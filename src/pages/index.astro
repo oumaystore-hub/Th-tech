@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import { getCollection } from 'astro:content';
 
 const allArticles = await getCollection('articles');
@@ -19,7 +20,9 @@ const latestArticles = allArticles
       <h1>المعرفة التقنية<br /><span class="gradient">بلا حدود</span></h1>
       <p>منصة متخصصة في الذكاء الاصطناعي، الأداء العالي، واستراتيجيات الرقمنة الحديثة.</p>
       <div class="actions">
-        <a href="/articles/الكل" class="btn primary">تصفح المقالات</a>
+        <a href="/articles/all" class="btn primary glow-btn">
+          <span>📑</span> تصفح المقالات
+        </a>
       </div>
     </div>
   </section>
@@ -27,7 +30,7 @@ const latestArticles = allArticles
   <section class="container">
     <div class="section-head">
       <h2>أحدث المقالات</h2>
-      <a href="/articles/الكل" class="view-all">عرض الكل ←</a>
+      <a href="/articles/all" class="view-all">عرض الكل ←</a>
     </div>
 
     {latestArticles.length > 0 ? (
@@ -50,6 +53,8 @@ const latestArticles = allArticles
       </div>
     )}
   </section>
+  
+  <Footer />
 </BaseLayout>
 
 <style>
@@ -60,7 +65,7 @@ const latestArticles = allArticles
   .gradient { background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; color: transparent; }
   .hero p { font-size: 1.2rem; color: var(--muted); max-width: 600px; margin: 0 auto 3rem; }
   .actions { display: flex; gap: 1rem; justify-content: center; }
-  .btn { padding: 1rem 2.5rem; border-radius: 50px; font-weight: 700; transition: all 0.3s; }
+  .btn { padding: 1rem 2.5rem; border-radius: 50px; font-weight: 700; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.5rem; }
   .primary { background: var(--primary); color: white; box-shadow: var(--glow); }
   .primary:hover { transform: translateY(-3px); box-shadow: 0 0 30px rgba(99,102,241,0.5); }
   .container { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem; }
