@@ -1,0 +1,96 @@
+---
+const links = [
+  { name: 'الرئيسية', href: '/' },
+  { name: 'المقالات', href: '/articles/الكل' },
+];
+
+const categories = [
+  { name: 'ذكاء اصطناعي', slug: 'ذكاء-اصطناعي', icon: '🧠' },
+  { name: 'تقنية', slug: 'تقنية', icon: '💻' },
+  { name: 'ربح رقمي', slug: 'ربح-رقمي', icon: '💎' },
+  { name: 'أداء', slug: 'أداء', icon: '⚡' }
+];
+---
+
+<header class="header">
+  <div class="container">
+    <a href="/" class="logo">Th<span>.Tech</span></a>
+    
+    <nav class="desktop-nav">
+      {links.map(l => <a href={l.href}>{l.name}</a>)}
+    </nav>
+
+    <button class="hamburger" id="menuBtn" aria-label="القائمة">
+      <span /><span /><span />
+    </button>
+  </div>
+</header>
+
+<div class="drawer" id="drawer">
+  <div class="drawer-header">
+    <span>القائمة</span>
+    <button id="closeBtn">✕</button>
+  </div>
+  <div class="drawer-links">
+    {links.map(l => <a href={l.href} class="link">{l.name}</a>)}
+  </div>
+  <div class="divider"></div>
+  <p class="label">التصنيفات</p>
+  {categories.map(c => (
+    <a href={`/articles/${c.slug}`} class="cat-link">
+      <span>{c.icon}</span> {c.name}
+    </a>
+  ))}
+</div>
+
+<div class="overlay" id="overlay" />
+
+<script>
+  const btn = document.getElementById('menuBtn');
+  const drawer = document.getElementById('drawer');
+  const close = document.getElementById('closeBtn');
+  const overlay = document.getElementById('overlay');
+  const toggle = () => {
+    drawer?.classList.toggle('open');
+    overlay?.classList.toggle('active');
+    document.body.style.overflow = drawer?.classList.contains('open') ? 'hidden' : '';
+  };
+  [btn, close, overlay].forEach(el => el?.addEventListener('click', toggle));
+</script>
+
+<style>
+  .header { position: sticky; top: 0; z-index: 100; backdrop-filter: blur(16px); background: rgba(10,10,15,0.7); border-bottom: 1px solid var(--border); }
+  .container { max-width: 1200px; margin: 0 auto; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
+  .logo { font-size: 1.6rem; font-weight: 800; letter-spacing: -1px; }
+  .logo span { color: var(--primary); text-shadow: var(--glow); }
+  
+  .desktop-nav { display: none; gap: 2rem; }
+  .desktop-nav a { color: var(--muted); font-weight: 500; }
+  .desktop-nav a:hover { color: var(--text); }
+  
+  .hamburger { background: none; border: none; cursor: pointer; display: flex; flex-direction: column; gap: 6px; padding: 0.5rem; }
+  .hamburger span { width: 28px; height: 2px; background: var(--text); border-radius: 2px; transition: 0.3s; }
+  
+  .drawer { position: fixed; top: 0; right: -100%; width: 85%; max-width: 340px; height: 100vh; background: #0f1016; z-index: 200; border-left: 1px solid var(--border); transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1); padding: 2rem; display: flex; flex-direction: column; gap: 1rem; }
+  .drawer.open { right: 0; box-shadow: -20px 0 50px rgba(0,0,0,0.5); }
+  
+  .drawer-header { display: flex; justify-content: space-between; align-items: center; font-weight: 700; font-size: 1.2rem; margin-bottom: 1rem; }
+  .drawer-header button { background: none; border: none; color: var(--muted); font-size: 1.5rem; cursor: pointer; }
+  
+  .link { display: block; padding: 0.8rem 1rem; border-radius: 12px; color: var(--text); font-weight: 600; }
+  .link:hover { background: var(--surface); color: var(--primary); }
+  
+  .divider { height: 1px; background: var(--border); margin: 0.5rem 0; }
+  .label { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; margin-top: 0.5rem; }
+  
+  .cat-link { display: flex; align-items: center; gap: 1rem; padding: 0.7rem 1rem; border-radius: 10px; color: var(--muted); }
+  .cat-link:hover { background: var(--surface); color: var(--accent); }
+  
+  .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 150; opacity: 0; visibility: hidden; transition: 0.3s; backdrop-filter: blur(4px); }
+  .overlay.active { opacity: 1; visibility: visible; }
+  
+  @media (min-width: 768px) {
+    .desktop-nav { display: flex; }
+    .hamburger { display: none; }
+  }
+</style>
