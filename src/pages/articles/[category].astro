@@ -1,19 +1,44 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  return ['الكل', 'ذكاء-اصطناعي', 'تقنية', 'ربح-رقمي', 'أداء'].map(c => ({ params: { category: c } }));
+  const categories = [
+    { slug: 'all', label: 'جميع المقالات' },
+    { slug: 'ذكاء-اصطناعي', label: 'ذكاء اصطناعي' },
+    { slug: 'تقنية', label: 'تقنية' },
+    { slug: 'ربح-رقمي', label: 'ربح رقمي' },
+    { slug: 'أداء', label: 'أداء' }
+  ];
+  return categories.map(c => ({ params: { category: c.slug } }));
 }
 
 const { category } = Astro.params;
 const all = await getCollection('articles');
 const norm = (s) => s.trim().replace(/\s+/g, '-').replace(/^ال/, '');
-const current = category === 'الكل' ? null : decodeURIComponent(category);
+
+const catMap = {
+  'all': null,
+  'ذكاء-اصطناعي': 'ذكاء-اصطناعي',
+  'تقنية': 'تقنية',
+  'ربح-رقمي': 'ربح-رقمي',
+  'أداء': 'أداء'
+};
+
+const current = catMap[category] || null;
 const filtered = current ? all.filter(a => norm(a.data.category) === norm(current)) : all;
 const sorted = filtered.sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime());
-const title = current ? current.replace(/-/g, ' ') : 'جميع المقالات';
+
+const titleMap = {
+  'all': 'جميع المقالات',
+  'ذكاء-اصطناعي': 'ذكاء اصطناعي',
+  'تقنية': 'تقنية',
+  'ربح-رقمي': 'ربح رقمي',
+  'أداء': 'أداء'
+};
+const title = titleMap[category] || 'غير معروف';
 ---
 
 <BaseLayout title={`${title} | Th-tech`}>
@@ -22,10 +47,15 @@ const title = current ? current.replace(/-/g, ' ') : 'جميع المقالات'
     <div class="page-header">
       <h1>{title}</h1>
       <p>{sorted.length} مقال متخصص</p>
-      <div class="filters">
-        {['الكل', 'ذكاء-اصطناعي', 'تقنية', 'ربح-رقمي', 'أداء'].map(c => (
-          <a href={`/articles/${c}`} class:list={['chip', { active: norm(c) === norm(category) }]}>
-            {c.replace(/-/g, ' ')}
+      <div class="filters">        {[
+          { slug: 'all', label: 'الكل' },
+          { slug: 'ذكاء-اصطناعي', label: 'ذكاء اصطناعي' },
+          { slug: 'تقنية', label: 'تقنية' },
+          { slug: 'ربح-رقمي', label: 'ربح رقمي' },
+          { slug: 'أداء', label: 'أداء' }
+        ].map(c => (
+          <a href={`/articles/${c.slug}`} class:list={['chip', { active: c.slug === category }]}>
+            {c.label}
           </a>
         ))}
       </div>
@@ -51,12 +81,13 @@ const title = current ? current.replace(/-/g, ' ') : 'جميع المقالات'
       </div>
     )}
   </main>
+  <Footer />
 </BaseLayout>
 
 <style>
   .container { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem; min-height: 70vh; }
   .page-header { text-align: center; margin-bottom: 4rem; }
-  .page-header h1 { font-size: 3rem; margin-bottom: 0.5rem; background: linear-gradient(to right, #fff, #94a3b8); -webkit-background-clip: text; color: transparent; }
+  .page-header h1 { font-size: 3rem; margin-bottom: 0.5rem; background: linear-gradient(to right, var(--text), var(--muted)); -webkit-background-clip: text; color: transparent; }
   .page-header p { color: var(--muted); font-size: 1.1rem; }
   .filters { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; margin-top: 2.5rem; }
   .chip { padding: 0.6rem 1.5rem; border-radius: 50px; background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-weight: 600; transition: all 0.3s; }
@@ -65,8 +96,7 @@ const title = current ? current.replace(/-/g, ' ') : 'جميع المقالات'
   .card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; transition: 0.4s; overflow: hidden; }
   .card:hover { border-color: rgba(6,182,212,0.4); transform: translateY(-5px); }
   .glow-line { position: absolute; bottom: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); opacity: 0; transition: 0.4s; }
-  .card:hover .glow-line { opacity: 1; }
-  .info { display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 0.8rem; }
+  .card:hover .glow-line { opacity: 1; }  .info { display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 0.8rem; }
   .cat { color: var(--accent); font-weight: 700; letter-spacing: 0.5px; }
   time { color: var(--muted); }
   .card h3 { font-size: 1.3rem; margin-bottom: 0.8rem; line-height: 1.4; }
