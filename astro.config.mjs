@@ -1,8 +1,7 @@
 import { defineConfig } from 'astro/config';
-import mdx from '@astrojs/mdx';
 
 export default defineConfig({
-  base: '/Th-tech/',
-  output: 'static',
-  integrations: [mdx()],
+  site: 'https://oumaystore-hub.github.io',
+  base: '/th-tech/', // ⬅️ ضروري جداً ليعمل الموقع كمجلد فرعي
+  trailingSlash: 'ignore',
 });
