@@ -1,0 +1,47 @@
+---
+import { getCollection } from 'astro:content';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const posts = await getCollection('blog');
+const searchQ = Astro.url.searchParams.get('q');
+const filtered = searchQ 
+  ? posts.filter(p => p.data.title.includes(searchQ) || p.data.description.includes(searchQ))
+  : posts;
+---
+<html lang="ar" dir="rtl" data-theme="dark">
+  <head><meta charset="UTF-8" /><title>المقالات - Th.Tech</title></head>
+  <body>
+    <Header />
+    <main class="main">
+      <h1>📚 {searchQ ? `نتائج البحث عن: ${searchQ}` : 'جميع المقالات'}</h1>
+      <div class="grid">
+        {filtered.map(p => (
+          <article class="card">
+            <span class="tag">{p.data.category}</span>
+            <h2><a href={`/articles/${p.slug}/`}>{p.data.title}</a></h2>
+            <p>{p.data.description}</p>
+            <time>{p.data.pubDate.toLocaleDateString('ar-SA')}</time>
+          </article>
+        ))}
+      </div>
+      {filtered.length === 0 && <p style="text-align:center;padding:2rem;color:#666">لا توجد نتائج</p>}
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  :root{--bg:#0a0a0a;--text:#fff;--card:#1a1a2e}
+  body{background:var(--bg);color:var(--text);margin:0;font-family:system-ui}
+  .main{max-width:1000px;margin:0 auto;padding:2rem 1rem}
+  h1{text-align:center;margin-bottom:2rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+  .card{background:var(--card);padding:1.5rem;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+  .tag{background:#3b82f6;color:#fff;padding:0.25rem 0.75rem;border-radius:20px;font-size:0.8rem;font-weight:bold}
+  h2{margin:0.75rem 0 0.5rem;font-size:1.3rem}
+  h2 a{color:#fff;text-decoration:none}
+  h2 a:hover{color:#3b82f6}
+  p{color:#aaa;line-height:1.6;margin-bottom:0.75rem}
+  time{color:#666;font-size:0.85rem}
+</style>
