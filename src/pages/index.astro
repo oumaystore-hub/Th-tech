@@ -1,87 +1,54 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { getCollection } from 'astro:content';
-
-const allArticles = await getCollection('articles');
-const latestArticles = allArticles
-  .sort((a, b) => b.data.publishDate.getTime() - a.data.publishDate.getTime())
-  .slice(0, 6);
+const posts = await getCollection('blog');
 ---
-
-<BaseLayout title="Th-tech | المستقبل التقني">
-  <Header />
-
-  <section class="hero">
-    <div class="glow-orb"></div>
-    <div class="content">
-      <div class="badge">🔥 محتوى تقني عملي</div>
-      <h1>المعرفة التقنية<br /><span class="gradient">بلا حدود</span></h1>
-      <p>منصة متخصصة في الذكاء الاصطناعي، الأداء العالي، واستراتيجيات الرقمنة الحديثة.</p>
-      <div class="actions">
-        <a href="/articles/all" class="btn primary glow-btn">
-          <span>📑</span> تصفح المقالات
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <section class="container">
-    <div class="section-head">
-      <h2>أحدث المقالات</h2>
-      <a href="/articles/all" class="view-all">عرض الكل ←</a>
-    </div>
-
-    {latestArticles.length > 0 ? (
-      <div class="grid">
-        {latestArticles.map(p => (
-          <article class="card">
-            <div class="card-glow"></div>
-            <div class="meta">
+<html lang="ar" dir="rtl" data-theme="dark">
+  <head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Th.Tech</title></head>
+  <body>
+    <Header />
+    <main class="main">
+      <section class="hero">
+        <h1>Th.Tech</h1>
+        <p>منصة متخصصة في الذكاء الاصطناعي، الأداء العالي، واستراتيجيات الرقمنة الحديثة.</p>
+        <a href="/articles/" class="btn">📚 تصفح المقالات</a>
+      </section>
+      <section class="articles-section">
+        <h2>أحدث المقالات</h2>
+        <div class="grid">
+          {posts.slice(0, 6).map(p => (
+            <article class="card">
               <span class="tag">{p.data.category}</span>
-              <time>{p.data.publishDate.toLocaleDateString('ar-EG')}</time>
-            </div>
-            <h3><a href={`/articles/${p.slug}`}>{p.data.title}</a></h3>
-            <p>{p.data.description || 'مقال متخصص يغطي أحدث التطورات في هذا المجال...'}</p>
-          </article>
-        ))}
-      </div>
-    ) : (
-      <div class="empty-state">
-        <p>لا توجد مقالات بعد. أضف ملفات .mdx إلى src/content/articles/</p>
-      </div>
-    )}
-  </section>
-  
-  <Footer />
-</BaseLayout>
+              <h3><a href={`/articles/${p.slug}/`}>{p.data.title}</a></h3>
+              <p>{p.data.description}</p>
+              <time>{p.data.pubDate.toLocaleDateString('ar-SA')}</time>
+            </article>
+          ))}
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </body>
+</html>
 
 <style>
-  .hero { position: relative; padding: 8rem 1.5rem 6rem; text-align: center; overflow: hidden; }
-  .glow-orb { position: absolute; top: -20%; left: 50%; transform: translateX(-50%); width: 600px; height: 600px; background: radial-gradient(circle, rgba(99,102,241,0.15) 0%, transparent 70%); z-index: -1; filter: blur(60px); }
-  .badge { display: inline-block; padding: 0.5rem 1.2rem; background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); border-radius: 50px; color: var(--primary); font-size: 0.85rem; font-weight: 600; margin-bottom: 2rem; }
-  .hero h1 { font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1.1; margin-bottom: 1.5rem; font-weight: 800; }
-  .gradient { background: linear-gradient(135deg, #6366f1, #06b6d4); -webkit-background-clip: text; color: transparent; }
-  .hero p { font-size: 1.2rem; color: var(--muted); max-width: 600px; margin: 0 auto 3rem; }
-  .actions { display: flex; gap: 1rem; justify-content: center; }
-  .btn { padding: 1rem 2.5rem; border-radius: 50px; font-weight: 700; transition: all 0.3s; display: inline-flex; align-items: center; gap: 0.5rem; }
-  .primary { background: var(--primary); color: white; box-shadow: var(--glow); }
-  .primary:hover { transform: translateY(-3px); box-shadow: 0 0 30px rgba(99,102,241,0.5); }
-  .container { max-width: 1200px; margin: 0 auto; padding: 4rem 1.5rem; }
-  .section-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 3rem; }
-  .section-head h2 { font-size: 2rem; }
-  .view-all { color: var(--accent); font-weight: 600; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 2rem; }
-  .card { position: relative; background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; transition: all 0.4s ease; overflow: hidden; }
-  .card:hover { border-color: rgba(99,102,241,0.4); transform: translateY(-5px); }
-  .card-glow { position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--primary), transparent); opacity: 0; transition: 0.4s; }
-  .card:hover .card-glow { opacity: 1; }
-  .meta { display: flex; justify-content: space-between; margin-bottom: 1.2rem; font-size: 0.8rem; }
-  .tag { color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-  time { color: var(--muted); }
-  .card h3 { font-size: 1.3rem; margin-bottom: 0.8rem; line-height: 1.4; }
-  .card h3 a { color: var(--text); }
-  .card p { color: var(--muted); font-size: 0.95rem; line-height: 1.7; }
-  .empty-state { text-align: center; padding: 4rem; color: var(--muted); background: var(--surface); border-radius: 20px; border: 1px dashed var(--border); }
+  :root{--bg:#0a0a0a;--text:#fff;--card:#1a1a2e}
+  body{background:var(--bg);color:var(--text);margin:0;font-family:system-ui}
+  .main{min-height:70vh}
+  .hero{background:linear-gradient(135deg,#1a1a2e,#16213e);padding:4rem 1rem;text-align:center}
+  .hero h1{font-size:2.5rem;margin-bottom:1rem}
+  .hero p{font-size:1.2rem;color:#ccc;margin-bottom:2rem;max-width:600px;margin-left:auto;margin-right:auto}
+  .btn{display:inline-block;background:#3b82f6;color:#fff;padding:1rem 2rem;border-radius:50px;text-decoration:none;font-weight:600;font-size:1.1rem;transition:transform 0.3s}
+  .btn:hover{transform:scale(1.05)}
+  .articles-section{max-width:1200px;margin:3rem auto;padding:0 1rem}
+  .articles-section h2{text-align:center;margin-bottom:2rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+  .card{background:var(--card);padding:1.5rem;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.3)}
+  .tag{background:#3b82f6;color:#fff;padding:0.25rem 0.75rem;border-radius:20px;font-size:0.8rem;font-weight:bold}
+  h3{margin:0.75rem 0 0.5rem;font-size:1.2rem}
+  h3 a{color:#fff;text-decoration:none}
+  h3 a:hover{color:#3b82f6}
+  p{color:#aaa;line-height:1.6;margin-bottom:0.75rem}
+  time{color:#666;font-size:0.85rem}
 </style>
