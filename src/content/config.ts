@@ -1,12 +1,17 @@
-import { defineCollection, z } from 'astro:content';
+import { z, defineCollection } from 'astro:content';
 
-const articles = defineCollection({
+const blogCollection = defineCollection({
   schema: z.object({
     title: z.string(),
-    category: z.enum(['ذكاء اصطناعي', 'تقنية', 'ربح رقمي', 'أداء']),
-    publishDate: z.coerce.date(),
-    description: z.string().optional(),
-  })
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    category: z.string(),
+    tags: z.array(z.string()).optional(),
+    author: z.string().optional(),
+    image: z.string().optional(),
+  }),
 });
 
-export const collections = { articles };
+export const collections = {
+  blog: blogCollection,
+};

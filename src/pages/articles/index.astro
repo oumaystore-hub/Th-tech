@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const posts = await getCollection('blog');
+---
+
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <title>جميع المقالات - TH Tech</title>
+  </head>
+  <body>
+    <Header />
+    
+    <main class="main">
+      <h1>جميع المقالات</h1>
+      
+      <div class="articles-grid">
+        {posts.map((post) => (
+          <article class="article-card">
+            <h3>
+              <a href={`/articles/${post.slug}`}>{post.data.title}</a>
+            </h3>
+            <p>{post.data.description}</p>
+            <div class="meta">
+              <span class="category">{post.data.category}</span>
+              <time>{new Date(post.data.pubDate).toLocaleDateString('ar-SA')}</time>
+            </div>
+          </article>
+        ))}
+      </div>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .main {
+    min-height: 70vh;
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+  }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+
+  .article-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+
+  .article-card h3 a {
+    color: #1a1a2e;
+    text-decoration: none;
+  }
+
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+    font-size: 0.9rem;
+    color: #6b7280;
+  }
+
+  .category {
+    background: #3b82f6;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+  }
+</style>
