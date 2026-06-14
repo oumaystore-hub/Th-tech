@@ -1,12 +1,16 @@
 import { defineCollection, z } from 'astro:content';
+import { glob } from 'astro/loaders';
 
-const articles = defineCollection({
+const blog = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
   schema: z.object({
     title: z.string(),
-    category: z.enum(['ذكاء اصطناعي', 'تقنية', 'ربح رقمي', 'أداء']),
-    publishDate: z.coerce.date(),
-    description: z.string().optional(),
-  })
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    category: z.string(),
+    tags: z.array(z.string()).optional(),
+    author: z.string().optional(),
+  }),
 });
 
-export const collections = { articles };
+export const collections = { blog };
