@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+const posts = await getCollection('blog');
+---
+<html lang="ar" dir="rtl">
+  <head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Th.Tech</title></head>  <body style="font-family:sans-serif;padding:2rem;background:#0f172a;color:#fff;max-width:800px;margin:0 auto;">
+    <h1 style="color:#3b82f6;text-align:center;">Th.Tech</h1>
+    <p style="text-align:center;color:#94a3b8;">منصة متخصصة في الذكاء الاصطناعي والتكنولوجيا</p>
+    
+    {posts.length > 0 ? (
+      <ul style="list-style:none;padding:0;margin-top:2rem;">
+        {posts.map(post => (
+          <li style="background:#1e293b;padding:1rem;margin:1rem 0;border-radius:8px;">
+            <a href={`/articles/${post.slug}/`} style="color:#38bdf8;text-decoration:none;font-weight:bold;">
+              {post.data.title}
+            </a>
+            <p style="color:#64748b;font-size:0.85rem;margin:0.5rem 0 0;">
+              {post.data.category} • {post.data.pubDate.toLocaleDateString('ar-SA')}
+            </p>
+          </li>
+        ))}
+      </ul>
+    ) : <p style="text-align:center;color:#64748b;padding:2rem;">لا توجد مقالات بعد</p>}
+  </body>
+</html>

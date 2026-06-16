@@ -1,0 +1,26 @@
+---
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.filter(p => p.slug).map(post => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+---
+
+<html lang="ar" dir="rtl">
+  <head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>{post.data.title}</title></head>
+  <body style="font-family:sans-serif;padding:2rem;background:#0f172a;color:#fff;max-width:800px;margin:0 auto;">
+    <a href="/" style="color:#38bdf8;text-decoration:none;">← العودة للرئيسية</a>
+    <article style="background:#1e293b;padding:2rem;border-radius:12px;margin-top:2rem;">
+      <span style="background:#3b82f6;color:#fff;padding:0.25rem 0.75rem;border-radius:20px;font-size:0.85rem;">{post.data.category}</span>
+      <h1 style="color:#38bdf8;margin:1rem 0;">{post.data.title}</h1>
+      <p style="color:#94a3b8;font-size:0.9rem;">📅 {post.data.pubDate.toLocaleDateString('ar-SA')}</p>
+      <div style="line-height:1.8;margin-top:2rem;color:#cbd5e1;"><Content /></div>
+    </article>
+  </body></html>
