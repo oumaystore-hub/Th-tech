@@ -2,12 +2,19 @@
 import { getCollection } from 'astro:content';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
-export async function getStaticPaths(){
-  const posts=await getCollection('blog');
-  return posts.map(p=>({params:{slug:p.slug},props:{post:p}}));
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  // فلتر أمان: نتأكد أن كل مقال له رابط (slug) صحيح
+  const validPosts = posts.filter(p => p.slug);
+  return validPosts.map(post => ({
+    params: { slug: post.slug },
+    props: { post }
+  }));
 }
-const {post}=Astro.props;
-const {Content}=await post.render();
+
+const { post } = Astro.props;
+const { Content } = await post.render();
 ---
 <html lang="ar" dir="rtl"><head><meta charset="UTF-8"/><title>{post.data.title}</title></head>
 <body style="font-family:sans-serif;background:#0f172a;color:#fff;margin:0">
