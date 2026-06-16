@@ -25,23 +25,27 @@ import Logo from './Logo.astro';
   </nav>
 </header>
 <style>
-.header{background:#1a1a2e;color:#fff;position:sticky;top:0;z-index:1000}
+.header{background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);position:sticky;top:0;z-index:1000;box-shadow:0 4px 20px rgba(0,0,0,0.1)}
 .container{max-width:1200px;margin:0 auto;padding:1rem;display:flex;justify-content:space-between;align-items:center}
-.nav-menu{display:flex;list-style:none;gap:1.5rem}
-.nav-menu a{color:#fff;text-decoration:none}
-.nav-tools{display:flex;gap:1rem}
-.tool-btn{background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer}
-.hamburger{display:none;flex-direction:column;gap:4px;background:none;border:none}
-.hamburger span{width:24px;height:2px;background:#fff}
-.mobile-menu{display:none;position:absolute;top:100%;left:0;right:0;background:#1a1a2e;padding:1rem}
+.nav-menu{display:flex;list-style:none;gap:2rem;margin:0;padding:0}
+.nav-menu a{color:#e2e8f0;text-decoration:none;font-weight:500;transition:0.3s}
+.nav-menu a:hover{color:#3b82f6}
+.nav-tools{display:flex;gap:1rem;align-items:center}
+.tool-btn{background:rgba(255,255,255,0.1);border:none;color:#fff;width:40px;height:40px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.hamburger{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer}
+.hamburger span{width:25px;height:3px;background:#fff;border-radius:3px}
+.mobile-menu{display:none;flex-direction:column;list-style:none;position:absolute;top:100%;left:0;right:0;background:#0f172a;padding:1rem 0;border-top:1px solid rgba(255,255,255,0.1)}
 .mobile-menu.active{display:flex}
+.mobile-menu a{display:block;padding:1rem;color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.05)}
 @media(max-width:768px){.nav-menu{display:none}.hamburger{display:flex}}
 </style>
 <script is:inline>
 document.getElementById('menu-btn')?.addEventListener('click',()=>{
-  document.getElementById('mobile-menu')?.classList.toggle('active')
+  document.getElementById('mobile-menu')?.classList.toggle('active');
+  document.getElementById('menu-btn').classList.toggle('active');
 });
 document.getElementById('theme-btn')?.addEventListener('click',()=>{
-  document.documentElement.setAttribute('data-theme',    document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';  document.documentElement.setAttribute('data-theme',isDark?'light':'dark');
+  document.getElementById('theme-btn').textContent=isDark?'☀️':'🌙';
 });
 </script>

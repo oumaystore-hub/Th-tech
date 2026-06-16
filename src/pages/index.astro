@@ -5,20 +5,53 @@ import Footer from '../components/Footer.astro';
 const posts = await getCollection('blog');
 ---
 <html lang="ar" dir="rtl" data-theme="dark">
-<head><meta charset="UTF-8"/><title>Th.Tech</title></head>
-<body style="font-family:sans-serif;background:#0f172a;color:#fff;margin:0">
+<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Th.Tech</title></head>
+<body style="margin:0;font-family:system-ui;background:#0f172a;color:#f1f5f9">
 <Header/>
-<main style="max-width:800px;margin:0 auto;padding:2rem;text-align:center">
-<h1 style="color:#3b82f6;font-size:2.5rem">Th.Tech</h1>
-<p style="color:#94a3b8">منصة متخصصة في الذكاء الاصطناعي والتكنولوجيا</p>
-<div style="margin-top:2rem">
-{posts.length > 0 ? posts.map(p => (
-<article style="background:#1e293b;padding:1.5rem;margin:1rem 0;border-radius:8px">
-<h3><a href={`/articles/${p.slug}/`} style="color:#3b82f6">{p.data.title}</a></h3>
-<p style="color:#94a3b8">{p.data.description}</p>
-</article>
-)) : <p>لا توجد مقالات بعد</p>}
-</div>
-</main><Footer/>
+<section class="hero">
+  <div class="hero-content">
+    <span class="badge">🚀 مرحباً بك في المستقبل</span>
+    <h1 class="title">اكتشف عالم <span class="gradient">الذكاء الاصطناعي</span></h1>
+    <p class="desc">منصة متخصصة تقدم أحدث المقالات والشروحات في عالم البرمجة والأدوات الرقمية.</p>
+    <div class="btns"><a href="/articles/" class="btn">تصفح المقالات</a></div>  </div>
+</section>
+<main class="container">
+  <section class="section">
+    <h2 class="sec-title"> أحدث المقالات</h2>
+    <div class="grid">
+      {posts.length>0 ? posts.map(p=>(
+        <article class="card">
+          <span class="tag">{p.data.category}</span>
+          <h3><a href={`/articles/${p.slug}/`}>{p.data.title}</a></h3>
+          <p>{p.data.description}</p>
+          <div class="meta"><span>📅 {p.data.pubDate.toLocaleDateString('ar-SA')}</span></div>
+        </article>
+      )) : <p style="text-align:center;padding:2rem;color:#666">لا توجد مقالات حالياً</p>}
+    </div>
+  </section>
+</main>
+<Footer/>
 </body>
 </html>
+<style>
+.container{max-width:1200px;margin:0 auto;padding:0 1rem}
+.hero{text-align:center;padding:6rem 1rem 4rem;background:radial-gradient(circle at top,#1e293b 0%,#0f172a 70%)}
+.badge{background:rgba(59,130,246,0.1);color:#3b82f6;padding:0.5rem 1rem;border-radius:50px;font-size:0.9rem;font-weight:bold;border:1px solid rgba(59,130,246,0.2)}
+.title{font-size:3rem;margin:1.5rem 0;line-height:1.2}
+.gradient{background:linear-gradient(to right,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.desc{font-size:1.2rem;color:#94a3b8;max-width:600px;margin:0 auto 2rem}
+.btn{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;padding:1rem 2rem;border-radius:8px;text-decoration:none;font-weight:bold;box-shadow:0 4px 15px rgba(59,130,246,0.3);transition:0.3s;display:inline-block}
+.btn:hover{transform:translateY(-3px)}
+.section{padding:4rem 0}
+.sec-title{text-align:center;margin-bottom:2rem;font-size:2rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2rem}
+.card{background:#1e293b;border-radius:16px;padding:1.5rem;transition:0.3s;border:1px solid rgba(255,255,255,0.05)}
+.card:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(0,0,0,0.2);border-color:#3b82f6}
+.tag{background:rgba(59,130,246,0.15);color:#3b82f6;padding:0.25rem 0.75rem;border-radius:50px;font-size:0.8rem;font-weight:bold;display:inline-block;margin-bottom:1rem}
+.card h3{margin:0.5rem 0;font-size:1.25rem}
+.card h3 a{color:#f1f5f9;text-decoration:none}
+.card h3 a:hover{color:#3b82f6}
+.card p{color:#94a3b8;font-size:0.95rem;margin-bottom:1rem}
+.meta{color:#64748b;font-size:0.85rem;border-top:1px solid rgba(255,255,255,0.05);padding-top:1rem}
+@media(max-width:768px){.title{font-size:2rem}.hero{padding:4rem 1rem 2rem}}
+</style>
