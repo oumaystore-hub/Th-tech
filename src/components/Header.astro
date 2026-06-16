@@ -1,0 +1,47 @@
+---
+import Logo from './Logo.astro';
+---
+<header class="header">
+  <nav class="navbar">
+    <div class="container">
+      <Logo size="medium" />
+      <ul class="nav-menu">
+        <li><a href="/">الرئيسية</a></li>
+        <li><a href="/articles/">المقالات</a></li>
+        <li><a href="/about/">من نحن</a></li>
+      </ul>
+      <div class="nav-tools">
+        <button id="theme-btn" class="tool-btn">🌙</button>
+        <button class="hamburger" id="menu-btn">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+      <ul class="mobile-menu" id="mobile-menu">
+        <li><a href="/">الرئيسية</a></li>
+        <li><a href="/articles/">المقالات</a></li>
+        <li><a href="/about/">من نحن</a></li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<style>
+.header{background:#1a1a2e;color:#fff;position:sticky;top:0;z-index:1000}
+.container{max-width:1200px;margin:0 auto;padding:1rem;display:flex;justify-content:space-between;align-items:center}
+.nav-menu{display:flex;list-style:none;gap:1.5rem}
+.nav-menu a{color:#fff;text-decoration:none}
+.nav-tools{display:flex;gap:1rem}
+.tool-btn{background:none;border:none;color:#fff;font-size:1.2rem;cursor:pointer}
+.hamburger{display:none;flex-direction:column;gap:4px;background:none;border:none}
+.hamburger span{width:24px;height:2px;background:#fff}
+.mobile-menu{display:none;position:absolute;top:100%;left:0;right:0;background:#1a1a2e;padding:1rem}
+.mobile-menu.active{display:flex}
+@media(max-width:768px){.nav-menu{display:none}.hamburger{display:flex}}
+</style>
+<script is:inline>
+document.getElementById('menu-btn')?.addEventListener('click',()=>{
+  document.getElementById('mobile-menu')?.classList.toggle('active')
+});
+document.getElementById('theme-btn')?.addEventListener('click',()=>{
+  document.documentElement.setAttribute('data-theme',    document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark')
+});
+</script>
