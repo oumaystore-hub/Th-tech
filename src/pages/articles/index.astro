@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const posts = await getCollection('blog');
+---
+
+<html lang="ar" dir="rtl" data-theme="dark">
+<head><meta charset="UTF-8"/><title>المقالات | Th.Tech</title></head>
+<body style="margin:0;font-family:system-ui;background:#0f172a;color:#f1f5f9">
+<Header/>
+<main class="container" style="max-width:1200px;margin:0 auto;padding:2rem 1rem;min-height:80vh">
+  <h1 style="text-align:center;margin-bottom:2rem">📚 جميع المقالات</h1>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2rem">
+    {posts.length>0 ? posts.map(p=>(
+      <article style="background:#1e293b;padding:1.5rem;border-radius:16px;border:1px solid rgba(255,255,255,0.05)">
+        <span style="background:rgba(59,130,246,0.15);color:#3b82f6;padding:0.25rem 0.75rem;border-radius:50px;font-size:0.8rem;font-weight:bold">{p.data.category}</span>
+        <h3 style="margin:0.5rem 0"><a href={`/articles/${p.slug}/`} style="color:#f1f5f9;text-decoration:none">{p.data.title}</a></h3>
+        <p style="color:#94a3b8;font-size:0.95rem">{p.data.description}</p>
+      </article>
+    )) : <p style="text-align:center;color:#666;padding:2rem">لا توجد مقالات بعد</p>}
+  </div>
+</main>
+<Footer/>
+</body>
+</html>
