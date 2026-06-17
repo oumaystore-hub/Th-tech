@@ -5,26 +5,608 @@ import Footer from '../../components/Footer.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blog');
-  // فلتر أمان: نتأكد أن كل مقال له رابط (slug) صحيح
-  const validPosts = posts.filter(p => p.slug);
-  return validPosts.map(post => ({
+  const valid = posts.filter(p => p.slug && p.slug.length > 0);
+  return valid.map(post => ({
     params: { slug: post.slug },
-    props: { post }
+    props: { post },
   }));
 }
 
 const { post } = Astro.props;
-const { Content } = await post.render();
+const { Content, headings } = await post.render();
+const toc = headings.filter(h => h.depth >= 2 && h.depth <= 3);
+
+const allPosts = await getCollection('blog');
+const related = allPosts
+  .filter(p => p.slug !== post.slug && p.data.category === post.data.category)
+  .slice(0, 3);
+
+const readingTime = Math.ceil(post.body.split(/\s+/).length / 200);
 ---
-<html lang="ar" dir="rtl"><head><meta charset="UTF-8"/><title>{post.data.title}</title></head>
-<body style="font-family:sans-serif;background:#0f172a;color:#fff;margin:0">
-<Header/>
-<main style="max-width:800px;margin:0 auto;padding:2rem">
-<a href="/" style="color:#3b82f6">← العودة</a>
-<article style="background:#1e293b;padding:2rem;margin-top:2rem;border-radius:12px">
-<h1 style="color:#3b82f6">{post.data.title}</h1>
-<div style="color:#94a3b8;margin:1rem 0"><Content/></div>
-</article>
-</main>
-<Footer/>
-</body></html>
+
+<html lang="ar" dir="rtl" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={post.data.description} />
+    <title>{post.data.title} | Th.Tech</title>
+  </head>
+  <body>
+    <!-- شريط تقدم القراءة -->
+    <div class="reading-progress" id="reading-progress"></div>
+    
+    <Header />
+    
+    <main class="main">
+      <article class="post">
+        <header class="post-header">
+          <div class="post-meta-top">
+            <span class="category-badge">{post.data.category}</span>
+            <div class="post-meta">
+              <span class="meta-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+                {post.data.pubDate.toLocaleDateString('ar-SA', { year: 'numeric', month: 'long', day: 'numeric' })}
+              </span>
+              <span class="meta-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                {post.data.author}
+              </span>
+              <span class="meta-item">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                {readingTime} دقيقة قراءة
+              </span>
+            </div>
+          </div>
+          
+          <h1>{post.data.title}</h1>
+        </header>
+
+        <div class="post-content">
+          <Content />
+        </div>
+
+        <!-- أزرار المشاركة -->
+        <div class="share-section">
+          <h3>📢 شارك المقال</h3>
+          <div class="share-buttons">
+            <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.data.title)}&url=${encodeURIComponent(Astro.url.href)}`} class="share-btn twitter" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+              Twitter
+            </a>
+            <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent(Astro.url.href)}&title=${encodeURIComponent(post.data.title)}`} class="share-btn linkedin" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+              LinkedIn
+            </a>
+            <a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(Astro.url.href)}`} class="share-btn facebook" target="_blank" rel="noopener">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+              Facebook
+            </a>
+            <button class="share-btn copy-link" onclick="navigator.clipboard.writeText(window.location.href); alert('تم نسخ الرابط!')">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+              </svg>
+              نسخ الرابط            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- مقالات ذات صلة -->
+      {related.length > 0 && (
+        <section class="related-section">
+          <h2 class="section-title">📖 قد يهمك أيضاً</h2>
+          <div class="related-grid">
+            {related.map(r => (
+              <a class="related-card" href={`/articles/${r.slug}/`}>
+                <span class="related-category">{r.data.category}</span>
+                <h3>{r.data.title}</h3>
+                <p>{r.data.description}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <div class="back-section">
+        <a href="/articles/" class="back-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          العودة لجميع المقالات
+        </a>
+      </div>
+    </main>
+
+    <!-- زر فهرس المقال المتوهج 📑 -->
+    {toc.length > 0 && (
+      <>
+        <button class="toc-btn glowing" id="toc-btn">
+          <span class="toc-icon">📑</span>
+          <span class="toc-text">فهرس المقال</span>
+        </button>
+        
+        <div class="toc-panel" id="toc-panel">
+          <div class="toc-header">
+            <div class="toc-title">
+              <span class="toc-icon-large">📑</span>
+              <h3>محتويات المقال</h3>
+            </div>
+            <button class="close-toc" id="close-toc">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>            </button>
+          </div>
+          <nav class="toc-nav">
+            <ul>
+              {toc.map(h => (
+                <li style={`margin-right: ${(h.depth - 2) * 1.5}rem`}>
+                  <a href={`#${h.slug}`} class="toc-link">
+                    <span class="toc-bullet"></span>
+                    {h.text}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+          <div class="toc-footer">
+            <p>📌 انقر على أي عنوان للانتقال إليه</p>
+          </div>
+        </div>
+      </>
+    )}
+
+    <!-- زر العودة للأعلى -->
+    <button class="back-to-top" id="back-to-top" title="العودة للأعلى">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+    </button>
+
+    <Footer />
+
+    <script is:inline>
+      // شريط التقدم
+      window.addEventListener('scroll', () => {
+        const winScroll = document.documentElement.scrollTop;
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (winScroll / height) * 100;
+        const progress = document.getElementById('reading-progress');
+        if(progress) progress.style.width = scrolled + '%';
+        
+        // زر العودة للأعلى
+        const backToTop = document.getElementById('back-to-top');
+        if(backToTop) {
+          if(winScroll > 500) backToTop.classList.add('visible');
+          else backToTop.classList.remove('visible');
+        }
+      });
+      
+      // الفهرس المتوهج
+      const tocBtn = document.getElementById('toc-btn');
+      const tocPanel = document.getElementById('toc-panel');      const closeToc = document.getElementById('close-toc');
+      
+      tocBtn?.addEventListener('click', () => tocPanel?.classList.add('active'));
+      closeToc?.addEventListener('click', () => tocPanel?.classList.remove('active'));
+      
+      document.addEventListener('click', (e) => {
+        if(!tocPanel?.contains(e.target) && !tocBtn?.contains(e.target)) {
+          tocPanel?.classList.remove('active');
+        }
+      });
+      
+      // العودة للأعلى
+      document.getElementById('back-to-top')?.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  :root {
+    --primary: #3b82f6;
+    --secondary: #8b5cf6;
+    --accent: #06b6d4;
+    --bg-dark: #0a0e27;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.4);
+  }
+  [data-theme="light"] {
+    --bg-dark: #f8fafc;
+    --card-bg: rgba(255, 255, 255, 0.8);
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+  }
+  
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.8;
+  }
+  
+  /* شريط التقدم */
+  .reading-progress {
+    position: fixed;
+    top: 0;    right: 0;
+    height: 4px;
+    background: linear-gradient(to left, var(--primary), var(--secondary), var(--accent));
+    z-index: 9999;
+    width: 0%;
+    transition: width 0.1s;
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+  }
+  
+  .main { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+  
+  .post {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 3rem;
+    margin-bottom: 3rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+  
+  .post-header { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 2px solid rgba(255, 255, 255, 0.1); }
+  .post-meta-top { margin-bottom: 1.5rem; }
+  .category-badge {
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    padding: 0.5rem 1.25rem;
+    border-radius: 50px;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  }
+  .post-meta {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  h1 {
+    font-size: 2.5rem;
+    line-height: 1.3;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;    -webkit-text-fill-color: transparent;
+  }
+  
+  .post-content {
+    font-size: 1.15rem;
+    line-height: 2;
+    color: var(--text-primary);
+  }
+  .post-content h2 {
+    color: var(--primary);
+    margin: 3rem 0 1.5rem;
+    padding-right: 1.5rem;
+    border-right: 4px solid var(--primary);
+    font-size: 2rem;
+  }
+  .post-content h3 {
+    color: var(--text-primary);
+    margin: 2.5rem 0 1rem;
+    font-size: 1.6rem;
+  }
+  .post-content p { margin-bottom: 1.5rem; }
+  .post-content ul, .post-content ol {
+    padding-right: 2rem;
+    margin-bottom: 1.5rem;
+  }
+  .post-content li { margin-bottom: 0.75rem; }
+  .post-content code {
+    background: rgba(59, 130, 246, 0.15);
+    padding: 0.25rem 0.6rem;
+    border-radius: 6px;
+    font-family: 'Courier New', monospace;
+    color: var(--primary);
+    font-size: 0.9em;
+  }
+  .post-content pre {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    padding: 1.5rem;
+    border-radius: 12px;
+    overflow-x: auto;
+    margin: 2rem 0;
+    direction: ltr;
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .post-content blockquote {
+    border-right: 4px solid var(--primary);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    background: rgba(59, 130, 246, 0.1);    border-radius: 12px;
+    font-style: italic;
+  }
+  .post-content img {
+    max-width: 100%;
+    border-radius: 12px;
+    margin: 2rem 0;
+  }
+  
+  /* أزرار المشاركة */
+  .share-section {
+    margin-top: 4rem;
+    padding-top: 2.5rem;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+  }
+  .share-section h3 { margin-bottom: 1.5rem; font-size: 1.3rem; }
+  .share-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .share-btn {
+    padding: 0.9rem 1.5rem;
+    border-radius: 12px;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+  }
+  .share-btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+  .twitter { background: #1da1f2; }
+  .linkedin { background: #0077b5; }
+  .facebook { background: #4267b2; }
+  .copy-link { background: rgba(255, 255, 255, 0.15); }
+  
+  /* المقالات ذات الصلة */
+  .related-section { margin: 4rem 0; }
+  .section-title {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-size: 2.2rem;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;  }
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  .related-card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 16px;
+    text-decoration: none;
+    color: var(--text-primary);
+    transition: all 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .related-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-glow);
+    border-color: var(--primary);
+  }
+  .related-category {
+    display: inline-block;
+    background: rgba(59, 130, 246, 0.2);
+    color: var(--primary);
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.8rem;
+    margin-bottom: 0.75rem;
+  }
+  .related-card h3 { margin: 0.75rem 0; font-size: 1.1rem; }
+  .related-card p { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.6; }
+  
+  .back-section { text-align: center; margin: 3rem 0; }
+  .back-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    background: rgba(59, 130, 246, 0.1);
+    transition: all 0.3s;
+  }
+  .back-btn:hover {
+    background: rgba(59, 130, 246, 0.2);
+    transform: translateX(-5px);
+  }
+    /* زر الفهرس المتوهج 📑 */
+  .toc-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 999;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    border: none;
+    padding: 1rem 1.75rem;
+    border-radius: 50px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: var(--shadow-glow);
+    animation: glow 2s infinite alternate;
+    transition: all 0.3s;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1rem;
+  }
+  .toc-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.8);
+  }
+  .toc-icon { font-size: 1.3rem; }
+  
+  @keyframes glow {
+    from { box-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+    to { box-shadow: 0 0 30px rgba(139, 92, 246, 0.9), 0 0 50px rgba(102, 126, 234, 0.6); }
+  }
+  
+  /* لوحة الفهرس */
+  .toc-panel {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 350px;
+    max-width: 90%;
+    height: 100vh;
+    background: var(--card-bg);
+    backdrop-filter: blur(30px);
+    box-shadow: -10px 0 50px rgba(0, 0, 0, 0.5);
+    padding: 2rem;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    overflow-y: auto;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+  }  .toc-panel.active { right: 0; }
+  
+  .toc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+    margin-bottom: 1.5rem;
+  }
+  .toc-title {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .toc-icon-large {
+    font-size: 2rem;
+    animation: rotate 3s linear infinite;
+  }
+  @keyframes rotate {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(5deg); }
+  }
+  .toc-title h3 {
+    margin: 0;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.5rem;
+  }
+  .close-toc {
+    background: rgba(239, 68, 68, 0.15);
+    border: none;
+    color: #ef4444;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+  }
+  .close-toc:hover {
+    background: rgba(239, 68, 68, 0.3);
+    transform: rotate(90deg);
+  }
+  
+  .toc-nav ul {
+    list-style: none;    padding: 0;
+  }
+  .toc-nav li { margin: 1rem 0; }
+  .toc-link {
+    color: var(--text-secondary);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    transition: all 0.3s;
+    font-weight: 500;
+  }
+  .toc-link:hover {
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--primary);
+    transform: translateX(-5px);
+  }
+  .toc-bullet {
+    width: 6px;
+    height: 6px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  
+  .toc-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  
+  /* زر العودة للأعلى */
+  .back-to-top {
+    position: fixed;
+    bottom: 2rem;
+    left: 2rem;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;    transition: all 0.3s;
+    z-index: 998;
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+  .back-to-top:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.6);
+  }
+  
+  @media (max-width: 768px) {
+    .post { padding: 2rem 1.5rem; }
+    h1 { font-size: 1.8rem; }
+    .post-content h2 { font-size: 1.5rem; }
+    .toc-btn { bottom: 1rem; right: 1rem; padding: 0.85rem 1.25rem; font-size: 0.9rem; }
+    .back-to-top { bottom: 1rem; left: 1rem; width: 45px; height: 45px; }
+  }
+</style>
