@@ -2,56 +2,590 @@
 import { getCollection } from 'astro:content';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+
 const posts = await getCollection('blog');
 ---
+
 <html lang="ar" dir="rtl" data-theme="dark">
-<head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>Th.Tech</title></head>
-<body style="margin:0;font-family:system-ui;background:#0f172a;color:#f1f5f9">
-<Header/>
-<section class="hero">
-  <div class="hero-content">
-    <span class="badge">🚀 مرحباً بك في المستقبل</span>
-    <h1 class="title">اكتشف عالم <span class="gradient">الذكاء الاصطناعي</span></h1>
-    <p class="desc">منصة متخصصة تقدم أحدث المقالات والشروحات في عالم البرمجة والأدوات الرقمية.</p>
-    <div class="btns"><a href="/articles/" class="btn">تصفح المقالات</a></div>  </div>
-</section>
-<main class="container">
-  <section class="section">
-    <h2 class="sec-title"> أحدث المقالات</h2>
-    <div class="grid">
-      {posts.length>0 ? posts.map(p=>(
-        <article class="card">
-          <span class="tag">{p.data.category}</span>
-          <h3><a href={`/articles/${p.slug}/`}>{p.data.title}</a></h3>
-          <p>{p.data.description}</p>
-          <div class="meta"><span>📅 {p.data.pubDate.toLocaleDateString('ar-SA')}</span></div>
-        </article>
-      )) : <p style="text-align:center;padding:2rem;color:#666">لا توجد مقالات حالياً</p>}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Th.Tech | المستقبل يبدأ هنا</title>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+  <Header />
+
+  <!-- Hero Section مع تأثيرات -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="gradient-orb orb-1"></div>
+      <div class="gradient-orb orb-2"></div>
+      <div class="gradient-orb orb-3"></div>
+    </div>
+    
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="pulse"></span>
+        🚀 مرحباً بك في المستقبل
+      </div>
+      
+      <h1 class="hero-title">
+        اكتشف عالم
+        <span class="gradient-text">الذكاء الاصطناعي</span>
+        <br />
+        <span class="highlight">والابتكار التقني</span>
+      </h1>
+      
+      <p class="hero-desc">
+        منصّة متخصصة تُقدّم أحدث المقالات والشروحات في عالم البرمجة، 
+        الذكاء الاصطناعي، والأدوات الرقمية المتقدمة
+      </p>
+      
+      <div class="hero-buttons">
+        <a href="/articles/" class="btn-primary">
+          <span>📚</span> تصفح المقالات
+        </a>
+        <a href="/about/" class="btn-secondary">
+          <span>ℹ️</span> من نحن        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-card">
+          <span class="stat-number">{posts.length}+</span>
+          <span class="stat-label">مقال احترافي</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-number">∞</span>
+          <span class="stat-label">معرفة مجانية</span>
+        </div>
+      </div>
     </div>
   </section>
-</main>
-<Footer/>
+
+  <!-- Featured Section -->
+  <main class="container">
+    <section class="section">
+      <div class="section-header">
+        <h2 class="section-title">
+          <span class="title-icon">🔥</span>
+          أحدث المقالات
+        </h2>
+        <a href="/articles/" class="view-all">
+          عرض الكل
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="articles-grid">
+        {posts.length > 0 ? posts.map((post, index) => (
+          <article class={`article-card featured-${index % 3}`}>
+            <div class="card-glow"></div>
+            <div class="card-content">
+              <div class="card-header">
+                <span class="category-badge">{post.data.category}</span>
+                {index === 0 && <span class="featured-badge">مميز</span>}
+              </div>
+              
+              <h3 class="card-title">
+                <a href={`/articles/${post.slug}/`}>
+                  {post.data.title}
+                </a>
+              </h3>
+              
+              <p class="card-excerpt">{post.data.description}</p>
+                            <div class="card-meta">
+                <div class="meta-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  {post.data.pubDate.toLocaleDateString('ar-SA')}
+                </div>
+                <div class="meta-item">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                  </svg>
+                  {post.data.author}
+                </div>
+              </div>
+            </div>
+          </article>
+        )) : (
+          <div class="empty-state">
+            <div class="empty-icon">📝</div>
+            <h3>لا توجد مقالات بعد</h3>
+            <p>سنقوم بنشر محتوى قيم قريباً</p>
+          </div>
+        )}
+      </div>
+    </section>
+  </main>
+
+  <Footer />
 </body>
 </html>
+
 <style>
-.container{max-width:1200px;margin:0 auto;padding:0 1rem}
-.hero{text-align:center;padding:6rem 1rem 4rem;background:radial-gradient(circle at top,#1e293b 0%,#0f172a 70%)}
-.badge{background:rgba(59,130,246,0.1);color:#3b82f6;padding:0.5rem 1rem;border-radius:50px;font-size:0.9rem;font-weight:bold;border:1px solid rgba(59,130,246,0.2)}
-.title{font-size:3rem;margin:1.5rem 0;line-height:1.2}
-.gradient{background:linear-gradient(to right,#3b82f6,#8b5cf6);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-.desc{font-size:1.2rem;color:#94a3b8;max-width:600px;margin:0 auto 2rem}
-.btn{background:linear-gradient(135deg,#3b82f6,#8b5cf6);color:#fff;padding:1rem 2rem;border-radius:8px;text-decoration:none;font-weight:bold;box-shadow:0 4px 15px rgba(59,130,246,0.3);transition:0.3s;display:inline-block}
-.btn:hover{transform:translateY(-3px)}
-.section{padding:4rem 0}
-.sec-title{text-align:center;margin-bottom:2rem;font-size:2rem}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:2rem}
-.card{background:#1e293b;border-radius:16px;padding:1.5rem;transition:0.3s;border:1px solid rgba(255,255,255,0.05)}
-.card:hover{transform:translateY(-5px);box-shadow:0 10px 30px rgba(0,0,0,0.2);border-color:#3b82f6}
-.tag{background:rgba(59,130,246,0.15);color:#3b82f6;padding:0.25rem 0.75rem;border-radius:50px;font-size:0.8rem;font-weight:bold;display:inline-block;margin-bottom:1rem}
-.card h3{margin:0.5rem 0;font-size:1.25rem}
-.card h3 a{color:#f1f5f9;text-decoration:none}
-.card h3 a:hover{color:#3b82f6}
-.card p{color:#94a3b8;font-size:0.95rem;margin-bottom:1rem}
-.meta{color:#64748b;font-size:0.85rem;border-top:1px solid rgba(255,255,255,0.05);padding-top:1rem}
-@media(max-width:768px){.title{font-size:2rem}.hero{padding:4rem 1rem 2rem}}
+  :root {
+    --primary: #3b82f6;
+    --secondary: #8b5cf6;
+    --accent: #06b6d4;
+    --bg-dark: #0a0e27;
+    --bg-card: rgba(30, 41, 59, 0.7);
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --gradient-2: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 50%, #06b6d4 100%);
+    --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.3);
+  }
+
+  [data-theme="light"] {    --bg-dark: #f8fafc;
+    --bg-card: rgba(255, 255, 255, 0.8);
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Hero Section */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8rem 1rem 4rem;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .gradient-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.4;
+    animation: float 20s infinite ease-in-out;
+  }
+
+  .orb-1 {
+    width: 600px;
+    height: 600px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    top: -200px;    right: -100px;
+    animation-delay: 0s;
+  }
+
+  .orb-2 {
+    width: 400px;
+    height: 400px;
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    bottom: -100px;
+    left: -50px;
+    animation-delay: 5s;
+  }
+
+  .orb-3 {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    top: 50%;
+    left: 50%;
+    animation-delay: 10s;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    33% { transform: translate(30px, -50px) scale(1.1); }
+    66% { transform: translate(-20px, 40px) scale(0.9); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    text-align: center;
+    animation: fadeInUp 1s ease;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(59, 130, 246, 0.15);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+  }
+  .pulse {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  .hero-title {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 900;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .gradient-text {
+    background: var(--gradient-2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: inline-block;
+  }
+
+  .highlight {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-desc {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .btn-primary, .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn-primary {
+    background: var(--gradient-2);
+    color: #fff;
+    box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+  }
+
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+  }
+
+  .btn-primary:hover::before {
+    left: 100%;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.5);
+  }
+
+  .btn-secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+  }
+  .btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 1.5rem 2.5rem;
+    border-radius: 16px;
+    text-align: center;
+    transition: transform 0.3s;
+  }
+
+  .stat-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .stat-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: var(--gradient-2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-label {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+  }
+
+  /* Main Content */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .section {    padding: 6rem 0;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .section-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .title-icon {
+    font-size: 2rem;
+  }
+
+  .view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 700;
+    transition: all 0.3s;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    background: rgba(59, 130, 246, 0.1);
+  }
+
+  .view-all:hover {
+    background: rgba(59, 130, 246, 0.2);
+    transform: translateX(-5px);
+  }
+
+  /* Articles Grid */
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 2rem;
+  }
+
+  .article-card {    position: relative;
+    background: var(--bg-card);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+  }
+
+  .card-glow {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--gradient-2);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .article-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-glow);
+    border-color: rgba(59, 130, 246, 0.3);
+  }
+
+  .article-card:hover .card-glow {
+    opacity: 1;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: 1rem;
+  }
+
+  .category-badge {
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--primary);
+    padding: 0.4rem 1rem;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+
+  .featured-badge {    background: linear-gradient(135deg, #f59e0b, #ef4444);
+    color: #fff;
+    padding: 0.3rem 0.8rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .card-title {
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+  }
+
+  .card-title a {
+    color: var(--text-primary);
+    text-decoration: none;
+    background: linear-gradient(to right, var(--text-primary), var(--primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: opacity 0.3s;
+  }
+
+  .card-title a:hover {
+    opacity: 0.8;
+  }
+
+  .card-excerpt {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-meta {
+    display: flex;
+    gap: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;  }
+
+  .meta-item svg {
+    opacity: 0.7;
+  }
+
+  .empty-state {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 6rem 2rem;
+    background: var(--bg-card);
+    border-radius: 20px;
+    border: 2px dashed rgba(59, 130, 246, 0.3);
+  }
+
+  .empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  .empty-state h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .empty-state p {
+    color: var(--text-secondary);
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero { padding: 6rem 1rem 3rem; }
+    .hero-title { font-size: 2rem; }
+    .hero-desc { font-size: 1rem; }
+    .section-title { font-size: 1.75rem; }
+    .articles-grid { grid-template-columns: 1fr; }
+    .hero-stats { flex-direction: column; }    .stat-card { padding: 1rem 2rem; }
+  }
 </style>
