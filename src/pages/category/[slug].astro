@@ -1,55 +1,30 @@
 ---
-import { getCollection } from 'astro:content';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('blog');
-  const categories = [...new Set(posts.map(p => p.data.category))];
-  return categories.map(cat => ({
-    params: { slug: cat.toLowerCase().replace(/\s+/g, '-') },
-    props: { category: cat },
-  }));
+  return [
+    { params: { slug: 'ai' }, props: { name: 'ذكاء اصطناعي', icon: '🤖' }},
+    { params: { slug: 'tech' }, props: { name: 'تقنية', icon: '📱' }},
+    { params: { slug: 'programming' }, props: { name: 'برمجة', icon: '💻' }},
+    { params: { slug: 'tools' }, props: { name: 'أدوات', icon: '🛠️' }}
+  ];
 }
 
-const { category } = Astro.props;
-const posts = await getCollection('blog');
-const categoryPosts = posts.filter(p => p.data.category === category);
+const { name, icon } = Astro.props;
 ---
 
-<html lang="ar" dir="rtl" data-theme="dark">
-<head>
-  <meta charset="UTF-8" />
-  <title>{category} | Th.Tech</title>
-</head>
-<body>
+<html lang="ar" dir="rtl">
+<head><meta charset="UTF-8" /><title>{name}</title></head>
+<body style="background:#0a0e27; color:#fff; font-family:sans-serif; margin:0;">
   <Header />
-  <main class="container">
-    <h1>📂 {category}</h1>
-    <div class="grid">
-      {categoryPosts.map(post => (
-        <article class="card">
-          <span class="tag">{post.data.category}</span>
-          <h3><a href={`/Th-tech/articles/${post.slug}/`}>{post.data.title}</a></h3>
-          <p>{post.data.description}</p>
-        </article>
-      ))}    </div>
-    <a href="/Th-tech/category/" class="back">← جميع التصنيفات</a>
+  <main style="max-width:1200px; margin:0 auto; padding:2rem 1rem;">
+    <h1 style="color:#00d4ff; margin-bottom:2rem;"><span style="font-size:2rem;">{icon}</span> {name}</h1>
+    <div style="background:#1e293b; padding:3rem; border-radius:14px; text-align:center; border:1px solid rgba(0,212,255,0.2);">
+      <p style="color:#94a3b8; font-size:1.1rem;">قريباً مقالات في هذا التصنيف</p>
+    </div>
+    <a href="/Th-tech/category/" style="display:inline-block; margin-top:2rem; color:#00d4ff; text-decoration:none;">← جميع التصنيفات</a>
   </main>
   <Footer />
 </body>
 </html>
-
-<style>
-  :root { --bg: #0a0e27; --card: #1e293b; --text: #f1f5f9; --primary: #00d4ff; }
-  body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); font-size: 0.85rem; }
-  .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1rem; }
-  h1 { color: var(--primary); margin-bottom: 2rem; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1.5rem; }
-  .card { background: var(--card); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(0,212,255,0.2); }
-  .tag { background: rgba(0,212,255,0.2); color: var(--primary); padding: 0.3rem 0.8rem; border-radius: 50px; font-size: 0.75rem; display: inline-block; margin-bottom: 0.8rem; }
-  h3 a { color: var(--text); text-decoration: none; }
-  h3 a:hover { color: var(--primary); }
-  p { color: #94a3b8; font-size: 0.85rem; }
-  .back { display: inline-block; margin-top: 2rem; color: var(--primary); text-decoration: none; }
-</style>
