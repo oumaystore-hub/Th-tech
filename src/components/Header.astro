@@ -1,40 +1,26 @@
 ---
-import Logo from './Logo.astro';
+const { size = 'medium' } = Astro.props;
 ---
 <header class="header" id="header">
   <nav class="navbar">
     <div class="container">
-      <Logo size="medium" />
+      <a href="/Th-tech/" class="logo">
+        <span class="logo-icon">⚡</span>
+        <span class="logo-text">Th-<span class="tech">tech</span></span>
+      </a>
       
       <ul class="nav-menu">
-        <li><a href="/Th-tech/" class="nav-link active">الرئيسية</a></li>
+        <li><a href="/Th-tech/" class="nav-link">الرئيسية</a></li>
         <li><a href="/Th-tech/articles/" class="nav-link">المقالات</a></li>
-        <li class="dropdown">
-          <a href="/Th-tech/category/" class="nav-link">التصنيفات ▾</a>
-          <ul class="dropdown-menu">
-            <li><a href="/Th-tech/category/ai/">🤖 ذكاء اصطناعي</a></li>
-            <li><a href="/Th-tech/category/programming/">💻 برمجة</a></li>
-            <li><a href="/Th-tech/category/tech/">📱 تقنية</a></li>
-            <li><a href="/Th-tech/category/tools/">🛠️ أدوات</a></li>
-          </ul>
-        </li>
-        <li><a href="/Th-tech/about/" class="nav-link">من نحن</a></li>
+        <li><a href="/Th-tech/category/" class="nav-link">التصنيفات</a></li>
+        <li><a href="/Th-tech/contact/" class="nav-link">اتصل بنا</a></li>
       </ul>
 
       <div class="nav-tools">
-        <button id="search-btn" class="tool-btn" title="بحث" aria-label="بحث">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <circle cx="11" cy="11" r="8"></circle>
-            <path d="m21 21-4.35-4.35"></path>
-          </svg>
-        </button>
-        <button id="theme-btn" class="tool-btn" title="الوضع الليلي" aria-label="تبديل الوضع">
-          <span class="theme-icon">🌙</span>
-        </button>
+        <button id="search-btn" class="tool-btn" aria-label="بحث">🔍</button>
+        <button id="theme-btn" class="tool-btn" aria-label="الوضع">🌙</button>
         <button class="hamburger" id="menu-btn" aria-label="القائمة">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
+          <span></span><span></span><span></span>
         </button>
       </div>
 
@@ -42,51 +28,47 @@ import Logo from './Logo.astro';
         <li><a href="/Th-tech/">🏠 الرئيسية</a></li>
         <li><a href="/Th-tech/articles/">📚 المقالات</a></li>
         <li><a href="/Th-tech/category/">📂 التصنيفات</a></li>
-        <li><a href="/Th-tech/about/">ℹ️ من نحن</a></li>
+        <li><a href="/Th-tech/contact/">📧 اتصل بنا</a></li>
       </ul>
     </div>
   </nav>
-  
-  <!-- شريط البحث المتقدم -->  <div class="search-overlay" id="search-overlay">
-    <div class="search-container">
-      <div class="search-box">
-        <svg class="search-icon" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="8"></circle>
-          <path d="m21 21-4.35-4.35"></path>
-        </svg>
-        <input type="text" id="search-input" placeholder="ابحث عن مقال، موضوع، أو كلمة مفتاحية..." autocomplete="off">
-        <button class="close-search" id="close-search">✕</button>
-      </div>
-      <div class="search-suggestions">
-        <span>اقتراحات:</span>
-        <a href="/Th-tech/category/ai/">الذكاء الاصطناعي</a>
-        <a href="/Th-tech/category/programming/">البرمجة</a>
-        <a href="/Th-tech/category/tools/">الأدوات</a>
-      </div>
-      <div class="search-results" id="search-results"></div>
-    </div>
-  </div>
 </header>
 
 <style>
   .header {
-    background: rgba(10, 14, 39, 0.95);
+    background: rgba(10, 14, 39, 0.98);
     backdrop-filter: blur(20px);
     position: sticky;
     top: 0;
     z-index: 1000;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
   }
   .navbar { width: 100%; }
   .container {
-    max-width: 1200px;
-    margin: 0 auto;
+    max-width: 1200px;    margin: 0 auto;
     padding: 1rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+  .logo-icon {
+    font-size: 1.8rem;
+    color: #00d4ff;
+  }
+  .logo-text {
+    font-size: 1.6rem;
+    font-weight: 800;
+    color: #1e3a8a;
+  }
+  .tech {
+    color: #00d4ff;
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
   }
   .nav-menu {
     display: flex;
@@ -94,114 +76,52 @@ import Logo from './Logo.astro';
     gap: 0.5rem;
     margin: 0;
     padding: 0;
-    align-items: center;
   }
-  .nav-link {    color: #e2e8f0;
-    text-decoration: none;
-    font-weight: 500;
-    padding: 0.75rem 1.25rem;
-    border-radius: 8px;
-    transition: all 0.3s;
-    position: relative;
-  }
-  .nav-link:hover, .nav-link.active {
-    background: rgba(59, 130, 246, 0.15);
-    color: #3b82f6;
-  }
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
-    transition: width 0.3s;
-  }
-  .nav-link:hover::after { width: 70%; }
-  
-  /* Dropdown */
-  .dropdown { position: relative; }
-  .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
-    background: rgba(30, 41, 59, 0.98);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
-    padding: 0.5rem;
-    min-width: 220px;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(-10px);
-    transition: all 0.3s;
-    list-style: none;
-    margin-top: 0.5rem;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
-  }
-  .dropdown:hover .dropdown-menu {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-  }  .dropdown-menu li a {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
+  .nav-link {
     color: #e2e8f0;
     text-decoration: none;
+    font-weight: 600;
+    padding: 0.6rem 1rem;
     border-radius: 8px;
     transition: all 0.3s;
+    font-size: 0.85rem;
   }
-  .dropdown-menu li a:hover {
-    background: rgba(59, 130, 246, 0.15);
-    color: #3b82f6;
+  .nav-link:hover, .nav-link.active {
+    background: rgba(0, 212, 255, 0.15);
+    color: #00d4ff;
   }
-  
   .nav-tools {
     display: flex;
-    gap: 0.75rem;
-    align-items: center;
+    gap: 0.5rem;
   }
-  .tool-btn {
-    background: rgba(255, 255, 255, 0.1);
-    border: none;
-    color: #fff;
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
+  .tool-btn {    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    color: #00d4ff;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size: 1.1rem;
     transition: all 0.3s;
   }
   .tool-btn:hover {
-    background: rgba(59, 130, 246, 0.3);
+    background: rgba(0, 212, 255, 0.3);
     transform: scale(1.1);
   }
-  
   .hamburger {
     display: none;
     flex-direction: column;
-    gap: 5px;
+    gap: 4px;
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0.5rem;
   }
-  .bar {
+  .hamburger span {
     width: 25px;
-    height: 3px;    background: #fff;
+    height: 3px;
+    background: #00d4ff;
     border-radius: 3px;
-    transition: all 0.3s;
   }
-  .hamburger.active .bar:nth-child(2) { opacity: 0; }
-  .hamburger.active .bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .hamburger.active .bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-  
   .mobile-menu {
     display: none;
     flex-direction: column;
@@ -212,8 +132,7 @@ import Logo from './Logo.astro';
     right: 0;
     background: rgba(10, 14, 39, 0.98);
     padding: 1rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    animation: slideDown 0.3s ease;
+    border-top: 2px solid rgba(0, 212, 255, 0.3);
   }
   .mobile-menu.active { display: flex; }
   .mobile-menu a {
@@ -221,153 +140,20 @@ import Logo from './Logo.astro';
     padding: 1rem;
     color: #fff;
     text-decoration: none;
-    border-radius: 8px;
-    margin-bottom: 0.5rem;
-    transition: background 0.3s;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
   }
-  .mobile-menu a:hover { background: rgba(59, 130, 246, 0.15); }
-  
-  /* Search Overlay */
-  .search-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(10, 14, 39, 0.98);
-    backdrop-filter: blur(20px);
-    padding: 3rem 1rem;
-    z-index: 1001;
-    animation: fadeIn 0.3s;
-  }
-  .search-overlay.active { display: block; }
-  .search-container { max-width: 700px; margin: 0 auto; }
-  .search-box {
-    display: flex;    align-items: center;
-    gap: 1rem;
-    background: rgba(30, 41, 59, 0.8);
-    border: 2px solid rgba(59, 130, 246, 0.3);
-    border-radius: 16px;
-    padding: 1rem 1.5rem;
-    box-shadow: 0 10px 40px rgba(59, 130, 246, 0.2);
-  }
-  .search-icon { color: #3b82f6; flex-shrink: 0; }
-  .search-box input {
-    flex: 1;
-    background: none;
-    border: none;
-    font-size: 1.2rem;
-    color: #fff;
-    outline: none;
-    font-family: 'Tajawal', sans-serif;
-  }
-  .search-box input::placeholder { color: #64748b; }
-  .close-search {
-    background: rgba(239, 68, 68, 0.2);
-    border: none;
-    color: #ef4444;
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: all 0.3s;
-  }
-  .close-search:hover { background: rgba(239, 68, 68, 0.4); }
-  
-  .search-suggestions {
-    margin-top: 1.5rem;
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .search-suggestions > span {
-    color: #64748b;
-    font-size: 0.9rem;
-  }
-  .search-suggestions a {
-    background: rgba(59, 130, 246, 0.15);
-    color: #3b82f6;
-    padding: 0.5rem 1rem;
-    border-radius: 50px;
-    text-decoration: none;
-    font-size: 0.9rem;    transition: all 0.3s;
-  }
-  .search-suggestions a:hover {
-    background: rgba(59, 130, 246, 0.3);
-    transform: translateY(-2px);
-  }
-  
-  @keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  
   @media (max-width: 768px) {
-    .nav-menu { display: none; }
-    .hamburger { display: flex; }
-    .search-box input { font-size: 1rem; }
+    .nav-menu { display: none; }    .hamburger { display: flex; }
+    .logo-text { font-size: 1.4rem; }
   }
 </style>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
-    // Hamburger Menu
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    menuBtn?.addEventListener('click', () => {
-      mobileMenu?.classList.toggle('active');
-      menuBtn.classList.toggle('active');
-    });
-    
-    mobileMenu?.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('active');
-        menuBtn.classList.remove('active');
-      });
-    });
-    
-    // Theme Toggle
-    const themeBtn = document.getElementById('theme-btn');
-    const themeIcon = themeBtn?.querySelector('.theme-icon');
-    const currentTheme = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', currentTheme);
-    if(themeIcon) themeIcon.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
-    
-    themeBtn?.addEventListener('click', () => {
-      const current = document.documentElement.getAttribute('data-theme');
-      const next = current === 'dark' ? 'light' : 'dark';      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-      if(themeIcon) themeIcon.textContent = next === 'dark' ? '☀️' : '🌙';
-    });
-    
-    // Search
-    const searchBtn = document.getElementById('search-btn');
-    const searchOverlay = document.getElementById('search-overlay');
-    const closeSearch = document.getElementById('close-search');
-    const searchInput = document.getElementById('search-input');
-    
-    searchBtn?.addEventListener('click', () => {
-      searchOverlay?.classList.add('active');
-      setTimeout(() => searchInput?.focus(), 100);
-    });
-    
-    closeSearch?.addEventListener('click', () => {
-      searchOverlay?.classList.remove('active');
-    });
-    
-    searchOverlay?.addEventListener('click', (e) => {
-      if(e.target === searchOverlay) searchOverlay.classList.remove('active');
-    });
-    
-    // Escape key to close search
-    document.addEventListener('keydown', (e) => {
-      if(e.key === 'Escape') searchOverlay?.classList.remove('active');
-    });
+  document.getElementById('menu-btn')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu')?.classList.toggle('active');
+  });
+  document.getElementById('theme-btn')?.addEventListener('click', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
   });
 </script>
