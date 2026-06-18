@@ -2,9 +2,9 @@
 ---
 <header class="site-header">
   <div class="container">
-    <!-- الشعار الجديد (يأخذ الصورة من مجلد public) -->
+    <!-- الشعار -->
     <a href="/Th-tech/" class="logo-link">
-      <img src="/logo.png" alt="Th-tech Logo" class="logo-img">
+      <img src="/Th-tech/logo.png" alt="Th-tech" class="logo-img">
     </a>
 
     <!-- روابط الحاسوب -->
@@ -14,67 +14,98 @@
       <a href="/Th-tech/contact/" class="nav-item">اتصل بنا</a>
     </nav>
 
-    <!-- أدوات (وضع ليلي + قائمة موبايل) -->
+    <!-- الأدوات -->
     <div class="header-tools">
       <button id="theme-btn" class="icon-btn">🌙</button>
-      <button id="menu-btn" class="icon-btn menu-btn-mobile"></button>
+      <button id="menu-btn" class="icon-btn hamburger">☰</button>
     </div>
   </div>
 
-  <!-- قائمة الهاتف (تحتوي على التصنيفات) -->
+  <!-- قائمة الهاتف -->
   <nav class="mobile-nav" id="mobile-nav">
     <a href="/Th-tech/" class="mobile-link">🏠 الرئيسية</a>
     <a href="/Th-tech/articles/" class="mobile-link">📚 المقالات</a>
-    <a href="/Th-tech/category/" class="mobile-link highlight">📂 التصنيفات</a>
+    <a href="/Th-tech/category/" class="mobile-link">📂 التصنيفات</a>
     <a href="/Th-tech/contact/" class="mobile-link">📧 اتصل بنا</a>
   </nav>
 </header>
 
 <style>
-  .site-header { background: rgba(10, 14, 39, 0.95); backdrop-filter: blur(10px); border-bottom: 2px solid rgba(0, 212, 255, 0.3); position: sticky; top: 0; z-index: 1000; padding: 0.5rem 0; }
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: flex; justify-content: space-between; align-items: center; }
+  .site-header {
+    background: rgba(10, 14, 39, 0.98);
+    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0.5rem 0;
+  }
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
   
-  /* تنسيق الشعار */
-  .logo-img { height: 45px; width: auto; transition: transform 0.3s; }
-  .logo-link:hover .logo-img { transform: scale(1.05); }
+  /* الشعار - مهم جداً */
+  .logo-img {
+    height: 50px;
+    width: auto;
+    display: block;
+  }
 
-  .desktop-nav { display: flex; gap: 1.5rem; align-items: center; }
-  .nav-item { color: #e2e8f0; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: color 0.3s; }
+  .desktop-nav { display: flex; gap: 1.5rem; }
+  .nav-item { color: #e2e8f0; text-decoration: none; font-weight: 600; }
   .nav-item:hover { color: #00d4ff; }
 
-  .header-tools { display: flex; gap: 0.5rem; align-items: center; }
-  .icon-btn { background: rgba(0, 212, 255, 0.1); border: 1px solid rgba(0, 212, 255, 0.2); color: #00d4ff; width: 40px; height: 40px; border-radius: 8px; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; }
-  .menu-btn-mobile { display: none; }
+  .header-tools { display: flex; gap: 0.5rem; }
+  .icon-btn {
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    color: #00d4ff;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+  }
+  .hamburger { display: none; }
 
-  .mobile-nav { display: none; flex-direction: column; background: #0a0e27; border-top: 1px solid rgba(0, 212, 255, 0.2); padding: 1rem; position: absolute; top: 100%; left: 0; right: 0; width: 100%; box-shadow: 0 10px 20px rgba(0,0,0,0.5); }
+  .mobile-nav {
+    display: none;
+    flex-direction: column;
+    background: #0a0e27;
+    padding: 1rem;
+    border-top: 1px solid rgba(0, 212, 255, 0.2);
+  }
   .mobile-nav.active { display: flex; }
-  .mobile-link { color: #fff; text-decoration: none; padding: 0.8rem 0; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: 600; }
-  .mobile-link:last-child { border-bottom: none; }
-  .mobile-link.highlight { color: #00d4ff; }
+  .mobile-link {
+    color: #fff;
+    text-decoration: none;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
 
   @media (max-width: 768px) {
     .desktop-nav { display: none; }
-    .menu-btn-mobile { display: flex; }
-    .logo-img { height: 35px; }
+    .hamburger { display: flex; }
+    .logo-img { height: 40px; }
   }
 </style>
-
 <script>
-  const menuBtn = document.getElementById('menu-btn');
-  const mobileNav = document.getElementById('mobile-nav');
-  menuBtn?.addEventListener('click', () => {
-    mobileNav.classList.toggle('active');
-    menuBtn.textContent = mobileNav.classList.contains('active') ? '✕' : '☰';
+  // الهمبرغر
+  document.getElementById('menu-btn')?.addEventListener('click', () => {
+    document.getElementById('mobile-nav').classList.toggle('active');
   });
 
+  // الوضع الليلي
   const themeBtn = document.getElementById('theme-btn');
-  const currentTheme = localStorage.getItem('theme');
-  if (currentTheme === 'light') { document.documentElement.setAttribute('data-theme', 'light'); themeBtn.textContent = '☀️'; }
-  else { document.documentElement.setAttribute('data-theme', 'dark'); themeBtn.textContent = '🌙'; }
-
+  const theme = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', theme);
+  themeBtn.textContent = theme === 'light' ? '☀️' : '🌙';
+  
   themeBtn?.addEventListener('click', () => {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    const newTheme = isDark ? 'light' : 'dark';
+    const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
     themeBtn.textContent = newTheme === 'light' ? '️' : '🌙';
