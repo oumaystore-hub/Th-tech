@@ -1,159 +1,62 @@
 ---
-const { size = 'medium' } = Astro.props;
 ---
-<header class="header" id="header">
-  <nav class="navbar">
-    <div class="container">
-      <a href="/Th-tech/" class="logo">
-        <span class="logo-icon">⚡</span>
-        <span class="logo-text">Th-<span class="tech">tech</span></span>
-      </a>
-      
-      <ul class="nav-menu">
-        <li><a href="/Th-tech/" class="nav-link">الرئيسية</a></li>
-        <li><a href="/Th-tech/articles/" class="nav-link">المقالات</a></li>
-        <li><a href="/Th-tech/category/" class="nav-link">التصنيفات</a></li>
-        <li><a href="/Th-tech/contact/" class="nav-link">اتصل بنا</a></li>
-      </ul>
+<header style="background:rgba(10,14,39,0.98); backdrop-filter:blur(20px); position:sticky; top:0; z-index:1000; border-bottom:2px solid rgba(0,212,255,0.3);">
+  <nav style="max-width:1200px; margin:0 auto; padding:0.8rem 1rem; display:flex; justify-content:space-between; align-items:center;">
+    <a href="/Th-tech/" style="display:flex; align-items:center; gap:0.5rem; text-decoration:none;">
+      <span style="font-size:1.6rem; color:#00d4ff;">⚡</span>
+      <span style="font-size:1.4rem; font-weight:800; color:#1e3a8a;">Th-<span style="color:#00d4ff; text-shadow:0 0 10px rgba(0,212,255,0.5);">tech</span></span>
+    </a>
+    
+    <!-- Desktop Menu -->
+    <ul style="display:flex; list-style:none; gap:0.3rem; margin:0; padding:0; align-items:center;">
+      <li><a href="/Th-tech/" style="color:#e2e8f0; text-decoration:none; font-weight:600; padding:0.5rem 0.8rem; border-radius:8px; font-size:0.85rem; transition:0.3s;">الرئيسية</a></li>
+      <li><a href="/Th-tech/articles/" style="color:#e2e8f0; text-decoration:none; font-weight:600; padding:0.5rem 0.8rem; border-radius:8px; font-size:0.85rem; transition:0.3s;">المقالات</a></li>
+      <li><a href="/Th-tech/category/" style="color:#e2e8f0; text-decoration:none; font-weight:600; padding:0.5rem 0.8rem; border-radius:8px; font-size:0.85rem; transition:0.3s;">التصنيفات</a></li>
+      <li><a href="/Th-tech/contact/" style="color:#e2e8f0; text-decoration:none; font-weight:600; padding:0.5rem 0.8rem; border-radius:8px; font-size:0.85rem; transition:0.3s;">اتصل بنا</a></li>
+    </ul>
 
-      <div class="nav-tools">
-        <button id="search-btn" class="tool-btn" aria-label="بحث">🔍</button>
-        <button id="theme-btn" class="tool-btn" aria-label="الوضع">🌙</button>
-        <button class="hamburger" id="menu-btn" aria-label="القائمة">
-          <span></span><span></span><span></span>
-        </button>
-      </div>
-
-      <ul class="mobile-menu" id="mobile-menu">
-        <li><a href="/Th-tech/">🏠 الرئيسية</a></li>
-        <li><a href="/Th-tech/articles/">📚 المقالات</a></li>
-        <li><a href="/Th-tech/category/">📂 التصنيفات</a></li>
-        <li><a href="/Th-tech/contact/">📧 اتصل بنا</a></li>
-      </ul>
-    </div>
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" style="display:none; background:none; border:none; color:#00d4ff; font-size:1.5rem; cursor:pointer;" aria-label="القائمة">☰</button>
   </nav>
+
+  <!-- Mobile Menu -->
+  <ul id="mobile-menu" style="display:none; flex-direction:column; list-style:none; background:rgba(10,14,39,0.98); padding:1rem; border-top:2px solid rgba(0,212,255,0.3); margin:0;">
+    <li><a href="/Th-tech/" style="display:block; padding:0.8rem; color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,0.1);">🏠 الرئيسية</a></li>
+    <li><a href="/Th-tech/articles/" style="display:block; padding:0.8rem; color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,0.1);">📚 المقالات</a></li>
+    <li><a href="/Th-tech/category/" style="display:block; padding:0.8rem; color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,0.1);">📂 التصنيفات</a></li>
+    <li><a href="/Th-tech/contact/" style="display:block; padding:0.8rem; color:#fff; text-decoration:none;">📧 اتصل بنا</a></li>
+  </ul>
 </header>
 
+<script>
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+  
+  menuBtn?.addEventListener('click', () => {
+    mobileMenu.style.display = mobileMenu.style.display === 'flex' ? 'none' : 'flex';
+  });
+
+  // Show/hide menu button based on screen size
+  function checkScreenSize() {
+    if(window.innerWidth <= 768) {
+      menuBtn.style.display = 'block';
+      document.querySelector('ul').style.display = 'none';
+    } else {
+      menuBtn.style.display = 'none';
+      document.querySelector('ul').style.display = 'flex';
+      mobileMenu.style.display = 'none';
+    }
+  }
+  
+  checkScreenSize();
+  window.addEventListener('resize', checkScreenSize);
+</script>
+
 <style>
-  .header {
-    background: rgba(10, 14, 39, 0.98);
-    backdrop-filter: blur(20px);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
-  }
-  .navbar { width: 100%; }
-  .container {
-    max-width: 1200px;    margin: 0 auto;
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    text-decoration: none;
-  }
-  .logo-icon {
-    font-size: 1.8rem;
-    color: #00d4ff;
-  }
-  .logo-text {
-    font-size: 1.6rem;
-    font-weight: 800;
-    color: #1e3a8a;
-  }
-  .tech {
-    color: #00d4ff;
-    text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
-  }
-  .nav-menu {
-    display: flex;
-    list-style: none;
-    gap: 0.5rem;
-    margin: 0;
-    padding: 0;
-  }
-  .nav-link {
-    color: #e2e8f0;
-    text-decoration: none;
-    font-weight: 600;
-    padding: 0.6rem 1rem;
-    border-radius: 8px;
-    transition: all 0.3s;
-    font-size: 0.85rem;
-  }
-  .nav-link:hover, .nav-link.active {
-    background: rgba(0, 212, 255, 0.15);
-    color: #00d4ff;
-  }
-  .nav-tools {
-    display: flex;
-    gap: 0.5rem;
-  }
-  .tool-btn {    background: rgba(0, 212, 255, 0.1);
-    border: 1px solid rgba(0, 212, 255, 0.3);
-    color: #00d4ff;
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: all 0.3s;
-  }
-  .tool-btn:hover {
-    background: rgba(0, 212, 255, 0.3);
-    transform: scale(1.1);
-  }
-  .hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 4px;
-    background: none;
-    border: none;
-    cursor: pointer;
-  }
-  .hamburger span {
-    width: 25px;
-    height: 3px;
-    background: #00d4ff;
-    border-radius: 3px;
-  }
-  .mobile-menu {
-    display: none;
-    flex-direction: column;
-    list-style: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    background: rgba(10, 14, 39, 0.98);
-    padding: 1rem;
-    border-top: 2px solid rgba(0, 212, 255, 0.3);
-  }
-  .mobile-menu.active { display: flex; }
-  .mobile-menu a {
-    display: block;
-    padding: 1rem;
-    color: #fff;
-    text-decoration: none;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
-  }
   @media (max-width: 768px) {
-    .nav-menu { display: none; }    .hamburger { display: flex; }
-    .logo-text { font-size: 1.4rem; }
+    nav > ul { display: none !important; }
+    #menu-btn { display: block !important; }
+    h1 { font-size: 1.5rem !important; }
+    .hero p { font-size: 0.9rem !important; }
   }
 </style>
-
-<script is:inline>
-  document.getElementById('menu-btn')?.addEventListener('click', () => {
-    document.getElementById('mobile-menu')?.classList.toggle('active');
-  });
-  document.getElementById('theme-btn')?.addEventListener('click', () => {
-    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-    document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
-  });
-</script>
