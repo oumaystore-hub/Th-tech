@@ -1,208 +1,75 @@
 ---
 ---
-<header class="header">
-  <div class="container">
-    <!-- الشعار مع إزالة الخلفية البيضاء -->
-    <a href="/Th-tech/" class="logo">
-      <img src="/Th-tech/logo.png" alt="Th-tech" class="logo-img">
+<header style="background:rgba(11,17,32,0.98); border-bottom:2px solid rgba(56,189,248,0.3); position:sticky; top:0; z-index:1000; padding:0.5rem 0;">
+  <div style="max-width:1200px; margin:0 auto; padding:0 1rem; display:flex; align-items:center; justify-content:space-between;">
+    
+    <!-- الشعار -->
+    <a href="/Th-tech/" style="text-decoration:none;">
+      <img src="/Th-tech/logo.png" alt="Logo" style="height:55px; width:auto; filter:drop-shadow(0 0 5px rgba(56,189,248,0.5));">
     </a>
 
-    <!-- روابط الحاسوب -->
-    <nav class="desktop-nav">
-      <a href="/Th-tech/">الرئيسية</a>
-      <a href="/Th-tech/articles/">المقالات</a>
-      <a href="/Th-tech/contact/">اتصل بنا</a>
+    <!-- قائمة الحاسوب -->
+    <nav style="display:flex; gap:1.5rem;" id="desktop-links">
+      <a href="/Th-tech/" style="color:#E2E8F0; text-decoration:none; font-weight:600;">الرئيسية</a>
+      <a href="/Th-tech/articles/" style="color:#E2E8F0; text-decoration:none; font-weight:600;">المقالات</a>
+      <a href="/Th-tech/contact/" style="color:#E2E8F0; text-decoration:none; font-weight:600;">اتصل بنا</a>
     </nav>
 
-    <!-- الأدوات -->
-    <div class="tools">
-      <button id="search-btn" class="icon-btn">🔍</button>
-      <button id="theme-btn" class="icon-btn">🌙</button>
-      <button id="menu-btn" class="icon-btn hamburger">☰</button>
+    <!-- الأزرار -->
+    <div style="display:flex; gap:0.5rem;">
+      <button onclick="document.getElementById('search-box').style.display='flex'; document.getElementById('search-input').focus()" style="background:transparent; border:1px solid rgba(56,189,248,0.3); color:#38BDF8; width:40px; height:40px; border-radius:8px; cursor:pointer; font-size:1.2rem;">🔍</button>
+      <button id="theme-toggle" onclick="toggleTheme()" style="background:transparent; border:1px solid rgba(56,189,248,0.3); color:#38BDF8; width:40px; height:40px; border-radius:8px; cursor:pointer; font-size:1.2rem;">🌙</button>
+      <button onclick="document.getElementById('mobile-menu').style.display=document.getElementById('mobile-menu').style.display==='flex'?'none':'flex'" style="display:none; background:transparent; border:1px solid rgba(56,189,248,0.3); color:#38BDF8; width:40px; height:40px; border-radius:8px; cursor:pointer; font-size:1.2rem;" id="menu-btn">☰</button>
     </div>
   </div>
 
-  <!-- شريط البحث المنزلق -->
-  <div id="search-panel" class="search-panel">
-    <div class="search-box">
-      <input type="text" id="search-input" placeholder="ابحث عن مقال...">
-      <button id="close-search">✕</button>
+  <!-- البحث -->
+  <div id="search-box" style="display:none; background:#1E293B; padding:1rem; border-top:1px solid rgba(56,189,248,0.2);">
+    <div style="max-width:600px; margin:0 auto; display:flex; gap:0.5rem;">
+      <input type="text" id="search-input" placeholder="ابحث..." style="flex:1; padding:0.8rem; border:1px solid rgba(56,189,248,0.3); border-radius:8px; background:#0B1120; color:#fff;">
+      <button onclick="document.getElementById('search-box').style.display='none'" style="background:#EF4444; color:white; border:none; padding:0 1rem; border-radius:8px; cursor:pointer;">✕</button>
     </div>
   </div>
 
-  <!-- قائمة الهاتف (تحتوي على التصنيفات) -->
-  <nav id="mobile-menu" class="mobile-menu">
-    <a href="/Th-tech/">🏠 الرئيسية</a>
-    <a href="/Th-tech/articles/">📚 المقالات</a>
-    <a href="/Th-tech/category/">📂 التصنيفات</a>
-    <a href="/Th-tech/contact/">📧 اتصل بنا</a>
+  <!-- قائمة الهاتف -->
+  <nav id="mobile-menu" style="display:none; flex-direction:column; background:#1E293B; padding:1rem; border-top:1px solid rgba(56,189,248,0.2);">
+    <a href="/Th-tech/" style="color:#E2E8F0; text-decoration:none; padding:0.8rem 0; border-bottom:1px solid rgba(56,189,248,0.2);">🏠 الرئيسية</a>
+    <a href="/Th-tech/articles/" style="color:#E2E8F0; text-decoration:none; padding:0.8rem 0; border-bottom:1px solid rgba(56,189,248,0.2);">📚 المقالات</a>
+    <a href="/Th-tech/category/" style="color:#E2E8F0; text-decoration:none; padding:0.8rem 0; border-bottom:1px solid rgba(56,189,248,0.2);">📂 التصنيفات</a>
+    <a href="/Th-tech/contact/" style="color:#E2E8F0; text-decoration:none; padding:0.8rem 0;">📧 اتصل بنا</a>
   </nav>
 </header>
 
-<style>
-  :root {
-    --bg: #0B1120;        /* أزرق فضائي مريح */
-    --card: #1E293B;      /* رمادي مزرق */
-    --text: #E2E8F0;      /* أبيض مائل للرمادي */
-    --primary: #38BDF8;   /* سماوي تقني */
-    --border: rgba(56, 189, 248, 0.2);  }
-  [data-theme="light"] {
-    --bg: #F8FAFC;
-    --card: #FFFFFF;
-    --text: #0F172A;
-    --primary: #0284C7;
-    --border: rgba(2, 132, 199, 0.2);
-  }
-
-  body {
-    margin: 0;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    transition: background 0.3s, color 0.3s;
-  }
-
-  .header {
-    background: rgba(11, 17, 32, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    padding: 0.5rem 0;
-  }
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 60px;
-  }
-
-  /* الشعار - إصلاح الخلفية البيضاء والحجم */
-  .logo-img {
-    height: 55px;
-    width: auto;
-    /* هذا السطر يجعل الخلفية البيضاء شفافة تلقائياً */
-    mix-blend-mode: screen; 
-  }
-  [data-theme="light"] .logo-img {
-    mix-blend-mode: normal; /* إظهار الخلفية في الوضع النهاري */
-  }
-
-  .desktop-nav { display: flex; gap: 1.5rem; }
-  .desktop-nav a {
-    color: var(--text);    text-decoration: none;
-    font-weight: 600;
-    font-size: 0.95rem;
-    transition: color 0.2s;
-  }
-  .desktop-nav a:hover { color: var(--primary); }
-
-  .tools { display: flex; gap: 0.5rem; align-items: center; }
-  .icon-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text);
-    width: 42px; height: 42px;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
-  .icon-btn:hover { background: var(--border); transform: scale(1.05); }
-  .hamburger { display: none; }
-
-  /* شريط البحث */
-  .search-panel {
-    display: none;
-    background: var(--card);
-    padding: 1rem;
-    border-bottom: 1px solid var(--border);
-    animation: slideDown 0.3s ease;
-  }
-  .search-panel.active { display: block; }
-  .search-box {
-    max-width: 600px;
-    margin: 0 auto;
-    display: flex;
-    gap: 0.5rem;
-  }
-  .search-box input {
-    flex: 1;
-    padding: 0.8rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--bg);
-    color: var(--text);
-    font-size: 1rem;
-  }
-  #close-search {
-    background: #EF4444;
-    color: white;
-    border: none;    padding: 0 1rem;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-
-  /* قائمة الهاتف */
-  .mobile-menu {
-    display: none;
-    flex-direction: column;
-    background: var(--card);
-    border-top: 1px solid var(--border);
-    padding: 1rem;
-    position: absolute;
-    top: 60px; left: 0; right: 0;
-    width: 100%;
-    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-  }
-  .mobile-menu.active { display: flex; }
-  .mobile-menu a {
-    color: var(--text);
-    text-decoration: none;
-    padding: 0.8rem 0;
-    border-bottom: 1px solid var(--border);
-    font-weight: 600;
-  }
-  .mobile-menu a:last-child { border-bottom: none; }
-
-  @media (max-width: 768px) {
-    .desktop-nav { display: none; }
-    .hamburger { display: flex; }
-    .logo-img { height: 45px; }
-  }
-  @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-</style>
-
 <script>
-  // 1. القائمة المتنقلة
-  document.getElementById('menu-btn')?.addEventListener('click', () => {
-    document.getElementById('mobile-menu').classList.toggle('active');
-  });
-
-  // 2. البحث
-  document.getElementById('search-btn')?.addEventListener('click', () => {
-    document.getElementById('search-panel').classList.add('active');
-    document.getElementById('search-input')?.focus();
-  });
-  document.getElementById('close-search')?.addEventListener('click', () => {
-    document.getElementById('search-panel').classList.remove('active');
-  });
-  // 3. الوضع الليلي (إصلاح كامل)
-  const themeBtn = document.getElementById('theme-btn');
-  const savedTheme = localStorage.getItem('theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', savedTheme);
-  themeBtn.textContent = savedTheme === 'light' ? '☀️' : '🌙';
-
-  themeBtn.addEventListener('click', () => {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
+  // الوضع الليلي - يعمل 100%
+  function toggleTheme() {
+    const html = document.documentElement;
+    const btn = document.getElementById('theme-toggle');
+    const current = html.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    
+    html.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
-    themeBtn.textContent = next === 'light' ? '☀️' : '🌙';
-  });
+    btn.textContent = next === 'light' ? '☀️' : '🌙';
+  }
+
+  // تحميل الوضع المحفوظ
+  const saved = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', saved);
+  document.getElementById('theme-toggle').textContent = saved === 'light' ? '☀️' : '🌙';
+
+  // إظهار/إخفاء زر الهاتف
+  function checkWidth() {
+    const btn = document.getElementById('menu-btn');
+    const desktop = document.getElementById('desktop-links');
+    if(window.innerWidth <= 768) {
+      btn.style.display = 'flex';
+      desktop.style.display = 'none';
+    } else {
+      btn.style.display = 'none';
+      desktop.style.display = 'flex';
+    }
+  }
+  checkWidth();
+  window.addEventListener('resize', checkWidth);
 </script>
