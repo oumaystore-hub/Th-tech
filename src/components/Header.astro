@@ -1,39 +1,71 @@
 ---
 ---
-<header class="site-header">
+<header class="header">
   <div class="container">
-    <!-- الشعار -->
-    <a href="/Th-tech/" class="logo-link">
+    <!-- الشعار مع إزالة الخلفية البيضاء -->
+    <a href="/Th-tech/" class="logo">
       <img src="/Th-tech/logo.png" alt="Th-tech" class="logo-img">
     </a>
 
     <!-- روابط الحاسوب -->
     <nav class="desktop-nav">
-      <a href="/Th-tech/" class="nav-item">الرئيسية</a>
-      <a href="/Th-tech/articles/" class="nav-item">المقالات</a>
-      <a href="/Th-tech/contact/" class="nav-item">اتصل بنا</a>
+      <a href="/Th-tech/">الرئيسية</a>
+      <a href="/Th-tech/articles/">المقالات</a>
+      <a href="/Th-tech/contact/">اتصل بنا</a>
     </nav>
 
     <!-- الأدوات -->
-    <div class="header-tools">
+    <div class="tools">
+      <button id="search-btn" class="icon-btn">🔍</button>
       <button id="theme-btn" class="icon-btn">🌙</button>
       <button id="menu-btn" class="icon-btn hamburger">☰</button>
     </div>
   </div>
 
-  <!-- قائمة الهاتف -->
-  <nav class="mobile-nav" id="mobile-nav">
-    <a href="/Th-tech/" class="mobile-link">🏠 الرئيسية</a>
-    <a href="/Th-tech/articles/" class="mobile-link">📚 المقالات</a>
-    <a href="/Th-tech/category/" class="mobile-link">📂 التصنيفات</a>
-    <a href="/Th-tech/contact/" class="mobile-link">📧 اتصل بنا</a>
+  <!-- شريط البحث المنزلق -->
+  <div id="search-panel" class="search-panel">
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="ابحث عن مقال...">
+      <button id="close-search">✕</button>
+    </div>
+  </div>
+
+  <!-- قائمة الهاتف (تحتوي على التصنيفات) -->
+  <nav id="mobile-menu" class="mobile-menu">
+    <a href="/Th-tech/">🏠 الرئيسية</a>
+    <a href="/Th-tech/articles/">📚 المقالات</a>
+    <a href="/Th-tech/category/">📂 التصنيفات</a>
+    <a href="/Th-tech/contact/">📧 اتصل بنا</a>
   </nav>
 </header>
 
 <style>
-  .site-header {
-    background: rgba(10, 14, 39, 0.98);
-    border-bottom: 2px solid rgba(0, 212, 255, 0.3);
+  :root {
+    --bg: #0B1120;        /* أزرق فضائي مريح */
+    --card: #1E293B;      /* رمادي مزرق */
+    --text: #E2E8F0;      /* أبيض مائل للرمادي */
+    --primary: #38BDF8;   /* سماوي تقني */
+    --border: rgba(56, 189, 248, 0.2);  }
+  [data-theme="light"] {
+    --bg: #F8FAFC;
+    --card: #FFFFFF;
+    --text: #0F172A;
+    --primary: #0284C7;
+    --border: rgba(2, 132, 199, 0.2);
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .header {
+    background: rgba(11, 17, 32, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -42,72 +74,135 @@
   .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1rem;    display: flex;
-    justify-content: space-between;
+    padding: 0 1rem;
+    display: flex;
     align-items: center;
+    justify-content: space-between;
+    height: 60px;
   }
-  
-  /* الشعار - مهم جداً */
+
+  /* الشعار - إصلاح الخلفية البيضاء والحجم */
   .logo-img {
-    height: 50px;
+    height: 55px;
     width: auto;
-    display: block;
+    /* هذا السطر يجعل الخلفية البيضاء شفافة تلقائياً */
+    mix-blend-mode: screen; 
+  }
+  [data-theme="light"] .logo-img {
+    mix-blend-mode: normal; /* إظهار الخلفية في الوضع النهاري */
   }
 
   .desktop-nav { display: flex; gap: 1.5rem; }
-  .nav-item { color: #e2e8f0; text-decoration: none; font-weight: 600; }
-  .nav-item:hover { color: #00d4ff; }
+  .desktop-nav a {
+    color: var(--text);    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+  }
+  .desktop-nav a:hover { color: var(--primary); }
 
-  .header-tools { display: flex; gap: 0.5rem; }
+  .tools { display: flex; gap: 0.5rem; align-items: center; }
   .icon-btn {
-    background: rgba(0, 212, 255, 0.1);
-    border: 1px solid rgba(0, 212, 255, 0.3);
-    color: #00d4ff;
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 42px; height: 42px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 1.2rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
   }
+  .icon-btn:hover { background: var(--border); transform: scale(1.05); }
   .hamburger { display: none; }
 
-  .mobile-nav {
+  /* شريط البحث */
+  .search-panel {
+    display: none;
+    background: var(--card);
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    animation: slideDown 0.3s ease;
+  }
+  .search-panel.active { display: block; }
+  .search-box {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0.5rem;
+  }
+  .search-box input {
+    flex: 1;
+    padding: 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 1rem;
+  }
+  #close-search {
+    background: #EF4444;
+    color: white;
+    border: none;    padding: 0 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  /* قائمة الهاتف */
+  .mobile-menu {
     display: none;
     flex-direction: column;
-    background: #0a0e27;
+    background: var(--card);
+    border-top: 1px solid var(--border);
     padding: 1rem;
-    border-top: 1px solid rgba(0, 212, 255, 0.2);
+    position: absolute;
+    top: 60px; left: 0; right: 0;
+    width: 100%;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
   }
-  .mobile-nav.active { display: flex; }
-  .mobile-link {
-    color: #fff;
+  .mobile-menu.active { display: flex; }
+  .mobile-menu a {
+    color: var(--text);
     text-decoration: none;
     padding: 0.8rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid var(--border);
+    font-weight: 600;
   }
+  .mobile-menu a:last-child { border-bottom: none; }
 
   @media (max-width: 768px) {
     .desktop-nav { display: none; }
     .hamburger { display: flex; }
-    .logo-img { height: 40px; }
+    .logo-img { height: 45px; }
   }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
+
 <script>
-  // الهمبرغر
+  // 1. القائمة المتنقلة
   document.getElementById('menu-btn')?.addEventListener('click', () => {
-    document.getElementById('mobile-nav').classList.toggle('active');
+    document.getElementById('mobile-menu').classList.toggle('active');
   });
 
-  // الوضع الليلي
+  // 2. البحث
+  document.getElementById('search-btn')?.addEventListener('click', () => {
+    document.getElementById('search-panel').classList.add('active');
+    document.getElementById('search-input')?.focus();
+  });
+  document.getElementById('close-search')?.addEventListener('click', () => {
+    document.getElementById('search-panel').classList.remove('active');
+  });
+  // 3. الوضع الليلي (إصلاح كامل)
   const themeBtn = document.getElementById('theme-btn');
-  const theme = localStorage.getItem('theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', theme);
-  themeBtn.textContent = theme === 'light' ? '☀️' : '🌙';
-  
-  themeBtn?.addEventListener('click', () => {
-    const newTheme = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('theme', newTheme);
-    themeBtn.textContent = newTheme === 'light' ? '️' : '🌙';
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  themeBtn.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+
+  themeBtn.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    const next = current === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    themeBtn.textContent = next === 'light' ? '☀️' : '🌙';
   });
 </script>
