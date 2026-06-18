@@ -1,21 +1,112 @@
 ---
 ---
-<header style="background:#0B1120; border-bottom:2px solid #38BDF8; position:sticky; top:0; z-index:1000;">
-  <div style="max-width:1200px; margin:0 auto; padding:1rem; display:flex; justify-content:space-between; align-items:center;">
-    <a href="/Th-tech/" style="text-decoration:none;"><img src="/Th-tech/logo.png" style="height:50px;"></a>
-    <nav style="display:flex; gap:1.5rem;"><a href="/Th-tech/" style="color:#fff; text-decoration:none;">الرئيسية</a><a href="/Th-tech/articles/" style="color:#fff; text-decoration:none;">المقالات</a><a href="/Th-tech/contact/" style="color:#fff; text-decoration:none;">اتصل بنا</a></nav>
-    <div style="display:flex; gap:0.5rem;">
-      <button onclick="document.getElementById('search').style.display='flex'" style="background:#38BDF8; border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer;">🔍</button>
-      <button id="themeBtn" onclick="toggleTheme()" style="background:#38BDF8; border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer;">🌙</button>
-      <button onclick="document.getElementById('mobile').style.display='flex'" style="display:none; background:#38BDF8; border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer;" id="menuBtn">☰</button>
+<header style="background: linear-gradient(135deg, #0B1120 0%, #1E293B 100%); border-bottom: 3px solid #38BDF8; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(56,189,248,0.2);">
+  <div style="max-width: 1200px; margin: 0 auto; padding: 0.8rem 1rem; display: flex; justify-content: space-between; align-items: center;">
+    
+    <!-- الشعار -->
+    <a href="/Th-tech/" style="text-decoration: none;">
+      <img src="/Th-tech/logo.png" alt="Th-tech" style="height: 55px; width: auto; filter: drop-shadow(0 0 10px rgba(56,189,248,0.5));">
+    </a>
+
+    <!-- قائمة الحاسوب -->
+    <nav id="desktop-nav" style="display: flex; gap: 2rem;">
+      <a href="/Th-tech/" style="color: #E2E8F0; text-decoration: none; font-weight: 700; font-size: 1rem; transition: color 0.3s;">الرئيسية</a>
+      <a href="/Th-tech/articles/" style="color: #E2E8F0; text-decoration: none; font-weight: 700; font-size: 1rem; transition: color 0.3s;">المقالات</a>
+      <a href="/Th-tech/contact/" style="color: #E2E8F0; text-decoration: none; font-weight: 700; font-size: 1rem; transition: color 0.3s;">اتصل بنا</a>
+    </nav>
+
+    <!-- الأزرار -->
+    <div style="display: flex; gap: 0.6rem;">
+      <button onclick="toggleSearch()" style="background: rgba(56,189,248,0.15); border: 2px solid #38BDF8; color: #38BDF8; width: 45px; height: 45px; border-radius: 12px; cursor: pointer; font-size: 1.3rem; transition: all 0.3s;">🔍</button>
+      <button id="themeBtn" onclick="toggleTheme()" style="background: rgba(56,189,248,0.15); border: 2px solid #38BDF8; color: #38BDF8; width: 45px; height: 45px; border-radius: 12px; cursor: pointer; font-size: 1.3rem; transition: all 0.3s;">🌙</button>
+      <button id="menuBtn" onclick="toggleMobile()" style="display: none; background: rgba(56,189,248,0.15); border: 2px solid #38BDF8; color: #38BDF8; width: 45px; height: 45px; border-radius: 12px; cursor: pointer; font-size: 1.3rem; transition: all 0.3s;">☰</button>
     </div>
   </div>
-  <div id="search" style="display:none; background:#1E293B; padding:1rem;"><input type="text" placeholder="ابحث..." style="width:100%; padding:0.8rem; border-radius:5px; border:1px solid #38BDF8;"><button onclick="document.getElementById('search').style.display='none'" style="margin-top:0.5rem; background:#EF4444; color:#fff; border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer;">إغلاق</button></div>
-  <nav id="mobile" style="display:none; flex-direction:column; background:#1E293B; padding:1rem;"><a href="/Th-tech/" style="color:#fff; padding:0.5rem 0; text-decoration:none;">🏠 الرئيسية</a><a href="/Th-tech/articles/" style="color:#fff; padding:0.5rem 0; text-decoration:none;">📚 المقالات</a><a href="/Th-tech/category/" style="color:#fff; padding:0.5rem 0; text-decoration:none;">📂 التصنيفات</a><a href="/Th-tech/contact/" style="color:#fff; padding:0.5rem 0; text-decoration:none;">📧 اتصل بنا</a></nav>
+
+  <!-- شريط البحث -->
+  <div id="searchBar" style="display: none; background: #1E293B; padding: 1.2rem; border-top: 2px solid #38BDF8;">
+    <div style="max-width: 600px; margin: 0 auto; display: flex; gap: 0.8rem;">
+      <input type="text" id="searchInput" placeholder="🔍 ابحث عن مقال..." style="flex: 1; padding: 0.9rem; border: 2px solid #38BDF8; border-radius: 10px; background: #0B1120; color: #fff; font-size: 1rem; font-family: inherit;">
+      <button onclick="toggleSearch()" style="background: #EF4444; color: white; border: none; padding: 0 1.5rem; border-radius: 10px; cursor: pointer; font-weight: bold;">إغلاق</button>
+    </div>
+  </div>
+
+  <!-- قائمة الهاتف -->
+  <nav id="mobileMenu" style="display: none; flex-direction: column; background: #1E293B; padding: 1rem; border-top: 2px solid #38BDF8;">
+    <a href="/Th-tech/" style="color: #E2E8F0; text-decoration: none; padding: 1rem; border-bottom: 1px solid rgba(56,189,248,0.2); font-weight: 600;">🏠 الرئيسية</a>
+    <a href="/Th-tech/articles/" style="color: #E2E8F0; text-decoration: none; padding: 1rem; border-bottom: 1px solid rgba(56,189,248,0.2); font-weight: 600;">📚 المقالات</a>
+    <a href="/Th-tech/category/" style="color: #E2E8F0; text-decoration: none; padding: 1rem; border-bottom: 1px solid rgba(56,189,248,0.2); font-weight: 600;">📂 التصنيفات</a>
+    <a href="/Th-tech/contact/" style="color: #E2E8F0; text-decoration: none; padding: 1rem; font-weight: 600;">📧 اتصل بنا</a>
+  </nav>
 </header>
+
 <script>
-function toggleTheme(){const html=document.documentElement;const btn=document.getElementById('themeBtn');const current=html.getAttribute('data-theme');const next=current==='light'?'dark':'light';html.setAttribute('data-theme',next);localStorage.setItem('theme',next);btn.textContent=next==='light'?'☀️':'🌙';}
-const saved=localStorage.getItem('theme')||'dark';document.documentElement.setAttribute('data-theme',saved);document.getElementById('themeBtn').textContent=saved==='light'?'☀️':'🌙';
-function checkSize(){const btn=document.getElementById('menuBtn');const nav=document.querySelector('nav');if(window.innerWidth<=768){btn.style.display='block';nav.style.display='none';}else{btn.style.display='none';nav.style.display='flex';}}
-checkSize();window.addEventListener('resize',checkSize);
+  // الوضع الليلي
+  function toggleTheme() {    const html = document.documentElement;
+    const btn = document.getElementById('themeBtn');
+    const current = html.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    
+    html.setAttribute('data-theme', next);
+    localStorage.setItem('theme', next);
+    btn.textContent = next === 'light' ? '☀️' : '🌙';
+    
+    // تغيير ألوان الأزرار
+    updateButtonColors();
+  }
+
+  // البحث
+  function toggleSearch() {
+    const search = document.getElementById('searchBar');
+    search.style.display = search.style.display === 'none' ? 'flex' : 'none';
+    if(search.style.display === 'flex') {
+      document.getElementById('searchInput').focus();
+    }
+  }
+
+  // قائمة الهاتف
+  function toggleMobile() {
+    const menu = document.getElementById('mobileMenu');
+    menu.style.display = menu.style.display === 'none' ? 'flex' : 'none';
+  }
+
+  // التحقق من حجم الشاشة
+  function checkSize() {
+    const btn = document.getElementById('menuBtn');
+    const nav = document.getElementById('desktop-nav');
+    if(window.innerWidth <= 768) {
+      btn.style.display = 'block';
+      nav.style.display = 'none';
+    } else {
+      btn.style.display = 'none';
+      nav.style.display = 'flex';
+      document.getElementById('mobileMenu').style.display = 'none';
+    }
+  }
+
+  // تحديث الألوان عند تغيير الثيم
+  function updateButtonColors() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const bgColor = isDark ? 'rgba(56,189,248,0.15)' : 'rgba(2,132,199,0.15)';
+    const borderColor = isDark ? '#38BDF8' : '#0284C7';
+    const textColor = isDark ? '#38BDF8' : '#0284C7';
+    
+    document.querySelectorAll('button').forEach(btn => {      if(btn.id !== 'closeSearch') {
+        btn.style.background = bgColor;
+        btn.style.borderColor = borderColor;
+        btn.style.color = textColor;
+      }
+    });
+  }
+
+  // التحميل الأولي
+  window.addEventListener('DOMContentLoaded', () => {
+    const saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
+    document.getElementById('themeBtn').textContent = saved === 'light' ? '☀️' : '🌙';
+    checkSize();
+    updateButtonColors();
+  });
+
+  window.addEventListener('resize', checkSize);
 </script>
