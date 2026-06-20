@@ -16,16 +16,16 @@
 
     <!-- أدوات التحكم -->
     <div class="header-tools">
-      <button id="search-btn" class="icon-btn" aria-label="بحث">🔍</button>
-      <button id="theme-btn" class="icon-btn" aria-label="تبديل الوضع"></button>
-      <button id="menu-btn" class="icon-btn hamburger-btn" aria-label="القائمة">☰</button>
+      <button id="search-btn" class="icon-btn">🔍</button>
+      <button id="theme-btn" class="icon-btn"></button>
+      <button id="menu-btn" class="icon-btn hamburger-btn">☰</button>
     </div>
   </div>
 
-  <!-- شريط البحث المنزلق -->
+  <!-- شريط البحث -->
   <div id="search-panel" class="search-panel">
     <div class="search-box">
-      <input type="text" placeholder="ابحث عن مقال..." class="search-input">
+      <input type="text" placeholder="ابحث هنا..." class="search-input">
       <button onclick="document.getElementById('search-panel').classList.remove('active')" class="close-search">✕</button>
     </div>
   </div>
@@ -35,74 +35,103 @@
     <a href="/Th-tech/" class="mobile-link">🏠 الرئيسية</a>
     <a href="/Th-tech/articles/" class="mobile-link">📚 المقالات</a>
     <a href="/Th-tech/category/" class="mobile-link highlight">📂 التصنيفات</a>
-    <a href="/Th-tech/contact/" class="mobile-link"> اتصل بنا</a>
+    <a href="/Th-tech/contact/" class="mobile-link">📧 اتصل بنا</a>
   </nav>
 </header>
 
 <style>
   :root {
-    --bg-dark: #0B1120;       /* أزرق فضائي عميق */
-    --bg-light: #F8FAFC;      /* أبيض مائل للرمادي */
-    --text-dark: #E2E8F0;     /* أبيض ناعم */
-    --text-light: #0F172A;    /* كحلي غامق */
-    --primary: #38BDF8;       /* سماوي تقني */
-    --border: rgba(56, 189, 248, 0.3);  }
+    /* الألوان الجديدة (مزيج بين الأزرق البنفسجي للتقنية) */
+    --bg-dark: #0f172a;       /* كحلي غامق جداً */
+    --bg-light: #f8fafc;      /* أبيض ناعم */
+    --card-bg: #1e293b;       /* رمادي مزرق للكروت */
+    --text-main: #f1f5f9;     /* أبيض فضي للنصوص */
+    --text-muted: #94a3b8;    /* رمادي للنصوص الثانوية */    
+    /* ألوان رئيسية جديدة */
+    --primary: #8b5cf6;       /* بنفسجي تقني */
+    --accent: #ec4899;        /* وردي/أرجواني للتمييز */
+    --gradient: linear-gradient(135deg, var(--primary), var(--accent));
+    
+    --border: rgba(139, 92, 246, 0.2);
+    --shadow: 0 10px 20px rgba(0,0,0,0.2);
+  }
 
-  body { margin: 0; font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg-dark); color: var(--text-dark); transition: 0.3s; }
-  [data-theme="light"] body { background: var(--bg-light); color: var(--text-light); }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg-dark);
+    color: var(--text-main);
+    transition: background 0.4s, color 0.4s;
+  }
+  [data-theme="light"] body {
+    background: var(--bg-light);
+    color: #0f172a;
+  }
 
   .site-header {
-    background: rgba(11, 17, 32, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 2px solid var(--border);
-    position: sticky; top: 0; z-index: 1000; padding: 0.5rem 0;
+    background: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 1000; padding: 0.8rem 0;
   }
-  [data-theme="light"] .site-header { background: rgba(248, 250, 252, 0.95); border-color: rgba(2, 132, 199, 0.3); }
+  [data-theme="light"] .site-header {
+    background: rgba(248, 250, 252, 0.9);
+    border-color: rgba(148, 163, 184, 0.3);
+  }
 
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: flex; justify-content: space-between; align-items: center; height: 60px; }
+  .container {
+    max-width: 1200px; margin: 0 auto; padding: 0 1rem;
+    display: flex; justify-content: space-between; align-items: center; height: 60px;
+  }
 
-  /* الشعار - محاولة دمج الخلفية البيضاء */
-  .logo-img { height: 50px; width: auto; mix-blend-mode: screen; filter: drop-shadow(0 0 5px rgba(56,189,248,0.5)); }
+  .logo-img { height: 50px; width: auto; mix-blend-mode: screen; filter: drop-shadow(0 0 5px var(--primary)); }
   [data-theme="light"] .logo-img { mix-blend-mode: normal; filter: none; }
 
-  .desktop-nav { display: flex; gap: 1.5rem; }
-  .nav-item { color: var(--text-dark); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: 0.3s; }
+  .desktop-nav { display: flex; gap: 2rem; }
+  .nav-item { color: var(--text-main); text-decoration: none; font-weight: 600; font-size: 0.95rem; transition: 0.3s; position: relative; }
   .nav-item:hover { color: var(--primary); }
-  [data-theme="light"] .nav-item { color: var(--text-light); }
+  .nav-item::after { content: ''; position: absolute; bottom: -5px; right: 0; width: 0; height: 2px; background: var(--gradient); transition: 0.3s; }
+  .nav-item:hover::after { width: 100%; }
+  [data-theme="light"] .nav-item { color: #334155; }
 
-  .header-tools { display: flex; gap: 0.5rem; align-items: center; }
-  .icon-btn {
-    background: transparent; border: 1px solid var(--border); color: var(--primary);
-    width: 40px; height: 40px; border-radius: 8px; cursor: pointer;
-    font-size: 1.2rem; display: flex; align-items: center; justify-content: center; transition: 0.3s;
+  .header-tools { display: flex; gap: 0.6rem; align-items: center; }
+  .icon-btn {    background: rgba(139, 92, 246, 0.1); border: 1px solid var(--primary);
+    color: var(--primary); width: 40px; height: 40px; border-radius: 10px;
+    cursor: pointer; font-size: 1.2rem; transition: all 0.3s;
   }
-  .icon-btn:hover { background: var(--border); transform: scale(1.05); }
+  .icon-btn:hover { background: var(--primary); color: #fff; transform: translateY(-2px); box-shadow: var(--shadow); }
+  
   .hamburger-btn { display: none; }
 
-  .search-panel { display: none; background: var(--bg-dark); padding: 1rem; border-top: 1px solid var(--border); animation: slideDown 0.3s ease; }
+  .search-panel { display: none; background: var(--bg-dark); padding: 1rem; animation: slideDown 0.3s ease; }
   .search-panel.active { display: block; }
-  .search-box { max-width: 600px; margin: 0 auto; display: flex; gap: 0.5rem; }
-  .search-input { flex: 1; padding: 0.8rem; border: 1px solid var(--border); border-radius: 8px; background: #1E293B; color: #fff; }
-  .close-search { background: #EF4444; color: white; border: none; padding: 0 1rem; border-radius: 8px; cursor: pointer; }
+  .search-box { max-width: 600px; margin: 0 auto; display: flex; gap: 0.8rem; }
+  .search-input {
+    flex: 1; padding: 0.9rem; border: 2px solid var(--primary); border-radius: 12px;
+    background: var(--card-bg); color: #fff; font-size: 1rem; outline: none;
+  }
+  .search-input:focus { box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2); }
+  .close-search { background: #ef4444; color: white; border: none; padding: 0 1.2rem; border-radius: 12px; cursor: pointer; }
 
   .mobile-menu {
-    display: none; flex-direction: column; background: #1E293B; border-top: 1px solid var(--border);
-    padding: 1rem; position: absolute; top: 60px; left: 0; right: 0; width: 100%; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+    display: none; flex-direction: column; background: var(--card-bg); border-top: 1px solid var(--border);
+    padding: 1.5rem; position: absolute; top: 100%; left: 0; right: 0; width: 100%; box-shadow: var(--shadow);
   }
   .mobile-menu.active { display: flex; }
-  .mobile-link { color: #fff; text-decoration: none; padding: 0.8rem 0; border-bottom: 1px solid var(--border); font-weight: 600; }
+  .mobile-link { color: var(--text-main); text-decoration: none; padding: 0.8rem 0; border-bottom: 1px solid var(--border); font-weight: 600; }
   .mobile-link:last-child { border-bottom: none; }
   .mobile-link.highlight { color: var(--primary); }
 
   @media (max-width: 768px) {
-    .desktop-nav { display: none; }    .hamburger-btn { display: flex; }
+    .desktop-nav { display: none; }
+    .hamburger-btn { display: flex; }
     .logo-img { height: 40px; }
   }
   @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 
 <script is:inline>
-  // 1. الوضع الليلي
+  // الوضع الليلي
   const themeBtn = document.getElementById('theme-btn');
   const html = document.documentElement;
   const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -115,13 +144,10 @@
     localStorage.setItem('theme', next);
     themeBtn.textContent = next === 'light' ? '☀️' : '🌙';
   });
-
-  // 2. القائمة المتنقلة
-  const menuBtn = document.getElementById('menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
-  menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('active'));
-
-  // 3. البحث
+  // القائمة والبحث
+  document.getElementById('menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('active');
+  });
   document.getElementById('search-btn').addEventListener('click', () => {
     document.getElementById('search-panel').classList.add('active');
   });
