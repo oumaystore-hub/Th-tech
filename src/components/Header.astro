@@ -20,7 +20,7 @@
     </div>
   </div>
 
-  <!-- شريط البحث المنزلق -->
+  <!-- شريط البحث -->
   <div id="search-panel" class="search-panel">
     <div class="search-container">
       <input type="text" placeholder="ابحث عن مقال..." class="search-input" />
@@ -33,7 +33,7 @@
     <a href="/Th-tech/" class="mobile-link">🏠 الرئيسية</a>
     <a href="/Th-tech/articles/" class="mobile-link">📚 المقالات</a>
     <a href="/Th-tech/category/" class="mobile-link">📂 التصنيفات</a>
-    <a href="/Th-tech/contact/" class="mobile-link"> اتصل بنا</a>
+    <a href="/Th-tech/contact/" class="mobile-link">📧 اتصل بنا</a>
   </nav>
 </header>
 
@@ -46,7 +46,8 @@
     --border: rgba(0, 212, 255, 0.2);
   }
 
-  .site-header {    background: rgba(2, 6, 23, 0.95);
+  .site-header {
+    background: rgba(2, 6, 23, 0.95);
     backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border);
     position: sticky;
@@ -73,7 +74,6 @@
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s;
-    position: relative;
   }
   .nav-link:hover, .nav-link.active { color: var(--primary); }
   
@@ -92,14 +92,15 @@
   .tool-btn:hover { background: var(--border); }
   .hamburger { display: none; }
 
-  /* Mobile Menu & Search */
   .search-panel, .mobile-menu { display: none; }
   .search-panel.active, .mobile-menu.active { display: block; }
-    .search-panel {
+  
+  .search-panel {
     position: absolute; top: 60px; left: 0; right: 0;
     background: var(--card); padding: 1rem;
     border-bottom: 1px solid var(--border);
     animation: slideDown 0.3s;
+    z-index: 999;
   }
   .search-container { max-width: 600px; margin: 0 auto; display: flex; gap: 0.5rem; }
   .search-input {
@@ -113,6 +114,7 @@
     background: var(--card); padding: 1rem;
     border-bottom: 1px solid var(--border);
     display: none; flex-direction: column;
+    z-index: 999;
   }
   .mobile-menu.active { display: flex; }
   .mobile-link {
@@ -129,31 +131,41 @@
   @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 </style>
 
-<script>
-  // 1. الوضع الليلي
-  const html = document.documentElement;
-  const themeBtn = document.getElementById('theme-btn');
-  const savedTheme = localStorage.getItem('theme') || 'dark';
-  html.setAttribute('data-theme', savedTheme);
-  themeBtn.textContent = savedTheme === 'light' ? '️' : '🌙';
-  
-  themeBtn.addEventListener('click', () => {
-    const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    html.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    themeBtn.textContent = next === 'light' ? '☀️' : '🌙';
-  });
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    // الوضع الليلي
+    const html = document.documentElement;
+    const themeBtn = document.getElementById('theme-btn');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    html.setAttribute('data-theme', savedTheme);
+    if(themeBtn) themeBtn.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+    
+    if(themeBtn) {
+      themeBtn.addEventListener('click', () => {
+        const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+        html.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+        themeBtn.textContent = next === 'light' ? '☀️' : '🌙';
+      });
+    }
 
-  // 2. القائمة والهمبرغر  const menuBtn = document.getElementById('menu-btn');
-  const mobileMenu = document.getElementById('mobile-menu');
-  menuBtn.addEventListener('click', () => {
-    mobileMenu.classList.toggle('active');
-    menuBtn.textContent = mobileMenu.classList.contains('active') ? '✕' : '☰';
-  });
+    // قائمة الهاتف
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if(menuBtn && mobileMenu) {
+      menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('active');
+        menuBtn.textContent = mobileMenu.classList.contains('active') ? '✕' : '';
+      });
+    }
 
-  // 3. البحث
-  const searchBtn = document.getElementById('search-btn');
-  const searchPanel = document.getElementById('search-panel');
-  searchBtn.addEventListener('click', () => searchPanel.classList.add('active'));
-  document.getElementById('close-search').addEventListener('click', () => searchPanel.classList.remove('active'));
+    // البحث
+    const searchBtn = document.getElementById('search-btn');
+    const searchPanel = document.getElementById('search-panel');
+    const closeSearch = document.getElementById('close-search');
+    if(searchBtn && searchPanel) {
+      searchBtn.addEventListener('click', () => searchPanel.classList.add('active'));
+      if(closeSearch) closeSearch.addEventListener('click', () => searchPanel.classList.remove('active'));
+    }
+  });
 </script>
