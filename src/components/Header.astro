@@ -3,11 +3,12 @@
 <header class="site-header">
   <div class="container">
     <a href="/Th-tech/" class="logo">
-      <img src="/logo1.png" alt="Th-tech Logo" class="logo-img" />
+      <img src="/logo1.png" alt="Th-tech" class="logo-img" onerror="this.style.display='none'; document.getElementById('text-logo').style.display='block';" />
+      <span id="text-logo" style="display:none; font-size:1.5rem; font-weight:800; color:var(--primary);">Th-<span style="color:var(--text);">tech</span></span>
     </a>
     
-    <nav class="nav-links" id="navLinks">
-      <a href="/Th-tech/" class="nav-link active">الرئيسية</a>
+    <nav class="nav-links">
+      <a href="/Th-tech/" class="nav-link">الرئيسية</a>
       <a href="/Th-tech/articles/" class="nav-link">المقالات</a>
       <a href="/Th-tech/category/" class="nav-link">التصنيفات</a>
       <a href="/Th-tech/contact/" class="nav-link">اتصل بنا</a>
@@ -15,12 +16,11 @@
 
     <div class="header-tools">
       <button id="search-btn" class="tool-btn" aria-label="بحث">🔍</button>
-      <button id="theme-btn" class="tool-btn" aria-label="تبديل الوضع">🌙</button>
-      <button id="menu-btn" class="tool-btn hamburger" aria-label="القائمة"></button>
+      <button id="theme-btn" class="tool-btn" aria-label="تبديل الوضع">️</button>
+      <button id="menu-btn" class="tool-btn hamburger" aria-label="القائمة">☰</button>
     </div>
   </div>
 
-  <!-- شريط البحث -->
   <div id="search-panel" class="search-panel">
     <div class="search-container">
       <input type="text" placeholder="ابحث عن مقال..." class="search-input" />
@@ -28,9 +28,8 @@
     </div>
   </div>
 
-  <!-- قائمة الهاتف -->
   <nav id="mobile-menu" class="mobile-menu">
-    <a href="/Th-tech/" class="mobile-link">🏠 الرئيسية</a>
+    <a href="/Th-tech/" class="mobile-link"> الرئيسية</a>
     <a href="/Th-tech/articles/" class="mobile-link">📚 المقالات</a>
     <a href="/Th-tech/category/" class="mobile-link">📂 التصنيفات</a>
     <a href="/Th-tech/contact/" class="mobile-link">📧 اتصل بنا</a>
@@ -39,133 +38,69 @@
 
 <style>
   :root {
-    --bg: #020617;
-    --card: #0f172a;
-    --text: #f8fafc;
-    --primary: #00d4ff;
-    --border: rgba(0, 212, 255, 0.2);
+    --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --text-sec: #64748b;
+    --primary: #0284c7; --border: rgba(2,132,199,0.2);
   }
-
-  .site-header {
-    background: rgba(2, 6, 23, 0.95);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    padding: 0.5rem 0;
+  [data-theme="dark"] {
+    --bg: #0b1120; --card: #1e293b; --text: #f1f5f9; --text-sec: #94a3b8;
+    --primary: #38bdf8; --border: rgba(56,189,248,0.2);
   }
-
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 60px;
-  }
-
-  .logo-img { height: 45px; width: auto; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:system-ui,sans-serif; transition:0.3s; }
   
-  .nav-links { display: flex; gap: 2rem; }
-  .nav-link {
-    color: var(--text);
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s;
-  }
-  .nav-link:hover, .nav-link.active { color: var(--primary); }
+  .site-header { background:var(--card); border-bottom:2px solid var(--border); position:sticky; top:0; z-index:1000; padding:0.5rem 0; }
+  .container { max-width:1200px; margin:0 auto; padding:0 1rem; display:flex; justify-content:space-between; align-items:center; height:60px; }
+  .logo-img { height:45px; width:auto; }
   
-  .header-tools { display: flex; gap: 0.5rem; align-items: center; }
-  .tool-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--primary);
-    width: 40px; height: 40px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    display: flex; align-items: center; justify-content: center;
-    transition: 0.3s;
-  }
-  .tool-btn:hover { background: var(--border); }
-  .hamburger { display: none; }
+  .nav-links { display:flex; gap:1.5rem; }
+  .nav-link { color:var(--text); text-decoration:none; font-weight:600; transition:0.3s; }
+  .nav-link:hover { color:var(--primary); }
+  
+  .header-tools { display:flex; gap:0.5rem; }
+  .tool-btn { background:transparent; border:1px solid var(--border); color:var(--primary); width:40px; height:40px; border-radius:8px; cursor:pointer; font-size:1.2rem; display:flex; align-items:center; justify-content:center; transition:0.3s; }
+  .tool-btn:hover { background:var(--primary); color:white; }
+  .hamburger { display:none; }
+  
+  .search-panel, .mobile-menu { display:none; }
+  .search-panel.active, .mobile-menu.active { display:block; }
+  .search-panel { position:absolute; top:60px; left:0; right:0; background:var(--card); padding:1rem; border-bottom:1px solid var(--border); z-index:999; }
+  .search-container { max-width:600px; margin:0 auto; display:flex; gap:0.5rem; }
+  .search-input { flex:1; padding:0.8rem; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text); }
+  .close-btn { background:#ef4444; color:white; border:none; padding:0 1rem; border-radius:8px; cursor:pointer; }
+  
+  .mobile-menu { position:absolute; top:60px; left:0; right:0; background:var(--card); padding:1rem; border-bottom:1px solid var(--border); display:none; flex-direction:column; z-index:999; }
+  .mobile-menu.active { display:flex; }
+  .mobile-link { color:var(--text); text-decoration:none; padding:1rem; border-bottom:1px solid var(--border); font-weight:600; }
+  .mobile-link:last-child { border-bottom:none; }
 
-  .search-panel, .mobile-menu { display: none; }
-  .search-panel.active, .mobile-menu.active { display: block; }
-  
-  .search-panel {
-    position: absolute; top: 60px; left: 0; right: 0;
-    background: var(--card); padding: 1rem;
-    border-bottom: 1px solid var(--border);
-    animation: slideDown 0.3s;
-    z-index: 999;
-  }
-  .search-container { max-width: 600px; margin: 0 auto; display: flex; gap: 0.5rem; }
-  .search-input {
-    flex: 1; padding: 0.8rem; border-radius: 8px;
-    border: 1px solid var(--border); background: var(--bg); color: var(--text);
-  }
-  .close-btn { background: #ef4444; color: white; border: none; padding: 0 1rem; border-radius: 8px; cursor: pointer; }
-  
-  .mobile-menu {
-    position: absolute; top: 60px; left: 0; right: 0;
-    background: var(--card); padding: 1rem;
-    border-bottom: 1px solid var(--border);
-    display: none; flex-direction: column;
-    z-index: 999;
-  }
-  .mobile-menu.active { display: flex; }
-  .mobile-link {
-    color: var(--text); text-decoration: none; padding: 1rem;
-    border-bottom: 1px solid var(--border); font-weight: 600;
-  }
-  .mobile-link:last-child { border-bottom: none; }
-
-  @media (max-width: 768px) {
-    .nav-links { display: none; }
-    .hamburger { display: flex; }
-    .logo-img { height: 35px; }
-  }
-  @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width:768px) { .nav-links { display:none; } .hamburger { display:flex; } .logo-img { height:35px; } }
 </style>
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
-    // الوضع الليلي
+  window.addEventListener('load', () => {
     const html = document.documentElement;
     const themeBtn = document.getElementById('theme-btn');
-    const savedTheme = localStorage.getItem('theme') || 'dark';
-    html.setAttribute('data-theme', savedTheme);
-    if(themeBtn) themeBtn.textContent = savedTheme === 'light' ? '☀️' : '🌙';
+    const saved = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', saved);
+    themeBtn.textContent = saved === 'dark' ? '🌙' : '☀️';
     
-    if(themeBtn) {
-      themeBtn.addEventListener('click', () => {
-        const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-        html.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        themeBtn.textContent = next === 'light' ? '☀️' : '🌙';
-      });
-    }
+    themeBtn.onclick = () => {
+      const next = html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      html.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      themeBtn.textContent = next === 'dark' ? '🌙' : '☀️';
+    };
 
-    // قائمة الهاتف
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
-    if(menuBtn && mobileMenu) {
-      menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('active');
-        menuBtn.textContent = mobileMenu.classList.contains('active') ? '✕' : '';
-      });
-    }
+    menuBtn.onclick = () => {
+      mobileMenu.classList.toggle('active');
+      menuBtn.textContent = mobileMenu.classList.contains('active') ? '✕' : '☰';
+    };
 
-    // البحث
     const searchBtn = document.getElementById('search-btn');
     const searchPanel = document.getElementById('search-panel');
-    const closeSearch = document.getElementById('close-search');
-    if(searchBtn && searchPanel) {
-      searchBtn.addEventListener('click', () => searchPanel.classList.add('active'));
-      if(closeSearch) closeSearch.addEventListener('click', () => searchPanel.classList.remove('active'));
-    }
+    searchBtn.onclick = () => searchPanel.classList.add('active');
+    document.getElementById('close-search').onclick = () => searchPanel.classList.remove('active');
   });
 </script>
