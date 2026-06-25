@@ -65,38 +65,39 @@
   
   .site-header {
     background: var(--card);
-    border-bottom: 2px solid var(--border);
+    border-bottom: 3px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 1000;
-    padding: 0.5rem 0;
+    padding: 0.8rem 0;
   }
   
   .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 90px;
+    height: 110px;
   }
   
   .logo-img {
-    height: 80px;
+    height: 95px;
     width: auto;
     display: block;
   }
   
   .nav-links {
     display: flex;
-    gap: 1.5rem;
+    gap: 2rem;
   }
   
   .nav-link {
     color: var(--text);
     text-decoration: none;
     font-weight: 600;
+    font-size: 1.1rem;
     transition: color 0.3s;
   }
   
@@ -106,18 +107,18 @@
   
   .header-tools {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.8rem;
   }
   
   .tool-btn {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--primary);
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
+    background: var(--primary);
+    border: 2px solid var(--border);
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
     cursor: pointer;
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -125,8 +126,8 @@
   }
   
   .tool-btn:hover {
-    background: var(--primary);
-    color: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(2,132,199,0.4);
   }
   
   .hamburger {
@@ -143,12 +144,12 @@
   
   .search-panel {
     position: absolute;
-    top: 90px;
+    top: 110px;
     left: 0;
     right: 0;
     background: var(--card);
-    padding: 1rem;
-    border-bottom: 1px solid var(--border);
+    padding: 1.5rem;
+    border-bottom: 2px solid var(--border);
     z-index: 999;
   }
   
@@ -156,35 +157,37 @@
     max-width: 600px;
     margin: 0 auto;
     display: flex;
-    gap: 0.5rem;
+    gap: 0.8rem;
   }
   
   .search-input {
     flex: 1;
-    padding: 0.8rem;
-    border-radius: 8px;
-    border: 1px solid var(--border);
+    padding: 1rem;
+    border-radius: 10px;
+    border: 2px solid var(--border);
     background: var(--bg);
     color: var(--text);
+    font-size: 1rem;
   }
   
   .close-btn {
     background: #ef4444;
     color: white;
     border: none;
-    padding: 0 1rem;
-    border-radius: 8px;
+    padding: 0 1.5rem;
+    border-radius: 10px;
     cursor: pointer;
+    font-weight: bold;
   }
   
   .mobile-menu {
     position: absolute;
-    top: 90px;
+    top: 110px;
     left: 0;
     right: 0;
     background: var(--card);
-    padding: 1rem;
-    border-bottom: 1px solid var(--border);
+    padding: 1.5rem;
+    border-bottom: 2px solid var(--border);
     display: none;
     flex-direction: column;
     z-index: 999;
@@ -197,9 +200,10 @@
   .mobile-link {
     color: var(--text);
     text-decoration: none;
-    padding: 1rem;
+    padding: 1.2rem;
     border-bottom: 1px solid var(--border);
     font-weight: 600;
+    font-size: 1.1rem;
   }
   
   .mobile-link:last-child {
@@ -214,67 +218,80 @@
       display: flex;
     }
     .logo-img {
-      height: 60px;
+      height: 70px;
     }
     .container {
-      height: 70px;
+      height: 85px;
+      padding: 0 1rem;
+    }
+    .tool-btn {
+      width: 45px;
+      height: 45px;
+      font-size: 1.2rem;
     }
   }
 </style>
 
 <script>
-  (function() {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    updateThemeIcon(savedTheme);
-  })();
-
+  // تطبيق الثيم فوراً عند تحميل الصفحة
+  const html = document.documentElement;
+  const savedTheme = localStorage.getItem('theme') || 'light';
+  html.setAttribute('data-theme', savedTheme);
+  
   function updateThemeIcon(theme) {
     const btn = document.getElementById('theme-btn');
     if (btn) {
       btn.textContent = theme === 'dark' ? '☀️' : '🌙';
     }
   }
+  
+  updateThemeIcon(savedTheme);
 
+  // تهيئة جميع الأزرار
   document.addEventListener('DOMContentLoaded', function() {
+    // 1. الوضع الليلي - إصلاح نهائي
     const themeBtn = document.getElementById('theme-btn');
-    const html = document.documentElement;
     
     if (themeBtn) {
-      themeBtn.addEventListener('click', function() {
+      themeBtn.onclick = function() {
         const currentTheme = html.getAttribute('data-theme');
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
         
         html.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
         updateThemeIcon(newTheme);
-      });
+        
+        console.log('Theme changed to:', newTheme);
+      };
     }
 
+    // 2. قائمة الهاتف
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     
     if (menuBtn && mobileMenu) {
-      menuBtn.addEventListener('click', function() {
+      menuBtn.onclick = function() {
         mobileMenu.classList.toggle('active');
         menuBtn.textContent = mobileMenu.classList.contains('active') ? '✕' : '☰';
-      });
+      };
     }
 
+    // 3. البحث
     const searchBtn = document.getElementById('search-btn');
     const searchPanel = document.getElementById('search-panel');
     const closeSearch = document.getElementById('close-search');
     
     if (searchBtn && searchPanel) {
-      searchBtn.addEventListener('click', function() {
+      searchBtn.onclick = function() {
         searchPanel.classList.add('active');
-      });
+        setTimeout(() => document.querySelector('.search-input').focus(), 100);
+      };
     }
     
     if (closeSearch && searchPanel) {
-      closeSearch.addEventListener('click', function() {
+      closeSearch.onclick = function() {
         searchPanel.classList.remove('active');
-      });
+      };
     }
   });
 </script>
