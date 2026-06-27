@@ -36,7 +36,6 @@
 </header>
 
 <style>
-  /* 1. تعريف الألوان الافتراضية (الوضع النهاري) */
   :root {
     --bg: #f8fafc;
     --card: #ffffff;
@@ -46,7 +45,6 @@
     --border: rgba(2,132,199,0.2);
   }
 
-  /* 2. تعريف ألوان الوضع الليلي */
   html.dark-mode {
     --bg: #0b1120;
     --card: #1e293b;
@@ -57,8 +55,7 @@
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  /* 3. تطبيق الخلفية على كامل الموقع لضمان عمل الوضع الليلي */
+  
   body {
     background-color: var(--bg);
     color: var(--text);
@@ -82,19 +79,18 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 140px; /* ارتفاع مناسب */
+    height: 110px; /* تم التصغير */
   }
   
-  /* 4. ضبط حجم الشعار والمسافة */
   .logo {
     flex-shrink: 0;
-    margin-left: 20px; /* مسافة تفصل الشعار عن الأزرار */
+    margin-left: 15px;
   }
   .logo-img {
-    height: 100px; /* حجم متوازن */
+    height: 70px; /* تم التصغير من 100px إلى 70px */
     width: auto;
     display: block;
-    filter: drop-shadow(0 4px 10px rgba(2,132,199,0.4));
+    filter: drop-shadow(0 2px 8px rgba(2,132,199,0.3));
   }
   
   .nav-links { display: flex; gap: 2rem; }
@@ -112,11 +108,11 @@
     background: var(--primary);
     border: 2px solid var(--border);
     color: white;
-    width: 55px;
-    height: 55px;
-    border-radius: 14px;
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
     cursor: pointer;
-    font-size: 1.5rem;
+    font-size: 1.4rem;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -129,81 +125,72 @@
   .search-panel.active, .mobile-menu.active { display: block; }
   
   .search-panel {
-    position: absolute; top: 140px; left: 0; right: 0;
-    background: var(--card); padding: 2rem;
+    position: absolute; top: 110px; left: 0; right: 0;
+    background: var(--card); padding: 1.5rem;
     border-bottom: 2px solid var(--border); z-index: 999;
   }
-  .search-container { max-width: 700px; margin: 0 auto; display: flex; gap: 1rem; }
+  .search-container { max-width: 600px; margin: 0 auto; display: flex; gap: 1rem; }
   .search-input {
-    flex: 1; padding: 1.2rem; border-radius: 12px;
+    flex: 1; padding: 1rem; border-radius: 10px;
     border: 2px solid var(--border); background: var(--bg); color: var(--text);
   }
-  .close-btn { background: #ef4444; color: white; border: none; padding: 0 2rem; border-radius: 12px; cursor: pointer; font-weight: bold; }
+  .close-btn { background: #ef4444; color: white; border: none; padding: 0 1.5rem; border-radius: 10px; cursor: pointer; font-weight: bold; }
   
   .mobile-menu {
-    position: absolute; top: 140px; left: 0; right: 0;
-    background: var(--card); padding: 2rem;
+    position: absolute; top: 110px; left: 0; right: 0;
+    background: var(--card); padding: 1.5rem;
     border-bottom: 2px solid var(--border);
     display: none; flex-direction: column; z-index: 999;
   }
   .mobile-menu.active { display: flex; }
   .mobile-link {
-    color: var(--text); text-decoration: none; padding: 1.5rem;
-    border-bottom: 1px solid var(--border); font-weight: 700; font-size: 1.1rem;
+    color: var(--text); text-decoration: none; padding: 1.2rem;
+    border-bottom: 1px solid var(--border); font-weight: 700; font-size: 1.05rem;
   }
   .mobile-link:last-child { border-bottom: none; }
 
   @media (max-width: 768px) {
     .nav-links { display: none; }
     .hamburger { display: flex; }
-    .logo-img { height: 70px; } /* تصغير الشعار للهاتف */
+    .logo-img { height: 50px; } /* تم التصغير من 70px إلى 50px */
     .logo { margin-left: 10px; }
-    .container { height: 100px; padding: 0 1.5rem; }
-    .tool-btn { width: 50px; height: 50px; font-size: 1.3rem; }
-    .search-panel, .mobile-menu { top: 100px; }
+    .container { height: 80px; padding: 0 1.5rem; }
+    .tool-btn { width: 45px; height: 45px; font-size: 1.2rem; }
+    .search-panel, .mobile-menu { top: 80px; }
   }
 </style>
 
 <script is:inline>
-  // دالة تبديل الوضع الليلي
   function toggleTheme() {
     const html = document.documentElement;
     const btn = document.getElementById('theme-btn');
-    
-    // التبديل بين إضافة وحذف الكلاس
     html.classList.toggle('dark-mode');
-    
-    // حفظ الاختيار وتغيير الأيقونة
     if (html.classList.contains('dark-mode')) {
       localStorage.setItem('theme', 'dark');
       btn.textContent = '☀️';
     } else {
       localStorage.setItem('theme', 'light');
-      btn.textContent = '';
+      btn.textContent = '🌙';
     }
   }
 
-  // عند تحميل الصفحة
   document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById('theme-btn');
     const html = document.documentElement;
     const savedTheme = localStorage.getItem('theme');
 
-    // استعادة الوضع المحفوظ
     if (savedTheme === 'dark') {
       html.classList.add('dark-mode');
-      btn.textContent = '️';
+      btn.textContent = '☀️';
     } else {
       html.classList.remove('dark-mode');
-      btn.textContent = '';
+      btn.textContent = '🌙';
     }
 
-    // تفعيل الزر
     if (btn) {
       btn.addEventListener('click', toggleTheme);
     }
 
-    // تفعيل قائمة الهاتف
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
     if (menuBtn && mobileMenu) {
@@ -213,7 +200,6 @@
       });
     }
 
-    // تفعيل البحث
     const searchBtn = document.getElementById('search-btn');
     const searchPanel = document.getElementById('search-panel');
     const closeSearch = document.getElementById('close-search');
