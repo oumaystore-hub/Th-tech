@@ -3,7 +3,7 @@
 <header class="site-header">
   <div class="container">
     <a href="/Th-tech/" class="logo">
-      <img src="/Th-tech/logo1.png" alt="Th-tech" class="logo-img" />
+      <img src="/logo1.png" alt="Th-tech" class="logo-img" />
     </a>
     
     <nav class="nav-links">
@@ -34,6 +34,9 @@
     <a href="/Th-tech/contact/" class="mobile-link">📧 اتصل بنا</a>
   </nav>
 </header>
+
+<!-- زر قائمة العناوين العائم -->
+<div class="toc-float-btn" id="tocBtn" title="قائمة العناوين">📑</div>
 
 <style>
   :root {
@@ -79,7 +82,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 110px; /* تم التصغير */
+    height: 110px;
   }
   
   .logo {
@@ -87,7 +90,7 @@
     margin-left: 15px;
   }
   .logo-img {
-    height: 70px; /* تم التصغير من 100px إلى 70px */
+    height: 70px;
     width: auto;
     display: block;
     filter: drop-shadow(0 2px 8px rgba(2,132,199,0.3));
@@ -149,14 +152,53 @@
   }
   .mobile-link:last-child { border-bottom: none; }
 
+  /* زر قائمة العناوين العائم المتوهج */
+  .toc-float-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    width: 65px;
+    height: 65px;
+    background: linear-gradient(135deg, var(--primary), #00d4ff);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+    box-shadow: 0 0 20px rgba(2,132,199,0.6), 0 0 40px rgba(2,132,199,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 998;
+    transition: all 0.3s;
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+  
+  .toc-float-btn:hover {
+    transform: scale(1.15) rotate(10deg);
+    box-shadow: 0 0 30px rgba(2,132,199,0.8), 0 0 60px rgba(2,132,199,0.6);
+  }
+  
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(2,132,199,0.6), 0 0 40px rgba(2,132,199,0.4); }
+    50% { box-shadow: 0 0 30px rgba(2,132,199,0.8), 0 0 60px rgba(2,132,199,0.6); }
+  }
+
   @media (max-width: 768px) {
     .nav-links { display: none; }
     .hamburger { display: flex; }
-    .logo-img { height: 50px; } /* تم التصغير من 70px إلى 50px */
+    .logo-img { height: 50px; }
     .logo { margin-left: 10px; }
     .container { height: 80px; padding: 0 1.5rem; }
     .tool-btn { width: 45px; height: 45px; font-size: 1.2rem; }
     .search-panel, .mobile-menu { top: 80px; }
+    .toc-float-btn {
+      width: 55px;
+      height: 55px;
+      bottom: 20px;
+      left: 20px;
+      font-size: 1.5rem;
+    }
   }
 </style>
 
@@ -206,6 +248,17 @@
     if (searchBtn && searchPanel) {
       searchBtn.addEventListener('click', () => searchPanel.classList.add('active'));
       if (closeSearch) closeSearch.addEventListener('click', () => searchPanel.classList.remove('active'));
+    }
+
+    // زر قائمة العناوين - التمرير السلس للمقالات
+    const tocBtn = document.getElementById('tocBtn');
+    if (tocBtn) {
+      tocBtn.addEventListener('click', () => {
+        const articlesSection = document.querySelector('.articles-container') || document.querySelector('main');
+        if (articlesSection) {
+          articlesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
     }
   });
 </script>
