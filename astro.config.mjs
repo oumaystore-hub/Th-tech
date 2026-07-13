@@ -1,10 +1,9 @@
 import { defineConfig } from 'astro/config';
-import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
   site: 'https://oumaystore-hub.github.io',
   base: '/Th-tech',
-  integrations: [sitemap()],
+  // تم إزالة integrations: [sitemap()] لتجنب التعارض مع الملف اليدوي
   markdown: {
     shikiConfig: {
       theme: 'one-dark-pro',
