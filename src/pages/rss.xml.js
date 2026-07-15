@@ -1,10 +1,13 @@
 import rss from '@astrojs/rss';
 
-// 1. استيراد الملفات كنص خام (Raw Text) لاستخراج البيانات يدوياً
+// استيراد الملفات كنص خام
 const allFiles = import.meta.glob('/src/pages/*/*.astro', { eager: true, query: '?raw' });
 
 // دالة لاستخراج Frontmatter من النص
 function parseFrontmatter(content) {
+  // 1. التأكد من أن المحتوى نص حقيقي
+  if (!content) return {};
+  
   // البحث عن الكتلة بين --- و ---
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return {};
@@ -13,18 +16,15 @@ function parseFrontmatter(content) {
   const lines = match[1].split('\n');
   
   lines.forEach(line => {
-    // استخراج المفتاح والقيمة (مثل title: "العنوان")
     const matchLine = line.match(/^(\w+):\s*(.*)/);
     if (matchLine) {
       let key = matchLine[1];
       let value = matchLine[2].trim();
       
-      // إزالة علامات التنصيص إذا وجدت ("...")
+      // إزالة علامات التنصيص إن وجدت
       if (value.startsWith('"') && value.endsWith('"')) {
         value = value.slice(1, -1);
-      }
-      // إزالة علامات التنصيص المفردة إذا وجدت ('...')
-      else if (value.startsWith("'") && value.endsWith("'")) {
+      } else if (value.startsWith("'") && value.endsWith("'")) {
         value = value.slice(1, -1);
       }
       
@@ -38,27 +38,29 @@ export function GET(context) {
   const items = [];
 
   for (const path in allFiles) {
-    const content = allFiles[path]; // المحتوى النصي للملف
-    const fm = parseFrontmatter(content); // استخراج البيانات
+    // 2. إصلاح الخطأ: استخراج النص سواء كان نصاً مباشراً أو داخل كائن default
+    const rawContent = typeof allFiles[path] === 'string' 
+      ? allFiles[path] 
+      : (allFiles[path]?.default || '');
+      
+    const fm = parseFrontmatter(rawContent);
     
-    // تجاهل الصفحة الرئيسية وصفحة 404
+    // تجاهل الصفحة الرئيسية و 404
     if (path.includes('pages/index.astro') || path.includes('404')) continue;
 
-    // إذا كان هناك عنوان، أضفه للقائمة
     if (fm.title) {
-      // تحويل المسار (مثال: /src/pages/ai/index.astro -> ai/)
       let slug = path.replace('/src/pages/', '').replace('/index.astro', '/');
       
       items.push({
         title: fm.title,
-        pubDate: fm.pubDate ? new Date(fm.pubDate) : new Date(), // تحويل التاريخ
+        pubDate: fm.pubDate ? new Date(fm.pubDate) : new Date(),
         description: fm.description || '',
         link: slug,
       });
     }
   }
 
-  // ترتيب المقالات من الأحدث للأقدم
+  // الترتيب من الأحدث للأقدم
   items.sort((a, b) => b.pubDate - a.pubDate);
 
   return rss({
