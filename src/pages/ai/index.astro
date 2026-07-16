@@ -3,24 +3,24 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 
-// بيانات الصفحة للتغذية (RSS) والعناوين
 export const title = "الذكاء الاصطناعي وتعلم الآلة";
 export const pubDate = "2026-07-15";
 export const description = "مقالات وشروحات عن الذكاء الاصطناعي، تعلم الآلة، والشبكات العصبية";
 ---
+
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <!-- ✅ العناوين والأوصاف الديناميكية -->
+  <!-- ✅ العناوين والأوصاف -->
   <title>{title} - Th.Tech</title>
   <meta name="description" content={description} />
   <meta name="keywords" content="تقنية, ذكاء اصطناعي, برمجة, أمن سيبراني, تعلم آلة, Th-Tech" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://oumaystore-hub.github.io/Th-tech/ai/" />
 
-  <!-- ✅ Open Graph (للمشاركة على فيسبوك ولينكدإن) -->
+  <!-- ✅ Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://oumaystore-hub.github.io/Th-tech/ai/" />
   <meta property="og:title" content={title} />
@@ -34,7 +34,7 @@ export const description = "مقالات وشروحات عن الذكاء الا
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content="https://oumaystore-hub.github.io/Th-tech/logo1.png" />
 
-  <!-- ✅ بيانات منظمة (JSON-LD) ليفهم Google نوع الموقع -->
+  <!-- ✅ بيانات منظمة (JSON-LD) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -74,7 +74,7 @@ export const description = "مقالات وشروحات عن الذكاء الا
     <article class="article" id="art1">
       <span class="badge">تعلم الآلة</span>
       <h2>الذكاء الاصطناعي التوليدي: ثورة المستقبل</h2>
-      <div class="meta">📅 15 يناير 2026 | ️ 25 دقيقة</div>
+      <div class="meta">📅 15 يناير 2026 | ⏱️ 25 دقيقة</div>
       <p class="intro">نماذج الذكاء الاصطناعي التوليدي تعيد تشكيل المستقبل من خلال الإبداع المنطقي وتوليد المحتوى المعقد بذكاء غير مسبوق.</p>
       
       <h3>1. ما هو الذكاء الاصطناعي التوليدي؟</h3>
@@ -199,7 +199,11 @@ export const description = "مقالات وشروحات عن الذكاء الا
         <li><strong>المراقبة الصناعية:</strong> فحص الجودة، كشف العيوب، الصيانة التنبؤية</li>
       </ul>
     </article>
-        <ShareButtons />
+
+    <ShareButtons />
+    
+    <!-- ✅ زر العودة للأعلى -->
+    <button id="backToTop" aria-label="العودة للأعلى">⬆️</button>
   </main>
   <Footer />
 </body>
@@ -238,6 +242,30 @@ export const description = "مقالات وشروحات عن الذكاء الا
   .article ul { padding-right: 1.5rem; margin-bottom: 1rem; }
   .article li { margin-bottom: 0.7rem; line-height: 1.7; color: var(--text-sec); }
   .article li strong { color: var(--primary); }
+
+  /* ✅ زر العودة للأعلى */
+  #backToTop {
+    position: fixed;
+    bottom: 95px;
+    left: 30px;
+    width: 45px;
+    height: 45px;
+    background: var(--card);
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1.4rem;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    z-index: 997;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  #backToTop.show { opacity: 1; visibility: visible; transform: translateY(-5px); }
+  #backToTop:hover { background: var(--primary); color: #fff; transform: scale(1.1); }
   
   @media (max-width: 768px) {
     .category-articles { padding: 2rem 1rem 3rem !important; max-width: 100% !important; }
@@ -254,11 +282,13 @@ export const description = "مقالات وشروحات عن الذكاء الا
     .toc-box { width: 95% !important; max-width: 350px !important; }
     .toc-nav a { font-size: 0.85rem !important; }
     .badge { font-size: 0.75rem !important; }
+    #backToTop { bottom: 75px !important; left: 15px !important; width: 40px !important; height: 40px !important; font-size: 1.2rem !important; }
   }
 </style>
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // فهرس المقالات
     const btn = document.getElementById('tocBtn');
     const modal = document.getElementById('tocModal');
     const close = document.getElementById('tocClose');
@@ -274,5 +304,18 @@ export const description = "مقالات وشروحات عن الذكاء الا
     btn.onclick = () => modal.classList.add('active');
     close.onclick = () => modal.classList.remove('active');
     modal.onclick = (e) => { if(e.target === modal) modal.classList.remove('active'); };
+
+    // ✅ زر العودة للأعلى
+    const backToTopBtn = document.getElementById('backToTop');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        backToTopBtn.classList.add('show');
+      } else {
+        backToTopBtn.classList.remove('show');
+      }
+    });
+    backToTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
   });
 </script>
