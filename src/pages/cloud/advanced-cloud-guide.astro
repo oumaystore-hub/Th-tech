@@ -1,0 +1,445 @@
+---
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+
+export const title = "الهندسة السحابية المتقدمة و DevOps الحديث";
+export const pubDate = "2026-07-18";
+export const description = "دليل متعمق لـ Kubernetes، Terraform، Serverless، FinOps، و CI/CD Pipelines";
+---
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} - Th.Tech</title>
+  <meta name="description" content={description} />
+</head>
+<body>
+  <Header />
+  
+  <main class="category-articles">
+    <div class="page-header">
+      <h1>☁️ الهندسة السحابية المتقدمة</h1>
+      <p>من الحاويات إلى الـ Serverless: بناء أنظمة لا تتوقف</p>
+    </div>
+
+    <!-- ✅ زر الفهرس المتوهج -->
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
+    <div class="toc-modal" id="tocModal">
+      <div class="toc-box">
+        <div class="toc-head">
+          <h3>فهرس المقال</h3>
+          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس">✕</button>
+        </div>
+        <nav class="toc-nav" id="tocNav"></nav>
+      </div>
+    </div>
+
+    <!-- ✅ السهم المنبثق (العودة للأعلى) -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
+
+    <article class="article" id="art1">
+      <span class="badge">مستوى خبير / مؤسسي</span>
+      <h2>الهندسة السحابية المتقدمة و DevOps الحديث</h2>
+      <div class="meta">📅 18 يوليو 2026 | ⏱️ 180 دقيقة قراءة</div>
+      <p class="intro">هذا الدليل الشامل والمفصل جداً موجه لمهندسي السحابة (Cloud Architects)، ومهندسي DevOps/SRE، وقادة الفرق التقنية، ومطوري الأنظمة الموزعة. يغطي المعماريات السحابية الحديثة، إدارة الحاويات المتقدمة بـ Kubernetes، البنية التحتية ككود (IaC) باستخدام Terraform و Pulumi، استراتيجيات التكلفة المتقدمة (FinOps)، خطوط أنابيب CI/CD المعقدة، المراقبة والملاحظة (Observability)، أمن السحابة المؤسسي، وMulti-Cloud Strategies. دليل عملي يعتمد على خبرات شركات مثل Amazon, Google, Netflix, و Spotify.</p>
+      
+      <h3>🏗️ الجزء الأول: معماريات السحابة الحديثة (Modern Cloud Architectures)</h3>
+      <p>انتقلنا من الخوادم الأحادية (Monoliths) إلى أنظمة موزعة ومعقدة تعتمد على خدمات مستقلة ومتناسقة:</p>
+      
+      <h4>1.1 Microservices Architecture - التصميم والتطبيق:</h4>
+      <ul>
+        <li><strong>مبدأ التجزئة (Decomposition):</strong> تقسيم التطبيق إلى خدمات صغيرة مستقلة حسب业务能力 (Business Capability) أو Domain-Driven Design (DDD Bounded Contexts). كل خدمة تملك قاعدة بياناتها الخاصة (Database per Service) لضمان الاستقلالية الكاملة.</li>
+        <li><strong>نمط Saga Pattern:</strong> إدارة المعاملات الموزعة (Distributed Transactions) عبر سلسلة من الأحداث المحلية أو الأوامر التعويضية (Compensating Transactions) بدلاً من 2PC التقليدي الذي لا يتناسب مع السحابة.</li>
+        <li><strong>نمط CQRS و Event Sourcing:</strong> فصل نماذج القراءة عن الكتابة (Command Query Responsibility Segregation) مع تخزين حالة التطبيق كسلسلة من الأحداث (Event Sourcing) باستخدام Kafka أو EventStoreDB.</li>
+        <li><strong>API Composition:</strong> تجميع بيانات من عدة خدمات صغيرة عبر API Gateway أو Backend-for-Frontend (BFF) Pattern لتقديم واجهة موحدة للعميل.</li>
+        <li><strong>التحديات والحلول:</strong>
+          <br/>• <strong>Latency:</strong> استخدام gRPC (HTTP/2 + Protobuf) للتواصل الداخلي السريع بدلاً من REST/JSON.
+          <br/>• <strong>Data Consistency:</strong> قبول Eventual Consistency، واستخدام Outbox Pattern و CDC (Change Data Capture) لمزامنة البيانات.
+          <br/>• <strong>Debugging:</strong> تطبيق Distributed Tracing (OpenTelemetry) و Structured Logging.</li>
+      </ul>
+
+      <h4>1.2 Event-Driven Architecture (EDA) المتقدمة:</h4>
+      <ul>
+        <li><strong>المبدأ الأساسي:</strong> الخدمات تنتج أحداثاً (Produce Events) وتستهلكها (Consume Events) بشكل غير متزامن عبر Message Broker، مما يقلل اقتران الخدمات (Loose Coupling).</li>
+        <li><strong>أنماط التواصل:</strong>
+          <br/>• <strong>Publish/Subscribe:</strong> حدث واحد يُرسل لعدة مشتركين (مثل Kafka Topics).
+          <br/>• <strong>Point-to-Point:</strong> رسالة واحدة تُعالج من قبل مستهلك واحد فقط (مثل SQS/RabbitMQ Queues).
+          <br/>• <strong>Request/Reply:</strong> نمط متزامن فوق بنية غير متزامنة باستخدام Correlation IDs.</li>
+        <li><strong>Message Brokers المقارنة:</strong>
+          <br/>• <strong>Apache Kafka:</strong> للأحداث عالية الإنتاجية (Millions/sec)، Replayability، و Stream Processing. يستخدم Log-structured Storage.
+          <br/>• <strong>RabbitMQ:</strong> للرسائل المعقدة (Routing, Exchanges)، Batching، وأولويات الرسائل. يستخدم AMQP.
+          <br/>• <strong>AWS SQS/SNS:</strong> خدمات مُدارة بالكامل، تكامل سهل مع خدمات AWS، لكن أقل مرونة.</li>
+        <li><strong>Stream Processing:</strong> معالجة البيانات في الوقت الفعلي باستخدام Kafka Streams، Apache Flink، أو AWS Kinesis Data Analytics.</li>
+        <li><strong>Dead Letter Queues (DLQ):</strong> عزل الرسائل الفاشلة للمراجعة وإعادة المعالجة لاحقاً (Retry Mechanisms مع Exponential Backoff).</li>
+      </ul>
+
+      <h4>1.3 Serverless Computing - الواقع والتطبيقات:</h4>
+      <ul>
+        <li><strong>FaaS (Function as a Service):</strong>
+          <br/>• <strong>AWS Lambda:</strong> دعم Node.js, Python, Go, Java, Ruby, C#. Cold Start Optimization باستخدام Provisioned Concurrency و SnapStart (للـ Java).
+          <br/>• <strong>Azure Functions:</strong> تكامل عميق مع Azure ecosystem، ديم Durable Functions للـ Stateful Workflows.
+          <br/>• <strong>Google Cloud Run:</strong> تشغيل حاويات Stateless بتركيبة Serverless، يدعم أي لغة أو Framework.</li>
+        <li><strong>BaaS (Backend as a Service):</strong>
+          <br/>• <strong>Firebase/Supabase:</strong> قواعد بيانات فورية، Authentication جاهز، Storage، و Real-time Subscriptions.
+          <br/>• <strong>AWS Amplify:</strong> تطوير Full-Stack سريع مع GraphQL APIs و Hosting.</li>
+        <li><strong>متى تستخدم Serverless:</strong> أحمال عمل متقطعة (Sporadic Traffic)، معالجة ملفات/صور، Webhooks، APIs بسيطة، و Cron Jobs.</li>
+        <li><strong>متى تتجنبه:</strong> تطبيقات طويلة التشغيل (Long-running processes)، حالات استخدام تتطلب اتصالاً مستمراً (WebSockets مكلفة)، و High-throughput Databases.</li>
+        <li><strong>التحديات:</strong>
+          <br/>• <strong>Cold Starts:</strong> تأخير 100ms-2s عند استدعاء دالة غير نشطة. الحلول: Keep-warm pings، Provisioned Concurrency، واختيار Runtimes أسرع (Go/Node.js).
+          <br/>• <strong>Limits:</strong> ذاكرة (10GB كحد أقصى)، وقت تنفيذ (15 دقيقة لـ Lambda)، وحجم الحزم.</li>
+      </ul>
+
+      <h3>🐳 الجزء الثاني: إدارة الحاويات و Kubernetes المتقدم</h3>
+      <p>Kubernetes (K8s) أصبح نظام التشغيل المعياري (Standard Operating System) للحوسبة السحابية والموزعة:</p>
+      
+      <h4>2.1 Kubernetes Core Concepts المعمق:</h4>
+      <ul>
+        <li><strong>Architecture:</strong>
+          <br/>• <strong>Control Plane:</strong> API Server (بوابة الدخول)، etcd (قاعدة بيانات موزعة للـ State)، Scheduler (توزيع Pods على Nodes)، Controller Manager (مشغلات الحالة).
+          <br/>• <strong>Data Plane (Nodes):</strong> kubelet (Agent على كل عقدة)، kube-proxy (شبكات و Load Balancing)، Container Runtime (containerd/CRI-O).</li>
+        <li><strong>Pods:</strong> أصغر وحدة قابلة للنشر. يمكن أن تحتوي على حاويات متعددة تشارك نفس الـ Network Namespace و Storage Volumes (Sidecar Pattern).</li>
+        <li><strong>Controllers:</strong>
+          <br/>• <strong>Deployments:</strong> إدارة ReplicaSets و Rolling Updates.
+          <br/>• <strong>StatefulSets:</strong> للتطبيقات ذات الحالة (قواعد البيانات) مع Identifiers مستقرة و Storage ثابت.
+          <br/>• <strong>DaemonSets:</strong> تشغيل Pod على كل عقدة (Log collectors, Monitoring agents).</li>
+        <li><strong>Services & Networking:</strong>
+          <br/>• <strong>ClusterIP:</strong> IP داخلي ثابت للتواصل بين الخدمات.
+          <br/>• <strong>NodePort:</strong> فتح منفذ على كل عقدة للوصول الخارجي.
+          <br/>• <strong>LoadBalancer:</strong> تكامل مع Load Balancer السحابي (AWS NLB/ALB).
+          <br/>• <strong>Ingress:</strong> إدارة HTTP/HTTPS Routing، TLS Termination، و Virtual Hosting عبر Ingress Controllers (NGINX, Traefik, HAProxy).</li>
+        <li><strong>Storage:</strong>
+          <br/>• <strong>Persistent Volumes (PV) & Claims (PVC):</strong> تجريد التخزين عن البنية التحتية.
+          <br/>• <strong>StorageClasses:</strong> توفير تخزين ديناميكي (Dynamic Provisioning) مع Reclaim Policies.
+          <br/>• <strong>CSIs:</strong> Container Storage Interface لتكامل مع أنظمة تخزين خارجية (AWS EBS, GCP Persistent Disks, NFS).</li>
+      </ul>
+
+      <h4>2.2 Advanced Orchestration & GitOps:</h4>
+      <ul>
+        <li><strong>Helm Charts:</strong>
+          <br/>• حزم Kubernetes قابلة للتخصيص باستخدام Templating (Go templates).
+          <br/>• إدارة Dependencies و Releases و Rollbacks.
+          <br/>• Best Practices: استخدام Values files للبيئات المختلفة (dev/staging/prod)، وتجنب Hardcoding.</li>
+        <li><strong>Kustomize:</strong> بديل لـ Helm يعتمد على Overlays و Patches دون Templates. مدعوم أصلاً في kubectl.</li>
+        <li><strong>Operators:</strong>
+          <br/>• أتمتة إدارة التطبيقات المعقدة باستخدام Custom Resource Definitions (CRDs) و Controllers.
+          <br/>• أمثلة: Prometheus Operator, Elasticsearch Operator, PostgreSQL Operator.
+          <br/>• Frameworks: Operator SDK (Go/Ansible/Helm).</li>
+        <li><strong>Service Mesh (Istio/Linkerd):</strong>
+          <br/>• إدارة حركة المرور الدقيقة: mTLS Encryption، Traffic Splitting (Canary Deployments)، Circuit Breaking، Retries، و Timeouts.
+          <br/>• الملاحظة: Metrics ذهبية (Golden Signals)، Distributed Tracing Integration.
+          <br/>• الأمان: Authorization Policies (L7)، JWT Validation، و Rate Limiting.</li>
+        <li><strong>GitOps (ArgoCD/Flux):</strong>
+          <br/>• Git كمصدر الحقيقة الوحيد (Single Source of Truth).
+          <br/>• ArgoCD يراقب Git Repository ويقارن الحالة المطلوبة مع الحالة الفعلية في الـ Cluster (Drift Detection).
+          <br/>• Sync Waves و Hooks للتحكم في ترتيب النشر.</li>
+      </ul>
+
+      <h4>2.3 Kubernetes Security Hardening:</h4>
+      <ul>
+        <li><strong>RBAC (Role-Based Access Control):</strong>
+          <br/>• Roles/RoleBindings (Namespaced) و ClusterRoles/ClusterRoleBindings.
+          <br/>• تجنب cluster-admin إلا للضرورة القصوى.
+          <br/>• استخدام Service Accounts مخصصة لكل تطبيق مع Least Privilege.</li>
+        <li><strong>Pod Security:</strong>
+          <br/>• Pod Security Standards (Privileged, Baseline, Restricted).
+          <br/>• SecurityContext: runAsNonRoot, readOnlyRootFilesystem, allowPrivilegeEscalation: false.
+          <br/>• Seccomp Profiles و AppArmor/SELinux للحماية على مستوى kernel.</li>
+        <li><strong>Network Policies:</strong>
+          <br/>• افتراضياً: كل شيء مسموح. تطبيق Default Deny-All ثم السماح فقط بالضروري.
+          <br/>• عزل Namespaces و Restricting Egress/Ingress Traffic.</li>
+        <li><strong>Image Security:</strong>
+          <br/>• مسح الصور بـ Trivy/Grype قبل النشر.
+          <br/>• استخدام Image Signatures (Cosign) و Verification (Sigstore).
+          <br/>• Private Registries مع Authentication و Vulnerability Scanning.</li>
+        <li><strong>Secrets Management:</strong>
+          <br/>• تجنب Kubernetes Secrets الافتراضية (Base64 فقط).
+          <br/>• استخدام External Secrets Operator مع AWS Secrets Manager، HashiCorp Vault، أو Azure Key Vault.</li>
+      </ul>
+
+      <h3>📜 الجزء الثالث: البنية التحتية ككود (IaC) - التنفيذ المتقدم</h3>
+      <ul>
+        <li><strong>Terraform المعمق:</strong>
+          <br/>• <strong>State Management:</strong> تخزين State في S3 Backend مع DynamoDB Locking لمنع التعديل المتزامن (Race Conditions).
+          <br/>• <strong>Workspaces:</strong> عزل البيئات (dev/staging/prod) باستخدام نفس الكود.
+          <br/>• <strong>Modules:</strong> إعادة استخدام الكود عبر Registry عام أو خاص. تطبيق Semantic Versioning للـ Modules.
+          <br/>• <strong>Providers:</strong> AWS، Azure، GCP، Kubernetes، Helm، و Providers مخصصين.
+          <br/>• <strong>Dynamic Blocks & For-Each:</strong> إنشاء موارد متعددة ديناميكياً بناءً على Variables.
+          <br/>• <strong>Imports & State Manipulation:</strong> استيراد موارد موجودة يدوياً لإدارتها بـ Terraform.</li>
+        <li><strong>Pulumi:</strong>
+          <br/>• استخدام لغات برمجة حقيقية (TypeScript, Python, Go, C#) بدلاً من HCL.
+          <br/>• المميزات: Unit Testing، Loops/Conditions طبيعية، و Integration مع IDEs.
+          <br/>• التحديات: منحنى تعلم أعلى، وأقل نضجاً من Terraform في بعض المجالات.</li>
+        <li><strong>Ansible:</strong>
+          <br/>• Configuration Management بدون Agents (Agentless) عبر SSH/WinRM.
+          <br/>• Playbooks، Roles، Inventories، و Vaults للتشفير.
+          <br/>• مناسب لتكوين الـ VMs، تثبيت الحزم، وإدارة الخدمات.</li>
+        <li><strong>Crossplane:</strong>
+          <br/>• إدارة البنية التحتية السحابية باستخدام Kubernetes Resources.
+          <br/>• Composition و XRDs لإنشاء موارد مخصصة (Composite Resources).</li>
+        <li><strong>Best Practices:</strong>
+          <br/>• Version Control لكل الكود (Infrastructure as Code).
+          <br/>• Code Review و CI/CD للـ IaC (Checkov/tfsec في الـ Pipeline).
+          <br/>• Immutable Infrastructure: عدم تعديل الموارد يدوياً أبداً.</li>
+      </ul>
+
+      <h3>🔄 الجزء الرابع: CI/CD Pipelines و DevOps المتقدم</h3>
+      <ul>
+        <li><strong>CI (Continuous Integration):</strong>
+          <br/>• <strong>GitHub Actions / GitLab CI:</strong> تعريف Workflows بـ YAML.
+          <br/>• <strong>الخطوات:</strong> Checkout → Setup Environment → Install Dependencies → Lint → Test (Unit/Integration) → Build → Scan → Push Artifacts.
+          <br/>• <strong>Caching:</strong> تسريع الـ Builds عبر Caching Dependencies (Node modules, Maven, Pip).
+          <br/>• <strong>Matrix Builds:</strong> اختبار على بيئات ولغات متعددة بالتوازي.</li>
+        <li><strong>CD (Continuous Deployment/Delivery):</strong>
+          <br/>• <strong>Strategies:</strong>
+            <br/>• <strong>Recreate:</strong> إيقاف القديم وتشغيل الجديد (Downtime).
+            <br/>• <strong>Rolling Update:</strong> استبدال Pods تدريجياً (بدون Downtime).
+            <br/>• <strong>Blue/Green:</strong> تشغيل نسختين، التبديل عبر Router.
+            <br/>• <strong>Canary:</strong> توجيه نسبة صغيرة من traffic للنسخة الجديدة ومراقبة الأداء.</li>
+          <br/>• <strong>Feature Flags:</strong> تفعيل/تعطيل الميزات ديناميكياً دون نشر جديد (LaunchDarkly, Unleash).</li>
+        <li><strong>Container Builds:</strong>
+          <br/>• Multi-stage Builds لتقليل حجم الصور.
+          <br/>• Distroless Images للأمان والأداء.
+          <br/>• BuildKit و Buildx للتوازي و Caching المتقدم.</li>
+        <li><strong>Testing in CI/CD:</strong>
+          <br/>• Unit Tests (Jest, pytest, JUnit).
+          <br/>• Integration Tests (Testcontainers, LocalStack).
+          <br/>• E2E Tests (Cypress, Playwright).
+          <br/>• Security Scanning (SAST, DAST, SCA).</li>
+      </ul>
+
+      <h3> الجزء الخامس: المراقبة والملاحظة (Observability)</h3>
+      <ul>
+        <li><strong>المراقبة (Metrics):</strong>
+          <br/>• <strong>Prometheus:</strong> جمع مقاييس Time-series، استعلامات PromQL، و Alertmanager.
+          <br/>• <strong>Grafana:</strong> Visualization، Dashboards، و Annotations.
+          <br/>• <strong>Golden Signals:</strong> Latency، Traffic، Errors، و Saturation.</li>
+        <li><strong>تسجيل الأحداث (Logging):</strong>
+          <br/>• <strong>ELK Stack:</strong> Elasticsearch (بحث)، Logstash (معالجة)، Kibana (تصور).
+          <br/>• <strong>Loki:</strong> خفيف الوزن، متكامل مع Grafana، مناسب لـ Kubernetes.
+          <br/>• <strong>Structured Logging:</strong> JSON format مع حقول موحدة (Timestamp, Level, Message, TraceID).</li>
+        <li><strong>التتبع الموزع (Distributed Tracing):</strong>
+          <br/>• <strong>OpenTelemetry:</strong> معيار موحد لـ Tracing, Metrics, و Logs.
+          <br/>• <strong>Jaeger/Zipkin:</strong> تصور مسارات الطلبات عبر الخدمات.
+          <br/>• <strong>Context Propagation:</strong> نقل Trace IDs عبر HTTP Headers و Message Queues.</li>
+        <li><strong>Alerting & On-Call:</strong>
+          <br/>• Prometheus Alertmanager: Routing, Grouping, Inhibition.
+          <br/>• PagerDuty/Opsgenie: إدارة الحوادث والتنبيهات.
+          <br/>• Runbooks و SOPs للاستجابة السريعة.</li>
+      </ul>
+
+      <h3> الجزء السادس: FinOps وإدارة التكلفة السحابية</h3>
+      <ul>
+        <li><strong>المبدأ:</strong> تحسين الإنفاق السحابي دون التأثير على الأداء أو الأمان. ثقافة مشتركة بين الفرق.</li>
+        <li><strong>الاستراتيجيات:</strong>
+          <br/>• <strong>Spot Instances:</strong> استخدام خوادم فائضة بتكلفة تصل إلى 90% أقل. مناسب لـ Batch Jobs و Stateless Workloads.
+          <br/>• <strong>Reserved Instances / Savings Plans:</strong> التزام لمدة 1 أو 3 سنوات لتخفيض التكلفة.
+          <br/>• <strong>Right-Sizing:</strong> اختيار أحجام الموارد المناسبة بناءً على الاستخدام الفعلي (CPU/Memory Utilization < 50% يعني Over-provisioning).</li>
+        <li><strong>أدوات المراقبة:</strong>
+          <br/>• AWS Cost Explorer، Azure Cost Management، GCP Billing Reports.
+          <br/>• CloudHealth، Cloudability، و Kubecost (لتكلفة Kubernetes).</li>
+        <li><strong>تحسين Kubernetes Cost:</strong>
+          <br/>• VPA (Vertical Pod Autoscaler) لضبط Requests/Limits تلقائياً.
+          <br/>• Karpenter لـ Fast Node Provisioning و Right-Sizing.
+          <br/>• إيقاف الموارد غير المستخدمة (Idle Load Balancers، Unattached Volumes).</li>
+        <li><strong>Tagging & Chargeback:</strong>
+          <br/>• وضع Tags على جميع الموارد (Team, Project, Environment).
+          <br/>• تخصيص التكاليف على الفرق والمشاريع (Showback/Chargeback).</li>
+      </ul>
+
+      <h3> الجزء السابع: Multi-Cloud و Hybrid Cloud Strategies</h3>
+      <ul>
+        <li><strong>لماذا Multi-Cloud؟</strong>
+          <br/>• تجنب Vendor Lock-in.
+          <br/>• الاستفادة من نقاط القوة لكل مزود (AWS للـ AI، GCP للـ Data، Azure للـ Enterprise).
+          <br/>• Disaster Recovery عبر مناطق جغرافية مختلفة.</li>
+        <li><strong>التحديات:</strong>
+          <br/>• تعقيد الإدارة والمراقبة.
+          <br/>• نقل البيانات بين السحابات (Egress Costs).
+          <br/>• اختلاف APIs وأدوات كل مزود.</li>
+        <li><strong>الحلول:</strong>
+          <br/>• <strong>Terraform:</strong> كود موحد لإدارة موارد متعددة.
+          <br/>• <strong>Kubernetes:</strong> منصة تشغيل موحدة عبر السحابات.
+          <br/>• <strong>Service Mesh:</strong> إدارة التواصل بين الخدمات عبر السحابات.
+          <br/>• <strong>Cloud-Native Tools:</strong> استخدام أدوات مفتوحة المصدر قدر الإمكان.</li>
+        <li><strong>Hybrid Cloud:</strong>
+          <br/>• دمج On-Premises مع Public Cloud.
+          <br/>• حالات الاستخدام: الامتثال للبيانات الحساسة، Latency منخفضة، و Workloads قديمة لا يمكن نقلها بسهولة.
+          <br/>• الأدوات: AWS Outposts، Azure Arc، و Google Anthos.</li>
+      </ul>
+
+      <h3> الجزء الثامن: أمن السحابة المؤسسي (Enterprise Cloud Security)</h3>
+      <ul>
+        <li><strong>Shared Responsibility Model:</strong>
+          <br/>• المزود يحمي البنية التحتية (Hardware, Network, Hypervisor).
+          <br/>• العميل يحمي البيانات، التطبيقات، أنظمة التشغيل، وجدران الحماية.</li>
+        <li><strong>IAM المتقدم:</strong>
+          <br/>• Least Privilege Principle: منح أقل صلاحيات ضرورية.
+          <br/>• MFA إلزامي لجميع المستخدمين.
+          <br/>• Temporary Credentials و Role Assumption بدلاً من Access Keys طويلة الأمد.
+          <br/>• Permission Boundaries و SCPs (Service Control Policies) للحدود التنظيمية.</li>
+        <li><strong>Network Security:</strong>
+          <br/>• VPC Design: Subnets (Public/Private)، NAT Gateways، و VPC Endpoints.
+          <br/>• Security Groups و NACLs كجدران حماية.
+          <br/>• WAF (Web Application Firewall) لحماية التطبيقات من OWASP Top 10.</li>
+        <li><strong>Data Protection:</strong>
+          <br/>• Encryption at Rest: AES-256، KMS Management.
+          <br/>• Encryption in Transit: TLS 1.3، mTLS.
+          <br/>• DLP (Data Loss Prevention): منع تسريب البيانات الحساسة.</li>
+        <li><strong>Compliance & Auditing:</strong>
+          <br/>• SOC 2، ISO 27001، HIPAA، GDPR، PCI-DSS.
+          <br/>• CloudTrail/Activity Logs للمراجعة والتدقيق.
+          <br/>• Automated Compliance Checks باستخدام AWS Config أو Azure Policy.</li>
+      </ul>
+
+      <div class="conclusion" style="background:linear-gradient(135deg,#0284c7,#00d4ff);color:white;padding:2rem;border-radius:12px;margin:2rem 0">
+        <h3> الخلاصة الهندسية الشاملة:</h3>
+        <ul style="list-style:none;padding:0">
+          <li>✅ السحابة ليست مجرد خوادم بعيدة، بل هي منهجية عمل وأتمتة وثقافة تنظيمية.</li>
+          <li>✅ البنية التحتية ككود (IaC) غير قابلة للتفاوض في البيئات الحديثة - كل شيء يجب أن يكون قابل للتكرار والمراجعة.</li>
+          <li>✅ المراقبة الشاملة (Observability) هي عينك التي ترى بها ما يحدث في النظام الموزع المعقد.</li>
+          <li>✅ التكلفة (FinOps) يجب أن تكون جزءاً من دورة حياة التطوير، ليس تفكيراً لاحقاً بعد الفاتورة.</li>
+          <li>✅ الأمان مسؤولية مشتركة ومستمرة - لا يوجد "آمن 100%"، بل "أكثر أماناً باستمرار".</li>
+          <li>✅ Kubernetes أصبح المعيار، لكن تعقيده يتطلب استثماراً في التدريب والأدوات المساعدة.</li>
+          <li>✅ Multi-Cloud و Hybrid Strategies تمنحك المرونة لكن تزيد التعقيد - اختر بحكمة.</li>
+          <li>✅ الشهادات المهنية (AWS Solutions Architect، CKA، Terraform Associate) تبني الأساس، لكن الخبرة العملية تبني المهندس.</li>
+        </ul>
+        <p style="font-size:1.3rem;font-weight:bold;margin-top:1rem;text-align:center">السحابة تمنحك القوة اللامحدودة، والهندسة السليمة تمنحك التحكم والسيطرة. ☁️</p>
+      </div>
+    </article>
+
+    <ShareButtons />
+  </main>
+  
+  <Footer />
+</body>
+</html>
+
+<style>
+  :root { --bg: #f8fafc; --card: #fff; --text: #0f172a; --text-sec: #64748b; --primary: #0284c7; --border: rgba(2,132,199,0.2); }
+  html.dark-mode { --bg: #0b1120; --card: #1e293b; --text: #f1f5f9; --text-sec: #94a3b8; --primary: #38bdf8; --border: rgba(56,189,248,0.2); }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; margin: 0; }
+  .category-articles { max-width: 950px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+  .page-header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 2px solid var(--border); }
+  .page-header h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; }
+  .page-header p { color: var(--text-sec); font-size: 1.1rem; }
+  .article { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 2.5rem 2rem; margin-bottom: 3rem; }
+  .badge { display: inline-block; background: var(--primary); color: white; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; margin-bottom: 1rem; }
+  .article h2 { color: var(--primary); font-size: 1.8rem; margin: 2rem 0 1rem; }
+  .article h3 { color: var(--text); font-size: 1.5rem; margin: 2.5rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+  .article h4 { color: var(--text-sec); font-size: 1.2rem; margin: 2rem 0 0.8rem; font-weight: 600; }
+  .meta { color: var(--text-sec); font-size: 0.9rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border); }
+  .intro { font-size: 1.15rem; color: var(--text-sec); margin-bottom: 2.5rem; padding: 2rem; background: rgba(2,132,199,0.05); border-right: 4px solid var(--primary); border-radius: 8px; line-height: 1.9; }
+  .article ul { padding-right: 1.5rem; margin: 1.5rem 0; }
+  .article li { margin-bottom: 0.8rem; line-height: 1.9; color: var(--text-sec); }
+  .article li strong { color: var(--primary); }
+  .conclusion ul { list-style: none !important; padding: 0; }
+  .conclusion li { color: white !important; font-size: 1.05rem; margin: 0.8rem 0; line-height: 1.8; }
+
+  /* ✅ تنسيق زر الفهرس */
+  .toc-btn { position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; background: linear-gradient(135deg, var(--primary), #00d4ff); border: none; border-radius: 50%; color: white; font-size: 1.6rem; cursor: pointer; box-shadow: 0 0 20px rgba(2,132,199,0.6); z-index: 998; transition: all 0.3s; }
+  .toc-btn:hover { transform: scale(1.1); box-shadow: 0 0 30px rgba(2,132,199,0.8); }
+  .toc-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 999; align-items: center; justify-content: center; }
+  .toc-modal.active { display: flex; }
+  .toc-box { background: var(--card); width: 90%; max-width: 500px; border-radius: 16px; padding: 2rem; border: 2px solid var(--border); }
+  .toc-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 2px solid var(--border); }
+  .toc-head h3 { color: var(--primary); margin: 0; }
+  .toc-close { background: none; border: none; color: var(--text-sec); font-size: 1.8rem; cursor: pointer; }
+  .toc-close:hover { color: #ef4444; }
+  .toc-nav { display: flex; flex-direction: column; gap: 0.6rem; max-height: 60vh; overflow-y: auto; }
+  .toc-nav a { display: block; background: var(--bg); color: var(--text); text-decoration: none; padding: 1rem 1.2rem; margin-bottom: 0.6rem; border-radius: 8px; border-right: 4px solid transparent; transition: all 0.3s; font-size: 0.95rem; }
+  .toc-nav a:hover { background: rgba(2,132,199,0.1); border-right-color: var(--primary); color: var(--primary); transform: translateX(-5px); }
+
+  /* ✅ تنسيق السهم المنبثق */
+  .back-to-top {
+    position: fixed;
+    bottom: 95px;
+    left: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--card);
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    color: var(--primary);
+    font-size: 1.4rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 997;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .back-to-top.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  .back-to-top:hover {
+    background: var(--primary);
+    color: #fff;
+    transform: scale(1.1) translateY(0);
+    box-shadow: 0 0 20px rgba(2,132,199,0.6);
+  }
+
+  @media (max-width: 768px) {
+    .category-articles { padding: 2rem 1rem 3rem !important; }
+    .page-header h1 { font-size: 1.6rem !important; }
+    .article { padding: 1.5rem 1.2rem !important; }
+    .article h2 { font-size: 1.4rem !important; }
+    .article h3 { font-size: 1.2rem !important; }
+    .article h4 { font-size: 1.05rem !important; }
+    .toc-btn { width: 48px !important; height: 48px !important; bottom: 15px !important; left: 15px !important; }
+    .back-to-top { width: 42px !important; height: 42px !important; bottom: 75px !important; left: 15px !important; font-size: 1.2rem !important; }
+    .toc-box { width: 95% !important; max-width: 350px !important; }
+    .toc-nav a { font-size: 0.85rem !important; }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // ✅ منطق الفهرس
+    var tocBtn = document.getElementById('tocBtn');
+    var tocModal = document.getElementById('tocModal');
+    var tocClose = document.getElementById('tocClose');
+    var tocNav = document.getElementById('tocNav');
+    
+    if (tocBtn && tocModal && tocNav) {
+      document.querySelectorAll('.article h3').forEach(function(h3) {
+        var link = document.createElement('a');
+        link.href = '#' + h3.id;
+        link.textContent = h3.textContent;
+        link.onclick = function(e) {
+          e.preventDefault();
+          h3.scrollIntoView({ behavior: 'smooth' });
+          tocModal.classList.remove('active');
+        };
+        tocNav.appendChild(link);
+      });
+
+      tocBtn.onclick = function() { tocModal.classList.add('active'); };
+      tocClose.onclick = function() { tocModal.classList.remove('active'); };
+      tocModal.onclick = function(e) { if (e.target === tocModal) tocModal.classList.remove('active'); };
+    }
+
+    // ✅ منطق السهم المنبثق
+    var backBtn = document.getElementById('backToTop');
+    if (backBtn) {
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 400) {
+          backBtn.classList.add('show');
+        } else {
+          backBtn.classList.remove('show');
+        }
+      });
+
+      backBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  });
+</script>
