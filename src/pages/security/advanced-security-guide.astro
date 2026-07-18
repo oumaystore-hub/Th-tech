@@ -3,9 +3,9 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 
-export const title = "الهندسة الأمنية المتقدمة والعمليات الدفاعية";
+export const title = "الأمن السيبراني والعمليات الدفاعية";
 export const pubDate = "2026-07-18";
-export const description = "دليل متعمق لـ Zero Trust، Threat Hunting، Reverse Engineering، DevSecOps، و SOAR";
+export const description = "دليل من الأساسيات إلى العمليات المتقدمة";
 ---
 
 <html lang="ar" dir="rtl">
@@ -18,90 +18,298 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
 <body>
   <Header />
   
-  <main class="category-articles">
+  <main class="category-page">
     <div class="page-header">
-      <h1>🛡️ الهندسة الأمنية المتقدمة</h1>
-      <p>من Zero Trust إلى صيد التهديدات المتقدم والأتمتة الدفاعية</p>
+      <h1>🛡️ الأمن السيبراني</h1>
+      <p>حماية الأنظمة والشبكات من التهديدات السيبرانية</p>
     </div>
 
-    <article class="article" id="art1">
-      <span class="badge">مستوى خبير / مؤسسي</span>
-      <h2>هندسة الأمن السيبراني المتقدم والعمليات الدفاعية الحديثة</h2>
-      <div class="meta">📅 18 يوليو 2026 | ⏱️ 85 دقيقة قراءة</div>
-      <p class="intro">هذا الدليل موجه لمهندسي الأمن، محللي العمليات الدفاعية (Blue Team)، ومعماريي الأنظمة. يغطي تنفيذ معماريات Zero Trust، صيد التهديدات المدفوع بالفرضيات، تحليل البرمجيات الخبيثة المتقدم، أتمتة الاستجابة، وأمن السحابة الهجينة.</p>
-      
-      <h3>🏗️ الجزء الأول: Zero Trust Architecture (ZTA) & SASE</h3>
-      <p>نموذج "ثق ولكن تحقق" لم يعد كافياً. ZTA يفترض اختراق الشبكة مسبقاً ويطبق تحققاً مستمراً:</p>
-      <ul>
-        <li><strong>ZTNA (Zero Trust Network Access):</strong> استبدال VPN التقليدي بوصول دقيق للتطبيقات فقط. تطبيق سياسات الوصول بناءً على الهوية، حالة الجهاز، والسياق الجغرافي/الزمني.</li>
-        <li><strong>Micro-segmentation:</strong> تقسيم الشبكة داخلياً إلى مناطق عزل دقيقة (Workload-level). استخدام eBPF أو Service Mesh (Istio/Linkerd) لفرض سياسات L7 ديناميكية دون إعادة تصميم الشبكة الفيزيائية.</li>
-        <li><strong>SASE (Secure Access Service Edge):</strong> دمج SD-WAN مع وظائف الأمان السحابية (SWG, CASB, FWaaS, ZTNA). تقليل Latency وتوحيد إدارة السياسات عبر الفروع والسحابة.</li>
-        <li><strong>Continuous Verification:</strong> تقييم المخاطر في الوقت الفعلي باستخدام إشارات من EDR، SIEM، و Identity Providers. إلغاء الجلسة فوراً عند اكتشاف شذوذ.</li>
-      </ul>
+    <div class="tabs-nav">
+      <button class="tab-btn active" data-tab="basic"> الأساسيات الأمنية</button>
+      <button class="tab-btn" data-tab="advanced"> العمليات المتقدمة</button>
+    </div>
 
-      <h3>🔍 الجزء الثاني: Threat Hunting المتقدم وتحليل التيليمتري</h3>
-      <p>الانتظار للإنذارات غير كافٍ. الصيد الاستباقي يبحث عن مؤشرات الاختراق (IOCs) ومؤشرات السلوك (IOBs) المخفية:</p>
-      <ul>
-        <li><strong>Hypothesis-Driven Hunting:</strong> بناء فرضيات مبنية على MITRE ATT&CK. مثال: "هل استغل المهاجم CVE-2024-XXXX للتحكم عن بعد؟" ثم صياغة استعلامات للتحقق.</li>
-        <li><strong>Telemetry Engineering:</strong> جمع بيانات غنية ومنظمة من EDR (Process Creation, Network Connections, Registry/File Modifications)، Network TAP/SPAN، و CloudTrail/Activity Logs. تطبيع البيانات إلى OCSF أو ECS.</li>
-        <li><strong>قواعد الكشف المتقدمة:</strong> كتابة قواعد Sigma للـ SIEM (تتعدد المنصات) و YARA/CAPE للبرمجيات الخبيثة. استخدام LoLBAS (Living Off The Land Binaries) للكشف عن إساءة استخدام أدوات النظام الشرعية.</li>
-        <li><strong>تحليل السلاسل الزمنية والارتباط:</strong> ربط أحداث متباعدة زمنياً عبر Graph Databases (Neo4j) أو TimescaleDB. كشف Lateral Movement عبر تحليل تدفقات SMB/RDP غير المألوفة.</li>
-        <li><strong>Jupyter للصيد:</strong> استخدام Python (Pandas, PySpark, Mordor datasets) لاستكشاف البيانات يدوياً، تطبيق خوارزميات Clustering للكشف عن الشذوذ.</li>
-      </ul>
-
-      <h3> الجزء الثالث: Reverse Engineering & Malware Analysis المتقدم</h3>
-      <ul>
-        <li><strong>Static Analysis العميق:</strong> تفكيك PE/ELF headers، استخراج Strings المشفرة/المضغوطة، تحليل Import/Export tables، وفك تشفير Packer/Protectors مخصصة باستخدام Ghidra/IDA Pro.</li>
-        <li><strong>Dynamic Analysis & Sandboxing:</strong> تشغيل العينة في بيئة معزولة (REMnux, Cuckoo, FLARE VM). مراقبة API Calls، Registry Changes، Network Beacons، و File System activity.</li>
-        <li><strong>Memory Forensics:</strong> تفريغ الذاكرة الحية (LiME, WinPMEM) وتحليلها بـ Volatility 3. استخراج Processes مخفية، Network Sockets، Command History، و Keys/Passwords من RAM.</li>
-        <li><strong>Unpacking & Deobfuscation:</strong> التعامل مع Custom Packers، Shellcode Analysis، وفك تشفير C2 Communications (Cobalt Strike, Sliver, Mythic).</li>
-        <li><strong>Threat Intelligence Integration:</strong> ربط العينات بـ Campaigns معروفة، استخدام MISP/TAXII لمشاركة IOCs، وتحديث قواعد YARA/Sigma.</li>
-      </ul>
-
-      <h3>☁️ الجزء الرابع: Cloud Security & DevSecOps المؤسسي</h3>
-      <ul>
-        <li><strong>CSPM & CWPP:</strong> مراجعة مستمرة لوضعية السحابة (Misconfigurations, Open Buckets, Over-privileged IAM). حماية Workloads عبر Runtime Protection.</li>
-        <li><strong>Kubernetes Security:</strong> فرض RBAC دقيق، NetworkPolicies لعزل الـ Pods، OPA/Gatekeeper للسياسات declarative، و Pod Security Standards.</li>
-        <li><strong>IaC Security:</strong> فحص Terraform/CloudFormation/Pulumi بـ Checkov/tfsec قبل التنفيذ.</li>
-        <li><strong>Secrets Management:</strong> عدم تخزين الأسرار في الكود. استخدام HashiCorp Vault، AWS Secrets Manager، أو Azure Key Vault مع Rotation آلي.</li>
-        <li><strong>Cloud-Native SIEM:</strong> استخدام Azure Sentinel، AWS Security Hub، أو GCP Chronicle لجمع وتحليل بيانات السحابة الهجينة.</li>
-      </ul>
-
-      <h3>🔐 الجزء الخامس: التشفير المتقدم وأمن البروتوكولات</h3>
-      <ul>
-        <li><strong>Post-Quantum Cryptography (PQC):</strong> الاستعداد لتهديد الحواسيب الكمومية. تطبيق خوارزميات NIST المعتمدة (CRYSTALS-Kyber، Dilithium).</li>
-        <li><strong>TLS 1.3 Internals:</strong> فهم Handshake المصغر، 0-RTT risks، Perfect Forward Secrecy، وإدارة Certificates آلياً.</li>
-        <li><strong>HSM & Key Management:</strong> حماية المفاتيح الجذرية في Hardware Security Modules. تطبيق Key Rotation policies، Separation of Duties.</li>
-        <li><strong>Protocol Hardening:</strong> تعطيل Cipher Suites القديمة، فرض HSTS، OCSP Stapling، و Certificate Transparency Logs.</li>
-      </ul>
-
-      <h3>⚡ الجزء السادس: SOAR، أتمتة الاستجابة، والذكاء الاصطناعي الدفاعي</h3>
-      <ul>
-        <li><strong>SOAR Playbooks:</strong> تصميم سير عمل آلي للاستجابة (عزل Endpoint، حظر IP، سحب Token، فتح Ticket). تقليل MTTR من ساعات إلى دقائق.</li>
-        <li><strong>Threat Intel Automation:</strong> دمج Feeds (STIX/TAXII)، enrichment آلي للـ IOCs، و Contextual Alerting.</li>
-        <li><strong>AI/ML في الدفاع:</strong> UEBA (User & Entity Behavior Analytics) للكشف عن Insider Threats. استخدام LLMs الملخصة للسجلات وتحليل الـ PCAPs.</li>
-        <li><strong>Human-in-the-Loop:</strong> الأتمتة لا تحل محل المحلل. تصميم نقاط مراجعة بشرية للقرارات عالية المخاطر.</li>
-      </ul>
-
-      <h3>⚔️ الجزء السابع: Red Teaming، Adversary Simulation، و Purple Teaming</h3>
-      <ul>
-        <li><strong>C2 Frameworks:</strong> استخدام Sliver، Covenant، أو Mythic لمحاكاة التهديدات الواقعية.</li>
-        <li><strong>Evasion Techniques:</strong> اختبار تجاوز AMSI، EDR Bypass (Direct Syscalls, Unhooking)، و Living Off The Land.</li>
-        <li><strong>Atomic Red Team:</strong> تنفيذ اختبارات صغيرة وقابلة للقياس للتحقق من تغطية الكشف.</li>
-        <li><strong>Purple Teaming:</strong> جلسات تعاونية بين الهجوم والدفاع. محاكاة سيناريو، مراقبة الكشف، ضبط القواعد فوراً.</li>
-      </ul>
-
-      <div class="conclusion" style="background:linear-gradient(135deg,#0284c7,#00d4ff);color:white;padding:2rem;border-radius:12px;margin:2rem 0">
-        <h3>💡 الخلاصة الهندسية:</h3>
-        <ul style="list-style:none;padding:0">
-          <li>✅ الأمن المؤسسي يعتمد على البيانات الدقيقة (Telemetry) والأتمتة المدروسة</li>
-          <li>✅ Zero Trust ليس منتجاً بل منهجية تشغيلية مستمرة</li>
-          <li>✅ الصيد المتقدم يتطلب فرضيات واضحة، أدوات تحليل عميق، وفهم TTPs</li>
-          <li>✅ التعاون بين الفرق (Purple) والاستعداد للكمومي يضمن البقاء</li>
+    <!-- ✅ التبويب الأول: الأساسيات -->
+    <div id="basic" class="tab-content active">
+      <article class="article" id="art1">
+        <span class="badge">مستوى أساسي</span>
+        <h2>أساسيات حماية الأنظمة والشبكات</h2>
+        <div class="meta"> 18 يوليو 2026 | ⏱️ 25 دقيقة</div>
+        <p class="intro">الأمن السيبراني يبدأ من فهم المبادئ الراسخة مثل CIA Triad وحماية الشبكات الأساسية.</p>
+        
+        <h3>🔒 مثلث CIA الأمني</h3>
+        <ul>
+          <li><strong>السرية (Confidentiality):</strong> ضمان وصول المصرح لهم فقط.</li>
+          <li><strong>النزاهة (Integrity):</strong> منع التعديل غير المصرح به.</li>
+          <li><strong>التوافر (Availability):</strong> ضمان استمرارية الخدمة.</li>
         </ul>
-        <p style="font-size:1.3rem;font-weight:bold;margin-top:1rem;text-align:center">الدفاع الفعال يُبنى بالهندسة، وليس بالتفاعل العشوائي. 🛡️🚀</p>
-      </div>
-    </article>
+
+        <h3>🌐 أمن الشبكات الأساسي</h3>
+        <ul>
+          <li><strong>جدران الحماية:</strong> تصفية الحزم و Stateful Inspection.</li>
+          <li><strong>التقسيم الشبكي:</strong> عزل الأقسام الحساسة (DMZ).</li>
+          <li><strong>بروتوكولات آمنة:</strong> HTTPS/TLS، SSH، WPA3.</li>
+        </ul>
+
+        <h3>🛡️ حماية نقاط النهاية</h3>
+        <ul>
+          <li><strong>Antivirus/EDR:</strong> الكشف القائم على التواقيع.</li>
+          <li><strong>التحديث الدوري:</strong> Patch Management.</li>
+          <li><strong>MFA:</strong> المصادقة متعددة العوامل.</li>
+        </ul>
+
+        <div class="conclusion" style="background:linear-gradient(135deg,#0284c7,#00d4ff);color:white;padding:2rem;border-radius:12px;margin:2rem 0">
+          <h3>💡 الخلاصة:</h3>
+          <ul style="list-style:none;padding:0">
+            <li>✅ الأمن طبقات وليس منتجاً واحداً</li>
+            <li>✅ التوعية البشرية خط الدفاع الأول</li>
+            <li>✅ التحديث والنسخ الاحتياطي ينقذان</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+
+    <!-- ✅ التبويب الثاني: المقال المتقدم كاملاً وطويلاً جداً -->
+    <div id="advanced" class="tab-content">
+      <article class="article" id="art2">
+        <span class="badge">مستوى خبير / مؤسسي</span>
+        <h2>الهندسة الأمنية المتقدمة والعمليات الدفاعية الحديثة</h2>
+        <div class="meta">📅 18 يوليو 2026 | ⏱️ 120 دقيقة قراءة</div>
+        <p class="intro">هذا الدليل الشامل والمفصل موجه لمهندسي الأمن السيبراني، محللي العمليات الدفاعية (Blue Team)، معماريي الأنظمة الآمنة، وقادة فرق الأمن. يغطي تنفيذ معماريات Zero Trust المتقدمة، صيد التهديدات المدفوع بالفرضيات، تحليل البرمجيات الخبيثة على المستوى المتقدم، أتمتة الاستجابة للحوادث، أمن السحابة الهجينة والمتعددة، التشفير المتقدم، هندسة الثقة الصفرية، والذكاء الاصطناعي التطبيقي في الأمن. دليل عملي يحتوي على أمثلة حقيقية، أدوات مؤسسية، وأفضل الممارسات من شركات Fortune 500.</p>
+        
+        <h3>🏗️ الجزء الأول: Zero Trust Architecture (ZTA) & SASE - التنفيذ العملي</h3>
+        <p>نموذج "ثق ولكن تحقق" (Trust but Verify) لم يعد كافياً في وجه التهديدات الحديثة. ZTA يفترض اختراق الشبكة مسبقاً (Assume Breach) ويطبق تحققاً مستمراً وصارماً في كل طبقة:</p>
+        <h4>1.1 ZTNA (Zero Trust Network Access) - التطبيق العملي:</h4>
+        <ul>
+          <li><strong>استبدال VPN التقليدي:</strong> الـ VPN يمنح وصولاً واسعاً للشبكة الداخلية بمجرد المصادقة، بينما ZTNA يوفر وصولاً دقيقاً للتطبيقات والخدمات المحددة فقط (Application-Level Access). تطبيق سياسات الوصول بناءً على: <br/> • الهوية (Identity): تكامل مع Identity Providers (Okta، Azure AD، Ping Identity) مع MFA إلزامي.<br/> • حالة الجهاز (Device Posture): فحص OS Version، Patch Level، Encryption Status، EDR Active، Jailbreak/Root Detection.<br/> • السياق (Context): الموقع الجغرافي (GeoIP)، الوقت (Time-Based Access)، سلوك المستخدم (Behavioral Analytics)، وحساسية المورد المطلوب.<br/> • أمثلة على حلول: Cloudflare Access، Zscaler Private Access (ZPA)، Twingate، Perimeter 81.</li>
+          
+          <li><strong>Micro-Segmentation المتقدم:</strong> تقسيم الشبكة داخلياً إلى مناطق عزل دقيقة على مستوى Workload وليس فقط VLANs. <br/> • استخدام eBPF (Extended Berkeley Packet Filter) مع Cilium Service Mesh لفرض سياسات Layer 7 ديناميكية دون إعادة تصميم الشبكة الفيزيائية.<br/> • تطبيق Zero Trust على East-West Traffic (الحركة الداخلية بين الخوادم) وليس فقط North-South.<br/> • Policy as Code: تعريف السياسات بـ YAML/Rego (OPA) وتخزينها في Git مع CI/CD pipelines.<br/> • أمثلة: Illumio، Guardicore، VMware NSX، Cisco ACI.</li>
+          
+          <li><strong>SASE (Secure Access Service Edge):</strong> دمج SD-WAN مع وظائف الأمان السحابية في منصة موحدة.<br/> • المكونات الأساسية: SWG (Secure Web Gateway)، CASB (Cloud Access Security Broker)، FWaaS (Firewall as a Service)، ZTNA، و SD-WAN.<br/> • الفوائد: تقليل Latency عبر Points of Presence (PoPs) عالمية، توحيد إدارة السياسات عبر الفروع والسحابة، تقليل التكلفة التشغيلية.<br/> • المزودون الرئيسيون: Palo Alto Prisma Access، Netskope، Cato Networks، VMware Velocloud، Fortinet FortiSASE.</li>
+          
+          <li><strong>Continuous Verification:</strong> تقييم المخاطر في الوقت الفعلي وليس فقط عند الدخول الأولي.<br/> • جمع الإشارات من: EDR (CrowdStrike، SentinelOne، Microsoft Defender for Endpoint)، SIEM (Splunk، Elastic Security، QRadar)، Identity Providers، و Cloud Security Tools.<br/> • كشف الشذوذ: Session Hijacking، Impossible Travel (دخول من دولتين في وقت قصير)، Anomalous Data Access (تنزيل كميات كبيرة)، Privilege Escalation Attempts.<br/> • الاستجابة التلقائية: إلغاء الجلسة فوراً، فرض MFA Challenge إضافي، عزل الجهاز، أو خفض صلاحيات المستخدم.</li>
+        </ul>
+
+        <h3> الجزء الثاني: Threat Hunting المتقدم - منهجيات وأدوات</h3>
+        <p>الانتظار السلبي للإنذارات (Alerts) غير كافٍ. الصيد الاستباقي (Proactive Hunting) يبحث عن IOCs و IOBs المخفية التي تجاوزت الدفاعات:</p>
+        
+        <h4>2.1 Hypothesis-Driven Hunting:</h4>
+        <ul>
+          <li><strong>بناء الفرضيات:</strong> استخدام MITRE ATT&CK Framework كأساس. مثال: "هل استغل المهاجم CVE-2024-1234 في Exchange Server للتحكم عن بعد؟"</li>
+          <li><strong>صياغة الاستعلامات:</strong> كتابة KQL (Kusto Query Language) لـ Microsoft Sentinel أو SPL (Search Processing Language) لـ Splunk للتحقق من الفرضية.</li>
+          <li><strong>الاختبار:</strong> استخدام Atomic Red Team لتنفيذ TTPs محددة في بيئة معزولة والتحقق من قدرة الكشف.</li>
+          <li><strong>التوثيق:</strong> توثيق النتائج في Jupyter Notebooks أو Hunting Platforms مثل Velociraptor.</li>
+        </ul>
+
+        <h4>2.2 Telemetry Engineering:</h4>
+        <ul>
+          <li><strong>مصادر البيانات:</strong><br/> • EDR Telemetry: Process Creation (Event ID 1 Sysinternals)، Network Connections (Event ID 3)، Registry Modifications، File Creation/Modification، DLL Loads، WMI Events.<br/> • Network TAP/SPAN: Zeek (Bro) لـ Network Metadata، Suricata/Snort لـ IDS/IPS Alerts، Packet Captures (PCAP) للتحليل العميق.<br/> • Cloud Logs: AWS CloudTrail (API Calls)، VPC Flow Logs (Network Traffic)، Azure Activity Logs، GCP Audit Logs.<br/> • Identity Logs: Azure AD Sign-In Logs، Okta System Logs، Authentication Events.</li>
+          
+          <li><strong>التطبيع (Normalization):</strong> تحويل البيانات إلى صيغ قياسية:<br/> • OCSF (Open Cybersecurity Schema Framework): معيار مفتوح من Splunk، IBM، و آخرين.<br/> • ECS (Elastic Common Schema): لـ Elastic Security/SIEM.<br/> • CIM (Common Information Model): لـ Splunk.</li>
+          
+          <li><strong>الاحتفاظ بالبيانات:</strong> Hot Storage (30-90 يوم للبيانات النشطة)، Cold Storage (1-7 سنوات للامتثال)، مع Cost Optimization عبر Data Tiering.</li>
+        </ul>
+
+        <h4>2.3 قواعد الكشف المتقدمة:</h4>
+        <ul>
+          <li><strong>Sigma Rules:</strong> صيغة YAML قابلة للنقل بين SIEMs مختلفة.<br/> • مثال: كشف PsExec Usage غير المصرح به، كشف PowerShell Encoded Commands، كشف Mimikatz.<br/> • الأدوات: Sigma CLI للتحقق، sigmac للتحويل لصيغ SIEM محددة.</li>
+          
+          <li><strong>YARA Rules:</strong> للكشف عن البرمجيات الخبيثة.<br/> • كتابة قواعد للـ Strings، Byte Sequences، و Behavioral Patterns.<br/> • أمثلة: كشف Cobalt Strike Beacons، كشف Ransomware Encryption Patterns.</li>
+          
+          <li><strong>LoLBAS Detection:</strong> كشف إساءة استخدام الأدوات الشرعية:<br/> • PsExec، WMI، PowerShell، Certutil، Bitsadmin، Mshta، Rundll32.<br/> • Command-Line Monitoring: كشف Arguments مشبوهة (-enc، -nop، DownloadString).</li>
+        </ul>
+
+        <h4>2.4 تحليل الارتباط والسلاسل الزمنية:</h4>
+        <ul>
+          <li><strong>Graph Databases:</strong> استخدام Neo4j أو Amazon Neptune لربط الكيانات (Users، Devices، Processes، Files، IPs) وكشف العلاقات المخفية.</li>
+          <li><strong>TimescaleDB:</strong> لتحليل Time-Series Data وكشف الأنماط الزمنية (مثلاً: نشاط غير عادي في ساعات الليل).</li>
+          <li><strong>Lateral Movement Detection:</strong><br/> • كشف SMB/RDP Connections غير المألوفة بين الأقسام.<br/> • Pass-the-Hash Attacks: كشف استخدام NTLM Hashes في Authentication.<br/> • Golden/Silver Ticket Detection: كشف Anomalies في Kerberos Tickets.</li>
+        </ul>
+
+        <h4>2.5 Jupyter للصيد:</h4>
+        <ul>
+          <li><strong>Python Libraries:</strong> Pandas للتحليل، PySpark للبيانات الكبيرة، Scikit-learn للـ ML، NetworkX لتصور الشبكات، Mordor Datasets للبيانات التدريبية.</li>
+          <li><strong>خوارزميات الكشف:</strong><br/> • Isolation Forest: للكشف عن الشذوذ.<br/> • DBSCAN: Clustering للكشف عن المجموعات المشبوهة.<br/> • LSTM: للكشف عن الأنماط الزمنية.</li>
+          <li><strong>التصور:</strong> Matplotlib، Seaborn، Plotly لتصور النتائج.</li>
+        </ul>
+
+        <h3>🔓 الجزء الثالث: Reverse Engineering & Malware Analysis - المستوى المتقدم</h3>
+        
+        <h4>3.1 Static Analysis العميق:</h4>
+        <ul>
+          <li><strong>PE/ELF Analysis:</strong> تفكيك Headers، Sections (.text، .data، .rsrc)، Import/Export Tables، و Resources.</li>
+          <li><strong>String Extraction:</strong> استخدام FLOSS (FireEye Labs Obfuscated String Solver) لاستخراج Strings المشفرة/المضغوطة.</li>
+          <li><strong>Disassembly & Decompilation:</strong><br/> • Ghidra (NSA): مفتوح المصدر، دعم Python Scripting.<br/> • IDA Pro: الأكثر تقدماً، Decompiler قوي، Debugger مدمج.<br/> • Binary Ninja: واجهة حديثة، API قوي للأتمتة.</li>
+          <li><strong>Anti-Analysis Detection:</strong> كشف Anti-Debugging (IsDebuggerPresent، Timing Checks، TLS Callbacks)، Anti-VM (VMware Tools Check، MAC Address Patterns)، و Packer Detection (UPX، Themida، VMProtect).</li>
+        </ul>
+
+        <h4>3.2 Dynamic Analysis & Sandboxing:</h4>
+        <ul>
+          <li><strong>البيئات المعزولة:</strong><br/> • REMnux: توزيعة لينكس لتحليل البرمجيات الخبيثة.<br/> • FLARE VM: بيئة ويندوز من FireEye.<br/> • Cuckoo Sandbox: Automated Analysis.<br/> • Any.Run، Hybrid Analysis: Sandboxes سحابية.</li>
+          
+          <li><strong>المراقبة:</strong><br/> • API Monitoring: API Monitor، ProcMon (Process Monitor).<br/> • Registry Changes: RegShot.<br/> • Network Activity: Wireshark، Fiddler، INetSim (Simulation).<br/> • File System: Process Monitor، Regshot.</li>
+          
+          <li><strong>API Calls الحرجة:</strong><br/> • Process Injection: CreateRemoteThread، WriteProcessMemory، NtUnmapViewOfSection.<br/> • Persistence: RegSetValue (Run Keys)، CreateService، Scheduled Tasks.<br/> • Credential Access: LSA Protection Bypass، LSASS Memory Dumping.</li>
+        </ul>
+
+        <h4>3.3 Memory Forensics:</h4>
+        <ul>
+          <li><strong>التفريغ:</strong><br/> • WinPMEM للويندوز.<br/> • LiME للينكس.<br/> • AVML (Azure Virtual Machine Memory).</li>
+          
+          <li><strong>Volatility 3 Analysis:</strong><br/> • pslist:列出 Processes.<br/> • netscan: كشف Network Connections.<br/> • cmdline: استخراج Command-Line Arguments.<br/> • hashdump: استخراج Password Hashes.<br/> • hivelist: Registry Hives.<br/> • malfind: كشف Injected Code.</li>
+          
+          <li><strong>الكشف المتقدم:</strong><br/> • DKOM (Direct Kernel Object Manipulation): كشف Processes مخفية عبر مقارنة Lists.<br/> • Hook Detection: كشف SSDT Hooks، IDT Hooks.<br/> • Rootkit Detection: كشف File System Filters، Kernel Callbacks.</li>
+        </ul>
+
+        <h4>3.4 Unpacking & Deobfuscation:</h4>
+        <ul>
+          <li><strong>Packers:</strong> UPX (سهل)، Themida، VMProtect، Enigma (صعب).</li>
+          <li><strong>Techniques:</strong><br/> • Generic Unpacking: Dumping من الذاكرة بعد_unpacking.<br/> • Manual Unpacking: إعادة بناء IAT (Import Address Table)، Fixing Relocations.<br/> • Automated Tools: Universal Unpacker، Peid، Detect It Easy (DIE).</li>
+          
+          <li><strong>Shellcode Analysis:</strong><br/> • Donut: توليد Position-Independent Code.<br/> • ShellcodeExec: تنفيذ مباشر.<br/> • scdbg: Shellcode Debugger.</li>
+          
+          <li><strong>C2 Decryption:</strong><br/> • Cobalt Strike Malleable C2: استخراج Configuration.<br/> • Sliver، Mythic: تحليل Traffic Patterns.<br/> • Tools: CobaltStrikeParser، CS-Decryptor.</li>
+        </ul>
+
+        <h3>☁️ الجزء الرابع: Cloud Security & DevSecOps - التنفيذ المؤسسي</h3>
+        
+        <h4>4.1 CSPM (Cloud Security Posture Management):</h4>
+        <ul>
+          <li><strong>الكشف عن:</strong><br/> • S3 Buckets Public.<br/> • Security Groups مفتوحة (0.0.0.0/0).<br/> • IAM Roles Over-Privileged.<br/> • Unencrypted Storage (EBS، RDS، S3).<br/> • Missing MFA على Root Accounts.<br/> • CloudTrail غير مفعل.</li>
+          
+          <li><strong>الأدوات:</strong><br/> • Wiz: Graph-Based Analysis.<br/> • Prisma Cloud (Palo Alto).<br/> • Lacework.<br/> • AWS Security Hub، Azure Security Center (مجانية).</li>
+        </ul>
+
+        <h4>4.2 CWPP (Cloud Workload Protection):</h4>
+        <ul>
+          <li><strong>Runtime Protection:</strong> كشف Anomalous Behavior في Containers و VMs.</li>
+          <li><strong>Vulnerability Management:</strong> فحص Images قبل النشر (Trivy، Grype، Clair).</li>
+          <li><strong>File Integrity Monitoring:</strong> كشف Changes في ملفات النظام الحرجة.</li>
+          <li><strong>الأدوات:</strong> Aqua Security، Sysdig Secure، Falco (Open Source)، Defender for Cloud.</li>
+        </ul>
+
+        <h4>4.3 Kubernetes Security:</h4>
+        <ul>
+          <li><strong>RBAC:</strong> Least Privilege، تجنب cluster-admin، استخدام Roles/RoleBindings محددة.</li>
+          <li><strong>NetworkPolicies:</strong> Deny-All by Default، السماح فقط بالـ Traffic الضروري.</li>
+          <li><strong>Pod Security:</strong><br/> • Pod Security Standards: Privileged، Baseline، Restricted.<br/> • SecurityContext: RunAsNonRoot، ReadOnlyRootFilesystem، Capabilities Drop.<br/> • Seccomp/AppArmor Profiles.</li>
+          
+          <li><strong>OPA/Gatekeeper:</strong> سياسات Declarative.<br/> • منع Images من Registries غير مصرح بها.<br/> • فرض Resource Limits.<br/> • منع Privileged Containers.</li>
+          
+          <li><strong>الكشف عن التهديدات:</strong><br/> • Cryptojacking: CPU Usage عالي غير عادي.<br/> • Privilege Escalation: محاولات الوصول لـ Service Accounts.<br/> • Tools: Falco، Sysdig، kube-bench.</li>
+        </ul>
+
+        <h4>4.4 IaC Security:</h4>
+        <ul>
+          <li><strong>الفحص:</strong><br/> • Checkov: دعم Terraform، CloudFormation، Kubernetes.<br/> • tfsec: مخصص لـ Terraform.<br/> • Terrascan.<br/> • Snyk IaC.</li>
+          
+          <li><strong>GitOps:</strong><br/> • OPA للموافقة التلقائية.<br/> • Atlantis لـ Terraform Workflow.<br/> • ArgoCD مع Policy Enforcement.</li>
+        </ul>
+
+        <h4>4.5 Secrets Management:</h4>
+        <ul>
+          <li><strong>الحلول:</strong><br/> • HashiCorp Vault: Dynamic Secrets، Encryption as a Service.<br/> • AWS Secrets Manager: Rotation آلي لـ RDS، Redshift.<br/> • Azure Key Vault: HSM-Backed.<br/> • Doppler، SecretHub.</li>
+          
+          <li><strong>الكشف عن التسريب:</strong><br/> • GitGuardian: فحص GitHub/GitLab.<br/> • TruffleHog: فحص Git History.<br/> • Gitleaks: CI/CD Integration.</li>
+        </ul>
+
+        <h3> الجزء الخامس: التشفير المتقدم وأمن البروتوكولات</h3>
+        
+        <h4>5.1 Post-Quantum Cryptography (PQC):</h4>
+        <ul>
+          <li><strong>التهديد:</strong> الحواسيب الكمومية ستكسر RSA و ECC خلال 10-15 سنة.</li>
+          <li><strong>خوارزميات NIST:</strong><br/> • CRYSTALS-Kyber: Key Encapsulation.<br/> • CRYSTALS-Dilithium: Digital Signatures.<br/> • SPHINCS+: Stateless Hash-Based Signatures.<br/> • FALCON: Compact Signatures.</li>
+          <li><strong>Crypto-Agility:</strong> تصميم أنظمة قابلة للترحيل السريع للخوارزميات الجديدة.</li>
+          <li><strong>Hybrid Schemes:</strong> دمج Classical + PQC للفترة الانتقالية.</li>
+        </ul>
+
+        <h4>5.2 TLS 1.3 Internals:</h4>
+        <ul>
+          <li><strong>التحسينات:</strong><br/> • 1-RTT Handshake (أسرع).<br/> • 0-RTT Mode (مع مخاطر Replay Attacks).<br/> • Perfect Forward Secrecy إلزامي (Ephemeral Keys).<br/> • إزالة Cipher Suites الضعيفة (RC4، 3DES، MD5).</li>
+          
+          <li><strong>إدارة الشهادات:</strong><br/> • ACME Protocol (Let's Encrypt).<br/> • Certificate Transparency Logs (كشف الشهادات المزورة).<br/> • OCSP Stapling (لتحسين الأداء).<br/> • Private PKI مع HashiCorp Vault.</li>
+        </ul>
+
+        <h4>5.3 HSM & Key Management:</h4>
+        <ul>
+          <li><strong>HSM Types:</strong><br/> • Network-Attached (AWS CloudHSM، Azure Dedicated HSM).<br/> • PCIe Cards (Thales، Gemalto).<br/> • Cloud KMS (AWS KMS، GCP KMS).</li>
+          
+          <li><strong>Best Practices:</strong><br/> • Key Rotation Policies (90 يوم للـ Encryption Keys).<br/> • Separation of Duties (لا شخص واحد يملك كل الصلاحيات).<br/> • Audit Trails (من استخدم المفتاح ومتى).<br/> • FIPS 140-2/3 Level 3 Compliance.</li>
+        </ul>
+
+        <h3>⚡ الجزء السادس: SOAR والأتمتة الدفاعية المتقدمة</h3>
+        
+        <h4>6.1 SOAR Playbooks:</h4>
+        <ul>
+          <li><strong>أمثلة:</strong><br/> • Phishing Response: Extract URLs/Attachments → Scan في VirusTotal → حظر في Firewall → عزل المستخدم → فتح Ticket.<br/> • Malware Outbreak: عزل Endpoints المصابة → جمع Forensics → حظر Hashes → تحديث EDR Signatures.<br/> • Brute Force Attack: حظر IP → فرض MFA → إشعار الفريق.</li>
+          
+          <li><strong>المنصات:</strong><br/> • Splunk Phantom.<br/> • Palo Alto XSOAR.<br/> • Siemplify (Google Chronicle).<br/> • TheHive + Cortex (Open Source).</li>
+        </ul>
+
+        <h4>6.2 Threat Intel Automation:</h4>
+        <ul>
+          <li><strong>Feeds:</strong><br/> • MISP (Open Source).<br/> • AlienVault OTX.<br/> • Anomali ThreatStream.<br/> • Recorded Future.</li>
+          
+          <li><strong>Enrichment:</strong><br/> • VirusTotal API.<br/> • PassiveTotal (RiskIQ).<br/> • Shodan API.<br/> • WHOIS، DNS History.</li>
+        </ul>
+
+        <h4>6.3 AI/ML في الدفاع:</h4>
+        <ul>
+          <li><strong>UEBA:</strong><br/> • بناء Baselines سلوكية.<br/> • كشف Insider Threats.<br/> • Compromised Accounts Detection.</li>
+          
+          <li><strong>NLP:</strong><br/> • تحليل رسائل Phishing.<br/> • Summarization للـ Incident Reports.<br/> • Classification للـ Alerts.</li>
+          
+          <li><strong>LLMs:</strong><br/> • توليد Sigma/YARA Rules.<br/> • تحليل PCAPs بسرعة.<br/> • Code Review للكشف عن Vulnerabilities.</li>
+          
+          <li><strong>Adversarial ML:</strong><br/> • الحماية من Model Poisoning.<br/> • Evasion Attacks Detection.</li>
+        </ul>
+
+        <h3>⚔️ الجزء السابع: Red Teaming & Purple Teaming الشامل</h3>
+        
+        <h4>7.1 C2 Frameworks:</h4>
+        <ul>
+          <li><strong>Sliver:</strong> Golang، Cross-Platform، Malleable Profiles.</li>
+          <li><strong>Covenant:</strong> .NET، HTTP/HTTPS C2.</li>
+          <li><strong>Mythic:</strong> Python، Agent-Agnostic.</li>
+          <li><strong>Cobalt Strike:</strong> التجاري، الأكثر تقدماً.</li>
+        </ul>
+
+        <h4>7.2 Evasion Techniques:</h4>
+        <ul>
+          <li><strong>AMSI Bypass:</strong> Patch AMSI.dll في الذاكرة.</li>
+          <li><strong>EDR Bypass:</strong><br/> • Direct Syscalls (تجاوز User-Mode Hooks).<br/> • Unhooking (إزالة Hooks).<br/> • Early Bird APC (Injection في Processes نظيفة).<br/> • Process Hollowing.</li>
+          
+          <li><strong>LOLBAS:</strong> استخدام أدوات النظام الشرعية.</li>
+        </ul>
+
+        <h4>7.3 Atomic Red Team:</h4>
+        <ul>
+          <li><strong>الاختبارات:</strong> صغيرة، قابلة للقياس، مرتبطة بـ MITRE ATT&CK.</li>
+          <li><strong>الأتمتة:</strong> Caldera (MITRE)، Red Canary Atomic Red Team.</li>
+        </ul>
+
+        <h4>7.4 Purple Teaming:</h4>
+        <ul>
+          <li><strong>المنهجية:</strong><br/> • محاكاة سيناريو (Ransomware، APT).<br/> • Blue Team يراقب في SIEM.<br/> • ضبط القواعد فوراً.<br/> • إعادة الاختبار لقياس التحسن.<br/> • توثيق Lessons Learned.</li>
+          
+          <li><strong>BAS (Breach & Attack Simulation):</strong><br/> • Cymulate.<br/> • AttackIQ.<br/> • SafeBreach.<br/> • محاكاة مستمرة وآلية.</li>
+        </ul>
+
+        <div class="conclusion" style="background:linear-gradient(135deg,#0284c7,#00d4ff);color:white;padding:2rem;border-radius:12px;margin:2rem 0">
+          <h3>💡 الخلاصة الهندسية الشاملة:</h3>
+          <ul style="list-style:none;padding:0">
+            <li>✅ الأمن المؤسسي يعتمد على البيانات الدقيقة (Telemetry)، الأتمتة المدروسة، والهندسة المعمارية الصلبة</li>
+            <li>✅ Zero Trust ليس منتجاً بل منهجية تشغيلية مستمرة تتطلب ثقافة وتغيير عمليات وتدريب</li>
+            <li>✅ الصيد المتقدم يتطلب فرضيات واضحة، أدوات تحليل عميق، فهم TTPs للمهاجمين، وصبر</li>
+            <li>✅ التعاون بين الفرق (Purple Teaming) والاستعداد للتهديدات المستقبلية (Quantum، AI-Powered Attacks) يضمن البقاء طويل الأمد</li>
+            <li>✅ الأتمتة تعزز المحللين لا تحل محلهم - Human Judgment، Critical Thinking، و Creativity يبقى حاسماً</li>
+            <li>✅ الاستثمار في التدريب المستمر، الشهادات المتقدمة (OSCP، OSCE، GCTI)، والمختبرات العملية</li>
+            <li>✅ المشاركة في المجتمع (Open Source، Conferences، CTFs) تبني المهارات والسمعة</li>
+          </ul>
+          <p style="font-size:1.3rem;font-weight:bold;margin-top:1rem;text-align:center">الدفاع الفعال يُبنى بالهندسة، البيانات، التعاون، والاستمرارية. الأمن رحلة لا وجهة. 🛡️</p>
+        </div>
+      </article>
+    </div>
 
     <ShareButtons />
   </main>
@@ -114,28 +322,52 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
   :root { --bg: #f8fafc; --card: #fff; --text: #0f172a; --text-sec: #64748b; --primary: #0284c7; --border: rgba(2,132,199,0.2); }
   html.dark-mode { --bg: #0b1120; --card: #1e293b; --text: #f1f5f9; --text-sec: #94a3b8; --primary: #38bdf8; --border: rgba(56,189,248,0.2); }
   body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; margin: 0; }
-  .category-articles { max-width: 950px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+  .category-page { max-width: 950px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
   .page-header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 2px solid var(--border); }
   .page-header h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; }
   .page-header p { color: var(--text-sec); font-size: 1.1rem; }
+  .tabs-nav { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+  .tab-btn { background: transparent; border: none; color: var(--text-sec); font-size: 1.1rem; font-weight: 600; padding: 0.8rem 1.5rem; cursor: pointer; border-radius: 8px 8px 0 0; transition: all 0.3s; }
+  .tab-btn:hover { color: var(--primary); background: rgba(2,132,199,0.05); }
+  .tab-btn.active { color: var(--primary); background: var(--card); box-shadow: 0 -2px 0 var(--primary) inset; }
+  .tab-content { display: none; animation: fadeIn 0.4s ease; }
+  .tab-content.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   .article { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 2.5rem 2rem; margin-bottom: 3rem; }
   .badge { display: inline-block; background: var(--primary); color: white; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; margin-bottom: 1rem; }
   .article h2 { color: var(--primary); font-size: 1.8rem; margin: 2rem 0 1rem; }
   .article h3 { color: var(--text); font-size: 1.5rem; margin: 2.5rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
-  .article h4 { color: var(--text-sec); font-size: 1.2rem; margin: 2rem 0 0.8rem; }
+  .article h4 { color: var(--text-sec); font-size: 1.2rem; margin: 2rem 0 0.8rem; font-weight: 600; }
   .meta { color: var(--text-sec); font-size: 0.9rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border); }
   .intro { font-size: 1.15rem; color: var(--text-sec); margin-bottom: 2.5rem; padding: 2rem; background: rgba(2,132,199,0.05); border-right: 4px solid var(--primary); border-radius: 8px; line-height: 1.9; }
   .article ul { padding-right: 1.5rem; margin: 1.5rem 0; }
   .article li { margin-bottom: 0.8rem; line-height: 1.9; color: var(--text-sec); }
   .article li strong { color: var(--primary); }
-  .article p { margin-bottom: 1.2rem; line-height: 1.8; color: var(--text); }
   .conclusion ul { list-style: none !important; padding: 0; }
   .conclusion li { color: white !important; font-size: 1.05rem; margin: 0.8rem 0; line-height: 1.8; }
   @media (max-width: 768px) {
-    .category-articles { padding: 2rem 1rem 3rem !important; }
+    .category-page { padding: 2rem 1rem 3rem !important; }
     .page-header h1 { font-size: 1.6rem !important; }
+    .tabs-nav { gap: 0.5rem; flex-direction: column; }
+    .tab-btn { font-size: 0.95rem; padding: 0.8rem; text-align: right; border-radius: 8px; }
     .article { padding: 1.5rem 1.2rem !important; }
     .article h2 { font-size: 1.4rem !important; }
     .article h3 { font-size: 1.2rem !important; }
+    .article h4 { font-size: 1.05rem !important; }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var tabs = document.querySelectorAll('.tab-btn');
+    var contents = document.querySelectorAll('.tab-content');
+    tabs.forEach(function(tab) {
+      tab.addEventListener('click', function() {
+        tabs.forEach(function(t) { t.classList.remove('active'); });
+        contents.forEach(function(c) { c.classList.remove('active'); });
+        tab.classList.add('active');
+        document.getElementById(tab.dataset.tab).classList.add('active');
+      });
+    });
+  });
+</script>
