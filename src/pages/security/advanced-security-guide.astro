@@ -37,7 +37,7 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
     </div>
 
     <!-- ✅ السهم المنبثق (العودة للأعلى) -->
-    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">️</button>
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
 
     <article class="article" id="art1">
       <span class="badge">مستوى خبير / مؤسسي</span>
@@ -264,13 +264,17 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
   .toc-modal { 
     display: none; 
     position: fixed; 
-    inset: 0; 
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
     background: rgba(0,0,0,0.6); 
     backdrop-filter: blur(8px);
     z-index: 999; 
     align-items: center; 
     justify-content: center; 
-    padding: 1.5rem;
+    padding: 6rem 1.5rem 1.5rem; /* ✅ إضافة مساحة للهيدر */
+    animation: fadeIn 0.3s ease;
   }
   .toc-modal.active { display: flex; }
   
@@ -281,7 +285,7 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
     border-radius: 20px; 
     border: 1px solid var(--border);
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-    max-height: 80vh;
+    max-height: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -295,6 +299,7 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
     padding: 1.5rem 2rem; 
     background: var(--bg);
     border-bottom: 1px solid var(--border); 
+    flex-shrink: 0;
   }
   .toc-head h3 { 
     color: var(--primary); 
@@ -331,7 +336,7 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
     overflow-y: auto; 
   }
   
-  /* ✅ الحل النووي لإزالة الخطوط وتنسيق القائمة */
+  /* ✅ الحل النووي لإزالة الخطوط - Reset كامل */
   .toc-nav a,
   .toc-nav a:link,
   .toc-nav a:visited,
@@ -341,7 +346,7 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
     align-items: center !important;
     gap: 10px !important;
     background: var(--bg) !important; 
-    color: var(--text) !important; /* فرض لون النص */
+    color: var(--text) !important;
     padding: 1rem 1.2rem !important; 
     border-radius: 12px !important; 
     font-size: 1rem !important;
@@ -350,9 +355,11 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
     position: relative !important;
     border: 1px solid transparent !important;
     
-    /* إزالة أي تنسيق رابط افتراضي */
+    /* إزالة كل شيء */
     text-decoration: none !important;
+    text-underline: none !important;
     border-bottom: none !important;
+    outline: none !important;
     -webkit-tap-highlight-color: transparent !important;
     transition: all 0.25s ease !important;
   }
@@ -360,7 +367,7 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
   /* أيقونة السهم */
   .toc-nav a::after {
     content: '←';
-    margin-right: auto; /* دفع السهم لليسار */
+    margin-right: auto;
     margin-left: 0;
     opacity: 0;
     transform: translateX(5px);
@@ -387,12 +394,17 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
   .toc-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
   .toc-nav::-webkit-scrollbar-thumb:hover { background: var(--primary); }
   
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
   @keyframes slideUp {
     from { opacity: 0; transform: translateY(40px) scale(0.96); }
     to { opacity: 1; transform: translateY(0) scale(1); }
   }
 
-  /* ✅ تنسيق السهم المنبثق */
+  /* ✅ تنسيق السهم المنبثق - إصلاح الظهور */
   .back-to-top {
     position: fixed;
     bottom: 95px;
@@ -416,14 +428,14 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
     box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   }
   .back-to-top.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
   }
   .back-to-top:hover {
     background: var(--primary);
-    color: #fff;
-    transform: scale(1.1) translateY(0);
+    color: #fff !important;
+    transform: scale(1.1) translateY(0) !important;
     box-shadow: 0 0 20px rgba(2,132,199,0.6);
   }
 
@@ -439,7 +451,8 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
     .image-caption { padding: 0.8rem 1rem !important; font-size: 0.85rem !important; }
     .toc-btn { width: 50px !important; height: 50px !important; bottom: 15px !important; left: 15px !important; font-size: 1.4rem !important; }
     .back-to-top { width: 42px !important; height: 42px !important; bottom: 75px !important; left: 15px !important; font-size: 1.2rem !important; }
-    .toc-box { max-width: 90% !important; border-radius: 16px !important; }
+    .toc-modal { padding: 7rem 1rem 1rem !important; } /* ✅ مساحة أكبر للهيدر في الموبايل */
+    .toc-box { max-width: 95% !important; border-radius: 16px !important; }
     .toc-head { padding: 1.2rem 1.5rem !important; }
     .toc-head h3 { font-size: 1.2rem !important; }
     .toc-nav { padding: 0.8rem !important; gap: 0.5rem !important; }
@@ -473,7 +486,7 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
       tocModal.onclick = function(e) { if (e.target === tocModal) tocModal.classList.remove('active'); };
     }
 
-    // ✅ منطق السهم المنبثق
+    // ✅ منطق السهم المنبثق - إصلاح الظهور
     var backBtn = document.getElementById('backToTop');
     if (backBtn) {
       window.addEventListener('scroll', function() {
@@ -482,7 +495,7 @@ export const description = "دليل متعمق لـ Zero Trust، Threat Hunting
         } else {
           backBtn.classList.remove('show');
         }
-      });
+      }, { passive: true });
 
       backBtn.addEventListener('click', function() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
