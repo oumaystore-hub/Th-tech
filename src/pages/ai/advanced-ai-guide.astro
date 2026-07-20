@@ -51,7 +51,7 @@ export const description = "دليل متعمق لـ Transformers، LLMs، RAG،
         <p class="image-caption">الشبكات العصبية العميقة - الأساس الذي بنيت عليه النماذج الحديثة</p>
       </div>
 
-      <h3>🧠 الجزء الأول: معماريات Transformers المتقدمة</h3>
+      <h3> الجزء الأول: معماريات Transformers المتقدمة</h3>
       <p>معمارية Transformer (Vaswani et al., 2017) أحدثت ثورة في معالجة اللغة الطبيعية والذكاء الاصطناعي بشكل عام. هذه المعمارية تعتمد على آلية Self-Attention بدلاً من الشبكات المتكررة (RNNs/LSTMs)، مما يمكنها من معالجة التسلسلات الطويلة بكفاءة عالية:</p>
       
       <h4>1.1 Self-Attention Mechanism - التحليل المعمق:</h4>
@@ -74,8 +74,8 @@ export const description = "دليل متعمق لـ Transformers، LLMs، RAG،
 
       <!-- صورة Transformers -->
       <div class="article-image">
-        <img src="https://images.unsplash.com/photo-1620712656733-6c5b9c4a6d4e?w=900&h=350&fit=crop" alt="Transformer Architecture" />
-        <p class="image-caption">معمارية Transformer - الأساس الذي بنيت عليه النماذج الكبيرة مثل GPT و BERT</p>
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&h=350&fit=crop" alt="Data Center Infrastructure" />
+        <p class="image-caption">البنية التحتية الحسابية - تشغيل معماريات Transformers يتطلب خوادم متطورة</p>
       </div>
 
       <h3>🗣️ الجزء الثاني: بناء وتدريب Large Language Models (LLMs)</h3>
@@ -89,88 +89,59 @@ export const description = "دليل متعمق لـ Transformers، LLMs، RAG،
           <br/>• Language filtering: تحديد اللغة باستخدام FastText أو langdetect.
           <br/>• Toxicity removal: فلترة المحتوى الضار باستخدام Perspective API أو نماذج تصنيف مخصصة.
           <br/>• PII redaction: إخفاء المعلومات الشخصية (أسماء، عناوين، أرقام هوية).</li>
-        <li><strong>Tokenization:</strong> BPE (Byte-Pair Encoding) أو SentencePiece مع Vocabulary size متوازن (32K-100K tokens). التوازن بين حجم المفردات وطول التسلسل مهم للكفاءة.</li>
+        <li><strong>Tokenization:</strong> BPE (Byte-Pair Encoding) أو SentencePiece مع Vocabulary size متوازن (32K-100K tokens).</li>
         <li><strong>التوازن:</strong> ضمان تمثيل عادل للغات والثقافات والمجالات المختلفة لتجنب التحيزات.</li>
       </ul>
 
       <h4>2.2 Training Strategies:</h4>
       <ul>
-        <li><strong>Pre-training:</strong> تدريب ذاتي الإشراف (Self-supervised) على أهداف مثل:
-          <br/>• MLM (Masked Language Modeling): إخفاء 15% من الكلمات وتدريب النموذج على توقعها (BERT).
-          <br/>• Causal LM: توقع الكلمة التالية في التسلسل (GPT).
-          <br/>• Span corruption: إخفاء spans من النص وتدريب النموذج على إعادة بنائها (T5).</li>
-        <li><strong>Distributed Training:</strong>
-          <br/>• <strong>Data Parallelism:</strong> نسخ النموذج على عدة GPUs مع تقسيم البيانات (Batch) عليها. يتطلب Gradient synchronization.
-          <br/>• <strong>Model Parallelism:</strong> تقسيم طبقات النموذج على أجهزة متعددة (مثلاً: كل GPU يأخذ 4-8 طبقات).
-          <br/>• <strong>Pipeline Parallelism:</strong> تقسيم الطبقات مع تمرير البيانات كـ pipeline (مثل: GPipe، PipeDream).
-          <br/>• <strong>3D Parallelism:</strong> دمج الأنواع الثلاثة لأقصى كفاءة (مثل: Megatron-LM، DeepSpeed).</li>
-        <li><strong>Mixed Precision:</strong> استخدام FP16/BF16 لتقليل استهلاك الذاكرة (النصف) وتسريع الحساب (2-3x) مع الحفاظ على الدقة باستخدام Loss scaling.</li>
-        <li><strong>Gradient Accumulation:</strong> تجميع Gradients عبر عدة steps قبل التحديث لزيادة Effective batch size.</li>
-        <li><strong>Checkpointing:</strong> حفظ الحالة دورياً (كل 1000-5000 steps) للتعافي من الأعطال واستئناف التدريب.</li>
+        <li><strong>Pre-training:</strong> تدريب ذاتي الإشراف على أهداف مثل MLM، Causal LM، و Span corruption.</li>
+        <li><strong>Distributed Training:</strong> Data Parallelism، Model Parallelism، Pipeline Parallelism، و 3D Parallelism.</li>
+        <li><strong>Mixed Precision:</strong> استخدام FP16/BF16 لتقليل استهلاك الذاكرة وتسريع الحساب.</li>
+        <li><strong>Checkpointing:</strong> حفظ الحالة دورياً للتعافي من الأعطال.</li>
       </ul>
 
       <h4>2.3 Alignment و Instruction Tuning:</h4>
       <ul>
-        <li><strong>Supervised Fine-Tuning (SFT):</strong> تدريب النموذج على بيانات تعليمات-استجابة عالية الجودة (مثل: OpenAI WebGPT dataset، Anthropic HH).</li>
-        <li><strong>RLHF (Reinforcement Learning from Human Feedback):</strong>
-          <br/>• الخطوة 1: جمع تفضيلات بشرية على مخرجات متعددة لنفس المدخل (A أفضل من B).
-          <br/>• الخطوة 2: تدريب Reward Model للتنبؤ بالتفضيل البشري (دقة 70-85%).
-          <br/>• الخطوة 3: استخدام PPO (Proximal Policy Optimization) لتحسين النموذج بناءً على المكافآت.</li>
-        <li><strong>RLAIF (RL from AI Feedback):</strong> استخدام نموذج أكبر أو متخصص (مثل: GPT-4) لتوليد التفضيلات بدلاً من البشر لتقليل التكلفة.</li>
-        <li><strong>DPO (Direct Preference Optimization):</strong> طريقة مباشرة لتحسين النموذج من التفضيلات دون الحاجة لـ Reward Model منفصل.</li>
+        <li><strong>SFT:</strong> تدريب النموذج على بيانات تعليمات-استجابة عالية الجودة.</li>
+        <li><strong>RLHF:</strong> جمع تفضيلات بشرية، تدريب Reward Model، وتحسين النموذج بـ PPO.</li>
+        <li><strong>DPO:</strong> طريقة مباشرة لتحسين النموذج من التفضيلات دون Reward Model منفصل.</li>
       </ul>
 
       <!-- صورة LLM Training -->
       <div class="article-image">
-        <img src="https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=900&h=350&fit=crop" alt="LLM Training" />
+        <img src="https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=900&h=350&fit=crop" alt="GPU Cluster Training" />
         <p class="image-caption">تدريب النماذج الكبيرة - توزيع الحساب على مئات GPUs لعدة أسابيع</p>
       </div>
 
       <h3>🔍 الجزء الثالث: RAG (Retrieval-Augmented Generation) المتقدم</h3>
-      <p>RAG يجمع بين قوة النماذج الكبيرة (التوليد) ودقة قواعد المعرفة الخارجية (الاسترجاع) للإجابة على أسئلة تتطلب معلومات حديثة أو متخصصة:</p>
+      <p>RAG يجمع بين قوة النماذج الكبيرة ودقة قواعد المعرفة الخارجية للإجابة على أسئلة تتطلب معلومات حديثة أو متخصصة:</p>
       
       <h4>3.1 Retrieval System المتقدم:</h4>
       <ul>
-        <li><strong>Embedding Models:</strong> استخدام نماذج متخصصة مثل:
-          <br/>• BGE (BAAI General Embedding): أداء عالي على مهام متعددة.
-          <br/>• E5 (Embeddings from bidirectional Encoder): تدريب على بيانات متنوعة.
-          <br/>• Fine-tuned embeddings: تعديل النموذج على بيانات المجال المستهدف.</li>
-        <li><strong>Vector Databases:</strong> 
-          <br/>• Pinecone: سحابي، سهل الاستخدام، scaling تلقائي.
-          <br/>• Weaviate: مفتوح المصدر، يدعم GraphQL، hybrid search.
-          <br/>• Qdrant: مكتوب بـ Rust، أداء عالي، filtering متقدم.
-          <br/>• FAISS (Facebook AI Similarity Search): مكتبة C++، indexing سريع، مناسب للـ on-premise.</li>
-        <li><strong>Hybrid Search:</strong> دمج البحث الدلالي (Dense embeddings) مع البحث النصي (Sparse/BM25) باستخدام Reciprocal Rank Fusion أو Weighted sum.</li>
-        <li><strong>Re-ranking:</strong> استخدام Cross-Encoder (مثل: BGE-Reranker، Cohere Rerank) لإعادة ترتيب النتائج المسترجعة (Top 100 → Top 10) لدقة أعلى.</li>
+        <li><strong>Embedding Models:</strong> BGE، E5، أو Fine-tuned embeddings للمجال.</li>
+        <li><strong>Vector Databases:</strong> Pinecone، Weaviate، Qdrant، أو FAISS.</li>
+        <li><strong>Hybrid Search:</strong> دمج البحث الدلالي مع البحث النصي (BM25).</li>
+        <li><strong>Re-ranking:</strong> استخدام Cross-Encoder لإعادة ترتيب النتائج لدقة أعلى.</li>
       </ul>
 
       <h4>3.2 Generation Strategies:</h4>
       <ul>
-        <li><strong>Context Window Management:</strong> 
-          <br/>• Chunking: تقسيم المستندات إلى أجزاء (512-2048 tokens) مع Overlap.
-          <br/>• Summarization: تلخيص السياق الطويل قبل الإرسال للنموذج.
-          <br/>• Recursive retrieval: استرجاع وثائق ذات صلة بالوثائق المسترجعة.</li>
-        <li><strong>Citation & Attribution:</strong> إضافة مراجع للمصادر المسترجعة (مثل: [1]، [2]) لزيادة الشفافية والثقة وتمكين المستخدم من التحقق.</li>
-        <li><strong>Multi-hop Reasoning:</strong> تمكين النموذج من دمج معلومات من مصادر متعددة للإجابة على أسئلة معقدة تتطلب استنتاجات غير مباشرة.</li>
-        <li><strong>Self-Reflection:</strong> جعل النموذج يقيم جودة الإجابة (Confidence score) ويطلب معلومات إضافية إذا كانت الثقة منخفضة.</li>
+        <li><strong>Context Window Management:</strong> Chunking، Summarization، و Recursive retrieval.</li>
+        <li><strong>Citation & Attribution:</strong> إضافة مراجع للمصادر المسترجعة لزيادة الشفافية.</li>
+        <li><strong>Multi-hop Reasoning:</strong> دمج معلومات من مصادر متعددة للإجابة على أسئلة معقدة.</li>
       </ul>
 
       <h4>3.3 Evaluation Metrics:</h4>
       <ul>
-        <li><strong>Retrieval Metrics:</strong> 
-          <br/>• Recall@K: نسبة الوثائق ذات الصلة في Top K.
-          <br/>• MRR (Mean Reciprocal Rank): متوسط معكوس رتبة أول وثيقة ذات صلة.
-          <br/>• NDCG (Normalized Discounted Cumulative Gain): قياس جودة الترتيب.</li>
-        <li><strong>Generation Metrics:</strong> 
-          <br/>• Faithfulness: مدى التزام الإجابة بالمصادر المسترجعة (بدون هلوسة).
-          <br/>• Relevance: مدى صلة الإجابة بالسؤال.
-          <br/>• Completeness: هل الإجابة شاملة أم جزئية.</li>
-        <li><strong>End-to-End:</strong> استخدام LLM-as-a-Judge (GPT-4 لتقييم الإجابات) أو مجموعات بيانات مثل RAGAS للتقييم الشامل.</li>
+        <li><strong>Retrieval:</strong> Recall@K، MRR، NDCG.</li>
+        <li><strong>Generation:</strong> Faithfulness، Relevance، Completeness.</li>
+        <li><strong>End-to-End:</strong> LLM-as-a-Judge ومجموعات بيانات مثل RAGAS.</li>
       </ul>
 
       <!-- صورة RAG -->
       <div class="article-image">
-        <img src="https://images.unsplash.com/photo-1677442135735-1c5c9e4a6d4e?w=900&h=350&fit=crop" alt="RAG Architecture" />
+        <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=900&h=350&fit=crop" alt="Data Retrieval & Storage" />
         <p class="image-caption">معمارية RAG - دمج البحث في قواعد المعرفة مع التوليد لدقة أعلى</p>
       </div>
 
@@ -179,84 +150,54 @@ export const description = "دليل متعمق لـ Transformers، LLMs، RAG،
       
       <h4>4.1 Full Fine-tuning:</h4>
       <ul>
-        <li><strong>متى تستخدمه:</strong> عندما تتوفر موارد كافية (GPUs، ذاكرة) وبيانات عالية الجودة (10K-100K أمثلة) للمجال المستهدف.</li>
-        <li><strong>التحديات:</strong> 
-          <br/>• Catastrophic forgetting: فقدان المعرفة العامة المكتسبة في Pre-training.
-          <br/>• Overfitting: إذا كانت البيانات قليلة أو غير متنوعة.
-          <br/>• تكلفة الحساب العالية: تحديث جميع المعاملات (Billions of parameters).</li>
-        <li><strong>Best Practices:</strong> 
-          <br/>• Learning rate scheduling: استخدام Warmup + Decay (Cosine أو Linear).
-          <br/>• Gradient clipping: منع Exploding gradients (clip value: 0.5-1.0).
-          <br/>• Early stopping: إيقاف التدريب عندما يتدهور الأداء على Validation set.</li>
+        <li><strong>التحديات:</strong> Catastrophic forgetting، Overfitting، وتكلفة الحساب العالية.</li>
+        <li><strong>Best Practices:</strong> Learning rate scheduling، Gradient clipping، و Early stopping.</li>
       </ul>
 
       <h4>4.2 Parameter-Efficient Fine-Tuning (PEFT):</h4>
       <ul>
-        <li><strong>LoRA (Low-Rank Adaptation):</strong> إضافة مصفوفات منخفضة الرتبة (Rank 8-64) قابلة للتدريب مع تجميد الأوزان الأصلية. يقلل المعاملات القابلة للتدريب بنسبة 90-99%.</li>
-        <li><strong>QLoRA:</strong> LoRA مع Quantization (4-bit NF4) لتقليل استهلاك الذاكرة بشكل كبير (يمكن Fine-tune نموذج 70B على GPU واحد 48GB).</li>
-        <li><strong>Prefix/Prompt Tuning:</strong> تعلم embeddings إضافية (Prefixes) تُضاف للمدخلات بدلاً من تعديل الأوزان. فعال للمهام البسيطة.</li>
-        <li><strong>Adapter Layers:</strong> إضافة طبقات صغيرة قابلة للتدريب (Bottleneck adapters) بين الطبقات الأصلية. يحافظ على النموذج الأصلي intact.</li>
-        <li><strong>P-Tuning v2:</strong> تحسين Prefix tuning بإضافة Prompts في كل طبقة وليس فقط الطبقة الأولى.</li>
+        <li><strong>LoRA / QLoRA:</strong> إضافة مصفوفات منخفضة الرتبة مع Quantization لتقليل الذاكرة.</li>
+        <li><strong>Prefix/Prompt Tuning:</strong> تعلم embeddings إضافية تُضاف للمدخلات.</li>
+        <li><strong>Adapter Layers:</strong> إضافة طبقات صغيرة قابلة للتدريب بين الطبقات الأصلية.</li>
       </ul>
 
       <h4>4.3 Domain Adaptation:</h4>
       <ul>
-        <li><strong>Continual Pre-training:</strong> مواصلة التدريب على بيانات المجال (Medical، Legal، Code) مع الحفاظ على المعرفة العامة باستخدام Regularization أو Replay buffers.</li>
-        <li><strong>Instruction Tuning:</strong> تدريب النموذج على اتباع التعليمات في المجال المستهدف (مثل: "لخص هذه الورقة الطبية"، "استخرج البنود من هذا العقد").</li>
-        <li><strong>Multi-task Learning:</strong> تدريب النموذج على مهام متعددة (Classification، QA، Summarization) في نفس الوقت لتحسين التعميم وتقليل Overfitting.</li>
+        <li><strong>Continual Pre-training:</strong> مواصلة التدريب على بيانات المجال مع الحفاظ على المعرفة العامة.</li>
+        <li><strong>Instruction Tuning & Multi-task Learning:</strong> تحسين التعميم وتقليل Overfitting.</li>
       </ul>
 
       <!-- صورة Fine-tuning -->
       <div class="article-image">
-        <img src="https://images.unsplash.com/photo-1620714223084-8fcacc6dfd8d?w=900&h=350&fit=crop" alt="Fine-tuning Process" />
+        <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=900&h=350&fit=crop" alt="Code Development & Tuning" />
         <p class="image-caption">Fine-tuning - تعديل النماذج الكبيرة لمهام محددة بكفاءة عالية</p>
       </div>
 
       <h3>🚀 الجزء الخامس: تحسين الأداء والكفاءة</h3>
-      <p>جعل النماذج الكبيرة قابلة للنشر والاستخدام في بيئات واقعية (Production) يتطلب تحسينات في السرعة والتكلفة:</p>
+      <p>جعل النماذج الكبيرة قابلة للنشر والاستخدام في بيئات واقعية يتطلب تحسينات في السرعة والتكلفة:</p>
       
       <h4>5.1 Model Compression:</h4>
       <ul>
-        <li><strong>Quantization:</strong> 
-          <br/>• Post-training Quantization: تقليل دقة الأوزان من FP32 إلى INT8 أو حتى INT4 بعد التدريب.
-          <br/>• Quantization-Aware Training (QAT): تدريب النموذج مع محاكاة Quantization للحفاظ على الدقة.
-          <br/>• GGUF/GGML: صيغ Quantization شائعة لـ Llama.cpp (Q4_0، Q8_0).</li>
-        <li><strong>Pruning:</strong> 
-          <br/>• Unstructured pruning: إزالة الأوزان الأقل أهمية (Magnitude-based).
-          <br/>• Structured pruning: إزالة عصبونات أو رؤوس Attention كاملة.</li>
-        <li><strong>Knowledge Distillation:</strong> تدريب نموذج صغير (Student، مثل: DistilBERT، TinyLlama) لمحاكاة مخرجات نموذج كبير (Teacher، مثل: BERT-large، Llama-70B) باستخدام Soft labels (Temperature-scaled softmax).</li>
+        <li><strong>Quantization:</strong> FP32 → INT8/INT4 مع الحفاظ على الدقة.</li>
+        <li><strong>Pruning:</strong> إزالة الأوزان أو العصبونات الأقل أهمية.</li>
+        <li><strong>Knowledge Distillation:</strong> تدريب نموذج صغير لمحاكاة نموذج كبير.</li>
       </ul>
 
       <h4>5.2 Inference Optimization:</h4>
       <ul>
-        <li><strong>Batching:</strong> معالجة طلبات متعددة معاً لزيادة استخدام GPU (Throughput) لكن قد يزيد Latency للطلب الواحد.</li>
-        <li><strong>Caching:</strong> 
-          <br/>• KV Cache: تخزين Key-Value states للطبقات السابقة لتجنب إعادة الحساب في كل خطوة توليد.
-          <br/>• Response caching: تخزين مخرجات الاستعلامات المتكررة (مثلاً: نفس السؤال في Chatbot).</li>
-        <li><strong>Speculative Decoding:</strong> استخدام نموذج صغير وسريع (Draft model) للتنبؤ بـ K tokens التالية، ثم التحقق منها بنموذج أكبر (Target model) بشكل متوازٍ.</li>
-        <li><strong>Continuous Batching:</strong> دمج الطلبات الجديدة مع الطلبات قيد المعالجة ديناميكياً (عندما ينتهي طلب، يبدأ آخر فوراً).</li>
-        <li><strong>PagedAttention:</strong> تحسين استخدام الذاكرة باستخدام تقنية مشابهة لـ Virtual memory في أنظمة التشغيل (مثل: vLLM).</li>
+        <li><strong>Batching & Caching:</strong> زيادة الاستخدام وتقليل التكرار.</li>
+        <li><strong>Speculative Decoding & PagedAttention:</strong> تسريع التوليد وتحسين الذاكرة.</li>
       </ul>
 
       <h4>5.3 Serving Infrastructure:</h4>
       <ul>
-        <li><strong>Frameworks:</strong> 
-          <br/>• vLLM: أداء عالي، PagedAttention، Continuous batching.
-          <br/>• TGI (Text Generation Inference): من Hugging Face، Tensor Parallelism، Quantization.
-          <br/>• Triton Inference Server: من NVIDIA، دعم نماذج متعددة، Dynamic batching.</li>
-        <li><strong>Scaling:</strong> 
-          <br/>• Auto-scaling: زيادة/تقليل عدد النسخ بناءً على الحمل (CPU/GPU utilization، Queue length).
-          <br/>• Load balancing: توزيع الطلبات على نسخ متعددة (Round-robin، Least connections).</li>
-        <li><strong>Monitoring:</strong> 
-          <br/>• Latency: Time to first token، Time per token، Total latency.
-          <br/>• Throughput: Requests per second، Tokens per second.
-          <br/>• Resource usage: GPU memory، GPU utilization، CPU usage.
-          <br/>• Cost: Cost per request، Cost per 1K tokens.</li>
+        <li><strong>Frameworks:</strong> vLLM، TGI، Triton Inference Server.</li>
+        <li><strong>Scaling & Monitoring:</strong> Auto-scaling، Load balancing، تتبع Latency و Throughput.</li>
       </ul>
 
       <!-- صورة Optimization -->
       <div class="article-image">
-        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&h=350&fit=crop" alt="AI Optimization" />
+        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=900&h=350&fit=crop" alt="Algorithm Optimization" />
         <p class="image-caption">تحسين النماذج - جعل الذكاء الاصطناعي أسرع وأرخص وأكثر كفاءة</p>
       </div>
 
@@ -265,55 +206,26 @@ export const description = "دليل متعمق لـ Transformers، LLMs، RAG،
       
       <h4>6.1 Bias Detection & Mitigation:</h4>
       <ul>
-        <li><strong>الأنواع:</strong> 
-          <br/>• Historical bias: تحيزات موجودة في البيانات التاريخية (مثل: توظيف ذكوري في مجال تقني).
-          <br/>• Representation bias: بعض المجموعات ممثلة تمثيلاً ناقصاً في البيانات.
-          <br/>• Measurement bias: استخدام مقاييس أو ميزات غير عادلة (مثل: الرمز البريدي كبديل للعرق).
-          <br/>• Aggregation bias: معاملة مجموعات مختلفة بنفس النموذج رغم اختلافاتها.</li>
-        <li><strong>الكشف:</strong> 
-          <br/>• تحليل التوزيعات الديموغرافية في البيانات (Gender، Race، Age).
-          <br/>• قياس الأداء التفريقي (Disparate impact): مقارنة الدقة/الأداء بين المجموعات.
-          <br/>• استخدام أدوات مثل Fairlearn (Microsoft)، AIF360 (IBM).</li>
-        <li><strong>التخفيف:</strong> 
-          <br/>• Pre-processing: Re-sampling (زيادة تمثيل المجموعات الناقصة)، Re-weighting (إعطاء أوزان أعلى للأمثلة المهمشة).
-          <br/>• In-processing: Adversarial debiasing (تدريب النموذج على عدم التمييز)، Fairness constraints.
-          <br/>• Post-processing: تعديل العتبات (Thresholds) لكل مجموعة لتحقيق عدالة إحصائية.</li>
+        <li><strong>الأنواع:</strong> Historical، Representation، Measurement، Aggregation bias.</li>
+        <li><strong>الكشف:</strong> تحليل التوزيعات الديموغرافية، قياس الأداء التفريقي.</li>
+        <li><strong>التخفيف:</strong> Re-sampling، Adversarial debiasing، Fairness constraints.</li>
       </ul>
 
       <h4>6.2 Safety & Alignment:</h4>
       <ul>
-        <li><strong>Red Teaming:</strong> 
-          <br/>• محاكاة هجمات خبيثة (Prompt injection، Jailbreaking، Adversarial examples) لاكتشاف نقاط الضعف قبل النشر.
-          <br/>• استخدام فرق بشرية أو نماذج AI متخصصة للهجوم.</li>
-        <li><strong>Constitutional AI:</strong> 
-          <br/>• تدريب النموذج على اتباع مبادئ أخلاقية محددة مسبقاً (Constitution) مثل: "لا تؤذِ البشر"، "كن صادقاً"، "احترم الخصوصية".
-          <br/>• استخدام Self-critique: جعل النموذج يقيم إجاباته ويعيد صياغتها إذا انتهكت المبادئ.</li>
-        <li><strong>Refusal Mechanisms:</strong> 
-          <br/>• تمكين النموذج من رفض الإجابة على أسئلة ضارة أو غير أخلاقية (مثل: "كيف أصنع قنبلة؟").
-          <br/>• التدريب على إجابات آمنة: "عذراً، لا يمكنني المساعدة في ذلك".</li>
+        <li><strong>Red Teaming:</strong> محاكاة هجمات خبيثة لاكتشاف نقاط الضعف.</li>
+        <li><strong>Constitutional AI & Refusal Mechanisms:</strong> مبادئ أخلاقية ورفض الأسئلة الضارة.</li>
       </ul>
 
       <h4>6.3 Transparency & Accountability:</h4>
       <ul>
-        <li><strong>Model Cards:</strong> 
-          <br/>• توثيق قدرات النموذج (ماذا يفعل جيداً).
-          <br/>• حدود النموذج (ماذا لا يفعل، أو يفعله بشكل سيء).
-          <br/>• التحيزات المحتملة والقيود الأخلاقية.</li>
-        <li><strong>Data Sheets:</strong> 
-          <br/>• وصف مصادر البيانات (من أين جاءت).
-          <br/>• طرق الجمع (كيف جُمعت).
-          <br/>• المعالجة (ماذا فعلنا بها: تنظيف، فلترة، Tokenization).</li>
-        <li><strong>Audit Trails:</strong> 
-          <br/>• تسجيل القرارات والعمليات (Log كل Request/Response).
-          <br/>• تمكين التدقيق والمساءلة لاحقاً (من اتخذ القرار، متى، ولماذا).</li>
-        <li><strong>Explainability:</strong> 
-          <br/>• استخدام تقنيات مثل SHAP، LIME لفهم لماذا اتخذ النموذج قراراً معيناً.
-          <br/>• مهم خاصة في المجالات الحساسة (الطب، القانون، التمويل).</li>
+        <li><strong>Model Cards & Data Sheets:</strong> توثيق القدرات، الحدود، ومصادر البيانات.</li>
+        <li><strong>Audit Trails & Explainability:</strong> SHAP، LIME، وتدقيق القرارات.</li>
       </ul>
 
       <!-- صورة AI Ethics -->
       <div class="article-image">
-        <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=900&h=350&fit=crop" alt="AI Ethics" />
+        <img src="https://images.unsplash.com/photo-1589829085413-56de8ae18c73?w=900&h=350&fit=crop" alt="AI Ethics & Balance" />
         <p class="image-caption">أخلاقيات الذكاء الاصطناعي - بناء أنظمة مسؤولة وآمنة وعادلة للجميع</p>
       </div>
 
@@ -322,61 +234,42 @@ export const description = "دليل متعمق لـ Transformers، LLMs، RAG،
       
       <h4>7.1 Healthcare:</h4>
       <ul>
-        <li><strong>التشخيص:</strong> 
-          <br/>• تحليل الصور الطبية (X-ray، MRI، CT) باستخدام Vision Transformers (ViT) أو CNNs متقدمة.
-          <br/>• الكشف عن الأمراض (سرطان، التهاب رئوي، كسور) بدقة تفوق البشر في بعض الحالات.</li>
-        <li><strong>اكتشاف الأدوية:</strong> 
-          <br/>• استخدام GNNs (Graph Neural Networks) لنمذجة التفاعلات الجزيئية.
-          <br/>• التنبؤ بفعالية الدواء وسُميته قبل التجارب السريرية.</li>
-        <li><strong>الطب الشخصي:</strong> 
-          <br/>• تكييف العلاجات بناءً على البيانات الجينية (Genomics) والسريرية للمريض.
-          <br/>• التنبؤ باستجابة المريض للعلاج (Responder vs Non-responder).</li>
+        <li><strong>التشخيص:</strong> تحليل الصور الطبية باستخدام Vision Transformers.</li>
+        <li><strong>اكتشاف الأدوية:</strong> GNNs لنمذجة التفاعلات الجزيئية.</li>
+        <li><strong>الطب الشخصي:</strong> تكييف العلاجات بناءً على البيانات الجينية.</li>
       </ul>
 
       <h4>7.2 Finance:</h4>
       <ul>
-        <li><strong>كشف الاحتيال:</strong> 
-          <br/>• نماذج Anomaly Detection (Isolation Forest، Autoencoders) للتعرف على المعاملات المشبوهة.
-          <br/>• Real-time detection: اتخاذ قرار في milliseconds لمنع الاحتيال قبل حدوثه.</li>
-        <li><strong>التقييم الائتماني:</strong> 
-          <br/>• استخدام بيانات غير تقليدية (سلوك التصفح، معاملات الهاتف) مع تفسيرية النموذج (Explainable AI).
-          <br/>• تجنب التحيز ضد فئات معينة (Fair lending).</li>
-        <li><strong>التداول الآلي:</strong> 
-          <br/>• نماذج Reinforcement Learning (PPO، DQN) لاتخاذ قرارات تداول في الوقت الفعلي.
-          <br/>• التنبؤ بحركة الأسعار باستخدام LSTMs أو Transformers.</li>
+        <li><strong>كشف الاحتيال:</strong> Anomaly Detection للمعاملات المشبوهة.</li>
+        <li><strong>التقييم الائتماني:</strong> بيانات غير تقليدية مع Explainable AI.</li>
+        <li><strong>التداول الآلي:</strong> Reinforcement Learning لاتخاذ قرارات فورية.</li>
       </ul>
 
       <h4>7.3 Customer Service:</h4>
       <ul>
-        <li><strong>Chatbots متقدمة:</strong> 
-          <br/>• نماذج مدربة على RAG للإجابة على استفسارات محددة بالشركة (المنتجات، السياسات، الفواتير).
-          <br/>• فهم السياق (Context-aware) والذاكرة عبر المحادثات (Multi-turn).</li>
-        <li><strong>تحليل المشاعر:</strong> 
-          <br/>• فهم نية العميل (Intent detection) ودرجة رضاه (Sentiment score) من النصوص والصوت.
-          <br/>• توجيه العملاء غير الراضين فوراً لممثل بشري.</li>
-        <li><strong>التوجيه الذكي:</strong> 
-          <br/>• تحويل العميل للقسم أو الشخص المناسب تلقائياً بناءً على طبيعة الاستفسار.
-          <br/>• تقليل وقت الانتظار وزيادة رضا العملاء.</li>
+        <li><strong>Chatbots متقدمة:</strong> RAG للإجابة على استفسارات محددة.</li>
+        <li><strong>تحليل المشاعر والتوجيه الذكي:</strong> فهم النية وتحويل العملاء تلقائياً.</li>
       </ul>
 
       <!-- صورة Applications -->
       <div class="article-image">
-        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&h=350&fit=crop" alt="AI Applications" />
+        <img src="https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=900&h=350&fit=crop" alt="Real World AI Applications" />
         <p class="image-caption">تطبيقات الذكاء الاصطناعي - من الرعاية الصحية إلى الخدمات المالية وخدمة العملاء</p>
       </div>
 
       <div class="conclusion" style="background:linear-gradient(135deg,#0284c7,#00d4ff);color:white;padding:2rem;border-radius:12px;margin:2rem 0">
         <h3>💡 الخلاصة الهندسية الشاملة:</h3>
         <ul style="list-style:none;padding:0">
-          <li>✅ Transformers هي الأساس، لكن الاختيار بين variants (Sparse، Linear، MoE) يعتمد على المهمة والموارد المتاحة.</li>
-          <li>✅ جودة البيانات وتنظيفها أهم من تعقيد النموذج في معظم الحالات الواقعية - Garbage in, garbage out.</li>
-          <li>✅ RAG و Fine-tuning أدوات قوية لتكييف النماذج الكبيرة مع احتياجات محددة، لكن لكل منهما استخدامات مختلفة.</li>
-          <li>✅ تحسين الأداء (Compression، Inference optimization) ضروري للنشر التجاري - النماذج الكبيرة جداً بدون تحسين غير قابلة للاستخدام.</li>
-          <li>✅ الأخلاقيات والمسؤولية ليست اختيارية - يجب دمجها في دورة حياة التطوير من البداية، ليس كفكرة لاحقة.</li>
-          <li>✅ التطبيقات الواقعية تتطلب فهم المجال (Domain Knowledge) بالإضافة إلى الخبرة التقنية - التعاون مع الخبراء ضروري.</li>
-          <li>✅ التعلم المستمر ضروري - مجال AI يتطور بسرعة هائلة (كل 6 أشهر появляются تقنيات جديدة).</li>
+          <li>✅ Transformers هي الأساس، لكن الاختيار بين variants يعتمد على المهمة والموارد.</li>
+          <li>✅ جودة البيانات وتنظيفها أهم من تعقيد النموذج في معظم الحالات الواقعية.</li>
+          <li>✅ RAG و Fine-tuning أدوات قوية لتكييف النماذج الكبيرة مع احتياجات محددة.</li>
+          <li>✅ تحسين الأداء (Compression، Inference optimization) ضروري للنشر التجاري.</li>
+          <li>✅ الأخلاقيات والمسؤولية ليست اختيارية - يجب دمجها في دورة حياة التطوير.</li>
+          <li>✅ التطبيقات الواقعية تتطلب فهم المجال بالإضافة إلى الخبرة التقنية.</li>
+          <li>✅ التعلم المستمر ضروري - مجال AI يتطور بسرعة هائلة.</li>
         </ul>
-        <p style="font-size:1.3rem;font-weight:bold;margin-top:1rem;text-align:center">الذكاء الاصطناعي ليس سحراً، بل هندسة دقيقة وبيانات جيدة ومسؤولية أخلاقية. ✨</p>
+        <p style="font-size:1.3rem;font-weight:bold;margin-top:1rem;text-align:center">الذكاء الاصطناعي ليس سحراً، بل هندسة دقيقة وبيانات جيدة ومسؤولية أخلاقية. 🤖✨</p>
       </div>
     </article>
 
@@ -567,7 +460,7 @@ export const description = "دليل متعمق لـ Transformers، LLMs، RAG،
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
 
-  /* ✅ تنسيق السهم المنبثق (⬆️) */
+  /* ✅ تنسيق السهم المنبثق (️) */
   .back-to-top {
     position: fixed;
     bottom: 95px;
