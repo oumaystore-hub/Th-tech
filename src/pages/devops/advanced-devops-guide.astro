@@ -1,0 +1,544 @@
+---
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+
+export const title = "DevOps المتقدم: من CI/CD إلى GitOps و SRE";
+export const pubDate = "2026-07-18";
+export const description = "دليل متعمق لـ Kubernetes، Terraform، CI/CD Pipelines، والمراقبة المتقدمة";
+---
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} - Th.Tech</title>
+  <meta name="description" content={description} />
+</head>
+<body>
+  <Header />
+  
+  <main class="category-articles">
+    <div class="page-header">
+      <h1>🔄 DevOps المتقدم وهندسة SRE</h1>
+      <p>بناء أنظمة عالية التوفر، أتمتة البنية التحتية، والنشر المستمر</p>
+    </div>
+
+    <!-- ✅ زر الفهرس (أيقونة 📑) -->
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
+    <div class="toc-modal" id="tocModal">
+      <div class="toc-box">
+        <div class="toc-head">
+          <h3>فهرس المقال</h3>
+          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس"></button>
+        </div>
+        <nav class="toc-nav" id="tocNav"></nav>
+      </div>
+    </div>
+
+    <!-- ✅ السهم المنبثق (⬆️) -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
+
+    <article class="article" id="art1">
+      <span class="badge">مستوى خبير / مهندس SRE</span>
+      <h2>DevOps المتقدم: من CI/CD إلى GitOps و SRE</h2>
+      <div class="meta"> 18 يوليو 2026 | ️ 300 دقيقة قراءة</div>
+      <p class="intro">هذا الدليل الشامل والمفصل جداً موجه لمهندسي DevOps، مهندسي SRE (Site Reliability Engineers)، ومهندسي المنصات (Platform Engineers). يغطي خطوط الأنابيب المتقدمة (CI/CD)، إدارة الحاويات بـ Kubernetes، البنية التحتية ككود (Terraform)، أطر العمل الحديثة مثل GitOps، المراقبة العميقة (Observability)، وأمن سلسلة التوريد (DevSecOps).</p>
+      
+      <!-- صورة رئيسية -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&h=400&fit=crop" alt="Server Infrastructure" />
+        <p class="image-caption">البنية التحتية الحديثة - أساس عمل DevOps والموثوقية العالية</p>
+      </div>
+
+      <h3>🔄 الجزء الأول: خطوط الأنابيب المتقدمة (CI/CD Pipelines)</h3>
+      <p>التكامل والنشر المستمر هو العمود الفقري لـ DevOps. الهدف هو أتمتة كل شيء من دمج الكود إلى نشره في الإنتاج بأمان:</p>
+      
+      <h4>1.1 استراتيجيات النشر (Deployment Strategies):</h4>
+      <ul>
+        <li><strong>Rolling Update:</strong> استبدال النسخ القديمة بالجديدة تدريجياً (واحدة تلو الأخرى) لضمان توفر الخدمة دائماً.</li>
+        <li><strong>Blue/Green:</strong> تشغيل نسختين متطابقتين (Blue الحالية، Green الجديدة). التبديل يتم فورياً عبر Load Balancer. عيبه: تكلفة مضاعفة للموارد.</li>
+        <li><strong>Canary:</strong> توجيه نسبة صغيرة من المستخدمين (مثلاً 5%) للنسخة الجديدة لمراقبة الأداء والأخطاء قبل النشر للجميع.</li>
+        <li><strong>Feature Flags:</strong> تفعيل ميزات معينة لعدد من المستخدمين برمجياً دون الحاجة لنشر كود جديد.</li>
+      </ul>
+
+      <h4>1.2 أدوات CI/CD المتقدمة:</h4>
+      <ul>
+        <li><strong>GitHub Actions:</strong>
+          <br/>• <strong>Workflows:</strong> ملفات YAML في `.github/workflows`.
+          <br/>• <strong>Matrix Builds:</strong> اختبار الكود على عدة نسخ من Node/Python/OS في نفس الوقت.
+          <br/>• <strong>Caching:</strong> تسريع البناء عبر تخزين الـ Dependencies (مثل `actions/cache`).</li>
+        <li><strong>GitLab CI:</strong>
+          <br/>• <strong>Runners:</strong> تنفيذ الوظائف (Shared vs. Specific Runners).
+          <br/>• <strong>Artifact Management:</strong> حفظ نتائج البناء للاختبار أو النشر.</li>
+        <li><strong>Jenkins:</strong>
+          <br/>• <strong>Jenkinsfile:</strong> تعريف الـ Pipeline ككود (Pipeline as Code).
+          <br/>• <strong>Plugins:</strong> مكتبة ضخمة للتكامل مع أي أداة.</li>
+      </ul>
+
+      <h4>1.3 اختبار الأمان والجودة (Quality Gates):</h4>
+      <ul>
+        <li><strong>SAST (Static Application Security Testing):</strong> فحص الكود المصدري لاكتشاف الثغرات (SonarQube).</li>
+        <li><strong>DAST (Dynamic Application Security Testing):</strong> فحص التطبيق أثناء التشغيل (OWASP ZAP).</li>
+        <li><strong>SCA (Software Composition Analysis):</strong> فحص المكتبات المستخدمة لاكتشاف ثغرات معروفة (Dependabot، Snyk).</li>
+      </ul>
+
+      <!-- صورة CI/CD Pipeline -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=900&h=350&fit=crop" alt="CI/CD Pipeline Automation" />
+        <p class="image-caption">خطوط الأنابيب - أتمتة الاختبار والنشر لضمان جودة البرمجيات</p>
+      </div>
+
+      <h3>🐳 الجزء الثاني: الحاويات و Kubernetes المتقدم</h3>
+      <p>الحاويات وحدت بيئة التشغيل، و Kubernetes أصبح نظام التشغيل المعياري للسحابة:</p>
+      
+      <h4>2.1 Docker Deep Dive:</h4>
+      <ul>
+        <li><strong>Multi-Stage Builds:</strong> استخدام مراحل متعددة لتقليل حجم الصورة النهائية (مثلاً: بناء الكود في مرحلة، وتشغيله بـ Nginx فقط في المرحلة النهائية).</li>
+        <li><strong>Distroless Images:</strong> صور لا تحتوي على Shell أو Package Manager، مما يقلل مساحة الهجوم (Attack Surface).</li>
+        <li><strong>Layer Caching:</strong> ترتيب تعليمات Dockerfile للاستفادة القصوى من التخزين المؤقت (مثلاً: وضع `COPY package.json` قبل `COPY .`).</li>
+      </ul>
+
+      <h4>2.2 Kubernetes Architecture:</h4>
+      <ul>
+        <li><strong>Control Plane:</strong>
+          <br/>• <strong>API Server:</strong> الواجهة الرئيسية للتواصل.
+          <br/>• <strong>etcd:</strong> قاعدة بيانات مفتاح-قيمة (Key-Value) لحالة الـ Cluster.
+          <br/>• <strong>Scheduler:</strong> توزيع الـ Pods على العقد المتاحة.
+          <br/>• <strong>Controller Manager:</strong> مشغلات الحالة (ReplicaSet Controller, Node Controller).</li>
+        <li><strong>Data Plane (Nodes):</strong>
+          <br/>• <strong>Kubelet:</strong> وكيل يعمل على كل عقدة ويضمن عمل الحاويات.
+          <br/>• <strong>Kube-proxy:</strong> إدارة قواعد الشبكة (IPTables/IPVS).</li>
+      </ul>
+
+      <h4>2.3 إدارة التطبيقات بـ Helm و Kustomize:</h4>
+      <ul>
+        <li><strong>Helm:</strong> مدير حزم Kubernetes. استخدام Charts قوالب (Templates) لتخصيص التطبيقات لبيئات مختلفة (Dev, Staging, Prod).</li>
+        <li><strong>Kustomize:</strong> أداة مدمجة في kubectl تعتمد على overlays لتعديل ملفات YAML دون استخدام القوالب.</li>
+        <li><strong>Operators:</strong> نمط برمجة يمتد لوظائف Kubernetes لإدارة التطبيقات المعقدة (قواعد البيانات، الـ Cache) تلقائياً.</li>
+      </ul>
+
+      <!-- صورة Kubernetes -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?w=900&h=350&fit=crop" alt="Kubernetes Orchestration" />
+        <p class="image-caption">Kubernetes - تنسيق الحاويات وإدارتها على نطاق واسع</p>
+      </div>
+
+      <h3>🏗️ الجزء الثالث: البنية التحتية ككود (IaC)</h3>
+      <p>IaC يسمح بإدارة البنية التحتية عبر ملفات تعريف قابلة للنسخ والمراجعة بدلاً من النقر اليدوي:</p>
+      
+      <h4>3.1 Terraform المتقدم:</h4>
+      <ul>
+        <li><strong>State Management:</strong>
+          <br/>• <strong>Remote Backend:</strong> تخزين الـ State في S3 أو Terraform Cloud لمنع التعارض.
+          <br/>• <strong>Locking:</strong> استخدام DynamoDB لمنع شخصين من التعديل في نفس الوقت.
+          <br/>• <strong>State Manipulation:</strong> استخدام `terraform import` و `terraform state mv` لإصلاح الحالات.</li>
+        <li><strong>Modules:</strong> إعادة استخدام الكود عبر إنشاء Modules عامة (مثل: Module لشبكة VPC، Module لخادم EC2).</li>
+        <li><strong>Workspaces:</strong> عزل بيئات مختلفة (Dev, Prod) باستخدام نفس كود الـ Terraform.</li>
+        <li><strong>Dynamic Blocks & For-Each:</strong> إنشاء موارد متعددة ديناميكياً بناءً على المتغيرات.</li>
+      </ul>
+
+      <h4>3.2 Ansible و Configuration Management:</h4>
+      <ul>
+        <li><strong>Playbooks:</strong> كتابة مهام التشغيل بصيغة YAML.</li>
+        <li><strong>Idempotency:</strong> ضمان أن تشغيل السكربت عدة مرات يعطي نفس النتيجة دون تغييرات غير مرغوبة.</li>
+        <li><strong>Vault:</strong> تشفير البيانات الحساسة (كلمات المرور، المفاتيح) داخل Playbooks.</li>
+      </ul>
+
+      <!-- صورة IaC -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=900&h=350&fit=crop" alt="Infrastructure as Code" />
+        <p class="image-caption">IaC - إدارة الخوادم والشبكات عبر الكود البرمجي</p>
+      </div>
+
+      <h3>🐙 الجزء الرابع: GitOps و ArgoCD</h3>
+      <p>GitOps هو تطبيق ممارسات DevOps على البنية التحتية، حيث يكون Git هو "مصدر الحقيقة" الوحيد (Single Source of Truth):</p>
+      
+      <h4>4.1 مبادئ GitOps:</h4>
+      <ul>
+        <li><strong>Declarative:</strong> وصف الحالة المطلوبة للنظام في ملفات (YAML) مخزنة في Git.</li>
+        <li><strong>Versioned & Immutable:</strong> تاريخ كامل للتغييرات، وإمكانية التراجع (Rollback) عبر Git.</li>
+        <li><strong>Pulled:</strong> العميل (Cluster) يسحب التغييرات من Git، بدلاً من دفعها من CI.</li>
+      </ul>
+
+      <h4>4.2 أدوات GitOps:</h4>
+      <ul>
+        <li><strong>ArgoCD:</strong>
+          <br/>• مراقبة مستمرة لـ Git Repo ومقارنته بحالة الـ Cluster.
+          <br/>• واجهة رسومية (UI) قوية لمراقبة الصحة والمزامنة.
+          <br/>• دعم Sync Waves و Hooks للتحكم في ترتيب النشر.</li>
+        <li><strong>Flux CD:</strong>
+          <br/>• أداة CNCF خفيفة الوزن تركز على التشغيل الآلي.
+          <br/>• تكامل عميق مع Source-Controller (Git, S3, Helm Repo).</li>
+      </ul>
+
+      <!-- صورة GitOps -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=900&h=350&fit=crop" alt="GitOps Workflow" />
+        <p class="image-caption">GitOps - إدارة البنية التحتية عبر مستودعات Git</p>
+      </div>
+
+      <h3> الجزء الخامس: المراقبة والملاحظة (Observability)</h3>
+      <p>المعرفة بحالة النظام ليست رفاهية بل ضرورة. الملاحظة تختلف عن المراقبة التقليدية:</p>
+      
+      <h4>5.1 الركائز الثلاث (Three Pillars):</h4>
+      <ul>
+        <li><strong>Metrics:</strong> أرقام رقمية عبر الزمن (CPU, Memory, Request Rate). أداة: <strong>Prometheus</strong>.</li>
+        <li><strong>Logs:</strong> سجلات الأحداث والنصوص. أداة: <strong>ELK Stack (Elasticsearch, Logstash, Kibana)</strong> أو <strong>Loki</strong>.</li>
+        <li><strong>Traces:</strong> تتبع طلب واحد عبر عدة خدمات (Microservices). أداة: <strong>Jaeger</strong> أو <strong>Zipkin</strong>.</li>
+      </ul>
+
+      <h4>5.2 SRE والمعايير الذهبية:</h4>
+      <ul>
+        <li><strong>SLI (Service Level Indicator):</strong> مقياس الأداء (مثلاً: نسبة الطلبات الناجحة 99.9%).</li>
+        <li><strong>SLO (Service Level Objective):</strong> الهدف الذي نسعى لتحقيقه (مثلاً: نريد نسبة نجاح 99.9%).</li>
+        <li><strong>SLA (Service Level Agreement):</strong> العقد مع العميل والعقوبات في حال عدم تحقيق الهدف.</li>
+        <li><strong>Error Budget:</strong> المسموح به من الأخطاء قبل الحاجة لإيقاف الميزات الجديدة وإصلاح النظام.</li>
+      </ul>
+
+      <h4>5.3 التنبيهات الذكية (Alerting):</h4>
+      <ul>
+        <li><strong>Alertmanager:</strong> تجميع التنبيهات، كتمها (Silencing)، وتوجيهها للقنوات الصحيحة (Slack, PagerDuty, Email).</li>
+        <li><strong>Golden Signals:</strong> Latency (التأخير)، Traffic (الحمل)، Errors (الأخطاء)، Saturation (الاستهلاك).</li>
+      </ul>
+
+      <!-- صورة Monitoring -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&h=350&fit=crop" alt="Monitoring Dashboards" />
+        <p class="image-caption">المراقبة - لوحات تحكم حية لمتابعة صحة الأنظمة</p>
+      </div>
+
+      <h3>🔒 الجزء السادس: DevSecOps وأمن سلسلة التوريد</h3>
+      <p>دمج الأمان في كل مرحلة من مراحل دورة حياة التطوير (Shift Left Security):</p>
+      
+      <h4>6.1 Secret Management:</h4>
+      <ul>
+        <li><strong>HashiCorp Vault:</strong> إدارة ديناميكية للأسرار (كلمات المرور، Tokens) مع تدقيق شامل.</li>
+        <li><strong>External Secrets Operator:</strong> مزامنة الأسرار من Cloud Providers (AWS Secrets Manager) إلى Kubernetes.</li>
+        <li><strong>GitLeaks / TruffleHog:</strong> فحص الـ Git History لمنع تسرب المفاتيح عن طريق الخطأ.</li>
+      </ul>
+
+      <h4>6.2 Supply Chain Security:</h4>
+      <ul>
+        <li><strong>SLSA Framework:</strong> إطار عمل لضمان سلامة سلسلة التوريد البرمجية.</li>
+        <li><strong>Signing Images:</strong> توقيع صور Docker باستخدام <strong>Cosign</strong> أو <strong>Notary</strong>.</li>
+        <li><strong>SBOM (Software Bill of Materials):</strong> قائمة مكونات البرمجيات المستخدمة (ضروري للكشف عن الثغرات الجديدة بسرعة).</li>
+      </ul>
+
+      <!-- صورة Security -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=900&h=350&fit=crop" alt="DevSecOps Security" />
+        <p class="image-caption">DevSecOps - دمج الأمان في خطوط الأنابيب والحماية من الثغرات</p>
+      </div>
+
+      <h3>🚀 الجزء السابع: التكلفة و FinOps</h3>
+      <p>إدارة تكلفة السحابة أصبحت جزءاً أساسياً من دور DevOps:</p>
+      
+      <h4>7.1 استراتيجيات توفير التكلفة:</h4>
+      <ul>
+        <li><strong>Right-Sizing:</strong> تحليل استخدام الموارد وتقليلها (مثلاً: تقليل CPU Request في K8s).</li>
+        <li><strong>Spot Instances:</strong> استخدام الخوادم الفائضة بتكلفة أقل (لأحمال العمل غير الحرجة).</li>
+        <li><strong>Auto-Scaling:</strong> تقليل عدد النسخ (Replicas) في أوقات الخمول.</li>
+        <li><strong>Kubecost:</strong> أداة لمراقبة تكلفة الـ Kubernetes Cluster ومعرفة تكلفة كل Namespace.</li>
+      </ul>
+
+      <div class="conclusion" style="background:linear-gradient(135deg,#0284c7,#00d4ff);color:white;padding:2rem;border-radius:12px;margin:2rem 0">
+        <h3>💡 الخلاصة الهندسية الشاملة:</h3>
+        <ul style="list-style:none;padding:0">
+          <li>✅ الأتمتة (Automation) هي الحل لكل شيء متكرر وبشري.</li>
+          <li>✅ البنية التحتية ككود (IaC) تجعل البيئة قابلة للتكرار والمراجعة.</li>
+          <li>✅ المراقبة (Observability) لا تقل أهمية عن الكود نفسه.</li>
+          <li>✅ GitOps يبسط إدارة Kubernetes ويجعل التغييرات شفافة.</li>
+          <li>✅ الأمان مسؤولية الجميع (Shift Left) وليس فقط فريق الحماية.</li>
+          <li>✅ التكلفة يجب مراقبتها باستمرار (FinOps).</li>
+        </ul>
+        <p style="font-size:1.3rem;font-weight:bold;margin-top:1rem;text-align:center">DevOps ليس أدوات، بل ثقافة بناء أنظمة موثوقة وسريعة وآمنة. 🔄✨</p>
+      </div>
+    </article>
+
+    <ShareButtons />
+  </main>
+  
+  <Footer />
+</body>
+</html>
+
+<style>
+  :root { --bg: #f8fafc; --card: #fff; --text: #0f172a; --text-sec: #64748b; --primary: #0284c7; --border: rgba(2,132,199,0.2); }
+  html.dark-mode { --bg: #0b1120; --card: #1e293b; --text: #f1f5f9; --text-sec: #94a3b8; --primary: #38bdf8; --border: rgba(56,189,248,0.2); }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; margin: 0; }
+  .category-articles { max-width: 950px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+  .page-header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 2px solid var(--border); }
+  .page-header h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; }
+  .page-header p { color: var(--text-sec); font-size: 1.1rem; }
+  .article { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 2.5rem 2rem; margin-bottom: 3rem; }
+  .badge { display: inline-block; background: var(--primary); color: white; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; margin-bottom: 1rem; }
+  .article h2 { color: var(--primary); font-size: 1.8rem; margin: 2rem 0 1rem; }
+  .article h3 { color: var(--text); font-size: 1.5rem; margin: 2.5rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+  .article h4 { color: var(--text-sec); font-size: 1.2rem; margin: 2rem 0 0.8rem; font-weight: 600; }
+  .meta { color: var(--text-sec); font-size: 0.9rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border); }
+  .intro { font-size: 1.15rem; color: var(--text-sec); margin-bottom: 2.5rem; padding: 2rem; background: rgba(2,132,199,0.05); border-right: 4px solid var(--primary); border-radius: 8px; line-height: 1.9; }
+  .article ul { padding-right: 1.5rem; margin: 1.5rem 0; }
+  .article li { margin-bottom: 0.8rem; line-height: 1.9; color: var(--text-sec); }
+  .article li strong { color: var(--primary); }
+  .conclusion ul { list-style: none !important; padding: 0; }
+  .conclusion li { color: white !important; font-size: 1.05rem; margin: 0.8rem 0; line-height: 1.8; }
+
+  /* ✅ تنسيق الصور في المقال */
+  .article-image {
+    margin: 2.5rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border: 2px solid var(--border);
+  }
+  .article-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .article-image:hover img {
+    transform: scale(1.02);
+  }
+  .image-caption {
+    background: var(--bg);
+    color: var(--text-sec);
+    padding: 1rem 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    font-style: italic;
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ✅ تنسيق زر الفهرس المتوهج (أيقونة 📑) */
+  .toc-btn { 
+    position: fixed; 
+    bottom: 30px; 
+    left: 30px; 
+    width: 55px; 
+    height: 55px; 
+    background: linear-gradient(135deg, var(--primary), #00d4ff); 
+    border: none; 
+    border-radius: 50%; 
+    color: white; 
+    font-size: 1.8rem;
+    cursor: pointer; 
+    box-shadow: 0 4px 15px rgba(2,132,199,0.5); 
+    z-index: 998; 
+    transition: all 0.3s ease; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .toc-btn:hover { 
+    transform: scale(1.1); 
+    box-shadow: 0 6px 20px rgba(2,132,199,0.7); 
+  }
+  
+  .toc-modal { 
+    display: none; 
+    position: fixed; 
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6); 
+    backdrop-filter: blur(8px);
+    z-index: 999; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 6rem 1.5rem 1.5rem; 
+    animation: fadeIn 0.3s ease;
+  }
+  .toc-modal.active { display: flex; }
+  
+  .toc-box { 
+    background: var(--card); 
+    width: 100%; 
+    max-width: 550px; 
+    border-radius: 20px; 
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .toc-head { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 1.5rem 2rem; 
+    background: var(--bg);
+    border-bottom: 1px solid var(--border); 
+    flex-shrink: 0;
+  }
+  .toc-head h3 { 
+    color: var(--primary); 
+    margin: 0; 
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  .toc-close { 
+    background: transparent; 
+    border: none; 
+    color: var(--text-sec); 
+    font-size: 2rem; 
+    line-height: 1;
+    cursor: pointer; 
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .toc-close:hover { 
+    background: #fee2e2; 
+    color: #ef4444;
+  }
+  
+  .toc-nav { 
+    display: flex; 
+    flex-direction: column; 
+    padding: 1rem;
+    gap: 0.6rem; 
+    overflow-y: auto; 
+  }
+  
+  /* ✅ الحل الجذري: استخدام div بدلاً من a - لا خطوط نهائياً */
+  .toc-item { 
+    display: block !important;
+    background: var(--bg) !important; 
+    color: var(--text) !important;
+    padding: 1rem 1.2rem !important; 
+    border-radius: 12px !important; 
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+    cursor: pointer !important;
+    border: 1px solid transparent !important;
+    text-decoration: none !important;
+    border-bottom: none !important;
+    outline: none !important;
+    transition: all 0.25s ease !important;
+  }
+  
+  .toc-item:hover { 
+    background: rgba(2,132,199,0.08) !important; 
+    border-color: rgba(2,132,199,0.2) !important;
+    color: var(--primary) !important;
+    transform: translateX(-4px) !important;
+  }
+
+  /* Scrollbar أنيق */
+  .toc-nav::-webkit-scrollbar { width: 6px; }
+  .toc-nav::-webkit-scrollbar-track { background: transparent; }
+  .toc-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+  .toc-nav::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+  
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+  /* ✅ تنسيق السهم المنبثق (⬆️) */
+  .back-to-top {
+    position: fixed;
+    bottom: 95px;
+    left: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--card);
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    color: var(--primary);
+    font-size: 1.6rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 997;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .back-to-top.show {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+  }
+  .back-to-top:hover {
+    background: var(--primary);
+    color: #fff !important;
+    transform: scale(1.1) translateY(0) !important;
+    box-shadow: 0 0 20px rgba(2,132,199,0.6);
+  }
+
+  @media (max-width: 768px) {
+    .category-articles { padding: 2rem 1rem 3rem !important; }
+    .page-header h1 { font-size: 1.6rem !important; }
+    .article { padding: 1.5rem 1.2rem !important; }
+    .article h2 { font-size: 1.4rem !important; }
+    .article h3 { font-size: 1.2rem !important; }
+    .article h4 { font-size: 1.05rem !important; }
+    .article-image { margin: 1.5rem 0 !important; }
+    .article-image img { height: 200px !important; object-fit: cover !important; }
+    .image-caption { padding: 0.8rem 1rem !important; font-size: 0.85rem !important; }
+    .toc-btn { width: 50px !important; height: 50px !important; bottom: 15px !important; left: 15px !important; font-size: 1.6rem !important; }
+    .back-to-top { width: 42px !important; height: 42px !important; bottom: 75px !important; left: 15px !important; font-size: 1.4rem !important; }
+    .toc-modal { padding: 7rem 1rem 1rem !important; }
+    .toc-box { max-width: 95% !important; border-radius: 16px !important; }
+    .toc-head { padding: 1.2rem 1.5rem !important; }
+    .toc-head h3 { font-size: 1.2rem !important; }
+    .toc-nav { padding: 0.8rem !important; gap: 0.5rem !important; }
+    .toc-item { padding: 0.9rem 1rem !important; font-size: 0.95rem !important; }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // ✅ منطق الفهرس (يستخدم div بدلاً من a)
+    var tocBtn = document.getElementById('tocBtn');
+    var tocModal = document.getElementById('tocModal');
+    var tocClose = document.getElementById('tocClose');
+    var tocNav = document.getElementById('tocNav');
+    
+    if (tocBtn && tocModal && tocNav) {
+      document.querySelectorAll('.article h3').forEach(function(h3) {
+        var item = document.createElement('div');
+        item.className = 'toc-item';
+        item.textContent = h3.textContent;
+        item.onclick = function(e) {
+          e.preventDefault();
+          h3.scrollIntoView({ behavior: 'smooth' });
+          tocModal.classList.remove('active');
+        };
+        tocNav.appendChild(item);
+      });
+
+      tocBtn.onclick = function() { tocModal.classList.add('active'); };
+      tocClose.onclick = function() { tocModal.classList.remove('active'); };
+      tocModal.onclick = function(e) { if (e.target === tocModal) tocModal.classList.remove('active'); };
+    }
+
+    // ✅ منطق السهم المنبثق
+    var backBtn = document.getElementById('backToTop');
+    if (backBtn) {
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 400) {
+          backBtn.classList.add('show');
+        } else {
+          backBtn.classList.remove('show');
+        }
+      }, { passive: true });
+
+      backBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  });
+</script>
