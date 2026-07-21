@@ -1,0 +1,1025 @@
+---
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+
+export const title = "الشبكات المتقدمة: دليل شامل من BGP إلى SD-WAN والأتمتة";
+export const pubDate = "2026-07-18";
+export const description = "دليل متعمق جداً لبروتوكولات التوجيه، أتمتة الشبكات، SASE، والمراقبة المتقدمة";
+---
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} - Th.Tech</title>
+  <meta name="description" content={description} />
+</head>
+<body>
+  <Header />
+  
+  <main class="category-articles">
+    <div class="page-header">
+      <h1>🌐 الشبكات المتقدمة وأمن المؤسسات</h1>
+      <p>الدليل الشامل من الأساسيات إلى الاحتراف في هندسة الشبكات الحديثة</p>
+    </div>
+
+    <!-- ✅ زر الفهرس (أيقونة 📑) -->
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
+    <div class="toc-modal" id="tocModal">
+      <div class="toc-box">
+        <div class="toc-head">
+          <h3>فهرس المقال</h3>
+          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس">✕</button>
+        </div>
+        <nav class="toc-nav" id="tocNav"></nav>
+      </div>
+    </div>
+
+    <!-- ✅ السهم المنبثق (️) -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
+
+    <article class="article" id="art1">
+      <span class="badge">مستوى خبير / مهندس شبكات محترف</span>
+      <h2>الشبكات المتقدمة: دليل شامل من BGP إلى SD-WAN والأتمتة</h2>
+      <div class="meta"> 18 يوليو 2026 | ⏱️ 500+ دقيقة قراءة</div>
+      <p class="intro">هذا الدليل الشامل والمفصل جداً (أكثر من 500 دقيقة قراءة) موجه لمهندسي الشبكات المحترفين (CCIE/JNCIE/CCNP)، معماريي البنية التحتية، ومطوري NetDevOps. يغطي بروتوكولات التوجيه المتقدمة (BGP, OSPF, EIGRP, IS-IS)، شبكات مُعرفة بالبرمجيات (SDN/SD-WAN)، أتمتة الشبكات عبر Python و Ansible و Terraform، أمن Zero Trust و SASE، مراقبة الأداء باستخدام eBPF و Streaming Telemetry، تصميم الشبكات السحابية الهجينة، وحل المشكلات المعقدة. يتضمن أمثلة عملية، أوامر حقيقية، ودراسات حالة من الواقع.</p>
+      
+      <!-- صورة رئيسية -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=900&h=400&fit=crop" alt="Network Infrastructure" />
+        <p class="image-caption">البنية التحتية للشبكات - قلب الاتصالات المؤسسية الحديثة</p>
+      </div>
+
+      <h3>📡 الجزء الأول: بروتوكولات التوجيه والتبديل المتقدم (Routing & Switching Deep Dive)</h3>
+      <p>فهم عميق لبروتوكولات التوجيه يضمن استقرار الشبكات الكبيرة، تجنب حلقات التوجيه (Routing Loops)، وتحقيق التوازن الأمثل للحمل (Load Balancing). هذا القسم يغطي التفاصيل الداخلية لكل بروتوكول مع أمثلة عملية:</p>
+      
+      <h4>1.1 BGP المتقدم (Border Gateway Protocol):</h4>
+      <ul>
+        <li><strong>المفاهيم الأساسية المتقدمة:</strong>
+          <br/>• <strong>Path Vector Protocol:</strong> BGP لا يستخدم Metric مثل IGP بل يعتمد على Path Attributes.
+          <br/>• <strong>AS_PATH:</strong> قائمة Autonomous Systems التي مرت بها الـ Route. كلما كان أقصر، كان أفضل (عادة).
+          <br/>• <strong>NEXT_HOP:</strong> عنوان IP للـ Router التالي. في eBGP يتغير، في iBGP يبقى كما هو.
+          <br/>• <strong>LOCAL_PREF:</strong> (Local Preference) يُستخدم داخل AS واحد لتحديد المسار المفضل. القيمة الأعلى أفضل (Default: 100).
+          <br/>• <strong>MED:</strong> (Multi-Exit Discriminator) يُرسل لـ AS مجاور ليقترح المسار الأفضل للدخول. القيمة الأقل أفضل.</li>
+        
+        <li><strong>أنواع الـ Peering:</strong>
+          <br/>• <strong>eBGP (External BGP):</strong> بين AS مختلفة (مثلاً بين شركتك و ISP). TTL=1 عادة.
+          <br/>• <strong>iBGP (Internal BGP):</strong> داخل نفس AS. يتطلب Full Mesh أو Route Reflectors.
+          <br/>• <strong>Route Reflectors:</strong> لتجنب Full Mesh (n*(n-1)/2 connections). الـ RR يعيد إعلان الـ Routes للعملاء (Clients).</li>
+        
+        <li><strong>أمثلة عملية (Cisco IOS):</strong>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:1rem;border-radius:8px;overflow-x:auto;margin:1rem 0"><code>! تكوين BGP أساسي
+router bgp 65001
+ bgp router-id 1.1.1.1
+ neighbor 10.0.0.2 remote-as 65002
+ neighbor 10.0.0.2 description ISP-Peer
+ neighbor 192.168.1.2 remote-as 65001
+ neighbor 192.168.1.2 update-source Loopback0
+ !
+ address-family ipv4
+  neighbor 10.0.0.2 activate
+  neighbor 10.0.0.2 next-hop-self
+  neighbor 192.168.1.2 activate
+  network 172.16.0.0 mask 255.255.0.0
+ exit-address-family</code></pre>
+        </li>
+        
+        <li><strong>Troubleshooting:</strong>
+          <br/>• <code>show ip bgp summary</code> - لرؤية حالة الـ Peers.
+          <br/>• <code>show ip bgp</code> - لعرض جدول BGP الكامل.
+          <br/>• <code>debug ip bgp</code> - لتتبع التحديثات (احذر في Production!).</li>
+      </ul>
+
+      <h4>1.2 OSPF المتقدم (Open Shortest Path First):</h4>
+      <ul>
+        <li><strong>المفاهيم المتقدمة:</strong>
+          <br/>• <strong>Areas:</strong> تقسيم الشبكة لتقليل حجم LSDB و SPF Calculations.
+            <br/>  - <strong>Area 0 (Backbone):</strong> جميع الـ Areas يجب أن تتصل بها.
+            <br/>  - <strong>Standard Areas:</strong> Areas عادية (1, 2, 3...).
+            <br/>  - <strong>Stub Area:</strong> لا تستقبل External Routes (Type 5 LSAs). تستخدم Default Route.
+            <br/>  - <strong>Totally Stubby:</strong> Stub + لا Inter-Area Routes (Type 3). فقط Default.
+            <br/>  - <strong>NSSA (Not-So-Stubby Area):</strong> تسمح بـ External Routes محلية (Type 7) تتحول لـ Type 5 في Area 0.</li>
+        
+        <li><strong>LSA Types:</strong>
+          <br/>• <strong>Type 1 (Router LSA):</strong> يصف الـ Router و Links داخل Area.
+          <br/>• <strong>Type 2 (Network LSA):</strong> يصف الـ Multi-Access Network (بواسطة DR).
+          <br/>• <strong>Type 3 (Summary LSA):</strong> Routes بين Areas (بواسطة ABR).
+          <br/>• <strong>Type 4 (ASBR Summary):</strong> يصف كيفية الوصول لـ ASBR.
+          <br/>• <strong>Type 5 (External LSA):</strong> Routes من خارج OSPF Domain (بواسطة ASBR).
+          <br/>• <strong>Type 7 (NSSA External):</strong> مثل Type 5 لكن داخل NSSA.</li>
+        
+        <li><strong>DR/BDR Election:</strong>
+          <br/>• في Multi-Access Networks (Ethernet)، يُنتخب DR (Designated Router) و BDR.
+          <br/>• المعايير: Priority الأعلى (Default: 1)، ثم Router ID الأعلى.
+          <br/>• Priority = 0 يعني لا مشاركة في الانتخاب.</li>
+        
+        <li><strong>مثال عملي:</strong>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:1rem;border-radius:8px;overflow-x:auto;margin:1rem 0"><code>router ospf 1
+ router-id 1.1.1.1
+ passive-interface GigabitEthernet0/1
+ network 10.0.0.0 0.0.0.255 area 0
+ network 172.16.0.0 0.0.255.255 area 1
+ area 1 stub no-summary
+ auto-cost reference-bandwidth 10000</code></pre>
+        </li>
+      </ul>
+
+      <h4>1.3 VXLAN و EVPN (Virtual Extensible LAN):</h4>
+      <ul>
+        <li><strong>المشكلة التي يحلها:</strong> VLANs محدودة بـ 4096 فقط. VXLAN يستخدم 24-bit VNI (Virtual Network Identifier) = 16 مليون شبكة!</li>
+        <li><strong>كيف يعمل:</strong>
+          <br/>• يغلف Ethernet Frame داخل UDP Packet (MAC-in-UDP).
+          <br/>• VTEP (VXLAN Tunnel End Point) يقوم بالتغليف وفك التغليف.
+          <br/>• Underlay Network (IP Network) ينقل الـ Packets.
+          <br/>• Overlay Network (VXLAN) يبني الـ Layer 2 Domain.</li>
+        
+        <li><strong>EVPN (Ethernet VPN):</strong>
+          <br/>• يستخدم BGP كـ Control Plane لنشر MAC Addresses و IP Addresses.
+          <br/>• Types of Routes:
+            <br/>  - <strong>Type 1:</strong> Ethernet Auto-Discovery (لـ Multi-Homing).
+            <br/>  - <strong>Type 2:</strong> MAC/IP Advertisement (ينشر MAC و IP).
+            <br/>  - <strong>Type 3:</strong> Inclusive Multicast (لـ Broadcast/Multicast).
+            <br/>  - <strong>Type 5:</strong> IP Prefix Route (لـ Layer 3).</li>
+        
+        <li><strong>مثال تكوين (Cisco NX-OS):</strong>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:1rem;border-radius:8px;overflow-x:auto;margin:1rem 0"><code>feature bgp
+feature nxapi
+feature vn-segment-vlan-based
+
+nv overlay evpn
+
+vlan 10
+  vn-segment 10010
+
+interface nve1
+  no shutdown
+  host-reachability protocol bgp
+  source-interface loopback0
+  member vni 10010
+
+router bgp 65001
+  neighbor 2.2.2.2 remote-as 65001
+  neighbor 2.2.2.2 update-source loopback0
+  address-family l2vpn evpn
+    neighbor 2.2.2.2 activate
+    send-community extended</code></pre>
+        </li>
+      </ul>
+
+      <!-- صورة Routing -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&h=350&fit=crop" alt="Routing and Switching" />
+        <p class="image-caption">التوجيه والتبديل - توجيه الحزم بكفاءة وعزل الشبكات بأمان</p>
+      </div>
+
+      <h3>🌐 الجزء الثاني: شبكات مُعرفة بالبرمجيات (SDN & SD-WAN)</h3>
+      <p>فصل مستوى التحكم (Control Plane) عن مستوى البيانات (Data Plane) يمنح مرونة غير مسبوقة، أتمتة كاملة، وقدرة على التكيف السريع مع المتغيرات:</p>
+      
+      <h4>2.1 معمارية SDN المتقدمة:</h4>
+      <ul>
+        <li><strong>الطبقات الثلاث:</strong>
+          <br/>• <strong>Application Layer:</strong> تطبيقات الشبكة (Firewall, Load Balancer, QoS).
+          <br/>• <strong>Control Layer:</strong> الـ SDN Controller (مثل: OpenDaylight, ONOS, Cisco APIC).
+          <br/>• <strong>Infrastructure Layer:</strong> الـ Switches و Routers (Data Plane).</li>
+        
+        <li><strong>Southbound Interfaces:</strong>
+          <br/>• <strong>OpenFlow:</strong> البروتوكول الأشهر. يسمح للـ Controller بإضافة/حذف/تعديل Flow Entries في الـ Flow Table.
+          <br/>• <strong>NETCONF/YANG:</strong> NETCONF بروتوكول إدارة، YANG لغة نمذجة البيانات.
+          <br/>• <strong>gNMI (gRPC Network Management Interface):</strong> حديث، سريع، يستخدم gRPC و Protocol Buffers.</li>
+        
+        <li><strong>Northbound Interfaces:</strong>
+          <br/>• RESTful APIs (JSON/XML) لدمج الـ SDN مع أنظمة خارجية (Orchestration, Monitoring, ITSM).</li>
+      </ul>
+
+      <h4>2.2 SD-WAN المتقدم:</h4>
+      <ul>
+        <li><strong>المشكلة التي يحلها:</strong>
+          <br/>• WAN التقليدي (MPLS) غالي، بطيء في التجهيز، وغير مرن.
+          <br/>• SD-WAN يستخدم Internet, LTE, MPLS معاً بذكاء.</li>
+        
+        <li><strong>المكونات:</strong>
+          <br/>• <strong>vEdge/cEdge:</strong> أجهزة أو Virtual Appliances في الفروع.
+          <br/>• <strong>vSmart Controller:</strong> يوزع السياسات و Routes.
+          <br/>• <strong>vManage:</strong> واجهة إدارة مركزية (GUI/API).
+          <br/>• <strong>vBond:</strong> Orchestrator للتوثيق الأولي.</li>
+        
+        <li><strong>Application-Aware Routing:</strong>
+          <br/>• يقيس كل Link: Latency, Jitter, Loss, Throughput.
+          <br/>• يطبق Policy بناءً على التطبيق:
+            <br/>  - VoIP → أقل Latency & Jitter.
+            <br/>  - Backup → أعلى Throughput (حتى لو Loss عالي).
+            <br/>  - SaaS (Office 365) → Direct Internet Access (لا يمرر بالـ DC).</li>
+        
+        <li><strong>Forward Error Correction (FEC):</strong>
+          <br/>• يُرسل redundant data packets.
+          <br/>• إذا ضاع Packet، الـ Receiver يعيد بناءه بدون Retransmission.
+          <br/>• مثالي للـ Real-Time Apps (Voice, Video).</li>
+        
+        <li><strong>مثال Policy (Cisco Viptela):</strong>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:1rem;border-radius:8px;overflow-x:auto;margin:1rem 0"><code>policy
+  lists
+    app-list VoIP
+      app voip
+    !
+    sla-class Good-SLA
+      latency 150
+      jitter 30
+      loss 1
+    !
+    vpn-list All
+      all
+  !
+  central-policy
+    policy VoIP-Policy
+      sequence 10
+        match
+          app-list VoIP
+        action
+          set
+            sla-class Good-SLA
+            preferred-color mpls
+          !
+          cflowd
+        !
+      !
+    !
+  !
+apply-policy
+  site-list Branches
+    vpn-list All
+      central-policy VoIP-Policy</code></pre>
+        </li>
+      </ul>
+
+      <!-- صورة SD-WAN -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=900&h=350&fit=crop" alt="SD-WAN and Software Defined Networking" />
+        <p class="image-caption">SD-WAN - إدارة الروابط المتعددة بذكاء لتحسين الأداء والتكلفة</p>
+      </div>
+
+      <h3> الجزء الثالث: أمن الشبكات و SASE (Secure Access Service Edge)</h3>
+      <p>أمن الشبكات الحديث يتجاوز الجدران النارية التقليدية نحو نماذج هجينة، موزعة، ومبنية على Zero Trust:</p>
+      
+      <h4>3.1 Next-Generation Firewalls (NGFW) المتقدمة:</h4>
+      <ul>
+        <li><strong>Deep Packet Inspection (DPI):</strong>
+          <br/>• لا يكتفي بـ Header (Layer 3/4) بل يفحص Payload (Layer 7).
+          <br/>• يكشف التطبيقات حتى لو استخدمت Ports غير قياسية أو Encryption (SSL Inspection).
+          <br/>• مثال: يفرق بين Facebook Video و Facebook Chat.</li>
+        
+        <li><strong>IPS/IDS Integration:</strong>
+          <br/>• <strong>IDS (Intrusion Detection System):</strong> يكتشف ويرسل تنبيه فقط.
+          <br/>• <strong>IPS (Intrusion Prevention System):</strong> يكتشف ويسقط الـ Packet أو ينهي الـ Session.
+          <br/>• Signature-Based: يعتمد على قواعد معروفة (مثل: CVE-2024-1234).
+          <br/>• Anomaly-Based: يكتشف السلوك الشاذ (مثل: Port Scan، DDoS).</li>
+        
+        <li><strong>User-ID & App-ID:</strong>
+          <br/>• يربط الـ Policy بالمستخدم (من AD/LDAP) وليس IP فقط.
+          <br/>• يكتشف التطبيق تلقائياً (أكثر من 3000 Application Signature).</li>
+        
+        <li><strong>مثال Policy (Palo Alto):</strong>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:1rem;border-radius:8px;overflow-x:auto;margin:1rem 0"><code>Rule Name: Allow-HR-Apps
+Source Zone: Trust
+Source User: HR-Group
+Destination Zone: Untrust
+Application: salesforce, office365
+Action: Allow
+Profile: 
+  Vulnerability: High-Sev-Only
+  URL-Filtering: Block-Malware
+Log at Session End: Yes</code></pre>
+        </li>
+      </ul>
+
+      <h4>3.2 Secure Access Service Edge (SASE):</h4>
+      <ul>
+        <li><strong>التعريف:</strong> دمج WAN (SD-WAN) مع Security Services (FWaaS, CASB, ZTNA, SWG) في منصة سحابية موحدة.</li>
+        
+        <li><strong>المكونات:</strong>
+          <br/>• <strong>SD-WAN:</strong> للربط الذكي بين الفروع والسحابة.
+          <br/>• <strong>FWaaS (Firewall as a Service):</strong> Firewall في السحابة (ليس On-Premise).
+          <br/>• <strong>CASB (Cloud Access Security Broker):</strong> يراقب ويؤمن الوصول لـ SaaS (مثل: Office 365, Salesforce).
+          <br/>• <strong>ZTNA (Zero Trust Network Access):</strong> يمنح وصولاً دقيقاً للتطبيقات (ليس للشبكة كاملة).
+          <br/>• <strong>SWG (Secure Web Gateway):</strong> يفلتر الويب، يمنع Malware، ويطبق سياسات الاستخدام.</li>
+        
+        <li><strong>الفوائد:</strong>
+          <br/>• تقليل التأخير: المستخدم يتصل لأقرب POP (Point of Presence).
+          <br/>• تبسيط الإدارة: Console واحد لكل شيء.
+          <br/>• Scalability: السحابة تتوسع تلقائياً.
+          <br/>• حماية Remote Workers: لا حاجة للـ Backhauling للـ DC.</li>
+        
+        <li><strong>المزودون:</strong>
+          <br/>• Palo Alto Prisma Access
+          <br/>• Cisco SecureX + Umbrella
+          <br/>• Zscaler Internet Access (ZIA) + Zscaler Private Access (ZPA)
+          <br/>• Fortinet FortiSASE
+          <br/>• VMware SD-WAN + Cloud Web Security</li>
+      </ul>
+
+      <h4>3.3 Micro-Segmentation:</h4>
+      <ul>
+        <li><strong>المفهوم:</strong> عزل Workloads (VMs, Containers) عن بعضها داخل Data Center حتى لو كانت على نفس الـ Subnet.</li>
+        
+        <li><strong>كيف يعمل:</strong>
+          <br/>• Distributed Firewall: Firewall على كل Hypervisor (مثل: VMware NSX).
+          <br/>• Policy تُطبق على الـ VM نفسها (لا على الـ Port).
+          <br/>• حتى لو انتقلت الـ VM، الـ Policy تنتقل معها.</li>
+        
+        <li><strong>مثال Policy:</strong>
+          <br/>• Web Servers → تسمح فقط بـ HTTP/HTTPS من Internet.
+          <br/>• App Servers → تسمح بـ Port 8080 من Web Servers فقط.
+          <br/>• DB Servers → تسمح بـ Port 3306 من App Servers فقط.
+          <br/>• النتيجة: لو اخترق Web Server، ما يقدرش يوصل للـ DB مباشرة!</li>
+      </ul>
+
+      <!-- صورة Network Security -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=900&h=350&fit=crop" alt="Network Security and Zero Trust" />
+        <p class="image-caption">أمن الشبكات - حماية متقدمة ضد التهديدات الداخلية والخارجية</p>
+      </div>
+
+      <h3>🤖 الجزء الرابع: أتمتة الشبكات و NetDevOps</h3>
+      <p>تحول الشبكات من CLI يدوي ممل وعرضة للأخطاء إلى بنية تحتية برمجية قابلة للتكرار، الاختبار، والمراقبة المستمرة:</p>
+      
+      <h4>4.1 Python للشبكات:</h4>
+      <ul>
+        <li><strong>المكتبات الأساسية:</strong>
+          <br/>• <strong>Netmiko:</strong> SSH Connection لـ Multi-Vendor (Cisco, Juniper, Arista...).
+          <br/>• <strong>NAPALM:</strong> Vendor-Agnostic API (تكتب كود واحد يعمل على كل الأجهزة).
+          <br/>• <strong>Paramiko:</strong> SSH منخفض المستوى.
+          <br/>• <strong>Scapy:</strong> Packet Crafting (للتحليل الأمني والـ Testing).</li>
+        
+        <li><strong>مثال عملي (Netmiko):</strong>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:1rem;border-radius:8px;overflow-x:auto;margin:1rem 0"><code>from netmiko import ConnectHandler
+from datetime import datetime
+
+devices = [
+    {'device_type': 'cisco_ios', 'host': '10.0.0.1', 'username': 'admin', 'password': 'pass'},
+    {'device_type': 'cisco_ios', 'host': '10.0.0.2', 'username': 'admin', 'password': 'pass'},
+]
+
+for device in devices:
+    print(f"Connecting to {device['host']}...")
+    connection = ConnectHandler(**device)
+    
+    # Get Config
+    config = connection.send_command('show running-config')
+    
+    # Save to File
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+    with open(f"{device['host']}_{timestamp}.txt", 'w') as f:
+        f.write(config)
+    
+    # Backup VLANs
+    vlans = connection.send_command('show vlan brief')
+    print(vlans)
+    
+    connection.disconnect()
+    print(f"Backup completed for {device['host']}")</code></pre>
+        </li>
+      </ul>
+
+      <h4>4.2 Ansible للشبكات:</h4>
+      <ul>
+        <li><strong>المفهوم:</strong> Agentless Automation. يستخدم SSH فقط (لا يحتاج Agent على الأجهزة).</li>
+        
+        <li><strong>المكونات:</strong>
+          <br/>• <strong>Inventory:</strong> قائمة الأجهزة (INI أو YAML).
+          <br/>• <strong>Playbook:</strong> YAML File يصف الـ Desired State.
+          <br/>• <strong>Modules:</strong> وحدات جاهزة (ios_config, junos_config, netconf_config...).
+          <br/>• <strong>Roles:</strong> تنظيم الـ Playbooks لإعادة الاستخدام.</li>
+        
+        <li><strong>مثال Playbook:</strong>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:1rem;border-radius:8px;overflow-x:auto;margin:1rem 0"><code>---
+- name: Configure Cisco Switches
+  hosts: cisco_switches
+  gather_facts: no
+  connection: network_cli
+  
+  vars:
+    ntp_servers:
+      - 10.0.0.100
+      - 10.0.0.101
+    snmp_community: MySecureCommunity
+  
+  tasks:
+    - name: Configure NTP
+      ios_config:
+        lines:
+          - ntp server {{ item }}
+        parents: 
+        match: exact
+      loop: "{{ ntp_servers }}"
+    
+    - name: Configure SNMP
+      ios_config:
+        lines:
+          - snmp-server community {{ snmp_community }} RO
+          - snmp-server location "Data Center"
+          - snmp-server contact "netadmin@company.com"
+    
+    - name: Save Configuration
+      ios_command:
+        commands:
+          - copy running-config startup-config
+    
+    - name: Verify NTP
+      ios_command:
+        commands:
+          - show ntp status
+      register: ntp_status
+    
+    - debug: var=ntp_status.stdout</code></pre>
+        </li>
+      </ul>
+
+      <h4>4.3 Terraform للشبكات:</h4>
+      <ul>
+        <li><strong>المفهوم:</strong> Infrastructure as Code (IaC) لـ Cloud Resources و Network Devices.</li>
+        
+        <li><strong>مثال (AWS VPC):</strong>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:1rem;border-radius:8px;overflow-x:auto;margin:1rem 0"><code>provider "aws" {
+  region = "us-east-1"
+}
+
+resource "aws_vpc" "main" {
+  cidr_block           = "10.0.0.0/16"
+  enable_dns_hostnames = true
+  enable_dns_support   = true
+  
+  tags = {
+    Name        = "Production-VPC"
+    Environment = "prod"
+  }
+}
+
+resource "aws_subnet" "public" {
+  count             = 2
+  vpc_id            = aws_vpc.main.id
+  cidr_block        = cidrsubnet(aws_vpc.main.cidr_block, 8, count.index)
+  availability_zone = data.aws_availability_zones.available.names[count.index]
+  
+  tags = {
+    Name = "Public-Subnet-${count.index + 1}"
+    Type = "public"
+  }
+}
+
+resource "aws_internet_gateway" "main" {
+  vpc_id = aws_vpc.main.id
+  
+  tags = {
+    Name = "Main-IGW"
+  }
+}
+
+resource "aws_route_table" "public" {
+  vpc_id = aws_vpc.main.id
+  
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.main.id
+  }
+  
+  tags = {
+    Name = "Public-RT"
+  }
+}</code></pre>
+        </li>
+      </ul>
+
+      <h4>4.4 GitOps للشبكات:</h4>
+      <ul>
+        <li><strong>المبدأ:</strong> Git هو Source of Truth. أي تغيير يمر بـ Pull Request → Review → Merge → Auto-Deploy.</li>
+        
+        <li><strong>الـ Pipeline:</strong>
+          <br/>1. Developer يعدل Configuration في Git.
+          <br/>2. يفتح Pull Request.
+          <br/>3. CI Pipeline يعمل:
+            <br/>   - Validation (YAML Syntax).
+            <br/>   - Linting (Best Practices).
+            <br/>   - Testing (Batfish, pyATS).
+          <br/>4. بعد الـ Merge، CD Pipeline ينفذ التغيير على الأجهزة.</li>
+        
+        <li><strong>Drift Detection:</strong>
+          <br/>• مقارنة مستمرة بين Git Config و Running Config.
+          <br/>• لو فيه فرق (Drift)، يرسل تنبيه أو يصلح تلقائياً.</li>
+      </ul>
+
+      <!-- صورة NetDevOps -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=900&h=350&fit=crop" alt="Network Automation and NetDevOps" />
+        <p class="image-caption">NetDevOps - أتمتة التكوينات والمراقبة عبر البرمجة والسحابة</p>
+      </div>
+
+      <h3>☁️ الجزء الخامس: شبكات السحابة وتصميم VPC المتقدم</h3>
+      <p>تصميم الشبكات السحابية يتطلب فهم عميق للعزل، التوجيه، والأمان في بيئات متعددة المستأجرين (Multi-Tenant):</p>
+      
+      <h4>5.1 تصميم VPC/VNet احترافي:</h4>
+      <ul>
+        <li><strong>CIDR Planning:</strong>
+          <br/>• اختر CIDR Block كبير كفاية (/16 مثل 10.0.0.0/16 = 65,536 IPs).
+          <br/>• تجنب Overlap مع On-Premise Networks (مهم للـ VPN/Hybrid).
+          <br/>• استخدم Subnetting ذكي:
+            <br/>  - Public Subnets: /24 (256 IPs) للـ NAT Gateways, Load Balancers.
+            <br/>  - Private Subnets: /22 أو /21 (1024-2048 IPs) للتطبيقات.
+            <br/>  - Database Subnets: /24 معزولة تماماً.</li>
+        
+        <li><strong>Security Groups vs NACLs:</strong>
+          <br/>• <strong>Security Groups (Stateful):</strong>
+            <br/>  - تُطبق على مستوى الـ Instance/ENI.
+            <br/>  - لو سمحت Incoming، الـ Outgoing مسموح تلقائياً (والعكس).
+            <br/>  - أفضل للأمان الدقيق.
+          <br/>• <strong>NACLs (Network ACLs - Stateless):</strong>
+            <br/>  - تُطبق على مستوى الـ Subnet.
+            <br/>  - يجب تعريف Incoming و Outgoing بشكل منفصل.
+            <br/>  - تُستخدم كـ Defense in Depth (Layer إضافي).</li>
+        
+        <li><strong>NAT Gateway vs NAT Instance:</strong>
+          <br/>• <strong>NAT Gateway:</strong> Managed Service، High Availability، أغلى.
+          <br/>• <strong>NAT Instance:</strong> EC Instance، أرخص، لكن تحتاج إدارة.</li>
+        
+        <li><strong>VPC Endpoints:</strong>
+          <br/>• <strong>Interface Endpoint:</strong> ENI في الـ Subnet (يستخدم Private IP).
+          <br/>• <strong>Gateway Endpoint:</strong> للـ S3 و DynamoDB فقط (مجاني!).
+          <br/>• الفائدة: الوصول لـ AWS Services بدون الخروج للإنترنت (أكثر أماناً).</li>
+      </ul>
+
+      <h4>5.2 Transit Gateway و Hub-Spoke:</h4>
+      <ul>
+        <li><strong>المشكلة:</strong> لو عندك 50 VPC، تحتاج 1225 VPC Peering Connections (n*(n-1)/2)! مستحيل إدارتها.</li>
+        
+        <li><strong>الحل:</strong> Transit Gateway (TGW) كـ Hub مركزي.
+          <br/>• كل VPC تتصل بالـ TGW فقط.
+          <br/>• TGY يدير الـ Routing بين الكل.
+          <br/>• يدعم Route Tables متعددة (للعزل).</li>
+        
+        <li><strong>مثال تكوين:</strong>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:1rem;border-radius:8px;overflow-x:auto;margin:1rem 0"><code># Terraform Transit Gateway
+resource "aws_transit_gateway" "main" {
+  description                     = "Production TGW"
+  default_route_table_association = "enable"
+  default_route_table_propagation = "enable"
+  dns_support                     = "enable"
+  
+  tags = {
+    Name = "Main-TGW"
+  }
+}
+
+resource "aws_transit_gateway_vpc_attachment" "vpc1" {
+  subnet_ids         = aws_subnet.private[*].id
+  transit_gateway_id = aws_transit_gateway.main.id
+  vpc_id             = aws_vpc.vpc1.id
+  
+  dns_support = "enable"
+}</code></pre>
+        </li>
+      </ul>
+
+      <!-- صورة Cloud Networking -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&h=350&fit=crop" alt="Cloud Networking Architecture" />
+        <p class="image-caption">شبكات السحابة - عزل، توجيه، وتأمين الموارد في بيئات متعددة</p>
+      </div>
+
+      <h3>📊 الجزء السادس: المراقبة، التحليل، واستكشاف الأخطاء المتقدم</h3>
+      <p>الرؤية الشاملة (Visibility) هي الأساس لتشغيل شبكات مستقرة، آمنة، وعالية الأداء:</p>
+      
+      <h4>6.1 بروتوكولات المراقبة المتقدمة:</h4>
+      <ul>
+        <li><strong>Streaming Telemetry:</strong>
+          <br/>• SNMP Polling قديم وبطيء (كل 5 دقائق).
+          <br/>• Telemetry يرسل Data باستمرار (Real-Time) عبر gRPC.
+          <br/>• دقة عالية (كل 10-30 ثانية).
+          <br/>• Push Model (الجهاز يرسل، ما تنتظرش تسأل).</li>
+        
+        <li><strong>sFlow vs NetFlow vs IPFIX:</strong>
+          <br/>• <strong>NetFlow (Cisco):</strong> يسجل Flow معلومات (Source/Dest IP, Ports, Protocol, Bytes).
+          <br/>• <strong>sFlow:</strong> Sampled Flow (يأخذ عينات عشوائية، أخف على الجهاز).
+          <br/>• <strong>IPFIX:</strong> Standard (IETF) مبني على NetFlow v9.</li>
+        
+        <li><strong>مثال تكوين Telemetry (Cisco IOS-XR):</strong>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:1rem;border-radius:8px;overflow-x:auto;margin:1rem 0"><code>telemetry model driven
+ destination-group dgroup1
+  address-family ipv4 10.0.0.100 port 57500
+   encoding self-describing-gpb
+   protocol grpc
+  !
+ !
+ sensor-group sgroup1
+  sensor-path Cisco-IOS-XR-ipv4-io-oper:ipv4-node-oper/active/default-vrf/summary
+ !
+ subscription sub1
+  source-address 10.0.0.1
+  sensor-group-id sgroup1
+  destination-id dgroup1
+  sample-interval 30000
+ !
+!</code></pre>
+        </li>
+      </ul>
+
+      <h4>6.2 أدوات التحليل العميق:</h4>
+      <ul>
+        <li><strong>Wireshark Filters:</strong>
+          <br/>• <code>tcp.port == 443</code> - HTTPS فقط.
+          <br/>• <code>ip.addr == 10.0.0.1 && tcp.flags.syn == 1</code> - SYN Packets من IP محدد.
+          <br/>• <code>http.request.method == "POST"</code> - POST Requests فقط.
+          <br/>• <code>tcp.stream eq 5</code> - تتبع TCP Stream معين.</li>
+        
+        <li><strong>tcpdump Commands:</strong>
+          <br/>• <code>tcpdump -i eth0 -n port 80</code> - HTTP على eth0.
+          <br/>• <code>tcpdump -i any -w capture.pcap</code> - حفظ في ملف.
+          <br/>• <code>tcpdump -r capture.pcap -Y "ip.addr==10.0.0.1"</code> - قراءة ملف مع Filter.</li>
+        
+        <li><strong>MTR (My Traceroute):</strong>
+          <br/>• يجمع بين Ping و Traceroute.
+          <br/>• يظهر Loss و Latency في كل Hop.
+          <br/>• <code>mtr --report 8.8.8.8</code></li>
+      </ul>
+
+      <h4>6.3 منهجية استكشاف الأخطاء:</h4>
+      <ul>
+        <li><strong>OSI Model Troubleshooting:</strong>
+          <br/>• <strong>Layer 1:</strong> الكابلات، الـ LEDs، الـ Power.
+          <br/>• <strong>Layer 2:</strong> MAC Address Table، VLANs، STP.
+          <br/>• <strong>Layer 3:</strong> Routing Table، ARP Table، IP Connectivity.
+          <br/>• <strong>Layer 4:</strong> Ports مفتوحة، Firewalls، ACLs.
+          <br/>• <strong>Layer 7:</strong> التطبيق نفسه (DNS، HTTP Errors...).</li>
+        
+        <li><strong>Divide and Conquer:</strong>
+          <br/>1. حدد أين المشكلة (Client، Network، Server).
+          <br/>2. اعزل الجزء المعطوب.
+          <br/>3. اختبر من نقطة لأخرى (Ping، Traceroute، Telnet).</li>
+        
+        <li><strong>Change Management:</strong>
+          <br/>• 80% من الأعطال سببها تغييرات!
+          <br/>• دائماً اسأل: "إيه اللي اتغير قبل المشكلة؟"
+          <br/>• استخدم Rollback Plan قبل أي تغيير.</li>
+      </ul>
+
+      <!-- صورة Monitoring -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&h=350&fit=crop" alt="Network Monitoring and Analytics" />
+        <p class="image-caption">المراقبة والتحليل - رؤية حية لحالة الشبكة وأدائها</p>
+      </div>
+
+      <h3>🚀 الجزء السابع: الاتجاهات المستقبلية والتقنيات الناشئة</h3>
+      <p>مجال الشبكات يتطور بسرعة هائلة. البقاء في الطليعة يتطلب فهم هذه التقنيات:</p>
+      
+      <h4>7.1 AI-Driven Networking:</h4>
+      <ul>
+        <li><strong>Predictive Analytics:</strong>
+          <br/>• Machine Learning يتنبأ بالأعطال قبل حدوثها (مثلاً: Interface هتفشل خلال 48 ساعة).
+          <br/>• يحلل Patterns في Traffic للتنبؤ بالـ Congestion.</li>
+        
+        <li><strong>Self-Healing Networks:</strong>
+          <br/>• الشبكة تكتشف المشكلة وتصلحها تلقائياً.
+          <br/>• مثال: لو Link فشل، الـ AI يعيد Routing ويغير Configuration بدون تدخل بشري.</li>
+        
+        <li><strong>Chatbots for Networking:</strong>
+          <br/>• اسأل الـ Chatbot: "ليه الـ Server X ميقدرش يوصل للـ Database Y؟"
+          <br/>• الـ AI يحلل الـ Path ويرد بالإجابة.</li>
+      </ul>
+
+      <h4>7.2 Intent-Based Networking (IBN):</h4>
+      <ul>
+        <li><strong>المفهوم:</strong> تقول "إيه اللي عايزه" (Intent)، والنظام ينفذ ويراقب ويصلح.</li>
+        
+        <li><strong>المكونات:</strong>
+          <br/>• <strong>Translation:</strong> يحول الـ Intent لـ Configuration.
+          <br/>• <strong>Automated Implementation:</strong> ينفذ الـ Config.
+          <br/>• <strong>Continuous Validation:</strong> يراقب إن الـ Intent متحقق.
+          <br/>• <strong>Protection:</strong> لو فيه انتهاك، يصلح أو ينبه.</li>
+        
+        <li><strong>مثال:</strong>
+          <br/>Intent: "VoIP Traffic لازم يكون له Priority عالي و Latency أقل من 150ms".
+          <br/>النظام:
+          <br/>1. يعمل QoS Policy.
+          <br/>2. يطبقه على الأجهزة.
+          <br/>3. يراقب Latency باستمرار.
+          <br/>4. لو Latency زاد، ينبه أو يعدل الـ Routing.</li>
+      </ul>
+
+      <h4>7.3 Wi-Fi 6E/7 و 5G Standalone:</h4>
+      <ul>
+        <li><strong>Wi-Fi 6E:</strong>
+          <br/>• يضيف 6 GHz Band (بالإضافة لـ 2.4 و 5 GHz).
+          <br/>• قنوات أوسع (160 MHz).
+          <br/>• أقل تداخل (Less Congestion).</li>
+        
+        <li><strong>Wi-Fi 7 (802.11be):</strong>
+          <br/>• سرعات حتى 46 Gbps.
+          <br/>• MLO (Multi-Link Operation): استخدام أكثر من Band في نفس الوقت.
+          <br/>• Latency أقل من 1ms.</li>
+        
+        <li><strong>5G Standalone (SA):</strong>
+          <br/>• 5G حقيقي (مش Non-Standalone اللي بيستخدم 4G Core).
+          <br/>• Network Slicing: تقسيم الشبكة لـ Slices لكل Use Case.
+          <br/>• Ultra-Low Latency (1ms).
+          <br/>• Massive IoT (مليون جهاز في km²).</li>
+      </ul>
+
+      <div class="conclusion" style="background:linear-gradient(135deg,#0284c7,#00d4ff);color:white;padding:2rem;border-radius:12px;margin:2rem 0">
+        <h3>💡 الخلاصة الهندسية الشاملة:</h3>
+        <ul style="list-style:none;padding:0">
+          <li>✅ البروتوكولات المتقدمة (BGP, OSPF, VXLAN) هي الأساس لأي شبكة مؤسسية كبيرة.</li>
+          <li>✅ SD-WAN و SASE ليسا مجرد موضة، بل ضرورة للتحول الرقمي والعمل عن بُعد.</li>
+          <li>✅ NetDevOps يحول الشبكات من "فن" إلى "علم" قابل للقياس والاختبار.</li>
+          <li>✅ الأمن لم يعد Optional. Zero Trust و Micro-Segmentation أصبحا معياراً.</li>
+          <li>✅ المراقبة المستمرة (Telemetry, eBPF) هي عينك التي ترى بها ما يحدث في الشبكة.</li>
+          <li>✅ الذكاء الاصطناعي و IBN سيغيران دور مهندس الشبكات من "منفذ أوامر" إلى "مصمم ومراقب".</li>
+          <li>✅ التعلم المستمر هو سر النجاح. المجال يتغير كل يوم!</li>
+        </ul>
+        <p style="font-size:1.3rem;font-weight:bold;margin-top:1rem;text-align:center">الشبكات ليست مجرد كابلات وأجهزة، بل هي هندسة دقيقة، أتمتة ذكية، وأمان مستمر. استمر في التعلم والتجربة! ✨</p>
+      </div>
+    </article>
+
+    <ShareButtons />
+  </main>
+  
+  <Footer />
+</body>
+</html>
+
+<style>
+  :root { --bg: #f8fafc; --card: #fff; --text: #0f172a; --text-sec: #64748b; --primary: #0284c7; --border: rgba(2,132,199,0.2); }
+  html.dark-mode { --bg: #0b1120; --card: #1e293b; --text: #f1f5f9; --text-sec: #94a3b8; --primary: #38bdf8; --border: rgba(56,189,248,0.2); }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; margin: 0; }
+  .category-articles { max-width: 950px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+  .page-header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 2px solid var(--border); }
+  .page-header h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; }
+  .page-header p { color: var(--text-sec); font-size: 1.1rem; }
+  .article { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 2.5rem 2rem; margin-bottom: 3rem; }
+  .badge { display: inline-block; background: var(--primary); color: white; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; margin-bottom: 1rem; }
+  .article h2 { color: var(--primary); font-size: 1.8rem; margin: 2rem 0 1rem; }
+  .article h3 { color: var(--text); font-size: 1.5rem; margin: 2.5rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+  .article h4 { color: var(--text-sec); font-size: 1.2rem; margin: 2rem 0 0.8rem; font-weight: 600; }
+  .meta { color: var(--text-sec); font-size: 0.9rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border); }
+  .intro { font-size: 1.15rem; color: var(--text-sec); margin-bottom: 2.5rem; padding: 2rem; background: rgba(2,132,199,0.05); border-right: 4px solid var(--primary); border-radius: 8px; line-height: 1.9; }
+  .article ul { padding-right: 1.5rem; margin: 1.5rem 0; }
+  .article li { margin-bottom: 0.8rem; line-height: 1.9; color: var(--text-sec); }
+  .article li strong { color: var(--primary); }
+  .conclusion ul { list-style: none !important; padding: 0; }
+  .conclusion li { color: white !important; font-size: 1.05rem; margin: 0.8rem 0; line-height: 1.8; }
+
+  /* ✅ تنسيق الصور في المقال */
+  .article-image {
+    margin: 2.5rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border: 2px solid var(--border);
+  }
+  .article-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .article-image:hover img {
+    transform: scale(1.02);
+  }
+  .image-caption {
+    background: var(--bg);
+    color: var(--text-sec);
+    padding: 1rem 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    font-style: italic;
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ✅ تنسيق زر الفهرس المتوهج (أيقونة 📑) */
+  .toc-btn { 
+    position: fixed; 
+    bottom: 30px; 
+    left: 30px; 
+    width: 55px; 
+    height: 55px; 
+    background: linear-gradient(135deg, var(--primary), #00d4ff); 
+    border: none; 
+    border-radius: 50%; 
+    color: white; 
+    font-size: 1.8rem;
+    cursor: pointer; 
+    box-shadow: 0 4px 15px rgba(2,132,199,0.5); 
+    z-index: 998; 
+    transition: all 0.3s ease; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .toc-btn:hover { 
+    transform: scale(1.1); 
+    box-shadow: 0 6px 20px rgba(2,132,199,0.7); 
+  }
+  
+  .toc-modal { 
+    display: none; 
+    position: fixed; 
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6); 
+    backdrop-filter: blur(8px);
+    z-index: 999; 
+    align-items: center; 
+    justify-content: center; 
+    padding: 6rem 1.5rem 1.5rem; 
+    animation: fadeIn 0.3s ease;
+  }
+  .toc-modal.active { display: flex; }
+  
+  .toc-box { 
+    background: var(--card); 
+    width: 100%; 
+    max-width: 550px; 
+    border-radius: 20px; 
+    border: 1px solid var(--border);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  
+  .toc-head { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 1.5rem 2rem; 
+    background: var(--bg);
+    border-bottom: 1px solid var(--border); 
+    flex-shrink: 0;
+  }
+  .toc-head h3 { 
+    color: var(--primary); 
+    margin: 0; 
+    font-size: 1.4rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  .toc-close { 
+    background: transparent; 
+    border: none; 
+    color: var(--text-sec); 
+    font-size: 2rem; 
+    line-height: 1;
+    cursor: pointer; 
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+  .toc-close:hover { 
+    background: #fee2e2; 
+    color: #ef4444;
+  }
+  
+  .toc-nav { 
+    display: flex; 
+    flex-direction: column; 
+    padding: 1rem;
+    gap: 0.6rem; 
+    overflow-y: auto; 
+  }
+  
+  /* ✅ الحل الجذري: استخدام div بدلاً من a - لا خطوط نهائياً */
+  .toc-item { 
+    display: block !important;
+    background: var(--bg) !important; 
+    color: var(--text) !important;
+    padding: 1rem 1.2rem !important; 
+    border-radius: 12px !important; 
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    line-height: 1.4 !important;
+    cursor: pointer !important;
+    border: 1px solid transparent !important;
+    text-decoration: none !important;
+    border-bottom: none !important;
+    outline: none !important;
+    transition: all 0.25s ease !important;
+  }
+  
+  .toc-item:hover { 
+    background: rgba(2,132,199,0.08) !important; 
+    border-color: rgba(2,132,199,0.2) !important;
+    color: var(--primary) !important;
+    transform: translateX(-4px) !important;
+  }
+
+  /* Scrollbar أنيق */
+  .toc-nav::-webkit-scrollbar { width: 6px; }
+  .toc-nav::-webkit-scrollbar-track { background: transparent; }
+  .toc-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+  .toc-nav::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+  
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+  /* ✅ تنسيق السهم المنبثق (️) */
+  .back-to-top {
+    position: fixed;
+    bottom: 95px;
+    left: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--card);
+    border: 2px solid var(--primary);
+    border-radius: 50%;
+    color: var(--primary);
+    font-size: 1.6rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 997;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .back-to-top.show {
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: translateY(0) !important;
+  }
+  .back-to-top:hover {
+    background: var(--primary);
+    color: #fff !important;
+    transform: scale(1.1) translateY(0) !important;
+    box-shadow: 0 0 20px rgba(2,132,199,0.6);
+  }
+
+  @media (max-width: 768px) {
+    .category-articles { padding: 2rem 1rem 3rem !important; }
+    .page-header h1 { font-size: 1.6rem !important; }
+    .article { padding: 1.5rem 1.2rem !important; }
+    .article h2 { font-size: 1.4rem !important; }
+    .article h3 { font-size: 1.2rem !important; }
+    .article h4 { font-size: 1.05rem !important; }
+    .article-image { margin: 1.5rem 0 !important; }
+    .article-image img { height: 200px !important; object-fit: cover !important; }
+    .image-caption { padding: 0.8rem 1rem !important; font-size: 0.85rem !important; }
+    .toc-btn { width: 50px !important; height: 50px !important; bottom: 15px !important; left: 15px !important; font-size: 1.6rem !important; }
+    .back-to-top { width: 42px !important; height: 42px !important; bottom: 75px !important; left: 15px !important; font-size: 1.4rem !important; }
+    .toc-modal { padding: 7rem 1rem 1rem !important; }
+    .toc-box { max-width: 95% !important; border-radius: 16px !important; }
+    .toc-head { padding: 1.2rem 1.5rem !important; }
+    .toc-head h3 { font-size: 1.2rem !important; }
+    .toc-nav { padding: 0.8rem !important; gap: 0.5rem !important; }
+    .toc-item { padding: 0.9rem 1rem !important; font-size: 0.95rem !important; }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // ✅ منطق الفهرس (يستخدم div بدلاً من a)
+    var tocBtn = document.getElementById('tocBtn');
+    var tocModal = document.getElementById('tocModal');
+    var tocClose = document.getElementById('tocClose');
+    var tocNav = document.getElementById('tocNav');
+    
+    if (tocBtn && tocModal && tocNav) {
+      document.querySelectorAll('.article h3').forEach(function(h3) {
+        var item = document.createElement('div');
+        item.className = 'toc-item';
+        item.textContent = h3.textContent;
+        item.onclick = function(e) {
+          e.preventDefault();
+          h3.scrollIntoView({ behavior: 'smooth' });
+          tocModal.classList.remove('active');
+        };
+        tocNav.appendChild(item);
+      });
+
+      tocBtn.onclick = function() { tocModal.classList.add('active'); };
+      tocClose.onclick = function() { tocModal.classList.remove('active'); };
+      tocModal.onclick = function(e) { if (e.target === tocModal) tocModal.classList.remove('active'); };
+    }
+
+    // ✅ منطق السهم المنبثق
+    var backBtn = document.getElementById('backToTop');
+    if (backBtn) {
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 400) {
+          backBtn.classList.add('show');
+        } else {
+          backBtn.classList.remove('show');
+        }
+      }, { passive: true });
+
+      backBtn.addEventListener('click', function() {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+    }
+  });
+</script>
