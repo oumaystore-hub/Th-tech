@@ -14,9 +14,9 @@
     </nav>
 
     <div class="header-tools">
-      <button id="search-btn" class="tool-btn" title="بحث"></button>
+      <button id="search-btn" class="tool-btn" title="بحث">🔍</button>
       <button id="theme-btn" class="tool-btn" title="الوضع الليلي">🌙</button>
-      <button id="menu-btn" class="tool-btn hamburger" title="القائمة">☰</button>
+      <button id="menu-btn" class="tool-btn hamburger" title="القائمة"></button>
     </div>
   </div>
 
@@ -24,15 +24,16 @@
   <div id="search-panel" class="search-panel">
     <div class="search-container">
       <input type="text" id="searchInput" placeholder="ابحث عن مقال..." class="search-input" />
-      <button id="close-search" class="close-btn">✕</button>
-      <div id="searchResults"></div>
+      <button id="close-search" class="close-btn"></button>
     </div>
+    <!-- نتائج البحث هنا -->
+    <div id="searchResults" class="search-results-box"></div>
   </div>
 
   <!-- القائمة المتنقلة -->
   <nav id="mobile-menu" class="mobile-menu">
     <a href="/Th-tech/" class="mobile-link"> الرئيسية</a>
-    <a href="/Th-tech/articles/" class="mobile-link">📚 المقالات</a>
+    <a href="/Th-tech/articles/" class="mobile-link"> المقالات</a>
     <a href="/Th-tech/category/" class="mobile-link">🗂️ التصنيفات</a>
     <a href="/Th-tech/contact/" class="mobile-link">📧 اتصل بنا</a>
   </nav>
@@ -67,7 +68,6 @@
     background-color: var(--bg);
     color: var(--text);
     font-family: system-ui, -apple-system, sans-serif;
-    transition: background-color 0.3s, color 0.3s;
   }
   
   .site-header {
@@ -99,11 +99,6 @@
     height: 50px;
     width: auto;
     display: block;
-    transition: transform 0.3s;
-  }
-  
-  .logo:hover .logo-img {
-    transform: scale(1.05);
   }
   
   .nav-links {
@@ -118,23 +113,6 @@
     font-weight: 600;
     font-size: 1rem;
     transition: all 0.3s;
-    padding: 0.5rem 0;
-    position: relative;
-  }
-  
-  .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 0;
-    height: 2px;
-    background: var(--primary);
-    transition: width 0.3s;
-  }
-  
-  .nav-link:hover::after {
-    width: 100%;
   }
   
   .nav-link:hover {
@@ -160,7 +138,6 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s;
-    box-shadow: 0 2px 8px rgba(2,132,199,0.3);
   }
   
   .tool-btn:hover {
@@ -187,7 +164,7 @@
   }
   
   .search-panel.active {
-    display: block;
+    display: block !important;
   }
   
   .search-container {
@@ -205,13 +182,11 @@
     background: var(--bg);
     color: var(--text);
     font-size: 1rem;
-    transition: all 0.3s;
   }
   
   .search-input:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(2,132,199,0.1);
   }
   
   .close-btn {
@@ -223,26 +198,22 @@
     cursor: pointer;
     font-weight: bold;
     font-size: 1.2rem;
-    transition: all 0.3s;
-  }
-  
-  .close-btn:hover {
-    background: #dc2626;
-    transform: scale(1.05);
   }
 
-  /* تنسيق نتائج البحث */
-  #searchResults {
-    margin-top: 10px;
+  /* صندوق نتائج البحث */
+  .search-results-box {
+    max-width: 600px;
+    margin: 10px auto 0;
     background: var(--card);
     border-radius: 8px;
     max-height: 300px;
     overflow-y: auto;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: block;
   }
 
   .search-result-link {
-    display: flex;
+    display: block;
     padding: 12px 20px;
     text-decoration: none;
     color: var(--text);
@@ -258,10 +229,6 @@
 
   .search-result-link:last-child {
     border-bottom: none;
-  }
-
-  .result-title {
-    font-weight: 600;
   }
 
   .no-results {
@@ -282,7 +249,6 @@
     border-bottom: 2px solid var(--border);
     flex-direction: column;
     z-index: 999;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
   }
   
   .mobile-menu.active {
@@ -295,182 +261,90 @@
     padding: 1rem 1.5rem;
     border-bottom: 1px solid var(--border);
     font-weight: 600;
-    font-size: 1.05rem;
-    transition: all 0.3s;
-    border-radius: 8px;
   }
   
   .mobile-link:hover {
     background: var(--bg);
     color: var(--primary);
-    padding-right: 2rem;
-  }
-  
-  .mobile-link:last-child {
-    border-bottom: none;
   }
 
-  /* Responsive Design */
   @media (max-width: 768px) {
-    .nav-links {
-      display: none;
-    }
-    
-    .hamburger {
-      display: flex;
-    }
-    
-    .logo-img {
-      height: 40px;
-    }
-    
-    .container {
-      height: 70px;
-      padding: 0 1.5rem;
-    }
-    
-    .tool-btn {
-      width: 40px;
-      height: 40px;
-      font-size: 1.1rem;
-    }
-    
-    .search-panel, .mobile-menu {
-      top: 70px;
-    }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .container { height: 70px; padding: 0 1.5rem; }
+    .search-panel, .mobile-menu { top: 70px; }
   }
 </style>
 
 <script>
-  // قائمة جميع مقالاتك
-  const allArticles = [
+  console.log('✅ Header script loaded');
+  
+  // قائمة المقالات
+  const articles = [
     { title: "الذكاء الاصطناعي", url: "/ai/" },
     { title: "الشبكات", url: "/networks/" },
     { title: "البرمجة", url: "/programming/" },
     { title: "الأمن السيبراني", url: "/security/" },
-    { title: "علم البيانات", url: "/data-science/" },
-    { title: "DevOps", url: "/devops/" },
-    { title: "IoT", url: "/iot/" },
-    { title: "Cloud", url: "/cloud/" },
-    { title: "Blockchain", url: "/blockchain/" },
-    { title: "Mobile", url: "/mobile/" },
     { title: "دليل الشبكات المتقدم", url: "/networks/advanced-network-guide/" },
     { title: "دليل البرمجة المتقدم", url: "/programming/advanced-programming-guide/" },
   ];
 
-  // تبديل الوضع الليلي/النهاري
-  function toggleTheme() {
-    const html = document.documentElement;
-    const btn = document.getElementById('theme-btn');
-    html.classList.toggle('dark-mode');
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('✅ DOM Loaded');
     
-    if (html.classList.contains('dark-mode')) {
-      localStorage.setItem('theme', 'dark');
-      btn.textContent = '☀️';
-      btn.setAttribute('title', 'الوضع النهاري');
-    } else {
-      localStorage.setItem('theme', 'light');
-      btn.textContent = '🌙';
-      btn.setAttribute('title', 'الوضع الليلي');
-    }
-  }
-
-  // التهيئة عند تحميل الصفحة
-  document.addEventListener('DOMContentLoaded', () => {
-    const themeBtn = document.getElementById('theme-btn');
-    const html = document.documentElement;
-    const savedTheme = localStorage.getItem('theme');
-
-    // تحميل الوضع المحفوظ
-    if (savedTheme === 'dark') {
-      html.classList.add('dark-mode');
-      themeBtn.textContent = '☀️';
-      themeBtn.setAttribute('title', 'الوضع النهاري');
-    }
-
-    // حدث زر الوضع
-    themeBtn.addEventListener('click', toggleTheme);
-
-    // القائمة المتنقلة
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    
-    menuBtn.addEventListener('click', () => {
-      mobileMenu.classList.toggle('active');
-      menuBtn.textContent = mobileMenu.classList.contains('active') ? '✕' : '☰';
-    });
-
-    // لوحة البحث
     const searchBtn = document.getElementById('search-btn');
     const searchPanel = document.getElementById('search-panel');
     const closeSearch = document.getElementById('close-search');
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
     
+    console.log('Search elements:', { searchBtn, searchPanel, searchInput, searchResults });
+    
     // إظهار لوحة البحث
-    searchBtn.addEventListener('click', () => {
-      searchPanel.classList.add('active');
-      if (searchInput) {
-        searchInput.focus();
-      }
-    });
+    if (searchBtn && searchPanel) {
+      searchBtn.addEventListener('click', function() {
+        console.log('🔍 Search button clicked');
+        searchPanel.classList.add('active');
+        if (searchInput) {
+          searchInput.focus();
+        }
+      });
+    }
     
     // إخفاء لوحة البحث
-    closeSearch.addEventListener('click', () => {
-      searchPanel.classList.remove('active');
-      if (searchInput) {
-        searchInput.value = '';
-      }
-      if (searchResults) {
-        searchResults.innerHTML = '';
-      }
-    });
-
+    if (closeSearch && searchPanel) {
+      closeSearch.addEventListener('click', function() {
+        searchPanel.classList.remove('active');
+        if (searchInput) searchInput.value = '';
+        if (searchResults) searchResults.innerHTML = '';
+      });
+    }
+    
     // البحث عند الكتابة
     if (searchInput && searchResults) {
       searchInput.addEventListener('input', function(e) {
-        const searchText = e.target.value.toLowerCase().trim();
+        const query = e.target.value.toLowerCase().trim();
+        console.log(' Searching for:', query);
         
-        // مسح النتائج القديمة
-        searchResults.innerHTML = '';
-        
-        if (searchText.length < 2) {
+        if (query.length < 2) {
+          searchResults.innerHTML = '';
           return;
         }
         
-        // البحث في المقالات
-        const foundArticles = allArticles.filter(function(article) {
-          return article.title.toLowerCase().includes(searchText);
-        });
+        const matches = articles.filter(art => 
+          art.title.toLowerCase().includes(query)
+        );
         
-        // عرض النتائج
-        if (foundArticles.length > 0) {
-          foundArticles.forEach(function(article) {
-            const link = document.createElement('a');
-            link.href = article.url;
-            link.className = 'search-result-link';
-            link.innerHTML = '<span class="result-title">' + article.title + '</span>';
-            searchResults.appendChild(link);
-          });
+        console.log('Found:', matches.length, 'results');
+        
+        if (matches.length > 0) {
+          searchResults.innerHTML = matches.map(m => 
+            `<a href="${m.url}" class="search-result-link"><span>${m.title}</span></a>`
+          ).join('');
         } else {
           searchResults.innerHTML = '<div class="no-results">لا توجد نتائج</div>';
         }
       });
     }
-
-    // إغلاق البحث والقائمة عند الضغط على Escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        searchPanel.classList.remove('active');
-        mobileMenu.classList.remove('active');
-        menuBtn.textContent = '☰';
-        if (searchInput) {
-          searchInput.value = '';
-        }
-        if (searchResults) {
-          searchResults.innerHTML = '';
-        }
-      }
-    });
   });
 </script>
