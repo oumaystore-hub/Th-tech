@@ -14,8 +14,8 @@
     </nav>
 
     <div class="header-tools">
-      <button id="search-btn" class="tool-btn" title="بحث">🔍</button>
-      <button id="theme-btn" class="tool-btn" title="الوضع الليلي">☀️</button>
+      <button id="search-btn" class="tool-btn" title="بحث"></button>
+      <button id="theme-btn" class="tool-btn" title="الوضع الليلي">🌙</button>
       <button id="menu-btn" class="tool-btn hamburger" title="القائمة">☰</button>
     </div>
   </div>
@@ -342,25 +342,8 @@
 </style>
 
 <script>
-  // تبديل الوضع الليلي/النهاري
-  function toggleTheme() {
-    const html = document.documentElement;
-    const btn = document.getElementById('theme-btn');
-    html.classList.toggle('dark-mode');
-    
-    if (html.classList.contains('dark-mode')) {
-      localStorage.setItem('theme', 'dark');
-      btn.textContent = '️☀️';
-      btn.setAttribute('title', 'الوضع النهاري');
-    } else {
-      localStorage.setItem('theme', 'light');
-      btn.textContent = '🌙';
-      btn.setAttribute('title', 'الوضع الليلي');
-    }
-  }
-
-  // قائمة مقالاتك - أضف هنا جميع صفحاتك
-  const siteArticles = [
+  // قائمة جميع مقالاتك
+  const allArticles = [
     { title: "الذكاء الاصطناعي", url: "/ai/" },
     { title: "الشبكات", url: "/networks/" },
     { title: "البرمجة", url: "/programming/" },
@@ -375,34 +358,20 @@
     { title: "دليل البرمجة المتقدم", url: "/programming/advanced-programming-guide/" },
   ];
 
-  // دالة البحث
-  function performSearch() {
-    const input = document.getElementById('searchInput');
-    const resultsDiv = document.getElementById('searchResults');
+  // تبديل الوضع الليلي/النهاري
+  function toggleTheme() {
+    const html = document.documentElement;
+    const btn = document.getElementById('theme-btn');
+    html.classList.toggle('dark-mode');
     
-    if (!input || !resultsDiv) return;
-    
-    const query = input.value.toLowerCase().trim();
-    
-    if (query.length < 2) {
-        resultsDiv.innerHTML = '';
-        return;
-    }
-    
-    // البحث في المقالات
-    const matches = siteArticles.filter(article => 
-        article.title.toLowerCase().includes(query)
-    );
-    
-    // عرض النتائج
-    if (matches.length > 0) {
-        resultsDiv.innerHTML = matches.map(match => `
-            <a href="${match.url}" class="search-result-link">
-                <span class="result-title">${match.title}</span>
-            </a>
-        `).join('');
+    if (html.classList.contains('dark-mode')) {
+      localStorage.setItem('theme', 'dark');
+      btn.textContent = '☀️';
+      btn.setAttribute('title', 'الوضع النهاري');
     } else {
-        resultsDiv.innerHTML = '<div class="no-results">لا توجد نتائج</div>';
+      localStorage.setItem('theme', 'light');
+      btn.textContent = '🌙';
+      btn.setAttribute('title', 'الوضع الليلي');
     }
   }
 
@@ -435,15 +404,59 @@
     const searchBtn = document.getElementById('search-btn');
     const searchPanel = document.getElementById('search-panel');
     const closeSearch = document.getElementById('close-search');
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
     
+    // إظهار لوحة البحث
     searchBtn.addEventListener('click', () => {
       searchPanel.classList.add('active');
-      searchPanel.querySelector('.search-input').focus();
+      if (searchInput) {
+        searchInput.focus();
+      }
     });
     
+    // إخفاء لوحة البحث
     closeSearch.addEventListener('click', () => {
       searchPanel.classList.remove('active');
+      if (searchInput) {
+        searchInput.value = '';
+      }
+      if (searchResults) {
+        searchResults.innerHTML = '';
+      }
     });
+
+    // البحث عند الكتابة
+    if (searchInput && searchResults) {
+      searchInput.addEventListener('input', function(e) {
+        const searchText = e.target.value.toLowerCase().trim();
+        
+        // مسح النتائج القديمة
+        searchResults.innerHTML = '';
+        
+        if (searchText.length < 2) {
+          return;
+        }
+        
+        // البحث في المقالات
+        const foundArticles = allArticles.filter(function(article) {
+          return article.title.toLowerCase().includes(searchText);
+        });
+        
+        // عرض النتائج
+        if (foundArticles.length > 0) {
+          foundArticles.forEach(function(article) {
+            const link = document.createElement('a');
+            link.href = article.url;
+            link.className = 'search-result-link';
+            link.innerHTML = '<span class="result-title">' + article.title + '</span>';
+            searchResults.appendChild(link);
+          });
+        } else {
+          searchResults.innerHTML = '<div class="no-results">لا توجد نتائج</div>';
+        }
+      });
+    }
 
     // إغلاق البحث والقائمة عند الضغط على Escape
     document.addEventListener('keydown', (e) => {
@@ -451,13 +464,13 @@
         searchPanel.classList.remove('active');
         mobileMenu.classList.remove('active');
         menuBtn.textContent = '☰';
+        if (searchInput) {
+          searchInput.value = '';
+        }
+        if (searchResults) {
+          searchResults.innerHTML = '';
+        }
       }
     });
-
-    // تفعيل البحث عند الكتابة
-    const searchInput = document.getElementById('searchInput');
-    if (searchInput) {
-        searchInput.addEventListener('input', performSearch);
-    }
   });
 </script>
