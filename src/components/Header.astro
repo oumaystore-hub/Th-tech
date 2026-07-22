@@ -15,14 +15,14 @@
 
     <div class="header-tools">
       <button id="search-btn" class="tool-btn" title="بحث">🔍</button>
-      <button id="theme-btn" class="tool-btn" title="الوضع الليلي">🌙</button>
+      <button id="theme-btn" class="tool-btn" title="الوضع الليلي"></button>
       <button id="menu-btn" class="tool-btn hamburger" title="القائمة">☰</button>
     </div>
   </div>
 
   <!-- لوحة البحث -->
-      <div id="search-panel" class="search-panel">
-      <div class="search-container">
+  <div id="search-panel" class="search-panel">
+    <div class="search-container">
       <input type="text" id="searchInput" placeholder="ابحث عن مقال..." class="search-input" />
       <button id="close-search" class="close-btn">✕</button>
       <div id="searchResults"></div>
@@ -230,6 +230,45 @@
     background: #dc2626;
     transform: scale(1.05);
   }
+
+  /* تنسيق نتائج البحث */
+  #searchResults {
+    margin-top: 10px;
+    background: var(--card);
+    border-radius: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+
+  .search-result-link {
+    display: flex;
+    padding: 12px 20px;
+    text-decoration: none;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+
+  .search-result-link:hover {
+    background: rgba(2,132,199,0.1);
+    color: var(--primary);
+    padding-right: 25px;
+  }
+
+  .search-result-link:last-child {
+    border-bottom: none;
+  }
+
+  .result-title {
+    font-weight: 600;
+  }
+
+  .no-results {
+    padding: 20px;
+    text-align: center;
+    color: var(--text-sec);
+  }
   
   /* القائمة المتنقلة */
   .mobile-menu {
@@ -311,12 +350,59 @@
     
     if (html.classList.contains('dark-mode')) {
       localStorage.setItem('theme', 'dark');
-      btn.textContent = '☀️';
+      btn.textContent = '️';
       btn.setAttribute('title', 'الوضع النهاري');
     } else {
       localStorage.setItem('theme', 'light');
       btn.textContent = '🌙';
       btn.setAttribute('title', 'الوضع الليلي');
+    }
+  }
+
+  // قائمة مقالاتك - أضف هنا جميع صفحاتك
+  const siteArticles = [
+    { title: "الذكاء الاصطناعي", url: "/ai/" },
+    { title: "الشبكات", url: "/networks/" },
+    { title: "البرمجة", url: "/programming/" },
+    { title: "الأمن السيبراني", url: "/security/" },
+    { title: "علم البيانات", url: "/data-science/" },
+    { title: "DevOps", url: "/devops/" },
+    { title: "IoT", url: "/iot/" },
+    { title: "Cloud", url: "/cloud/" },
+    { title: "Blockchain", url: "/blockchain/" },
+    { title: "Mobile", url: "/mobile/" },
+    { title: "دليل الشبكات المتقدم", url: "/networks/advanced-network-guide/" },
+    { title: "دليل البرمجة المتقدم", url: "/programming/advanced-programming-guide/" },
+  ];
+
+  // دالة البحث
+  function performSearch() {
+    const input = document.getElementById('searchInput');
+    const resultsDiv = document.getElementById('searchResults');
+    
+    if (!input || !resultsDiv) return;
+    
+    const query = input.value.toLowerCase().trim();
+    
+    if (query.length < 2) {
+        resultsDiv.innerHTML = '';
+        return;
+    }
+    
+    // البحث في المقالات
+    const matches = siteArticles.filter(article => 
+        article.title.toLowerCase().includes(query)
+    );
+    
+    // عرض النتائج
+    if (matches.length > 0) {
+        resultsDiv.innerHTML = matches.map(match => `
+            <a href="${match.url}" class="search-result-link">
+                <span class="result-title">${match.title}</span>
+            </a>
+        `).join('');
+    } else {
+        resultsDiv.innerHTML = '<div class="no-results">لا توجد نتائج</div>';
     }
   }
 
@@ -359,105 +445,19 @@
       searchPanel.classList.remove('active');
     });
 
-    // إغلاق البحث عند الضغط على Escape
+    // إغلاق البحث والقائمة عند الضغط على Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         searchPanel.classList.remove('active');
         mobileMenu.classList.remove('active');
         menuBtn.textContent = '☰';
-     } 
-  });
-<script>
-// قائمة مقالاتك - أضف هنا جميع صفحاتك
-const siteArticles = [
-    { title: "الذكاء الاصطناعي", url: "/ai/" },
-    { title: "الشبكات", url: "/networks/" },
-    { title: "البرمجة", url: "/programming/" },
-    { title: "الأمن السيبراني", url: "/security/" },
-    { title: "علم البيانات", url: "/data-science/" },
-    { title: "DevOps", url: "/devops/" },
-    { title: "IoT", url: "/iot/" },
-    { title: "Cloud", url: "/cloud/" },
-    { title: "Blockchain", url: "/blockchain/" },
-    { title: "Mobile", url: "/mobile/" },
-    { title: "دليل الشبكات المتقدم", url: "/networks/advanced-network-guide/" },
-    { title: "دليل البرمجة المتقدم", url: "/programming/advanced-programming-guide/" },
-];
+      }
+    });
 
-// دالة البحث
-function performSearch() {
-    const input = document.getElementById('searchInput');
-    const resultsDiv = document.getElementById('searchResults');
-    
-    if (!input || !resultsDiv) return;
-    
-    const query = input.value.toLowerCase().trim();
-    
-    if (query.length < 2) {
-        resultsDiv.innerHTML = '';
-        return;
-    }
-    
-    // البحث في المقالات
-    const matches = siteArticles.filter(article => 
-        article.title.toLowerCase().includes(query)
-    );
-    
-    // عرض النتائج
-    if (matches.length > 0) {
-        resultsDiv.innerHTML = matches.map(match => `
-            <a href="${match.url}" class="search-result-link">
-                <span class="result-title">${match.title}</span>
-            </a>
-        `).join('');
-    } else {
-        resultsDiv.innerHTML = '<div class="no-results">لا توجد نتائج</div>';
-    }
-}
-
-// تفعيل البحث عند الكتابة
-document.addEventListener('DOMContentLoaded', function() {
+    // تفعيل البحث عند الكتابة
     const searchInput = document.getElementById('searchInput');
     if (searchInput) {
         searchInput.addEventListener('input', performSearch);
     }
-});
+  });
 </script>
-/* تنسيق نتائج البحث */
-#searchResults {
-    margin-top: 10px;
-    background: var(--card);
-    border-radius: 8px;
-    max-height: 300px;
-    overflow-y: auto;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.search-result-link {
-    display: flex;
-    padding: 12px 20px;
-    text-decoration: none;
-    color: var(--text);
-    border-bottom: 1px solid var(--border);
-    transition: all 0.3s;
-}
-
-.search-result-link:hover {
-    background: rgba(2,132,199,0.1);
-    color: var(--primary);
-    padding-right: 25px;
-}
-
-.search-result-link:last-child {
-    border-bottom: none;
-}
-
-.result-title {
-    font-weight: 600;
-}
-
-.no-results {
-    padding: 20px;
-    text-align: center;
-    color: var(--text-sec);
-}
