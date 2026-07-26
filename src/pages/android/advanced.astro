@@ -38,7 +38,7 @@ export const description = "دليل شامل جداً (3000+ كلمة) يغطي
     </div>
 
     <!-- السهم المنبثق -->
-    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">️</button>
 
     <article class="article" id="art2">
       <span class="badge" style="background:linear-gradient(135deg,#3ddc84,#00c853)">مستوى متقدم / شامل جداً (3000+ كلمة)</span>
@@ -67,28 +67,24 @@ export const description = "دليل شامل جداً (3000+ كلمة) يغطي
           <br/>• دعم Gmail و Google Maps
           <br/>• الكاميرا بدون واجهة برمجة
         </li>
-        
         <li><strong>Android 4.0 Ice Cream Sandwich (2011):</strong> ثورة في التصميم:
           <br/>• واجهة Holo الجديدة
           <br/>• دعم Face Unlock
           <br/>• Data Usage Monitor
           <br/>• 4000 API جديد!
         </li>
-        
         <li><strong>Android 5.0 Lollipop (2014):</strong> Material Design:
           <br/>• ART runtime بدلاً من Dalvik
           <br/>• 64-bit support
           <br/>• Material Design language
           <br/>• Battery Saver
         </li>
-        
         <li><strong>Android 10 (2019):</strong> الخصوصية أولاً:
           <br/>• Scoped Storage
           <br/>• Background Location限制
           <br/>• Dark Theme نظامي
           <br/>• Focus Mode
         </li>
-        
         <li><strong>Android 14 (2024):</strong> الذكاء والخصوصية:
           <br/>• AI-powered features
           <br/>• Privacy Dashboard محسّن
@@ -115,8 +111,8 @@ export const description = "دليل شامل جداً (3000+ كلمة) يغطي
         HAL تجرد العتاد عن النظام. كل جهاز له HAL خاص:
       </p>
       <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0"><code>// مثال: Camera HAL interface
-class CameraProvider {
-    fun getCameraList(): List<CameraInfo>
+interface CameraProvider {
+    fun getCameraList(): List&lt;CameraInfo&gt;
     fun openCamera(cameraId: String): CameraDevice
     fun closeCamera(cameraId: String)
 }</code></pre>
@@ -141,7 +137,7 @@ class CameraProvider {
       <pre style="background:#1e293b;color:#e2e8f0;padding:1rem;border-radius:8px;margin:1rem 0;overflow-x:auto"><code>// مثال متقدم: تحميل بيانات مع معالجة الأخطاء
 class UserRepository(private val api: UserApi) {
     
-    suspend fun loadUsers(): Result<List<User>> = withContext(Dispatchers.IO) {
+    suspend fun loadUsers(): Result&lt;List&lt;User&gt;&gt; = withContext(Dispatchers.IO) {
         try {
             val response = api.getUsers()
             if (response.isSuccessful) {
@@ -155,7 +151,7 @@ class UserRepository(private val api: UserApi) {
     }
     
     // تدفق البيانات مع Flow
-    fun getUsersStream(): Flow<List<User>> = flow {
+    fun getUsersStream(): Flow&lt;List&lt;User&gt;&gt; = flow {
         while (true) {
             val users = loadUsers().getOrNull() ?: emptyList()
             emit(users)
@@ -165,17 +161,17 @@ class UserRepository(private val api: UserApi) {
 }</code></pre>
 
       <h4>3.2 Sealed Classes للنمط الآمن</h4>
-      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0"><code>sealed class ApiResult<out T> {
-    data class Success<T>(val data: T) : ApiResult<T>()
-    data class Error<T>(val message: String) : ApiResult<T>()
-    object Loading : ApiResult<Nothing>()
+      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0"><code>sealed class ApiResult&lt;out T&gt; {
+    data class Success&lt;T&gt;(val data: T) : ApiResult&lt;T&gt;()
+    data class Error&lt;T&gt;(val message: String) : ApiResult&lt;T&gt;()
+    object Loading : ApiResult&lt;Nothing&gt;()
 }
 
 // استخدام آمن
 when (val result = repository.loadUsers()) {
-    is ApiResult.Success -> showUsers(result.data)
-    is ApiResult.Error -> showError(result.message)
-    ApiResult.Loading -> showLoading()
+    is ApiResult.Success -&gt; showUsers(result.data)
+    is ApiResult.Error -&gt; showError(result.message)
+    ApiResult.Loading -&gt; showLoading()
 }</code></pre>
 
       <h4>3.3 Extension Functions</h4>
@@ -197,12 +193,12 @@ if (email.isValidEmail()) {
 
       <h3 id="part4">🎨 الجزء الرابع: Jetpack Compose</h3>
       <p>
-        Jetpack Compose هو الإطار الحديث لبناء الواجهات بشكل declarative:
+        Jetpack Compose هو الإطار declarative الحديث لبناء الواجهات:
       </p>
 
       <h4>4.1 الأساسيات</h4>
       <pre style="background:#1e293b;color:#e2e8f0;padding:1rem;border-radius:8px;margin:1rem 0;overflow-x:auto"><code>@Composable
-fun UserCard(user: User, onClick: () -> Unit) {
+fun UserCard(user: User, onClick: () -&gt; Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -274,7 +270,7 @@ fun AppNavigation() {
         startDestination = "home"
     ) {
         composable("home") { HomeScreen(navController) }
-        composable("user/{userId}") { backStackEntry ->
+        composable("user/{userId}") { backStackEntry -&gt;
             val userId = backStackEntry.arguments?.getString("userId")
             UserDetailScreen(userId, navController)
         }
@@ -302,7 +298,7 @@ interface UserDao {
     suspend fun getUserById(userId: Int): User?
     
     @Query("SELECT * FROM users ORDER BY createdAt DESC")
-    fun getAllUsers(): Flow<List<User>>
+    fun getAllUsers(): Flow&lt;List&lt;User&gt;&gt;
     
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertUser(user: User)
@@ -414,7 +410,7 @@ val httpClient = OkHttpClient.Builder()
     .addInterceptor(HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
     })
-    .addInterceptor { chain ->
+    .addInterceptor { chain -&gt;
         val request = chain.request().newBuilder()
             .header("Authorization", "Bearer ${getToken()}")
             .build()
@@ -470,7 +466,7 @@ dependencies {
           <li>✅ الاختبار ضروري - Unit Tests و UI Tests</li>
           <li>✅ Material Design 3 هو المعيار الحالي</li>
         </ul>
-        <p style="font-size:1.2rem;font-weight:bold;margin-top:1.5rem;text-align:center">ابدأ بالتطبيق العملي فوراً! </p>
+        <p style="font-size:1.2rem;font-weight:bold;margin-top:1.5rem;text-align:center">ابدأ بالتطبيق العملي فوراً! 🚀</p>
       </div>
     </article>
 
@@ -528,34 +524,46 @@ dependencies {
 </style>
 
 <script>
+  // ✅ كل الكود يعمل على المتصفح فقط
   document.addEventListener('DOMContentLoaded', function() {
     var tocBtn = document.getElementById('tocBtn');
     var tocModal = document.getElementById('tocModal');
     var tocClose = document.getElementById('tocClose');
     var tocNav = document.getElementById('tocNav');
+    
     if (tocBtn && tocModal && tocNav) {
       document.querySelectorAll('.article h3').forEach(function(h3) {
         var item = document.createElement('div');
         item.className = 'toc-item';
         item.textContent = h3.textContent;
-        item.onclick = function(e) {
+        item.addEventListener('click', function(e) {
           e.preventDefault();
           h3.scrollIntoView({ behavior: 'smooth' });
           tocModal.classList.remove('active');
-        };
+        });
         tocNav.appendChild(item);
       });
-      tocBtn.onclick = function() { tocModal.classList.add('active'); };
-      tocClose.onclick = function() { tocModal.classList.remove('active'); };
-      tocModal.onclick = function(e) { if (e.target === tocModal) tocModal.classList.remove('active'); };
+
+      tocBtn.addEventListener('click', function() { tocModal.classList.add('active'); });
+      tocClose.addEventListener('click', function() { tocModal.classList.remove('active'); });
+      tocModal.addEventListener('click', function(e) { 
+        if (e.target === tocModal) tocModal.classList.remove('active'); 
+      });
     }
+
     var backBtn = document.getElementById('backToTop');
     if (backBtn) {
       window.addEventListener('scroll', function() {
-        if (window.scrollY > 400) { backBtn.classList.add('show'); }
-        else { backBtn.classList.remove('show'); }
+        if (window.scrollY > 400) { 
+          backBtn.classList.add('show'); 
+        } else { 
+          backBtn.classList.remove('show'); 
+        }
       }, { passive: true });
-      backBtn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+      
+      backBtn.addEventListener('click', function() { 
+        window.scrollTo({ top: 0, behavior: 'smooth' }); 
+      });
     }
   });
 </script>
