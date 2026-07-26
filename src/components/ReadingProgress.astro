@@ -1,16 +1,10 @@
 ---
-// ReadingProgress.astro - نسخة محسّنة مع دعم كامل
+// ReadingProgress.astro
+// شريط تقدم القراءة فقط (العداد سينقل لمنطقة الميتا)
 ---
 
 <div class="reading-progress-wrapper">
   <div class="reading-progress-bar" id="progressBar"></div>
-  <span class="reading-time-badge" id="readingTimeBadge">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="12" cy="12" r="10"></circle>
-      <polyline points="12 6 12 12 16 14"></polyline>
-    </svg>
-    <span id="readingTimeText">جاري الحساب...</span>
-  </span>
 </div>
 
 <style>
@@ -30,85 +24,25 @@
     transition: width 0.1s ease-out;
     box-shadow: 0 0 10px rgba(2, 132, 199, 0.5);
   }
-  
-  .reading-time-badge {
-    position: absolute;
-    top: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(15, 23, 42, 0.95);
-    color: #fff;
-    padding: 6px 14px;
-    border-radius: 25px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    backdrop-filter: blur(10px);
-    pointer-events: auto;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.3s;
-    white-space: nowrap;
-  }
-  
-  .reading-time-badge:hover {
-    transform: translateX(-50%) translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
-    background: rgba(2, 132, 199, 0.95);
-  }
-  
-  .reading-time-badge svg {
-    flex-shrink: 0;
-  }
-  
-  /* دعم الوضع الليلي */
-  :global(html.dark-mode) .reading-time-badge {
-    background: rgba(241, 245, 249, 0.95);
-    color: #0f172a;
-  }
-  
-  @media (max-width: 768px) {
-    .reading-time-badge {
-      top: 8px;
-      font-size: 0.75rem;
-      padding: 4px 10px;
-    }
-    .reading-progress-bar {
-      height: 3px;
-    }
-  }
 </style>
 
 <script>
   if (typeof window !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
       const progressBar = document.getElementById('progressBar');
-      const readingTimeText = document.getElementById('readingTimeText');
       const article = document.querySelector('article');
       
-      // حساب وقت القراءة
+      // حساب وقت القراءة وتخزينه في عنصر يمكن الوصول إليه
       if (article) {
         const wordCount = article.innerText.trim().split(/\s+/).length;
         const minutes = Math.ceil(wordCount / 200);
         
-        // حفظ الوقت في عنصر عالمي
-        const timeStorage = document.createElement('span');
-        timeStorage.id = 'calculatedReadingTime';
-        timeStorage.style.display = 'none';
-        timeStorage.textContent = minutes.toString();
-        document.body.appendChild(timeStorage);
-        
-        // عرض الوقت في الشارة
-        if (readingTimeText) {
-          if (minutes < 1) {
-            readingTimeText.textContent = 'أقل من دقيقة';
-          } else if (minutes === 1) {
-            readingTimeText.textContent = 'دقيقة واحدة';
-          } else {
-            readingTimeText.textContent = `${minutes} دقائق`;
-          }
-        }
+        // إنشاء عنصر مخزن للوقت يمكن استخدامه في أي مكان
+        const timeElement = document.createElement('span');
+        timeElement.id = 'calculatedReadingTime';
+        timeElement.style.display = 'none';
+        timeElement.textContent = minutes;
+        document.body.appendChild(timeElement);
       }
 
       // تحديث شريط التقدم
