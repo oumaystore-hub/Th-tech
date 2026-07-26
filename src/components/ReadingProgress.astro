@@ -1,11 +1,10 @@
 ---
 // ReadingProgress.astro
-// شريط تقدم القراءة + وقت القراءة التلقائي
+// شريط تقدم القراءة فقط (العداد سينقل لمنطقة الميتا)
 ---
 
 <div class="reading-progress-wrapper">
   <div class="reading-progress-bar" id="progressBar"></div>
-  <span class="reading-time" id="readingTime">جاري الحساب...</span>
 </div>
 
 <style>
@@ -25,71 +24,28 @@
     transition: width 0.1s ease-out;
     box-shadow: 0 0 10px rgba(2, 132, 199, 0.5);
   }
-  
-  .reading-time {
-    position: absolute;
-    top: 8px;
-    right: 20px;
-    background: rgba(15, 23, 42, 0.9);
-    color: #fff;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    backdrop-filter: blur(8px);
-    pointer-events: auto;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s;
-  }
-  
-  .reading-time:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
-  }
-  
-  /* ✅ دعم الوضع الليلي */
-  :global(html.dark-mode) .reading-time {
-    background: rgba(241, 245, 249, 0.9);
-    color: #0f172a;
-  }
-  
-  @media (max-width: 768px) {
-    .reading-time {
-      right: 12px;
-      font-size: 0.75rem;
-      padding: 4px 10px;
-    }
-    .reading-progress-bar {
-      height: 3px;
-    }
-  }
 </style>
 
 <script>
   if (typeof window !== 'undefined') {
     document.addEventListener('DOMContentLoaded', () => {
       const progressBar = document.getElementById('progressBar');
-      const readingTimeEl = document.getElementById('readingTime');
       const article = document.querySelector('article');
       
-      // ✅ حساب وقت القراءة تلقائياً (متوسط 200 كلمة/دقيقة)
+      // حساب وقت القراءة وتخزينه في عنصر يمكن الوصول إليه
       if (article) {
         const wordCount = article.innerText.trim().split(/\s+/).length;
         const minutes = Math.ceil(wordCount / 200);
         
-        // عرض الوقت بشكل جميل
-        if (minutes < 1) {
-          readingTimeEl.textContent = '⏱️ أقل من دقيقة';
-        } else if (minutes === 1) {
-          readingTimeEl.textContent = '⏱️ دقيقة واحدة';
-        } else {
-          readingTimeEl.textContent = `️ ${minutes} دقائق`;
-        }
-      } else {
-        readingTimeEl.style.display = 'none';
+        // إنشاء عنصر مخزن للوقت يمكن استخدامه في أي مكان
+        const timeElement = document.createElement('span');
+        timeElement.id = 'calculatedReadingTime';
+        timeElement.style.display = 'none';
+        timeElement.textContent = minutes;
+        document.body.appendChild(timeElement);
       }
 
-      // ✅ تحديث شريط التقدم عند التمرير
+      // تحديث شريط التقدم
       const updateProgress = () => {
         if (!article) return;
         
@@ -99,7 +55,6 @@
         const windowHeight = window.innerHeight;
         const scrollPos = window.scrollY;
 
-        // حساب النسبة المئوية للتقدم
         let progress = ((scrollPos - articleTop + windowHeight * 0.5) / articleHeight) * 100;
         progress = Math.min(100, Math.max(0, progress));
         
@@ -108,10 +63,7 @@
         }
       };
 
-      // الاستماع لحدث التمرير
       window.addEventListener('scroll', updateProgress, { passive: true });
-      
-      // تشغيل أولي
       updateProgress();
     });
   }
