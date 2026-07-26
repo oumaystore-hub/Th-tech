@@ -1,5 +1,8 @@
 ---
+// ShareButtons.astro
+// مكون أزرار المشاركة - يعمل بدون مشاكل في Astro
 ---
+
 <div class="share-container">
   <span class="share-label">شارك المقال:</span>
   <div class="share-buttons">
@@ -19,39 +22,13 @@
     </button>
     
     <!-- Copy Link -->
-    <button type="button" onclick="copyLink()" class="s-btn cp" aria-label="Copy Link">
+    <button type="button" onclick="copyLink()" class="s-btn cp" aria-label="Copy Link" id="copyBtn">
       <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
     </button>
   </div>
+  <!-- ✅ رسالة النسخ المنبثقة -->
+  <span id="copyMessage" class="copy-message">تم نسخ الرابط!</span>
 </div>
-
-<script>
-  function share(platform) {
-    const url = encodeURIComponent(window.location.href);
-    const title = encodeURIComponent(document.title);
-    let shareUrl = '';
-    
-    // روابط صحيحة ومفتوحة
-    if (platform === 'twitter') shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
-    if (platform === 'linkedin') shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
-    if (platform === 'whatsapp') shareUrl = `https://wa.me/?text=${title}%20${url}`;
-    
-    window.open(shareUrl, '_blank', 'width=600,height=400');
-  }
-  
-  function copyLink() {
-    navigator.clipboard.writeText(window.location.href);
-    const btn = document.querySelector('.cp');
-    const originalIcon = btn.innerHTML;
-    
-    // تغيير الأيقونة لعلامة صح لفترة وجيزة
-    btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
-    
-    setTimeout(() => {
-      btn.innerHTML = originalIcon;
-    }, 2000);
-  }
-</script>
 
 <style>
   .share-container {
@@ -59,6 +36,7 @@
     margin: 2.5rem 0; padding: 1rem;
     background: var(--bg); border-radius: 12px;
     border: 1px solid var(--border); flex-wrap: wrap;
+    position: relative;
   }
   .share-label { font-weight: 700; color: var(--text); font-size: 0.95rem; }
   .share-buttons { display: flex; gap: 0.5rem; }
@@ -67,14 +45,114 @@
     cursor: pointer; font-size: 1.1rem; font-weight: bold;
     color: white; transition: all 0.3s; display: flex; align-items: center; justify-content: center;
   }
-  
-  /* هذا السطر ضروري جداً لكي يعمل النقر على الأيقونات */
   .s-btn svg { pointer-events: none; }
-
   .tw { background: #000000; } 
   .li { background: #0a66c2; } 
   .wa { background: #25d366; } 
   .cp { background: var(--primary); }
-  
   .s-btn:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.15); filter: brightness(1.1); }
+  
+  /* ✅ رسالة النسخ */
+  .copy-message {
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    background: var(--primary);
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+    z-index: 10;
+  }
+  .copy-message.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) scale(1);
+  }
 </style>
+
+<script>
+  // ✅ الحل: تعريف الدوال على window لضمان الوصول العالمي
+  if (typeof window !== 'undefined') {
+    
+    window.share = function(platform) {
+      const url = encodeURIComponent(window.location.href);
+      const title = encodeURIComponent(document.title);
+      let shareUrl = '';
+      
+      if (platform === 'twitter') {
+        shareUrl = `https://twitter.com/intent/tweet?url=${url}&text=${title}`;
+      } else if (platform === 'linkedin') {
+        shareUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${url}`;
+      } else if (platform === 'whatsapp') {
+        shareUrl = `https://wa.me/?text=${title}%20${url}`;
+      }
+      
+      if (shareUrl) {
+        window.open(shareUrl, '_blank', 'width=600,height=400');
+      }
+    };
+    
+    window.copyLink = function() {
+      const url = window.location.href;
+      
+      // طريقة حديثة وآمنة للنسخ
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(url).then(() => {
+          showCopyMessage();
+        }).catch(() => {
+          fallbackCopy(url);
+        });
+      } else {
+        fallbackCopy(url);
+      }
+    };
+    
+    // ✅ دالة احتياطية للنسخ للمتصفحات القديمة
+    function fallbackCopy(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.focus();
+      textarea.select();
+      
+      try {
+        document.execCommand('copy');
+        showCopyMessage();
+      } catch (err) {
+        console.error('Copy failed', err);
+      }
+      
+      document.body.removeChild(textarea);
+    }
+    
+    // ✅ إظهار رسالة النجاح
+    function showCopyMessage() {
+      const msg = document.getElementById('copyMessage');
+      const btn = document.getElementById('copyBtn');
+      
+      if (msg && btn) {
+        // تغيير الأيقونة لعلامة صح
+        const originalIcon = btn.innerHTML;
+        btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+        
+        // إظهار الرسالة
+        msg.classList.add('show');
+        
+        // إعادة كل شيء بعد 2 ثانية
+        setTimeout(() => {
+          btn.innerHTML = originalIcon;
+          msg.classList.remove('show');
+        }, 2000);
+      }
+    }
+  }
+</script>
