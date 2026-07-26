@@ -12,15 +12,15 @@
         <span>الرئيسية</span>
       </a>
       <a href="/Th-tech/articles/" class="nav-link">
-        <span class="icon">📚</span>
+        <span class="icon"></span>
         <span>المقالات</span>
       </a>
       <a href="/Th-tech/category/" class="nav-link">
-        <span class="icon">📑</span>
+        <span class="icon"></span>
         <span>التصنيفات</span>
       </a>
       <a href="/Th-tech/contact/" class="nav-link">
-        <span class="icon">✉️</span>
+        <span class="icon">️</span>
         <span>اتصل بنا</span>
       </a>
     </nav>
@@ -82,11 +82,11 @@
   <!-- ✅ القائمة المتنقلة مع تصنيفات منبثقة -->
   <nav id="mobile-menu" class="mobile-menu">
     <a href="/Th-tech/" class="mobile-link">
-      <span class="icon">🏠</span>
+      <span class="icon"></span>
       <span>الرئيسية</span>
     </a>
     <a href="/Th-tech/articles/" class="mobile-link">
-      <span class="icon">📚</span>
+      <span class="icon"></span>
       <span>المقالات</span>
     </a>
     
@@ -650,7 +650,7 @@
     color: var(--primary);
   }
   
-  /* ✅ القائمة الفرعية */
+  /* ✅ القائمة الفرعية - مع إصلاح ظهور جميع التصنيفات */
   .dropdown-list {
     list-style: none;
     padding: 0;
@@ -664,8 +664,28 @@
   }
   
   .dropdown-list.open {
-    max-height: 700px;
+    max-height: 60vh;        /* ✅ لا تتعدى 60% من ارتفاع الشاشة */
     opacity: 1;
+    overflow-y: auto;        /* ✅ تمرير تلقائي */
+  }
+
+  /* ✅ تحسين شريط التمرير */
+  .dropdown-list.open::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .dropdown-list.open::-webkit-scrollbar-track {
+    background: rgba(2,132,199,0.1);
+    border-radius: 3px;
+  }
+
+  .dropdown-list.open::-webkit-scrollbar-thumb {
+    background: var(--primary);
+    border-radius: 3px;
+  }
+
+  .dropdown-list.open::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-light);
   }
   
   .dropdown-list li a {
@@ -901,7 +921,7 @@
           
           searchStats.textContent = `🔍 تم العثور على ${results.length} نتيجة لـ "${query}"`;
         } else {
-          searchResults.innerHTML = '<div class="no-results">😕 لم يتم العثور على نتائج. جرب كلمات أخرى</div>';
+          searchResults.innerHTML = '<div class="no-results"> لم يتم العثور على نتائج. جرب كلمات أخرى</div>';
           searchStats.textContent = '';
         }
       }, 300);
