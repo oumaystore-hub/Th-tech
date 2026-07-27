@@ -532,6 +532,49 @@ export const description = "دليل شامل جداً (3000+ كلمة) يغطي
   </main>
   
   <Footer />
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    // ⚙️ إعدادات التتبع الذكي
+    const TRACK_TIME = 30;        // 30 ثانية
+    const SCROLL_THRESHOLD = 0.7; // 70% من طول المقال
+
+    const currentPath = window.location.pathname;
+    let isMarked = false;
+
+    function markAsRead() {
+      if (isMarked) return;
+      const readArticles = JSON.parse(localStorage.getItem('read_articles') || '[]');
+      if (!readArticles.includes(currentPath)) {
+        readArticles.push(currentPath);
+        localStorage.setItem('read_articles', JSON.stringify(readArticles));
+      }
+      isMarked = true;
+    }
+
+    // خروج فوري إذا كان المقال مُسجلاً مسبقاً
+    if (JSON.parse(localStorage.getItem('read_articles') || '[]').includes(currentPath)) return;
+
+    // ⏱️ 1. العداد الزمني
+    const timeTimer = setTimeout(markAsRead, TRACK_TIME * 1000);
+
+    // 📜 2. مستشعر التمرير
+    const checkScroll = () => {
+      const scrollPercent = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+      if (scrollPercent >= SCROLL_THRESHOLD) {
+        markAsRead();
+        clearTimeout(timeTimer);
+        window.removeEventListener('scroll', checkScroll, { passive: true });
+      }
+    };
+    window.addEventListener('scroll', checkScroll, { passive: true });
+
+    // 🧹 تنظيف المؤقتات عند مغادرة الصفحة
+    window.addEventListener('beforeunload', () => {
+      clearTimeout(timeTimer);
+      window.removeEventListener('scroll', checkScroll);
+    });
+  });
+</script>
 </body>
 </html>
 
