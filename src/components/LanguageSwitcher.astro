@@ -1,0 +1,70 @@
+---
+// src/components/LanguageSwitcher.astro
+---
+
+<div class="lang-switcher">
+  <button id="btn-ar" class="lang-btn active">🇸 العربية</button>
+  <button id="btn-en" class="lang-btn">🇬🇧 English</button>
+</div>
+
+<style>
+  .lang-switcher {
+    display: flex;
+    gap: 5px;
+    background: var(--bg);
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+  .lang-btn {
+    background: transparent;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    color: var(--text-sec);
+    transition: all 0.2s;
+  }
+  .lang-btn:hover { background: var(--border); }
+  .lang-btn.active {
+    background: var(--primary);
+    color: white;
+    font-weight: bold;
+  }
+</style>
+
+<script>
+  const btnAr = document.getElementById('btn-ar');
+  const btnEn = document.getElementById('btn-en');
+  
+  // 1. قراءة اللغة المحفوظة (أو العربية افتراضياً)
+  const currentLang = localStorage.getItem('lang') || 'ar';
+
+  // 2. تحديث شكل الأزرار بناءً على اللغة الحالية
+  function updateButtons() {
+    const lang = localStorage.getItem('lang') || 'ar';
+    if (lang === 'ar') {
+      btnAr.classList.add('active');
+      btnEn.classList.remove('active');
+    } else {
+      btnEn.classList.add('active');
+      btnAr.classList.remove('active');
+    }
+  }
+
+  // تشغيل التحديث عند التحميل
+  updateButtons();
+
+  // 3. عند الضغط على العربية
+  btnAr.addEventListener('click', () => {
+    localStorage.setItem('lang', 'ar');
+    window.location.reload(); // إعادة تحميل الصفحة لتطبيق اللغة
+  });
+
+  // 4. عند الضغط على الإنجليزية
+  btnEn.addEventListener('click', () => {
+    localStorage.setItem('lang', 'en');
+    window.location.reload(); // إعادة تحميل الصفحة لتطبيق اللغة
+  });
+</script>
