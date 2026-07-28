@@ -27,11 +27,11 @@ export const description = "مرجع تقني عملي يتجاوز 5000 كلم�
       <p>رحلة تقنية معمقة (5000+ كلمة) من حماية العتاد إلى الاستجابة الاحترافية للتهديدات</p>
     </div>
 
-    <!-- ✅ زر الفهرس - مع z-index مرتفع -->
-    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس" style="z-index: 9999;">📑</button>
+    <!-- ✅ زر الفهرس -->
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
     
     <!-- ✅ نافذة الفهرس -->
-    <div class="toc-modal" id="tocModal" style="z-index: 9998;">
+    <div class="toc-modal" id="tocModal">
       <div class="toc-box">
         <div class="toc-head">
           <h3>فهرس المقال</h3>
@@ -41,8 +41,8 @@ export const description = "مرجع تقني عملي يتجاوز 5000 كلم�
       </div>
     </div>
 
-    <!-- ✅ زر العودة للأعلى - مع z-index مرتفع -->
-    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى" style="z-index: 9997;">⬆️</button>
+    <!-- ✅ زر العودة للأعلى -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
 
     <article class="article">
       <span class="badge" style="background:linear-gradient(135deg,#ef4444,#dc2626)">أمن سيبراني / مرجع شامل (5000+ كلمة)</span>
@@ -212,10 +212,11 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
   
   <Footer />
 
-  <!-- ✅ كود التتبع الذكي للمقال (الوقت + التمرير) -->
+  <!-- ✅ كود التتبع الذكي + الفهرس + العودة للأعلى (نفس الكود الناجح من المقالات السابقة) -->
   <script is:inline>
     if (typeof window !== 'undefined') {
       window.addEventListener('DOMContentLoaded', function() {
+        // === تتبع القراءة (30 ثانية أو 70% تمرير) ===
         var TRACK_TIME = 30;
         var SCROLL_THRESHOLD = 0.7;
         var currentPath = window.location.pathname;
@@ -262,7 +263,7 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
           window.removeEventListener('scroll', checkScroll);
         });
 
-        // وقت القراءة
+        // === وقت القراءة ===
         setTimeout(function() {
           try {
             var timeElement = document.getElementById('calculatedReadingTime');
@@ -276,18 +277,14 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
           } catch (e) {}
         }, 100);
 
-        // ✅ الفهرس - مع التأكد من وجود العناصر
+        // === الفهرس (نفس الكود الناجح) ===
         var tocBtn = document.getElementById('tocBtn');
         var tocModal = document.getElementById('tocModal');
         var tocClose = document.getElementById('tocClose');
         var tocNav = document.getElementById('tocNav');
         
-        console.log('TOC Elements:', { tocBtn, tocModal, tocClose, tocNav });
-        
         if (tocBtn && tocModal && tocNav) {
           var h3Elements = document.querySelectorAll('.article h3');
-          console.log('Found H3 elements:', h3Elements.length);
-          
           h3Elements.forEach(function(h3) {
             var item = document.createElement('div');
             item.className = 'toc-item';
@@ -300,29 +297,13 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
             tocNav.appendChild(item);
           });
           
-          tocBtn.onclick = function() { 
-            console.log('TOC button clicked');
-            tocModal.classList.add('active'); 
-          };
-          
-          tocClose.onclick = function() { 
-            console.log('TOC close clicked');
-            tocModal.classList.remove('active'); 
-          };
-          
-          tocModal.onclick = function(e) { 
-            if (e.target === tocModal) {
-              tocModal.classList.remove('active');
-            }
-          };
-        } else {
-          console.error('TOC elements not found!');
+          tocBtn.onclick = function() { tocModal.classList.add('active'); };
+          tocClose.onclick = function() { tocModal.classList.remove('active'); };
+          tocModal.onclick = function(e) { if (e.target === tocModal) tocModal.classList.remove('active'); };
         }
 
-        // ✅ العودة للأعلى - مع التأكد من وجود العنصر
+        // === العودة للأعلى (نفس الكود الناجح) ===
         var backBtn = document.getElementById('backToTop');
-        console.log('Back to top button:', backBtn);
-        
         if (backBtn) {
           window.addEventListener('scroll', function() {
             if (window.scrollY > 400) {
@@ -333,69 +314,12 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
           });
           
           backBtn.addEventListener('click', function() {
-            console.log('Back to top clicked');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           });
-        } else {
-          console.error('Back to top button not found!');
         }
       });
     }
   </script>
-
-  <!-- ✅ الحل النووي للأزرار - يضاف بعد السكربت الأصلي -->
-  <button id="tocBtnFallback" onclick="document.getElementById('tocModal').classList.add('active')" 
-          style="position:fixed;bottom:30px;left:30px;width:56px;height:56px;background:linear-gradient(135deg,#ef4444,#dc2626);border:none;border-radius:50%;color:#fff;font-size:1.8rem;cursor:pointer;z-index:999999 !important;transform:translateZ(0) !important;box-shadow:0 4px 20px rgba(239,68,68,0.4);display:flex;align-items:center;justify-content:center;pointer-events:auto !important;">
-    📑
-  </button>
-
-  <button id="backToTopFallback" onclick="window.scrollTo({top:0,behavior:'smooth'})" 
-          style="position:fixed;bottom:95px;left:30px;width:50px;height:50px;background:var(--card);border:2px solid var(--primary);border-radius:50%;color:var(--primary);font-size:1.4rem;cursor:pointer;z-index:999997 !important;transform:translateZ(0) !important;opacity:0;visibility:hidden;transition:all 0.3s ease;display:flex;align-items:center;justify-content:center;pointer-events:auto !important;">
-    ⬆️
-  </button>
-
-  <script is:inline>
-    (function() {
-      console.log('🚀 Fallback buttons loaded');
-      
-      // إظهار/إخفاء زر العودة للأعلى
-      var backFallback = document.getElementById('backToTopFallback');
-      window.addEventListener('scroll', function() {
-        if (window.scrollY > 400) {
-          backFallback.style.opacity = '1';
-          backFallback.style.visibility = 'visible';
-        } else {
-          backFallback.style.opacity = '0';
-          backFallback.style.visibility = 'hidden';
-        }
-      }, { passive: true });
-      
-      // إغلاق الفهرس عند الضغط خارجه
-      var tocModal = document.getElementById('tocModal');
-      if (tocModal) {
-        tocModal.addEventListener('click', function(e) {
-          if (e.target === this) this.classList.remove('active');
-        });
-      }
-      
-      console.log('✅ Fallback buttons initialized');
-    })();
-  </script>
-
-  <style>
-    /* ضمان عدم تأثر الأزرار بأي تنسيق خارجي */
-    #tocBtnFallback, #backToTopFallback {
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-      font-family: system-ui, sans-serif;
-    }
-    #tocBtnFallback:active, #backToTopFallback:active { transform: scale(0.95) !important; }
-    
-    /* تحسين شريط التمرير للفهرس */
-    .toc-nav::-webkit-scrollbar { width: 6px; }
-    .toc-nav::-webkit-scrollbar-track { background: transparent; }
-    .toc-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-  </style>
 </body>
 </html>
 
@@ -425,7 +349,7 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
   .article-image:hover img { transform: scale(1.02); }
   .image-caption { background: var(--bg); color: var(--text-sec); padding: 1rem 1.5rem; text-align: center; font-size: 0.9rem; font-style: italic; margin: 0; border-top: 1px solid var(--border); }
   
-  /* ✅ زر الفهرس - مع position ثابت و z-index مرتفع */
+  /* ✅ زر الفهرس - نفس التنسيق الناجح */
   .toc-btn { 
     position: fixed; 
     bottom: 30px; 
@@ -439,7 +363,7 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
     font-size: 1.6rem; 
     cursor: pointer; 
     box-shadow: 0 4px 15px rgba(239,68,68,0.5); 
-    z-index: 9999 !important;
+    z-index: 9999;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
@@ -450,7 +374,7 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
     box-shadow: 0 6px 20px rgba(239,68,68,0.7); 
   }
   
-  /* ✅ نافذة الفهرس */
+  /* ✅ نافذة الفهرس - نفس التنسيق الناجح */
   .toc-modal { 
     display: none; 
     position: fixed; 
@@ -460,7 +384,7 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
     bottom: 0; 
     background: rgba(0,0,0,0.6); 
     backdrop-filter: blur(8px); 
-    z-index: 9998 !important;
+    z-index: 9998;
     align-items: center; 
     justify-content: center; 
     padding: 6rem 1.5rem 1.5rem; 
@@ -535,7 +459,7 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
   .toc-nav::-webkit-scrollbar-track { background: transparent; }
   .toc-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
   
-  /* ✅ زر العودة للأعلى - مع position ثابت و z-index مرتفع */
+  /* ✅ زر العودة للأعلى - نفس التنسيق الناجح */
   .back-to-top { 
     position: fixed; 
     bottom: 95px; 
@@ -552,7 +476,7 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
     visibility: hidden; 
     transform: translateY(20px); 
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
-    z-index: 9997 !important;
+    z-index: 9997;
     display: flex; 
     align-items: center; 
     justify-content: center; 
@@ -588,14 +512,12 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
       height: 50px !important; 
       bottom: 15px !important; 
       left: 15px !important;
-      z-index: 9999 !important;
     }
     .back-to-top { 
       width: 42px !important; 
       height: 42px !important; 
       bottom: 75px !important; 
       left: 15px !important;
-      z-index: 9997 !important;
     }
     .toc-modal { padding: 7rem 1rem 1rem !important; }
     .toc-box { max-width: 95% !important; border-radius: 16px !important; }
