@@ -22,6 +22,54 @@ export const description = "مسارات تعلم منظمة من المبتدئ
       <p>اختر مسارك التقني وابدأ رحلتك من الصفر حتى الاحتراف</p>
     </div>
 
+    <!-- ✅ مسار أمان Windows الجديد (مع ربط المستويات بأجزاء المقال) -->
+    <section class="path-card" id="windows-security">
+      <div class="path-header" style="background: linear-gradient(135deg, #ef4444, #dc2626)">
+        <span class="path-icon">🔐</span>
+        <div>
+          <h2>أمان Windows المتقدم</h2>
+          <p>من التشفير إلى الاستجابة للحوادث (5000+ كلمة)</p>
+        </div>
+      </div>
+      <div class="path-content">
+        
+        <!-- مستوى المبتدئ (يرتبط بـ part1 و part2 في المقال) -->
+        <div class="level beginner" data-path="windows-security" data-level="beginner">
+          <span class="level-badge">مبتدئ</span>
+          <h3>أساسيات الحماية والتشفير</h3>
+          <ul>
+            <li id="task-part1">✅ الجزء 1: حماية العتاد وتشفير البيانات</li>
+            <li id="task-part2">✅ الجزء 2: الدفاع الاستباقي (Defender)</li>
+          </ul>
+          <a href="/Th-tech/windows/security-guide/#part1" class="path-link">ابدأ القراءة ←</a>
+        </div>
+
+        <!-- مستوى المتوسط (يرتبط بـ part3 و part4 في المقال) -->
+        <div class="level intermediate" data-path="windows-security" data-level="intermediate">
+          <span class="level-badge">متوسط</span>
+          <h3>تأمين الهوية والتدقيق</h3>
+          <ul>
+            <li id="task-part3">✅ الجزء 3: تأمين الهوية والصلاحيات</li>
+            <li id="task-part4">✅ الجزء 4: التدقيق والبحث عن التهديدات</li>
+          </ul>
+          <a href="/Th-tech/windows/security-guide/#part3" class="path-link">تابع المسار ←</a>
+        </div>
+
+        <!-- مستوى المتقدم (يرتبط بـ part5 و part6 و part7 في المقال) -->
+        <div class="level advanced" data-path="windows-security" data-level="advanced">
+          <span class="level-badge">متقدم</span>
+          <h3>الاستجابة و Zero Trust</h3>
+          <ul>
+            <li id="task-part5">✅ الجزء 5: خطة الاستجابة للحوادث</li>
+            <li id="task-part6">✅ الجزء 6: تأمين PowerShell</li>
+            <li id="task-part7">✅ الجزء 7: Zero Trust والسحابة</li>
+          </ul>
+          <a href="/Th-tech/windows/security-guide/#part5" class="path-link">أتقن المسار ←</a>
+        </div>
+
+      </div>
+    </section>
+
     <!-- مسار تطوير الويب -->
     <section class="path-card" id="web-dev">
       <div class="path-header" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8)">
@@ -347,17 +395,27 @@ export const description = "مسارات تعلم منظمة من المبتدئ
   .path-header h2 { font-size: 1.2rem; margin: 0 0 0.2rem; font-weight: 700; }
   .path-header p { margin: 0; opacity: 0.9; font-size: 0.85rem; }
   .path-content { padding: 1rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; }
+  
+  /* ✅ تنسيق المستويات مع دعم حالة الإكمال */
   .level { padding: 0.8rem; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); transition: all 0.3s; }
   .level:hover { border-color: var(--primary); transform: translateY(-2px); }
+  .level.completed { border-color: #22c55e; background: rgba(34, 197, 94, 0.05); }
+  
   .level-badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 12px; font-size: 0.7rem; font-weight: 700; color: white; margin-bottom: 0.4rem; }
   .beginner .level-badge { background: linear-gradient(135deg, #22c55e, #16a34a); }
   .intermediate .level-badge { background: linear-gradient(135deg, #f59e0b, #d97706); }
   .advanced .level-badge { background: linear-gradient(135deg, #ef4444, #dc2626); }
+  
   .level h3 { margin: 0 0 0.5rem; color: var(--text); font-size: 0.95rem; }
   .level ul { list-style: none; padding: 0; margin: 0 0 0.6rem; }
   .level li { padding: 0.25rem 0; color: var(--text-sec); font-size: 0.8rem; border-bottom: 1px solid rgba(128,128,128,0.1); display: flex; align-items: center; gap: 0.3rem; }
   .level li:last-child { border-bottom: none; }
   .level li:before { content: "✓"; color: var(--primary); font-weight: bold; font-size: 0.75rem; }
+  
+  /* ✅ تأثير اكتمال المهمة */
+  .level li.done { color: var(--primary); font-weight: bold; text-decoration: line-through; opacity: 0.7; }
+  .level li.done::before { content: "✅"; font-size: 0.7rem; }
+
   .path-link { display: inline-block; padding: 0.35rem 0.9rem; background: var(--primary); color: white; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 0.8rem; transition: all 0.3s; margin-top: 0.3rem; }
   .path-link:hover { background: #0ea5e9; transform: translateX(-3px); }
   
@@ -409,11 +467,11 @@ export const description = "مسارات تعلم منظمة من المبتدئ
 
 <script>
   // ✅ منطق الشارات والتقدم مع التحديث الفوري
-const paths = {
+  const paths = {
     'windows': [
       '/Th-tech/windows/', 
       '/Th-tech/windows/advanced/',
-      '/Th-tech/windows/security-guide/'  // ✅ هذا هو السطر الجديد
+      '/Th-tech/windows/security-guide/'  // ✅ أضفنا رابط دليل الأمن هنا
     ],
     'networks': ['/Th-tech/networks/', '/Th-tech/5g-technology/'],
     'coding': ['/Th-tech/programming/', '/Th-tech/devops/'],
@@ -448,18 +506,84 @@ const paths = {
     });
   }
 
-  // تشغيل عند تحميل الصفحة
-  document.addEventListener('DOMContentLoaded', updateBadges);
+  // ✅ دالة جديدة لتحديث تقدم المسار بناءً على الأجزاء المقروءة
+  function updatePathProgress() {
+    // تعريف هيكلية المسار: أي جزء (part) يتبع أي مستوى
+    const pathStructure = {
+      'windows-security': {
+        beginner: ['part1', 'part2'],
+        intermediate: ['part3', 'part4'],
+        advanced: ['part5', 'part6', 'part7']
+      }
+    };
+
+    // جلب كل الأجزاء التي تم قراءتها من الذاكرة
+    const readSections = Object.keys(localStorage).filter(k => k.startsWith('read_section_')).map(k => k.replace('read_section_', ''));
+
+    // لكل مسار في الصفحة
+    Object.keys(pathStructure).forEach(pathId => {
+      const levels = pathStructure[pathId];
+      
+      // فحص كل مستوى (مبتدئ، متوسط، متقدم)
+      Object.keys(levels).forEach(levelName => {
+        const requiredParts = levels[levelName];
+        const levelCard = document.querySelector(`.level[data-path="${pathId}"][data-level="${levelName}"]`);
+        
+        if (!levelCard) return;
+
+        let completedCount = 0;
+
+        // فحص كل جزء مطلوب في هذا المستوى
+        requiredParts.forEach(partId => {
+          const taskItem = document.getElementById(`task-${partId}`);
+          if (taskItem) {
+            if (readSections.includes(partId)) {
+              taskItem.classList.add('done');
+              completedCount++;
+            } else {
+              taskItem.classList.remove('done');
+            }
+          }
+        });
+
+        // إذا اكتمل كل أجزاء المستوى، نلون البطاقة بالكامل
+        if (completedCount === requiredParts.length) {
+          levelCard.classList.add('completed');
+        } else {
+          levelCard.classList.remove('completed');
+        }
+      });
+    });
+  }
+
+  // تشغيل الدوال عند تحميل الصفحة
+  document.addEventListener('DOMContentLoaded', () => {
+    updateBadges();
+    updatePathProgress();
+  });
 
   // ✅ تحديث فوري عند العودة للتبويب
   document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) updateBadges();
+    if (!document.hidden) {
+      updateBadges();
+      updatePathProgress();
+    }
   });
-  window.addEventListener('focus', updateBadges);
+  
+  window.addEventListener('focus', () => {
+    updateBadges();
+    updatePathProgress();
+  });
   
   // ✅ تحديث فوري عبر التبويبات (عندما يسجل مقال في تبويب آخر)
-  window.addEventListener('storage', updateBadges);
+  window.addEventListener('storage', () => {
+    updateBadges();
+    updatePathProgress();
+  });
   
   // ✅ تحديث فوري عند استقبال حدث من مقال مقروء
-  window.addEventListener('badge-update', updateBadges);
+  window.addEventListener('badge-update', () => {
+    updateBadges();
+    updatePathProgress();
+  });
 </script>
