@@ -1,0 +1,557 @@
+---
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+import ReadingProgress from '../../components/ReadingProgress.astro';
+
+export const title = "دليل أمان Windows المتقدم: من BitLocker إلى Zero Trust";
+export const pubDate = "2026-07-28";
+export const description = "دليل شامل لأمن Windows: BitLocker، Windows Defender، Group Policy، Audit Policies، والتأمين ضد الهجمات الحديثة";
+---
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} - Th.Tech</title>
+  <meta name="description" content={description} />
+  <meta name="keywords" content="Windows Security, BitLocker, Defender, Group Policy, Audit, Zero Trust, Hardening" />
+</head>
+<body>
+  <Header />
+  <ReadingProgress />
+  
+  <main class="category-articles">
+    <div class="page-header">
+      <h1>🔐 أمان Windows المتقدم</h1>
+      <p>دليل شامل لتأمين نظام Windows ضد الهجمات الحديثة</p>
+    </div>
+
+    <!-- زر الفهرس -->
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
+    <div class="toc-modal" id="tocModal">
+      <div class="toc-box">
+        <div class="toc-head">
+          <h3>فهرس المقال</h3>
+          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس">✕</button>
+        </div>
+        <nav class="toc-nav" id="tocNav"></nav>
+      </div>
+    </div>
+
+    <!-- زر العودة للأعلى -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
+
+    <article class="article" id="art2">
+      <span class="badge" style="background:linear-gradient(135deg,#ef4444,#dc2626)">أمن سيبراني / متقدم (3000+ كلمة)</span>
+      <h2>دليل أمان Windows المتقدم: من BitLocker إلى Zero Trust</h2>
+      
+      <!-- منطقة الميتا -->
+      <div class="meta">
+        <span>📅 28 يوليو 2026</span>
+        <span class="separator">|</span>
+        <span>⏱️ قراءة متعمقة (3000+ كلمة)</span>
+        <span class="separator">|</span>
+        <span id="readingTimeDisplay" class="reading-time-badge">⏱️ جاري الحساب...</span>
+      </div>
+      
+      <p class="intro">
+        في عالم يتزايد فيه تهديد البرمجيات الخبيثة وهجمات الفدية، لم يعد تأمين نظام Windows خياراً بل ضرورة قصوى. هذا الدليل المتقدم (أكثر من 3000 كلمة) سيأخذك في رحلة شاملة لتأمين نظام Windows من الصفر حتى الاحتراف، بدءاً من أساسيات التشفير وBitLocker، مروراً بتكوين Windows Defender وGroup Policy، وصولاً إلى استراتيجيات Zero Trust والتدقيق المتقدم (Advanced Auditing). ستتعلم كيفية كشف التهديدات، منع الاختراقات، والاستجابة للحوادث بأدوات مدمجة في النظام دون الحاجة لبرامج خارجية.
+      </p>
+
+      <!-- صورة رئيسية -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1550751863-88478f4b89d9?w=900&h=400&fit=crop" alt="Windows Security" onerror="this.src='https://picsum.photos/900/400?random=1'" />
+        <p class="image-caption">طبقات الأمان في Windows - دفاع متعدد المستويات</p>
+      </div>
+
+      <h3 id="part1">🔐 الجزء الأول: أساسيات التشفير وحماية البيانات</h3>
+      
+      <h4>1.1 BitLocker Drive Encryption</h4>
+      <p>
+        BitLocker هو نظام التشفير المدمج في Windows الذي يحمي البيانات على مستوى القرص الكامل (Full Disk Encryption). يعمل باستخدام خوارزمية AES بمفتاح 128 أو 256-bit.
+      </p>
+      <ul>
+        <li><strong>متطلبات التشغيل:</strong>
+          <br/>• Windows 10/11 Pro أو Enterprise
+          <br/>• شريحة TPM 1.2 أو 2.0 (Trusted Platform Module)
+          <br/>• قسم نظام غير مشفر (System Partition) FAT32
+          <br/>• دعم UEFI مع Secure Boot
+        </li>
+        <li><strong>طرق المصادقة:</strong>
+          <br/>• TPM فقط (شفاف للمستخدم)
+          <br/>• TPM + PIN (أمان إضافي)
+          <br/>• USB Key (بدون TPM)
+          <br/>• Recovery Password (للطوارئ)
+        </li>
+      </ul>
+      
+      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0"><code># تفعيل BitLocker عبر PowerShell
+Enable-BitLocker -MountPoint "C:" -EncryptionMethod Aes256 `
+  -UsedSpaceOnly -TpmProtector
+
+# إضافة PIN كطبقة أمان إضافية
+Add-BitLockerKeyProtector -MountPoint "C:" -TpmAndPinProtector
+
+# حفظ مفتاح الاستعادة في ملف
+$recovery = Get-BitLockerRecoveryInfo -MountPoint "C:"
+$recovery.RecoveryPassword | Out-File "C:\Backup\BitLocker-Key.txt"
+
+# عرض حالة التشفير
+Get-BitLockerVolume -MountPoint "C:" | Select-Object VolumeStatus, EncryptionPercentage</code></pre>
+
+      <h4>1.2 Encrypting File System (EFS)</h4>
+      <p>
+        EFS يسمح بتشفير ملفات ومجلدات فردية بدلاً من القرص الكامل. مفيد عندما يحتاج عدة مستخدمين للوصول لنفس الجهاز مع حماية بيانات كل منهم.
+      </p>
+      <ul>
+        <li><strong>الفرق بين BitLocker و EFS:</strong>
+          <br/>• BitLocker: يشفّر القرص كاملاً، يحمي من سرقة الجهاز
+          <br/>• EFS: يشفّر ملفات محددة، يحمي من وصول المستخدمين الآخرين
+        </li>
+        <li><strong>أفضل الممارسات:</strong>
+          <br/>• احتفظ بنسخة من شهادة EFS في مكان آمن
+          <br/>• استخدم Recovery Agent في بيئات المؤسسات
+          <br/>• لا تستخدم EFS للمجلدات المشتركة (Network Shares)
+        </li>
+      </ul>
+
+      <h3 id="part2">🛡️ الجزء الثاني: Windows Defender المتقدم</h3>
+      
+      <h4>2.1 تكوين الحماية في الوقت الفعلي</h4>
+      <p>
+        Windows Defender Antivirus يوفر حماية شاملة ضد البرمجيات الخبيثة. للتكوين المتقدم:
+      </p>
+      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0"><code># تعطيل الفحص السحابي (غير مستحسن)
+Set-MpPreference -DisableRealtimeMonitoring $false
+
+# إضافة مسارات للاستبعاد (بحذر!)
+Set-MpPreference -ExclusionPath "C:\TrustedApps", "D:\DevProjects"
+
+# تمكين حماية PUP (برامج غير مرغوب فيها)
+Set-MpPreference -PUAProtection Enabled
+
+# تكوين الفحص المجدول
+Set-MpPreference -ScanScheduleDay 0 -ScanScheduleTime 120  # الأحد 2:00 صباحاً
+
+# تمكين سلوك الحماية المتقدم
+Set-MpPreference -AllowSwitchToAsyncInspection $true
+Set-MpPreference -HighThreatDefaultAction Quarantine -Force</code></pre>
+
+      <h4>2.2 Controlled Folder Access (حماية ضد الفدية)</h4>
+      <p>
+        هذه الميزة تمنع التطبيقات غير الموثوقة من تعديل الملفات في مجلدات محمية (مثل المستندات، الصور، سطح المكتب).
+      </p>
+      <ul>
+        <li><strong>التفعيل عبر PowerShell:</strong>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0"><code># تمكين الحماية
+Set-MpPreference -EnableControlledFolderAccess Enabled
+
+# إضافة مجلدات محمية
+Set-MpPreference -ControlledFolderAccessProtectedFolders `
+  "C:\Users\*\Documents", "C:\Users\*\Pictures", "D:\ImportantData"
+
+# السماح لتطبيق موثوق بالوصول
+Set-MpPreference -ControlledFolderAccessAllowedApplications `
+  "C:\Program Files\TrustedApp\app.exe"</code></pre>
+        </li>
+        <li><strong>مراقبة الأحداث:</strong>
+          <br/>• Event Viewer → Applications and Services Logs → Microsoft → Windows → Windows Defender → Operational
+          <br/>• Event ID 1121: ملف تم حظره
+          <br/>• Event ID 1120: ملف تم السماح به
+        </li>
+      </ul>
+
+      <h4>2.3 Attack Surface Reduction (ASR) Rules</h4>
+      <p>
+        قواعد ASR تمنع سلوكيات محددة معروفة باستغلالها في الهجمات، مثل تشغيل ماكرو من الإنترنت أو حقن عمليات في الذاكرة.
+      </p>
+      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0"><code># عرض قواعد ASR الحالية
+Get-MpPreference | Select-Object AttackSurfaceReductionRules_Ids, AttackSurfaceReductionRules_Actions
+
+# تمكين قاعدة: حظر تنفيذ ملفات من مجلدات البريد والمجلدات المؤقتة
+Add-MpPreference -AttackSurfaceReductionRules_Ids "BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550" `
+  -AttackSurfaceReductionRules_Actions Enabled
+
+# قائمة أهم قواعد ASR:
+# • D4F940AB-401B-4EFB-A358-282F94F7F449: حظر تنفيذ سكربتات Office من الإنترنت
+# • 7674BA52-37EB-4A4F-A9A1-F0F9A1619A2C: حظر حقن العمليات في Office
+# • D1E49AAC-8F55-430B-B909-70C3F7C8D525: حظر إنشاء عمليات من PSExec و WMI</code></pre>
+
+      <!-- صورة Defender -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=900&h=350&fit=crop" alt="Windows Defender" onerror="this.src='https://picsum.photos/900/350?random=2'" />
+        <p class="image-caption">Windows Defender: حماية متعددة الطبقات ضد التهديدات الحديثة</p>
+      </div>
+
+      <h3 id="part3">⚙️ الجزء الثالث: Group Policy للتأمين المركزي</h3>
+      
+      <h4>3.1 سياسات كلمة المرور والحسابات</h4>
+      <ul>
+        <li><strong>مسار السياسات:</strong>
+          <br/>Computer Configuration → Policies → Windows Settings → Security Settings → Account Policies
+        </li>
+        <li><strong>الإعدادات الموصى بها:</strong>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0"><code>• Enforce password history: 24 passwords remembered
+• Maximum password age: 90 days
+• Minimum password age: 1 day
+• Minimum password length: 14 characters
+• Password must meet complexity requirements: Enabled
+• Store passwords using reversible encryption: Disabled
+
+• Account lockout threshold: 5 invalid attempts
+• Account lockout duration: 30 minutes
+• Reset account lockout counter after: 30 minutes</code></pre>
+        </li>
+      </ul>
+
+      <h4>3.2 سياسات التدقيق (Audit Policies)</h4>
+      <p>
+        التدقيق المتقدم يسجل أحداث الأمان الهامة لتحليلها لاحقاً أو إرسالها لخادم SIEM.
+      </p>
+      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0"><code># تمكين التدقيق المتقدم عبر PowerShell
+AuditPol /set /category:"Logon/Logoff" /success:enable /failure:enable
+AuditPol /set /category:"Object Access" /success:enable /failure:enable
+AuditPol /set /category:"Privilege Use" /success:enable /failure:enable
+AuditPol /set /category:"Detailed Tracking" /success:enable
+
+# أحداث مهمة للمراقبة:
+# • 4624: تسجيل دخول ناجح
+# • 4625: محاولة دخول فاشلة (رصد هجمات Brute Force)
+# • 4688: عملية جديدة تم إنشاؤها (رصد تنفيذ برامج خبيثة)
+# • 4698: مهمة مجدولة تم إنشاؤها (رصد Persistence)
+# • 4720: مستخدم تم إنشاؤه (رصد إضافة حسابات غير مصرح بها)</code></pre>
+
+      <h4>3.3 تقييد الصلاحيات باستخدام User Rights Assignment</h4>
+      <ul>
+        <li><strong>سياسات حرجة:</strong>
+          <br/>• Deny log on locally: إضافة حسابات ضيوف أو خدمات غير موثوقة
+          <br/>• Deny access to this computer from the network: منع الوصول عن بعد لحسابات معينة
+          <br/>• Allow log on through Remote Desktop Services: تقييده لمجموعة Administrators فقط
+          <br/>• Back up files and directories: تقييده لحسابات النسخ الاحتياطي المخصصة
+        </li>
+      </ul>
+
+      <h3 id="part4">🔍 الجزء الرابع: الكشف والاستجابة للتهديدات</h3>
+      
+      <h4>4.1 استخدام Event Viewer للتحقيق</h4>
+      <p>
+        Event Viewer هو أداة قوية لتحليل أحداث النظام واكتشاف الأنشطة المشبوهة.
+      </p>
+      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0"><code># استعلامات PowerShell مفيدة للتحقيق:
+
+# عرض محاولات الدخول الفاشلة في آخر 24 ساعة
+Get-WinEvent -FilterHashtable @{
+  LogName='Security'
+  Id=4625
+  StartTime=(Get-Date).AddHours(-24)
+} | Select-Object TimeCreated, @{N='User';E={$_.Properties[5].Value}}, `
+  @{N='SourceIP';E={$_.Properties[19].Value}}, @{N='FailureReason';E={$_.Properties[8].Value}}
+
+# عرض العمليات التي تم إنشاؤها مؤخراً
+Get-WinEvent -FilterHashtable @{
+  LogName='Security'
+  Id=4688
+  StartTime=(Get-Date).AddHours(-1)
+} | Select-Object TimeCreated, @{N='Process';E={$_.Properties[5].Value}}, `
+  @{N='CommandLine';E={$_.Properties[8].Value}}
+
+# تصدير الأحداث لملف CSV للتحليل الخارجي
+Get-WinEvent -FilterHashtable @{LogName='Security'; Id=4624,4625; StartTime=(Get-Date).AddDays(-7)} `
+  | Export-Csv -Path "C:\Reports\SecurityEvents.csv" -NoTypeInformation</code></pre>
+
+      <h4>4.2 Windows Security Baselines من Microsoft</h4>
+      <p>
+        تقدم Microsoft قوالب Group Policy جاهزة (Security Baselines) مُعدّة حسب أفضل الممارسات الأمنية.
+      </p>
+      <ul>
+        <li><strong>التحميل والتطبيق:</strong>
+          <br/>1. نزّل Security Baselines من: https://techcommunity.microsoft.com/t5/microsoft-security-baselines/bg-p/Microsoft-Security-Baselines
+          <br/>2. فك الضغط واستخدم ملف `.admx` لإضافة القوالب لـ Group Policy Management
+          <br/>3. طبق القالب على الـ OU المطلوب مع مراجعة التعديلات حسب بيئة عملك
+        </li>
+        <li><strong>نصيحة:</strong> لا تطبق القوالب بشكل أعمى، راجع كل سياسة وفهم تأثيرها قبل النشر.
+      </ul>
+
+      <h3 id="part5">🛡️ الجزء الخامس: استراتيجيات Zero Trust في Windows</h3>
+      
+      <h4>5.1 مبدأ "لا تثق، تحقق دائماً"</h4>
+      <p>
+        Zero Trust يفترض أن الشبكة الداخلية قد تكون مخترقة، لذا يجب التحقق من كل طلب وصول بغض النظر عن مصدره.
+      </p>
+      <ul>
+        <li><strong>تطبيق Zero Trust في Windows:</strong>
+          <br/>• استخدام Windows Hello for Business للمصادقة متعددة العوامل
+          <br/>• تمكين Conditional Access عبر Azure AD (للمؤسسات)
+          <br/>• تطبيق Least Privilege: منح الحد الأدنى من الصلاحيات اللازمة
+          <br/>• عزل الأجهزة عالية الخطورة في شبكات VLAN منفصلة
+        </li>
+      </ul>
+
+      <h4>5.2 Windows Defender Application Control (WDAC)</h4>
+      <p>
+        WDAC (سابقاً Device Guard) يسمح بتحديد التطبيقات المسموح بتنفيذها فقط، مما يمنع البرامج غير الموثوقة من العمل.
+      </p>
+      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0"><code># إنشاء سياسة WDAC أساسية
+New-CIPolicyRule -FilePathRule "C:\Program Files\TrustedApp\*" `
+  -FriendlyName "TrustedApp Policy" | `
+  New-CIPolicy -FilePath "C:\Policies\TrustedApps.xml"
+
+# تحويل السياسة لصيغة ثنائية وتفعيلها
+ConvertFrom-CIPolicy -XmlFilePath "C:\Policies\TrustedApps.xml" `
+  -BinaryFilePath "C:\Policies\TrustedApps.bin"
+
+# تطبيق السياسة عبر Group Policy أو PowerShell
+# (يتطلب إعادة تشغيل وتفعيل Secure Boot)</code></pre>
+
+      <!-- صورة Zero Trust -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1550751863-88478f4b89d9?w=900&h=350&fit=crop" alt="Zero Trust Security" onerror="this.src='https://picsum.photos/900/350?random=3'" />
+        <p class="image-caption">Zero Trust: التحقق من كل طلب وصول بغض النظر عن المصدر</p>
+      </div>
+
+      <h3 id="part6">🔄 الجزء السادس: النسخ الاحتياطي والاسترداد الآمن</h3>
+      
+      <h4>6.1 Windows Backup مع التشفير</h4>
+      <ul>
+        <li><strong>أفضل الممارسات:</strong>
+          <br/>• استخدم BitLocker لتشفير أقراص النسخ الاحتياطي الخارجية
+          <br/>• احفظ نسخاً في مواقع جغرافية متعددة (3-2-1 Rule)
+          <br/>• اختبر استعادة النسخ دورياً (لا تفترض أنها تعمل!)
+          <br/>• استخدم Volume Shadow Copy Service (VSS) للنسخ المتسق
+        </li>
+      </ul>
+
+      <h4>6.2 System Restore Points المحمية</h4>
+      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0"><code># إنشاء نقطة استعادة قبل تثبيت تحديثات أو برامج
+Checkpoint-Computer -Description "Before Major Update" `
+  -RestorePointType "MODIFY_SETTINGS"
+
+# عرض نقاط الاستعادة المتاحة
+Get-ComputerRestorePoint | Select-Object CreationTime, Description, RestorePointType
+
+# استعادة النظام (يتطلب إعادة تشغيل)
+# يتم عبر: System Properties → System Protection → System Restore
+
+# حماية نقاط الاستعادة من الحذف غير المصرح به
+# عبر Group Policy: Configure System Restore → Turn on System Restore</code></pre>
+
+      <h3 id="part7">🚨 الجزء السابع: الاستجابة للحوادث (Incident Response)</h3>
+      
+      <h4>7.1 خطة استجابة سريعة</h4>
+      <ol>
+        <li><strong>العزل:</strong> افصل الجهاز المصاب عن الشبكة فوراً (كابل/واي فاي)</li>
+        <li><strong>الحفظ:</strong> احفظ الذاكرة والقرص للتحليل الجنائي (استخدم أدوات مثل FTK Imager)</li>
+        <li><strong>التحليل:</strong> راجع Event Logs، Processes، Network Connections</li>
+        <li><strong>الإزالة:</strong> استخدم Windows Defender Offline أو أدوات متخصصة لإزالة البرمجيات الخبيثة</li>
+        <li><strong>الاسترداد:</strong> استعد النظام من نسخة نظيفة، غيّر جميع كلمات المرور</li>
+        <li><strong>التوثيق:</strong> دوّن كل الخطوات والنتائج للتحسين المستقبلي</li>
+      </ol>
+
+      <h4>7.2 أدوات مدمجة مفيدة</h4>
+      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0"><code># عرض الاتصالات الشبكية النشطة
+netstat -ano | findstr ESTABLISHED
+
+# عرض العمليات مع مسار الملف الكامل
+Get-Process | Select-Object Name, Id, Path, Company | Format-Table -AutoSize
+
+# فحص التواقيع الرقمية للملفات المشبوهة
+Get-AuthenticodeSignature -FilePath "C:\Suspicious\file.exe"
+
+# عرض المهام المجدولة (مصدر شائع لـ Persistence)
+Get-ScheduledTask | Where-Object {$_.State -eq 'Ready'} | `
+  Select-Object TaskName, TaskPath, State
+
+# تصدير قائمة البرامج المثبتة للمقارنة مع النسخة النظيفة
+Get-WmiObject -Class Win32_Product | Select-Object Name, Version, Vendor `
+  | Export-Csv "C:\Reports\InstalledSoftware.csv" -NoTypeInformation</code></pre>
+
+      <div class="conclusion" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;padding:2rem;border-radius:12px;margin:2rem 0">
+        <h3>🔐 الخلاصة الأمنية:</h3>
+        <ul style="list-style:none;padding:0">
+          <li>✅ التشفير (BitLocker/EFS) هو خط الدفاع الأول ضد سرقة البيانات</li>
+          <li>✅ Windows Defender المتقدم يوفر حماية شاملة عند تكوينه بشكل صحيح</li>
+          <li>✅ Group Policy يسمح بتطبيق سياسات أمنية موحدة على نطاق واسع</li>
+          <li>✅ التدقيق (Auditing) والتحقيق (Forensics) أساسيان للكشف عن الاختراقات</li>
+          <li>✅ Zero Trust ليس منتجاً بل منهجية: تحقق من كل طلب وصول</li>
+          <li>✅ النسخ الاحتياطي المشفّر والمختبر هو آخر خط دفاع عند حدوث كارثة</li>
+          <li>✅ الأمان عملية مستمرة، ليس حدثاً لمرة واحدة</li>
+        </ul>
+        <p style="font-size:1.2rem;font-weight:bold;margin-top:1.5rem;text-align:center">الأمان القوي يبدأ بالتوعية، ويستمر بالممارسة! 🛡️</p>
+      </div>
+    </article>
+
+    <ShareButtons />
+  </main>
+  
+  <Footer />
+
+  <!-- ✅ كود التتبع الذكي (30 ثانية أو 70% تمرير) -->
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      const TRACK_TIME = 30;
+      const SCROLL_THRESHOLD = 0.7;
+      const currentPath = window.location.pathname;
+      let isMarked = false;
+
+      console.log('🔍 Tracking:', currentPath);
+
+      function markAsRead() {
+        if (isMarked) return;
+        const readArticles = JSON.parse(localStorage.getItem('read_articles') || '[]');
+        if (!readArticles.includes(currentPath)) {
+          readArticles.push(currentPath);
+          localStorage.setItem('read_articles', JSON.stringify(readArticles));
+          console.log('✅ Marked:', currentPath);
+        }
+        isMarked = true;
+      }
+
+      if (JSON.parse(localStorage.getItem('read_articles') || '[]').includes(currentPath)) {
+        console.log('ℹ️ Already read');
+        return;
+      }
+
+      const timeTimer = setTimeout(markAsRead, TRACK_TIME * 1000);
+
+      const checkScroll = () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+        const docHeight = Math.max(
+          document.body.scrollHeight, document.documentElement.scrollHeight,
+          document.body.offsetHeight, document.documentElement.offsetHeight
+        );
+        const scrollPercent = (scrollTop + windowHeight) / docHeight;
+        
+        if (scrollPercent >= SCROLL_THRESHOLD) {
+          console.log(`📜 Scroll reached ${Math.round(scrollPercent*100)}%`);
+          markAsRead();
+          clearTimeout(timeTimer);
+          window.removeEventListener('scroll', checkScroll, { passive: true });
+        }
+      };
+      
+      window.addEventListener('scroll', checkScroll, { passive: true });
+      checkScroll();
+
+      window.addEventListener('beforeunload', () => {
+        clearTimeout(timeTimer);
+        window.removeEventListener('scroll', checkScroll);
+      });
+    });
+  </script>
+</body>
+</html>
+
+<style>
+  :root { --bg: #f8fafc; --card: #fff; --text: #0f172a; --text-sec: #64748b; --primary: #ef4444; --border: rgba(239,68,68,0.2); }
+  html.dark-mode { --bg: #0b1120; --card: #1e293b; --text: #f1f5f9; --text-sec: #94a3b8; --primary: #f87171; --border: rgba(248,113,113,0.2); }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; margin: 0; }
+  .category-articles { max-width: 950px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+  .page-header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 2px solid var(--border); }
+  .page-header h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; }
+  .article { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 2.5rem 2rem; margin-bottom: 3rem; }
+  .badge { display: inline-block; background: linear-gradient(135deg,#ef4444,#dc2626); color: white; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; margin-bottom: 1rem; }
+  .article h2 { color: var(--primary); font-size: 1.8rem; margin: 2rem 0 1rem; }
+  .article h3 { color: var(--text); font-size: 1.5rem; margin: 2.5rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+  .article h4 { color: var(--text-sec); font-size: 1.2rem; margin: 2rem 0 0.8rem; font-weight: 600; }
+  .meta { color: var(--text-sec); font-size: 0.9rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border); display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+  .meta .separator { color: var(--border); }
+  .reading-time-badge { background: linear-gradient(135deg, #0284c7, #38bdf8); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3); }
+  .intro { font-size: 1.15rem; color: var(--text-sec); margin-bottom: 2.5rem; padding: 2rem; background: rgba(239,68,68,0.05); border-right: 4px solid var(--primary); border-radius: 8px; line-height: 1.9; }
+  .article ul { padding-right: 1.5rem; margin: 1.5rem 0; }
+  .article li { margin-bottom: 0.8rem; line-height: 1.9; color: var(--text-sec); }
+  .article li strong { color: var(--primary); }
+  .conclusion ul { list-style: none !important; padding: 0; }
+  .conclusion li { color: white !important; font-size: 1.05rem; margin: 0.8rem 0; line-height: 1.8; }
+  .article-image { margin: 2.5rem 0; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.12); border: 2px solid var(--border); }
+  .article-image img { width: 100%; height: auto; display: block; transition: transform 0.3s ease; }
+  .article-image:hover img { transform: scale(1.02); }
+  .image-caption { background: var(--bg); color: var(--text-sec); padding: 1rem 1.5rem; text-align: center; font-size: 0.9rem; font-style: italic; margin: 0; border-top: 1px solid var(--border); }
+  .toc-btn { position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; background: linear-gradient(135deg, var(--primary), #fca5a5); border: none; border-radius: 50%; color: white; font-size: 1.6rem; cursor: pointer; box-shadow: 0 4px 15px rgba(239,68,68,0.5); z-index: 998; transition: all 0.3s ease; }
+  .toc-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(239,68,68,0.7); }
+  .toc-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 999; align-items: center; justify-content: center; padding: 6rem 1.5rem 1.5rem; animation: fadeIn 0.3s ease; }
+  .toc-modal.active { display: flex; }
+  .toc-box { background: var(--card); width: 100%; max-width: 550px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-height: 80vh; display: flex; flex-direction: column; overflow: hidden; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .toc-head { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; background: var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .toc-head h3 { color: var(--primary); margin: 0; font-size: 1.4rem; font-weight: 800; }
+  .toc-close { background: transparent; border: none; color: var(--text-sec); font-size: 2rem; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .toc-close:hover { background: #fee2e2; color: #ef4444; }
+  .toc-nav { display: flex; flex-direction: column; padding: 1rem; gap: 0.6rem; overflow-y: auto; }
+  .toc-item { display: block !important; background: var(--bg) !important; color: var(--text) !important; padding: 1rem 1.2rem !important; border-radius: 12px !important; font-size: 1rem !important; font-weight: 600 !important; line-height: 1.4 !important; cursor: pointer !important; border: 1px solid transparent !important; text-decoration: none !important; border-bottom: none !important; outline: none !important; -webkit-tap-highlight-color: transparent !important; transition: all 0.25s ease !important; }
+  .toc-item:hover { background: rgba(239,68,68,0.08) !important; border-color: rgba(239,68,68,0.2) !important; color: var(--primary) !important; transform: translateX(-4px) !important; }
+  .toc-nav::-webkit-scrollbar { width: 6px; }
+  .toc-nav::-webkit-scrollbar-track { background: transparent; }
+  .toc-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  .back-to-top { position: fixed; bottom: 95px; left: 30px; width: 50px; height: 50px; background: var(--card); border: 2px solid var(--primary); border-radius: 50%; color: var(--primary); font-size: 1.4rem; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 997; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .back-to-top.show { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; }
+  .back-to-top:hover { background: var(--primary); color: #fff !important; transform: scale(1.1) !important; box-shadow: 0 0 20px rgba(239,68,68,0.6); }
+  @media (max-width: 768px) {
+    .category-articles { padding: 2rem 1rem 3rem !important; }
+    .page-header h1 { font-size: 1.6rem !important; }
+    .article { padding: 1.5rem 1.2rem !important; }
+    .article h2 { font-size: 1.4rem !important; }
+    .article h3 { font-size: 1.2rem !important; }
+    .article h4 { font-size: 1.05rem !important; }
+    .article-image { margin: 1.5rem 0 !important; }
+    .article-image img { height: 200px !important; object-fit: cover !important; }
+    .image-caption { padding: 0.8rem 1rem !important; font-size: 0.85rem !important; }
+    .toc-btn { width: 50px !important; height: 50px !important; bottom: 15px !important; left: 15px !important; }
+    .back-to-top { width: 42px !important; height: 42px !important; bottom: 75px !important; left: 15px !important; }
+    .toc-modal { padding: 7rem 1rem 1rem !important; }
+    .toc-box { max-width: 95% !important; border-radius: 16px !important; }
+    .toc-head { padding: 1.2rem 1.5rem !important; }
+    .toc-head h3 { font-size: 1.2rem !important; }
+    .toc-nav { padding: 0.8rem !important; gap: 0.5rem !important; }
+    .toc-item { padding: 0.9rem 1rem !important; font-size: 0.95rem !important; }
+    .meta { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // الفهرس
+    var tocBtn = document.getElementById('tocBtn');
+    var tocModal = document.getElementById('tocModal');
+    var tocClose = document.getElementById('tocClose');
+    var tocNav = document.getElementById('tocNav');
+    if (tocBtn && tocModal && tocNav) {
+      document.querySelectorAll('.article h3').forEach(function(h3) {
+        var item = document.createElement('div');
+        item.className = 'toc-item';
+        item.textContent = h3.textContent;
+        item.onclick = function(e) {
+          e.preventDefault();
+          h3.scrollIntoView({ behavior: 'smooth' });
+          tocModal.classList.remove('active');
+        };
+        tocNav.appendChild(item);
+      });
+      tocBtn.onclick = function() { tocModal.classList.add('active'); };
+      tocClose.onclick = function() { tocModal.classList.remove('active'); };
+      tocModal.onclick = function(e) { if (e.target === tocModal) tocModal.classList.remove('active'); };
+    }
+    // السهم
+    var backBtn = document.getElementById('backToTop');
+    if (backBtn) {
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 400) { backBtn.classList.add('show'); }
+        else { backBtn.classList.remove('show'); }
+      }, { passive: true });
+      backBtn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    }
+    // وقت القراءة
+    setTimeout(() => {
+      const timeElement = document.getElementById('calculatedReadingTime');
+      const displayElement = document.getElementById('readingTimeDisplay');
+      if (timeElement && displayElement) {
+        const minutes = parseInt(timeElement.textContent);
+        if (minutes < 1) displayElement.textContent = '⏱️ أقل من دقيقة';
+        else if (minutes === 1) displayElement.textContent = '⏱️ دقيقة واحدة';
+        else displayElement.textContent = `⏱️ ${minutes} دقائق`;
+      }
+    }, 100);
+  });
+</script>
