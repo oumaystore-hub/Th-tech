@@ -4,7 +4,7 @@ import Footer from '../../components/Footer.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 import ReadingProgress from '../../components/ReadingProgress.astro';
 
-export const title = "دليل أمان Windows الشامل: من التشفير إلى Zero Trust (5000+ كلمة)";
+export const title = "دليل أمان Windows الشامل: من التشفير إلى Zero Trust";
 export const pubDate = "2026-07-28";
 export const description = "الدليل التقني الأشمل لأمن أنظمة Windows. يغطي BitLocker، VBS، Defender ASR، WDAC، PowerShell Hardening، LAPS، وخطة الاستجابة للحوادث.";
 ---
@@ -15,7 +15,7 @@ export const description = "الدليل التقني الأشمل لأمن أن
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title} - Th.Tech</title>
   <meta name="description" content={description} />
-  <meta name="keywords" content="Windows Security, Hardening, BitLocker, VBS, ASR, WDAC, Zero Trust, Incident Response, PowerShell, CIS Benchmarks, LAPS" />
+  <meta name="keywords" content="Windows Security, Hardening, BitLocker, VBS, ASR, WDAC, Zero Trust, Incident Response, CIS Benchmarks, LAPS" />
 </head>
 <body>
   <Header />
@@ -23,7 +23,7 @@ export const description = "الدليل التقني الأشمل لأمن أن
   
   <main class="category-articles">
     <div class="page-header">
-      <h1> الدليل الشامل لأمن Windows المتقدم</h1>
+      <h1>🔐 الدليل الشامل لأمن Windows المتقدم</h1>
       <p>دليل تقني عملي (5000+ كلمة) يغطي جميع طبقات الحماية، من العتاد إلى السحابة</p>
     </div>
 
@@ -38,16 +38,16 @@ export const description = "الدليل التقني الأشمل لأمن أن
       </div>
     </div>
 
-    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">️</button>
 
     <article class="article">
       <span class="badge" style="background:linear-gradient(135deg,#ef4444,#dc2626)">أمن سيبراني / مرجع شامل (5000+ كلمة)</span>
       <h2>دليل أمان Windows المتقدم: تأمين البنية التحتية ضد التهديدات المعقدة</h2>
       
       <div class="meta">
-        <span>📅 28 يوليو 2026</span>
+        <span> 28 يوليو 2026</span>
         <span class="separator">|</span>
-        <span>️ قراءة متعمقة (5000+ كلمة)</span>
+        <span>⏱️ قراءة متعمقة (5000+ كلمة)</span>
         <span class="separator">|</span>
         <span id="readingTimeDisplay" class="reading-time-badge">⏱️ جاري الحساب...</span>
       </div>
@@ -61,7 +61,7 @@ export const description = "الدليل التقني الأشمل لأمن أن
         <p class="image-caption">بنية الأمان الدفاعي متعدد الطبقات: من العتاد إلى السحابة</p>
       </div>
 
-      <h3 id="part1">🔐 الجزء الأول: حماية العتاد وتشفير البيانات (Hardware & Encryption)</h3>
+      <h3 id="part1">🔐 الجزء الأول: حماية العتاد وتشفير البيانات (Hardware &amp; Encryption)</h3>
       
       <h4>1.1 BitLocker Drive Encryption: ما وراء التفعيل</h4>
       <p>
@@ -75,8 +75,8 @@ Enable-BitLocker -MountPoint "C:" -EncryptionMethod Aes256 `
   -TpmAndPinProtector -UsedSpaceOnly
 
 # إجبار تشفير الأقراص القابلة للإزالة (Removable Drives)
-# المسار: Computer Configuration -> Administrative Templates -> Windows Components -> BitLocker Drive Encryption -> Removable Data Drives
-# سياسة: Deny write access to fixed drives not protected by BitLocker -> Enabled</code></pre>
+# المسار: Computer Configuration -&gt; Administrative Templates -&gt; Windows Components -&gt; BitLocker Drive Encryption -&gt; Removable Data Drives
+# سياسة: Deny write access to fixed drives not protected by BitLocker -&gt; Enabled</code></pre>
         </li>
         <li><strong>إدارة مفاتيح الاستعادة:</strong> يجب حفظ Recovery Key في Active Directory أو Azure AD فوراً. فقدان المفتاح يعني فقدان البيانات نهائياً.
           <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code># تصدير معرف مفتاح الاستعادة لـ AD
@@ -92,11 +92,11 @@ Backup-BitLockerKeyProtector -MountPoint "C:" -KeyProtectorId (Get-BitLockerVolu
         <li><strong>HVCI (Hypervisor-Enforced Code Integrity):</strong> يمنع هذا المكون تحميل تعريفات (Drivers) أو أكواد نواة غير موقعة رقمياً ومختومة من قبل Microsoft أو موثقة. هذا يغلق الباب أمام هجمات Rootkit و Kernel Exploits التي تحاول تعديل سلوك النظام من الداخل.
         <li><strong>Credential Guard:</strong> يعتمد على VBS لعزل بيانات المصادقة (LSASS Process). حتى لو حصل المهاجم على صلاحيات SYSTEM، لن يتمكن من استخراج Hashes أو Kerberos Tickets لاستخدامها في هجمات Pass-the-Hash أو Pass-the-Ticket.</li>
         <li><strong>التحقق من الحالة:</strong>
-          <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code>Get-CimInstance -ClassName Win32_DeviceGuard -Namespace root\Microsoft\Windows\DeviceGuard | Select-Object SecurityServicesRunning, VirtualizationBasedSecurityStatus</code></pre>
+          <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code>Get-CimInstance -ClassName Win32_DeviceGuard -Namespace root/Microsoft/Windows/DeviceGuard | Select-Object SecurityServicesRunning, VirtualizationBasedSecurityStatus</code></pre>
         </li>
       </ul>
 
-      <h3 id="part2">🛡️ الجزء الثاني: الدفاع الهجومي (Microsoft Defender & ASR)</h3>
+      <h3 id="part2">🛡️ الجزء الثاني: الدفاع الهجومي (Microsoft Defender &amp; ASR)</h3>
       
       <h4>2.1 Attack Surface Reduction (ASR) Rules</h4>
       <p>
@@ -116,7 +116,7 @@ Backup-BitLockerKeyProtector -MountPoint "C:" -KeyProtectorId (Get-BitLockerVolu
 # 4. حظر سرقة بيانات الاعتماد من LSASS (9E6C4E1F-7D60-472F-BA1A-A39EF667E11F)
 # يحمي عملية lsass.exe من أدوات مثل Mimikatz.</code></pre>
         </li>
-        <li><strong>استراتيجية النشر (Audit Mode):</strong> لا تفعل القواعد فوراً. ابدأ بـ `AuditMode` لمدة أسبوعين، راجع سجلات Event Viewer (ID 1121) للتأكد من عدم منع تطبيقات شرعية، ثم انتقل لـ `Enabled`.</li>
+        <li><strong>استراتيجية النشر (Audit Mode):</strong> لا تفعل القواعد فوراً. ابدأ بـ AuditMode لمدة أسبوعين، راجع سجلات Event Viewer (ID 1121) للتأكد من عدم منع تطبيقات شرعية، ثم انتقل لـ Enabled.</li>
       </ul>
 
       <h4>2.2 Windows Defender Application Control (WDAC)</h4>
@@ -124,7 +124,7 @@ Backup-BitLockerKeyProtector -MountPoint "C:" -KeyProtectorId (Get-BitLockerVolu
         WDAC (المعروف سابقاً بـ Device Guard) يسمح لك بتحديد قائمة بيضاء (Allow List) دقيقة للتطبيقات والملفات المسموح بتنفيذها. أي شيء غير موجود في القائمة يُرفض تنفيذُه، مما يجعل تشغيل البرمجيات الخبيثة شبه مستحيل.
       </p>
       <ul>
-        <li><strong>إنشاء سياسة WDAC:</strong> يمكن استخدام `New-CIPolicy` لإنشاء سياسة مبدئية بناءً على ملفات موجودة على جهاز مرجعي (Reference Machine)، ثم تنقيحها وتحويلها لصيغة ثنائية (.bin) ونشرها عبر GPO.</li>
+        <li><strong>إنشاء سياسة WDAC:</strong> يمكن استخدام New-CIPolicy لإنشاء سياسة مبدئية بناءً على ملفات موجودة على جهاز مرجعي (Reference Machine)، ثم تنقيحها وتحويلها لصيغة ثنائية (.bin) ونشرها عبر GPO.</li>
         <li><strong>دمج مع Smart App Control (SAC):</strong> في Windows 11، يتم دمج WDAC مع الذكاء الاصطناعي السحابي لمنع التطبيقات غير الموثوقة تلقائياً.</li>
       </ul>
 
@@ -133,7 +133,7 @@ Backup-BitLockerKeyProtector -MountPoint "C:" -KeyProtectorId (Get-BitLockerVolu
         <p class="image-caption">لوحة تحكم Microsoft Defender for Endpoint لإدارة التهديدات</p>
       </div>
 
-      <h3 id="part3">⚙️ الجزء الثالث: تأمين الهوية والصلاحيات (Identity & Access)</h3>
+      <h3 id="part3">⚙️ الجزء الثالث: تأمين الهوية والصلاحيات (Identity &amp; Access)</h3>
       
       <h4>3.1 Local Administrator Password Solution (LAPS)</h4>
       <p>
@@ -155,19 +155,19 @@ Get-AdmPwdPassword -ComputerName "PC-FINANCE-01"</code></pre>
         لمنع المهاجم من التحرك أفقياً بعد اختراق جهاز عادي، يجب فصل الحسابات إلى طبقات (Tiers):
       </p>
       <ul>
-        <li><strong>Tier 0 (Identity & Control Plane):</strong> خوادم الـ Domain Controllers، الـ PKI، إدارة الهوية. لا يجب تسجيل دخول حسابات Tier 0 أبداً على أجهزة عادية.</li>
-        <li><strong>Tier 1 (Data & Apps Plane):</strong> خوادم قواعد البيانات، خوادم التطبيقات.</li>
+        <li><strong>Tier 0 (Identity &amp; Control Plane):</strong> خوادم الـ Domain Controllers، الـ PKI، إدارة الهوية. لا يجب تسجيل دخول حسابات Tier 0 أبداً على أجهزة عادية.</li>
+        <li><strong>Tier 1 (Data &amp; Apps Plane):</strong> خوادم قواعد البيانات، خوادم التطبيقات.</li>
         <li><strong>Tier 2 (User Workstations):</strong> أجهزة الموظفين اليومية.</li>
       </ul>
 
-      <h3 id="part4">🔍 الجزء الرابع: التدقيق المتقدم والبحث عن التهديدات (Audit & Hunting)</h3>
+      <h3 id="part4">🔍 الجزء الرابع: التدقيق المتقدم والبحث عن التهديدات (Audit &amp; Hunting)</h3>
       
       <h4>4.1 تفعيل Audit Policies المتقدم</h4>
       <p>
         السجلات القياسية غير كافية. يجب تفعيل Advanced Audit Policy Configuration لتسجيل الأحداث الدقيقة التالية:
       </p>
       <ul>
-        <li><strong>Account Logon & Management:</strong> مراقبة نجاح وفشل تسجيل الدخول (Event 4624, 4625)، وإنشاء/تعديل الحسابات (Event 4720, 4722).</li>
+        <li><strong>Account Logon &amp; Management:</strong> مراقبة نجاح وفشل تسجيل الدخول (Event 4624, 4625)، وإنشاء/تعديل الحسابات (Event 4720, 4722).</li>
         <li><strong>Object Access:</strong> تسجيل الوصول لملفات ومجلدات حساسة (Event 4663).</li>
         <li><strong>Process Creation:</strong> تسجيل كل عملية يتم إنشاؤها مع سطر الأوامر الكامل (Event 4688). هذا حاسم لاكتشاف تنفيذ أوامر PowerShell مشفرة.</li>
         <li><strong>PowerShell Logging:</strong> تفعيل Module Logging و Script Block Logging (Event ID 4104) لتسجيل كل سكريبت يتم تنفيذه، حتى المشفر منه.</li>
@@ -211,8 +211,8 @@ wevtutil epl System C:\Evidence\System.evtx
 wevtutil epl Security C:\Evidence\Security.evtx
 
 # قائمة بالملفات المفتوحة والاتصالات النشطة
-netstat -ano > C:\Evidence\NetworkConnections.txt
-tasklist /v > C:\Evidence\RunningProcesses.txt</code></pre>
+netstat -ano &gt; C:\Evidence\NetworkConnections.txt
+tasklist /v &gt; C:\Evidence\RunningProcesses.txt</code></pre>
         </li>
         <li><strong>الاستئصال والاسترداد:</strong> إزالة البرمجيات الخبيثة، تصحيح الثغرة التي تم استغلالها (Patching)، واستعادة البيانات من نسخ احتياطية نظيفة ومعزولة.</li>
       </ul>
@@ -232,13 +232,13 @@ tasklist /v > C:\Evidence\RunningProcesses.txt</code></pre>
         <li><strong>تعطيل PowerShell v2:</strong> الإصدار القديم يفتقر لأمان AMSI وسجلات الحدث الدقيقة، ويجب تعطيله تماماً.</li>
       </ul>
 
-      <h3 id="part7"> الجزء السابع: Zero Trust & Cloud Integration</h3>
+      <h3 id="part7"> الجزء السابع: Zero Trust &amp; Cloud Integration</h3>
       <p>
         الانتقال من نموذج "Perimeter Security" (الثقة داخل الشبكة) إلى Zero Trust.
       </p>
       <ul>
         <li><strong>Conditional Access:</strong> استخدام Azure AD لطلب MFA أو فحص توافق الجهاز (Compliance Check) قبل السماح بالوصول للتطبيقات السحابية.</li>
-        <li><strong>Microsoft Defender for Endpoint:</strong> دمج الأجهزة في المنصة السحابية للحصول على رؤية موحدة، كشف التهديدات عبر السلوك، والاستجابة الآلية (Automated Investigation & Response).</li>
+        <li><strong>Microsoft Defender for Endpoint:</strong> دمج الأجهزة في المنصة السحابية للحصول على رؤية موحدة، كشف التهديدات عبر السلوك، والاستجابة الآلية (Automated Investigation &amp; Response).</li>
       </ul>
 
       <div class="conclusion" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;padding:2rem;border-radius:12px;margin:2rem 0">
@@ -259,7 +259,6 @@ tasklist /v > C:\Evidence\RunningProcesses.txt</code></pre>
   
   <Footer />
 
-  <!-- ✅ كود التتبع الذكي والفهرس (مصحح تماماً) -->
   <script is:inline>
     if (typeof window !== 'undefined') {
       window.addEventListener('DOMContentLoaded', function() {
