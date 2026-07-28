@@ -23,7 +23,7 @@ export const description = "مرجع تقني عملي يتجاوز 5000 كلم�
   
   <main class="category-articles">
     <div class="page-header">
-      <h1> الدليل المرجعي الشامل لأمن Windows المتقدم</h1>
+      <h1>🔐 الدليل المرجعي الشامل لأمن Windows المتقدم</h1>
       <p>رحلة تقنية معمقة (5000+ كلمة) من حماية العتاد إلى الاستجابة الاحترافية للتهديدات</p>
     </div>
 
@@ -53,7 +53,7 @@ export const description = "مرجع تقني عملي يتجاوز 5000 كلم�
         <span class="separator">|</span>
         <span>⏱️ قراءة متعمقة (5000+ كلمة)</span>
         <span class="separator">|</span>
-        <span id="readingTimeDisplay" class="reading-time-badge">️ جاري الحساب...</span>
+        <span id="readingTimeDisplay" class="reading-time-badge">⏱️ جاري الحساب...</span>
       </div>
       
       <p class="intro">
@@ -156,7 +156,7 @@ Get-WinEvent -FilterHashtable @&#123;LogName='Microsoft-Windows-PowerShell/Opera
   $_.Message -match "DownloadString|Invoke-Expression"
 &#125; | Select-Object TimeCreated, Message</code></pre>
 
-      <h3 id="part5"> الجزء الخامس: خطة الاستجابة للحوادث (Incident Response)</h3>
+      <h3 id="part5">🚨 الجزء الخامس: خطة الاستجابة للحوادث (Incident Response)</h3>
       
       <h4>5.1 مراحل الاستجابة وفق معيار NIST 800-61</h4>
       <p>
@@ -342,6 +342,60 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
       });
     }
   </script>
+
+  <!-- ✅ الحل النووي للأزرار - يضاف بعد السكربت الأصلي -->
+  <button id="tocBtnFallback" onclick="document.getElementById('tocModal').classList.add('active')" 
+          style="position:fixed;bottom:30px;left:30px;width:56px;height:56px;background:linear-gradient(135deg,#ef4444,#dc2626);border:none;border-radius:50%;color:#fff;font-size:1.8rem;cursor:pointer;z-index:999999 !important;transform:translateZ(0) !important;box-shadow:0 4px 20px rgba(239,68,68,0.4);display:flex;align-items:center;justify-content:center;pointer-events:auto !important;">
+    📑
+  </button>
+
+  <button id="backToTopFallback" onclick="window.scrollTo({top:0,behavior:'smooth'})" 
+          style="position:fixed;bottom:95px;left:30px;width:50px;height:50px;background:var(--card);border:2px solid var(--primary);border-radius:50%;color:var(--primary);font-size:1.4rem;cursor:pointer;z-index:999997 !important;transform:translateZ(0) !important;opacity:0;visibility:hidden;transition:all 0.3s ease;display:flex;align-items:center;justify-content:center;pointer-events:auto !important;">
+    ⬆️
+  </button>
+
+  <script is:inline>
+    (function() {
+      console.log('🚀 Fallback buttons loaded');
+      
+      // إظهار/إخفاء زر العودة للأعلى
+      var backFallback = document.getElementById('backToTopFallback');
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 400) {
+          backFallback.style.opacity = '1';
+          backFallback.style.visibility = 'visible';
+        } else {
+          backFallback.style.opacity = '0';
+          backFallback.style.visibility = 'hidden';
+        }
+      }, { passive: true });
+      
+      // إغلاق الفهرس عند الضغط خارجه
+      var tocModal = document.getElementById('tocModal');
+      if (tocModal) {
+        tocModal.addEventListener('click', function(e) {
+          if (e.target === this) this.classList.remove('active');
+        });
+      }
+      
+      console.log('✅ Fallback buttons initialized');
+    })();
+  </script>
+
+  <style>
+    /* ضمان عدم تأثر الأزرار بأي تنسيق خارجي */
+    #tocBtnFallback, #backToTopFallback {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      font-family: system-ui, sans-serif;
+    }
+    #tocBtnFallback:active, #backToTopFallback:active { transform: scale(0.95) !important; }
+    
+    /* تحسين شريط التمرير للفهرس */
+    .toc-nav::-webkit-scrollbar { width: 6px; }
+    .toc-nav::-webkit-scrollbar-track { background: transparent; }
+    .toc-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  </style>
 </body>
 </html>
 
