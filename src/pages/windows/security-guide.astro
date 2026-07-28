@@ -6,7 +6,7 @@ import ReadingProgress from '../../components/ReadingProgress.astro';
 
 export const title = "دليل أمان Windows المتقدم: من التشفير إلى الاستجابة للحوادث";
 export const pubDate = "2026-07-28";
-export const description = "دليل تقني شامل ومتعمق (5000+ كلمة) يغطي BitLocker، Windows Defender، Group Policy، Zero Trust، التدقيق المتقدم، وخطة الاستجابة للحوادث في بيئات المؤسسات.";
+export const description = "دليل تقني شامل ومتعمق (5000+ كلمة) يغطي BitLocker، Windows Defender، Group Policy، Zero Trust، التدقيق المتقدم، وخطة الاستجابة للحوادث.";
 ---
 
 <html lang="ar" dir="rtl">
@@ -23,7 +23,7 @@ export const description = "دليل تقني شامل ومتعمق (5000+ كل�
   
   <main class="category-articles">
     <div class="page-header">
-      <h1> أمان Windows المتقدم: دليل العملي الشامل</h1>
+      <h1>🔐 أمان Windows المتقدم: دليل العملي الشامل</h1>
       <p>رحلة تقنية معمقة من حماية البيانات إلى الاستجابة الاحترافية للتهديدات</p>
     </div>
 
@@ -45,7 +45,7 @@ export const description = "دليل تقني شامل ومتعمق (5000+ كل�
       <h2>دليل أمان Windows المتقدم: من التشفير إلى الاستجابة للحوادث</h2>
       
       <div class="meta">
-        <span> 28 يوليو 2026</span>
+        <span>📅 28 يوليو 2026</span>
         <span class="separator">|</span>
         <span>⏱️ قراءة متعمقة (5000+ كلمة)</span>
         <span class="separator">|</span>
@@ -53,7 +53,7 @@ export const description = "دليل تقني شامل ومتعمق (5000+ كل�
       </div>
       
       <p class="intro">
-        في عصر تتسارع فيه وتيرة الهجمات الإلكترونية وتتعقد فيه سلاسل التوريد البرمجية، لم يعد تأمين أنظمة Windows مجرد خطوة روتينية، بل أصبح ركيزة استراتيجية لأي مؤسسة تهدف لحماية أصولها الرقمية وسمعتها التشغيلية. يعتمد هذا الدليل على معايير أمنية عالمية مثل CIS Benchmarks، NIST SP 800-53، وMicrosoft Security Baselines، ويقدم خارطة طريق عملية تبدأ من تشفير البيانات على مستوى القرص، مروراً بتكوين مضاد الفيروسات المدمج، وصولاً إلى تطبيق نموذج Zero Trust، وبناء خطة استجابة للحوادث قابلة للتنفيذ الفوري. ستجد هنا أوامر PowerShell مفصلة، سياسات Group Policy مجربة، وآليات تدقيق متقدمة مصممة خصيصاً لبيئات المؤسسات الحديثة التي تعتمد على سحابة هجينة وأجهزة طرفية متعددة.
+        في عصر تتسارع فيه وتيرة الهجمات الإلكترونية، لم يعد تأمين أنظمة Windows مجرد خطوة روتينية. يعتمد هذا الدليل على معايير أمنية عالمية مثل CIS Benchmarks و NIST، ويقدم خارطة طريق عملية تبدأ من تشفير البيانات، مروراً بتكوين مضاد الفيروسات، وصولاً إلى تطبيق نموذج Zero Trust وبناء خطة استجابة للحوادث.
       </p>
 
       <div class="article-image">
@@ -65,94 +65,56 @@ export const description = "دليل تقني شامل ومتعمق (5000+ كل�
       
       <h4>1.1 BitLocker Drive Encryption: ما وراء التفعيل الأساسي</h4>
       <p>
-        يعتبر BitLocker خط الدفاع الأول ضد سرقة الأجهزة المادية أو فقدان وسائط التخزين. يعتمد على خوارزمية AES (Advanced Encryption Standard) بمفاتيح 128 أو 256 بت، ويتكامل بشكل وثيق مع شريحة TPM (Trusted Platform Module) لضمان أن نظام الإقلاع لم يتم التلاعب به قبل فك تشفير القرص.
+        يعتبر BitLocker خط الدفاع الأول ضد سرقة الأجهزة المادية. يعتمد على خوارزمية AES بمفاتيح 128 أو 256 بت، ويتكامل مع شريحة TPM لضمان سلامة نظام الإقلاع.
       </p>
       <ul>
-        <li><strong>آلية عمل TPM + PIN:</strong> عند تفعيل BitLocker مع PIN إضافي، يقوم TPM بالتحقق من سلامة سجل الإقلاع (Boot Sequence) عبر قياسات PCR (Platform Configuration Registers). إذا تم تعديل Bootloader أو إضافة جهاز USB غير مصرح به، يرفض TPM إطلاق مفتاح فك التشفير، مما يوقف عملية الإقلاع عند شاشة زرقاء تطلب إدخال PIN أو مفتاح الاستعادة.</li>
+        <li><strong>آلية عمل TPM + PIN:</strong> عند تفعيل BitLocker مع PIN إضافي، يقوم TPM بالتحقق من سلامة سجل الإقلاع. إذا تم تعديل Bootloader، يرفض TPM إطلاق مفتاح فك التشفير.</li>
         <li><strong>تكوين Enterprise عبر GPO:</strong>
           <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code># تفعيل BitLocker مع إجبار استخدام PIN و TPM
 Enable-BitLocker -MountPoint "C:" -EncryptionMethod Aes256 `
   -TpmAndPinProtector -UsedSpaceOnly
 
 # تصدير مفتاح الاستعادة إلى Active Directory
-Backup-BitLockerKeyProtector -MountPoint "C:" -KeyProtectorId (Get-BitLockerVolume -MountPoint "C:").KeyProtector[0].KeyProtectorId
-
-# تعطيل التشفير على الأقراص القابلة للإزالة (حسب سياسة المؤسسة)
-Disable-BitLocker -MountPoint "E:"</code></pre>
-        </li>
-        <li><strong>ملاحظات تشغيلية حرجة:</strong>
-          <br/>• تأكد دائماً من وجود نسخة احتياطية من Recovery Key في مكان منفصل وآمن (مثل Azure AD أو خادم إدارة مفاتيح مؤسسي).
-          <br/>• عند ترقية BIOS/UEFI، قد تتغير قياسات PCR مما يؤدي لطلب مفتاح الاستعادة. استخدم `tpm.msc` لمسح وإعادة تهيئة TPM قبل التحديثات الكبرى.
-          <br/>• BitLocker لا يحمي من الهجمات التي تحدث بعد تسجيل دخول المستخدم (مثل Keyloggers أو Memory Scraping). لهذا ننتقل للطبقات التالية.
+Backup-BitLockerKeyProtector -MountPoint "C:" -KeyProtectorId (Get-BitLockerVolume -MountPoint "C:").KeyProtector[0].KeyProtectorId</code></pre>
         </li>
       </ul>
 
       <h4>1.2 Virtualization-Based Security (VBS) و HVCI</h4>
       <p>
-        تعتمد تقنيات الأمان الحديثة في Windows 11 على العزل الافتراضي (Virtualization) لحماية العمليات الحساسة من نظام التشغيل نفسه.
+        تعتمد تقنيات الأمان الحديثة في Windows 11 على العزل الافتراضي لحماية العمليات الحساسة.
       </p>
       <ul>
-        <li><strong>HVCI (Hypervisor-Enforced Code Integrity):</strong> يمنع تحميل تعريفات (Drivers) أو أكواد نواة غير موقعة رقمياً من قبل Microsoft أو شهادات موثوقة. يقلل بشكل جذري من هجمات Rootkit و Kernel Exploits.</li>
-        <li><strong>Credential Guard:</strong> يعزل بيانات المصادقة (مثل Kerberos Tickets و NTLM Hashes) داخل حاوية افتراضية معزولة عن نظام التشغيل الرئيسي. حتى لو نجح المهاجم في الحصول على صلاحيات SYSTEM، لن يتمكن من سرقة الـ Hashes لإعادة استخدامها (Pass-the-Hash).</li>
-        <li><strong>التحقق والتفعيل:</strong>
-          <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code># التحقق من حالة VBS و Credential Guard
-Get-CimInstance -ClassName Win32_DeviceGuard -Namespace root\Microsoft\Windows\DeviceGuard | Select-Object SecurityServicesRunning, VirtualizationBasedSecurityStatus
-
-# تفعيل Credential Guard عبر GPO
-# المسار: Computer Configuration -> Administrative Templates -> System -> Device Guard
-# السياسة: Turn On Virtualization Based Security -> Enabled
-# خيار: Select Platform Security Level -> Secure Boot and DMA Protection</code></pre>
-        </li>
+        <li><strong>HVCI:</strong> يمنع تحميل تعريفات غير موقعة رقمياً، مما يقلل هجمات Rootkit.</li>
+        <li><strong>Credential Guard:</strong> يعزل بيانات المصادقة داخل حاوية افتراضية، مما يحميها من سرقة الـ Hashes حتى لو نجح المهاجم في الحصول على صلاحيات SYSTEM.</li>
       </ul>
 
       <h3 id="part2">🛡️ الجزء الثاني: Windows Defender المتقدم وإدارة التهديدات</h3>
       
       <h4>2.1 التكوين المتقدم لـ Microsoft Defender Antivirus</h4>
       <p>
-        مضاد الفيروسات المدمج تطور ليصبح منصة حماية طرفية كاملة (Endpoint Protection Platform). التكوين الافتراضي جيد، لكن البيئات المؤسسية تحتاج ضبطاً دقيقاً.
+        مضاد الفيروسات المدمج تطور ليصبح منصة حماية طرفية كاملة. البيئات المؤسسية تحتاج ضبطاً دقيقاً يتجاوز الإعدادات الافتراضية.
       </p>
       <ul>
-        <li><strong>Network Protection:</strong> يمنع التطبيقات من الاتصال بنطاقات أو عناوين IP خبيثة معروفة في قواعد التهديدات السحابية. يعمل بشكل شفاف ويوقف الاتصالات المشبوهة قبل وصول البيانات.
+        <li><strong>Network Protection:</strong> يمنع التطبيقات من الاتصال بنطاقات خبيثة معروفة في قواعد التهديدات السحابية.
           <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code># تمكين حماية الشبكة
-Set-MpPreference -EnableNetworkProtection Enabled
-
-# عرض السجلات الخاصة بحظر الشبكة
-Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-Windows Defender/Operational'; Id=1125} | Select-Object TimeCreated, Message</code></pre>
+Set-MpPreference -EnableNetworkProtection Enabled</code></pre>
         </li>
-        <li><strong>Cloud-Delivered Protection & Automatic Sample Submission:</strong> يستخدم الذكاء الاصطناعي السحابي لتحليل الملفات المشتبه بها في غضون ثوانٍ. يُنصح بتفعيله إلا في بيئات شديدة الحساسية للبيانات حيث يمكن تعطيل الإرسال التلقائي للعينات.
-        </li>
-        <li><strong>Exploit Protection:</strong> مجموعة من التخفيفات (Mitigations) التي تغير سلوك نظام التشغيل والذاكرة لجعل استغلال الثغرات أصعب بكثير. تشمل:
-          <br/>• DEP (Data Execution Prevention)
-          <br/>• ASLR (Address Space Layout Randomization)
-          <br/>• CFG (Control Flow Guard)
-          <br/>• Arbitrary Code Guard (ACG)
-          <br/>يمكن تصدير التكوين وتطبيقه عبر PowerShell أو Intune.
-        </li>
+        <li><strong>Exploit Protection:</strong> مجموعة من التخفيفات (Mitigations) التي تغير سلوك نظام التشغيل والذاكرة لجعل استغلال الثغرات أصعب بكثير (DEP, ASLR, CFG).</li>
       </ul>
 
       <h4>2.2 Attack Surface Reduction (ASR) Rules</h4>
       <p>
-        قواعد ASR هي جوهر الحماية الاستباقية. بدلاً من الانتظار حتى يظهر فيروس جديد، تمنع السلوكيات التي تستخدمها 90% من الهجمات الحديثة.
+        قواعد ASR هي جوهر الحماية الاستباقية. تمنع السلوكيات التي تستخدمها 90% من الهجمات الحديثة.
       </p>
       <ul>
         <li><strong>أهم القواعد وتأثيرها:</strong>
-          <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code># 1. حظر تنفيذ Office Macros من الإنترنت (ID: BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550)
-# يمنع تشغيل ماكرو خبيث تم تحميله عبر البريد أو المتصفح.
-
-# 2. حظر حقن الكود في عمليات Office (ID: 7674BA52-37EB-4A4F-A9A1-F0F9A1619A2C)
-# يوقف استغلال ثغرات مثل CVE-2017-11882.
-
-# 3. حظر إنشاء عمليات قابلة للتنفيذ من PSExec أو WMI (ID: D1E49AAC-8F55-430B-B909-70C3F7C8D525)
-# يعطل أدوات الحركة الجانبية (Lateral Movement) الشائعة.
-
-# 4. حظر سرقة بيانات الاعتماد من LSASS (ID: 9E6C4E1F-7D60-472F-BA1A-A39EF667E11F)
-# يحمي عملية lsass.exe من أدوات مثل Mimikatz.
+          <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code># 1. حظر تنفيذ Office Macros من الإنترنت (ID: BE9BA2D9...)
+# 2. حظر حقن الكود في عمليات Office (ID: 7674BA52...)
+# 3. حظر إنشاء عمليات قابلة للتنفيذ من PSExec أو WMI (ID: D1E49AAC...)
 
 # تطبيق قاعدة عبر PowerShell (وضع Audit أولاً للمراقبة)
 Add-MpPreference -AttackSurfaceReductionRules_Ids "BE9BA2D9-53EA-4CDC-84E5-9B1EEEE46550" `
   -AttackSurfaceReductionRules_Actions AuditMode</code></pre>
-        </li>
-        <li><strong>استراتيجية النشر:</strong> ابدأ دائماً بوضع `AuditMode` لمدة أسبوعين، راجع سجلات Event Viewer (ID 1121) للتأكد من عدم حظر تطبيقات شرعية، ثم انتقل لـ `Enabled`.
         </li>
       </ul>
 
@@ -165,27 +127,13 @@ Add-MpPreference -AttackSurfaceReductionRules_Ids "BE9BA2D9-53EA-4CDC-84E5-9B1EE
       
       <h4>3.1 تطبيق Microsoft Security Baselines بشكل صحيح</h4>
       <p>
-        تقدم Microsoft حزم سياسات جاهزة مبنية على اختبارات مكثفة. الخطأ الشائع هو تطبيقها كـ "صندوق أسود". النهج الصحيح:
+        تقدم Microsoft حزم سياسات جاهزة. النهج الصحيح هو مراجعتها وفهم تأثير كل سياسة قبل النشر على بيئة الإنتاج.
       </p>
-      <ol>
-        <li>تحميل الحزمة الأخيرة من موقع Microsoft Security Baselines.</li>
-        <li>استخدام أداة LGPO.exe أو Group Policy Management لاستيراد ملف `.inf`.</li>
-        <li>مراجعة كل سياسة تحت تبويب "Setting" وفهم التأثير على بيئة العمل (مثلاً: تعطيل SMBv1 قد يؤثر على أجهزة قديمة).</li>
-        <li>ربط الـ GPO بـ OU تجريبي أولاً، ثم الإنتاج بعد فترة مراقبة.</li>
-      </ol>
 
       <h4>3.2 تأمين الحسابات والصلاحيات (Least Privilege)</h4>
       <ul>
-        <li><strong>سياسات كلمة المرور الحديثة:</strong> الانتقال من التعقيد الإلزامي إلى الطول (14+ حرف) مع منع كلمات المرور الشائعة عبر قائمة مخصصة. تفعيل Smart Lockout لمنع هجمات التخمين عن بعد.
-        <li><strong>Local Administrator Password Solution (LAPS):</strong> أداة مجانية من Microsoft تدير كلمات مرور المسؤول المحلي بشكل عشوائي ومؤقت، وتخزنها مشفرة في Active Directory. تلغي خطر استخدام نفس كلمة المرور عبر مئات الأجهزة.
-          <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code># تحديث كلمة مرور LAPS يدوياً (للاختبار)
-Reset-AdmPwdPassword -ComputerName "PC-01"
-
-# عرض كلمة المرور الحالية (يتطلب صلاحيات قراءة LAPS في AD)
-Get-AdmPwdPassword -ComputerName "PC-01"</code></pre>
-        </li>
-        <li><strong>Tiered Administration Model:</strong> فصل الحسابات إلى مستويات (Tier 0 للخوادم والهوية، Tier 1 للتطبيقات، Tier 2 لمحطات العمل). يمنع اختراق جهاز عادي من الوصول لبيئة الخوادم الحساسة.
-        </li>
+        <li><strong>LAPS (Local Administrator Password Solution):</strong> أداة مجانية تدير كلمات مرور المسؤول المحلي بشكل عشوائي ومؤقت، وتخزنها مشفرة في Active Directory.</li>
+        <li><strong>Tiered Administration Model:</strong> فصل الحسابات إلى مستويات (Tier 0 للخوادم، Tier 1 للتطبيقات، Tier 2 لمحطات العمل) لمنع الحركة الجانبية للمهاجمين.</li>
       </ul>
 
       <h3 id="part4">🔍 الجزء الرابع: التدقيق المتقدم والبحث عن التهديدات (Threat Hunting)</h3>
@@ -197,13 +145,10 @@ Get-AdmPwdPassword -ComputerName "PC-01"</code></pre>
       <ul>
         <li><strong>الأحداث الحرجة التي يجب مراقبتها:</strong>
           <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code># 4688: إنشاء عملية جديدة (راقب CommandLine و ParentProcess)
-# 4698/4699/4700/4701: إنشاء/تعديل/حذف مهام مجدولة (Persistence)
-# 4720/4722/4723/4724: إنشاء/تفعيل/تغيير كلمة مرور/تعديل مستخدم
-# 4768/4769/4771: طلب/منح/فشل تذاكر Kerberos (Golden/Silver Ticket attacks)
-# 5140/5145: الوصول لمشاركات الشبكة والملفات الحساسة
+# 4698: إنشاء مهام مجدولة (Persistence)
+# 4720: إنشاء مستخدم جديد
+# 4768: طلب تذاكر Kerberos (Golden/Silver Ticket attacks)
 # 1102: مسح سجل الأحداث (محاولة إخفاء الآثار)</code></pre>
-        </li>
-        <li><strong>أتمتة جمع السجلات:</strong> استخدام Windows Event Forwarding (WEF) لإرسال السجلات لخادم مركزي، أو استخدام وكيل خفيف مثل Winlogbeat لإرسالها لمنصة SIEM.
         </li>
       </ul>
 
@@ -212,33 +157,22 @@ Get-AdmPwdPassword -ComputerName "PC-01"</code></pre>
         لا تنتظر إنذارات مضاد الفيروسات. ابحث بنشاط عن الشذوذ.
       </p>
       <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code># 1. البحث عن عمليات PowerShell مشفرة أو مخفية
-Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-PowerShell/Operational'; Id=4104} | Where-Object {$_.Message -match "EncodedCommand|DownloadString|Invoke-Expression"} | Select-Object TimeCreated, Message
+Get-WinEvent -FilterHashtable @{LogName='Microsoft-Windows-PowerShell/Operational'; Id=4104} | Where-Object {$_.Message -match "EncodedCommand"}
 
 # 2. اكتشاف الاتصالات الخارجية المشبوهة
-Get-NetTCPConnection -State Established | Where-Object {$_.RemoteAddress -notmatch "^(10\.|172\.(1[6-9]|2[0-9]|3[01])\.|192\.168\.)"} | Select-Object OwningProcess, RemoteAddress, RemotePort
+Get-NetTCPConnection -State Established | Where-Object {$_.RemoteAddress -notmatch "^(10\.|172\.(1[6-9]|2[0-9]|3[01])\.|192\.168\.)"}
 
 # 3. فحص التواقيع الرقمية للعمليات النشطة
-Get-Process | Select-Object Name, Path, @{N="Signed";E={(Get-AuthenticodeSignature $_.Path).Status}} | Where-Object {$_.Signed -ne "Valid"}
+Get-Process | Select-Object Name, Path, @{N="Signed";E={(Get-AuthenticodeSignature $_.Path).Status}} | Where-Object {$_.Signed -ne "Valid"}</code></pre>
 
-# 4. البحث عن ملفات تم تعديلها حديثاً في مجلدات النظام
-Get-ChildItem -Path "C:\Windows\System32", "C:\ProgramData" -Recurse -ErrorAction SilentlyContinue | Where-Object {$_.LastWriteTime -gt (Get-Date).AddHours(-24)} | Select-Object FullName, LastWriteTime</code></pre>
-
-      <h3 id="part5"> الجزء الخامس: نموذج Zero Trust العملي في Windows</h3>
+      <h3 id="part5">️ الجزء الخامس: نموذج Zero Trust العملي في Windows</h3>
       
       <h4>5.1 المبادئ الأساسية وتطبيقها</h4>
       <p>
-        Zero Trust ليس منتجاً، بل منهجية تفترض أن الاختراق قد حدث بالفعل. المبادئ الثلاثة:
+        Zero Trust يفترض أن الاختراق قد حدث بالفعل. المبادئ الثلاثة: التحقق الصريح، أقل صلاحية، وافتراض الاختراق.
       </p>
-      <ol>
-        <li><strong>التحقق الصريح:</strong> المصادقة متعددة العوامل (MFA) لكل وصول، بغض النظر عن الموقع.</li>
-        <li><strong>أقل صلاحية:</strong> Just-In-Time (JIT) و Just-Enough-Access (JEA) بدلاً من الصلاحيات الدائمة.</li>
-        <li><strong>افتراض الاختراق:</strong> عزل الأضرار، تشفير كل شيء، ومراقبة السلوك.</li>
-      </ol>
-
-      <h4>5.2 Windows Hello for Business & Conditional Access</h4>
       <ul>
-        <li>استبدال كلمات المرور بمفاتيح بيومترية أو PIN مرتبط بالجهاز. الـ PIN لا ينتقل عبر الشبكة، مما يلغي خطر التصيد (Phishing).</li>
-        <li>دمج مع Azure AD Conditional Access لمنع تسجيل الدخول من دول غير متوقعة، أو أجهزة غير متوافقة، أو شبكات غير موثوقة.</li>
+        <li><strong>Windows Hello for Business & Conditional Access:</strong> استبدال كلمات المرور بمفاتيح بيومترية أو PIN مرتبط بالجهاز، ومنع تسجيل الدخول من ظروف مشبوهة.</li>
       </ul>
 
       <h3 id="part6">🚨 الجزء السادس: خطة الاستجابة للحوادث (Incident Response)</h3>
@@ -248,33 +182,23 @@ Get-ChildItem -Path "C:\Windows\System32", "C:\ProgramData" -Recurse -ErrorActio
         اتبع دورة حياة واضحة: التحضير → الكشف والتحليل → الاحتواء والاستئصال → الاسترداد → الدروس المستفادة.
       </p>
       <ul>
-        <li><strong>التحضير:</strong> امتلاك قائمة أصول، خرائط شبكة، حسابات طوارئ منفصلة، وأدوات تحليل جاهزة (USB محمية بـ BitLocker تحتوي على أدوات Forensics).</li>
-        <li><strong>الاحتواء الفوري:</strong>
-          <br/>• عزل الشبكة: تعطيل محول الشبكة أو نقل الجهاز لـ VLAN معزول.
-          <br/>• تعطيل الحساب المخترق في AD فوراً.
-          <br/>• لا تغلق الجهاز! الإغلاق يفقد محتويات الذاكرة (RAM) التي تحتوي على مفاتيح التشفير، العمليات النشطة، والاتصالات المفتوحة.
-        </li>
+        <li><strong>الاحتواء الفوري:</strong> عزل الشبكة، تعطيل الحساب المخترق، وعدم إغلاق الجهاز للحفاظ على أدلة الذاكرة (RAM).</li>
         <li><strong>جمع الأدلة الرقمية:</strong>
           <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code># تفريغ الذاكرة باستخدام أداة مؤمنة
-# (مثال باستخدام DumpIt أو WinPMEM)
 .\DumpIt.exe /output C:\Evidence\MemoryDump.raw
 
 # حفظ سجلات الأحداث
 wevtutil epl System C:\Evidence\System.evtx
 wevtutil epl Security C:\Evidence\Security.evtx
-wevtutil epl Application C:\Evidence\Application.evtx
 
-# إنشاء قائمة بالملفات المفتوحة والاتصالات
-netstat -ano > C:\Evidence\NetworkConnections.txt
-tasklist /v > C:\Evidence\RunningProcesses.txt</code></pre>
+# قائمة بالملفات المفتوحة والاتصالات
+netstat -ano > C:\Evidence\NetworkConnections.txt</code></pre>
         </li>
       </ul>
 
       <h4>6.2 التعامل مع هجمات الفدية (Ransomware)</h4>
       <ul>
-        <li>لا تدفع الفدية أبداً. لا يوجد ضمان لاستعادة البيانات، وتمول العمليات الإجرامية.</li>
-        <li>تحديد نوع الفدية عبر مواقع مثل NoMoreRansom أو ID Ransomware.</li>
-        <li>استعادة من نسخ احتياطية معزولة (Air-Gapped أو Immutable). اختبر عملية الاستعادة دورياً.</li>
+        <li>لا تدفع الفدية أبداً. حدد نوع الفدية، واستعد من نسخ احتياطية معزولة (Air-Gapped).</li>
         <li>بعد الاستعادة، غير جميع كلمات المرور، راجع الثغرة الأولية، وحدّث أنظمة الكشف.</li>
       </ul>
 
@@ -287,21 +211,19 @@ tasklist /v > C:\Evidence\RunningProcesses.txt</code></pre>
       
       <h4>7.1 أتمتة الفحوصات الأمنية</h4>
       <p>
-        الأمان اليدوي غير قابل للاستمرار. استخدم PowerShell و Task Scheduler لإنشاء تقارير دورية.
+        استخدم PowerShell و Task Scheduler لإنشاء تقارير دورية تلقائية.
       </p>
       <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code># سكريبت فحص يومي مبسط
 $Report = @()
 $Report += [PSCustomObject]@{Check="BitLocker Status"; Result=(Get-BitLockerVolume -MountPoint C:).VolumeStatus}
 $Report += [PSCustomObject]@{Check="Firewall Status"; Result=(Get-NetFirewallProfile -All).Enabled}
-$Report += [PSCustomObject]@{Check="Definer Last Update"; Result=(Get-MpComputerStatus).AntivirusSignatureLastUpdated}
 $Report | Export-Csv -Path "C:\Logs\SecurityCheck_$(Get-Date -Format 'yyyyMMdd').csv" -NoTypeInformation</code></pre>
 
       <h4>7.2 المراقبة والامتثال (Compliance)</h4>
       <ul>
         <li>استخدم Microsoft Intune أو Group Policy لتطبيق التكوينات وفرضها.</li>
         <li>راجع تقارير Secure Score في Microsoft 365 Defender بشكل أسبوعي.</li>
-        <li>طابق الإعدادات مع معايير CIS Level 1 أو ISO 27001 Annex A حسب قطاعك.</li>
-        <li>وثّق كل تغيير، احتفظ بسجلات التدقيق لمدة سنة على الأقل، وأجرِ مراجعات داخلية ربع سنوية.</li>
+        <li>وثّق كل تغيير، واحتفظ بسجلات التدقيق لمدة سنة على الأقل.</li>
       </ul>
 
       <div class="conclusion" style="background:linear-gradient(135deg,#ef4444,#dc2626);color:white;padding:2rem;border-radius:12px;margin:2rem 0">
@@ -312,7 +234,6 @@ $Report | Export-Csv -Path "C:\Logs\SecurityCheck_$(Get-Date -Format 'yyyyMMdd')
           <li>✅ فعّل VBS و Credential Guard على كل جهاز حديث.</li>
           <li>✅ راقب السلوك، لا الملفات فقط. المهاجمون يتطورون أسرع من التواقيع.</li>
           <li>✅ اختبر خطة الاستجابة للحوادث قبل حدوث الكارثة.</li>
-          <li>✅ وثّق، راجع، وحسّن. الأمن السيبراني سباق لا ينتهي.</li>
         </ul>
         <p style="font-size:1.2rem;font-weight:bold;margin-top:1.5rem;text-align:center">الحماية الحقيقية تبدأ بالوعي، وتستمر بالانضباط! 🛡️🔐</p>
       </div>
@@ -323,7 +244,7 @@ $Report | Export-Csv -Path "C:\Logs\SecurityCheck_$(Get-Date -Format 'yyyyMMdd')
   
   <Footer />
 
-  <!-- ✅ كود التتبع الذكي ووقت القراءة والفهرس -->
+  <!-- ✅ كود التتبع الذكي ووقت القراءة والفهرس - مصحح لبناء Astro -->
   <script is:inline>
     if (typeof window !== 'undefined') {
       window.addEventListener('DOMContentLoaded', function() {
@@ -361,7 +282,7 @@ $Report | Export-Csv -Path "C:\Logs\SecurityCheck_$(Get-Date -Format 'yyyyMMdd')
             var docHeight = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
             var scrollPercent = (scrollTop + windowHeight) / docHeight;
             if (scrollPercent >= SCROLL_THRESHOLD) {
-              console.log(' Scroll reached ' + Math.round(scrollPercent*100) + '%');
+              console.log('📜 Scroll reached ' + Math.round(scrollPercent*100) + '%');
               markAsRead();
               clearTimeout(timeTimer);
               window.removeEventListener('scroll', checkScroll, { passive: true });
@@ -385,8 +306,8 @@ $Report | Export-Csv -Path "C:\Logs\SecurityCheck_$(Get-Date -Format 'yyyyMMdd')
             if (timeElement && displayElement) {
               var minutes = parseInt(timeElement.textContent);
               if (minutes < 1) displayElement.textContent = '⏱️ أقل من دقيقة';
-              else if (minutes === 1) displayElement.textContent = '⏱️ دقيقة واحدة';
-              else displayElement.textContent = '️ ' + minutes + ' دقائق';
+              else if (minutes === 1) displayElement.textContent = '️ دقيقة واحدة';
+              else displayElement.textContent = '⏱️ ' + minutes + ' دقائق';
             }
           } catch (e) {}
         }, 100);
