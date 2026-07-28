@@ -1,4 +1,5 @@
 ---
+import LanguageSwitcher from './LanguageSwitcher.astro'; // ✅ إضافة مكون تبديل اللغة
 ---
 <header class="site-header">
   <div class="container">
@@ -9,34 +10,37 @@
     <nav class="nav-links">
       <a href="/Th-tech/" class="nav-link">
         <span class="icon">🏠</span>
-        <span>الرئيسية</span>
+        <span data-i18n="home">الرئيسية</span>
       </a>
       <a href="/Th-tech/articles/" class="nav-link">
         <span class="icon">📚</span>
-        <span>المقالات</span>
+        <span data-i18n="articles">المقالات</span>
       </a>
       <a href="/Th-tech/learning-paths/" class="nav-link">
         <span class="icon">🎯</span>
-        <span>مسارات التعلم</span>
+        <span data-i18n="learning_paths">مسارات التعلم</span>
       </a>
       <a href="/Th-tech/category/" class="nav-link">
         <span class="icon">📑</span>
-        <span>التصنيفات</span>
+        <span data-i18n="categories">التصنيفات</span>
       </a>
       <a href="/Th-tech/contact/" class="nav-link">
         <span class="icon">✉️</span>
-        <span>اتصل بنا</span>
+        <span data-i18n="contact">اتصل بنا</span>
       </a>
     </nav>
 
     <div class="header-tools">
-      <button id="search-btn" class="tool-btn" title="بحث متقدم">
+      <!-- ✅ زر تبديل اللغة -->
+      <LanguageSwitcher />
+      
+      <button id="search-btn" class="tool-btn" data-i18n-aria="search" title="بحث متقدم">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"></circle>
           <path d="m21 21-4.35-4.35"></path>
         </svg>
       </button>
-      <button id="theme-btn" class="tool-btn" title="الوضع الليلي">
+      <button id="theme-btn" class="tool-btn" data-i18n-aria="dark_mode" title="الوضع الليلي">
         <svg id="moon-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
@@ -52,7 +56,7 @@
           <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
       </button>
-      <button id="menu-btn" class="tool-btn hamburger" title="القائمة">
+      <button id="menu-btn" class="tool-btn hamburger" data-i18n-aria="menu" title="القائمة">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="3" y1="12" x2="21" y2="12"></line>
           <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -71,7 +75,7 @@
           <path d="m21 21-4.35-4.35"></path>
         </svg>
       </div>
-      <input type="text" id="searchInput" placeholder="ابحث في المقالات، التصنيفات، الكلمات المفتاحية..." class="search-input" />
+      <input type="text" id="searchInput" data-i18n-placeholder="search" placeholder="ابحث في المقالات، التصنيفات، الكلمات المفتاحية..." class="search-input" />
       <button id="close-search" class="close-btn">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -87,18 +91,18 @@
   <nav id="mobile-menu" class="mobile-menu">
     <a href="/Th-tech/" class="mobile-link">
       <span class="icon">🏠</span>
-      <span>الرئيسية</span>
+      <span data-i18n="home">الرئيسية</span>
     </a>
     
     <a href="/Th-tech/articles/" class="mobile-link">
       <span class="icon">📚</span>
-      <span>المقالات</span>
+      <span data-i18n="articles">المقالات</span>
     </a>
     
     <!-- ✅ رابط مسارات التعلم المضاف -->
     <a href="/Th-tech/learning-paths/" class="mobile-link">
       <span class="icon">🎯</span>
-      <span>مسارات التعلم</span>
+      <span data-i18n="learning_paths">مسارات التعلم</span>
     </a>
     
     <!-- قائمة التصنيفات المنبثقة -->
@@ -106,7 +110,7 @@
       <button class="mobile-dropdown-toggle" aria-expanded="false">
         <span class="dropdown-text">
           <span class="icon">📑</span>
-          <span>التصنيفات</span>
+          <span data-i18n="categories">التصنيفات</span>
         </span>
         <svg class="dropdown-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="6 9 12 15 18 9"></polyline>
@@ -275,7 +279,7 @@
     
     <a href="/Th-tech/contact/" class="mobile-link">
       <span class="icon">✉️</span>
-      <span>اتصل بنا</span>
+      <span data-i18n="contact">اتصل بنا</span>
     </a>
   </nav>
 </header>
@@ -743,6 +747,62 @@
 </style>
 
 <script>
+  // ✅ قاموس الترجمة للواجهة
+  const i18n = {
+    ar: {
+      home: 'الرئيسية',
+      articles: 'المقالات',
+      learning_paths: 'مسارات التعلم',
+      categories: 'التصنيفات',
+      contact: 'اتصل بنا',
+      search: 'بحث',
+      dark_mode: 'الوضع الليلي',
+      light_mode: 'الوضع النهاري',
+      menu: 'القائمة'
+    },
+    en: {
+      home: 'Home',
+      articles: 'Articles',
+      learning_paths: 'Learning Paths',
+      categories: 'Categories',
+      contact: 'Contact',
+      search: 'Search',
+      dark_mode: 'Dark Mode',
+      light_mode: 'Light Mode',
+      menu: 'Menu'
+    }
+  };
+
+  // ✅ دالة تطبيق اللغة على الواجهة
+  function applyLanguage(lang) {
+    const t = i18n[lang] || i18n.ar;
+    
+    // تحديث النصوص عبر سمات data-i18n
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key]) el.textContent = t[key];
+    });
+
+    // تحديث aria-label للأزرار
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+      const key = el.getAttribute('data-i18n-aria');
+      if (t[key]) el.setAttribute('aria-label', t[key]);
+    });
+
+    // تحديث placeholder لحقل البحث
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput && t.search) {
+      searchInput.placeholder = lang === 'ar' ? 'ابحث في المقالات، التصنيفات، الكلمات المفتاحية...' : 'Search articles, categories, keywords...';
+    }
+
+    // تحديث اتجاه الصفحة
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    
+    // حفظ اللغة
+    localStorage.setItem('lang', lang);
+  }
+
   // قاعدة بيانات شاملة للمحتوى - مع روابط صحيحة
   const siteContent = {
     articles: [
@@ -782,12 +842,12 @@
       localStorage.setItem('theme', 'dark');
       moonIcon.style.display = 'none';
       sunIcon.style.display = 'block';
-      btn.setAttribute('title', 'الوضع النهاري');
+      btn.setAttribute('title', i18n.en.light_mode);
     } else {
       localStorage.setItem('theme', 'light');
       moonIcon.style.display = 'block';
       sunIcon.style.display = 'none';
-      btn.setAttribute('title', 'الوضع الليلي');
+      btn.setAttribute('title', i18n.ar.dark_mode);
     }
   }
 
@@ -834,6 +894,10 @@
 
   // التهيئة عند التحميل
   document.addEventListener('DOMContentLoaded', () => {
+    // ✅ تطبيق اللغة المحفوظة
+    const savedLang = localStorage.getItem('lang') || 'ar';
+    applyLanguage(savedLang);
+    
     // الوضع المحفوظ
     const savedTheme = localStorage.getItem('theme');
     const themeBtn = document.getElementById('theme-btn');
@@ -844,11 +908,16 @@
       document.documentElement.classList.add('dark-mode');
       moonIcon.style.display = 'none';
       sunIcon.style.display = 'block';
-      themeBtn.setAttribute('title', 'الوضع النهاري');
+      themeBtn.setAttribute('title', i18n.en.light_mode);
     }
 
     // أزرار التحكم
     themeBtn.addEventListener('click', toggleTheme);
+
+    // ✅ الاستماع لتغيير اللغة من مكون LanguageSwitcher
+    window.addEventListener('langChanged', (e) => {
+      applyLanguage(e.detail.lang);
+    });
 
     // القائمة المتنقلة
     const menuBtn = document.getElementById('menu-btn');
