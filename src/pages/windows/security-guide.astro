@@ -51,7 +51,7 @@ export const description = "مرجع تقني عملي يتجاوز 5000 كلم�
         <span class="separator">|</span>
         <span>⏱️ قراءة متعمقة (5000+ كلمة)</span>
         <span class="separator">|</span>
-        <span id="readingTimeDisplay" class="reading-time-badge">⏱️ جاري الحساب...</span>
+        <span id="readingTimeDisplay" class="reading-time-badge">️ جاري الحساب...</span>
       </div>
       
       <p class="intro">
@@ -63,7 +63,7 @@ export const description = "مرجع تقني عملي يتجاوز 5000 كلم�
         <p class="image-caption">بنية الأمان الدفاعي متعدد الطبقات: من العتاد إلى السحابة</p>
       </div>
 
-      <h3 id="part1">🔐 الجزء الأول: حماية العتاد وتشفير البيانات</h3>
+      <h3 id="part1"> الجزء الأول: حماية العتاد وتشفير البيانات</h3>
       
       <h4>1.1 BitLocker Drive Encryption: ما وراء التفعيل</h4>
       <p>
@@ -112,7 +112,7 @@ Add-MpPreference -AttackSurfaceReductionRules_Ids "BE9BA2D9-53EA-4CDC-84E5-9B1EE
         <p class="image-caption">لوحة تحكم Microsoft Defender for Endpoint لإدارة التهديدات</p>
       </div>
 
-      <h3 id="part3">⚙️ الجزء الثالث: تأمين الهوية والصلاحيات</h3>
+      <h3 id="part3">️ الجزء الثالث: تأمين الهوية والصلاحيات</h3>
       
       <h4>3.1 Local Administrator Password Solution (LAPS)</h4>
       <p>
@@ -210,11 +210,10 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
   
   <Footer />
 
-  <!-- ✅ كود JavaScript النهائي المضمون - يعمل دائماً مع Astro -->
+  <!-- ✅ كود JavaScript النهائي المضمون -->
   <script is:inline>
-    // دالة التهيئة التي تعمل دائماً
     function initButtons() {
-      console.log('🔧 Initializing buttons...');
+      console.log('🔧 تهيئة الأزرار...');
       
       // === الفهرس ===
       const tocBtn = document.getElementById('tocBtn');
@@ -223,15 +222,11 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
       const tocNav = document.getElementById('tocNav');
       
       if (tocBtn && tocModal && tocNav && tocClose) {
-        console.log('✅ TOC elements found');
+        tocNav.innerHTML = ''; // تنظيف مسبق
         
-        // تنظيف الفهرس أولاً
-        tocNav.innerHTML = '';
-        
-        // بناء عناصر الفهرس
         document.querySelectorAll('.article h3').forEach(h3 => {
-          const item = document.createElement('a');
-          item.href = '#' + h3.id;
+          // ✅ استخدام div بدلاً من a لتجنب تنسيقات الروابط الافتراضية
+          const item = document.createElement('div');
           item.className = 'toc-item';
           item.textContent = h3.textContent;
           item.onclick = (e) => {
@@ -242,47 +237,21 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
           tocNav.appendChild(item);
         });
         
-        // ربط الأحداث
-        tocBtn.onclick = () => {
-          console.log('📑 TOC opened');
-          tocModal.classList.add('active');
-        };
-        tocClose.onclick = () => {
-          console.log('❌ TOC closed');
-          tocModal.classList.remove('active');
-        };
-        tocModal.onclick = (e) => {
-          if (e.target === tocModal) tocModal.classList.remove('active');
-        };
-      } else {
-        console.error('❌ TOC elements NOT found:', { tocBtn, tocModal, tocNav, tocClose });
+        tocBtn.onclick = () => tocModal.classList.add('active');
+        tocClose.onclick = () => tocModal.classList.remove('active');
+        tocModal.onclick = (e) => { if (e.target === tocModal) tocModal.classList.remove('active'); };
       }
 
       // === السهم المنبثق ===
       const backBtn = document.getElementById('backToTop');
       if (backBtn) {
-        console.log('✅ Back-to-top button found');
-        
-        // دالة تحديث حالة الزر
-        function updateBackButton() {
-          if (window.scrollY > 400) {
-            backBtn.classList.add('show');
-          } else {
-            backBtn.classList.remove('show');
-          }
-        }
-        
-        // تحديث فوري + عند التمرير
-        updateBackButton();
-        window.addEventListener('scroll', updateBackButton, { passive: true });
-        
-        // عند النقر
-        backBtn.onclick = () => {
-          console.log('⬆️ Scrolling to top');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+        const updateBtn = () => {
+          if (window.scrollY > 400) backBtn.classList.add('show');
+          else backBtn.classList.remove('show');
         };
-      } else {
-        console.error('❌ Back-to-top button NOT found');
+        updateBtn(); // تشغيل فوري
+        window.addEventListener('scroll', updateBtn, { passive: true });
+        backBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
       // === تتبع القراءة ===
@@ -298,10 +267,9 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
           if (!read.includes(currentPath)) {
             read.push(currentPath);
             localStorage.setItem('read_articles', JSON.stringify(read));
-            console.log('📚 Article marked as read');
           }
           isMarked = true;
-        } catch (e) { console.error('Tracking error:', e); }
+        } catch (e) {}
       }
 
       try {
@@ -326,18 +294,15 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
         const displayEl = document.getElementById('readingTimeDisplay');
         if (timeEl && displayEl) {
           const min = parseInt(timeEl.textContent);
-          if (min < 1) displayEl.textContent = '⏱️ أقل من دقيقة';
-          else if (min === 1) displayEl.textContent = '⏱️ دقيقة واحدة';
+          if (min < 1) displayEl.textContent = '️ أقل من دقيقة';
+          else if (min === 1) displayEl.textContent = '️ دقيقة واحدة';
           else displayEl.textContent = '⏱️ ' + min + ' دقائق';
         }
       }, 100);
     }
 
-    // التشغيل عند التحميل الأولي
     if (typeof window !== 'undefined') {
-      // DOMContentLoaded للتحميل الأول
       document.addEventListener('DOMContentLoaded', initButtons);
-      // astro:page-load للتنقل الداخلي في Astro
       document.addEventListener('astro:page-load', initButtons);
     }
   </script>
@@ -370,9 +335,11 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
   .article-image:hover img { transform: scale(1.02); }
   .image-caption { background: var(--bg); color: var(--text-sec); padding: 1rem 1.5rem; text-align: center; font-size: 0.9rem; font-style: italic; margin: 0; border-top: 1px solid var(--border); }
   
-  /* ✅ الفهرس */
+  /* ✅ زر الفهرس */
   .toc-btn { position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; background: linear-gradient(135deg, var(--primary), #fca5a5); border: none; border-radius: 50%; color: white; font-size: 1.6rem; cursor: pointer; box-shadow: 0 4px 15px rgba(239,68,68,0.5); z-index: 998; transition: all 0.3s ease; }
   .toc-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(239,68,68,0.7); }
+  
+  /* ✅ نافذة الفهرس */
   .toc-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 999; align-items: center; justify-content: center; padding: 6rem 1.5rem 1.5rem; animation: fadeIn 0.3s ease; }
   .toc-modal.active { display: flex; }
   .toc-box { background: var(--card); width: 100%; max-width: 550px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-height: 80vh; display: flex; flex-direction: column; overflow: hidden; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -381,15 +348,40 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
   .toc-close { background: transparent; border: none; color: var(--text-sec); font-size: 2rem; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
   .toc-close:hover { background: #fee2e2; color: #ef4444; }
   .toc-nav { display: flex; flex-direction: column; padding: 1rem; gap: 0.6rem; overflow-y: auto; }
-  .toc-item { display: block !important; background: var(--bg) !important; color: var(--text) !important; padding: 1rem 1.2rem !important; border-radius: 12px !important; font-size: 1rem !important; font-weight: 600 !important; line-height: 1.4 !important; cursor: pointer !important; border: 1px solid transparent !important; text-decoration: none !important; border-bottom: none !important; outline: none !important; -webkit-tap-highlight-color: transparent !important; transition: all 0.25s ease !important; }
-  .toc-item:hover { background: rgba(239,68,68,0.08) !important; border-color: rgba(239,68,68,0.2) !important; color: var(--primary) !important; transform: translateX(-4px) !important; }
+  
+  /* ✅ عناصر الفهرس - بدون خطوط أو ألوان روابط */
+  .toc-item { 
+    display: block !important; 
+    background: var(--bg) !important; 
+    color: var(--text) !important; 
+    padding: 1rem 1.2rem !important; 
+    border-radius: 12px !important; 
+    font-size: 1rem !important; 
+    font-weight: 600 !important; 
+    line-height: 1.4 !important; 
+    cursor: pointer !important;
+    border: 1px solid transparent !important; 
+    text-decoration: none !important; /* ✅ إزالة الخط نهائياً */
+    text-underline-offset: 0 !important;
+    text-decoration-line: none !important;
+    border-bottom: none !important; 
+    outline: none !important; 
+    -webkit-tap-highlight-color: transparent !important; 
+    transition: all 0.25s ease !important;
+  }
+  .toc-item:hover { 
+    background: rgba(239,68,68,0.08) !important; 
+    border-color: rgba(239,68,68,0.2) !important; 
+    color: var(--primary) !important; 
+    transform: translateX(-4px) !important; 
+  }
   .toc-nav::-webkit-scrollbar { width: 6px; }
   .toc-nav::-webkit-scrollbar-track { background: transparent; }
   .toc-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
   
-  /* ✅ السهم */
+  /* ✅ السهم المنبثق */
   .back-to-top { position: fixed; bottom: 95px; left: 30px; width: 50px; height: 50px; background: var(--card); border: 2px solid var(--primary); border-radius: 50%; color: var(--primary); font-size: 1.4rem; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 997; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
   .back-to-top.show { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; }
   .back-to-top:hover { background: var(--primary); color: #fff !important; transform: scale(1.1) !important; box-shadow: 0 0 20px rgba(239,68,68,0.6); }
