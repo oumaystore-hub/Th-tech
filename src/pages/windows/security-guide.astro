@@ -212,10 +212,11 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
   
   <Footer />
 
-  <!-- ✅ كود التتبع الذكي + الفهرس + العودة للأعلى (نفس الكود الناجح من المقالات السابقة) -->
+  <!-- ✅ كود التتبع + الفهرس + العودة للأعلى (مع إضافة astro:page-load) -->
   <script is:inline>
     if (typeof window !== 'undefined') {
-      window.addEventListener('DOMContentLoaded', function() {
+      // ✅ دالة التهيئة - نعيد استخدامها لكل حدث
+      function initPage() {
         // === تتبع القراءة (30 ثانية أو 70% تمرير) ===
         var TRACK_TIME = 30;
         var SCROLL_THRESHOLD = 0.7;
@@ -277,13 +278,16 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
           } catch (e) {}
         }, 100);
 
-        // === الفهرس (نفس الكود الناجح) ===
+        // === الفهرس ===
         var tocBtn = document.getElementById('tocBtn');
         var tocModal = document.getElementById('tocModal');
         var tocClose = document.getElementById('tocClose');
         var tocNav = document.getElementById('tocNav');
         
         if (tocBtn && tocModal && tocNav) {
+          // تنظيف الفهرس القديم أولاً (لمنع التكرار عند التنقل)
+          tocNav.innerHTML = '';
+          
           var h3Elements = document.querySelectorAll('.article h3');
           h3Elements.forEach(function(h3) {
             var item = document.createElement('div');
@@ -302,22 +306,30 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
           tocModal.onclick = function(e) { if (e.target === tocModal) tocModal.classList.remove('active'); };
         }
 
-        // === العودة للأعلى (نفس الكود الناجح) ===
+        // === العودة للأعلى ===
         var backBtn = document.getElementById('backToTop');
         if (backBtn) {
-          window.addEventListener('scroll', function() {
+          // إزالة المستمع القديم لمنع التكرار
+          var newScrollHandler = function() {
             if (window.scrollY > 400) {
               backBtn.classList.add('show');
             } else {
               backBtn.classList.remove('show');
             }
-          });
+          };
+          window.addEventListener('scroll', newScrollHandler);
           
-          backBtn.addEventListener('click', function() {
+          backBtn.onclick = function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
-          });
+          };
         }
-      });
+      }
+
+      // ✅ التشغيل عند التحميل الأولي
+      document.addEventListener('DOMContentLoaded', initPage);
+      
+      // ✅ التشغيل عند التنقل بين صفحات Astro (هذا هو الحل!)
+      document.addEventListener('astro:page-load', initPage);
     }
   </script>
 </body>
@@ -349,7 +361,7 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
   .article-image:hover img { transform: scale(1.02); }
   .image-caption { background: var(--bg); color: var(--text-sec); padding: 1rem 1.5rem; text-align: center; font-size: 0.9rem; font-style: italic; margin: 0; border-top: 1px solid var(--border); }
   
-  /* ✅ زر الفهرس - نفس التنسيق الناجح */
+  /* ✅ زر الفهرس */
   .toc-btn { 
     position: fixed; 
     bottom: 30px; 
@@ -374,7 +386,7 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
     box-shadow: 0 6px 20px rgba(239,68,68,0.7); 
   }
   
-  /* ✅ نافذة الفهرس - نفس التنسيق الناجح */
+  /* ✅ نافذة الفهرس */
   .toc-modal { 
     display: none; 
     position: fixed; 
@@ -459,7 +471,7 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
   .toc-nav::-webkit-scrollbar-track { background: transparent; }
   .toc-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
   
-  /* ✅ زر العودة للأعلى - نفس التنسيق الناجح */
+  /* ✅ زر العودة للأعلى */
   .back-to-top { 
     position: fixed; 
     bottom: 95px; 
