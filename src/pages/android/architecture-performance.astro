@@ -22,7 +22,7 @@ export const description = "غوص تقني عميق (5000+ كلمة) في Zygot
   
   <main class="category-articles">
     <div class="page-header">
-      <h1> معمارية Android الداخلية وتحليل الأداء المتقدم</h1>
+      <h1>️⚡ معمارية Android الداخلية وتحليل الأداء المتقدم</h1>
       <p>دليل الخبراء: كيف يعمل النظام فعلياً؟ وكيف نحلل ونحسن الأداء على مستوى النواة؟</p>
     </div>
 
@@ -39,7 +39,7 @@ export const description = "غوص تقني عميق (5000+ كلمة) في Zygot
     </div>
 
     <!-- ✅ السهم المنبثق -->
-    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">️</button>
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
 
     <article class="article">
       <span class="badge" style="background:linear-gradient(135deg,#3ddc84,#00c853)">هندسة نواة / أداء متقدم / 5000+ كلمة</span>
@@ -80,7 +80,7 @@ adb shell settings put global use_boot_image_profile 0
 adb shell cmd package compile -f -m speed-profile com.your.package</code></pre>
 
       <!-- ✅ الجزء الثاني: Binder IPC -->
-      <h3 id="part2"> الجزء الثاني: نظام IPC و Binder العميق</h3>
+      <h3 id="part2">🔗 الجزء الثاني: نظام IPC و Binder العميق</h3>
       
       <h4>2.1 كيف تتواصل العمليات في Android؟</h4>
       <p>
@@ -90,11 +90,6 @@ adb shell cmd package compile -f -m speed-profile com.your.package</code></pre>
       <p>
         Binder يعتمد على <strong>Memory-Mapped File</strong> (ملف مُربط بالذاكرة). بدلاً من نسخ البيانات بين مساحة Kernel ومساحة User مرتين، يتم إنشاء مخزن مؤقت (Buffer) في Kernel Space، ويُربط مباشرة بـ User Space لكلا العمليتين. هذا يقلل عدد نسخ البيانات (Zero-Copy) ويحسن الأداء بشكل هائل.
       </p>
-      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code>// مثال على تعريف واجهة Binder عبر AIDL
-interface IRemoteService {
-    int getUserPid();
-    String getServiceInfo();
-}</code></pre>
       <p>
         <strong>تنبيه أداء:</strong> استدعاءات Binder مكلفة نسبياً إذا تمت في الـ Main Thread. دائماً استخدم Coroutines مع <code>Dispatchers.IO</code> أو <code>Executors</code> عند التواصل مع خدمات بعيدة لتجنب تجميد الواجهة.
       </p>
@@ -141,7 +136,7 @@ adb shell atrace --async_dump > trace_output.perfetto</code></pre>
       </p>
 
       <!-- ✅ الجزء الخامس: واجهة المستخدم -->
-      <h3 id="part5">🎨 الجزء الخامس: تحسين واجهة المستخدم على مستوى Render Pipeline</h3>
+      <h3 id="part5"> الجزء الخامس: تحسين واجهة المستخدم على مستوى Render Pipeline</h3>
       
       <h4>5.1 كيف يرسم Android الشاشة؟</h4>
       <p>
@@ -172,7 +167,7 @@ fun SmartList(items: List<Data>) {
 }</code></pre>
 
       <!-- ✅ الجزء السادس: الأمان الداخلي -->
-      <h3 id="part6">️ الجزء السادس: الأمان على مستوى النظام (SELinux و Trusty)</h3>
+      <h3 id="part6">🔐 الجزء السادس: الأمان على مستوى النظام (SELinux و Trusty)</h3>
       
       <h4>6.1 SELinux: Mandatory Access Control</h4>
       <p>
@@ -190,14 +185,17 @@ fun SmartList(items: List<Data>) {
       <p>
         لتحسين وقت بدء التشغيل والأداء العام، استخدم مكتبة <strong>Macrobenchmark</strong> لقياس الأداء على جهاز حقيقي (وليس محاكي). ثم استخدم النتائج لإنشاء <strong>Baseline Profiles</strong> التي تخبر ART بأي الكلاسات يجب تحميلها وترجمتها مسبقاً عند تثبيت التطبيق.
       </p>
-      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code>androidx.benchmark:macrobenchmark
-androidx.profileinstaller:profileinstaller
-
-// في build.gradle
-baselineProfile {
-    mergeIntoMain = true
+      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code>// في build.gradle.kts
+dependencies {
+    implementation("androidx.benchmark:benchmark-macro-junit4:1.2.3")
+    implementation("androidx.profileinstaller:profileinstaller:3.3.1")
 }
-// عند الإطلاق، سيُدمج البروفايل تلقائياً مع APK لتحسين الأداء فوراً</code></pre>
+
+android {
+    baselineProfile {
+        mergeIntoMain = true
+    }
+}</code></pre>
 
       <h4>7.2 Checklist الأداء قبل الإطلاق</h4>
       <ul>
