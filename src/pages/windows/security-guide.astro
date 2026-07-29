@@ -210,92 +210,135 @@ tasklist /v &gt; C:&#92;Evidence&#92;RunningProcesses.txt</code></pre>
   
   <Footer />
 
-  <!-- ✅ كود JavaScript واحد فقط (آمن ومضمون) -->
-  <script>
-    if (typeof window !== 'undefined') {
-      document.addEventListener('DOMContentLoaded', function() {
-        // === تتبع القراءة ===
-        const TRACK_TIME = 30;
-        const SCROLL_THRESHOLD = 0.7;
-        const currentPath = window.location.pathname;
-        let isMarked = false;
-
-        function markAsRead() {
-          if (isMarked) return;
-          try {
-            const readArticles = JSON.parse(localStorage.getItem('read_articles') || '[]');
-            if (!readArticles.includes(currentPath)) {
-              readArticles.push(currentPath);
-              localStorage.setItem('read_articles', JSON.stringify(readArticles));
-            }
-            isMarked = true;
-          } catch (e) {}
-        }
-
-        try {
-          if (JSON.parse(localStorage.getItem('read_articles') || '[]').includes(currentPath)) return;
-        } catch (e) {}
-
-        const timeTimer = setTimeout(markAsRead, TRACK_TIME * 1000);
-
-        function checkScroll() {
-          try {
-            const scrollPercent = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
-            if (scrollPercent >= SCROLL_THRESHOLD) {
-              markAsRead();
-              clearTimeout(timeTimer);
-              window.removeEventListener('scroll', checkScroll);
-            }
-          } catch (e) {}
-        }
-        window.addEventListener('scroll', checkScroll, { passive: true });
-        checkScroll();
-        window.addEventListener('beforeunload', () => { clearTimeout(timeTimer); window.removeEventListener('scroll', checkScroll); });
-
-        // === وقت القراءة ===
-        setTimeout(() => {
-          try {
-            const timeElement = document.getElementById('calculatedReadingTime');
-            const displayElement = document.getElementById('readingTimeDisplay');
-            if (timeElement && displayElement) {
-              const minutes = parseInt(timeElement.textContent);
-              if (minutes < 1) displayElement.textContent = '⏱️ أقل من دقيقة';
-              else if (minutes === 1) displayElement.textContent = '⏱️ دقيقة واحدة';
-              else displayElement.textContent = '⏱️ ' + minutes + ' دقائق';
-            }
-          } catch (e) {}
-        }, 100);
-
-        // === الفهرس ===
-        const tocBtn = document.getElementById('tocBtn');
-        const tocModal = document.getElementById('tocModal');
-        const tocClose = document.getElementById('tocClose');
-        const tocNav = document.getElementById('tocNav');
+  <!-- ✅ كود JavaScript النهائي المضمون - يعمل دائماً مع Astro -->
+  <script is:inline>
+    // دالة التهيئة التي تعمل دائماً
+    function initButtons() {
+      console.log('🔧 Initializing buttons...');
+      
+      // === الفهرس ===
+      const tocBtn = document.getElementById('tocBtn');
+      const tocModal = document.getElementById('tocModal');
+      const tocClose = document.getElementById('tocClose');
+      const tocNav = document.getElementById('tocNav');
+      
+      if (tocBtn && tocModal && tocNav && tocClose) {
+        console.log('✅ TOC elements found');
         
-        if (tocBtn && tocModal && tocNav) {
-          tocNav.innerHTML = '';
-          document.querySelectorAll('.article h3').forEach(h3 => {
-            const item = document.createElement('div');
-            item.className = 'toc-item';
-            item.textContent = h3.textContent;
-            item.onclick = (e) => { e.preventDefault(); h3.scrollIntoView({ behavior: 'smooth' }); tocModal.classList.remove('active'); };
-            tocNav.appendChild(item);
-          });
-          tocBtn.onclick = () => tocModal.classList.add('active');
-          tocClose.onclick = () => tocModal.classList.remove('active');
-          tocModal.onclick = (e) => { if (e.target === tocModal) tocModal.classList.remove('active'); };
-        }
+        // تنظيف الفهرس أولاً
+        tocNav.innerHTML = '';
+        
+        // بناء عناصر الفهرس
+        document.querySelectorAll('.article h3').forEach(h3 => {
+          const item = document.createElement('a');
+          item.href = '#' + h3.id;
+          item.className = 'toc-item';
+          item.textContent = h3.textContent;
+          item.onclick = (e) => {
+            e.preventDefault();
+            h3.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            tocModal.classList.remove('active');
+          };
+          tocNav.appendChild(item);
+        });
+        
+        // ربط الأحداث
+        tocBtn.onclick = () => {
+          console.log('📑 TOC opened');
+          tocModal.classList.add('active');
+        };
+        tocClose.onclick = () => {
+          console.log('❌ TOC closed');
+          tocModal.classList.remove('active');
+        };
+        tocModal.onclick = (e) => {
+          if (e.target === tocModal) tocModal.classList.remove('active');
+        };
+      } else {
+        console.error('❌ TOC elements NOT found:', { tocBtn, tocModal, tocNav, tocClose });
+      }
 
-        // === العودة للأعلى ===
-        const backBtn = document.getElementById('backToTop');
-        if (backBtn) {
-          window.addEventListener('scroll', () => {
-            if (window.scrollY > 400) backBtn.classList.add('show');
-            else backBtn.classList.remove('show');
-          }, { passive: true });
-          backBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+      // === السهم المنبثق ===
+      const backBtn = document.getElementById('backToTop');
+      if (backBtn) {
+        console.log('✅ Back-to-top button found');
+        
+        // دالة تحديث حالة الزر
+        function updateBackButton() {
+          if (window.scrollY > 400) {
+            backBtn.classList.add('show');
+          } else {
+            backBtn.classList.remove('show');
+          }
         }
-      });
+        
+        // تحديث فوري + عند التمرير
+        updateBackButton();
+        window.addEventListener('scroll', updateBackButton, { passive: true });
+        
+        // عند النقر
+        backBtn.onclick = () => {
+          console.log('⬆️ Scrolling to top');
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
+      } else {
+        console.error('❌ Back-to-top button NOT found');
+      }
+
+      // === تتبع القراءة ===
+      const TRACK_TIME = 30;
+      const SCROLL_THRESHOLD = 0.7;
+      const currentPath = window.location.pathname;
+      let isMarked = false;
+
+      function markAsRead() {
+        if (isMarked) return;
+        try {
+          const read = JSON.parse(localStorage.getItem('read_articles') || '[]');
+          if (!read.includes(currentPath)) {
+            read.push(currentPath);
+            localStorage.setItem('read_articles', JSON.stringify(read));
+            console.log('📚 Article marked as read');
+          }
+          isMarked = true;
+        } catch (e) { console.error('Tracking error:', e); }
+      }
+
+      try {
+        if (JSON.parse(localStorage.getItem('read_articles') || '[]').includes(currentPath)) return;
+      } catch (e) {}
+
+      const timer = setTimeout(markAsRead, TRACK_TIME * 1000);
+      function onScroll() {
+        const percent = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+        if (percent >= SCROLL_THRESHOLD) {
+          markAsRead();
+          clearTimeout(timer);
+          window.removeEventListener('scroll', onScroll);
+        }
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('beforeunload', () => { clearTimeout(timer); window.removeEventListener('scroll', onScroll); });
+
+      // === وقت القراءة ===
+      setTimeout(() => {
+        const timeEl = document.getElementById('calculatedReadingTime');
+        const displayEl = document.getElementById('readingTimeDisplay');
+        if (timeEl && displayEl) {
+          const min = parseInt(timeEl.textContent);
+          if (min < 1) displayEl.textContent = '⏱️ أقل من دقيقة';
+          else if (min === 1) displayEl.textContent = '⏱️ دقيقة واحدة';
+          else displayEl.textContent = '⏱️ ' + min + ' دقائق';
+        }
+      }, 100);
+    }
+
+    // التشغيل عند التحميل الأولي
+    if (typeof window !== 'undefined') {
+      // DOMContentLoaded للتحميل الأول
+      document.addEventListener('DOMContentLoaded', initButtons);
+      // astro:page-load للتنقل الداخلي في Astro
+      document.addEventListener('astro:page-load', initButtons);
     }
   </script>
 </body>
