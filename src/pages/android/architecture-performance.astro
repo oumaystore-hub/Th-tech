@@ -3,9 +3,9 @@ import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 import ShareButtons from '../../components/ShareButtons.astro';
 
-export const title = "معمارية Android الداخلية وتحليل الأداء المتقدم";
+export const title = "معمارية Android الداخلية وتحليل الأداء المتقدم: الدليل الشامل";
 export const pubDate = "2026-07-30";
-export const description = "دليل شامل يتجاوز 5000 كلمة يغطي Zygote، ART، Binder، إدارة الذاكرة، Perfetto، وتحسين الأداء.";
+export const description = "دليل تقني معمق يتجاوز 5000 كلمة يغطي Zygote، ART، Binder IPC، إدارة الذاكرة، Perfetto، وتحسين واجهة المستخدم.";
 ---
 
 <html lang="ar" dir="rtl">
@@ -20,111 +20,162 @@ export const description = "دليل شامل يتجاوز 5000 كلمة يغط�
   
   <main class="category-articles">
     <div class="page-header">
-      <h1>⚡ معمارية Android الداخلية وتحليل الأداء المتقدم</h1>
-      <p>دليل الخبراء: من Zygote إلى Render Thread (5000+ كلمة)</p>
+      <h1> معمارية Android الداخلية وتحليل الأداء المتقدم</h1>
+      <p>دليل الخبراء: من Zygote إلى Render Thread (مرجع شامل)</p>
     </div>
 
-    <!-- ✅ زر الفهرس -->
     <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
     <div class="toc-modal" id="tocModal">
       <div class="toc-box">
         <div class="toc-head">
           <h3>فهرس المقال</h3>
-          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس">✕</button>
+          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس"></button>
         </div>
         <nav class="toc-nav" id="tocNav"></nav>
       </div>
     </div>
 
-    <!-- ✅ السهم المنبثق -->
-    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">️</button>
 
     <article class="article">
-      <span class="badge" style="background:linear-gradient(135deg,#3ddc84,#00c853)">هندسة متقدمة / 5000+ كلمة</span>
-      <h2>معمارية Android الداخلية: من Zygote إلى Render Thread</h2>
+      <span class="badge" style="background:linear-gradient(135deg,#3ddc84,#00c853)">هندسة متقدمة / دليل شامل</span>
+      <h2>معمارية Android الداخلية: كيف يعمل النظام تحت الغطاء؟</h2>
       
       <div class="meta">
         <span>📅 30 يوليو 2026</span>
         <span class="separator">|</span>
-        <span>⏱️ قراءة متعمقة</span>
+        <span>️ قراءة متعمقة</span>
         <span class="separator">|</span>
         <span id="readingTimeDisplay" class="reading-time-badge">⏱️ جاري الحساب...</span>
       </div>
 
       <p class="intro">
-        معظم المطورين يتعاملون مع Android كصندوق أسود. لكن لفهم الأداء الحقيقي وحل التعقيدات، يجب فهم ما يحدث تحت الغطاء. هذا الدليل (5000+ كلمة) يشرح Zygote، ART، Binder، إدارة الذاكرة، وأدوات التحليل الاحترافية.
+        نظام Android هو الأكثر انتشاراً في العالم، ويعتمد على نواة Linux معدلة. لفهم الأداء الحقيقي وحل المشاكل المعقدة مثل التجميد (Lags) أو استهلاك الذاكرة، يجب تجاوز مستوى الـ API والدخول إلى المعمارية الداخلية. هذا الدليل يشرح بالتفصيل كيف يبدأ النظام، كيف تترجم الأكواد، كيف تتواصل العمليات، وكيف تُدار الذاكرة والرسوميات.
       </p>
 
-      <h3 id="part1">️ الجزء الأول: عملية Zygote وآلية تشغيل ART</h3>
+      <!-- ✅ الجزء الأول -->
+      <h3 id="part1">⚙️ الجزء الأول: عملية Zygote وبدء التشغيل</h3>
       <p>
-        عند إقلاع الجهاز، يبدأ نظام Android عملية <strong>Zygote</strong> التي تحمل أطر العمل الأساسية. عند طلب تشغيل تطبيق، يقوم Zygote بعملية Fork. بفضل Copy-on-Write في Linux، تشارك التطبيقات الذاكرة مما يوفر الموارد.
-      </p>
-      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code># مراقبة Zygote
-adb shell ps | grep zygote</code></pre>
-
-      <h4>Android Runtime (ART): من JIT إلى AOT</h4>
-      <p>
-        ART يدعم ثلاثة أنماط: AOT (ترجمة مسبقة)، JIT (ترجمة أثناء التشغيل)، وPGO (تحسين موجه بالملف الشخصي). النمط الهجين الحالي يبدأ بـ JIT ثم يترجم الطرق الساخنة بـ AOT.
-      </p>
-
-      <h3 id="part2">🔗 الجزء الثاني: نظام Binder IPC</h3>
-      <p>
-        Binder هو آلية IPC المخصصة في Android. يعتمد على Memory-Mapped File لتقليل نسخ البيانات (Zero-Copy). التواصل بين العمليات يتم عبر Kernel Buffer مشترك.
+        عندما يضغط المستخدم على زر التشغيل، يقوم المعالج بتنفيذ كود الإقلاع (Bootloader) الذي يحمل نواة Linux. بعد تهيئة النواة، يتم تشغيل أول عملية في فضاء المستخدم تسمى <strong>init</strong>. هذه العملية هي "أم جميع العمليات" ومسؤولة عن تشغيل الخدمات الأساسية.
       </p>
       <p>
-        <strong>تنبيه:</strong> استدعاءات Binder مكلفة في Main Thread. استخدم Dispatchers.IO دائماً.
+        واحدة من أهم الخدمات التي يطلقها init هي <strong>Zygote</strong>. اسمها يعني "البويضة الملقحة"، ودورها حيوي جداً. تقوم Zygote بتحميل إطار عمل Java الأساسي (Android Framework) والموارد المشتركة في الذاكرة مرة واحدة. بعد ذلك، تنتظر Zygote طلبات تشغيل التطبيقات.
+      </p>
+      <p>
+        عندما يريد النظام تشغيل تطبيق جديد، لا يقوم بتحميل الإطار من الصفر، بل يقوم بعملية <strong>Fork</strong> (استنساخ) لعملية Zygote. بفضل تقنية Copy-on-Write في Linux، فإن التطبيق الجديد يشارك نفس صفحات الذاكرة التي تحملها Zygote طالما لم يقم بتعديلها. هذا يوفر مئات الميجابايتات من الذاكرة ويقلل وقت بدء التشغيل بشكل هائل.
+      </p>
+      <p>
+        بعد الاستنساخ، تقوم العملية الجديدة بتحميل كود التطبيق الخاص (classes.dex) والموارد المحددة، ثم تبدأ تشغيل الـ Main Thread (اللووبر الرئيسي).
       </p>
 
-      <h3 id="part3">🧠 الجزء الثالث: إدارة الذاكرة و GC</h3>
+      <h4>نظام System Server</h4>
       <p>
-        Android يفصل بين Java Heap، Native Heap، وGFX Memory. ART يستخدم Generational GC وConcurrent Copying لتقليل الـ pauses.
-      </p>
-      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code># مراقبة الذاكرة
-adb shell dumpsys meminfo com.your.package</code></pre>
-
-      <h3 id="part4">📊 الجزء الرابع: تحليل الأداء مع Perfetto</h3>
-      <p>
-        Perfetto هو المعيار الذهبي لتحليل الأداء. يجمع بيانات من Kernel وART وApp في تسلسل زمني واحد.
-      </p>
-      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code># التقاط trace
-adb shell atrace --async_start -b 32768 sched freq
-# بعد إعادة إنتاج المشكلة
-adb shell atrace --async_dump > trace.perfetto</code></pre>
-
-      <h3 id="part5">🎨 الجزء الخامس: تحسين واجهة المستخدم</h3>
-      <p>
-        العملية تمر بـ UI Thread (Measure, Layout, Draw) ثم Render Thread (OpenGL/Vulkan). Overdraw يحدث عند رسم بكسل مرات متعددة.
-      </p>
-      <h4>تحسين Jetpack Compose</h4>
-      <p>
-        استخدم derivedStateOf للحسابات المشتقة، وremember للعمليات الثقيلة.
+        بالإضافة إلى التطبيقات، تقوم Zygote بتشغيل عملية <strong>system_server</strong>. هذه العملية تحتوي على جميع خدمات النظام الأساسية مثل ActivityManager، PackageManager، WindowManager، وPowerManager. كل تطبيق يتواصل مع هذه الخدمات عبر آلية IPC تسمى Binder.
       </p>
 
-      <h3 id="part6">🔐 الجزء السادس: الأمان (SELinux و Trusty)</h3>
+      <!-- ✅ الجزء الثاني -->
+      <h3 id="part2">☕ الجزء الثاني: Android Runtime (ART) وترجمة الكود</h3>
       <p>
-        SELinux يفرض سياسات وصول إلزامية. Trusty TEE هو نظام معزول للمفاتيح الحساسة يعمل على شريحة أمنية منفصلة.
+        في السابق، كان Android يستخدم آلة Dalvik الافتراضية التي تعمل بنظام JIT (Just-In-Time). لكن منذ إصدار Lollipop، تم استبدالها بـ <strong>ART</strong> (Android Runtime). الفرق الجوهري هو أن ART يدعم الترجمة المسبقة (AOT - Ahead Of Time) بالإضافة إلى JIT.
+      </p>
+      <p>
+        <strong>كيف يعمل ART الآن؟</strong>
+        <br/>عند تثبيت التطبيق، يقوم ART بتحويل كود الـ Dalvik Executable (DEX) إلى كود آلة أصلي (Native Code) خاص بالمعالج (OAT file). هذا يجعل التطبيق يعمل بسرعة عالية لأنه لا يحتاج للترجمة أثناء التشغيل.
+      </p>
+      <p>
+        <strong>تحسين الملف الشخصي (Profile Guided Optimization):</strong>
+        <br/>مشكلة الترجمة المسبقة الكاملة هي أنها تستغرق وقتاً طويلاً عند التثبيت وتأخذ مساحة تخزين كبيرة. لذلك، يستخدم ART نهجاً هجيناً. يتم تجميع الكود الأكثر استخداماً (Hot Methods) مسبقاً، بينما يتم تبقية الكود الأقل استخداماً بطريقة JIT أو تفسيره. يقوم النظام بمراقبة سلوك التطبيق وإنشاء "ملف تعريف" (Profile) يحدد الدوال الساخنة، ثم يقوم بترجمتها في الخلفية عندما يكون الجهاز خاملاً ومشحوناً.
       </p>
 
-      <h3 id="part7">🛠️ الجزء السابع: Macrobenchmark و Baseline Profiles</h3>
+      <!-- ✅ الجزء الثالث -->
+      <h3 id="part3"> الجزء الثالث: Binder IPC وتواصل العمليات</h3>
       <p>
-        استخدم Macrobenchmark لقياس الأداء على جهاز حقيقي، ثم أنشئ Baseline Profiles لتحسين وقت البدء.
+        Android هو نظام يعتمد على العزل (Sandboxing). كل تطبيق يعمل في عملية منفصلة ومعزولة. لكن التطبيقات تحتاج للتواصل مع بعضها ومع خدمات النظام (مثل طلب الموقع أو فتح الكاميرا). هنا يأتي دور <strong>Binder</strong>.
       </p>
-      <pre style="background:#1e293b;color:#e2e8f0;padding:0.5rem;border-radius:4px;margin:0.5rem 0;overflow-x:auto"><code>// في build.gradle.kts
-android {
-    baselineProfile {
-        mergeIntoMain = true
-    }
-}</code></pre>
+      <p>
+        Binder هو آلية التواصل بين العمليات (IPC) المطورة خصيصاً لـ Android. تعتمد على مفهوم الـ Proxy-Stub. عندما يطلب التطبيق خدمة، يقوم بإرسال طلب عبر Binder Driver الموجود في النواة. يقوم الـ Driver بتوجيه الطلب إلى العملية المستهدفة.
+      </p>
+      <p>
+        <strong>لماذا Binder أسرع من آليات IPC الأخرى؟</strong>
+        <br/>لأنه يستخدم تقنية Memory Mapping. بدلاً من نسخ البيانات من مساحة المستخدم إلى مساحة النواة ثم إلى العملية الأخرى (نسخ مزدوج)، يتم ربط منطقة من الذاكرة بين العمليتين، مما يسمح بنقل البيانات بنسخة واحدة فقط.
+      </p>
+      <p>
+        <strong>محدودية Binder:</strong>
+        <br/>حجم البيانات المنقولة عبر Binder محدود (عادة 1MB). محاولة إرسال بيانات ضخمة (مثل Bitmap كبيرة) عبر Intent ستؤدي إلى انهيار التطبيق (TransactionTooLargeException).
+      </p>
+
+      <!-- ✅ الجزء الرابع -->
+      <h3 id="part4">🧠 الجزء الرابع: إدارة الذاكرة و Low Memory Killer</h3>
+      <p>
+        إدارة الذاكرة في Android معقدة لأنها يجب أن توازن بين أداء التطبيقات المتعددة واستهلاك البطارية.
+      </p>
+      <h4>Heap وأنواع الذاكرة</h4>
+      <p>
+        كل عملية لها كومة (Heap) مخصصة للـ Java Objects. حجم الـ Heap محدود ويعتمد على كثافة الشاشة وذاكرة الجهاز. بالإضافة إلى ذلك، هناك الذاكرة الأصلية (Native Memory) المستخدمة للمكتبات C/C++ وللـ Bitmaps الكبيرة.
+      </p>
+      <h4>جامع القمامة (Garbage Collector)</h4>
+      <p>
+        ART يستخدم خوارزميات متقدمة لجمع القمامة. في الإصدارات الحديثة، يستخدم "Concurrent Copying" الذي يعمل بشكل متوازٍ مع التطبيق لتقليل وقت التوقف (Pause Time). يتم تقسيم الـ Heap إلى مناطق (Generations): منطقة للكائنات قصيرة العمر (يتم تنظيفها بسرعة) ومنطقة للكائنات طويلة العمر.
+      </p>
+      <h4>Low Memory Killer (LMK)</h4>
+      <p>
+        عندما تنخفض الذاكرة الحرة في النظام، تقوم النواة بتفعيل LMK. هذه الآلية تقتل العمليات في الخلفية بناءً على أولويتها (OOM Adjustment). العمليات التي تحتوي على Activities مرئية للمستخدم لها أولوية عالية جداً ولا تُقتل إلا في الحالات الحرجة، بينما التطبيقات المخفية في الخلفية تقتل أولاً.
+      </p>
+
+      <!-- ✅ الجزء الخامس -->
+      <h3 id="part5">📊 الجزء الخامس: تحليل الأداء وأداة Perfetto</h3>
+      <p>
+        لتحليل الأداء بعمق، لم نعد نعتمد فقط على Android Studio Profiler. الأداة الأقوى هي <strong>Perfetto</strong> (المعروفة سابقاً بـ Systrace على مستوى النظام).
+      </p>
+      <p>
+        Perfetto تجمع بيانات من مصادر متعددة:
+        <br/>1. <strong>النواة:</strong> جدولة المعالج (Scheduler)، استخدام القرص، الشبكة.
+        <br/>2. ART: أحداث جامع القمامة، الترجمة.
+        <br/>3. النظام: أحداث WindowManager، SurfaceFlinger.
+        <br/>4. التطبيق: يمكن للمطور إضافة نقاط تتبع مخصصة (Custom Traces).
+      </p>
+      <p>
+        <strong>تحليل Jank (التقطيع):</strong>
+        <br/>الهدف هو رسم إطار كل 16.6 مللي ثانية (لـ 60Hz). إذا تأخر الرسم، يظهر "Jank". في Perfetto، يمكنك رؤية الـ Render Thread والـ UI Thread. إذا كان الـ UI Thread مشغولاً بعملية ثقيلة، سيظهر ذلك بوضوح، وعليك نقل العملية إلى Thread آخر.
+      </p>
+
+      <!-- ✅ الجزء السادس -->
+      <h3 id="part6">🎨 الجزء السادس: واجهة المستخدم و SurfaceFlinger</h3>
+      <p>
+        كيف تظهر الرسومات على الشاشة؟
+        <br/>يقوم التطبيق برسم واجهته في Buffer (منطقة ذاكرة). ثم يرسل هذا الـ Buffer إلى عملية تسمى <strong>SurfaceFlinger</strong>.
+      </p>
+      <p>
+        SurfaceFlinger هي المسؤولة عن دمج (Compose) جميع النوافذ (Windows) من مختلف التطبيقات وعرضها على الشاشة. تستخدم GPU لتسريع هذا الدمج (Hardware Composer).
+      </p>
+      <h4>Hardware Acceleration</h4>
+      <p>
+        منذ Android 4.0، يتم تفعيل التسريع العتادي افتراضياً. هذا يعني أن عمليات الرسم تتم عبر GPU بدلاً من CPU. ومع ذلك، بعض العمليات لا تزال تتم على CPU (مثل قياس النصوص المعقدة)، مما قد يسبب اختناقات.
+      </p>
+      <h4>Jetpack Compose Internals</h4>
+      <p>
+        Compose يستخدم نهجاً مختلفاً عن View System التقليدي. بدلاً من شجرة Views ثابتة، يستخدم Compose "Slot Table" لتتبع حالة الواجهة. عند تغير البيانات (State)، تقوم Compose بإعادة رسم الأجزاء المتغيرة فقط (Smart Recomposition) بدلاً من إعادة رسم الشاشة كاملة، مما يحسن الأداء بشكل كبير إذا تم استخدامه بشكل صحيح.
+      </p>
+
+      <!-- ✅ الجزء السابع -->
+      <h3 id="part7"> الجزء السابع: الأمان الداخلي (SELinux)</h3>
+      <p>
+        Android لا يعتمد فقط على صلاحيات المستخدم (User Permissions). يستخدم <strong>SELinux</strong> (Security-Enhanced Linux) لتطبيق سياسات وصول إلزامية (MAC).
+      </p>
+      <p>
+        حتى لو كان التطبيق يملك صلاحيات Root، فإنه لا يستطيع الوصول لملف أو عملية إذا كانت سياسة SELinux تمنعه. السياسات محددة بدقة لكل عملية (Context). هذا يمنع التطبيقات الضارة من تجاوز العزل حتى في حال وجود ثغرة.
+      </p>
 
       <div class="conclusion" style="background:linear-gradient(135deg,#3ddc84,#00c853);color:white;padding:2rem;border-radius:12px;margin:2rem 0">
-        <h3>💡 الخلاصة:</h3>
+        <h3>💡 الخلاصة الهندسية:</h3>
         <ul style="list-style:none;padding:0">
-          <li>✅ فهم Zygote وART يحسن بدء التطبيق</li>
-          <li>✅ تجنب Binder في Main Thread</li>
-          <li>✅ استخدم Perfetto للتحليل العميق</li>
-          <li>✅ Compose حساس للـ State</li>
+          <li>✅ فهم Zygote و ART يساعد في تحسين بدء التطبيق.</li>
+          <li>✅ Binder سريع لكن له حدود حجمية، احذر من TransactionTooLarge.</li>
+          <li>✅ استخدام Perfetto ضروري لاكتشاف الاختناقات الخفية.</li>
+          <li>✅ Compose قوي لكنه يتطلب فهم الـ State لتجنب إعادة الرسم الزائد.</li>
+          <li>✅ SELinux هو خط الدفاع الأخير والأقوى في النظام.</li>
         </ul>
-        <p style="font-size:1.2rem;font-weight:bold;margin-top:1.5rem;text-align:center">تعمق في الأساسيات! 🚀</p>
+        <p style="font-size:1.2rem;font-weight:bold;margin-top:1.5rem;text-align:center">تعمق في الأساسيات، وابنِ تطبيقات احترافية! 🚀</p>
       </div>
     </article>
 
@@ -133,11 +184,9 @@ android {
   
   <Footer />
 
-  <!-- ✅ كود JavaScript الناجح -->
   <script>
     if (typeof window !== 'undefined') {
       document.addEventListener('DOMContentLoaded', function() {
-        // الفهرس
         var tocBtn = document.getElementById('tocBtn');
         var tocModal = document.getElementById('tocModal');
         var tocClose = document.getElementById('tocClose');
@@ -161,7 +210,6 @@ android {
           tocModal.onclick = function(e) { if (e.target === tocModal) tocModal.classList.remove('active'); };
         }
 
-        // السهم
         var backBtn = document.getElementById('backToTop');
         if (backBtn) {
           window.addEventListener('scroll', function() {
@@ -171,19 +219,17 @@ android {
           backBtn.onclick = function() { window.scrollTo({ top: 0, behavior: 'smooth' }); };
         }
 
-        // وقت القراءة
         setTimeout(function() {
           var timeEl = document.getElementById('calculatedReadingTime');
           var displayEl = document.getElementById('readingTimeDisplay');
           if (timeEl && displayEl) {
             var min = parseInt(timeEl.textContent);
-            if (min < 1) displayEl.textContent = '️ أقل من دقيقة';
-            else if (min === 1) displayEl.textContent = '️ دقيقة واحدة';
+            if (min < 1) displayEl.textContent = '⏱️ أقل من دقيقة';
+            else if (min === 1) displayEl.textContent = '⏱️ دقيقة واحدة';
             else displayEl.textContent = '⏱️ ' + min + ' دقائق';
           }
         }, 100);
 
-        // تتبع القراءة
         var TRACK_TIME = 30;
         var SCROLL_THRESHOLD = 0.7;
         var currentPath = window.location.pathname;
@@ -244,7 +290,6 @@ android {
   .conclusion ul { list-style: none !important; padding: 0; }
   .conclusion li { color: white !important; font-size: 1.05rem; margin: 0.8rem 0; line-height: 1.8; }
   
-  /* الفهرس */
   .toc-btn { position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; background: linear-gradient(135deg, var(--primary), #00e676); border: none; border-radius: 50%; color: white; font-size: 1.6rem; cursor: pointer; box-shadow: 0 4px 15px rgba(61,220,132,0.5); z-index: 998; transition: all 0.3s ease; }
   .toc-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(61,220,132,0.7); }
   .toc-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 999; align-items: center; justify-content: center; padding: 6rem 1.5rem 1.5rem; animation: fadeIn 0.3s ease; }
@@ -263,7 +308,6 @@ android {
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
   
-  /* السهم */
   .back-to-top { position: fixed; bottom: 95px; left: 30px; width: 50px; height: 50px; background: var(--card); border: 2px solid var(--primary); border-radius: 50%; color: var(--primary); font-size: 1.4rem; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 997; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
   .back-to-top.show { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; }
   .back-to-top:hover { background: var(--primary); color: #fff !important; transform: scale(1.1) !important; box-shadow: 0 0 20px rgba(61,220,132,0.6); }
