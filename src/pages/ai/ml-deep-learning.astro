@@ -586,21 +586,22 @@ def predict(text: str):
   
   <Footer />
 
-  <!-- ✅ كود JavaScript المضمون -->
   <script is:inline>
-    function initButtons() {
-      const tocBtn = document.getElementById('tocBtn');
-      const tocModal = document.getElementById('tocModal');
-      const tocClose = document.getElementById('tocClose');
-      const tocNav = document.getElementById('tocNav');
+  if (typeof window !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', function() {
+      // الفهرس
+      var tocBtn = document.getElementById('tocBtn');
+      var tocModal = document.getElementById('tocModal');
+      var tocClose = document.getElementById('tocClose');
+      var tocNav = document.getElementById('tocNav');
       
       if (tocBtn && tocModal && tocNav && tocClose) {
         tocNav.innerHTML = '';
-        document.querySelectorAll('.article h3').forEach(h3 => {
-          const item = document.createElement('div');
+        document.querySelectorAll('.article h3').forEach(function(h3) {
+          var item = document.createElement('div');
           item.className = 'toc-item';
           item.textContent = h3.textContent;
-          item.onclick = (e) => {
+          item.onclick = function(e) {
             e.preventDefault();
             h3.scrollIntoView({ behavior: 'smooth', block: 'start' });
             tocModal.classList.remove('active');
@@ -608,32 +609,37 @@ def predict(text: str):
           tocNav.appendChild(item);
         });
         
-        tocBtn.onclick = () => tocModal.classList.add('active');
-        tocClose.onclick = () => tocModal.classList.remove('active');
-        tocModal.onclick = (e) => { if (e.target === tocModal) tocModal.classList.remove('active'); };
+        tocBtn.onclick = function() { tocModal.classList.add('active'); };
+        tocClose.onclick = function() { tocModal.classList.remove('active'); };
+        tocModal.onclick = function(e) { 
+          if (e.target === tocModal) tocModal.classList.remove('active'); 
+        };
       }
 
-      const backBtn = document.getElementById('backToTop');
+      // السهم
+      var backBtn = document.getElementById('backToTop');
       if (backBtn) {
-        const updateBtn = () => {
+        function updateBtn() {
           if (window.scrollY > 400) backBtn.classList.add('show');
           else backBtn.classList.remove('show');
-        };
+        }
         updateBtn();
         window.addEventListener('scroll', updateBtn, { passive: true });
-        backBtn.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+        backBtn.onclick = function() { 
+          window.scrollTo({ top: 0, behavior: 'smooth' }); 
+        };
       }
 
       // تتبع القراءة
-      const TRACK_TIME = 30;
-      const SCROLL_THRESHOLD = 0.7;
-      const currentPath = window.location.pathname;
-      let isMarked = false;
+      var TRACK_TIME = 30;
+      var SCROLL_THRESHOLD = 0.7;
+      var currentPath = window.location.pathname;
+      var isMarked = false;
 
       function markAsRead() {
         if (isMarked) return;
         try {
-          const read = JSON.parse(localStorage.getItem('read_articles') || '[]');
+          var read = JSON.parse(localStorage.getItem('read_articles') || '[]');
           if (!read.includes(currentPath)) {
             read.push(currentPath);
             localStorage.setItem('read_articles', JSON.stringify(read));
@@ -646,9 +652,9 @@ def predict(text: str):
         if (JSON.parse(localStorage.getItem('read_articles') || '[]').includes(currentPath)) return;
       } catch (e) {}
 
-      const timer = setTimeout(markAsRead, TRACK_TIME * 1000);
+      var timer = setTimeout(markAsRead, TRACK_TIME * 1000);
       function onScroll() {
-        const percent = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+        var percent = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
         if (percent >= SCROLL_THRESHOLD) {
           markAsRead();
           clearTimeout(timer);
@@ -656,26 +662,25 @@ def predict(text: str):
         }
       }
       window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('beforeunload', () => { clearTimeout(timer); window.removeEventListener('scroll', onScroll); });
+      window.addEventListener('beforeunload', function() { 
+        clearTimeout(timer); 
+        window.removeEventListener('scroll', onScroll); 
+      });
 
       // وقت القراءة
-      setTimeout(() => {
-        const timeEl = document.getElementById('calculatedReadingTime');
-        const displayEl = document.getElementById('readingTimeDisplay');
+      setTimeout(function() {
+        var timeEl = document.getElementById('calculatedReadingTime');
+        var displayEl = document.getElementById('readingTimeDisplay');
         if (timeEl && displayEl) {
-          const min = parseInt(timeEl.textContent);
+          var min = parseInt(timeEl.textContent);
           if (min < 1) displayEl.textContent = '⏱️ أقل من دقيقة';
           else if (min === 1) displayEl.textContent = '⏱️ دقيقة واحدة';
           else displayEl.textContent = '⏱️ ' + min + ' دقائق';
         }
       }, 100);
-    }
-
-    if (typeof window !== 'undefined') {
-      document.addEventListener('DOMContentLoaded', initButtons);
-      document.addEventListener('astro:page-load', initButtons);
-    }
-  </script>
+    });
+  }
+</script>
 </body>
 </html>
 
