@@ -27,19 +27,19 @@ export const description = "مرجع تقني عميق يتجاوز 6000 كلم�
     </div>
 
     <!-- ✅ زر الفهرس -->
-    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس"></button>
     <div class="toc-modal" id="tocModal">
       <div class="toc-box">
         <div class="toc-head">
           <h3>فهرس المقال</h3>
-          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس"></button>
+          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس">✕</button>
         </div>
         <nav class="toc-nav" id="tocNav"></nav>
       </div>
     </div>
 
     <!-- ✅ السهم المنبثق -->
-    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">️</button>
 
     <article class="article">
       <span class="badge" style="background:linear-gradient(135deg,#8b5cf6,#6d28d9)">ذكاء اصطناعي / مرجع شامل (6000+ كلمة)</span>
@@ -128,7 +128,7 @@ export const description = "مرجع تقني عميق يتجاوز 6000 كلم�
       </p>
 
       <!-- ✅ الجزء الثاني: الشبكات العصبية والتعلم العميق -->
-      <h3 id="part2">🧠 الجزء الثاني: الشبكات العصبية والتعلم العميق المتقدمة</h3>
+      <h3 id="part2"> الجزء الثاني: الشبكات العصبية والتعلم العميق المتقدمة</h3>
       
       <h4>2.1 من الإدراك الحسي (Perceptron) إلى الشبكات العميقة</h4>
       <p>
@@ -349,7 +349,7 @@ export const description = "مرجع تقني عميق يتجاوز 6000 كلم�
       </p>
 
       <!-- ✅ الجزء الخامس: أخلاقيات الذكاء الاصطناعي -->
-      <h3 id="part5">🔐 الجزء الخامس: أخلاقيات الذكاء الاصطناعي والأمان والتحيز</h3>
+      <h3 id="part5"> الجزء الخامس: أخلاقيات الذكاء الاصطناعي والأمان والتحيز</h3>
       
       <h4>5.1 التحيز (Bias): عندما يكون الذكاء ظالماً</h4>
       <p>
@@ -586,101 +586,106 @@ def predict(text: str):
   
   <Footer />
 
-  <script is:inline>
-  if (typeof window !== 'undefined') {
-    document.addEventListener('DOMContentLoaded', function() {
-      // الفهرس
-      var tocBtn = document.getElementById('tocBtn');
-      var tocModal = document.getElementById('tocModal');
-      var tocClose = document.getElementById('tocClose');
-      var tocNav = document.getElementById('tocNav');
-      
-      if (tocBtn && tocModal && tocNav && tocClose) {
-        tocNav.innerHTML = '';
-        document.querySelectorAll('.article h3').forEach(function(h3) {
-          var item = document.createElement('div');
-          item.className = 'toc-item';
-          item.textContent = h3.textContent;
-          item.onclick = function(e) {
-            e.preventDefault();
-            h3.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            tocModal.classList.remove('active');
-          };
-          tocNav.appendChild(item);
-        });
+  <!-- ✅ كود JavaScript آمن تماماً ومتوافق مع البناء -->
+  <script>
+    if (typeof window !== 'undefined') {
+      document.addEventListener('DOMContentLoaded', function() {
+        // === الفهرس ===
+        var tocBtn = document.getElementById('tocBtn');
+        var tocModal = document.getElementById('tocModal');
+        var tocClose = document.getElementById('tocClose');
+        var tocNav = document.getElementById('tocNav');
         
-        tocBtn.onclick = function() { tocModal.classList.add('active'); };
-        tocClose.onclick = function() { tocModal.classList.remove('active'); };
-        tocModal.onclick = function(e) { 
-          if (e.target === tocModal) tocModal.classList.remove('active'); 
-        };
-      }
-
-      // السهم
-      var backBtn = document.getElementById('backToTop');
-      if (backBtn) {
-        function updateBtn() {
-          if (window.scrollY > 400) backBtn.classList.add('show');
-          else backBtn.classList.remove('show');
-        }
-        updateBtn();
-        window.addEventListener('scroll', updateBtn, { passive: true });
-        backBtn.onclick = function() { 
-          window.scrollTo({ top: 0, behavior: 'smooth' }); 
-        };
-      }
-
-      // تتبع القراءة
-      var TRACK_TIME = 30;
-      var SCROLL_THRESHOLD = 0.7;
-      var currentPath = window.location.pathname;
-      var isMarked = false;
-
-      function markAsRead() {
-        if (isMarked) return;
-        try {
-          var read = JSON.parse(localStorage.getItem('read_articles') || '[]');
-          if (!read.includes(currentPath)) {
-            read.push(currentPath);
-            localStorage.setItem('read_articles', JSON.stringify(read));
+        if (tocBtn && tocModal && tocNav && tocClose) {
+          tocNav.innerHTML = '';
+          var headings = document.querySelectorAll('.article h3');
+          for (var i = 0; i < headings.length; i++) {
+            var h3 = headings[i];
+            var item = document.createElement('div');
+            item.className = 'toc-item';
+            item.textContent = h3.textContent;
+            (function(h3Ref) {
+              item.onclick = function(e) {
+                e.preventDefault();
+                h3Ref.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                tocModal.classList.remove('active');
+              };
+            })(h3);
+            tocNav.appendChild(item);
           }
-          isMarked = true;
+          
+          tocBtn.onclick = function() { tocModal.classList.add('active'); };
+          tocClose.onclick = function() { tocModal.classList.remove('active'); };
+          tocModal.onclick = function(e) { 
+            if (e.target === tocModal) tocModal.classList.remove('active'); 
+          };
+        }
+
+        // === السهم ===
+        var backBtn = document.getElementById('backToTop');
+        if (backBtn) {
+          function updateBtn() {
+            if (window.scrollY > 400) backBtn.classList.add('show');
+            else backBtn.classList.remove('show');
+          }
+          updateBtn();
+          window.addEventListener('scroll', updateBtn, { passive: true });
+          backBtn.onclick = function() { 
+            window.scrollTo({ top: 0, behavior: 'smooth' }); 
+          };
+        }
+
+        // === تتبع القراءة ===
+        var TRACK_TIME = 30;
+        var SCROLL_THRESHOLD = 0.7;
+        var currentPath = window.location.pathname;
+        var isMarked = false;
+
+        function markAsRead() {
+          if (isMarked) return;
+          try {
+            var read = JSON.parse(localStorage.getItem('read_articles') || '[]');
+            if (!read.includes(currentPath)) {
+              read.push(currentPath);
+              localStorage.setItem('read_articles', JSON.stringify(read));
+            }
+            isMarked = true;
+          } catch (e) {}
+        }
+
+        try {
+          if (JSON.parse(localStorage.getItem('read_articles') || '[]').includes(currentPath)) return;
         } catch (e) {}
-      }
 
-      try {
-        if (JSON.parse(localStorage.getItem('read_articles') || '[]').includes(currentPath)) return;
-      } catch (e) {}
-
-      var timer = setTimeout(markAsRead, TRACK_TIME * 1000);
-      function onScroll() {
-        var percent = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
-        if (percent >= SCROLL_THRESHOLD) {
-          markAsRead();
-          clearTimeout(timer);
-          window.removeEventListener('scroll', onScroll);
+        var timer = setTimeout(markAsRead, TRACK_TIME * 1000);
+        function onScroll() {
+          var percent = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+          if (percent >= SCROLL_THRESHOLD) {
+            markAsRead();
+            clearTimeout(timer);
+            window.removeEventListener('scroll', onScroll);
+          }
         }
-      }
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('beforeunload', function() { 
-        clearTimeout(timer); 
-        window.removeEventListener('scroll', onScroll); 
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('beforeunload', function() { 
+          clearTimeout(timer); 
+          window.removeEventListener('scroll', onScroll); 
+        });
+
+        // === وقت القراءة ===
+        setTimeout(function() {
+          var timeEl = document.getElementById('calculatedReadingTime');
+          var displayEl = document.getElementById('readingTimeDisplay');
+          if (timeEl && displayEl) {
+            var min = parseInt(timeEl.textContent);
+            if (min < 1) displayEl.textContent = '⏱️ أقل من دقيقة';
+            else if (min === 1) displayEl.textContent = '⏱️ دقيقة واحدة';
+            else displayEl.textContent = '⏱️ ' + min + ' دقائق';
+          }
+        }, 100);
       });
-
-      // وقت القراءة
-      setTimeout(function() {
-        var timeEl = document.getElementById('calculatedReadingTime');
-        var displayEl = document.getElementById('readingTimeDisplay');
-        if (timeEl && displayEl) {
-          var min = parseInt(timeEl.textContent);
-          if (min < 1) displayEl.textContent = '⏱️ أقل من دقيقة';
-          else if (min === 1) displayEl.textContent = '⏱️ دقيقة واحدة';
-          else displayEl.textContent = '⏱️ ' + min + ' دقائق';
-        }
-      }, 100);
-    });
-  }
-</script>
+    }
+  </script>
 </body>
 </html>
 
