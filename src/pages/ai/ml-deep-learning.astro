@@ -653,40 +653,101 @@ def predict(text: str):
           }
           isMarked = true;
         } catch (e) {}
-      }
-
-      try {
-        if (JSON.parse(localStorage.getItem('read_articles') || '[]').includes(currentPath)) return;
-      } catch (e) {}
-
-      var timer = setTimeout(markAsRead, TRACK_TIME * 1000);
-      function onScroll() {
-        var percent = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
-        if (percent >= SCROLL_THRESHOLD) {
-          markAsRead();
-          clearTimeout(timer);
-          window.removeEventListener('scroll', onScroll);
-        }
-      }
-      window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('beforeunload', function() { 
-        clearTimeout(timer); 
-        window.removeEventListener('scroll', onScroll); 
-      });
-
-      // === وقت القراءة ===
-      setTimeout(function() {
-        var timeEl = document.getElementById('calculatedReadingTime');
-        var displayEl = document.getElementById('readingTimeDisplay');
-        if (timeEl && displayEl) {
-          var min = parseInt(timeEl.textContent);
-          if (min < 1) displayEl.textContent = '⏱️ أقل من دقيقة';
-          else if (min === 1) displayEl.textContent = '⏱️ دقيقة واحدة';
-          else displayEl.textContent = '⏱️ ' + min + ' دقائق';
-        }
-      }, 100);
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // === الفهرس ===
+  var tocBtn = document.getElementById('tocBtn');
+  var tocModal = document.getElementById('tocModal');
+  var tocClose = document.getElementById('tocClose');
+  var tocNav = document.getElementById('tocNav');
+  
+  if (tocBtn && tocModal && tocNav && tocClose) {
+    tocNav.innerHTML = '';
+    var headings = document.querySelectorAll('.article h3');
+    
+    headings.forEach(function(h3) {
+      var item = document.createElement('div');
+      item.className = 'toc-item';
+      item.textContent = h3.textContent;
+      item.onclick = function(e) {
+        e.preventDefault();
+        h3.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        tocModal.classList.remove('active');
+      };
+      tocNav.appendChild(item);
     });
-  </script>
+    
+    tocBtn.onclick = function() { tocModal.classList.add('active'); };
+    tocClose.onclick = function() { tocModal.classList.remove('active'); };
+    tocModal.onclick = function(e) { 
+      if (e.target === tocModal) tocModal.classList.remove('active'); 
+    };
+  }
+
+  // === السهم ===
+  var backBtn = document.getElementById('backToTop');
+  if (backBtn) {
+    function updateBtn() {
+      if (window.scrollY > 400) backBtn.classList.add('show');
+      else backBtn.classList.remove('show');
+    }
+    updateBtn();
+    window.addEventListener('scroll', updateBtn, { passive: true });
+    backBtn.onclick = function() { 
+      window.scrollTo({ top: 0, behavior: 'smooth' }); 
+    };
+  }
+
+  // === تتبع القراءة ===
+  var TRACK_TIME = 30;
+  var SCROLL_THRESHOLD = 0.7;
+  var currentPath = window.location.pathname;
+  var isMarked = false;
+
+  function markAsRead() {
+    if (isMarked) return;
+    try {
+      var read = JSON.parse(localStorage.getItem('read_articles') || '[]');
+      if (!read.includes(currentPath)) {
+        read.push(currentPath);
+        localStorage.setItem('read_articles', JSON.stringify(read));
+      }
+      isMarked = true;
+    } catch (e) {}
+  }
+
+  try {
+    if (JSON.parse(localStorage.getItem('read_articles') || '[]').includes(currentPath)) return;
+  } catch (e) {}
+
+  var timer = setTimeout(markAsRead, TRACK_TIME * 1000);
+  function onScroll() {
+    var percent = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+    if (percent >= SCROLL_THRESHOLD) {
+      markAsRead();
+      clearTimeout(timer);
+      window.removeEventListener('scroll', onScroll);
+    }
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('beforeunload', function() { 
+    clearTimeout(timer); 
+    window.removeEventListener('scroll', onScroll); 
+  });
+
+  // === وقت القراءة ===
+  setTimeout(function() {
+    var timeEl = document.getElementById('calculatedReadingTime');
+    var displayEl = document.getElementById('readingTimeDisplay');
+    if (timeEl && displayEl) {
+      var min = parseInt(timeEl.textContent);
+      if (min < 1) displayEl.textContent = '️ أقل من دقيقة';
+      else if (min === 1) displayEl.textContent = '⏱️ دقيقة واحدة';
+      else displayEl.textContent = '⏱️ ' + min + ' دقائق';
+    }
+  }, 100);
+});
+</script>
 </body>
 </html>
 
