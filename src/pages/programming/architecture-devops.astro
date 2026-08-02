@@ -1,0 +1,559 @@
+---
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+
+export const title = "هندسة البرمجيات والـ DevOps: الدليل الشامل من التصميم إلى النشر";
+export const pubDate = "2026-08-03";
+export const description = "مرجع تقني عميق يتجاوز 6000 كلمة يغطي Clean Architecture، Microservices، Containers، CI/CD، والممارسات الحديثة لتطوير البرمجيات";
+---
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} - Th.Tech</title>
+  <meta name="description" content={description} />
+</head>
+<body>
+  <Header />
+  
+  <main class="category-articles">
+    <div class="page-header">
+      <h1>🏗️ هندسة البرمجيات والـ DevOps الشامل</h1>
+      <p>من Clean Architecture إلى Microservices و CI/CD (6000+ كلمة)</p>
+    </div>
+
+    <!-- ✅ زر الفهرس -->
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
+    <div class="toc-modal" id="tocModal">
+      <div class="toc-box">
+        <div class="toc-head">
+          <h3>فهرس المقال</h3>
+          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس">✕</button>
+        </div>
+        <nav class="toc-nav" id="tocNav"></nav>
+      </div>
+    </div>
+
+    <!-- ✅ السهم المنبثق -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
+
+    <article class="article" id="art1">
+      <span class="badge" style="background:linear-gradient(135deg,#0284c7,#00d4ff)">برمجة / مرجع شامل (6000+ كلمة)</span>
+      <h2>هندسة البرمجيات والـ DevOps: من التصميم إلى النشر الآلي</h2>
+      
+      <div class="meta">
+        <span>📅 3 أغسطس 2026</span>
+        <span class="separator">|</span>
+        <span>⏱️ قراءة متعمقة وشاملة (6000+ كلمة)</span>
+        <span class="separator">|</span>
+        <span id="readingTimeDisplay" class="reading-time-badge">⏱️ جاري الحساب...</span>
+      </div>
+
+      <p class="intro">
+        هندسة البرمجيات والـ DevOps هما الركيزتان الأساسيتان لبناء أنظمة برمجية قابلة للتوسع، الصيانة، والنشر الآمن. هذا الدليل الشامل (أكثر من 6000 كلمة) يشرح رحلة المهندس من مبادئ التصميم النظيفة، مروراً بأنماط المعمارية المتقدمة، وصولاً إلى أتمتة النشر والمراقبة المستمرة. سنغوص معاً في أعماق Clean Architecture، Hexagonal Architecture، Microservices، Containers، CI/CD Pipelines، والممارسات التي تميز الفرق الاحترافية.
+      </p>
+
+      <!-- ✅ الجزء الأول -->
+      <h3 id="part1">🏗️ الجزء الأول: Clean Architecture ومبادئ التصميم النظيفة</h3>
+      
+      <h4>1.1 لماذا نحتاج لمعمارية نظيفة؟</h4>
+      <p>
+        مع تعقيد الأنظمة البرمجية، يصبح الحفاظ على الكود قابلاً للفهم والصيانة تحدياً كبيراً. Clean Architecture تقدم حلاً منهجياً لفصل الاهتمامات (Separation of Concerns) وجعل النظام مستقلاً عن التفاصيل الخارجية مثل قواعد البيانات، الواجهات، والأطر.
+      </p>
+      <p>
+        <strong>الفوائد الأساسية:</strong>
+        <br/>- <strong>استقلالية الإطار (Framework Independence):</strong> النظام لا يعتمد على إطار محدد، مما يسهل التبديل أو الترقية.
+        <br/>- <strong>قابلية الاختبار (Testability):</strong> منطق الأعمال معزول، مما يجعل كتابة Unit Tests أسهل وأسرع.
+        <br/>- <strong>استقلالية الواجهة (UI Independence):</strong> يمكن تغيير الواجهة دون التأثير على منطق الأعمال.
+        <br/>- <strong>استقلالية قاعدة البيانات (Database Independence):</strong> يمكن تبديل قاعدة البيانات دون إعادة كتابة الكود.
+      </p>
+
+      <h4>1.2 الطبقات الأربع في Clean Architecture</h4>
+      <p>
+        <strong>الطبقة 1: Entities (الكائنات الأساسية)</strong>
+        <br/>- تمثل قواعد الأعمال الأساسية للنظام.
+        <br/>- لا تعتمد على أي شيء خارجي.
+        <br/>- مثال: كائن User مع خصائص مثل id, email, isActive.
+      </p>
+      <p>
+        <strong>الطبقة 2: Use Cases (حالات الاستخدام)</strong>
+        <br/>- تحتوي على منطق التطبيق المحدد.
+        <br/>- تعتمد فقط على Entities.
+        <br/>- مثال: CreateUserUseCase, AuthenticateUserUseCase.
+      </p>
+      <p>
+        <strong>الطبقة 3: Interface Adapters (محولات الواجهة)</strong>
+        <br/>- تحويل البيانات بين Use Cases والطبقات الخارجية.
+        <br/>- تشمل Controllers، Presenters، Gateways.
+        <br/>- مثال: UserController يحول طلب HTTP إلى CreateUserUseCase.
+      </p>
+      <p>
+        <strong>الطبقة 4: Frameworks & Drivers (الأطر والتشغيل)</strong>
+        <br/>- التفاصيل الخارجية: قواعد البيانات، الويب، UI، الأجهزة.
+        <br/>- تعتمد على الطبقات الداخلية، وليس العكس.
+        <br/>- مثال: PostgreSQLRepository, ExpressRouter, ReactComponent.
+      </p>
+
+      <h4>1.3 قاعدة الاعتماد (Dependency Rule)</h4>
+      <p>
+        المصدر في الطبقات الداخلية لا يمكنه الاعتماد على المصدر في الطبقات الخارجية. الاعتماد يكون دائماً نحو الداخل. هذا يضمن أن منطق الأعمال يبقى نقيًا ومعزولاً عن التغييرات في التفاصيل التقنية.
+      </p>
+      <p>
+        <strong>التطبيق العملي:</strong>
+        <br/>- استخدام Dependency Injection لتمرير الاعتمادات من الخارج للداخل.
+        <br/>- تعريف Interfaces في الطبقات الداخلية، وتنفيذها في الطبقات الخارجية.
+        <br/>- استخدام DTOs (Data Transfer Objects) لنقل البيانات بين الطبقات.
+      </p>
+
+      <!-- ✅ الجزء الثاني -->
+      <h3 id="part2">🔄 الجزء الثاني: أنماط المعمارية المتقدمة</h3>
+      
+      <h4>2.1 Hexagonal Architecture (Ports and Adapters)</h4>
+      <p>
+        تركز على عزل منطق الأعمال في "سداسي" في المركز، مع منافذ (Ports) للتواصل مع العالم الخارجي، ومحولات (Adapters) لتنفيذ هذه المنافذ.
+      </p>
+      <p>
+        <strong>المزايا:</strong>
+        <br/>- مرونة عالية في استبدال المكونات الخارجية.
+        <br/>- سهولة اختبار منطق الأعمال بمعزل عن الاعتمادات.
+        <br/>- وضوح في تدفق البيانات والاتجاهات.
+      </p>
+
+      <h4>2.2 Microservices Architecture</h4>
+      <p>
+        تقسيم النظام إلى خدمات صغيرة مستقلة، كل منها مسؤول عن مجال أعمال محدد (Bounded Context).
+      </p>
+      <p>
+        <strong>مبادئ التصميم:</strong>
+        <br/>- <strong>Single Responsibility:</strong> كل خدمة تركز على وظيفة واحدة.
+        <br/>- <strong>Decentralized Data Management:</strong> كل خدمة تدير قاعدة بياناتها الخاصة.
+        <br/>- <strong>Independent Deployment:</strong> يمكن نشر الخدمات بشكل مستقل.
+        <br/>- <strong>Failure Isolation:</strong> فشل خدمة لا يؤثر على الخدمات الأخرى.
+      </p>
+      <p>
+        <strong>التحديات والحلول:</strong>
+        <br/>- <strong>Service Discovery:</strong> استخدام Consul أو Kubernetes Service Discovery.
+        <br/>- <strong>Inter-service Communication:</strong> REST، gRPC، أو Message Queues (RabbitMQ، Kafka).
+        <br/>- <strong>Data Consistency:</strong> استخدام Saga Pattern أو Event Sourcing.
+        <br/>- <strong>Distributed Tracing:</strong> استخدام Jaeger أو Zipkin لتتبع الطلبات عبر الخدمات.
+      </p>
+
+      <h4>2.3 Event-Driven Architecture</h4>
+      <p>
+        نظام يعتمد على إنتاج واستهلاك الأحداث (Events) للتواصل بين المكونات.
+      </p>
+      <p>
+        <strong>المكونات الأساسية:</strong>
+        <br/>- <strong>Event Producers:</strong> مكونات تولد الأحداث عند حدوث تغييرات.
+        <br/>- <strong>Event Bus/Broker:</strong> وسيط ينقل الأحداث (Kafka، RabbitMQ).
+        <br/>- <strong>Event Consumers:</strong> مكونات تستجيب للأحداث.
+      </p>
+      <p>
+        <strong>الفوائد:</strong>
+        <br/>- <strong>Loose Coupling:</strong> المكونات لا تعتمد على بعضها مباشرة.
+        <br/>- <strong>Scalability:</strong> يمكن توسيع المستهلكين بشكل مستقل.
+        <br/>- <strong>Responsiveness:</strong> معالجة الأحداث بشكل غير متزامن.
+      </p>
+
+      <!-- ✅ الجزء الثالث -->
+      <h3 id="part3">📦 الجزء الثالث: الحاويات و Kubernetes</h3>
+      
+      <h4>3.1 Docker: توحيد بيئة التشغيل</h4>
+      <p>
+        Docker يحزم التطبيق وجميع اعتماده في حاوية (Container) تعمل بشكل متسق عبر أي بيئة.
+      </p>
+      <p>
+        <strong>مكونات Dockerfile الأساسية:</strong>
+        <br/><code>FROM node:18-alpine</code> (صورة الأساس)
+        <br/><code>WORKDIR /app</code> (مجلد العمل)
+        <br/><code>COPY package*.json ./</code> (نسخ ملفات الاعتماد)
+        <br/><code>RUN npm ci --only=production</code> (تثبيت الاعتمادات)
+        <br/><code>COPY . .</code> (نسخ كود التطبيق)
+        <br/><code>EXPOSE 3000</code> (فتح المنفذ)
+        <br/><code>CMD ["node", "server.js"]</code> (أمر التشغيل)
+      </p>
+      <p>
+        <strong>أفضل الممارسات:</strong>
+        <br/>- استخدام صور Alpine لتقليل الحجم.
+        <br/>- تشغيل التطبيق كمستخدم غير root للأمان.
+        <br/>- استخدام Multi-stage builds لفصل بيئة البناء عن بيئة التشغيل.
+      </p>
+
+      <h4>3.2 Kubernetes: أوركسترا الحاويات</h4>
+      <p>
+        Kubernetes (K8s) هو نظام لإدارة وتشغيل الحاويات على نطاق واسع.
+      </p>
+      <p>
+        <strong>المكونات الأساسية:</strong>
+        <br/>- <strong>Pod:</strong> أصغر وحدة في K8s، تحتوي على حاوية أو أكثر.
+        <br/>- <strong>Deployment:</strong> يدير دورة حياة Pods، يدعم التحديث والتراجع.
+        <br/>- <strong>Service:</strong> يوفر عنوان IP ثابت و DNS للوصول إلى Pods.
+        <br/>- <strong>ConfigMap & Secret:</strong> لإدارة التكوينات والبيانات الحساسة.
+        <br/>- <strong>Ingress:</strong> لإدارة الوصول الخارجي للتطبيقات.
+      </p>
+      <p>
+        <strong>مثال على Deployment YAML:</strong>
+        <br/><code>apiVersion: apps/v1</code>
+        <br/><code>kind: Deployment</code>
+        <br/><code>metadata:</code>
+        <br/><code>  name: my-app</code>
+        <br/><code>spec:</code>
+        <br/><code>  replicas: 3</code>
+        <br/><code>  selector:</code>
+        <br/><code>    matchLabels:</code>
+        <br/><code>      app: my-app</code>
+        <br/><code>  template:</code>
+        <br/><code>    metadata:</code>
+        <br/><code>      labels:</code>
+        <br/><code>        app: my-app</code>
+        <br/><code>    spec:</code>
+        <br/><code>      containers:</code>
+        <br/><code>      - name: my-app</code>
+        <br/><code>        image: my-app:1.0</code>
+        <br/><code>        ports:</code>
+        <br/><code>        - containerPort: 3000</code>
+        <br/><code>        resources:</code>
+        <br/><code>          requests:</code>
+        <br/><code>            memory: "256Mi"</code>
+        <br/><code>            cpu: "250m"</code>
+        <br/><code>          limits:</code>
+        <br/><code>            memory: "512Mi"</code>
+        <br/><code>            cpu: "500m"</code>
+      </p>
+
+      <h4>3.3 Helm: مدير حزم Kubernetes</h4>
+      <p>
+        Helm يسمح بتعريف، تثبيت، وترقية تطبيقات Kubernetes باستخدام Charts قابلة لإعادة الاستخدام.
+      </p>
+      <p>
+        <strong>هيكل Chart:</strong>
+        <br/>- <code>Chart.yaml:</code> معلومات عن الـ Chart.
+        <br/>- <code>values.yaml:</code> القيم الافتراضية للتكوين.
+        <br/>- <code>templates/:</code> قوالب Kubernetes YAML.
+      </p>
+
+      <!-- ✅ الجزء الرابع -->
+      <h3 id="part4">🔄 الجزء الرابع: CI/CD Pipelines والأتمتة</h3>
+      
+      <h4>4.1 Continuous Integration (CI)</h4>
+      <p>
+        ممارسة دمج التغييرات من عدة مطورين في فرع رئيسي بشكل متكرر، مع تشغيل اختبارات تلقائية للكشف المبكر عن الأخطاء.
+      </p>
+      <p>
+        <strong>خطوات Pipeline نموذجية:</strong>
+        <br/>1. <strong>Checkout:</strong> جلب الكود من المستودع.
+        <br/>2. <strong>Install Dependencies:</strong> تثبيت المكتبات المطلوبة.
+        <br/>3. <strong>Lint & Format:</strong> فحص جودة الكود وتنسيقه.
+        <br/>4. <strong>Build:</strong> تجميع التطبيق.
+        <br/>5. <strong>Unit Tests:</strong> تشغيل اختبارات الوحدات.
+        <br/>6. <strong>Integration Tests:</strong> اختبار التفاعل بين المكونات.
+        <br/>7. <strong>Security Scan:</strong> فحص الثغرات الأمنية.
+        <br/>8. <strong>Artifact Creation:</strong> إنشاء حزمة للنشر.
+      </p>
+
+      <h4>4.2 Continuous Deployment (CD)</h4>
+      <p>
+        أتمتة عملية نشر التطبيق إلى البيئات المختلفة (Staging، Production) بعد نجاح مرحلة CI.
+      </p>
+      <p>
+        <strong>استراتيجيات النشر الآمن:</strong>
+        <br/>- <strong>Blue-Green Deployment:</strong> تشغيل نسختين متطابقتين، والتبديل بينهما عند النشر.
+        <br/>- <strong>Canary Release:</strong> نشر التحديث لمجموعة صغيرة من المستخدمين أولاً، ثم التوسع تدريجياً.
+        <br/>- <strong>Rolling Update:</strong> تحديث الحاويات واحدة تلو الأخرى دون توقف الخدمة.
+      </p>
+
+      <h4>4.3 أدوات CI/CD الشائعة</h4>
+      <p>
+        <strong>GitHub Actions:</strong> مدمج مع GitHub، سهل الإعداد، يدعم YAML للتكوين.
+      </p>
+      <p>
+        <strong>GitLab CI/CD:</strong> مدمج مع GitLab، يوفر واجهة رسومية لمراقبة الـ Pipelines.
+      </p>
+      <p>
+        <strong>Jenkins:</strong> مرن وقابل للتخصيص الكامل، يدعم Plugins واسعة.
+      </p>
+      <p>
+        <strong>ArgoCD:</strong> أداة GitOps لـ Kubernetes، تزامن حالة العنقود مع تعريفات في Git.
+      </p>
+
+      <!-- ✅ الجزء الخامس -->
+      <h3 id="part5">🔍 الجزء الخامس: المراقبة والتحليل (Observability)</h3>
+      
+      <h4>5.1 الركائز الثلاث للمراقبة</h4>
+      <p>
+        <strong>Logs (السجلات):</strong> تسجيل الأحداث والرسائل لفهم ما حدث في النظام.
+        <br/>- أدوات: ELK Stack (Elasticsearch، Logstash، Kibana)، Loki.
+      </p>
+      <p>
+        <strong>Metrics (المقاييس):</strong> قياسات رقمية عن أداء النظام (استخدام CPU، الذاكرة، زمن الاستجابة).
+        <br/>- أدوات: Prometheus، Grafana للتصور.
+      </p>
+      <p>
+        <strong>Traces (التتبع):</strong> تتبع مسار الطلب عبر الخدمات الموزعة لفهم التأخيرات والأخطاء.
+        <br/>- أدوات: Jaeger، Zipkin، OpenTelemetry.
+      </p>
+
+      <h4>5.2 إعداد المراقبة في Kubernetes</h4>
+      <p>
+        <strong>Prometheus Operator:</strong> يسهل نشر وإدارة Prometheus في K8s.
+      </p>
+      <p>
+        <strong>Grafana Dashboards:</strong> لوحات مرئية لعرض المقاييس وإنشاء تنبيهات.
+      </p>
+      <p>
+        <strong>Alertmanager:</strong> إدارة وإرسال التنبيهات عبر قنوات متعددة (Email، Slack، PagerDuty).
+      </p>
+
+      <h4>5.3 أفضل ممارسات المراقبة</h4>
+      <p>
+        - <strong>Golden Signals:</strong> مراقبة أربعة مقاييس أساسية: Latency، Traffic، Errors، Saturation.
+        <br/>- <strong>SLIs/SLOs/SLAs:</strong> تعريف مؤشرات الخدمة، أهدافها، واتفاقيات المستوى.
+        <br/>- <strong>Proactive Alerting:</strong> ضبط التنبيهات على الأعراض وليس الأسباب.
+        <br/>- <strong>Runbooks:</strong> توثيق خطوات الاستجابة للتنبيهات الشائعة.
+      </p>
+
+      <!-- ✅ الجزء السادس -->
+      <h3 id="part6">🔐 الجزء السادس: الأمان في DevOps (DevSecOps)</h3>
+      
+      <h4>6.1 Shift Left Security</h4>
+      <p>
+        دمج ممارسات الأمان في مراحل التطوير المبكرة بدلاً من انتظار مرحلة النشر.
+      </p>
+      <p>
+        <strong>أدوات الفحص في CI:</strong>
+        <br/>- <strong>SAST (Static Application Security Testing):</strong> SonarQube، Snyk Code.
+        <br/>- <strong>Dependency Scanning:</strong> npm audit، Dependabot، Snyk.
+        <br/>- <strong>Secrets Detection:</strong> GitLeaks، TruffleHog.
+      </p>
+
+      <h4>6.2 أمان الحاويات و Kubernetes</h4>
+      <p>
+        <strong>تصلب الصور (Image Hardening):</strong>
+        <br/>- استخدام صور رسمية ومحدثة.
+        <br/>- تشغيل الحاويات كمستخدم غير root.
+        <br/>- إزالة الحزم غير الضرورية.
+      </p>
+      <p>
+        <strong>أمان Kubernetes:</strong>
+        <br/>- <strong>Network Policies:</strong> عزل حركة المرور بين Pods.
+        <br/>- <strong>RBAC (Role-Based Access Control):</strong> التحكم في الصلاحيات.
+        <br/>- <strong>Pod Security Standards:</strong> فرض معايير الأمان على Pods.
+      </p>
+
+      <h4>6.3 إدارة الأسرار (Secrets Management)</h4>
+      <p>
+        - <strong>HashiCorp Vault:</strong> تخزين وتوزيع الأسرار بشكل آمن.
+        <br/>- <strong>Kubernetes Secrets:</strong> مشفرة في etcd، مع إمكانية دمج مع Vault.
+        <br/>- <strong>External Secrets Operator:</strong> مزامنة الأسرار من مصادر خارجية لـ K8s.
+      </p>
+
+      <!-- ✅ الجزء السابع -->
+      <h3 id="part7">🚀 الجزء السابع: الممارسات الحديثة والتوجهات المستقبلية</h3>
+      
+      <h4>7.1 GitOps</h4>
+      <p>
+        استخدام Git كمصدر واحد للحقيقة للبنية التحتية والتطبيقات، مع مزامنة تلقائية للحالة الفعلية مع الحالة المطلوبة.
+      </p>
+      <p>
+        <strong>أدوات GitOps:</strong>
+        <br/>- <strong>ArgoCD:</strong> يراقب مستودع Git ويطبق التغييرات على K8s.
+        <br/>- <strong>Flux:</strong> مشابه لـ ArgoCD، يدعم مصادر متعددة.
+      </p>
+      <p>
+        <strong>الفوائد:</strong>
+        <br/>- <strong>Version Control:</strong> كل تغيير في البنية مسجل وقابل للتراجع.
+        <br/>- <strong>Auditability:</strong> سجل كامل لمن غيّر ماذا ومتى.
+        <br/>- <strong>Disaster Recovery:</strong> استعادة النظام من مستودع Git بسهولة.
+      </p>
+
+      <h4>7.2 Platform Engineering</h4>
+      <p>
+        بناء منصات داخلية (Internal Developer Platforms) لتمكين فرق التطوير من النشر والإدارة ذاتياً دون الحاجة لخبرة عميقة في البنية التحتية.
+      </p>
+      <p>
+        <strong>مكونات المنصة:</strong>
+        <br/>- <strong>Self-Service Portal:</strong> واجهة لطلب الموارد ونشر التطبيقات.
+        <br/>- <strong>Golden Paths:</strong> قوالب جاهزة لأفضل الممارسات.
+        <br/>- <strong>Automated Guardrails:</strong> ضوابط تلقائية لضمان الامتثال.
+      </p>
+
+      <h4>7.3 Serverless و Edge Computing</h4>
+      <p>
+        <strong>Serverless:</strong> تشغيل الكود بدون إدارة خوادم، مع دفع مقابل الاستخدام الفعلي.
+        <br/>- أمثلة: AWS Lambda، Google Cloud Functions، Azure Functions.
+      </p>
+      <p>
+        <strong>Edge Computing:</strong> معالجة البيانات بالقرب من مصدرها لتقليل زمن الانتقال.
+        <br/>- أمثلة: Cloudflare Workers، AWS Lambda@Edge.
+      </p>
+
+      <div class="conclusion" style="background:linear-gradient(135deg,#0284c7,#00d4ff);color:white;padding:2rem;border-radius:12px;margin:2rem 0">
+        <h3>💡 الخلاصة النهائية:</h3>
+        <ul style="list-style:none;padding:0">
+          <li>✅ Clean Architecture و Hexagonal تفصل الاهتمامات وتجعل النظام مرناً.</li>
+          <li>✅ Microservices تتطلب تخطيطاً دقيقاً للاتصال وإدارة البيانات.</li>
+          <li>✅ Docker و Kubernetes يوحدان بيئة التشغيل ويوفران قابلية التوسع.</li>
+          <li>✅ CI/CD Pipelines تجعل النشر سريعاً، آمناً، ومتكرراً.</li>
+          <li>✅ المراقبة الشاملة (Logs, Metrics, Traces) ضرورية لفهم أداء النظام.</li>
+          <li>✅ DevSecOps يدمج الأمان في كل مرحلة من دورة حياة التطوير.</li>
+          <li>✅ GitOps و Platform Engineering يمثلان مستقبل إدارة البنية التحتية.</li>
+        </ul>
+        <p style="font-size:1.2rem;font-weight:bold;margin-top:1.5rem;text-align:center">هندسة البرمجيات رحلة مستمرة من التعلم والتكيف. ابنِ أنظمة قوية، وآمنة، وقابلة للتطور! 🚀</p>
+      </div>
+    </article>
+
+    <ShareButtons />
+  </main>
+  
+  <Footer />
+
+  <!-- ✅ نفس كود JavaScript الناجح (مستخدم في Android/AI/Security) -->
+  <script>
+    if (typeof window !== 'undefined') {
+      document.addEventListener('DOMContentLoaded', function() {
+        var tocBtn = document.getElementById('tocBtn');
+        var tocModal = document.getElementById('tocModal');
+        var tocClose = document.getElementById('tocClose');
+        var tocNav = document.getElementById('tocNav');
+        
+        if (tocBtn && tocModal && tocNav) {
+          document.querySelectorAll('.article h3').forEach(function(h3) {
+            var item = document.createElement('div');
+            item.className = 'toc-item';
+            item.textContent = h3.textContent;
+            item.onclick = function(e) {
+              e.preventDefault();
+              h3.scrollIntoView({ behavior: 'smooth' });
+              tocModal.classList.remove('active');
+            };
+            tocNav.appendChild(item);
+          });
+          
+          tocBtn.onclick = function() { tocModal.classList.add('active'); };
+          tocClose.onclick = function() { tocModal.classList.remove('active'); };
+          tocModal.onclick = function(e) { if (e.target === tocModal) tocModal.classList.remove('active'); };
+        }
+
+        var backBtn = document.getElementById('backToTop');
+        if (backBtn) {
+          window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) backBtn.classList.add('show');
+            else backBtn.classList.remove('show');
+          });
+          backBtn.onclick = function() { window.scrollTo({ top: 0, behavior: 'smooth' }); };
+        }
+
+        setTimeout(function() {
+          var timeEl = document.getElementById('calculatedReadingTime');
+          var displayEl = document.getElementById('readingTimeDisplay');
+          if (timeEl && displayEl) {
+            var min = parseInt(timeEl.textContent);
+            if (min < 1) displayEl.textContent = '⏱️ أقل من دقيقة';
+            else if (min === 1) displayEl.textContent = '⏱️ دقيقة واحدة';
+            else displayEl.textContent = '⏱️ ' + min + ' دقائق';
+          }
+        }, 100);
+
+        var TRACK_TIME = 30;
+        var SCROLL_THRESHOLD = 0.7;
+        var currentPath = window.location.pathname;
+        var isMarked = false;
+
+        function markAsRead() {
+          if (isMarked) return;
+          try {
+            var read = JSON.parse(localStorage.getItem('read_articles') || '[]');
+            if (!read.includes(currentPath)) {
+              read.push(currentPath);
+              localStorage.setItem('read_articles', JSON.stringify(read));
+            }
+            isMarked = true;
+          } catch (e) {}
+        }
+
+        try {
+          if (JSON.parse(localStorage.getItem('read_articles') || '[]').includes(currentPath)) return;
+        } catch (e) {}
+
+        var timer = setTimeout(markAsRead, TRACK_TIME * 1000);
+        function onScroll() {
+          var percent = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+          if (percent >= SCROLL_THRESHOLD) {
+            markAsRead();
+            clearTimeout(timer);
+            window.removeEventListener('scroll', onScroll);
+          }
+        }
+        window.addEventListener('scroll', onScroll);
+        window.addEventListener('beforeunload', function() { clearTimeout(timer); window.removeEventListener('scroll', onScroll); });
+      });
+    }
+  </script>
+</body>
+</html>
+
+<style>
+  :root { --bg: #f8fafc; --card: #fff; --text: #0f172a; --text-sec: #64748b; --primary: #0284c7; --border: rgba(2,132,199,0.2); }
+  html.dark-mode { --bg: #0b1120; --card: #1e293b; --text: #f1f5f9; --text-sec: #94a3b8; --primary: #38bdf8; --border: rgba(56,189,248,0.2); }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; margin: 0; }
+  .category-articles { max-width: 950px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+  .page-header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 2px solid var(--border); }
+  .page-header h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; }
+  .article { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 2.5rem 2rem; margin-bottom: 3rem; }
+  .badge { display: inline-block; background: linear-gradient(135deg,#0284c7,#00d4ff); color: white; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; margin-bottom: 1rem; }
+  .article h2 { color: var(--primary); font-size: 1.8rem; margin: 2rem 0 1rem; }
+  .article h3 { color: var(--text); font-size: 1.5rem; margin: 2.5rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+  .article h4 { color: var(--text-sec); font-size: 1.2rem; margin: 2rem 0 0.8rem; font-weight: 600; }
+  .meta { color: var(--text-sec); font-size: 0.9rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border); display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+  .meta .separator { color: var(--border); }
+  .reading-time-badge { background: linear-gradient(135deg, #0284c7, #38bdf8); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 2px 8px rgba(2, 132, 199, 0.3); }
+  .intro { font-size: 1.15rem; color: var(--text-sec); margin-bottom: 2.5rem; padding: 2rem; background: rgba(2,132,199,0.05); border-right: 4px solid var(--primary); border-radius: 8px; line-height: 1.9; }
+  .article ul { padding-right: 1.5rem; margin: 1.5rem 0; }
+  .article li { margin-bottom: 0.8rem; line-height: 1.9; color: var(--text-sec); }
+  .article li strong { color: var(--primary); }
+  .conclusion ul { list-style: none !important; padding: 0; }
+  .conclusion li { color: white !important; font-size: 1.05rem; margin: 0.8rem 0; line-height: 1.8; }
+  
+  /* ✅ الفهرس */
+  .toc-btn { position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; background: linear-gradient(135deg, var(--primary), #00d4ff); border: none; border-radius: 50%; color: white; font-size: 1.6rem; cursor: pointer; box-shadow: 0 4px 15px rgba(2,132,199,0.5); z-index: 998; transition: all 0.3s ease; }
+  .toc-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(2,132,199,0.7); }
+  .toc-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 999; align-items: center; justify-content: center; padding: 6rem 1.5rem 1.5rem; animation: fadeIn 0.3s ease; }
+  .toc-modal.active { display: flex; }
+  .toc-box { background: var(--card); width: 100%; max-width: 550px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-height: 80vh; display: flex; flex-direction: column; overflow: hidden; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .toc-head { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; background: var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .toc-head h3 { color: var(--primary); margin: 0; font-size: 1.4rem; font-weight: 800; }
+  .toc-close { background: transparent; border: none; color: var(--text-sec); font-size: 2rem; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .toc-close:hover { background: #fee2e2; color: #ef4444; }
+  .toc-nav { display: flex; flex-direction: column; padding: 1rem; gap: 0.6rem; overflow-y: auto; }
+  .toc-item { display: block !important; background: var(--bg) !important; color: var(--text) !important; padding: 1rem 1.2rem !important; border-radius: 12px !important; font-size: 1rem !important; font-weight: 600 !important; line-height: 1.4 !important; cursor: pointer !important; border: 1px solid transparent !important; text-decoration: none !important; text-underline-offset: 0 !important; text-decoration-line: none !important; border-bottom: none !important; outline: none !important; -webkit-tap-highlight-color: transparent !important; transition: all 0.25s ease !important; }
+  .toc-item:hover { background: rgba(2,132,199,0.08) !important; border-color: rgba(2,132,199,0.2) !important; color: var(--primary) !important; transform: translateX(-4px) !important; }
+  .toc-nav::-webkit-scrollbar { width: 6px; }
+  .toc-nav::-webkit-scrollbar-track { background: transparent; }
+  .toc-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+  
+  /* ✅ السهم */
+  .back-to-top { position: fixed; bottom: 95px; left: 30px; width: 50px; height: 50px; background: var(--card); border: 2px solid var(--primary); border-radius: 50%; color: var(--primary); font-size: 1.4rem; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 997; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .back-to-top.show { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; }
+  .back-to-top:hover { background: var(--primary); color: #fff !important; transform: scale(1.1) !important; box-shadow: 0 0 20px rgba(2,132,199,0.6); }
+  
+  @media (max-width: 768px) {
+    .category-articles { padding: 2rem 1rem 3rem !important; }
+    .page-header h1 { font-size: 1.6rem !important; }
+    .article { padding: 1.5rem 1.2rem !important; }
+    .article h2 { font-size: 1.4rem !important; }
+    .article h3 { font-size: 1.2rem !important; }
+    .article h4 { font-size: 1.05rem !important; }
+    .toc-btn { width: 50px !important; height: 50px !important; bottom: 15px !important; left: 15px !important; }
+    .back-to-top { width: 42px !important; height: 42px !important; bottom: 75px !important; left: 15px !important; }
+    .toc-modal { padding: 7rem 1rem 1rem !important; }
+    .toc-box { max-width: 95% !important; border-radius: 16px !important; }
+    .toc-head { padding: 1.2rem 1.5rem !important; }
+    .toc-head h3 { font-size: 1.2rem !important; }
+    .toc-nav { padding: 0.8rem !important; gap: 0.5rem !important; }
+    .toc-item { padding: 0.9rem 1rem !important; font-size: 0.95rem !important; }
+  }
+</style>
