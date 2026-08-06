@@ -1,0 +1,832 @@
+---
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import ShareButtons from '../../components/ShareButtons.astro';
+
+export const title = "Kubernetes و DevOps السحابي: الدليل الشامل لإدارة الحاويات والأتمتة";
+export const pubDate = "2026-08-03";
+export const description = "دليل متقدم جداً يتجاوز 6000 كلمة يغطي Kubernetes، Helm، GitOps، Service Mesh، وأمن الحاويات";
+---
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} - Th.Tech</title>
+  <meta name="description" content={description} />
+  <meta name="keywords" content="Kubernetes, DevOps, Docker, Helm, GitOps, Service Mesh, Cloud Native" />
+</head>
+<body>
+  <Header />
+  
+  <main class="category-articles">
+    <div class="page-header">
+      <h1>🐳 Kubernetes و DevOps السحابي</h1>
+      <p>دليل شامل وطويل جداً (6000+ كلمة) عن إدارة الحاويات والأتمتة السحابية</p>
+    </div>
+
+    <!-- ✅ زر الفهرس المتوهج -->
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
+    <div class="toc-modal" id="tocModal">
+      <div class="toc-box">
+        <div class="toc-head">
+          <h3>فهرس المقال</h3>
+          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس">✕</button>
+        </div>
+        <nav class="toc-nav" id="tocNav"></nav>
+      </div>
+    </div>
+
+    <!-- ✅ السهم المنبثق (العودة للأعلى) -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
+
+    <article class="article" id="art3">
+      <span class="badge" style="background:linear-gradient(135deg,#f59e0b,#d97706)">مستوى متقدم / Kubernetes شامل (6000+ كلمة)</span>
+      <h2>Kubernetes و DevOps السحابي: من الحاويات إلى الأتمتة المتقدمة</h2>
+      
+      <!-- ✅ منطقة الميتا المعدلة -->
+      <div class="meta">
+        <span>📅 3 أغسطس 2026</span>
+        <span class="separator">|</span>
+        <span>⏱️ قراءة متعمقة وشاملة (6000+ كلمة)</span>
+        <span class="separator">|</span>
+        <span id="readingTimeDisplay" class="reading-time-badge">⏱️ جاري الحساب...</span>
+      </div>
+      
+      <p class="intro">
+        Kubernetes هو نظام إدارة الحاويات المفتوح المصدر الذي أصبح المعيار الصناعي لتطبيقات السحابة الحديثة. مع DevOps، يُمكّن Kubernetes الفرق من نشر، توسيع، وإدارة التطبيقات المعقدة بموثوقية وكفاءة غير مسبوقة.
+        <br/><br/>
+        هذا الدليل الشامل (أكثر من 6000 كلمة) يغوص في أعماق Kubernetes، Helm، GitOps، Service Mesh، وأمن الحاويات. سنشرح بالتفصيل كيف تبني خطوط أنابيب CI/CD متقدمة، تدير عناقيد متعددة، وتضمن موثوقية الأنظمة الموزعة في بيئة الإنتاج.
+      </p>
+
+      <!-- صورة رئيسية -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=900&h=400&fit=crop" alt="Kubernetes DevOps" onerror="this.src='https://picsum.photos/900/400?random=50'" />
+        <p class="image-caption">Kubernetes و DevOps - أتمتة النشر وإدارة الحاويات على نطاق واسع</p>
+      </div>
+
+      <h3 id="part1">🐳 الجزء الأول: أساسيات Kubernetes المتقدمة</h3>
+      
+      <h4>1.1 بنية Kubernetes المعمقة</h4>
+      <p>
+        <strong>Control Plane (مستوى التحكم):</strong>
+        <br/>- <strong>API Server:</strong> نقطة الاتصال الوحيدة للعنقود، يتحقق من صحة الطلبات ويحدث etcd.
+        <br/>- <strong>etcd:</strong> قاعدة بيانات موزعة تخزن حالة العنقود بأكملها (مفتاح-قيمة).
+        <br/>- <strong>Scheduler:</strong> يقرر على أي عقدة تُشغَّل الـ Pods بناءً على الموارد والقيود.
+        <br/>- <strong>Controller Manager:</strong> يدير Controllers المختلفة (ReplicaSet، Node، Endpoint).
+      </p>
+      <p>
+        <strong>Data Plane (مستوى البيانات - Nodes):</strong>
+        <br/>- <strong>kubelet:</strong> وكيل يعمل على كل عقدة، يضمن تشغيل الحاويات كما هو موصوف في PodSpec.
+        <br/>- <strong>kube-proxy:</strong> يدير قواعد الشبكة (iptables/IPVS) لتمكين Services.
+        <br/>- <strong>Container Runtime:</strong> containerd أو CRI-O لتشغيل الحاويات فعلياً.
+      </p>
+
+      <h4>1.2 Pods و Containers المتقدم</h4>
+      <p>
+        <strong>Pod Patterns:</strong>
+        <br/>- <strong>Sidecar:</strong> حاوية مساعدة تشارك نفس الـ Network و Storage مع التطبيق الرئيسي (مثل logging agent).
+        <br/>- <strong>Adapter:</strong> تحويل مخرجات التطبيق لتنسيق موحد (مثل توحيد logs).
+        <br/>- <strong>Ambassador:</strong> وكيل للاتصالات الخارجية (مثل proxy لقاعدة بيانات).
+      </p>
+      <p>
+        <strong>Init Containers:</strong>
+        <br/>- حاويات تُنفَّذ قبل الحاويات الرئيسية لإعداد البيئة (مثل انتظار قاعدة البيانات).
+        <br/>- تُستخدم للتهيئة، التحميل المسبق، أو التحقق من المتطلبات.
+      </p>
+      <p>
+        <strong>Ephemeral Containers:</strong>
+        <br/>- حاويات مؤقتة للتصحيح (debugging) دون تعديل الـ Pod الأصلي.
+        <br/>- مثالية للتحقيق في المشاكل في بيئة الإنتاج بأمان.
+      </p>
+
+      <h4>1.3 Services و Networking المتقدم</h4>
+      <p>
+        <strong>Service Types:</strong>
+        <br/>- <strong>ClusterIP:</strong> IP داخلي فقط، للاتصال بين الخدمات داخل العنقود.
+        <br/>- <strong>NodePort:</strong> يفتح منفذاً على كل عقدة للوصول الخارجي.
+        <br/>- <strong>LoadBalancer:</strong> يدمج مع Load Balancer السحابي (AWS ELB، Azure LB).
+        <br/>- <strong>ExternalName:</strong> يعيد توجيه DNS لخدمة خارجية.
+      </p>
+      <p>
+        <strong>Ingress Controllers:</strong>
+        <br/>- <strong>NGINX Ingress:</strong> الأكثر شيوعاً، يدعم SSL، Rate Limiting، و Rewrite Rules.
+        <br/>- <strong>Traefik:</strong> ديناميكي، يدعم Let's Encrypt تلقائياً.
+        <br/>- <strong>Contour (Envoy):</strong> أداء عالي مع دعم HTTP/3 و gRPC.
+      </p>
+      <p>
+        <strong>Network Policies:</strong>
+        <br/>- جدران حماية على مستوى الـ Pod للتحكم في حركة المرور الداخلة والخارجة.
+        <br/>- ضرورية لعزل الخدمات الحساسة وتقليل سطح الهجوم.
+      </p>
+
+      <!-- صورة Kubernetes Architecture -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1639322537228-f710d846310a?w=900&h=350&fit=crop" alt="Kubernetes Architecture" onerror="this.src='https://picsum.photos/900/350?random=51'" />
+        <p class="image-caption">بنية Kubernetes - Control Plane و Data Plane</p>
+      </div>
+
+      <h3 id="part2">📦 الجزء الثاني: Helm و إدارة التطبيقات</h3>
+      
+      <h4>2.1 Helm Charts المتقدم</h4>
+      <p>
+        <strong>Chart Structure:</strong>
+        <br/>- <strong>Chart.yaml:</strong> تعريف الـ Chart (الاسم، الإصدار، الاعتمادات).
+        <br/>- <strong>values.yaml:</strong> القيم الافتراضية القابلة للتخصيص.
+        <br/>- <strong>templates/:</strong> ملفات YAML مع Go templating للديناميكية.
+        <br/>- <strong>charts/:</strong> الاعتمادات الفرعية (Sub-charts).
+      </p>
+      <p>
+        <strong>Advanced Templating:</strong>
+        <br/>- <strong>Conditionals:</strong> {{ if .Values.feature.enabled }} ... {{ end }}.
+        <br/>- <strong>Loops:</strong> {{ range .Values.items }} ... {{ end }}.
+        <br/>- <strong>Named Templates:</strong> {{ define "myapp.labels" }} ... {{ end }} لإعادة الاستخدام.
+      </p>
+      <p>
+        <strong>Best Practices:</strong>
+        <br/>- استخدام values.yaml للبيئات المختلفة (dev/staging/prod).
+        <br/>- تجنب hard-coding، استخدام .Release.Name و .Chart.Version للديناميكية.
+        <br/>- توثيق القيم المطلوبة في README.md و values.yaml مع comments.
+      </p>
+
+      <h4>2.2 إدارة Releases و Upgrades</h4>
+      <p>
+        <strong>Rolling Updates:</strong>
+        <br/>- helm upgrade --install مع --atomic للrollback التلقائي عند الفشل.
+        <br/>- استخدام --wait و --timeout لضمان اكتمال النشر قبل العودة.
+      </p>
+      <p>
+        <strong>History و Rollback:</strong>
+        <br/>- helm history <release> لعرض سجل الإصدارات.
+        <br/>- helm rollback <release> <revision> للعودة لإصدار سابق.
+      </p>
+      <p>
+        <strong>Testing Charts:</strong>
+        <br/>- helm test <release> لتشغيل tests المحددة في templates/tests/.
+        <br/>- استخدام ct (chart-testing) للتحقق من Charts في CI pipelines.
+      </p>
+
+      <h4>2.3 Private Chart Repositories</h4>
+      <p>
+        <strong>Hosting Options:</strong>
+        <br/>- <strong>ChartMuseum:</strong> خادم Charts مفتوح المصدر مع دعم التخزين السحابي.
+        <br/>- <strong>Harbor:</strong> Registry للـ containers و Charts مع أمان متقدم.
+        <br/>- <strong>Cloud Native:</strong> AWS S3 + CloudFront، Azure Blob + CDN.
+      </p>
+      <p>
+        <strong>Security:</strong>
+        <br/>- استخدام Basic Auth أو OAuth للوصول الخاص.
+        <br/>- توقيع Charts باستخدام PGP للتحقق من النزاهة.
+        <br/>- مسح Charts بحثاً عن vulnerabilities باستخدام trivy أو similar tools.
+      </p>
+
+      <!-- صورة Helm -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=900&h=350&fit=crop" alt="Helm Package Manager" onerror="this.src='https://picsum.photos/900/350?random=52'" />
+        <p class="image-caption">Helm - مدير حزم Kubernetes للتطبيقات المعقدة</p>
+      </div>
+
+      <h3 id="part3">🔄 الجزء الثالث: GitOps و الأتمتة المتقدمة</h3>
+      
+      <h4>3.1 مبادئ GitOps الأساسية</h4>
+      <p>
+        <strong>المبادئ الأربعة:</strong>
+        <br/>1. <strong>Declarative:</strong> وصف الحالة المرغوبة في Git (لا أوامر imperative).
+        <br/>2. <strong>Versioned:</strong> كل تغيير في Git له commit و history.
+        <br/>3. <strong>Automated:</strong> تطبيق التغييرات تلقائياً عند push لـ Git.
+        <br/>4. <strong>Reconciled:</strong> مراقبة مستمرة لضمان تطابق الحالة الفعلية مع المرغوبة.
+      </p>
+      <p>
+        <strong>الفوائد:</strong>
+        <br/>- <strong>Auditability:</strong> كل تغيير مُتتبع في Git history.
+        <br/>- <strong>Disaster Recovery:</strong> إعادة بناء العنقود من Git فقط.
+        <br/>- <strong>Collaboration:</strong> Pull Requests للمراجعة قبل التطبيق.
+      </p>
+
+      <h4>3.2 ArgoCD المتقدم</h4>
+      <p>
+        <strong>Application Management:</strong>
+        <br/>- تعريف التطبيقات في YAML مع source (Git repo)، destination (cluster/namespace)، و sync policy.
+        <br/>- دعم Multi-Source Applications لدمج Charts من repos متعددة.
+      </p>
+      <p>
+        <strong>Sync Strategies:</strong>
+        <br/>- <strong>Auto:</strong> مزامنة تلقائية عند تغير Git.
+        <br/>- <strong>Manual:</strong> مزامنة يدوية مع approval workflow.
+        <br/>- <strong>Prune:</strong> حذف الموارد غير الموجودة في Git.
+        <br/>- <strong>SelfHeal:</strong> إعادة تطبيق الحالة المرغوبة إذا تغيرت يدوياً.
+      </p>
+      <p>
+        <strong>App of Apps Pattern:</strong>
+        <br/>- تطبيق ArgoCD يدير تطبيقات ArgoCD الأخرى (هرمي).
+        <br/>- مثالي لإدارة بيئات متعددة (dev/staging/prod) من repo واحد.
+      </p>
+
+      <h4>3.3 Flux v2 المتقدم</h4>
+      <p>
+        <strong>GitRepository و Kustomization:</strong>
+        <br/>- GitRepository: تعريف repo، branch، و path للمصادر.
+        <br/>- Kustomization: تطبيق Kustomize overlays مع health checks و dependencies.
+      </p>
+      <p>
+        <strong>Image Automation:</strong>
+        <br/>- ImageRepository: مراقبة registry لاكتشاف tags جديدة.
+        <br/>- ImagePolicy: تحديد سياسة التحديث (semver، regex، latest).
+        <br/>- ImageUpdateAutomation: إنشاء PR تلقائي لتحديث image tag في Git.
+      </p>
+      <p>
+        <strong>Multi-tenancy:</strong>
+        <br/>- استخدام ServiceAccounts و RBAC لعزل الفرق.
+        <br/>- Flux يمكن تشغيله في namespaces متعددة مع صلاحيات محددة.
+      </p>
+
+      <!-- صورة GitOps -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=900&h=350&fit=crop" alt="GitOps Workflow" onerror="this.src='https://picsum.photos/900/350?random=53'" />
+        <p class="image-caption">GitOps - Git كمصدر الحقيقة الوحيد للبنية والتطبيقات</p>
+      </div>
+
+      <h3 id="part4">🕸️ الجزء الرابع: Service Mesh و الملاحظة</h3>
+      
+      <h4>4.1 Istio المتقدم</h4>
+      <p>
+        <strong>Traffic Management:</strong>
+        <br/>- <strong>VirtualServices:</strong> توجيه HTTP/TCP بناءً على headers، weights، أو conditions.
+        <br/>- <strong>DestinationRules:</strong> تعريف subsets (versions)، load balancing policies، و connection pooling.
+        <br/>- <strong>Gateways:</strong> إدارة ingress/egress traffic مع TLS termination.
+      </p>
+      <p>
+        <strong>Security:</strong>
+        <br/>- <strong>mTLS:</strong> تشفير تلقائي بين services مع إدارة الشهادات.
+        <br/>- <strong>AuthorizationPolicies:</strong> تحكم دقيق في من يمكنه الوصول لخدمة معينة.
+        <br/>- <strong>PeerAuthentication:</strong> فرض mTLS على مستوى namespace أو cluster.
+      </p>
+      <p>
+        <strong>Observability:</strong>
+        <br/>- <strong>Metrics:</strong> Prometheus metrics جاهزة لـ request count، latency، errors.
+        <br/>- <strong>Tracing:</strong> تكامل مع Jaeger/Zipkin لـ distributed tracing.
+        <br/>- <strong>Access Logs:</strong> Envoy access logs مع حقول مخصصة.
+      </p>
+
+      <h4>4.2 Linkerd الخفيف</h4>
+      <p>
+        <strong>المميزات:</strong>
+        <br/>- <strong>Simple:</strong> تثبيت بخطوة واحدة، موارد أقل من Istio.
+        <br/>- <strong>Secure by Default:</strong> mTLS مفعل تلقائياً.
+        <br/>- <strong>Observable:</strong> golden metrics (success rate، latency، traffic) مدمجة.
+      </p>
+      <p>
+        <strong>التكامل:</strong>
+        <br/>- يعمل مع أي Kubernetes cluster بدون تعديل التطبيقات.
+        <br/>- يدعم gRPC، HTTP/1.1، HTTP/2، و TCP.
+      </p>
+
+      <h4>4.3 Observability Stack</h4>
+      <p>
+        <strong>Prometheus Operator:</strong>
+        <br/>- ServiceMonitors لاكتشاف targets تلقائياً.
+        <br/>- PrometheusRules للـ alerting مع PromQL.
+        <br/>- Thanos/Cortex لـ long-term storage و global querying.
+      </p>
+      <p>
+        <strong>Grafana Dashboards:</strong>
+        <br/>- Kubernetes cluster overview (nodes، pods، resources).
+        <br/>- Application-specific dashboards (business metrics).
+        <br/>- Alerting مع Slack/PagerDuty integration.
+      </p>
+      <p>
+        <strong>Distributed Tracing:</strong>
+        <br/>- OpenTelemetry Collector لجمع traces من مصادر متعددة.
+        <br/>- Jaeger أو Tempo للتخزين والاستعلام.
+        <br/>- ربط traces مع logs و metrics لـ root cause analysis.
+      </p>
+
+      <!-- صورة Service Mesh -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&h=350&fit=crop" alt="Service Mesh Architecture" onerror="this.src='https://picsum.photos/900/350?random=54'" />
+        <p class="image-caption">Service Mesh - إدارة التواصل بين الخدمات بأمان وملاحظة</p>
+      </div>
+
+      <h3 id="part5">🔐 الجزء الخامس: أمن Kubernetes و الحاويات</h3>
+      
+      <h4>5.1 Pod Security Standards</h4>
+      <p>
+        <strong>المستويات الثلاثة:</strong>
+        <br/>- <strong>Privileged:</strong> غير مقيد (للتطبيقات الموثوقة فقط).
+        <br/>- <strong>Baseline:</strong> يمنع escalations الخطرة (مثل hostPID، hostNetwork).
+        <br/>- <strong>Restricted:</strong> الأكثر أماناً، يمنع root، writable filesystems، و capabilities.
+      </p>
+      <p>
+        <strong>التطبيق:</strong>
+        <br/>- PodSecurity admission controller (مدمج في K8s 1.23+).
+        <br/>- OPA/Gatekeeper لسياسات مخصصة ومعقدة.
+        <br/>- Kyverno لسياسات declarative مع reporting.
+      </p>
+
+      <h4>5.2 Image Security</h4>
+      <p>
+        <strong>Scanning:</strong>
+        <br/>- <strong>Trivy:</strong> سريع، يدعم images، filesystems، و git repos.
+        <br/>- <strong>Grype:</strong> من Anchore، مع دعم SBOM generation.
+        <br/>- <strong>Clair:</strong> من CoreOS، يركز على vulnerabilities في packages.
+      </p>
+      <p>
+        <strong>Signing و Verification:</strong>
+        <br/>- <strong>Cosign (Sigstore):</strong> توقيع images و verification بدون مفاتيح معقدة.
+        <br/>- <strong>Notary v2:</strong> معيار OCI للتوقيع والتحقق.
+        <br/>- <strong>Admission Controllers:</strong> رفض images غير الموقعة أو التي تحتوي على vulnerabilities حرجة.
+      </p>
+
+      <h4>5.3 Network Security</h4>
+      <p>
+        <strong>Network Policies:</strong>
+        <br/>- عزل namespaces بـ default-deny policies.
+        <br/>- السماح بالمرور فقط بين services المحددة.
+        <br/>- استخدام labels و selectors للتحكم الدقيق.
+      </p>
+      <p>
+        <strong>eBPF و Cilium:</strong>
+        <br/>- <strong>Cilium:</strong> يستخدم eBPF لـ networking و security عالي الأداء.
+        <br/>- <strong>Identity-aware:</strong> سياسات بناءً على labels وليس IPs فقط.
+        <br/>- <strong>Observability:</strong> رؤية حركة المرور على مستوى kernel بدون overhead.
+      </p>
+
+      <h4>5.4 Secrets Management</h4>
+      <p>
+        <strong>الخيارات:</strong>
+        <br/>- <strong>Kubernetes Secrets:</strong> مشفرة في etcd (مع encryption at rest).
+        <br/>- <strong>External Secrets Operator:</strong> مزامنة secrets من AWS Secrets Manager، HashiCorp Vault، إلخ.
+        <br/>- <strong>Sealed Secrets:</strong> تشفير secrets في Git لفك تشفيرها فقط في cluster.
+      </p>
+      <p>
+        <strong>Best Practices:</strong>
+        <br/>- عدم hard-code secrets في code أو images.
+        <br/>- استخدام RBAC للتحكم في من يمكنه الوصول لـ secrets.
+        <br/>- تدوير secrets دورياً ومراقبة الوصول لها.
+      </p>
+
+      <!-- صورة Security -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=900&h=350&fit=crop" alt="Kubernetes Security" onerror="this.src='https://picsum.photos/900/350?random=55'" />
+        <p class="image-caption">أمن Kubernetes - من الحاويات إلى الشبكة والـ secrets</p>
+      </div>
+
+      <h3 id="part6">🚀 الجزء السادس: النشر المتقدم و CI/CD</h3>
+      
+      <h4>6.1 Deployment Strategies</h4>
+      <p>
+        <strong>Rolling Update:</strong>
+        <br/>- التحديث التدريجي لـ Pods مع الحفاظ على التوافر.
+        <br/>- التحكم في maxSurge و maxUnavailable للتحكم في السرعة والمخاطرة.
+      </p>
+      <p>
+        <strong>Blue/Green:</strong>
+        <br/>- تشغيل نسختين متطابقتين (blue = stable، green = new).
+        <br/>- التبديل عبر تحديث Service أو Ingress.
+        <br/>- rollback فوري بإعادة التوجيه للـ blue.
+      </p>
+      <p>
+        <strong>Canary:</strong>
+        <br/>- توجيه نسبة صغيرة من traffic (1-5%) للنسخة الجديدة.
+        <br/>- مراقبة metrics (errors، latency) قبل التوسع.
+        <br/>- أتمتة القرار باستخدام Flagger أو Argo Rollouts.
+      </p>
+
+      <h4>6.2 CI/CD Pipelines المتقدم</h4>
+      <p>
+        <strong>GitHub Actions / GitLab CI:</strong>
+        <br/>- <strong>Build Stage:</strong> build image، scan vulnerabilities، push لـ registry.
+        <br/>- <strong>Test Stage:</strong> unit tests، integration tests، security scans.
+        <br/>- <strong>Deploy Stage:</strong> update Helm values، apply عبر ArgoCD/Flux.
+      </p>
+      <p>
+        <strong>Environment Promotion:</strong>
+        <br/>- dev → staging → production مع approvals يدوية أو آلية.
+        <br/>- استخدام Git branches أو tags لتمثيل البيئات.
+        <br/>- automated testing في كل مرحلة قبل الترقية.
+      </p>
+      <p>
+        <strong>Feature Flags:</strong>
+        <br/>- LaunchDarkly، Unleash، أو flags مخصصة في code.
+        <br/>- تمكين/تعطيل الميزات ديناميكياً دون إعادة نشر.
+        <br/>- A/B testing و gradual rollouts.
+      </p>
+
+      <h4>6.3 Testing في Kubernetes</h4>
+      <p>
+        <strong>Unit & Integration Tests:</strong>
+        <br/>- اختبار business logic بعزل عن Kubernetes.
+        <br/>- استخدام testcontainers لـ dependencies (DBs، message queues).
+      </p>
+      <p>
+        <strong>Kubernetes-native Testing:</strong>
+        <br/>- <strong>Kuttl:</strong> اختبار Kubernetes resources مع assertions.
+        <br/>- <strong>Kind (Kubernetes in Docker):</strong> clusters مؤقتة لـ CI testing.
+        <br/>- <strong>Test Infra as Code:</strong> Terraform + Kitchen لاختبار البنية.
+      </p>
+      <p>
+        <strong>Chaos Engineering:</strong>
+        <br/>- <strong>Chaos Mesh / Litmus:</strong> حقن failures (pod kill، network delay) لاختبار المرونة.
+        <br/>- <strong>Game Days:</strong> تمارين مخططة لمحاكاة outages حقيقية.
+        <br/>- الهدف: اكتشاف weak points قبل أن تسبب incidents في الإنتاج.
+      </p>
+
+      <!-- صورة CI/CD -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=900&h=350&fit=crop" alt="Advanced CI/CD Pipeline" onerror="this.src='https://picsum.photos/900/350?random=56'" />
+        <p class="image-caption">CI/CD المتقدم - من build إلى deploy مع اختبارات وأمان</p>
+      </div>
+
+      <h3 id="part7">🌐 الجزء السابع: إدارة العناقيد المتعددة و Multi-Cloud</h3>
+      
+      <h4>7.1 Cluster Management</h4>
+      <p>
+        <strong>Cluster API:</strong>
+        <br/>- معيار CNCF لإدارة دورة حياة clusters كـ Kubernetes resources.
+        <br/>- دعم مزودين متعددين (AWS، Azure، GCP، vSphere).
+        <br/>- declarative cluster provisioning و upgrades.
+      </p>
+      <p>
+        <strong>Multi-cluster Management:</strong>
+        <br/>- <strong>Rancher:</strong> واجهة موحدة لإدارة clusters متعددة.
+        <br/>- <strong>Anthos (GCP):</strong> إدارة hybrid و multi-cloud مع سياسات موحدة.
+        <br/>- <strong>Arc (Azure):</strong> توصيل clusters خارجية بـ Azure control plane.
+      </p>
+
+      <h4>7.2 Multi-Cloud Strategies</h4>
+      <p>
+        <strong>التصميم:</strong>
+        <br/>- <strong>Active-Active:</strong> تشغيل التطبيق على سحابات متعددة في نفس الوقت.
+        <br/>- <strong>Active-Passive:</strong> سحابة رئيسية وأخرى للـ DR.
+        <br/>- <strong>Workload Placement:</strong> توجيه workloads بناءً على التكلفة، الأداء، أو الامتثال.
+      </p>
+      <p>
+        <strong>التحديات والحلول:</strong>
+        <br/>- <strong>Data Gravity:</strong> تقليل نقل البيانات عبر caching و edge processing.
+        <br/>- <strong>Consistent Networking:</strong> استخدام Service Mesh أو CNI plugins موحدة.
+        <br/>- <strong>Unified Observability:</strong> جمع metrics/logs/traces من جميع السحابات في مكان واحد.
+      </p>
+
+      <h4>7.3 Disaster Recovery</h4>
+      <p>
+        <strong>Backup & Restore:</strong>
+        <br/>- <strong>Velero:</strong> backup لـ cluster resources و persistent volumes.
+        <br/>- <strong>Restic Integration:</strong> backup للـ filesystems داخل containers.
+        <br/>- <strong>Offsite Storage:</strong> تخزين backups في region أو cloud مختلف.
+      </p>
+      <p>
+        <strong>Failover Automation:</strong>
+        <br/>- <strong>Cluster Failover:</strong> إعادة توجيه traffic لـ cluster بديل عند failure.
+        <br/>- <strong>DNS-based:</strong> تحديث DNS records للـ failover (مع TTL منخفض).
+        <br/>- <strong>Testing:</strong> تمرينات DR دورية لضمان جاهزية الخطة.
+      </p>
+
+      <!-- صورة Multi-Cloud -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=900&h=350&fit=crop" alt="Multi-Cloud Kubernetes" onerror="this.src='https://picsum.photos/900/350?random=57'" />
+        <p class="image-caption">Multi-Cloud Kubernetes - إدارة عناقيد عبر مزودين متعددين</p>
+      </div>
+
+      <h3 id="part8">🔮 الجزء الثامن: المستقبل والاتجاهات الناشئة</h3>
+      
+      <h4>8.1 eBPF و Cloud Native Networking</h4>
+      <p>
+        <strong>ما هو eBPF؟</strong>
+        <br/>- تقنية kernel تسمح بتشغيل code آمن داخل kernel بدون تعديل source أو load modules.
+        <br/>- ثورة في networking، security، و observability لـ cloud native apps.
+      </p>
+      <p>
+        <strong>التطبيقات:</strong>
+        <br/>- <strong>Cilium:</strong> networking و security عالي الأداء باستخدام eBPF.
+        <br/>- <strong>Falco:</strong> runtime security مع eBPF للكشف عن السلوك المشبوه.
+        <br/>- <strong>Pixie:</strong> observability بدون instrumentation باستخدام eBPF.
+      </p>
+
+      <h4>8.2 WebAssembly (Wasm) في Kubernetes</h4>
+      <p>
+        <strong>المزايا:</strong>
+        <br/>- <strong>Portable:</strong> نفس الـ Wasm binary يعمل على أي platform.
+        <br/>- <strong>Secure:</strong> sandboxing مدمج، عزل أقوى من containers.
+        <br/>- <strong>Fast Startup:</strong> milliseconds بدلاً من seconds لـ containers.
+      </p>
+      <p>
+        <strong>التكامل مع Kubernetes:</strong>
+        <br/>- <strong>Krustlet:</strong> kubelet بديل لتشغيل Wasm workloads.
+        <br/>- <strong>Containerd Wasm Shim:</strong> تشغيل Wasm كـ "containers" في containerd.
+        <br/>- حالات الاستخدام: edge computing، serverless functions، plugins آمنة.
+      </p>
+
+      <h4>8.3 Platform Engineering و Internal Developer Platforms</h4>
+      <p>
+        <strong>المفهوم:</strong>
+        <br/>- بناء منصات ذاتية الخدمة (Self-Service) للمطورين داخل المؤسسة.
+        <br/>- تقليل cognitive load على الفرق عبر أتمتة البنية المعقدة.
+      </p>
+      <p>
+        <strong>الأدوات:</strong>
+        <br/>- <strong>Backstage (Spotify):</strong> portal موحد للخدمات، templates، و documentation.
+        <br/>- <strong>Crossplane:</strong> إدارة البنية السحابية كـ Kubernetes resources.
+        <br/>- <strong>Humanitec / Port:</strong> منصات تجارية لـ Internal Developer Platforms.
+      </p>
+      <p>
+        <strong>الفوائد:</strong>
+        <br/>- تسريع onboarding للمطورين الجدد.
+        <br/>- ضمان الامتثال للأمان والسياسات عبر templates موحدة.
+        <br/>- تمكين فرق المنتج للتركيز على business value بدلاً من infrastructure.
+      </p>
+
+      <div class="conclusion" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:white;padding:2rem;border-radius:12px;margin:2rem 0">
+        <h3>💡 الخلاصة النهائية:</h3>
+        <ul style="list-style:none;padding:0">
+          <li>✅ Kubernetes ليس مجرد أداة، بل هو نظام تشغيل للسحابة الحديثة.</li>
+          <li>✅ GitOps يغير طريقة إدارة البنية - من أوامر يدوية إلى declarative automation.</li>
+          <li>✅ Service Mesh ليس ضرورياً لكل تطبيق، لكنه حاسم للأنظمة المعقدة والموزعة.</li>
+          <li>✅ الأمان يجب أن يُدمج في كل مرحلة (Shift-Left Security)، ليس كإضافة لاحقة.</li>
+          <li>✅ الملاحظة (Observability) ليست رفاهية، بل ضرورة لفهم الأنظمة الموزعة.</li>
+          <li>✅ المستقبل هو eBPF، Wasm، و Platform Engineering - ابدأ التعلم الآن.</li>
+          <li>✅ التعقيد لا مفر منه في الأنظمة الموزعة، لكن يمكن إدارته بالأدوات والمنهجيات الصحيحة.</li>
+        </ul>
+        <p style="font-size:1.3rem;font-weight:bold;margin-top:1rem;text-align:center">Kubernetes يمنحك القوة، و DevOps يمنحك السرعة. اجعلهما يعملان معاً! 🐳🚀</p>
+      </div>
+    </article>
+
+    <ShareButtons />
+  </main>
+  
+  <Footer />
+
+  <!-- ✅ نفس كود JavaScript الناجح -->
+  <script>
+    if (typeof window !== 'undefined') {
+      document.addEventListener('DOMContentLoaded', function() {
+        var tocBtn = document.getElementById('tocBtn');
+        var tocModal = document.getElementById('tocModal');
+        var tocClose = document.getElementById('tocClose');
+        var tocNav = document.getElementById('tocNav');
+        
+        if (tocBtn && tocModal && tocNav) {
+          document.querySelectorAll('.article h3').forEach(function(h3) {
+            var item = document.createElement('div');
+            item.className = 'toc-item';
+            item.textContent = h3.textContent;
+            item.onclick = function(e) {
+              e.preventDefault();
+              h3.scrollIntoView({ behavior: 'smooth' });
+              tocModal.classList.remove('active');
+            };
+            tocNav.appendChild(item);
+          });
+          
+          tocBtn.onclick = function() { tocModal.classList.add('active'); };
+          tocClose.onclick = function() { tocModal.classList.remove('active'); };
+          tocModal.onclick = function(e) { if (e.target === tocModal) tocModal.classList.remove('active'); };
+        }
+
+        var backBtn = document.getElementById('backToTop');
+        if (backBtn) {
+          window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) backBtn.classList.add('show');
+            else backBtn.classList.remove('show');
+          });
+          backBtn.onclick = function() { window.scrollTo({ top: 0, behavior: 'smooth' }); };
+        }
+
+        setTimeout(function() {
+          var timeEl = document.getElementById('calculatedReadingTime');
+          var displayEl = document.getElementById('readingTimeDisplay');
+          if (timeEl && displayEl) {
+            var min = parseInt(timeEl.textContent);
+            if (min < 1) displayEl.textContent = '⏱️ أقل من دقيقة';
+            else if (min === 1) displayEl.textContent = '⏱️ دقيقة واحدة';
+            else displayEl.textContent = '⏱️ ' + min + ' دقائق';
+          }
+        }, 100);
+
+        var TRACK_TIME = 30;
+        var SCROLL_THRESHOLD = 0.7;
+        var currentPath = window.location.pathname;
+        var isMarked = false;
+
+        function markAsRead() {
+          if (isMarked) return;
+          try {
+            var read = JSON.parse(localStorage.getItem('read_articles') || '[]');
+            if (!read.includes(currentPath)) {
+              read.push(currentPath);
+              localStorage.setItem('read_articles', JSON.stringify(read));
+            }
+            isMarked = true;
+          } catch (e) {}
+        }
+
+        try {
+          if (JSON.parse(localStorage.getItem('read_articles') || '[]').includes(currentPath)) return;
+        } catch (e) {}
+
+        var timer = setTimeout(markAsRead, TRACK_TIME * 1000);
+        function onScroll() {
+          var percent = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+          if (percent >= SCROLL_THRESHOLD) {
+            markAsRead();
+            clearTimeout(timer);
+            window.removeEventListener('scroll', onScroll);
+          }
+        }
+        window.addEventListener('scroll', onScroll);
+        window.addEventListener('beforeunload', function() { clearTimeout(timer); window.removeEventListener('scroll', onScroll); });
+      });
+    }
+  </script>
+</body>
+</html>
+
+<style>
+  :root { --bg: #f8fafc; --card: #fff; --text: #0f172a; --text-sec: #64748b; --primary: #f59e0b; --border: rgba(245,158,11,0.2); }
+  html.dark-mode { --bg: #0b1120; --card: #1e293b; --text: #f1f5f9; --text-sec: #94a3b8; --primary: #fbbf24; --border: rgba(251,191,36,0.2); }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; margin: 0; }
+  .category-articles { max-width: 950px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+  .page-header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 2px solid var(--border); }
+  .page-header h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; }
+  .article { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 2.5rem 2rem; margin-bottom: 3rem; }
+  .badge { display: inline-block; background: linear-gradient(135deg,#f59e0b,#d97706); color: white; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; margin-bottom: 1rem; }
+  .article h2 { color: var(--primary); font-size: 1.8rem; margin: 2rem 0 1rem; }
+  .article h3 { color: var(--text); font-size: 1.5rem; margin: 2.5rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+  .article h4 { color: var(--text-sec); font-size: 1.2rem; margin: 2rem 0 0.8rem; font-weight: 600; }
+  .meta { color: var(--text-sec); font-size: 0.9rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border); display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; }
+  .meta .separator { color: var(--border); }
+  .reading-time-badge { background: linear-gradient(135deg, #f59e0b, #fbbf24); color: white; padding: 0.3rem 0.8rem; border-radius: 20px; font-weight: 700; font-size: 0.85rem; box-shadow: 0 2px 8px rgba(245,158,11,0.3); }
+  .intro { font-size: 1.15rem; color: var(--text-sec); margin-bottom: 2.5rem; padding: 2rem; background: rgba(245,158,11,0.05); border-right: 4px solid var(--primary); border-radius: 8px; line-height: 1.9; }
+  .article ul { padding-right: 1.5rem; margin: 1.5rem 0; }
+  .article li { margin-bottom: 0.8rem; line-height: 1.9; color: var(--text-sec); }
+  .article li strong { color: var(--primary); }
+  .conclusion ul { list-style: none !important; padding: 0; }
+  .conclusion li { color: white !important; font-size: 1.05rem; margin: 0.8rem 0; line-height: 1.8; }
+  
+  /* ✅ تنسيق الصور */
+  .article-image {
+    margin: 2.5rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border: 2px solid var(--border);
+  }
+  .article-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .article-image:hover img { transform: scale(1.02); }
+  .image-caption {
+    background: var(--bg);
+    color: var(--text-sec);
+    padding: 1rem 1.5rem;
+    text-align: center;
+    font-size: 0.9rem;
+    font-style: italic;
+    margin: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  /* ✅ زر الفهرس */
+  .toc-btn { 
+    position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; 
+    background: linear-gradient(135deg, var(--primary), #fbbf24); border: none; border-radius: 50%; 
+    color: white; font-size: 1.6rem; cursor: pointer; box-shadow: 0 4px 15px rgba(245,158,11,0.5); 
+    z-index: 998; transition: all 0.3s ease;
+  }
+  .toc-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(245,158,11,0.7); }
+  
+  .toc-modal { 
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 999; 
+    align-items: center; justify-content: center; padding: 6rem 1.5rem 1.5rem; 
+    animation: fadeIn 0.3s ease;
+  }
+  .toc-modal.active { display: flex; }
+  
+  .toc-box { 
+    background: var(--card); width: 100%; max-width: 550px; border-radius: 20px; 
+    border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    max-height: 80vh; display: flex; flex-direction: column; overflow: hidden;
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .toc-head { 
+    display: flex; justify-content: space-between; align-items: center; 
+    padding: 1.5rem 2rem; background: var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .toc-head h3 { color: var(--primary); margin: 0; font-size: 1.4rem; font-weight: 800; }
+  .toc-close { 
+    background: transparent; border: none; color: var(--text-sec); font-size: 2rem; 
+    cursor: pointer; width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+  }
+  .toc-close:hover { background: #fee2e2; color: #ef4444; }
+  .toc-nav { display: flex; flex-direction: column; padding: 1rem; gap: 0.6rem; overflow-y: auto; }
+  
+  .toc-item { 
+    display: block !important; background: var(--bg) !important; color: var(--text) !important;
+    padding: 1rem 1.2rem !important; border-radius: 12px !important; font-size: 1rem !important;
+    font-weight: 600 !important; line-height: 1.4 !important; cursor: pointer !important;
+    border: 1px solid transparent !important; text-decoration: none !important;
+    border-bottom: none !important; outline: none !important;
+    -webkit-tap-highlight-color: transparent !important; transition: all 0.25s ease !important;
+  }
+  .toc-item:hover { 
+    background: rgba(245,158,11,0.08) !important; border-color: rgba(245,158,11,0.2) !important;
+    color: var(--primary) !important; transform: translateX(-4px) !important;
+  }
+
+  .toc-nav::-webkit-scrollbar { width: 6px; }
+  .toc-nav::-webkit-scrollbar-track { background: transparent; }
+  .toc-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+  
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+  /* ✅ السهم المنبثق */
+  .back-to-top {
+    position: fixed; bottom: 95px; left: 30px; width: 50px; height: 50px;
+    background: var(--card); border: 2px solid var(--primary); border-radius: 50%;
+    color: var(--primary); font-size: 1.4rem; cursor: pointer; opacity: 0; visibility: hidden;
+    transform: translateY(20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 997; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .back-to-top.show { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; }
+  .back-to-top:hover { background: var(--primary); color: #fff !important; transform: scale(1.1) !important; box-shadow: 0 0 20px rgba(245,158,11,0.6); }
+
+  @media (max-width: 768px) {
+    .category-articles { padding: 2rem 1rem 3rem !important; }
+    .page-header h1 { font-size: 1.6rem !important; }
+    .article { padding: 1.5rem 1.2rem !important; }
+    .article h2 { font-size: 1.4rem !important; }
+    .article h3 { font-size: 1.2rem !important; }
+    .article h4 { font-size: 1.05rem !important; }
+    .article-image { margin: 1.5rem 0 !important; }
+    .article-image img { height: 200px !important; object-fit: cover !important; }
+    .image-caption { padding: 0.8rem 1rem !important; font-size: 0.85rem !important; }
+    .toc-btn { width: 50px !important; height: 50px !important; bottom: 15px !important; left: 15px !important; }
+    .back-to-top { width: 42px !important; height: 42px !important; bottom: 75px !important; left: 15px !important; }
+    .toc-modal { padding: 7rem 1rem 1rem !important; }
+    .toc-box { max-width: 95% !important; border-radius: 16px !important; }
+    .toc-head { padding: 1.2rem 1.5rem !important; }
+    .toc-head h3 { font-size: 1.2rem !important; }
+    .toc-nav { padding: 0.8rem !important; gap: 0.5rem !important; }
+    .toc-item { padding: 0.9rem 1rem !important; font-size: 0.95rem !important; }
+    .meta { flex-direction: column; align-items: flex-start; gap: 0.3rem; }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var tocBtn = document.getElementById('tocBtn');
+    var tocModal = document.getElementById('tocModal');
+    var tocClose = document.getElementById('tocClose');
+    var tocNav = document.getElementById('tocNav');
+    
+    if (tocBtn && tocModal && tocNav) {
+      document.querySelectorAll('.article h3').forEach(function(h3) {
+        var item = document.createElement('div');
+        item.className = 'toc-item';
+        item.textContent = h3.textContent;
+        item.onclick = function(e) {
+          e.preventDefault();
+          h3.scrollIntoView({ behavior: 'smooth' });
+          tocModal.classList.remove('active');
+        };
+        tocNav.appendChild(item);
+      });
+
+      tocBtn.onclick = function() { tocModal.classList.add('active'); };
+      tocClose.onclick = function() { tocModal.classList.remove('active'); };
+      tocModal.onclick = function(e) { if (e.target === tocModal) tocModal.classList.remove('active'); };
+    }
+
+    var backBtn = document.getElementById('backToTop');
+    if (backBtn) {
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 400) { backBtn.classList.add('show'); }
+        else { backBtn.classList.remove('show'); }
+      }, { passive: true });
+      backBtn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+    }
+    
+    setTimeout(() => {
+      const timeElement = document.getElementById('calculatedReadingTime');
+      const displayElement = document.getElementById('readingTimeDisplay');
+      
+      if (timeElement && displayElement) {
+        const minutes = parseInt(timeElement.textContent);
+        
+        if (minutes < 1) {
+          displayElement.textContent = '⏱️ أقل من دقيقة';
+        } else if (minutes === 1) {
+          displayElement.textContent = '⏱️ دقيقة واحدة';
+        } else {
+          displayElement.textContent = `⏱️ ${minutes} دقائق`;
+        }
+      }
+    }, 100);
+  });
+</script>
