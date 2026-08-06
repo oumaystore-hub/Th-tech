@@ -24,12 +24,15 @@ export const description = "دليل من أساسيات السحابة إلى �
       <p>تصميم وبناء الأنظمة القابلة للتوسع والموثوقة في السحابة</p>
     </div>
 
+    <!-- ✅ أزرار التبويبات الثلاثة -->
     <div class="tabs-nav">
       <button class="tab-btn active" data-tab="basic">📜 أساسيات السحابة</button>
       <button class="tab-btn" data-tab="advanced">🚀 الهندسة المتقدمة</button>
+      <!-- ✅ التبويب الثالث الجديد -->
+      <button class="tab-btn" data-tab="kubernetes">🐳 Kubernetes و DevOps السحابي</button>
     </div>
 
-    <!-- ✅ التبويب الأول: الأساسيات -->
+    <!-- ✅ محتوى التبويب الأول: الأساسيات -->
     <div id="basic" class="tab-content active">
       <article class="article" id="art1">
         <span class="badge">مستوى أساسي</span>
@@ -69,13 +72,26 @@ export const description = "دليل من أساسيات السحابة إلى �
       </article>
     </div>
 
-    <!-- ✅ التبويب الثاني: زر ينتقل للمقال المتقدم -->
+    <!-- ✅ محتوى التبويب الثاني: الهندسة المتقدمة -->
     <div id="advanced" class="tab-content">
       <div style="text-align:center;padding:3rem 2rem">
         <h2 style="color:var(--primary);margin-bottom:1rem">☁️ هندسة السحابة المتقدمة</h2>
-        <p style="color:var(--text-sec);font-size:1.1rem;margin-bottom:2rem">مقال متعمق جداً (250 دقيقة) يغطي Kubernetes، Terraform، Serverless، و FinOps</p>
-        <a href="./advanced-cloud-guide/" style="display:inline-flex;align-items:center;gap:0.5rem;padding:1rem 2rem;background:var(--primary);color:white;border-radius:10px;text-decoration:none;font-weight:700;font-size:1.1rem">
+        <p style="color:var(--text-sec);font-size:1.1rem;margin-bottom:2rem">مقال متعمق يغطي Kubernetes، Terraform، Serverless، و FinOps</p>
+        <a href="/Th-tech/cloud/advanced-cloud-guide/" style="display:inline-flex;align-items:center;gap:0.5rem;padding:1rem 2rem;background:var(--primary);color:white;border-radius:10px;text-decoration:none;font-weight:700;font-size:1.1rem;transition:all 0.3s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 30px rgba(2,132,199,0.4)'" onmouseout="this.style.transform='none';this.style.boxShadow='none'">
           اقرأ الدليل المتقدم الكامل 📖
+        </a>
+      </div>
+    </div>
+
+    <!-- ✅ محتوى التبويب الثالث: Kubernetes و DevOps السحابي -->
+    <div id="kubernetes" class="tab-content">
+      <div style="text-align:center;padding:3rem 2rem">
+        <h2 style="color:var(--primary);margin-bottom:1rem">🐳 Kubernetes و DevOps السحابي</h2>
+        <p style="color:var(--text-sec);font-size:1.1rem;margin-bottom:2rem">
+          دليل عملي يشرح إدارة الحاويات، الأتمتة السحابية، CI/CD المتقدم، وبنية Microservices.
+        </p>
+        <a href="/Th-tech/cloud/kubernetes-devops-guide/" style="display:inline-flex;align-items:center;gap:0.5rem;padding:1rem 2rem;background:var(--primary);color:white;border-radius:10px;text-decoration:none;font-weight:700;font-size:1.1rem;transition:all 0.3s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 10px 30px rgba(2,132,199,0.4)'" onmouseout="this.style.transform='none';this.style.boxShadow='none'">
+          اقرأ دليل Kubernetes ←
         </a>
       </div>
     </div>
@@ -84,6 +100,28 @@ export const description = "دليل من أساسيات السحابة إلى �
   </main>
   
   <Footer />
+
+  <!-- ✅ كود JavaScript للتبويبات -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var tabs = document.querySelectorAll('.tab-btn');
+      var contents = document.querySelectorAll('.tab-content');
+      
+      tabs.forEach(function(tab) {
+        tab.addEventListener('click', function() {
+          tabs.forEach(function(t) { t.classList.remove('active'); });
+          contents.forEach(function(c) { c.classList.remove('active'); });
+          
+          tab.classList.add('active');
+          var targetId = tab.getAttribute('data-tab');
+          var targetContent = document.getElementById(targetId);
+          if (targetContent) {
+            targetContent.classList.add('active');
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
 
@@ -95,13 +133,18 @@ export const description = "دليل من أساسيات السحابة إلى �
   .page-header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 2px solid var(--border); }
   .page-header h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; }
   .page-header p { color: var(--text-sec); font-size: 1.1rem; }
-  .tabs-nav { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
-  .tab-btn { background: transparent; border: none; color: var(--text-sec); font-size: 1.1rem; font-weight: 600; padding: 0.8rem 1.5rem; cursor: pointer; border-radius: 8px 8px 0 0; transition: all 0.3s; }
+  
+  /* ✅ تنسيق التبويبات */
+  .tabs-nav { display: flex; gap: 1rem; margin-bottom: 2rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; overflow-x: auto; }
+  .tab-btn { background: transparent; border: none; color: var(--text-sec); font-size: 1.1rem; font-weight: 600; padding: 0.8rem 1.5rem; cursor: pointer; border-radius: 8px 8px 0 0; transition: all 0.3s; white-space: nowrap; }
   .tab-btn:hover { color: var(--primary); background: rgba(2,132,199,0.05); }
-  .tab-btn.active { color: var(--primary); background: var(--card); box-shadow: 0 -2px 0 var(--primary) inset; }
+  .tab-btn.active { color: var(--primary); background: var(--card); box-shadow: 0 -2px 0 var(--primary) inset; border-bottom: 2px solid var(--card); }
+  
+  /* ✅ تنسيق المحتويات */
   .tab-content { display: none; animation: fadeIn 0.4s ease; }
   .tab-content.active { display: block; }
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  
   .article { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 2.5rem 2rem; margin-bottom: 3rem; }
   .badge { display: inline-block; background: var(--primary); color: white; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; margin-bottom: 1rem; }
   .article h2 { color: var(--primary); font-size: 1.8rem; margin: 2rem 0 1rem; }
@@ -113,26 +156,12 @@ export const description = "دليل من أساسيات السحابة إلى �
   .article li strong { color: var(--primary); }
   .conclusion ul { list-style: none !important; padding: 0; }
   .conclusion li { color: white !important; font-size: 1.05rem; margin: 0.8rem 0; line-height: 1.8; }
+  
   @media (max-width: 768px) {
     .category-page { padding: 2rem 1rem 3rem !important; }
     .page-header h1 { font-size: 1.6rem !important; }
-    .tabs-nav { gap: 0.5rem; flex-direction: column; }
-    .tab-btn { font-size: 0.95rem; padding: 0.8rem; text-align: right; border-radius: 8px; }
+    .tabs-nav { gap: 0.5rem; flex-wrap: wrap; }
+    .tab-btn { font-size: 0.95rem; padding: 0.6rem 1rem; border-radius: 8px; }
     .article { padding: 1.5rem 1.2rem !important; }
   }
 </style>
-
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    var tabs = document.querySelectorAll('.tab-btn');
-    var contents = document.querySelectorAll('.tab-content');
-    tabs.forEach(function(tab) {
-      tab.addEventListener('click', function() {
-        tabs.forEach(function(t) { t.classList.remove('active'); });
-        contents.forEach(function(c) { c.classList.remove('active'); });
-        tab.classList.add('active');
-        document.getElementById(tab.dataset.tab).classList.add('active');
-      });
-    });
-  });
-</script>
