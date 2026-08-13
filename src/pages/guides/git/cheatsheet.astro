@@ -1,0 +1,1627 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+export const title = "الدليل الشامل لـ Git: من الأساسيات إلى الاحتراف";
+export const description = "دليل شامل يغطي Git من التثبيت وحتى الاحتراف، مع أمثلة عملية، نصائح متقدمة، وأفضل الممارسات";
+export const pubDate = "2026-08-13";
+---
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} - Th.Tech</title>
+  <meta name="description" content={description} />
+  <meta name="keywords" content="git, github, version control, إدارة النسخ, تطوير, برمجة" />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="article" />
+</head>
+<body>
+  <Header />
+
+  <main class="guide-article">
+    <!-- ✅ زر الفهرس المتوهج -->
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="8" y1="6" x2="21" y2="6"></line>
+        <line x1="8" y1="12" x2="21" y2="12"></line>
+        <line x1="8" y1="18" x2="21" y2="18"></line>
+        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+      </svg>
+    </button>
+    <div class="toc-modal" id="tocModal">
+      <div class="toc-box">
+        <div class="toc-head">
+          <h3>فهرس الدليل</h3>
+          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس">✕</button>
+        </div>
+        <nav class="toc-nav" id="tocNav"></nav>
+      </div>
+    </div>
+
+    <!-- ✅ السهم المنبثق -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="12" y1="19" x2="12" y2="5"></line>
+        <polyline points="5 12 12 5 19 12"></polyline>
+      </svg>
+    </button>
+
+    <div class="page-header">
+      <span class="badge">دليل شامل</span>
+      <h1>Git: من الأساسيات إلى الاحتراف</h1>
+      <p>الدليل الأكثر شمولاً لإتقان Git، أداة التحكم في النسخ الأكثر استخداماً في عالم البرمجة</p>
+      <div class="meta">
+        <span>📅 13 أغسطس 2026</span>
+        <span>⏱️ 25 دقيقة قراءة</span>
+        <span>📖 أكثر من 6000 كلمة</span>
+      </div>
+    </div>
+
+    <article class="article-content">
+      
+      <!-- المقدمة -->
+      <section id="intro" class="section">
+        <h2>مقدمة: لماذا Git؟</h2>
+        <p>
+          في عالم البرمجة الحديث، أصبح نظام التحكم في النسخ (Version Control) أداة لا غنى عنها لكل مطور محترف. وGit، الذي طوره <strong>لينوس تورفالدز</strong> (مؤسس نواة Linux) في عام 2005، يعتبر المعيار الذهبي في هذا المجال. يستخدمه الملايين حول العالم، من المطورين الفرديين إلى فرق العمل الضخمة في شركات مثل Google وFacebook وMicrosoft.
+        </p>
+        
+        <figure class="article-image">
+          <img src="/guides/git/git-overview.png" alt="مخطط يوضح كيف يعمل Git في إدارة النسخ" loading="lazy" />
+          <figcaption>مخطط يوضح البنية الأساسية لـ Git وكيفية إدارة النسخ</figcaption>
+        </figure>
+
+        <p>
+          Git ليس مجرد أداة لحفظ النسخ الاحتياطية، بل هو نظام متكامل يدير تاريخ مشروعك بالكامل. يتيح لك تتبع كل تغيير، التعاون مع آخرين بسلاسة، التراجع عن الأخطاء بسهولة، وتجربة أفكار جديدة دون المخاطرة بكودك الرئيسي. في هذا الدليل الشامل، سنغوص في كل جانب من جوانب Git، من المفاهيم الأساسية إلى التقنيات المتقدمة التي يستخدمها المحترفون.
+        </p>
+      </section>
+
+      <!-- القسم الأول: التثبيت والإعداد -->
+      <section id="setup" class="section">
+        <h2>القسم الأول: التثبيت والإعداد الأولي</h2>
+        
+        <h3>1.1 تثبيت Git على مختلف الأنظمة</h3>
+        <p>
+          الخطوة الأولى هي تثبيت Git على جهازك. العملية تختلف قليلاً حسب نظام التشغيل، لكنها بسيطة في جميع الحالات. إليك الدليل التفصيلي لكل نظام:
+        </p>
+
+        <h4>🪟 نظام Windows</h4>
+        <p>
+          لتثبيت Git على Windows، انتقل إلى الموقع الرسمي <code>git-scm.com</code> وقم بتنزيل المثبت. أثناء التثبيت، ستظهر لك عدة خيارات. إليك الإعدادات الموصى بها:
+        </p>
+        
+        <ul>
+          <li><strong>Editor:</strong> اختر VS Code أو أي محرر تفضله بدلاً من Vim الافتراضي.</li>
+          <li><strong>Branch naming:</strong> اترك الإعداد الافتراضي (main).</li>
+          <li><strong>PATH environment:</strong> اختر "Git from the command line and also from 3rd-party software" لاستخدام Git من أي موجه أوامر.</li>
+          <li><strong>SSH:</strong> استخدم OpenSSH المدمج.</li>
+          <li><strong>HTTPS:</strong> استخدم Git Credential Manager لتخزين بيانات الدخول بأمان.</li>
+        </ul>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">terminal</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># بعد التثبيت، تأكد من نجاح العملية
+git --version
+# يجب أن يظهر رقم الإصدار، مثال: git version 2.45.0</code></pre>
+        </div>
+
+        <figure class="article-image">
+          <img src="/guides/git/git-windows-setup.png" alt="شاشة تثبيت Git على Windows" loading="lazy" />
+          <figcaption>خيارات التثبيت الموصى بها على Windows</figcaption>
+        </figure>
+
+        <h4>🐧 نظام Linux (Ubuntu/Debian)</h4>
+        <p>
+          على أنظمة Linux، عادة ما يمكنك تثبيت Git عبر مدير الحزم. إليك الأوامر لأنظمة Debian/Ubuntu:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># تحديث قائمة الحزم
+sudo apt update
+
+# تثبيت Git
+sudo apt install git
+
+# التحقق من التثبيت
+git --version</code></pre>
+        </div>
+
+        <h4>🍎 نظام macOS</h4>
+        <p>
+          على macOS، يمكنك تثبيت Git بعدة طرق. الطريقة الأسهل هي استخدام Homebrew:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># تثبيت Homebrew أولاً (إذا لم يكن مثبتاً)
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# تثبيت Git عبر Homebrew
+brew install git
+
+# التحقق
+git --version</code></pre>
+        </div>
+
+        <h3>1.2 الإعدادات الأساسية</h3>
+        <p>
+          بعد التثبيت، يجب إعداد Git بمعلوماتك الشخصية. هذه المعلومات ستظهر في كل commit تقوم به، وهي ضرورية للتعاون مع الفريق:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># إعداد الاسم
+git config --global user.name "اسمك الكامل"
+
+# إعداد البريد الإلكتروني (استخدم نفس البريد المسجل في GitHub)
+git config --global user.email "your.email@example.com"
+
+# التحقق من الإعدادات
+git config --list</code></pre>
+        </div>
+
+        <div class="tip-box">
+          <span class="tip-icon">💡</span>
+          <div class="tip-content">
+            <strong>نصيحة مهمة:</strong> استخدم <code>--global</code> لإعداد Git مرة واحدة لجميع المشاريع. إذا أردت إعداداً خاصاً بمشروع محدد، احذف <code>--global</code> ونفذ الأمر داخل مجلد المشروع.
+          </div>
+        </div>
+
+        <figure class="article-image">
+          <img src="/guides/git/git-config-setup.png" alt="إعدادات Git الأساسية" loading="lazy" />
+          <figcaption>إعدادات Git الأساسية التي يجب ضبطها قبل البدء</figcaption>
+        </figure>
+
+        <h3>1.3 الإعدادات المتقدمة الموصى بها</h3>
+        <p>
+          إليك مجموعة من الإعدادات التي يحسن ضبطها لتسهيل العمل:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># تلوين مخرجات Git
+git config --global color.ui auto
+
+# محرر النصوص الافتراضي
+git config --global core.editor "code --wait"
+
+# أداة دمج الفروع الافتراضية
+git config --global init.defaultBranch main
+
+# استخدام rebase عند السحب
+git config --global pull.rebase true
+
+# ضغط الملفات الكبيرة
+git config --global core.compression 9</code></pre>
+        </div>
+      </section>
+
+      <!-- القسم الثاني: المفاهيم الأساسية -->
+      <section id="concepts" class="section">
+        <h2>القسم الثاني: فهم البنية الأساسية لـ Git</h2>
+        
+        <p>
+          قبل البدء باستخدام الأوامر، من المهم فهم كيف يعمل Git داخلياً. هذا الفهم سيساعدك على استيعاب لماذا تتصرف الأوامر بطريقة معينة، وكيفية حل المشاكل المعقدة.
+        </p>
+
+        <h3>2.1 مناطق العمل الثلاث</h3>
+        <p>
+          يعمل Git بنظام ثلاث مناطق رئيسية. فهم هذه المناطق هو مفتاح إتقان Git:
+        </p>
+
+        <figure class="article-image">
+          <img src="/guides/git/git-three-areas.png" alt="المناطق الثلاث في Git" loading="lazy" />
+          <figcaption>المناطق الثلاث في Git: Working Directory، Staging Area، Repository</figcaption>
+        </figure>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-icon">📁</div>
+            <h4>Working Directory</h4>
+            <p>
+              مجلد عملك الحالي حيث تقوم بتحرير الملفات. هنا تكتب الكود وتعدل الملفات. أي تغيير هنا لا يتم تتبعه تلقائياً.
+            </p>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">📋</div>
+            <h4>Staging Area (Index)</h4>
+            <p>
+              منطقة تحضيرية بين مجلد العمل والمستودع. هنا تختار التغييرات التي تريد تضمينها في الـ commit القادم. تعمل كقائمة مراجعة قبل الحفظ.
+            </p>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">🗄️</div>
+            <h4>Repository (Local)</h4>
+            <p>
+              المستودع المحلي حيث يتم حفظ تاريخ المشروع بالكامل. كل commit يُحفظ هنا مع معلوماته الكاملة. يحتوي على جميع الفروع والتاريخ.
+            </p>
+          </div>
+        </div>
+
+        <h3>2.2 كيف يعمل Git داخلياً</h3>
+        <p>
+          يستخدم Git نموذجاً مختلفاً عن أنظمة التحكم في النسخ الأخرى. بدلاً من تخزين الفروقات بين النسخ، يقوم Git بتخزين "لحظات" (Snapshots) كاملة للمشروع في كل commit. هذا التصميم يجعل العديد من العمليات سريعة جداً.
+        </p>
+
+        <p>
+          عند إنشاء commit، يقوم Git بـ:
+        </p>
+        <ol>
+          <li>حساب hash (SHA-1) لكل ملف في المشروع.</li>
+          <li>تخزين المحتوى الفريد في قاعدة بيانات الكائنات.</li>
+          <li>إنشاء كائن commit يشير إلى snapshot الحالي.</li>
+          <li>ربط commit الجديد بـ commit السابق (parent).</li>
+        </ol>
+
+        <figure class="article-image">
+          <img src="/guides/git/git-internal-structure.png" alt="البنية الداخلية لـ Git" loading="lazy" />
+          <figcaption>كيف يخزن Git البيانات: كائنات Blobs، Trees، Commits</figcaption>
+        </figure>
+
+        <h3>2.3 مصطلحات أساسية يجب معرفتها</h3>
+        <div class="glossary-grid">
+          <div class="glossary-item">
+            <span class="term">Repository</span>
+            <span class="def">قاعدة بيانات تحتوي على كامل تاريخ المشروع</span>
+          </div>
+          <div class="glossary-item">
+            <span class="term">Commit</span>
+            <span class="def">لقطة محفوظة من المشروع مع رسالة وصفية</span>
+          </div>
+          <div class="glossary-item">
+            <span class="term">Branch</span>
+            <span class="def">مسار تطور مستقل للمشروع</span>
+          </div>
+          <div class="glossary-item">
+            <span class="term">Merge</span>
+            <span class="def">دمج تغييرات من فرع إلى آخر</span>
+          </div>
+          <div class="glossary-item">
+            <span class="term">Remote</span>
+            <span class="def">نسخة من المستودع على خادم بعيد</span>
+          </div>
+          <div class="glossary-item">
+            <span class="term">Clone</span>
+            <span class="def">نسخ مستودع بعيد إلى جهازك المحلي</span>
+          </div>
+          <div class="glossary-item">
+            <span class="term">Fetch</span>
+            <span class="def">جلب التغييرات من البعيد بدون دمج</span>
+          </div>
+          <div class="glossary-item">
+            <span class="term">Pull</span>
+            <span class="def">Fetch + Merge في عملية واحدة</span>
+          </div>
+          <div class="glossary-item">
+            <span class="term">Push</span>
+            <span class="def">رفع commits المحلية إلى البعيد</span>
+          </div>
+          <div class="glossary-item">
+            <span class="term">Stash</span>
+            <span class="def">حفظ مؤقت للتغييرات غير المحفوظة</span>
+          </div>
+          <div class="glossary-item">
+            <span class="term">Rebase</span>
+            <span class="def">إعادة تطبيق commits على أساس جديد</span>
+          </div>
+          <div class="glossary-item">
+            <span class="term">Cherry-pick</span>
+            <span class="def">تطبيق commit محدد من فرع آخر</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- القسم الثالث: البدء بالمشروع -->
+      <section id="starting" class="section">
+        <h2>القسم الثالث: البدء بمشروع جديد</h2>
+        
+        <h3>3.1 إنشاء مستودع جديد</h3>
+        <p>
+          هناك طريقتان رئيسيتان للبدء بـ Git: إنشاء مستودع جديد من الصفر، أو نسخ مستودع موجود.
+        </p>
+
+        <h4>إنشاء مستودع جديد (Init)</h4>
+        <p>
+          لإنشاء مستودع Git في مجلد موجود:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># انتقل إلى مجلد مشروعك
+cd path/to/your/project
+
+# إنشاء مستودع Git جديد
+git init
+
+# التحقق من إنشاء المجلد المخفي .git
+ls -la | grep .git</code></pre>
+        </div>
+
+        <p>
+          أمر <code>git init</code> ينشئ مجلداً مخفياً اسمه <code>.git</code> يحتوي على كامل البنية التحتية للمستودع. هذا المجلد هو "عقل" Git، ويحتوي على جميع commits، الفروع، والإعدادات.
+        </p>
+
+        <figure class="article-image">
+          <img src="/guides/git/git-init-folder.png" alt="محتويات مجلد .git" loading="lazy" />
+          <figcaption>البنية الداخلية لمجلد .git بعد التهيئة</figcaption>
+        </figure>
+
+        <h3>3.2 إنشاء ملف .gitignore</h3>
+        <p>
+          ملف <code>.gitignore</code> يخبر Git بتجاهل ملفات ومجلدات معينة. هذا ضروري لمنع ملفات غير ضرورية من الدخول في تاريخ المشروع:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># إنشاء ملف .gitignore
+touch .gitignore
+
+# أو استخدم محرر النصوص
+code .gitignore</code></pre>
+        </div>
+
+        <p>محتوى نموذجي لـ .gitignore:</p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">.gitignore</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># مجلدات النظام
+.DS_Store
+Thumbs.db
+
+# مجلدات Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ملفات البيئة
+.env
+.env.local
+.env.*.local
+
+# مجلدات البناء
+dist/
+build/
+*.min.js
+*.min.css
+
+# محررات النصوص
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ملفات السجلات
+*.log
+logs/
+
+# ملفات مؤقتة
+*.tmp
+*.temp</code></pre>
+        </div>
+
+        <div class="tip-box">
+          <span class="tip-icon"></span>
+          <div class="tip-content">
+            <strong>مورد مفيد:</strong> زُر <code>gitignore.io</code> لإنشاء ملفات .gitignore جاهزة لأنواع مشاريع مختلفة. فقط اكتب اسم التقنية (Node, Python, Laravel, إلخ) وسيقوم الموقع بإنشاء الملف لك.
+          </div>
+        </div>
+
+        <h3>3.3 النسخ من مستودع بعيد (Clone)</h3>
+        <p>
+          للانضمام لمشروع موجود أو العمل على كود مفتوح المصدر:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># نسخ مستودع عبر HTTPS
+git clone https://github.com/username/repository.git
+
+# نسخ مستودع عبر SSH (موصى به)
+git clone git@github.com:username/repository.git
+
+# نسخ مع تحديد اسم المجلد
+git clone https://github.com/username/repo.git my-project
+
+# نسخ فرع محدد فقط
+git clone --branch develop https://github.com/username/repo.git</code></pre>
+        </div>
+
+        <figure class="article-image">
+          <img src="/guides/git/git-clone-diagram.png" alt="عملية Git clone" loading="lazy" />
+          <figcaption>كيف تعمل عملية Git Clone</figcaption>
+        </figure>
+      </section>
+
+      <!-- القسم الرابع: العمل اليومي -->
+      <section id="daily-work" class="section">
+        <h2>القسم الرابع: دورة العمل اليومية</h2>
+        
+        <p>
+          دورة العمل اليومية في Git تتبع نمطاً متكرراً: تعديل الملفات، إضافتها للمرحلة التحضيرية، ثم عمل commit. هذا القسم يشرح كل خطوة بالتفصيل مع أمثلة عملية.
+        </p>
+
+        <h3>4.1 التحقق من حالة المشروع (Status)</h3>
+        <p>
+          أول أمر يجب استخدامه قبل أي شيء آخر هو <code>git status</code>. هذا الأمر يخبرك بحالة جميع الملفات:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># عرض الحالة المفصلة
+git status
+
+# عرض مختصر
+git status -s</code></pre>
+        </div>
+
+        <p>مخرجات <code>git status -s</code> تستخدم رموزاً مختصرة:</p>
+        <ul>
+          <li><code>??</code> - ملف جديد غير متابع</li>
+          <li><code>A</code> - ملف مُضاف للمرحلة التحضيرية</li>
+          <li><code>M</code> - ملف مُعدّل</li>
+          <li><code>MM</code> - الملف في المرحلة التحضيرية ومُعدّل مرة أخرى</li>
+          <li><code>D</code> - ملف محذوف</li>
+          <li><code>R</code> - ملف أعيد تسميته</li>
+        </ul>
+
+        <h3>4.2 إضافة الملفات للمرحلة التحضيرية (Stage)</h3>
+        <p>
+          المرحلة التحضيرية (Staging) هي ما يميز Git عن غيره. هنا تختار بالضبط ما تريد تضمينه في commit القادم:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># إضافة ملف محدد
+git add filename.js
+
+# إضافة جميع الملفات المعدلة والجديدة
+git add .
+
+# إضافة جميع الملفات المعدلة فقط (لا يشمل الجديدة)
+git add -u
+
+# إضافة ملفات محددة بنمط
+git add *.js
+git add src/**/*.ts
+
+# إضافة تفاعلية (اختيار أجزاء محددة من ملف)
+git add -p
+
+# إزالة ملف من المرحلة التحضيرية
+git reset HEAD filename.js</code></pre>
+        </div>
+
+        <figure class="article-image">
+          <img src="/guides/git/git-add-interactive.png" alt="إضافة تفاعلية مع git add -p" loading="lazy" />
+          <figcaption>إضافة تفاعلية تسمح لك باختيار أجزاء محددة من التغييرات</figcaption>
+        </figure>
+
+        <h3>4.3 حفظ التغييرات (Commit)</h3>
+        <p>
+          الـ commit هو لقطة محفوظة من المشروع. كل commit له hash فريد، رسالة وصفية، وتاريخ:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># commit مع رسالة مباشرة
+git commit -m "feat: add user authentication module"
+
+# commit سريع للإضافات المعدلة فقط (بدون git add)
+git commit -am "fix: resolve login bug"
+
+# تعديل آخر commit
+git commit --amend -m "feat: add user authentication module with tests"
+
+# commit مع تفصيل أكثر
+git commit -m "feat: add user authentication" -m "This includes:
+- Login endpoint
+- JWT token generation
+- Password hashing
+- Unit tests"</code></pre>
+        </div>
+
+        <div class="tip-box">
+          <span class="tip-icon">📝</span>
+          <div class="tip-content">
+            <strong>اتفاقية Conventional Commits:</strong> استخدم صيغة موحدة لرسائل commits:
+            <code>type(scope): description</code>
+            <br><br>
+            الأنواع الشائعة:<br>
+            • <code>feat:</code> ميزة جديدة<br>
+            • <code>fix:</code> إصلاح خطأ<br>
+            • <code>docs:</code> توثيق فقط<br>
+            • <code>style:</code> تنسيق الكود<br>
+            • <code>refactor:</code> إعادة هيكلة<br>
+            • <code>test:</code> إضافة أو تعديل اختبارات<br>
+            • <code>chore:</code> مهام صيانة
+          </div>
+        </div>
+
+        <h3>4.4 عرض التاريخ (Log)</h3>
+        <p>
+          لعرض سجل commits مع تفاصيل مختلفة:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># سجل commits الكامل
+git log
+
+# سجل مختصر (سطر واحد لكل commit)
+git log --oneline
+
+# سجل مع الرسم البياني للفروع
+git log --oneline --graph --all
+
+# آخر 10 commits
+git log -n 10
+
+# commits منذ تاريخ معين
+git log --since="2024-01-01" --until="2024-12-31"
+
+# commits لمؤلف معين
+git log --author="username"
+
+# commits تحتوي كلمة في الرسالة
+git log --grep="authentication"
+
+# commits في ملف محدد
+git log -- path/to/file.js
+
+# إحصائيات commits
+git log --stat
+
+# عرض التغييرات في كل commit
+git log -p
+
+# تنسيق مخصص
+git log --pretty=format:"%h - %an, %ar : %s"</code></pre>
+        </div>
+
+        <figure class="article-image">
+          <img src="/guides/git/git-log-graph.png" alt="عرض رسومي لـ Git log" loading="lazy" />
+          <figcaption>عرض رسومي لتاريخ commits والفروع باستخدام git log --graph</figcaption>
+        </figure>
+      </section>
+
+      <!-- القسم الخامس: الفروع -->
+      <section id="branches" class="section">
+        <h2>القسم الخامس: الفروع (Branches) - القوة الحقيقية لـ Git</h2>
+        
+        <p>
+          الفروع هي أحد أقوى ميزات Git. تسمح لك بتطوير ميزات جديدة، إصلاح الأخطاء، أو تجربة أفكار دون التأثير على الكود الرئيسي. كل فرع هو مسار تطور مستقل.
+        </p>
+
+        <h3>5.1 مفهوم الفروع</h3>
+        <p>
+          في Git، الفرع هو مجرد مؤشر (pointer) إلى commit معين. عندما تنشئ فرعاً جديداً، Git لا ينسخ الملفات، بل ينشئ مؤشراً جديداً يشير إلى نفس commit الحالي. هذا يجعل إنشاء الفروع سريعاً جداً (أجزاء من الثانية).
+        </p>
+
+        <figure class="article-image">
+          <img src="/guides/git/git-branches-concept.png" alt="مفهوم الفروع في Git" loading="lazy" />
+          <figcaption>كيف تعمل الفروع في Git: مجرد مؤشرات تتحرك مع كل commit</figcaption>
+        </figure>
+
+        <h3>5.2 إنشاء والتبديل بين الفروع</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># إنشاء فرع جديد
+git branch feature-login
+
+# التبديل لفرع آخر
+git checkout feature-login
+
+# أو الطريقة الأحدث (Git 2.23+)
+git switch feature-login
+
+# إنشاء فرع والتبديل إليه فوراً
+git checkout -b feature-login
+# أو
+git switch -c feature-login
+
+# إنشاء فرع من commit معين
+git checkout -b feature-from-hash a1b2c3d
+
+# عرض جميع الفروع المحلية
+git branch
+
+# عرض جميع الفروع (محلية وبعيدة)
+git branch -a
+
+# عرض الفرع الحالي
+git branch --show-current
+
+# حذف فرع محلي
+git branch -d feature-login
+
+# حذف فرع بالقوة (حتى لو لم يُدمج)
+git branch -D feature-login
+
+# إعادة تسمية فرع
+git branch -m old-name new-name</code></pre>
+        </div>
+
+        <h3>5.3 دمج الفروع (Merge)</h3>
+        <p>
+          عندما تنتهي من عملك في فرع وتريد دمج تغييراتك مع الفرع الرئيسي:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># التبديل للفرع المستهدف
+git checkout main
+# أو
+git switch main
+
+# سحب آخر التحديثات
+git pull origin main
+
+# دمج الفرع
+git merge feature-login
+
+# دمج بدون fast-forward (لحفظ تاريخ الفرع)
+git merge --no-ff feature-login
+
+# دمج مع squashing (دمج كل commits في واحد)
+git merge --squash feature-login</code></pre>
+        </div>
+
+        <figure class="article-image">
+          <img src="/guides/git/git-merge-diagram.png" alt="عملية Git merge" loading="lazy" />
+          <figcaption>كيف يعمل دمج الفروع في Git</figcaption>
+        </figure>
+
+        <h3>5.4 حل تعارضات الدمج (Merge Conflicts)</h3>
+        <p>
+          التعارضات تحدث عندما يعدل فرعان نفس السطور في نفس الملف. Git يتوقف ويطلب منك الحل يدوياً:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">text</span>
+          </div>
+          <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+هذا الكود من الفرع الحالي (main)
+=======
+هذا الكود من الفرع المدمج (feature)
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-login</code></pre>
+        </div>
+
+        <p>لحل التعارض:</p>
+        <ol>
+          <li>افتح الملف في المحرر.</li>
+          <li>ابحث عن علامات التعارض (<code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>).</li>
+          <li>اختر الكود الصحيح أو ادمج الاثنين.</li>
+          <li>احذف علامات التعارض.</li>
+          <li>احفظ الملف.</li>
+          <li>أضف الملف: <code>git add filename</code></li>
+          <li>أكمل الدمج: <code>git commit</code></li>
+        </ol>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># بعد حل التعارضات يدوياً
+git add .
+git commit -m "fix: resolve merge conflicts"
+
+# أو إلغاء الدمج والعودة للحالة السابقة
+git merge --abort</code></pre>
+        </div>
+
+        <h3>5.5 Rebase: بديل الدمج</h3>
+        <p>
+          الـ rebase يعيد تطبيق commits فرعك على أساس فرع آخر، مما يخلق تاريخاً خطياً أنظف:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># rebase على الفرع الرئيسي
+git checkout feature-login
+git rebase main
+
+# rebase تفاعلي (لإعادة ترتيب أو تعديل commits)
+git rebase -i HEAD~5
+
+# إلغاء rebase جاري
+git rebase --abort
+
+# متابعة rebase بعد حل التعارضات
+git rebase --continue</code></pre>
+        </div>
+
+        <figure class="article-image">
+          <img src="/guides/git/git-rebase-vs-merge.png" alt="الفرق بين merge و rebase" loading="lazy" />
+          <figcaption>الفرق بين Git Merge و Git Rebase في عرض التاريخ</figcaption>
+        </figure>
+
+        <div class="warning-box">
+          <span class="warning-icon">⚠️</span>
+          <div class="warning-content">
+            <strong>قاعدة ذهبية:</strong> لا تقم بـ rebase على فرع شاركه مع آخرين أو رُفع إلى البعيد. الـ rebase يغير تاريخ commits، مما يسبب مشاكل للفريق. استخدمه فقط على الفروع المحلية.
+          </div>
+        </div>
+      </section>
+
+      <!-- القسم السادس: العمل مع البعيد -->
+      <section id="remote" class="section">
+        <h2>القسم السادس: العمل مع المستودعات البعيدة</h2>
+        
+        <p>
+          Git موزع بطبيعته، مما يعني أن كل نسخة محلية هي مستودع كامل. لكن التعاون يتطلب مستودعات بعيدة (GitHub, GitLab, Bitbucket). هذا القسم يشرح كيفية التفاعل معها.
+        </p>
+
+        <h3>6.1 إعداد المستودع البعيد</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># إضافة مستودع بعيد
+git remote add origin https://github.com/username/repo.git
+
+# عرض المستودعات البعيدة
+git remote -v
+
+# تغيير رابط مستودع بعيد
+git remote set-url origin https://github.com/username/new-repo.git
+
+# إزالة مستودع بعيد
+git remote remove origin
+
+# فحص مستودع بعيد
+git remote show origin</code></pre>
+        </div>
+
+        <h3>6.2 السحب والرفع (Push & Pull)</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># رفع الفرع الحالي إلى البعيد لأول مرة
+git push -u origin main
+
+# رفع عادي
+git push
+
+# رفع فرع محدد
+git push origin feature-login
+
+# رفع مع تعيين upstream
+git push --set-upstream origin feature-login
+
+# سحب التحديثات ودمجها
+git pull
+
+# سحب تحديثات فقط بدون دمج
+git fetch
+
+# سحب وتحديث كل الفروع
+git fetch --all
+
+# رفع بالقوة (استخدم بحذر!)
+git push --force
+# أو الأكثر أماناً
+git push --force-with-lease
+
+# حذف فرع بعيد
+git push origin --delete feature-login</code></pre>
+        </div>
+
+        <figure class="article-image">
+          <img src="/guides/git/git-push-pull.png" alt="عملية push و pull" loading="lazy" />
+          <figcaption>كيف تتم عملية Push و Pull بين المحلي والبعيد</figcaption>
+        </figure>
+
+        <h3>6.3 Pull Requests / Merge Requests</h3>
+        <p>
+          Pull Request (PR) هو طلب لدمج تغييراتك مع فرع آخر (عادة main). هذه العملية أساسية في العمل الجماعي:
+        </p>
+        
+        <ol>
+          <li>أنشئ فرعاً جديداً للميزة: <code>git checkout -b feature-login</code></li>
+          <li>قم بتطوير الميزة وعمل commits.</li>
+          <li>ارفع الفرع: <code>git push origin feature-login</code></li>
+          <li>افتح PR على GitHub/GitLab.</li>
+          <li>انتظر مراجعة الفريق (Code Review).</li>
+          <li>عالج أي ملاحظات.</li>
+          <li>عند الموافقة، يتم الدمج (Merge).</li>
+          <li>احذف الفرع: <code>git branch -d feature-login</code></li>
+        </ol>
+
+        <div class="tip-box">
+          <span class="tip-icon">🤝</span>
+          <div class="tip-content">
+            <strong>أفضل ممارسات Pull Requests:</strong><br>
+            • اجعل PR صغيراً ومركزاً على مهمة واحدة.<br>
+            • اكتب وصفاً واضحاً يشرح التغييرات.<br>
+            • أضف لقطات شاشة للتغييرات البصرية.<br>
+            • ربط PR بالتذاكر (Issues/Tickets).<br>
+            • راجع الكود بنفسك قبل طلب المراجعة.<br>
+            • ابقَ متجاوباً مع ملاحظات المراجعين.
+          </div>
+        </div>
+      </section>
+
+      <!-- القسم السابع: التراجع والإصلاح -->
+      <section id="undo-fix" class="section">
+        <h2>القسم السابع: التراجع عن الأخطاء وإصلاح المشاكل</h2>
+        
+        <p>
+          كل مطور يرتكب أخطاء. Git يوفر أدوات قوية للتراجع والإصلاح. هذا القسم يشرح كيفية التعامل مع المواقف الصعبة.
+        </p>
+
+        <h3>7.1 التراجع عن تغييرات غير محفوظة</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># استعادة ملف إلى حالته في آخر commit
+git checkout -- filename.js
+# أو
+git restore filename.js
+
+# استعادة جميع الملفات
+git checkout -- .
+# أو
+git restore .
+
+# إزالة ملفات غير متباعة من مجلد العمل
+git clean -n    # عرض ما سيُحذف
+git clean -f    # حذف فعلي
+git clean -fd   # حذف ملفات ومجلدات</code></pre>
+        </div>
+
+        <h3>7.2 التراجع عن commits</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># التراجع عن آخر commit مع حفظ التغييرات في working directory
+git reset --soft HEAD~1
+
+# التراجع مع إبقاء التغييرات في staging
+git reset --mixed HEAD~1  # (افتراضي)
+
+# التراجع الكامل وحذف التغييرات
+git reset --hard HEAD~1
+
+# إنشاء commit جديد يعكس commit سابق (آمن للتعاون)
+git revert &lt;commit-hash&gt;
+
+# التراجع عن revert
+git revert --no-commit HEAD</code></pre>
+        </div>
+
+        <figure class="article-image">
+          <img src="/guides/git/git-reset-revert.png" alt="الفرق بين reset و revert" loading="lazy" />
+          <figcaption>الفرق بين git reset و git revert</figcaption>
+        </figure>
+
+        <h3>7.3 البحث والتنقيب (Bisect)</h3>
+        <p>
+          أمر <code>git bisect</code> يساعدك في إيجاد commit الذي أدخل خطأً معيناً:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># بدء البحث
+git bisect start
+
+# تحديد commit يعرف أنه جيد
+git bisect good a1b2c3d
+
+# تحديد commit يعرف أنه سيء
+git bisect bad HEAD
+
+# Git سينقلك لمنتصف المسار، اختبر الكود ثم:
+git bisect good   # إذا كان يعمل
+# أو
+git bisect bad    # إذا كان به خطأ
+
+# كرر حتى يجد Git commit المشكلة
+
+# إنهاء البحث
+git bisect reset</code></pre>
+        </div>
+
+        <h3>7.4 استعادة ملفات محذوفة</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># استعادة ملف من commit معين
+git checkout &lt;commit-hash&gt; -- filename.js
+
+# أو
+git restore --source=&lt;commit-hash&gt; filename.js
+
+# استعادة مجلد كامل
+git checkout &lt;commit-hash&gt; -- folder/</code></pre>
+        </div>
+      </section>
+
+      <!-- القسم الثامن: أدوات متقدمة -->
+      <section id="advanced" class="section">
+        <h2>القسم الثامن: أدوات متقدمة للمحترفين</h2>
+        
+        <h3>8.1 Stash: حفظ مؤقت للتغييرات</h3>
+        <p>
+          Stash يسمح لك بحفظ التغييرات مؤقتاً والعودة لمجالد عمل نظيف:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># حفظ التغييرات مؤقتاً
+git stash
+
+# حفظ مع رسالة
+git stash save "work in progress on feature"
+
+# عرض كل stashes
+git stash list
+
+# استعادة آخر stash
+git stash pop
+
+# استعادة دون حذف من القائمة
+git stash apply
+
+# استعادة stash محدد
+git stash apply stash@{2}
+
+# حذف stash
+git stash drop stash@{1}
+
+# حذف كل stashes
+git stash clear
+
+# إنشاء فرع من stash
+git stash branch new-branch stash@{0}</code></pre>
+        </div>
+
+        <h3>8.2 Tags: وضع علامات على الإصدارات</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># إنشاء tag خفيف
+git tag v1.0.0
+
+# إنشاء tag annotated (موصى به)
+git tag -a v1.0.0 -m "Release version 1.0.0"
+
+# عرض كل tags
+git tag
+
+# عرض تفاصيل tag
+git show v1.0.0
+
+# رفع tag للبعيد
+git push origin v1.0.0
+
+# رفع كل tags
+git push --tags
+
+# حذف tag محلي
+git tag -d v1.0.0
+
+# حذف tag بعيد
+git push origin --delete v1.0.0</code></pre>
+        </div>
+
+        <h3>8.3 Cherry-pick: تطبيق commits محددة</h3>
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># تطبيق commit محدد على الفرع الحالي
+git cherry-pick &lt;commit-hash&gt;
+
+# تطبيق عدة commits
+git cherry-pick &lt;hash1&gt; &lt;hash2&gt;
+
+# تطبيق نطاق commits
+git cherry-pick A..B
+
+# تطبيق دون commit تلقائي
+git cherry-pick --no-commit &lt;hash&gt;</code></pre>
+        </div>
+
+        <h3>8.4 Hooks: أتمتة المهام</h3>
+        <p>
+          Git Hooks هي سكربتات تعمل تلقائياً عند أحداث معينة. إليك مثالاً على pre-commit hook للتحقق من الكود:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># إنشاء pre-commit hook
+cat &gt; .git/hooks/pre-commit &lt;&lt; 'EOF'
+#!/bin/sh
+
+# فحص الكود قبل كل commit
+echo "Running pre-commit checks..."
+
+# فحص الـ linting
+npm run lint
+
+# تشغيل الاختبارات
+npm test
+
+echo "All checks passed!"
+EOF
+
+# جعله قابلاً للتنفيذ
+chmod +x .git/hooks/pre-commit</code></pre>
+        </div>
+
+        <figure class="article-image">
+          <img src="/guides/git/git-hooks-workflow.png" alt="سير عمل Git Hooks" loading="lazy" />
+          <figcaption>كيف تعمل Git Hooks في سير العمل</figcaption>
+        </figure>
+      </section>
+
+      <!-- القسم التاسع: أفضل الممارسات -->
+      <section id="best-practices" class="section">
+        <h2>القسم التاسع: أفضل الممارسات وسير العمل الاحترافي</h2>
+        
+        <h3>9.1 Git Flow: منهجية العمل المنظمة</h3>
+        <p>
+          Git Flow هو منهجية شائعة لإدارة الفروع في المشاريع الكبيرة:
+        </p>
+
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-icon"></div>
+            <h4>main/master</h4>
+            <p>الفرع الرئيسي، يحتوي على كود الإنتاج المستقر. كل commit هنا يجب أن يكون جاهزاً للنشر.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-icon"></div>
+            <h4>develop</h4>
+            <p>فرع التطوير، يجمع كل الميزات الجديدة قبل دمجها مع main.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">✨</div>
+            <h4>feature/*</h4>
+            <p>فروع الميزات الجديدة، تنشأ من develop وتُدمج معه.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">🐛</div>
+            <h4>hotfix/*</h4>
+            <p>فروع الإصلاحات العاجلة، تنشأ من main وتُدمج مع main وdevelop.</p>
+          </div>
+          <div class="info-card">
+            <div class="info-icon">📦</div>
+            <h4>release/*</h4>
+            <p>فروع التحضير للإصدار، لإجراء التعديلات الأخيرة قبل النشر.</p>
+          </div>
+        </div>
+
+        <figure class="article-image">
+          <img src="/guides/git/gitflow-diagram.png" alt="منهجية Git Flow" loading="lazy" />
+          <figcaption>مخطط Git Flow الكامل</figcaption>
+        </figure>
+
+        <h3>9.2 قواعد ذهبية للعمل مع Git</h3>
+        <ol>
+          <li><strong>commit صغير ومتكرر:</strong> commits صغيرة أسهل في المراجعة والتراجع عنها.</li>
+          <li><strong>رسائل commits واضحة:</strong> اشرح لماذا التغيير، ليس ماذا.</li>
+          <li><strong>فرع لكل مهمة:</strong> لا تعمل مباشرة على main أو develop.</li>
+          <li><strong>حدّث فرعك بانتظام:</strong> اعمل rebase أو merge من develop يومياً.</li>
+          <li><strong>راجع كودك قبل push:</strong> استخدم <code>git diff</code> و <code>git status</code>.</li>
+          <li><strong>لا تشارك commits مكسورة:</strong> تأكد أن الكود يعمل قبل الرفع.</li>
+          <li><strong>استخدم .gitignore:</strong> لا ترفع ملفات مؤقتة أو حساسة.</li>
+          <li><strong>احذف الفروع المدمجة:</strong> حافظ على نظافة المستودع.</li>
+          <li><strong>استخدم tags للإصدارات:</strong> سهل تتبع الإصدارات.</li>
+          <li><strong>تعلم حل التعارضات:</strong> لا تخف منها، هي جزء طبيعي من العمل.</li>
+        </ol>
+
+        <h3>9.3 أخطاء شائعة وكيفية تجنبها</h3>
+        <div class="error-grid">
+          <div class="error-card">
+            <div class="error-icon">❌</div>
+            <h4>commit إلى main مباشرة</h4>
+            <p><strong>الحل:</strong> أنشئ فرعاً جديداً للميزة واعمل عليه.</p>
+          </div>
+          <div class="error-card">
+            <div class="error-icon">❌</div>
+            <h4>رسائل commits غامضة</h4>
+            <p><strong>الحل:</strong> استخدم Conventional Commits وكن وصفيًا.</p>
+          </div>
+          <div class="error-card">
+            <div class="error-icon">❌</div>
+            <h4>دفع كود غير مختبر</h4>
+            <p><strong>الحل:</strong> شغّل الاختبارات محلياً قبل الرفع.</p>
+          </div>
+          <div class="error-card">
+            <div class="error-icon"></div>
+            <h4>فروع قديمة غير محذوفة</h4>
+            <p><strong>الحل:</strong> احذف الفروع بعد الدمج.</p>
+          </div>
+          <div class="error-card">
+            <div class="error-icon">❌</div>
+            <h4>تجاهل .gitignore</h4>
+            <p><strong>الحل:</strong> أضف .gitignore في البداية.</p>
+          </div>
+          <div class="error-card">
+            <div class="error-icon">❌</div>
+            <h4>رفع مفاتيح سرية</h4>
+            <p><strong>الحل:</strong> استخدم .env واستخدم git-secrets.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- القسم العاشر: GitHub وGitHub Actions -->
+      <section id="github" class="section">
+        <h2>القسم العاشر: GitHub والتكاملات</h2>
+        
+        <h3>10.1 GitHub SSH Setup</h3>
+        <p>
+          إعداد SSH يجعل العمل مع GitHub أسهل وأكثر أماناً:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">bash</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code># إنشاء مفتاح SSH جديد
+ssh-keygen -t ed25519 -C "your.email@example.com"
+
+# بدء SSH agent
+eval "$(ssh-agent -s)"
+
+# إضافة المفتاح
+ssh-add ~/.ssh/id_ed25519
+
+# نسخ المفتاح العام
+cat ~/.ssh/id_ed25519.pub
+
+# اختبار الاتصال
+ssh -T git@github.com</code></pre>
+        </div>
+
+        <h3>10.2 GitHub Actions: CI/CD</h3>
+        <p>
+          مثال على workflow بسيط لاختبار الكود تلقائياً:
+        </p>
+
+        <div class="code-block">
+          <div class="code-header">
+            <span class="lang">yaml</span>
+            <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+          </div>
+          <pre><code>name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Run tests
+      run: npm test
+    
+    - name: Build
+      run: npm run build</code></pre>
+        </div>
+
+        <figure class="article-image">
+          <img src="/guides/git/github-actions.png" alt="GitHub Actions workflow" loading="lazy" />
+          <figcaption>مثال على GitHub Actions workflow</figcaption>
+        </figure>
+      </section>
+
+      <!-- الخلاصة -->
+      <section id="conclusion" class="section">
+        <h2>الخلاصة: رحلتك مع Git</h2>
+        
+        <p>
+          Git أداة قوية ومعقدة، لكن فهم الأساسيات يفتح لك أبواب الاحتراف. إليك ملخص سريع لما تعلمته:
+        </p>
+
+        <div class="summary-grid">
+          <div class="summary-card">
+            <span class="check">✅</span>
+            <p>تثبيت وإعداد Git</p>
+          </div>
+          <div class="summary-card">
+            <span class="check">✅</span>
+            <p>المناطق الثلاث والعمل اليومي</p>
+          </div>
+          <div class="summary-card">
+            <span class="check">✅</span>
+            <p>إدارة الفروع والدمج</p>
+          </div>
+          <div class="summary-card">
+            <span class="check">✅</span>
+            <p>العمل مع المستودعات البعيدة</p>
+          </div>
+          <div class="summary-card">
+            <span class="check">✅</span>
+            <p>التراجع والإصلاح</p>
+          </div>
+          <div class="summary-card">
+            <span class="check">✅</span>
+            <p>أدوات متقدمة للمحترفين</p>
+          </div>
+        </div>
+
+        <p>
+          استمر في التمرين، ولا تخف من التجربة. كل خطأ تتعلم منه، وكل مشروع تشارك فيه يضيف لمهاراتك. Git هو رفيقك في رحلة البرمجة، وكلما أتقنته، كلما أصبحت مطوراً أكثر كفاءة واحترافية.
+        </p>
+
+        <div class="cta-box">
+          <h3>🚀 الخطوة التالية</h3>
+          <p>جرب إنشاء مشروع تجريبي وطبق ما تعلمته. ابدأ بـ <code>git init</code>، أنشئ فروعاً، اجعل commits، وادفعها إلى GitHub. الممارسة هي مفتاح الإتقان!</p>
+          <a href="/guides/" class="cta-button">العودة لأدلة مرجعية</a>
+        </div>
+      </section>
+
+    </article>
+
+    <!-- Share Buttons -->
+    <div class="share-section">
+      <h3>شارك الدليل</h3>
+      <div class="share-buttons">
+        <a href="#" class="share-btn twitter" aria-label="Share on Twitter">𝕏 Twitter</a>
+        <a href="#" class="share-btn facebook" aria-label="Share on Facebook">f Facebook</a>
+        <a href="#" class="share-btn linkedin" aria-label="Share on LinkedIn">in LinkedIn</a>
+        <button class="share-btn copy-link" onclick="copyArticleLink()"> نسخ الرابط</button>
+      </div>
+    </div>
+
+  </main>
+
+  <Footer />
+</body>
+</html>
+
+<style>
+  :root {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #0f172a;
+    --text-sec: #64748b;
+    --primary: #0284c7;
+    --primary-light: #38bdf8;
+    --border: rgba(2,132,199,0.2);
+    --shadow: rgba(0,0,0,0.1);
+    --code-bg: #1e293b;
+    --code-text: #e2e8f0;
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+  }
+  html.dark-mode {
+    --bg: #0b1120;
+    --card: #1e293b;
+    --text: #f1f5f9;
+    --text-sec: #94a3b8;
+    --primary: #38bdf8;
+    --primary-light: #0ea5e9;
+    --border: rgba(56,189,248,0.2);
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #0f172a;
+    --code-text: #f1f5f9;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, -apple-system, sans-serif; line-height: 1.7; }
+
+  .guide-article { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 6rem; }
+
+  /* Page Header */
+  .page-header { text-align: center; margin-bottom: 3rem; padding: 2rem 0; border-bottom: 2px solid var(--border); }
+  .badge { display: inline-block; background: var(--primary); color: white; padding: 0.3rem 1rem; border-radius: 50px; font-size: 0.85rem; margin-bottom: 1rem; }
+  .page-header h1 { color: var(--primary); font-size: 2.4rem; margin-bottom: 1rem; line-height: 1.3; }
+  .page-header p { color: var(--text-sec); font-size: 1.15rem; max-width: 600px; margin: 0 auto 1.5rem; }
+  .meta { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; color: var(--text-sec); font-size: 0.9rem; }
+  .meta span { display: flex; align-items: center; gap: 0.3rem; }
+
+  /* Article Content */
+  .article-content { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 2.5rem 2rem; margin-bottom: 2rem; }
+  .section { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  .section:last-child { border-bottom: none; }
+  .section h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 1.5rem; padding-bottom: 0.5rem; border-bottom: 3px solid var(--border); }
+  .section h3 { color: var(--text); font-size: 1.4rem; margin: 2rem 0 1rem; }
+  .section h4 { color: var(--text); font-size: 1.15rem; margin: 1.5rem 0 0.8rem; }
+  .article-content p { margin-bottom: 1rem; color: var(--text); line-height: 1.8; }
+  .article-content ul, .article-content ol { margin: 1rem 0 1.5rem 1.5rem; }
+  .article-content li { margin-bottom: 0.5rem; line-height: 1.7; }
+  .article-content code { background: var(--code-bg); color: var(--primary-light); padding: 0.2rem 0.5rem; border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 0.9em; }
+
+  /* Code Blocks */
+  .code-block { background: var(--code-bg); border-radius: 12px; margin: 1.5rem 0; overflow: hidden; border: 1px solid var(--border); }
+  .code-header { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1.2rem; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .code-header .lang { color: var(--primary-light); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; }
+  .copy-btn { background: rgba(255,255,255,0.1); border: none; color: var(--text-sec); padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+  .code-block pre { padding: 1.2rem; overflow-x: auto; direction: ltr; text-align: left; }
+  .code-block code { background: none; padding: 0; color: var(--code-text); font-size: 0.9rem; line-height: 1.6; }
+
+  /* Images */
+  .article-image { margin: 2rem 0; text-align: center; }
+  .article-image img { max-width: 100%; height: auto; border-radius: 12px; box-shadow: 0 4px 20px var(--shadow); border: 1px solid var(--border); }
+  .article-image figcaption { margin-top: 0.8rem; color: var(--text-sec); font-size: 0.9rem; font-style: italic; }
+
+  /* Info Grid */
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+  .info-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: center; transition: all 0.3s; }
+  .info-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px var(--shadow); border-color: var(--primary); }
+  .info-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .info-card h4 { margin-bottom: 0.5rem; color: var(--text); }
+  .info-card p { margin: 0; font-size: 0.9rem; color: var(--text-sec); line-height: 1.5; }
+
+  /* Glossary */
+  .glossary-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+  .glossary-item { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; }
+  .glossary-item .term { display: block; font-weight: 700; color: var(--primary); margin-bottom: 0.3rem; font-family: 'Fira Code', monospace; }
+  .glossary-item .def { font-size: 0.9rem; color: var(--text-sec); }
+
+  /* Tip/Warning Boxes */
+  .tip-box, .warning-box { display: flex; gap: 1rem; padding: 1.2rem; border-radius: 12px; margin: 1.5rem 0; align-items: flex-start; }
+  .tip-box { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); }
+  .warning-box { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); }
+  .tip-icon, .warning-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .tip-content, .warning-content { flex: 1; }
+  .tip-content strong { color: var(--success); }
+  .warning-content strong { color: var(--warning); }
+
+  /* Error Grid */
+  .error-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+  .error-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; }
+  .error-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .error-card h4 { color: var(--error); font-size: 1rem; margin-bottom: 0.5rem; }
+  .error-card p { margin: 0; font-size: 0.9rem; color: var(--text-sec); }
+
+  /* Summary Grid */
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+  .summary-card { display: flex; align-items: center; gap: 0.8rem; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 1rem; }
+  .check { color: var(--success); font-size: 1.2rem; font-weight: 700; }
+  .summary-card p { margin: 0; font-size: 0.95rem; }
+
+  /* CTA Box */
+  .cta-box { background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; padding: 2rem; border-radius: 16px; text-align: center; margin-top: 2rem; }
+  .cta-box h3 { color: white; margin-bottom: 1rem; }
+  .cta-box p { color: rgba(255,255,255,0.9); margin-bottom: 1.5rem; }
+  .cta-button { display: inline-block; background: white; color: var(--primary); padding: 0.8rem 2rem; border-radius: 8px; text-decoration: none; font-weight: 600; transition: all 0.3s; }
+  .cta-button:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+
+  /* Share Section */
+  .share-section { text-align: center; padding: 2rem 0; border-top: 2px solid var(--border); }
+  .share-section h3 { margin-bottom: 1rem; color: var(--text); }
+  .share-buttons { display: flex; justify-content: center; gap: 0.8rem; flex-wrap: wrap; }
+  .share-btn { padding: 0.6rem 1.2rem; border-radius: 8px; text-decoration: none; color: white; font-weight: 600; font-size: 0.9rem; transition: all 0.3s; border: none; cursor: pointer; }
+  .share-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+  .share-btn.twitter { background: #1da1f2; }
+  .share-btn.facebook { background: #1877f2; }
+  .share-btn.linkedin { background: #0a66c2; }
+  .share-btn.copy-link { background: var(--text-sec); }
+
+  /* TOC Button & Modal */
+  .toc-btn {
+    position: fixed; bottom: 30px; left: 30px; width: 56px; height: 56px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    border: none; border-radius: 50%; color: white; cursor: pointer;
+    box-shadow: 0 4px 20px rgba(2,132,199,0.4); z-index: 998;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  @keyframes glow {
+    from { box-shadow: 0 4px 20px rgba(2,132,199,0.4); }
+    to { box-shadow: 0 4px 30px rgba(2,132,199,0.7), 0 0 40px rgba(56,189,248,0.3); }
+  }
+  .toc-btn:hover { transform: scale(1.1); }
+
+  .toc-modal {
+    display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 999;
+    align-items: center; justify-content: center; padding: 2rem;
+    animation: fadeIn 0.3s ease;
+  }
+  .toc-modal.active { display: flex; }
+  
+  .toc-box {
+    background: var(--card); width: 100%; max-width: 500px; max-height: 80vh;
+    border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    display: flex; flex-direction: column; overflow: hidden;
+    animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .toc-head {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.5rem 2rem; background: var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .toc-head h3 { color: var(--primary); margin: 0; font-size: 1.3rem; }
+  .toc-close {
+    background: transparent; border: none; color: var(--text-sec); font-size: 1.5rem;
+    cursor: pointer; width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+  }
+  .toc-close:hover { background: #fee2e2; color: #ef4444; }
+  .toc-nav { padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; }
+  .toc-item {
+    display: block !important; background: var(--bg) !important; color: var(--text) !important;
+    padding: 0.8rem 1rem !important; border-radius: 10px !important; font-size: 0.95rem !important;
+    font-weight: 500 !important; cursor: pointer !important; border: 1px solid transparent !important;
+    text-decoration: none !important; transition: all 0.2s ease !important;
+  }
+  .toc-item:hover {
+    background: rgba(2,132,199,0.08) !important; border-color: rgba(2,132,199,0.2) !important;
+    color: var(--primary) !important; transform: translateX(-4px) !important;
+  }
+
+  /* Back to Top */
+  .back-to-top {
+    position: fixed; bottom: 100px; left: 30px; width: 48px; height: 48px;
+    background: var(--card); border: 2px solid var(--primary); border-radius: 50%;
+    color: var(--primary); cursor: pointer; opacity: 0; visibility: hidden;
+    transform: translateY(20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 997; display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .back-to-top.show { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; }
+  .back-to-top:hover { background: var(--primary); color: #fff !important; transform: scale(1.1) !important; }
+
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .guide-article { padding: 1rem; }
+    .article-content { padding: 1.5rem 1rem; }
+    .page-header h1 { font-size: 1.8rem; }
+    .meta { gap: 0.8rem; }
+    .info-grid, .glossary-grid, .error-grid, .summary-grid { grid-template-columns: 1fr; }
+    .toc-btn { width: 50px; height: 50px; bottom: 20px; left: 20px; }
+    .back-to-top { width: 44px; height: 44px; bottom: 80px; left: 20px; }
+    .share-buttons { flex-direction: column; align-items: center; }
+  }
+</style>
+
+<script>
+  if (typeof window !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', function() {
+      // TOC
+      var tocBtn = document.getElementById('tocBtn');
+      var tocModal = document.getElementById('tocModal');
+      var tocClose = document.getElementById('tocClose');
+      var tocNav = document.getElementById('tocNav');
+      
+      if (tocBtn && tocModal && tocNav) {
+        document.querySelectorAll('.section h2, .section h3').forEach(function(heading) {
+          if (heading.id) {
+            var item = document.createElement('a');
+            item.className = 'toc-item';
+            item.href = '#' + heading.id;
+            item.textContent = heading.textContent;
+            item.onclick = function(e) {
+              e.preventDefault();
+              heading.scrollIntoView({ behavior: 'smooth' });
+              tocModal.classList.remove('active');
+            };
+            tocNav.appendChild(item);
+          }
+        });
+
+        tocBtn.onclick = function() { tocModal.classList.add('active'); };
+        tocClose.onclick = function() { tocModal.classList.remove('active'); };
+        tocModal.onclick = function(e) { if (e.target === tocModal) tocModal.classList.remove('active'); };
+      }
+
+      // Back to Top
+      var backBtn = document.getElementById('backToTop');
+      if (backBtn) {
+        window.addEventListener('scroll', function() {
+          if (window.scrollY > 400) backBtn.classList.add('show');
+          else backBtn.classList.remove('show');
+        }, { passive: true });
+        backBtn.addEventListener('click', function() { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+      }
+    });
+  }
+
+  function copyCode(btn) {
+    var code = btn.closest('.code-block').querySelector('code').textContent;
+    navigator.clipboard.writeText(code).then(function() {
+      btn.textContent = 'تم النسخ!';
+      setTimeout(function() { btn.textContent = 'نسخ'; }, 2000);
+    });
+  }
+
+  function copyArticleLink() {
+    navigator.clipboard.writeText(window.location.href).then(function() {
+      alert('تم نسخ رابط المقال!');
+    });
+  }
+</script>
