@@ -1,0 +1,923 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import ShareButtons from '../../../components/ShareButtons.astro';
+
+export const title = "دليل Docker والحاويات الشامل: من الأساسيات إلى الاحتراف";
+export const description = "دليل شامل يغطي Docker من التثبيت وحتى النشر الاحترافي، مع أمثلة عملية وأفضل الممارسات";
+export const pubDate = "2026-08-18";
+---
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title} - Th.Tech</title>
+  <meta name="description" content={description} />
+  <meta name="keywords" content="docker, containers, deployment, حاويات, نشر, devops" />
+</head>
+<body>
+  <Header />
+  
+  <main class="category-articles">
+    <div class="page-header">
+      <h1>🐳 دليل Docker والحاويات الشامل</h1>
+      <p>من الأساسيات إلى الاحتراف: بناء، تشغيل، وإدارة الحاويات بكفاءة</p>
+    </div>
+
+    <!-- ✅ زر الفهرس (أيقونة ) -->
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
+    <div class="toc-modal" id="tocModal">
+      <div class="toc-box">
+        <div class="toc-head">
+          <h3>فهرس الدليل</h3>
+          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس">✕</button>
+        </div>
+        <nav class="toc-nav" id="tocNav"></nav>
+      </div>
+    </div>
+
+    <!-- ✅ السهم المنبثق (⬆️) -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">️</button>
+
+    <article class="article" id="art1">
+      <span class="badge" style="background:linear-gradient(135deg,#0ea5e9,#06b6d4)">دليل شامل / احترافي</span>
+      <h2>Docker والحاويات: من الصفر إلى النشر الاحترافي</h2>
+      <div class="meta">📅 18 أغسطس 2026 | ⏱️ 30 دقيقة قراءة | 📖 أكثر من 5000 كلمة</div>
+      
+      <p class="intro">
+        Docker أحدث ثورة في عالم تطوير البرمجيات ونشر التطبيقات. يسمح لك بتغليف تطبيقك مع جميع تبعياته في حاوية (Container) موحدة تعمل على أي نظام. في هذا الدليل الشامل، سنتعلم كل ما تحتاجه لإتقان Docker من التثبيت حتى النشر الاحترافي في الإنتاج.
+      </p>
+
+      <!-- صورة رئيسية -->
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1605745341112-8428ead9386d?w=900&h=400&fit=crop" alt="Docker Container Technology" />
+        <p class="image-caption">تقنية الحاويات - ثورة في عالم تطوير ونشر التطبيقات</p>
+      </div>
+
+      <h3 id="part1"> الجزء الأول: ما هي الحاويات ولماذا Docker؟</h3>
+      
+      <h4>1.1 الفرق بين الحاويات والآلات الافتراضية</h4>
+      <p>
+        الحاويات تختلف جذرياً عن الآلات الافتراضية (VMs). بينما تحتاج VM إلى نظام تشغيل كامل، الحاوية تشارك نواة نظام التشغيل المضيف، مما يجعلها:
+      </p>
+      
+      <ul>
+        <li><strong>أخف وزناً:</strong> حجمها MBs بدلاً من GBs.</li>
+        <li><strong>أسرع:</strong> تبدأ في ثوانٍ بدلاً من دقائق.</li>
+        <li><strong>أكثر كفاءة:</strong> استهلاك أقل للذاكرة والمعالج.</li>
+        <li><strong>محمولة:</strong> تعمل على أي نظام يدعم Docker.</li>
+      </ul>
+
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1605745341112-8428ead9386d?w=900&h=350&fit=crop" alt="Containers vs VMs" />
+        <p class="image-caption">الفرق بين الحاويات والآلات الافتراضية في البنية والأداء</p>
+      </div>
+
+      <h4>1.2 مكونات Docker الأساسية</h4>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-icon">🐳</div>
+          <h4>Docker Engine</h4>
+          <p>البرنامج الأساسي الذي يدير الحاويات على جهازك.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">📦</div>
+          <h4>Image</h4>
+          <p>قالب للقراءة فقط يحتوي على التطبيق والتبعيات.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">📦</div>
+          <h4>Container</h4>
+          <p>نسخة قابلة للتنفيذ من الـ Image.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">📝</div>
+          <h4>Dockerfile</h4>
+          <p>ملف نصي يحتوي على تعليمات بناء الـ Image.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon"></div>
+          <h4>Docker Hub</h4>
+          <p>مستودع مركزي للـ Images الجاهزة.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">🔄</div>
+          <h4>Volume</h4>
+          <p>تخزين دائم للبيانات خارج الحاوية.</p>
+        </div>
+      </div>
+
+      <h3 id="part2">🚀 الجزء الثاني: التثبيت والإعداد الأولي</h3>
+      
+      <h4>2.1 تثبيت Docker على مختلف الأنظمة</h4>
+
+      <h4>🪟 نظام Windows</h4>
+      <p>
+        قم بتنزيل <strong>Docker Desktop for Windows</strong> من الموقع الرسمي. يتطلب:
+      </p>
+      <ul>
+        <li>Windows 10/11 Pro أو Enterprise (64-bit)</li>
+        <li>تفعيل Hyper-V و WSL 2</li>
+        <li>4GB RAM كحد أدنى (8GB موصى به)</li>
+      </ul>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">powershell</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># تحقق من التثبيت
+docker --version
+docker run hello-world</code></pre>
+      </div>
+
+      <h4>🐧 نظام Linux (Ubuntu)</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># تحديث النظام
+sudo apt update
+
+# تثبيت المتطلبات
+sudo apt install ca-certificates curl gnupg
+
+# إضافة مفتاح GPG الرسمي
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+
+# إضافة المستودع
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+# تثبيت Docker
+sudo apt update
+sudo apt install docker-ce docker-ce-cli containerd.io
+
+# إضافة المستخدم لمجموعة docker (لتجنب sudo)
+sudo usermod -aG docker $USER
+
+# التحقق
+docker --version</code></pre>
+      </div>
+
+      <h4>🍎 نظام macOS</h4>
+      <p>
+        قم بتنزيل <strong>Docker Desktop for Mac</strong> من الموقع الرسمي. يتطلب macOS 11 أو أحدث.
+      </p>
+
+      <h4>2.2 الإعدادات الموصى بها</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># تمكين Docker عند بدء التشغيل (Linux)
+sudo systemctl enable docker
+sudo systemctl start docker
+
+# التحقق من حالة الخدمة
+sudo systemctl status docker
+
+# عرض معلومات النظام
+docker info</code></pre>
+      </div>
+
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1605745341112-8428ead9386d?w=900&h=350&fit=crop" alt="Docker Installation" />
+        <p class="image-caption">تثبيت Docker على مختلف الأنظمة - خطوات بسيطة لبدء العمل</p>
+      </div>
+
+      <h3 id="part3">📦 الجزء الثالث: العمل مع الـ Images</h3>
+      
+      <h4>3.1 تنزيل Images من Docker Hub</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># تنزيل Image (مثال: Nginx)
+docker pull nginx
+
+# تنزيل Image بإصدار محدد
+docker pull nginx:alpine
+
+# تنزيل Image من Docker Hub
+docker pull python:3.11-slim
+
+# عرض جميع الـ Images المحلية
+docker images
+docker image ls
+
+# عرض معلومات Image
+docker inspect nginx</code></pre>
+      </div>
+
+      <h4>3.2 البحث عن Images</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># البحث عن Images
+docker search nginx
+docker search python
+
+# البحث مع تصفية النتائج
+docker search --filter is-official=true python</code></pre>
+      </div>
+
+      <h4>3.3 إدارة Images</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># حذف Image
+docker rmi nginx
+
+# حذف جميع Images غير المستخدمة
+docker image prune -a
+
+# حفظ Image كملف
+docker save -o nginx.tar nginx
+
+# تحميل Image من ملف
+docker load -i nginx.tar
+
+# إعادة تسمية Image
+docker tag nginx:latest my-nginx:v1</code></pre>
+      </div>
+
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1605745341112-8428ead9386d?w=900&h=350&fit=crop" alt="Docker Images Management" />
+        <p class="image-caption">إدارة Images - تنزيل، بحث، وحفظ الحاويات الجاهزة</p>
+      </div>
+
+      <h3 id="part4"> الجزء الرابع: تشغيل وإدارة الحاويات</h3>
+      
+      <h4>4.1 تشغيل حاوية بسيطة</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># تشغيل حاوية Nginx
+docker run nginx
+
+# تشغيل في الخلفية (Detached mode)
+docker run -d nginx
+
+# تشغيل مع تعيين اسم
+docker run -d --name my-nginx nginx
+
+# تشغيل مع تعيين منفذ
+docker run -d -p 8080:80 nginx
+
+# تشغيل مع متغير بيئة
+docker run -d -e MYSQL_ROOT_PASSWORD=secret mysql
+
+# تشغيل مع Volume
+docker run -d -v /host/path:/container/path nginx</code></pre>
+      </div>
+
+      <h4>4.2 إدارة الحاويات</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># عرض الحاويات العاملة
+docker ps
+
+# عرض جميع الحاويات (بما فيها المتوقفة)
+docker ps -a
+
+# إيقاف حاوية
+docker stop my-nginx
+
+# بدء حاوية متوقفة
+docker start my-nginx
+
+# إعادة تشغيل
+docker restart my-nginx
+
+# حذف حاوية
+docker rm my-nginx
+
+# حذف جميع الحاويات المتوقفة
+docker container prune
+
+# الدخول إلى حاوية
+docker exec -it my-nginx bash
+
+# عرض السجلات (Logs)
+docker logs my-nginx
+docker logs -f my-nginx  # متابعة مباشرة</code></pre>
+      </div>
+
+      <h4>4.3 مراقبة الأداء</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># عرض استخدام الموارد
+docker stats
+
+# عرض تفاصيل حاوية
+docker inspect my-nginx
+
+# عرض العمليات داخل الحاوية
+docker top my-nginx</code></pre>
+      </div>
+
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1605745341112-8428ead9386d?w=900&h=350&fit=crop" alt="Docker Container Management" />
+        <p class="image-caption">إدارة الحاويات - تشغيل، إيقاف، ومراقبة الأداء</p>
+      </div>
+
+      <h3 id="part5">🛠️ الجزء الخامس: بناء Images مخصصة</h3>
+      
+      <h4>5.1 كتابة Dockerfile</h4>
+      <p>
+        مثال على Dockerfile لتطبيق Node.js:
+      </p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">dockerfile</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># استخدام Image أساسي
+FROM node:18-alpine
+
+# تعيين مجلد العمل
+WORKDIR /app
+
+# نسخ package files
+COPY package*.json ./
+
+# تثبيت التبعيات
+RUN npm ci --only=production
+
+# نسخ الكود
+COPY . .
+
+# تعريض المنفذ
+EXPOSE 3000
+
+# أمر التشغيل
+CMD ["node", "server.js"]</code></pre>
+      </div>
+
+      <h4>5.2 بناء Image من Dockerfile</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># بناء Image
+docker build -t my-app .
+
+# بناء مع تحديد Dockerfile
+docker build -t my-app -f Dockerfile.prod .
+
+# بناء بدون cache
+docker build --no-cache -t my-app .
+
+# عرض سجل البناء
+docker build --progress=plain -t my-app .</code></pre>
+      </div>
+
+      <h4>5.3 أفضل ممارسات Dockerfile</h4>
+      <div class="tip-box">
+        <span class="tip-icon">💡</span>
+        <div class="tip-content">
+          <strong>أفضل الممارسات:</strong><br>
+          • استخدم Images رسمية ومحدثة<br>
+          • قلل عدد الطبقات (Layers) بدمج الأوامر<br>
+          • استخدم .dockerignore لاستبعاد الملفات غير الضرورية<br>
+          • استخدم Alpine Images للحجم الأصغر<br>
+          • لا تخزن أسرار (Secrets) في Image<br>
+          • استخدم USER غير root للأمان
+        </div>
+      </div>
+
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1605745341112-8428ead9386d?w=900&h=350&fit=crop" alt="Dockerfile Best Practices" />
+        <p class="image-caption">بناء Images مخصصة - كتابة Dockerfile احترافي</p>
+      </div>
+
+      <h3 id="part6">🔄 الجزء السادس: Docker Compose للتطبيقات المتعددة</h3>
+      
+      <h4>6.1 ما هو Docker Compose؟</h4>
+      <p>
+        Docker Compose أداة لتعريف وتشغيل تطبيقات متعددة الحاويات باستخدام ملف YAML واحد.
+      </p>
+
+      <h4>6.2 كتابة docker-compose.yml</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">yaml</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code>version: '3.8'
+
+services:
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:</code></pre>
+      </div>
+
+      <h4>6.3 أوامر Docker Compose</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># بدء الخدمات
+docker-compose up
+
+# بدء في الخلفية
+docker-compose up -d
+
+# إيقاف الخدمات
+docker-compose down
+
+# عرض الحالة
+docker-compose ps
+
+# عرض السجلات
+docker-compose logs -f
+
+# إعادة بناء
+docker-compose up --build
+
+# تنفيذ أمر في خدمة
+docker-compose exec web bash</code></pre>
+      </div>
+
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1605745341112-8428ead9386d?w=900&h=350&fit=crop" alt="Docker Compose Multi-Container Apps" />
+        <p class="image-caption">Docker Compose - إدارة تطبيقات متعددة الحاويات بسهولة</p>
+      </div>
+
+      <h3 id="part7"> الجزء السابع: إدارة البيانات والتخزين</h3>
+      
+      <h4>7.1 أنواع التخزين في Docker</h4>
+      <div class="info-grid">
+        <div class="info-card">
+          <div class="info-icon">📂</div>
+          <h4>Volumes</h4>
+          <p>تخزين مُدار بواسطة Docker، الأفضل للإنتاج.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon"></div>
+          <h4>Bind Mounts</h4>
+          <p>ربط مجلد من المضيف، مثالي للتطوير.</p>
+        </div>
+        <div class="info-card">
+          <div class="info-icon">💾</div>
+          <h4>tmpfs</h4>
+          <p>تخزين مؤقت في الذاكرة فقط.</p>
+        </div>
+      </div>
+
+      <h4>7.2 العمل مع Volumes</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># إنشاء Volume
+docker volume create my-volume
+
+# عرض Volumes
+docker volume ls
+
+# فحص Volume
+docker volume inspect my-volume
+
+# حذف Volume
+docker volume rm my-volume
+
+# حذف Volumes غير المستخدمة
+docker volume prune
+
+# استخدام Volume
+docker run -d -v my-volume:/data nginx</code></pre>
+      </div>
+
+      <h4>7.3 نسخ احتياطي للبيانات</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># نسخ احتياطي
+docker run --rm -v my-volume:/source -v $(pwd):/backup alpine tar czf /backup/backup.tar.gz -C /source .
+
+# استعادة
+docker run --rm -v my-volume:/target -v $(pwd):/backup alpine tar xzf /backup/backup.tar.gz -C /target</code></pre>
+      </div>
+
+      <h3 id="part8"> الجزء الثامن: الشبكات في Docker</h3>
+      
+      <h4>8.1 أنواع الشبكات</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># عرض الشبكات
+docker network ls
+
+# إنشاء شبكة
+docker network create my-network
+
+# تشغيل حاوية في شبكة
+docker run -d --network my-network --name web nginx
+
+# ربط حاوية بشبكة
+docker network connect my-network my-container
+
+# فصل حاوية عن شبكة
+docker network disconnect my-network my-container</code></pre>
+      </div>
+
+      <h4>8.2 التواصل بين الحاويات</h4>
+      <p>
+        الحاويات في نفس الشبكة يمكنها التواصل باستخدام أسماء الحاويات كـ DNS:
+      </p>
+
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># إنشاء شبكة
+docker network create app-network
+
+# تشغيل قاعدة البيانات
+docker run -d --network app-network --name db postgres
+
+# تشغيل التطبيق (يمكنه الاتصال بـ db)
+docker run -d --network app-network --name app my-app</code></pre>
+      </div>
+
+      <h3 id="part9">🚀 الجزء التاسع: النشر في الإنتاج</h3>
+      
+      <h4>9.1 تحسين Images للإنتاج</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">dockerfile</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># Multi-stage build
+FROM node:18 AS builder
+WORKDIR /app
+COPY . .
+RUN npm ci && npm run build
+
+FROM node:18-alpine
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+EXPOSE 3000
+CMD ["node", "dist/server.js"]</code></pre>
+      </div>
+
+      <h4>9.2 الأمان في الإنتاج</h4>
+      <div class="warning-box">
+        <span class="warning-icon">⚠️</span>
+        <div class="warning-content">
+          <strong>نصائح أمان مهمة:</strong><br>
+          • لا تشغل كـ root داخل الحاوية<br>
+          • استخدم Secrets Management (لا تضع كلمات مرور في Images)<br>
+          • حدّث Images بانتظام<br>
+          • استخدم Security Scanning<br>
+          • قلل الصلاحيات (Capabilities)
+        </div>
+      </div>
+
+      <h4>9.3 Docker Swarm (Orchestration)</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># تهيئة Swarm
+docker swarm init
+
+# نشر خدمة
+docker service create --name web --replicas 3 -p 80:80 nginx
+
+# عرض الخدمات
+docker service ls
+
+# تحديث خدمة
+docker service update --image nginx:alpine web
+
+# Scale خدمة
+docker service scale web=5</code></pre>
+      </div>
+
+      <h3 id="part10">🛠️ الجزء العاشر: نصائح وحلول للمشاكل الشائعة</h3>
+      
+      <h4>10.1 مشاكل شائعة وحلولها</h4>
+      <div class="error-grid">
+        <div class="error-card">
+          <div class="error-icon">❌</div>
+          <h4>الحاوية تتوقف فوراً</h4>
+          <p><strong>الحل:</strong> تأكد أن العملية الرئيسية (PID 1) تبقى عاملة.</p>
+        </div>
+        <div class="error-card">
+          <div class="error-icon">❌</div>
+          <h4>مشاكل صلاحيات الملفات</h4>
+          <p><strong>الحل:</strong> استخدم USER مناسب أو عدل الصلاحيات.</p>
+        </div>
+        <div class="error-card">
+          <div class="error-icon">❌</div>
+          <h4>الحاوية تستهلك موارد كثيرة</h4>
+          <p><strong>الحل:</strong> استخدم --memory و --cpus لتحديد الموارد.</p>
+        </div>
+        <div class="error-card">
+          <div class="error-icon">❌</div>
+          <h4>فشل الاتصال بين الحاويات</h4>
+          <p><strong>الحل:</strong> تأكد أنها في نفس الشبكة واستخدم الأسماء.</p>
+        </div>
+      </div>
+
+      <h4>10.2 تنظيف Docker</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># تنظيف شامل (احذر!)
+docker system prune -a --volumes
+
+# تنظيف Images غير مستخدمة
+docker image prune -a
+
+# تنظيف الحاويات المتوقفة
+docker container prune
+
+# تنظيف Volumes غير مستخدمة
+docker volume prune
+
+# عرض استخدام القرص
+docker system df</code></pre>
+      </div>
+
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1605745341112-8428ead9386d?w=900&h=350&fit=crop" alt="Docker Production Deployment" />
+        <p class="image-caption">النشر في الإنتاج - تحسين، أمان، وإدارة الحاويات</p>
+      </div>
+
+      <div class="conclusion" style="background:linear-gradient(135deg,#0ea5e9,#06b6d4);color:white;padding:2rem;border-radius:12px;margin:2rem 0">
+        <h3>💡 الخلاصة الهندسية الشاملة:</h3>
+        <ul style="list-style:none;padding:0">
+          <li>✅ الحاويات أخف وأسرع من VMs - استخدمها لتطوير ونشر أسرع.</li>
+          <li>✅ Dockerfile جيد = Images أصغر وأكثر أماناً.</li>
+          <li>✅ Compose يسهل إدارة التطبيقات المتعددة.</li>
+          <li>✅ Volumes ضرورية للحفاظ على البيانات.</li>
+          <li>✅ الأمان في الإنتاج ليس خياراً - اتبع أفضل الممارسات.</li>
+          <li>✅ المراقبة والتنظيف المستمر يحافظ على أداء النظام.</li>
+        </ul>
+        <p style="font-size:1.3rem;font-weight:bold;margin-top:1rem;text-align:center">Docker ليس مجرد أداة، بل منهجية عمل حديثة! ✨</p>
+      </div>
+    </article>
+
+    <ShareButtons />
+  </main>
+  
+  <Footer />
+
+  <script>
+    if (typeof window !== 'undefined') {
+      document.addEventListener('DOMContentLoaded', function() {
+        // ✅ التبويبات
+        var tabs = document.querySelectorAll('.tab-btn');
+        var contents = document.querySelectorAll('.tab-content');
+        
+        tabs.forEach(function(tab) {
+          tab.addEventListener('click', function() {
+            tabs.forEach(function(t) { t.classList.remove('active'); });
+            contents.forEach(function(c) { c.classList.remove('active'); });
+            
+            tab.classList.add('active');
+            var targetId = tab.getAttribute('data-tab');
+            var targetContent = document.getElementById(targetId);
+            if (targetContent) {
+              targetContent.classList.add('active');
+            }
+          });
+        });
+
+        // ✅ زر الفهرس
+        var tocBtn = document.getElementById('tocBtn');
+        var tocModal = document.getElementById('tocModal');
+        var tocClose = document.getElementById('tocClose');
+        var tocNav = document.getElementById('tocNav');
+        
+        if (tocBtn && tocModal && tocNav) {
+          document.querySelectorAll('.article h3').forEach(function(h3) {
+            var item = document.createElement('div');
+            item.className = 'toc-item';
+            item.textContent = h3.textContent;
+            item.onclick = function(e) {
+              e.preventDefault();
+              h3.scrollIntoView({ behavior: 'smooth' });
+              tocModal.classList.remove('active');
+            };
+            tocNav.appendChild(item);
+          });
+          
+          tocBtn.onclick = function() { tocModal.classList.add('active'); };
+          tocClose.onclick = function() { tocModal.classList.remove('active'); };
+          tocModal.onclick = function(e) { if (e.target === tocModal) tocModal.classList.remove('active'); };
+        }
+
+        // ✅ السهم المنبثق
+        var backBtn = document.getElementById('backToTop');
+        if (backBtn) {
+          window.addEventListener('scroll', function() {
+            if (window.scrollY > 400) backBtn.classList.add('show');
+            else backBtn.classList.remove('show');
+          }, { passive: true });
+          backBtn.onclick = function() { window.scrollTo({ top: 0, behavior: 'smooth' }); };
+        }
+
+        // ✅ التتبع الذكي
+        var TRACK_TIME = 30;
+        var SCROLL_THRESHOLD = 0.7;
+        var currentPath = window.location.pathname;
+        var isMarked = false;
+
+        function markAsRead() {
+          if (isMarked) return;
+          try {
+            var read = JSON.parse(localStorage.getItem('read_articles') || '[]');
+            if (!read.includes(currentPath)) {
+              read.push(currentPath);
+              localStorage.setItem('read_articles', JSON.stringify(read));
+            }
+            isMarked = true;
+          } catch (e) {}
+        }
+
+        try {
+          if (JSON.parse(localStorage.getItem('read_articles') || '[]').includes(currentPath)) return;
+        } catch (e) {}
+
+        var timer = setTimeout(markAsRead, TRACK_TIME * 1000);
+        function onScroll() {
+          var percent = (window.scrollY + window.innerHeight) / document.body.scrollHeight;
+          if (percent >= SCROLL_THRESHOLD) {
+            markAsRead();
+            clearTimeout(timer);
+            window.removeEventListener('scroll', onScroll);
+          }
+        }
+        window.addEventListener('scroll', onScroll);
+        window.addEventListener('beforeunload', function() { clearTimeout(timer); window.removeEventListener('scroll', onScroll); });
+      });
+    }
+
+    function copyCode(btn) {
+      var code = btn.closest('.code-block').querySelector('code').textContent;
+      navigator.clipboard.writeText(code).then(function() {
+        btn.textContent = 'تم النسخ!';
+        setTimeout(function() { btn.textContent = 'نسخ'; }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
+
+<style>
+  :root { --bg: #f8fafc; --card: #fff; --text: #0f172a; --text-sec: #64748b; --primary: #0ea5e9; --border: rgba(14,165,233,0.2); }
+  html.dark-mode { --bg: #0b1120; --card: #1e293b; --text: #f1f5f9; --text-sec: #94a3b8; --primary: #38bdf8; --border: rgba(56,189,248,0.2); }
+  body { background: var(--bg); color: var(--text); font-family: system-ui, sans-serif; margin: 0; }
+  .category-articles { max-width: 950px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+  .page-header { text-align: center; margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 2px solid var(--border); }
+  .page-header h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 0.5rem; }
+  .page-header p { color: var(--text-sec); font-size: 1.1rem; }
+  .article { background: var(--card); border: 2px solid var(--border); border-radius: 16px; padding: 2.5rem 2rem; margin-bottom: 3rem; }
+  .badge { display: inline-block; background: linear-gradient(135deg,#0ea5e9,#06b6d4); color: white; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; margin-bottom: 1rem; }
+  .article h2 { color: var(--primary); font-size: 1.8rem; margin: 2rem 0 1rem; }
+  .article h3 { color: var(--text); font-size: 1.5rem; margin: 2.5rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+  .article h4 { color: var(--text-sec); font-size: 1.2rem; margin: 2rem 0 0.8rem; font-weight: 600; }
+  .meta { color: var(--text-sec); font-size: 0.9rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border); display: flex; gap: 1rem; flex-wrap: wrap; }
+  .intro { font-size: 1.15rem; color: var(--text-sec); margin-bottom: 2.5rem; padding: 2rem; background: rgba(14,165,233,0.05); border-right: 4px solid var(--primary); border-radius: 8px; line-height: 1.9; }
+  .article ul, .article ol { padding-right: 1.5rem; margin: 1.5rem 0; }
+  .article li { margin-bottom: 0.8rem; line-height: 1.9; color: var(--text-sec); }
+  .article li strong { color: var(--primary); }
+  .conclusion ul { list-style: none !important; padding: 0; }
+  .conclusion li { color: white !important; font-size: 1.05rem; margin: 0.8rem 0; line-height: 1.8; }
+  
+  .article-image { margin: 2.5rem 0; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 24px rgba(0,0,0,0.12); border: 2px solid var(--border); }
+  .article-image img { width: 100%; height: auto; display: block; transition: transform 0.3s ease; }
+  .article-image:hover img { transform: scale(1.02); }
+  .image-caption { background: var(--bg); color: var(--text-sec); padding: 1rem 1.5rem; text-align: center; font-size: 0.9rem; font-style: italic; margin: 0; border-top: 1px solid var(--border); }
+
+  .code-block { background: var(--code-bg); border-radius: 12px; margin: 1.5rem 0; overflow: hidden; border: 1px solid var(--border); }
+  .code-header { display: flex; justify-content: space-between; align-items: center; padding: 0.8rem 1.2rem; background: rgba(0,0,0,0.2); border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .code-header .lang { color: var(--primary-light); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; }
+  .copy-btn { background: rgba(255,255,255,0.1); border: none; color: var(--text-sec); padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; transition: all 0.2s; }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+  .code-block pre { padding: 1.2rem; overflow-x: auto; direction: ltr; text-align: left; }
+  .code-block code { background: none; padding: 0; color: var(--code-text); font-size: 0.9rem; line-height: 1.6; }
+
+  .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin: 1.5rem 0; }
+  .info-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; text-align: center; transition: all 0.3s; }
+  .info-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px var(--shadow); border-color: var(--primary); }
+  .info-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .info-card h4 { margin-bottom: 0.5rem; color: var(--text); }
+  .info-card p { margin: 0; font-size: 0.9rem; color: var(--text-sec); line-height: 1.5; }
+
+  .tip-box, .warning-box { display: flex; gap: 1rem; padding: 1.2rem; border-radius: 12px; margin: 1.5rem 0; align-items: flex-start; }
+  .tip-box { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); }
+  .warning-box { background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); }
+  .tip-icon, .warning-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .tip-content, .warning-content { flex: 1; }
+  .tip-content strong { color: var(--success); }
+  .warning-content strong { color: var(--warning); }
+
+  .error-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
+  .error-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 1.2rem; }
+  .error-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .error-card h4 { color: var(--error); font-size: 1rem; margin-bottom: 0.5rem; }
+  .error-card p { margin: 0; font-size: 0.9rem; color: var(--text-sec); }
+
+  .toc-btn { position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; background: linear-gradient(135deg, var(--primary), #06b6d4); border: none; border-radius: 50%; color: white; font-size: 1.8rem; cursor: pointer; box-shadow: 0 4px 15px rgba(14,165,233,0.5); z-index: 998; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+  .toc-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(14,165,233,0.7); }
+  
+  .toc-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); z-index: 999; align-items: center; justify-content: center; padding: 6rem 1.5rem 1.5rem; animation: fadeIn 0.3s ease; }
+  .toc-modal.active { display: flex; }
+  
+  .toc-box { background: var(--card); width: 100%; max-width: 550px; border-radius: 20px; border: 1px solid var(--border); box-shadow: 0 20px 60px rgba(0,0,0,0.3); max-height: 80vh; display: flex; flex-direction: column; overflow: hidden; animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+  .toc-head { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 2rem; background: var(--bg); border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .toc-head h3 { color: var(--primary); margin: 0; font-size: 1.4rem; font-weight: 800; }
+  .toc-close { background: transparent; border: none; color: var(--text-sec); font-size: 2rem; cursor: pointer; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .toc-close:hover { background: #fee2e2; color: #ef4444; }
+  .toc-nav { display: flex; flex-direction: column; padding: 1rem; gap: 0.6rem; overflow-y: auto; }
+  
+  .toc-item { display: block !important; background: var(--bg) !important; color: var(--text) !important; padding: 1rem 1.2rem !important; border-radius: 12px !important; font-size: 1rem !important; font-weight: 600 !important; line-height: 1.4 !important; cursor: pointer !important; border: 1px solid transparent !important; text-decoration: none !important; border-bottom: none !important; outline: none !important; transition: all 0.25s ease !important; }
+  .toc-item:hover { background: rgba(14,165,233,0.08) !important; border-color: rgba(14,165,233,0.2) !important; color: var(--primary) !important; transform: translateX(-4px) !important; }
+
+  .toc-nav::-webkit-scrollbar { width: 6px; }
+  .toc-nav::-webkit-scrollbar-track { background: transparent; }
+  .toc-nav::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+  
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(40px) scale(0.96); } to { opacity: 1; transform: translateY(0) scale(1); } }
+
+  .back-to-top { position: fixed; bottom: 95px; left: 30px; width: 50px; height: 50px; background: var(--card); border: 2px solid var(--primary); border-radius: 50%; color: var(--primary); font-size: 1.6rem; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 997; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+  .back-to-top.show { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; }
+  .back-to-top:hover { background: var(--primary); color: #fff !important; transform: scale(1.1) !important; box-shadow: 0 0 20px rgba(14,165,233,0.6); }
+
+  @media (max-width: 768px) {
+    .category-articles { padding: 2rem 1rem 3rem !important; }
+    .page-header h1 { font-size: 1.6rem !important; }
+    .article { padding: 1.5rem 1.2rem !important; }
+    .article h2 { font-size: 1.4rem !important; }
+    .article h3 { font-size: 1.2rem !important; }
+    .article h4 { font-size: 1.05rem !important; }
+    .article-image { margin: 1.5rem 0 !important; }
+    .article-image img { height: 200px !important; object-fit: cover !important; }
+    .image-caption { padding: 0.8rem 1rem !important; font-size: 0.85rem !important; }
+    .toc-btn { width: 50px !important; height: 50px !important; bottom: 15px !important; left: 15px !important; font-size: 1.6rem !important; }
+    .back-to-top { width: 42px !important; height: 42px !important; bottom: 75px !important; left: 15px !important; font-size: 1.4rem !important; }
+    .toc-modal { padding: 7rem 1rem 1rem !important; }
+    .toc-box { max-width: 95% !important; border-radius: 16px !important; }
+    .toc-head { padding: 1.2rem 1.5rem !important; }
+    .toc-head h3 { font-size: 1.2rem !important; }
+    .toc-nav { padding: 0.8rem !important; gap: 0.5rem !important; }
+    .toc-item { padding: 0.9rem 1rem !important; font-size: 0.95rem !important; }
+  }
+</style>
