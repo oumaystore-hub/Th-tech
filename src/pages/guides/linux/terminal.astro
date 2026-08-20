@@ -36,7 +36,7 @@ export const pubDate = "2026-08-19";
       </div>
 
       <!-- ✅ الجزء الأول -->
-      <h3 id="part1"> الجزء الأول: مقدمة عن Linux</h3>
+      <h3 id="part1">🔍 الجزء الأول: مقدمة عن Linux</h3>
       <h4>1.1 ما هو Linux ولماذا هو مهم؟</h4>
       <p>Linux هو نواة نظام تشغيل مفتوحة المصدر، طوّرها <strong>لينوس تورفالدز</strong> في 1991. ما يميز Linux:</p>
       <ul>
@@ -55,7 +55,7 @@ export const pubDate = "2026-08-19";
       </div>
 
       <!-- ✅ الجزء الثاني -->
-      <h3 id="part2">🚀 الجزء الثاني: التثبيت وبدء العمل</h3>
+      <h3 id="part2"> الجزء الثاني: التثبيت وبدء العمل</h3>
       <h4>2.1 التثبيت على Windows (WSL2)</h4>
       <p>يوفر Windows Subsystem for Linux 2 بيئة Linux كاملة داخل Windows:</p>
       <div class="code-block">
@@ -124,9 +124,8 @@ whoami</code></pre>
         </ul>
       </div>
 
-      <!-- ✅ الجزء الثالث (جديد) -->
-      <h3 id="part3"> الجزء الثالث: إدارة الملفات والمجلدات</h3>
-      
+      <!-- ✅ الجزء الثالث -->
+      <h3 id="part3">📁 الجزء الثالث: إدارة الملفات والمجلدات</h3>
       <h4>3.1 هيكلية نظام الملفات</h4>
       <p>يفهم Linux الملفات بشكل شجري يبدأ من الجذر <code>/</code>:</p>
       <ul>
@@ -207,7 +206,118 @@ locate readme.txt      # بحث سريع (يحتاج تحديث قاعدة ال�
           <li>✅ <code>grep</code> و <code>find</code> أدوات لا غنى عنها للمحترفين</li>
         </ul>
       </div>
-      <!-- ✅ نهاية الجزء الثالث -->
+
+      <!-- ✅ الجزء الرابع (جديد) -->
+      <h3 id="part4"> الجزء الرابع: الصلاحيات والمستخدمين</h3>
+      
+      <h4>4.1 فهم صلاحيات الملفات</h4>
+      <p>في Linux، لكل ملف 3 أنواع من الصلاحيات و 3 فئات من المستخدمين:</p>
+      <ul>
+        <li><strong>الصلاحيات:</strong> القراءة (r)، الكتابة (w)، التنفيذ (x).</li>
+        <li><strong>الفئات:</strong> المالك (u)، المجموعة (g)، الآخرون (o).</li>
+      </ul>
+      <p>عند تنفيذ <code>ls -l file.txt</code>، ستظهر نتيجة مثل:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code>-rwxr-xr-- 1 ahmed devs 1024 Aug 19 10:00 file.txt
+|    |    |
+|    |    ── الآخرون (r--) : قراءة فقط
+|    └── المجموعة (r-x) : قراءة وتنفيذ
+└── المالك (rwx) : قراءة، كتابة، وتنفيذ</code></pre>
+      </div>
+
+      <h4>4.2 تعديل الصلاحيات (chmod)</h4>
+      <p>يمكنك استخدام النظام الرقمي (Octal) أو الرمزي:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># النظام الرقمي (4=ر، 2=ك، 1=ت)
+chmod 755 script.sh      # المالك: كامل، المجموعة: قراءة+تنفيذ، الآخرون: قراءة+تنفيذ
+chmod 644 file.txt       # المالك: قراءة+كتابة، الباقي: قراءة فقط
+chmod 777 folder/        # صلاحيات كاملة للجميع (غير آمن!)
+
+# النظام الرمزي
+chmod u+x script.sh      # إضافة تنفيذ للمالك
+chmod g-w file.txt       # إزالة كتابة من المجموعة
+chmod o-r file.txt       # إزالة قراءة من الآخرين</code></pre>
+      </div>
+
+      <h4>4.3 تغيير المالك والمجموعة</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># تغيير المالك
+sudo chown newuser file.txt
+
+# تغيير المالك والمجموعة معاً
+sudo chown ahmed:developers file.txt
+
+# تغيير المجموعة فقط
+sudo chgrp admins file.txt
+
+# تطبيق متكرر على مجلد كامل
+sudo chown -R ahmed:developers /var/www/html</code></pre>
+      </div>
+
+      <h4>4.4 إدارة المستخدمين والمجموعات</h4>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># إنشاء مستخدم جديد
+sudo useradd -m -s /bin/bash newuser
+sudo passwd newuser      # تعيين كلمة مرور
+
+# تعديل مستخدم
+sudo usermod -aG sudo newuser   # إضافة لمجموعة sudo (صلاحيات جذر)
+sudo usermod -d /home/new newuser # تغيير المجلد الشخصي
+
+# حذف مستخدم
+sudo userdel -r newuser   # -r لحذف المجلد الشخصي أيضاً
+
+# إدارة المجموعات
+sudo groupadd webteam
+sudo usermod -aG webteam ahmed
+groups ahmed              # عرض مجموعات المستخدم</code></pre>
+      </div>
+
+      <h4>4.5 صلاحيات الجذر (Sudo)</h4>
+      <p>في Linux الحديث، نستخدم <code>sudo</code> بدلاً من الدخول كـ root مباشرة للأمان:</p>
+      <div class="code-block">
+        <div class="code-header">
+          <span class="code-lang">bash</span>
+          <button class="copy-btn" onclick="copyCode(this)">نسخ</button>
+        </div>
+        <pre><code># تنفيذ أمر بصلاحية الجذر
+sudo apt update
+sudo systemctl restart nginx
+
+# الدخول لجلسة root
+sudo -i
+exit   # للخروج
+
+# عرض من له صلاحيات sudo
+cat /etc/sudoers</code></pre>
+      </div>
+
+      <div class="conclusion-box">
+        <h3>💡 خلاصة الجزء الرابع:</h3>
+        <ul>
+          <li>✅ الصلاحيات هي خط الدفاع الأول لحماية النظام</li>
+          <li>✅ استخدم <code>chmod 755</code> للبرامج و <code>644</code> للملفات العادية</li>
+          <li>✅ تجنب <code>sudo</code> إلا عند الضرورة القصوى</li>
+          <li>✅ دائماً استخدم <code>-R</code> بحذر عند تغيير ملكية المجلدات</li>
+        </ul>
+      </div>
+      <!-- ✅ نهاية الجزء الرابع -->
 
     </article>
   </main>
