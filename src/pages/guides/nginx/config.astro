@@ -3,7 +3,7 @@ import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 import ShareButtons from '../../../components/ShareButtons.astro';
 
-export const title = "دليل Nginx والخوادم";
+export const title = "دليل Nginx والخوادم الشامل";
 export const pubDate = "2026-08-21";
 ---
 
@@ -16,12 +16,206 @@ export const pubDate = "2026-08-21";
 <body>
   <Header />
   
-  <main style="max-width: 800px; margin: 2rem auto; padding: 1rem; text-align: center;">
-    <h1>⚙️ دليل Nginx والخوادم</h1>
-    <p>مرحباً بك في الدليل الشامل لإدارة خوادم Nginx.</p>
-    <p>🚧 جاري بناء المحتوى خطوة بخطوة...</p>
-  </main>
+  <main class="linux-guide-main">
+    <div class="page-header">
+      <h1>⚙️ دليل Nginx والخوادم الشامل</h1>
+      <p>من التثبيت إلى الاستضافة العكسية والأمان</p>
+    </div>
 
+    <!-- ✅ زر الفهرس -->
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
+    
+    <!-- ✅ نافذة الفهرس -->
+    <div class="toc-modal" id="tocModal">
+      <div class="toc-box">
+        <div class="toc-head">
+          <h3>فهرس الدليل</h3>
+          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس">✕</button>
+        </div>
+        <nav class="toc-nav" id="tocNav"></nav>
+      </div>
+    </div>
+
+    <!-- ✅ السهم المنبثق -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
+
+    <article class="guide-article">
+      <span class="badge">دليل شامل</span>
+      <h2>Nginx: من الصفر إلى الاحتراف</h2>
+      <div class="meta">📅 21 أغسطس 2026 | ⏱️ 30 دقيقة قراءة</div>
+      
+      <p class="intro">
+        Nginx هو خادم ويب عالي الأداء، يعمل كـ Reverse Proxy، وموازن حمل. يُستخدم من قبل أكبر المواقع في العالم لسرعته واستقراره.
+      </p>
+
+      <div class="article-image">
+        <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=900&h=400&fit=crop" alt="Nginx Server" />
+        <p class="image-caption">Nginx - العمود الفقري لمعظم خوادم الويب الحديثة</p>
+      </div>
+
+      <!-- ✅ الجزء الأول -->
+      <h3 id="part1"> الجزء الأول: مقدمة عن Nginx</h3>
+      <h4>1.1 لماذا Nginx؟</h4>
+      <p>يتميز Nginx ببنية غير متزامنة تعتمد على الأحداث، مما يجعله أخف وأسرع من Apache:</p>
+      <ul>
+        <li><strong>أداء عالي:</strong> يستهلك موارد أقل مع عدد زوار أكبر.</li>
+        <li><strong>مرونة:</strong> يعمل كخادم ويب، وكيل عكسي، وموازن حمل.</li>
+        <li><strong>أمان:</strong> دعم مدمج لـ SSL/TLS.</li>
+      </ul>
+
+      <div class="conclusion-box">
+        <h3>💡 خلاصة الجزء الأول:</h3>
+        <ul>
+          <li>✅ Nginx هو الخيار الأول للمواقع عالية الزيارات.</li>
+          <li>✅ بنيته الحديثة تجعله أسرع وأكثر استقراراً.</li>
+        </ul>
+      </div>
+
+      <!-- ✅ الجزء الثاني -->
+      <h3 id="part2">🚀 الجزء الثاني: التثبيت والإعداد</h3>
+      
+      <h4>2.1 التثبيت على Ubuntu/Debian</h4>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <pre><code>sudo apt update
+sudo apt install nginx -y
+sudo systemctl enable nginx
+sudo systemctl start nginx</code></pre>
+      </div>
+
+      <h4>2.2 التحقق من التشغيل</h4>
+      <div class="code-block">
+        <div class="code-header"><span class="code-lang">bash</span><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <pre><code>sudo systemctl status nginx
+nginx -v
+curl -I http://localhost</code></pre>
+      </div>
+
+      <div class="conclusion-box">
+        <h3>💡 خلاصة الجزء الثاني:</h3>
+        <ul>
+          <li>✅ استخدم <code>systemctl</code> لإدارة الخدمة.</li>
+          <li>✅ افتح المتصفح لترى صفحة "Welcome to nginx".</li>
+        </ul>
+      </div>
+
+    </article>
+
+    <ShareButtons />
+  </main>
+  
   <Footer />
+
+  <script>
+    function copyCode(btn) {
+      const code = btn.closest('.code-block').querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = 'تم النسخ!';
+        setTimeout(() => btn.textContent = 'نسخ', 2000);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var tocBtn = document.getElementById('tocBtn');
+      var tocModal = document.getElementById('tocModal');
+      var tocClose = document.getElementById('tocClose');
+      var tocNav = document.getElementById('tocNav');
+      
+      if (tocBtn && tocModal && tocNav) {
+        var headings = document.querySelectorAll('h3');
+        headings.forEach(function(h3) {
+          var item = document.createElement('div');
+          item.className = 'toc-item';
+          item.textContent = h3.textContent;
+          item.addEventListener('click', function() {
+            h3.scrollIntoView({ behavior: 'smooth' });
+            tocModal.classList.remove('active');
+          });
+          tocNav.appendChild(item);
+        });
+
+        tocBtn.addEventListener('click', function() { tocModal.classList.add('active'); });
+        tocClose.addEventListener('click', function() { tocModal.classList.remove('active'); });
+        tocModal.addEventListener('click', function(e) {
+          if (e.target === tocModal) tocModal.classList.remove('active');
+        });
+      }
+
+      var backBtn = document.getElementById('backToTop');
+      if (backBtn) {
+        window.addEventListener('scroll', function() {
+          if (window.scrollY > 400) backBtn.classList.add('show');
+          else backBtn.classList.remove('show');
+        });
+        backBtn.addEventListener('click', function() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+    });
+  </script>
 </body>
 </html>
+
+<style>
+  :root { --bg: #f8fafc; --card: #ffffff; --text: #0f172a; --text-sec: #64748b; --primary: #22c55e; --primary-light: #4ade80; --border: rgba(34,197,94,0.2); --shadow: rgba(0,0,0,0.1); }
+  html.dark-mode { --bg: #0b1120; --card: #1e293b; --text: #f1f5f9; --text-sec: #94a3b8; --primary: #4ade80; --primary-light: #22c55e; --border: rgba(74,222,128,0.2); --shadow: rgba(0,0,0,0.3); }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; }
+  .linux-guide-main { max-width: 950px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; }
+  .page-header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+  .page-header h1 { color: var(--primary); font-size: 2rem; margin-bottom: 0.5rem; }
+  .page-header p { color: var(--text-sec); font-size: 1.1rem; }
+  .guide-article { background: var(--card); border: 2px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem; }
+  .badge { display: inline-block; background: linear-gradient(135deg,var(--primary),var(--primary-light)); color: white; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; margin-bottom: 1rem; }
+  .guide-article h2 { color: var(--primary); font-size: 1.6rem; margin: 1.5rem 0 1rem; }
+  .guide-article h3 { color: var(--text); font-size: 1.4rem; margin: 2rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+  .guide-article h4 { color: var(--text-sec); font-size: 1.15rem; margin: 1.5rem 0 0.8rem; font-weight: 600; }
+  .meta { color: var(--text-sec); font-size: 0.9rem; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px dashed var(--border); }
+  .intro { font-size: 1.15rem; color: var(--text-sec); margin-bottom: 2rem; padding: 1.5rem; background: rgba(34,197,94,0.05); border-right: 4px solid var(--primary); border-radius: 8px; line-height: 1.8; }
+  .guide-article ul { padding-right: 1.5rem; margin: 1rem 0; color: var(--text-sec); }
+  .guide-article li { margin-bottom: 0.6rem; line-height: 1.7; }
+  .guide-article li strong { color: var(--primary); }
+  .article-image { margin: 2rem 0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px var(--shadow); border: 2px solid var(--border); }
+  .article-image img { width: 100%; height: auto; display: block; }
+  .image-caption { background: var(--bg); color: var(--text-sec); padding: 0.8rem 1.2rem; text-align: center; font-size: 0.9rem; font-style: italic; margin: 0; border-top: 1px solid var(--border); }
+  .conclusion-box { background: linear-gradient(135deg,var(--primary),var(--primary-light)); color: white; padding: 1.5rem; border-radius: 10px; margin: 2rem 0; }
+  .conclusion-box h3 { color: white; border: none; margin-bottom: 1rem; }
+  .conclusion-box ul { list-style: none; padding: 0; margin: 0; }
+  .conclusion-box li { color: white; font-size: 1rem; margin: 0.6rem 0; line-height: 1.7; }
+  .code-block { background: #1e293b; border-radius: 8px; margin: 1rem 0 2rem; overflow: hidden; border: 1px solid var(--border); }
+  .code-header { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 1rem; background: rgba(0,0,0,0.3); }
+  .code-lang { color: #4ade80; font-size: 0.85rem; font-weight: 600; }
+  .copy-btn { background: rgba(255,255,255,0.1); border: none; color: #94a3b8; padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+  .code-block pre { padding: 1rem; overflow-x: auto; direction: ltr; text-align: left; }
+  .code-block code { background: none; padding: 0; color: #e2e8f0; font-size: 0.9rem; line-height: 1.6; }
+  .toc-btn { position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border: none; border-radius: 50%; color: white; font-size: 1.8rem; cursor: pointer; box-shadow: 0 4px 15px rgba(34,197,94,0.5); z-index: 1000; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+  .toc-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(34,197,94,0.7); }
+  .toc-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1001; align-items: center; justify-content: center; padding: 2rem; animation: fadeIn 0.3s ease; }
+  .toc-modal.active { display: flex; }
+  .toc-box { background: var(--card); width: 100%; max-width: 450px; border-radius: 16px; box-shadow: 0 10px 30px var(--shadow); max-height: 80vh; display: flex; flex-direction: column; overflow: hidden; animation: slideUp 0.3s ease; }
+  .toc-head { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+  .toc-head h3 { margin: 0; color: var(--primary); font-size: 1.2rem; }
+  .toc-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-sec); padding: 5px; }
+  .toc-close:hover { color: #ef4444; }
+  .toc-nav { display: flex; flex-direction: column; padding: 1rem; overflow-y: auto; gap: 0.5rem; }
+  .toc-item { padding: 0.8rem 1rem; background: var(--bg); border-radius: 8px; cursor: pointer; transition: all 0.2s; color: var(--text); font-weight: 500; }
+  .toc-item:hover { background: rgba(34,197,94,0.1); color: var(--primary); transform: translateX(-5px); }
+  .back-to-top { position: fixed; bottom: 95px; left: 30px; width: 50px; height: 50px; background: var(--card); border: 2px solid var(--primary); border-radius: 50%; color: var(--primary); font-size: 1.5rem; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 999; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px var(--shadow); }
+  .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+  .back-to-top:hover { background: var(--primary); color: white; transform: scale(1.1); }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @media (max-width: 768px) {
+    .linux-guide-main { padding: 1rem !important; }
+    .page-header h1 { font-size: 1.5rem !important; }
+    .guide-article { padding: 1.2rem !important; }
+    .guide-article h2 { font-size: 1.3rem !important; }
+    .guide-article h3 { font-size: 1.1rem !important; }
+    .guide-article h4 { font-size: 1rem !important; }
+    .intro { font-size: 1rem !important; padding: 1rem !important; }
+    .code-block pre { padding: 0.8rem !important; }
+    .toc-btn { width: 50px; height: 50px; bottom: 15px; left: 15px; font-size: 1.5rem; }
+    .back-to-top { width: 42px; height: 42px; bottom: 75px; left: 15px; font-size: 1.2rem; }
+  }
+</style>
