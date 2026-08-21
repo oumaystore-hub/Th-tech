@@ -18,14 +18,31 @@ export const pubDate = "2026-08-19";
   
   <main class="linux-guide-main">
     <div class="page-header">
-      <h1>🐧 دليل Linux وسطر الأوامر الشامل</h1>
+      <h1> دليل Linux وسطر الأوامر الشامل</h1>
       <p>من الأساسيات إلى الاحتراف</p>
     </div>
+
+    <!-- ✅ زر الفهرس -->
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
+    
+    <!-- ✅ نافذة الفهرس -->
+    <div class="toc-modal" id="tocModal">
+      <div class="toc-box">
+        <div class="toc-head">
+          <h3>فهرس الدليل</h3>
+          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس"></button>
+        </div>
+        <nav class="toc-nav" id="tocNav"></nav>
+      </div>
+    </div>
+
+    <!-- ✅ السهم المنبثق -->
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
 
     <article class="guide-article">
       <span class="badge">دليل شامل</span>
       <h2>Linux وسطر الأوامر: من الصفر إلى الاحتراف</h2>
-      <div class="meta">📅 19 أغسطس 2026 | ⏱️ 35 دقيقة قراءة</div>
+      <div class="meta"> 19 أغسطس 2026 | ⏱️ 35 دقيقة قراءة</div>
       
       <p class="intro">
         Linux هو نظام التشغيل الذي يشغّل معظم خوادم الإنترنت، وأجهزة السوبر كمبيوتر، ومليارات الأجهزة حول العالم. إتقان سطر الأوامر (Terminal) في Linux يفتح لك أبواباً لا حدود لها في التطوير، إدارة الأنظمة، والأتمتة.
@@ -202,7 +219,7 @@ sudo usermod -aG sudo newuser</code></pre>
       </div>
 
       <div class="conclusion-box">
-        <h3>💡 خلاصة الجزء الرابع:</h3>
+        <h3> خلاصة الجزء الرابع:</h3>
         <ul>
           <li>✅ الصلاحيات هي خط الدفاع الأول لحماية النظام</li>
           <li>✅ استخدم <code>chmod 755</code> للبرامج و <code>644</code> للملفات العادية</li>
@@ -211,7 +228,7 @@ sudo usermod -aG sudo newuser</code></pre>
       </div>
 
       <!-- ✅ الجزء الخامس -->
-      <h3 id="part5">️ الجزء الخامس: إدارة العمليات والخدمات</h3>
+      <h3 id="part5">⚙️ الجزء الخامس: إدارة العمليات والخدمات</h3>
       <h4>5.1 مراقبة العمليات</h4>
       <div class="code-block">
         <div class="code-header">
@@ -257,7 +274,7 @@ ss -tuln</code></pre>
       </div>
 
       <div class="conclusion-box">
-        <h3>💡 خلاصة الجزء السادس:</h3>
+        <h3> خلاصة الجزء السادس:</h3>
         <ul>
           <li>✅ <code>ping</code> أول خطوة لتشخيص أي مشكلة إنترنت</li>
           <li>✅ استخدم <code>ssh</code> دائماً للاتصال بالخوادم</li>
@@ -265,8 +282,8 @@ ss -tuln</code></pre>
         </ul>
       </div>
 
-      <!-- ✅ الجزء الثامن: Bash Scripting (مبسط وآمن) -->
-      <h3 id="part8">🤖 الجزء الثامن: Bash Scripting (الأتمتة)</h3>
+      <!-- ✅ الجزء الثامن: Bash Scripting -->
+      <h3 id="part8"> الجزء الثامن: Bash Scripting (الأتمتة)</h3>
       
       <h4>8.1 أساسيات كتابة السكريبتات</h4>
       <p>السكريبتات (Scripts) تسمح لك بأتمتة المهام المتكررة وتوفير الوقت:</p>
@@ -355,6 +372,7 @@ chmod +x backup.sh
   <Footer />
 
   <script>
+    // ✅ زر نسخ الكود
     function copyCode(btn) {
       const code = btn.closest('.code-block').querySelector('code').innerText;
       navigator.clipboard.writeText(code).then(() => {
@@ -362,6 +380,65 @@ chmod +x backup.sh
         setTimeout(() => btn.textContent = 'نسخ', 2000);
       });
     }
+
+    // ✅ تشغيل الفهرس والسهم المنبثق بعد تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+      
+      // 1. منطق الفهرس (Table of Contents)
+      var tocBtn = document.getElementById('tocBtn');
+      var tocModal = document.getElementById('tocModal');
+      var tocClose = document.getElementById('tocClose');
+      var tocNav = document.getElementById('tocNav');
+      
+      if (tocBtn && tocModal && tocNav) {
+        // جمع جميع العناوين الرئيسية (h3) وإنشاء الفهرس
+        var headings = document.querySelectorAll('h3');
+        headings.forEach(function(h3) {
+          var item = document.createElement('div');
+          item.className = 'toc-item';
+          item.textContent = h3.textContent;
+          
+          // عند النقر على عنصر في الفهرس، التمرير إليه
+          item.addEventListener('click', function() {
+            h3.scrollIntoView({ behavior: 'smooth' });
+            tocModal.classList.remove('active'); // إغلاق الفهرس
+          });
+          
+          tocNav.appendChild(item);
+        });
+
+        // فتح وإغلاق الفهرس
+        tocBtn.addEventListener('click', function() {
+          tocModal.classList.add('active');
+        });
+        tocClose.addEventListener('click', function() {
+          tocModal.classList.remove('active');
+        });
+        
+        // إغلاق عند النقر خارج الصندوق
+        tocModal.addEventListener('click', function(e) {
+          if (e.target === tocModal) {
+            tocModal.classList.remove('active');
+          }
+        });
+      }
+
+      // 2. منطق السهم المنبثق (Back to Top)
+      var backBtn = document.getElementById('backToTop');
+      if (backBtn) {
+        window.addEventListener('scroll', function() {
+          if (window.scrollY > 400) {
+            backBtn.classList.add('show');
+          } else {
+            backBtn.classList.remove('show');
+          }
+        });
+        
+        backBtn.addEventListener('click', function() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+    });
   </script>
 </body>
 </html>
@@ -370,7 +447,7 @@ chmod +x backup.sh
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: #f8fafc; color: #0f172a; font-family: system-ui, sans-serif; line-height: 1.6; }
   
-  .linux-guide-main { max-width: 950px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .linux-guide-main { max-width: 950px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; }
   .page-header { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid rgba(34,197,94,0.2); }
   .page-header h1 { color: #22c55e; font-size: 2rem; margin-bottom: 0.5rem; }
   .page-header p { color: #64748b; font-size: 1.1rem; }
@@ -403,19 +480,138 @@ chmod +x backup.sh
   .code-block pre { padding: 1rem; overflow-x: auto; direction: ltr; text-align: left; }
   .code-block code { background: none; padding: 0; color: #e2e8f0; font-size: 0.9rem; line-height: 1.6; }
 
+  /* ✅ تنسيقات زر الفهرس */
+  .toc-btn {
+    position: fixed;
+    bottom: 30px;
+    left: 30px;
+    width: 55px;
+    height: 55px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(34,197,94,0.5);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .toc-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(34,197,94,0.7); }
+  
+  .toc-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+    z-index: 1001;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    animation: fadeIn 0.3s ease;
+  }
+  .toc-modal.active { display: flex; }
+  
+  .toc-box {
+    background: #fff;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+  }
+  
+  .toc-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    flex-shrink: 0;
+  }
+  .toc-head h3 { margin: 0; color: #22c55e; font-size: 1.2rem; }
+  .toc-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #64748b;
+    padding: 5px;
+  }
+  .toc-close:hover { color: #ef4444; }
+  
+  .toc-nav {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    overflow-y: auto;
+    gap: 0.5rem;
+  }
+  
+  .toc-item {
+    padding: 0.8rem 1rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #0f172a;
+    font-weight: 500;
+  }
+  .toc-item:hover { background: #ecfdf5; color: #22c55e; transform: translateX(-5px); }
+
+  /* ✅ تنسيقات السهم المنبثق */
+  .back-to-top {
+    position: fixed;
+    bottom: 95px;
+    left: 30px;
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border: 2px solid #22c55e;
+    border-radius: 50%;
+    color: #22c55e;
+    font-size: 1.5rem;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+  .back-to-top:hover { background: #22c55e; color: white; transform: scale(1.1); }
+
+  /* ✅ الأنيميشن */
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* ✅ التجاوب للجوال */
   @media (max-width: 768px) {
     .linux-guide-main { padding: 1rem !important; }
     .page-header h1 { font-size: 1.5rem !important; }
-    .page-header p { font-size: 1rem !important; }
     .guide-article { padding: 1.2rem !important; }
     .guide-article h2 { font-size: 1.3rem !important; }
     .guide-article h3 { font-size: 1.1rem !important; }
     .guide-article h4 { font-size: 1rem !important; }
     .intro { font-size: 1rem !important; padding: 1rem !important; }
-    .article-image img { height: auto !important; }
-    .image-caption { font-size: 0.85rem !important; padding: 0.6rem !important; }
-    .conclusion-box { padding: 1rem !important; }
-    .conclusion-box li { font-size: 0.95rem !important; }
     .code-block pre { padding: 0.8rem !important; }
+    
+    .toc-btn { width: 50px; height: 50px; bottom: 15px; left: 15px; font-size: 1.5rem; }
+    .back-to-top { width: 42px; height: 42px; bottom: 75px; left: 15px; font-size: 1.2rem; }
   }
 </style>
