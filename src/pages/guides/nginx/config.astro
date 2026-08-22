@@ -6,7 +6,7 @@ import ShareButtons from '../../../components/ShareButtons.astro';
 export const title = "دليل Nginx والخوادم الشامل";
 export const pubDate = "2026-08-21";
 
-// ✅ تخزين الأكواد كـ strings عادية
+// ✅ أكواد الأجزاء 1-4 (موجودة مسبقاً)
 const codeInstall = `sudo apt update
 sudo apt install nginx -y
 sudo systemctl enable nginx
@@ -47,6 +47,27 @@ const codeProxy = `server {
         proxy_set_header Host HOST_NAME_VAR;
     }
 }`;
+
+// ✅ أكواد الأجزاء الجديدة (5-7)
+const codeCertbot = `sudo apt install certbot python3-certbot-nginx -y
+sudo certbot --nginx -d mywebsite.com -d www.mywebsite.com`;
+
+const codeSecurity = `server_tokens off;
+add_header X-Frame-Options "SAMEORIGIN" always;
+add_header X-Content-Type-Options "nosniff" always;
+add_header X-XSS-Protection "1; mode=block" always;
+client_max_body_size 10M;`;
+
+const codeGzip = `gzip on;
+gzip_vary on;
+gzip_proxied any;
+gzip_comp_level 6;
+gzip_types text/plain text/css application/json application/javascript text/xml;`;
+
+const codeCache = `location ~* \\.(jpg|jpeg|png|gif|ico|css|js)$ {
+    expires 30d;
+    add_header Cache-Control "public, immutable";
+}`;
 ---
 
 <html lang="ar" dir="rtl">
@@ -61,7 +82,7 @@ const codeProxy = `server {
   <main class="linux-guide-main">
     <div class="page-header">
       <h1>⚙️ دليل Nginx والخوادم الشامل</h1>
-      <p>من التثبيت إلى الاستضافة العكسية والأمان</p>
+      <p>من التثبيت إلى الاستضافة العكسية، SSL، والأمان</p>
     </div>
 
     <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
@@ -80,12 +101,13 @@ const codeProxy = `server {
     <article class="guide-article">
       <span class="badge">دليل شامل</span>
       <h2>Nginx: من الصفر إلى الاحتراف</h2>
-      <div class="meta">📅 21 أغسطس 2026 | ⏱️ 30 دقيقة قراءة</div>
+      <div class="meta"> 21 أغسطس 2026 | ⏱️ 35 دقيقة قراءة</div>
       
       <p class="intro">
         Nginx هو خادم ويب عالي الأداء، يعمل كـ Reverse Proxy، وموازن حمل. يُستخدم من قبل أكبر المواقع في العالم لسرعته واستقراره.
       </p>
 
+      <!-- ✅ الأجزاء 1-4 (نفس الكود الناجح سابقاً) -->
       <h3 id="part1">🔍 الجزء الأول: مقدمة عن Nginx</h3>
       <h4>1.1 لماذا Nginx؟</h4>
       <p>يتميز Nginx ببنية غير متزامنة تعتمد على الأحداث، مما يجعله أخف وأسرع من Apache:</p>
@@ -94,78 +116,55 @@ const codeProxy = `server {
         <li><strong>مرونة:</strong> يعمل كخادم ويب، وكيل عكسي، وموازن حمل.</li>
         <li><strong>أمان:</strong> دعم مدمج لـ SSL/TLS.</li>
       </ul>
-
-      <div class="conclusion-box">
-        <h3>💡 خلاصة الجزء الأول:</h3>
-        <ul>
-          <li>✅ Nginx هو الخيار الأول للمواقع عالية الزيارات.</li>
-          <li>✅ بنيته الحديثة تجعله أسرع وأكثر استقراراً.</li>
-        </ul>
-      </div>
+      <div class="conclusion-box"><h3>💡 خلاصة الجزء الأول:</h3><ul><li>✅ Nginx هو الخيار الأول للمواقع عالية الزيارات.</li><li>✅ بنيته الحديثة تجعله أسرع وأكثر استقراراً.</li></ul></div>
 
       <h3 id="part2">🚀 الجزء الثاني: التثبيت والإعداد</h3>
       <h4>2.1 التثبيت على Ubuntu/Debian</h4>
-      <div class="code-block">
-        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>{codeInstall}</code></pre>
-      </div>
-
+      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeInstall}</code></pre></div>
       <h4>2.2 التحقق من التشغيل</h4>
-      <div class="code-block">
-        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>{codeCheck}</code></pre>
-      </div>
+      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeCheck}</code></pre></div>
+      <div class="conclusion-box"><h3>💡 خلاصة الجزء الثاني:</h3><ul><li>✅ استخدم systemctl لإدارة الخدمة.</li><li>✅ افتح المتصفح لترى صفحة Welcome to nginx.</li></ul></div>
 
-      <div class="conclusion-box">
-        <h3>💡 خلاصة الجزء الثاني:</h3>
-        <ul>
-          <li>✅ استخدم systemctl لإدارة الخدمة.</li>
-          <li>✅ افتح المتصفح لترى صفحة Welcome to nginx.</li>
-        </ul>
-      </div>
-
-      <h3 id="part3"> الجزء الثالث: إعداد المواقع (Server Blocks)</h3>
+      <h3 id="part3">📂 الجزء الثالث: إعداد المواقع (Server Blocks)</h3>
       <h4>3.1 إنشاء موقع جديد</h4>
-      <div class="code-block">
-        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>{codeMkdir}</code></pre>
-      </div>
-
+      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeMkdir}</code></pre></div>
       <h4>3.2 ملف الإعداد الأساسي</h4>
       <p>أنشئ ملف في etc/nginx/sites-available/mywebsite:</p>
-      <div class="code-block">
-        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>{codeServer}</code></pre>
-      </div>
-
+      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeServer}</code></pre></div>
       <h4>3.3 تفعيل الموقع</h4>
-      <div class="code-block">
-        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>{codeEnable}</code></pre>
-      </div>
-
-      <div class="conclusion-box">
-        <h3>💡 خلاصة الجزء الثالث:</h3>
-        <ul>
-          <li>✅ دائماً نفذ nginx -t قبل إعادة التحميل.</li>
-          <li>✅ try_files يمنع أخطاء 404 غير الضرورية.</li>
-        </ul>
-      </div>
+      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeEnable}</code></pre></div>
+      <div class="conclusion-box"><h3>💡 خلاصة الجزء الثالث:</h3><ul><li>✅ دائماً نفذ nginx -t قبل إعادة التحميل.</li><li>✅ try_files يمنع أخطاء 404 غير الضرورية.</li></ul></div>
 
       <h3 id="part4">🔄 الجزء الرابع: الوكيل العكسي (Reverse Proxy)</h3>
       <h4>4.1 توجيه الطلبات لتطبيق داخلي</h4>
-      <div class="code-block">
-        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>{codeProxy}</code></pre>
-      </div>
+      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeProxy}</code></pre></div>
+      <div class="conclusion-box"><h3>💡 خلاصة الجزء الرابع:</h3><ul><li>✅ البروكسي العكسي يخفي بنية الخوادم الداخلية.</li><li>✅ يحسن الأمان والأداء مع تطبيقات الـ Backend.</li></ul></div>
 
-      <div class="conclusion-box">
-        <h3>💡 خلاصة الجزء الرابع:</h3>
-        <ul>
-          <li>✅ البروكسي العكسي يخفي بنية الخوادم الداخلية.</li>
-          <li>✅ يحسن الأمان والأداء مع تطبيقات الـ Backend.</li>
-        </ul>
-      </div>
+      <!-- ✅ الجزء الخامس (جديد) -->
+      <h3 id="part5">🔒 الجزء الخامس: تأمين SSL/HTTPS</h3>
+      <h4>5.1 تركيب شهادة مجانية بـ Certbot</h4>
+      <p>أسهل طريقة لتحويل موقعك لـ HTTPS مجاناً مع تجديد تلقائي:</p>
+      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeCertbot}</code></pre></div>
+      <p>سيقوم Certbot تلقائياً بتعديل إعدادات Nginx وتفعيل المنفذ 443.</p>
+      <div class="conclusion-box"><h3>💡 خلاصة الجزء الخامس:</h3><ul><li>✅ HTTPS ضروري لـ SEO وثقة المستخدمين.</li><li>✅ الشهادات تجدد تلقائياً كل 60 يوم.</li></ul></div>
+
+      <!-- ✅ الجزء السادس (جديد) -->
+      <h3 id="part6">️ الجزء السادس: الأمان المتقدم</h3>
+      <h4>6.1 إخفاء معلومات الخادم وتقييد الوصول</h4>
+      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeSecurity}</code></pre></div>
+      <h4>6.2 حماية من رفع الملفات الضخمة</h4>
+      <p>استخدم <code>client_max_body_size 10M;</code> لمنع هجمات امتلاء القرص.</p>
+      <div class="conclusion-box"><h3>💡 خلاصة الجزء السادس:</h3><ul><li>✅ <code>server_tokens off;</code> يخفي إصدار Nginx.</li><li>✅ الرؤوس الأمنية تحمي من ثغرات XSS و Clickjacking.</li></ul></div>
+
+      <!-- ✅ الجزء السابع (جديد) -->
+      <h3 id="part7">⚡ الجزء السابع: تحسين الأداء والكاش</h3>
+      <h4>7.1 تفعيل ضغط Gzip</h4>
+      <p>يقلل حجم الملفات المرسلة للمتصفح بشكل كبير:</p>
+      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeGzip}</code></pre></div>
+      <h4>7.2 كاش الملفات الثابتة (Static Caching)</h4>
+      <p>إخبار المتصفح بحفظ الصور والخطوط لمدة شهر:</p>
+      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeCache}</code></pre></div>
+      <div class="conclusion-box"><h3>💡 خلاصة الجزء السابع:</h3><ul><li>✅ Gzip يوفر عرض النطاق الترددي (Bandwidth).</li><li>✅ الكاش يسرع تحميل الموقع للزوار المتكررين.</li></ul></div>
 
     </article>
 
