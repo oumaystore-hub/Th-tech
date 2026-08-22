@@ -19,7 +19,7 @@ export const pubDate = "2026-08-22";
   <main class="linux-guide-main">
     <div class="page-header">
       <h1>️ دليل Shell Scripting الشامل</h1>
-      <p>أتمتة المهام وكتابة سكربتات Bash باحتراف</p>
+      <p>أتمتة المهام، الشروط، والحلقات في Bash</p>
     </div>
 
     <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
@@ -33,80 +33,148 @@ export const pubDate = "2026-08-22";
       </div>
     </div>
 
-    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">️</button>
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
 
     <article class="guide-article">
       <span class="badge">دليل شامل</span>
       <h2>Shell Scripting: أتمتة مهام Linux</h2>
-      <div class="meta">📅 22 أغسطس 2026 | ⏱️ 20 دقيقة قراءة</div>
+      <div class="meta">📅 22 أغسطس 2026 | ⏱️ 25 دقيقة قراءة</div>
       
       <p class="intro">
-        Shell Scripting يسمح لك بجمع مجموعة من الأوامر في ملف واحد لتشغيلها تلقائياً. هو أداة قوية لكل مدير أنظمة ومطور لتوفير الوقت والجهد.
+        Shell Scripting يسمح لك بجمع الأوامر في ملف واحد وتنفيذها تلقائياً. هو الأداة الأقوى لمديري الأنظمة والمطورين لتوفير الوقت.
       </p>
 
-      <h3 id="part1"> الجزء الأول: مقدمة عن Bash</h3>
-      <h4>1.1 ما هو Bash Scripting؟</h4>
-      <p>Shell هو واجهة سطر الأوامر التي تتفاعل مع نظام التشغيل، و Bash هو الأكثر شيوعاً في توزيعات Linux.</p>
-      <ul>
-        <li><strong>الأتمتة:</strong> تنفيذ مهام متكررة بضغطة زر.</li>
-        <li><strong>المنطق:</strong> استخدام الشروط (If) والحلقات (Loops).</li>
-        <li><strong>المتغيرات:</strong> تخزين البيانات وإعادة استخدامها.</li>
-      </ul>
-      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ Bash هو لغة برمجة مدمجة في كل نظام Linux.</li></ul></div>
-
-      <h3 id="part2"> الجزء الثاني: أول سكربت</h3>
-      <h4>2.1 إنشاء وتشغيل السكربت</h4>
+      <!-- ✅ الجزء الأول -->
+      <h3 id="part1"> الجزء الأول: الأساسيات والمتغيرات</h3>
+      <h4>1.1 إنشاء سكربت وتشغيله</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
         <pre><code>#!/bin/bash
-# هذا أول سكربت لي
-echo "مرحباً بك في عالم الأتمتة!"</code></pre>
+# أول سكربت
+echo "مرحباً بالعالم!"</code></pre>
       </div>
-      <h4>2.2 إعطاء صلاحيات التشغيل</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
         <pre><code>chmod +x script.sh
 ./script.sh</code></pre>
       </div>
-      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ ابدأ السكربت دائماً بسطر Shebang `#!/bin/bash`.</li></ul></div>
 
-      <h3 id="part3"> الجزء الثالث: المتغيرات (Variables)</h3>
-      <h4>3.1 تعريف واستخدام المتغيرات</h4>
+      <h4>1.2 المتغيرات (Variables)</h4>
+      <div class="code-block">
+        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <pre><code>NAME="Ahmed"
+AGE=25
+echo "الاسم: &#36;NAME"
+echo "العمر: &#36;AGE"</code></pre>
+      </div>
+
+      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ لا تترك مسافات حول `=` عند التعريف.</li><li>✅ استخدم `&#36;` لاستدعاء القيمة.</li></ul></div>
+
+      <!-- ✅ الجزء الثاني -->
+      <h3 id="part2">️ الجزء الثاني: الشروط (Conditions)</h3>
+      <h4>2.1 جملة If الشرطية</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
         <pre><code>#!/bin/bash
-# تعريف متغير نصي
-NAME="Ahmed"
+AGE=20
 
-# طباعة المتغير
-echo "مرحباً يا NAME"
-
-# متغير رقمي
-AGE=25
-echo "عمرك هو AGE سنة"</code></pre>
+if [ &#36;AGE -gt 18 ]; then
+    echo "أنت بالغ"
+elif [ &#36;AGE -eq 18 ]; then
+    echo "عمرك 18 سنة"
+else
+    echo "أنت قاصر"
+fi</code></pre>
       </div>
-      <div class="conclusion-box"><h3> خلاصة:</h3><ul><li>✅ لا تترك مسافات حول علامة `=` عند التعريف.</li><li>✅ استخدم `$` لاستدعاء قيمة المتغير.</li></ul></div>
+      <h4>2.2 مقارنة النصوص</h4>
+      <div class="code-block">
+        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <pre><code>STATUS="active"
+if [ "&#36;STATUS" == "active" ]; then
+    echo "الخدمة تعمل"
+fi</code></pre>
+      </div>
 
-      <h3 id="part4">📋 الجزء الرابع: الملخص السريع</h3>
+      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ استخدم `-gt` (أكبر)، `-lt` (أصغر)، `-eq` (يساوي) للأرقام.</li></ul></div>
+
+      <!-- ✅ الجزء الثالث -->
+      <h3 id="part3">🔄 الجزء الثالث: الحلقات (Loops)</h3>
+      <h4>3.1 حلقة For</h4>
+      <div class="code-block">
+        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <pre><code>#!/bin/bash
+# تكرار قائمة
+for COLOR in Red Green Blue
+do
+    echo "اللون: &#36;COLOR"
+done</code></pre>
+      </div>
+
+      <h4>3.2 حلقة While</h4>
+      <div class="code-block">
+        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <pre><code>#!/bin/bash
+COUNTER=0
+while [ &#36;COUNTER -lt 5 ]
+do
+    echo "الرقم: &#36;COUNTER"
+    COUNTER=$((COUNTER + 1))
+done</code></pre>
+      </div>
+
+      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ For مثالية لقوائم محددة.</li><li>✅ While مثالية لانتظار شرط معين.</li></ul></div>
+
+      <!-- ✅ الجزء الرابع -->
+      <h3 id="part4">🧩 الجزء الرابع: الدوال (Functions)</h3>
+      <h4>4.1 تعريف واستدعاء دالة</h4>
+      <div class="code-block">
+        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <pre><code>#!/bin/bash
+# تعريف الدالة
+greet() {
+    echo "مرحباً &#36;1! يومك سعيد."
+}
+
+# استدعاء الدالة
+greet "Ahmed"
+greet "Sara"</code></pre>
+      </div>
+      <h4>4.2 إرجاع قيم</h4>
+      <div class="code-block">
+        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <pre><code>add() {
+    sum=$((&#36;1 + &#36;2))
+    echo &#36;sum
+}
+
+result=$(add 5 10)
+echo "المجموع: &#36;result"</code></pre>
+      </div>
+
+      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ الدوال تنظم الكود وتقلل التكرار.</li><li>✅ `&#36;1`, `&#36;2` هي المعاملات الممررة للدالة.</li></ul></div>
+
+      <!-- ✅ الملخص -->
+      <h3 id="part5">📋 الجزء الخامس: الملخص السريع</h3>
       <div class="table-responsive">
         <table class="cheat-sheet-table">
           <thead>
             <tr>
-              <th>الأمر</th>
+              <th>البناء</th>
               <th>الوظيفة</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>#!/bin/bash</td><td>تحديد مترجم Bash</td></tr>
-            <tr><td>chmod +x</td><td>منح صلاحيات التنفيذ</td></tr>
-            <tr><td>echo</td><td>طباعة نص أو متغير</td></tr>
-            <tr><td>VAR="Value"</td><td>تعريف متغير جديد</td></tr>
+            <tr><td>#!/bin/bash</td><td>تحديد المترجم</td></tr>
+            <tr><td>VAR="Value"</td><td>تعريف متغير</td></tr>
+            <tr><td>if [ ... ]; then</td><td>شرط منطقي</td></tr>
+            <tr><td>for x in list</td><td>حلقة تكرار</td></tr>
+            <tr><td>func() { ... }</td><td>تعريف دالة</td></tr>
           </tbody>
         </table>
       </div>
       <div class="conclusion-box">
-        <h3> مبارك!</h3>
-        <p style="margin-top: 0.5rem;">أصبحت الآن قادراً على كتابة وتشغيل سكربتات Bash الأساسية.</p>
+        <h3>🎉 مبارك!</h3>
+        <p style="margin-top: 0.5rem;">أصبحت الآن قادراً على كتابة سكربتات Bash متقدمة وأتمتة مهامك.</p>
       </div>
 
     </article>
