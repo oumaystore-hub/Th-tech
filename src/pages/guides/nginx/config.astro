@@ -6,7 +6,7 @@ import ShareButtons from '../../../components/ShareButtons.astro';
 export const title = "دليل Nginx والخوادم الشامل";
 export const pubDate = "2026-08-21";
 
-// ✅ أكواد الأجزاء 1-4 (موجودة مسبقاً)
+// ✅ متغيرات الأكواد (الطريقة الآمنة التي تمنع فشل البناء)
 const codeInstall = `sudo apt update
 sudo apt install nginx -y
 sudo systemctl enable nginx
@@ -48,7 +48,6 @@ const codeProxy = `server {
     }
 }`;
 
-// ✅ أكواد الأجزاء الجديدة (5-7)
 const codeCertbot = `sudo apt install certbot python3-certbot-nginx -y
 sudo certbot --nginx -d mywebsite.com -d www.mywebsite.com`;
 
@@ -68,6 +67,44 @@ const codeCache = `location ~* \\.(jpg|jpeg|png|gif|ico|css|js)$ {
     expires 30d;
     add_header Cache-Control "public, immutable";
 }`;
+
+// ✅ أكواد الأجزاء الجديدة (8-10)
+const codeLoadBalance = `upstream backend_pool {
+    least_conn;
+    server 10.0.0.10;
+    server 10.0.0.11;
+    server 10.0.0.12 backup;
+}
+
+server {
+    listen 80;
+    server_name app.mywebsite.com;
+    
+    location / {
+        proxy_pass http://backend_pool;
+    }
+}`;
+
+const codeLogs = `# عرض السجلات مباشرة
+tail -f /var/log/nginx/access.log
+
+# عرض آخر 50 خطأ
+tail -n 50 /var/log/nginx/error.log
+
+# أكثر عناوين IP زيارة
+awk '{print $1}' /var/log/nginx/access.log | sort | uniq -c | sort -nr | head`;
+
+const codeLogFormat = `log_format custom 'REMOTE_ADDR - USER [TIME_LOCAL] "REQUEST" STATUS BODY_BYTES_SENT';
+access_log /var/log/nginx/custom.log custom;`;
+
+const codeTroubleshoot = `# التحقق من صحة الإعدادات
+sudo nginx -t
+
+# زيادة حجم الملفات المرفوعة (حل خطأ 413)
+client_max_body_size 50M;
+
+# إعادة التشغيل الآمن
+sudo systemctl reload nginx`;
 ---
 
 <html lang="ar" dir="rtl">
@@ -85,7 +122,7 @@ const codeCache = `location ~* \\.(jpg|jpeg|png|gif|ico|css|js)$ {
       <p>من التثبيت إلى الاستضافة العكسية، SSL، والأمان</p>
     </div>
 
-    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس"></button>
     <div class="toc-modal" id="tocModal">
       <div class="toc-box">
         <div class="toc-head">
@@ -101,21 +138,17 @@ const codeCache = `location ~* \\.(jpg|jpeg|png|gif|ico|css|js)$ {
     <article class="guide-article">
       <span class="badge">دليل شامل</span>
       <h2>Nginx: من الصفر إلى الاحتراف</h2>
-      <div class="meta"> 21 أغسطس 2026 | ⏱️ 35 دقيقة قراءة</div>
+      <div class="meta">📅 21 أغسطس 2026 | ⏱️ 40 دقيقة قراءة</div>
       
       <p class="intro">
         Nginx هو خادم ويب عالي الأداء، يعمل كـ Reverse Proxy، وموازن حمل. يُستخدم من قبل أكبر المواقع في العالم لسرعته واستقراره.
       </p>
 
-      <!-- ✅ الأجزاء 1-4 (نفس الكود الناجح سابقاً) -->
+      <!-- ✅ الأجزاء 1-7 (موجودة وآمنة) -->
       <h3 id="part1">🔍 الجزء الأول: مقدمة عن Nginx</h3>
       <h4>1.1 لماذا Nginx؟</h4>
       <p>يتميز Nginx ببنية غير متزامنة تعتمد على الأحداث، مما يجعله أخف وأسرع من Apache:</p>
-      <ul>
-        <li><strong>أداء عالي:</strong> يستهلك موارد أقل مع عدد زوار أكبر.</li>
-        <li><strong>مرونة:</strong> يعمل كخادم ويب، وكيل عكسي، وموازن حمل.</li>
-        <li><strong>أمان:</strong> دعم مدمج لـ SSL/TLS.</li>
-      </ul>
+      <ul><li><strong>أداء عالي:</strong> يستهلك موارد أقل مع عدد زوار أكبر.</li><li><strong>مرونة:</strong> يعمل كخادم ويب، وكيل عكسي، وموازن حمل.</li><li><strong>أمان:</strong> دعم مدمج لـ SSL/TLS.</li></ul>
       <div class="conclusion-box"><h3>💡 خلاصة الجزء الأول:</h3><ul><li>✅ Nginx هو الخيار الأول للمواقع عالية الزيارات.</li><li>✅ بنيته الحديثة تجعله أسرع وأكثر استقراراً.</li></ul></div>
 
       <h3 id="part2">🚀 الجزء الثاني: التثبيت والإعداد</h3>
@@ -140,31 +173,46 @@ const codeCache = `location ~* \\.(jpg|jpeg|png|gif|ico|css|js)$ {
       <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeProxy}</code></pre></div>
       <div class="conclusion-box"><h3>💡 خلاصة الجزء الرابع:</h3><ul><li>✅ البروكسي العكسي يخفي بنية الخوادم الداخلية.</li><li>✅ يحسن الأمان والأداء مع تطبيقات الـ Backend.</li></ul></div>
 
-      <!-- ✅ الجزء الخامس (جديد) -->
       <h3 id="part5">🔒 الجزء الخامس: تأمين SSL/HTTPS</h3>
       <h4>5.1 تركيب شهادة مجانية بـ Certbot</h4>
-      <p>أسهل طريقة لتحويل موقعك لـ HTTPS مجاناً مع تجديد تلقائي:</p>
       <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeCertbot}</code></pre></div>
-      <p>سيقوم Certbot تلقائياً بتعديل إعدادات Nginx وتفعيل المنفذ 443.</p>
       <div class="conclusion-box"><h3>💡 خلاصة الجزء الخامس:</h3><ul><li>✅ HTTPS ضروري لـ SEO وثقة المستخدمين.</li><li>✅ الشهادات تجدد تلقائياً كل 60 يوم.</li></ul></div>
 
-      <!-- ✅ الجزء السادس (جديد) -->
-      <h3 id="part6">️ الجزء السادس: الأمان المتقدم</h3>
+      <h3 id="part6">🛡️ الجزء السادس: الأمان المتقدم</h3>
       <h4>6.1 إخفاء معلومات الخادم وتقييد الوصول</h4>
       <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeSecurity}</code></pre></div>
-      <h4>6.2 حماية من رفع الملفات الضخمة</h4>
-      <p>استخدم <code>client_max_body_size 10M;</code> لمنع هجمات امتلاء القرص.</p>
-      <div class="conclusion-box"><h3>💡 خلاصة الجزء السادس:</h3><ul><li>✅ <code>server_tokens off;</code> يخفي إصدار Nginx.</li><li>✅ الرؤوس الأمنية تحمي من ثغرات XSS و Clickjacking.</li></ul></div>
+      <div class="conclusion-box"><h3>💡 خلاصة الجزء السادس:</h3><ul><li>✅ server_tokens off; يخفي إصدار Nginx.</li><li>✅ الرؤوس الأمنية تحمي من ثغرات XSS و Clickjacking.</li></ul></div>
 
-      <!-- ✅ الجزء السابع (جديد) -->
       <h3 id="part7">⚡ الجزء السابع: تحسين الأداء والكاش</h3>
       <h4>7.1 تفعيل ضغط Gzip</h4>
-      <p>يقلل حجم الملفات المرسلة للمتصفح بشكل كبير:</p>
       <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeGzip}</code></pre></div>
       <h4>7.2 كاش الملفات الثابتة (Static Caching)</h4>
-      <p>إخبار المتصفح بحفظ الصور والخطوط لمدة شهر:</p>
       <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeCache}</code></pre></div>
       <div class="conclusion-box"><h3>💡 خلاصة الجزء السابع:</h3><ul><li>✅ Gzip يوفر عرض النطاق الترددي (Bandwidth).</li><li>✅ الكاش يسرع تحميل الموقع للزوار المتكررين.</li></ul></div>
+
+      <!-- ✅ الأجزاء الجديدة (8-10) -->
+      <h3 id="part8">⚖️ الجزء الثامن: موازنة الحمل (Load Balancing)</h3>
+      <h4>8.1 توزيع الطلبات على عدة خوادم</h4>
+      <p>يستخدم Nginx لتوزيع الزيارات تلقائياً لضمان عدم توقف الخدمة:</p>
+      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeLoadBalance}</code></pre></div>
+      <div class="conclusion-box"><h3>💡 خلاصة الجزء الثامن:</h3><ul><li>✅ <code>least_conn</code> يرسل الطلبات للسيرفر الأقل ضغطاً.</li><li>✅ <code>backup</code> يعمل فقط عند فشل السيرفرات الرئيسية.</li></ul></div>
+
+      <h3 id="part9">📊 الجزء التاسع: المراقبة والسجلات (Logs)</h3>
+      <h4>9.1 قراءة وتحليل السجلات</h4>
+      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeLogs}</code></pre></div>
+      <h4>9.2 تنسيق سجل مخصص</h4>
+      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeLogFormat}</code></pre></div>
+      <div class="conclusion-box"><h3>💡 خلاصة الجزء التاسع:</h3><ul><li>✅ <code>access.log</code> لتتبع الزوار، <code>error.log</code> للأعطال.</li><li>✅ التنسيق المخصص يسهل التحليل الآلي لاحقاً.</li></ul></div>
+
+      <h3 id="part10"> الجزء العاشر: استكشاف الأخطاء (Troubleshooting)</h3>
+      <h4>10.1 حل الأخطاء الشائعة</h4>
+      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeTroubleshoot}</code></pre></div>
+      <ul>
+        <li><strong>خطأ 502:</strong> التطبيق الخلفي متوقف أو المنفذ خاطئ.</li>
+        <li><strong>خطأ 403:</strong> مشكلة في صلاحيات المجلد أو ملف index.</li>
+        <li><strong>خطأ 413:</strong> حجم الملف المرفوع أكبر من المسموح.</li>
+      </ul>
+      <div class="conclusion-box"><h3>💡 خلاصة الجزء العاشر:</h3><ul><li>✅ دائماً استخدم <code>sudo nginx -t</code> قبل أي تعديل.</li><li>✅ راقب <code>error.log</code> فوراً عند ظهور أخطاء 5xx.</li></ul></div>
 
     </article>
 
