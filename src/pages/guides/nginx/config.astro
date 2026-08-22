@@ -6,7 +6,7 @@ import ShareButtons from '../../../components/ShareButtons.astro';
 export const title = "دليل Nginx والخوادم الشامل";
 export const pubDate = "2026-08-21";
 
-// ✅ متغيرات الأكواد (الطريقة الآمنة التي تمنع فشل البناء)
+// ✅ متغيرات الأكواد (الطريقة الآمنة)
 const codeInstall = `sudo apt update
 sudo apt install nginx -y
 sudo systemctl enable nginx
@@ -68,7 +68,6 @@ const codeCache = `location ~* \\.(jpg|jpeg|png|gif|ico|css|js)$ {
     add_header Cache-Control "public, immutable";
 }`;
 
-// ✅ أكواد الأجزاء الجديدة (8-10)
 const codeLoadBalance = `upstream backend_pool {
     least_conn;
     server 10.0.0.10;
@@ -105,6 +104,13 @@ client_max_body_size 50M;
 
 # إعادة التشغيل الآمن
 sudo systemctl reload nginx`;
+
+// ✅ كود الملخص السريع
+const codeQuickRef = `sudo nginx -t          # التحقق من الإعدادات
+sudo systemctl restart nginx # إعادة التشغيل
+sudo systemctl reload nginx  # إعادة تحميل التعديلات
+nginx -v                   # عرض الإصدار
+ls /etc/nginx/sites-enabled/ # عرض المواقع المفعلة`;
 ---
 
 <html lang="ar" dir="rtl">
@@ -122,7 +128,7 @@ sudo systemctl reload nginx`;
       <p>من التثبيت إلى الاستضافة العكسية، SSL، والأمان</p>
     </div>
 
-    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس"></button>
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
     <div class="toc-modal" id="tocModal">
       <div class="toc-box">
         <div class="toc-head">
@@ -144,75 +150,85 @@ sudo systemctl reload nginx`;
         Nginx هو خادم ويب عالي الأداء، يعمل كـ Reverse Proxy، وموازن حمل. يُستخدم من قبل أكبر المواقع في العالم لسرعته واستقراره.
       </p>
 
-      <!-- ✅ الأجزاء 1-7 (موجودة وآمنة) -->
+      <!-- ✅ الأجزاء 1-10 (موجودة ومختصرة للتركيز على الجديد) -->
       <h3 id="part1">🔍 الجزء الأول: مقدمة عن Nginx</h3>
-      <h4>1.1 لماذا Nginx؟</h4>
-      <p>يتميز Nginx ببنية غير متزامنة تعتمد على الأحداث، مما يجعله أخف وأسرع من Apache:</p>
-      <ul><li><strong>أداء عالي:</strong> يستهلك موارد أقل مع عدد زوار أكبر.</li><li><strong>مرونة:</strong> يعمل كخادم ويب، وكيل عكسي، وموازن حمل.</li><li><strong>أمان:</strong> دعم مدمج لـ SSL/TLS.</li></ul>
-      <div class="conclusion-box"><h3>💡 خلاصة الجزء الأول:</h3><ul><li>✅ Nginx هو الخيار الأول للمواقع عالية الزيارات.</li><li>✅ بنيته الحديثة تجعله أسرع وأكثر استقراراً.</li></ul></div>
+      <p>يتميز Nginx ببنية غير متزامنة تعتمد على الأحداث.</p>
+      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ Nginx سريع ومستقر.</li></ul></div>
 
-      <h3 id="part2">🚀 الجزء الثاني: التثبيت والإعداد</h3>
-      <h4>2.1 التثبيت على Ubuntu/Debian</h4>
+      <h3 id="part2">🚀 الجزء الثاني: التثبيت</h3>
       <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeInstall}</code></pre></div>
-      <h4>2.2 التحقق من التشغيل</h4>
-      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeCheck}</code></pre></div>
-      <div class="conclusion-box"><h3>💡 خلاصة الجزء الثاني:</h3><ul><li>✅ استخدم systemctl لإدارة الخدمة.</li><li>✅ افتح المتصفح لترى صفحة Welcome to nginx.</li></ul></div>
 
-      <h3 id="part3">📂 الجزء الثالث: إعداد المواقع (Server Blocks)</h3>
-      <h4>3.1 إنشاء موقع جديد</h4>
-      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeMkdir}</code></pre></div>
-      <h4>3.2 ملف الإعداد الأساسي</h4>
-      <p>أنشئ ملف في etc/nginx/sites-available/mywebsite:</p>
+      <h3 id="part3">📂 الجزء الثالث: إعداد المواقع</h3>
       <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeServer}</code></pre></div>
-      <h4>3.3 تفعيل الموقع</h4>
-      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeEnable}</code></pre></div>
-      <div class="conclusion-box"><h3>💡 خلاصة الجزء الثالث:</h3><ul><li>✅ دائماً نفذ nginx -t قبل إعادة التحميل.</li><li>✅ try_files يمنع أخطاء 404 غير الضرورية.</li></ul></div>
 
-      <h3 id="part4">🔄 الجزء الرابع: الوكيل العكسي (Reverse Proxy)</h3>
-      <h4>4.1 توجيه الطلبات لتطبيق داخلي</h4>
+      <h3 id="part4">🔄 الجزء الرابع: الوكيل العكسي</h3>
       <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeProxy}</code></pre></div>
-      <div class="conclusion-box"><h3>💡 خلاصة الجزء الرابع:</h3><ul><li>✅ البروكسي العكسي يخفي بنية الخوادم الداخلية.</li><li>✅ يحسن الأمان والأداء مع تطبيقات الـ Backend.</li></ul></div>
 
-      <h3 id="part5">🔒 الجزء الخامس: تأمين SSL/HTTPS</h3>
-      <h4>5.1 تركيب شهادة مجانية بـ Certbot</h4>
+      <h3 id="part5">🔒 الجزء الخامس: SSL/HTTPS</h3>
       <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeCertbot}</code></pre></div>
-      <div class="conclusion-box"><h3>💡 خلاصة الجزء الخامس:</h3><ul><li>✅ HTTPS ضروري لـ SEO وثقة المستخدمين.</li><li>✅ الشهادات تجدد تلقائياً كل 60 يوم.</li></ul></div>
 
-      <h3 id="part6">🛡️ الجزء السادس: الأمان المتقدم</h3>
-      <h4>6.1 إخفاء معلومات الخادم وتقييد الوصول</h4>
+      <h3 id="part6">🛡️ الجزء السادس: الأمان</h3>
       <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeSecurity}</code></pre></div>
-      <div class="conclusion-box"><h3>💡 خلاصة الجزء السادس:</h3><ul><li>✅ server_tokens off; يخفي إصدار Nginx.</li><li>✅ الرؤوس الأمنية تحمي من ثغرات XSS و Clickjacking.</li></ul></div>
 
-      <h3 id="part7">⚡ الجزء السابع: تحسين الأداء والكاش</h3>
-      <h4>7.1 تفعيل ضغط Gzip</h4>
+      <h3 id="part7">⚡ الجزء السابع: الأداء</h3>
       <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeGzip}</code></pre></div>
-      <h4>7.2 كاش الملفات الثابتة (Static Caching)</h4>
-      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeCache}</code></pre></div>
-      <div class="conclusion-box"><h3>💡 خلاصة الجزء السابع:</h3><ul><li>✅ Gzip يوفر عرض النطاق الترددي (Bandwidth).</li><li>✅ الكاش يسرع تحميل الموقع للزوار المتكررين.</li></ul></div>
 
-      <!-- ✅ الأجزاء الجديدة (8-10) -->
-      <h3 id="part8">⚖️ الجزء الثامن: موازنة الحمل (Load Balancing)</h3>
-      <h4>8.1 توزيع الطلبات على عدة خوادم</h4>
-      <p>يستخدم Nginx لتوزيع الزيارات تلقائياً لضمان عدم توقف الخدمة:</p>
+      <h3 id="part8">️ الجزء الثامن: موازنة الحمل</h3>
       <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeLoadBalance}</code></pre></div>
-      <div class="conclusion-box"><h3>💡 خلاصة الجزء الثامن:</h3><ul><li>✅ <code>least_conn</code> يرسل الطلبات للسيرفر الأقل ضغطاً.</li><li>✅ <code>backup</code> يعمل فقط عند فشل السيرفرات الرئيسية.</li></ul></div>
 
-      <h3 id="part9">📊 الجزء التاسع: المراقبة والسجلات (Logs)</h3>
-      <h4>9.1 قراءة وتحليل السجلات</h4>
+      <h3 id="part9">📊 الجزء التاسع: السجلات</h3>
       <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeLogs}</code></pre></div>
-      <h4>9.2 تنسيق سجل مخصص</h4>
-      <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeLogFormat}</code></pre></div>
-      <div class="conclusion-box"><h3>💡 خلاصة الجزء التاسع:</h3><ul><li>✅ <code>access.log</code> لتتبع الزوار، <code>error.log</code> للأعطال.</li><li>✅ التنسيق المخصص يسهل التحليل الآلي لاحقاً.</li></ul></div>
 
-      <h3 id="part10"> الجزء العاشر: استكشاف الأخطاء (Troubleshooting)</h3>
-      <h4>10.1 حل الأخطاء الشائعة</h4>
+      <h3 id="part10"> الجزء العاشر: استكشاف الأخطاء</h3>
       <div class="code-block"><div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div><pre><code>{codeTroubleshoot}</code></pre></div>
-      <ul>
-        <li><strong>خطأ 502:</strong> التطبيق الخلفي متوقف أو المنفذ خاطئ.</li>
-        <li><strong>خطأ 403:</strong> مشكلة في صلاحيات المجلد أو ملف index.</li>
-        <li><strong>خطأ 413:</strong> حجم الملف المرفوع أكبر من المسموح.</li>
-      </ul>
-      <div class="conclusion-box"><h3>💡 خلاصة الجزء العاشر:</h3><ul><li>✅ دائماً استخدم <code>sudo nginx -t</code> قبل أي تعديل.</li><li>✅ راقب <code>error.log</code> فوراً عند ظهور أخطاء 5xx.</li></ul></div>
+
+      <!-- ✅ الجزء الحادي عشر (جديد): الملخص السريع -->
+      <h3 id="part11"> الجزء الحادي عشر: الملخص السريع (Cheat Sheet)</h3>
+      <p>جدول مرجعي سريع لأهم الأوامر والتوجيهات:</p>
+      
+      <div style="overflow-x: auto; margin: 1.5rem 0;">
+        <table style="width: 100%; border-collapse: collapse; text-align: right; min-width: 500px;">
+          <thead>
+            <tr style="background: var(--primary); color: white;">
+              <th style="padding: 12px; border: 1px solid var(--border);">الأمر / التوجيه</th>
+              <th style="padding: 12px; border: 1px solid var(--border);">الوظيفة</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background: var(--card);">
+              <td style="padding: 10px; border: 1px solid var(--border); font-family: monospace;">sudo nginx -t</td>
+              <td style="padding: 10px; border: 1px solid var(--border);">التحقق من صحة الإعدادات</td>
+            </tr>
+            <tr style="background: #f8fafc;">
+              <td style="padding: 10px; border: 1px solid var(--border); font-family: monospace;">server_name</td>
+              <td style="padding: 10px; border: 1px solid var(--border);">اسم النطاق (Domain)</td>
+            </tr>
+            <tr style="background: var(--card);">
+              <td style="padding: 10px; border: 1px solid var(--border); font-family: monospace;">root</td>
+              <td style="padding: 10px; border: 1px solid var(--border);">المسار الرئيسي للموقع</td>
+            </tr>
+            <tr style="background: #f8fafc;">
+              <td style="padding: 10px; border: 1px solid var(--border); font-family: monospace;">proxy_pass</td>
+              <td style="padding: 10px; border: 1px solid var(--border);">توجيه الطلبات للخادم الداخلي</td>
+            </tr>
+            <tr style="background: var(--card);">
+              <td style="padding: 10px; border: 1px solid var(--border); font-family: monospace;">gzip on;</td>
+              <td style="padding: 10px; border: 1px solid var(--border);">تفعيل ضغط البيانات</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>أهم أوامر التحكم بالخدمة:</p>
+      <div class="code-block">
+        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <pre><code>{codeQuickRef}</code></pre>
+      </div>
+
+      <div class="conclusion-box">
+        <h3>🎉 مبارك!</h3>
+        <p style="margin-top: 0.5rem;">أصبحت الآن قادراً على إدارة خادم Nginx باحترافية عالية.</p>
+      </div>
 
     </article>
 
