@@ -5,6 +5,48 @@ import ShareButtons from '../../../components/ShareButtons.astro';
 
 export const title = "دليل Nginx والخوادم الشامل";
 export const pubDate = "2026-08-21";
+
+// ✅ تخزين الأكواد كـ strings عادية
+const codeInstall = `sudo apt update
+sudo apt install nginx -y
+sudo systemctl enable nginx
+sudo systemctl start nginx`;
+
+const codeCheck = `sudo systemctl status nginx
+nginx -v
+curl -I http://localhost`;
+
+const codeMkdir = `sudo mkdir -p /var/www/mywebsite
+sudo chown -R www-data:www-data /var/www/mywebsite
+sudo chmod -R 755 /var/www/mywebsite`;
+
+const codeServer = `server {
+    listen 80;
+    server_name mywebsite.com www.mywebsite.com;
+    root /var/www/mywebsite;
+    index index.html;
+
+    location / {
+        try_files URI_PATH URI_PATH/ =404;
+    }
+}`;
+
+const codeEnable = `sudo ln -s /etc/nginx/sites-available/mywebsite /etc/nginx/sites-enabled/
+sudo nginx -t
+sudo systemctl reload nginx`;
+
+const codeProxy = `server {
+    listen 80;
+    server_name app.mywebsite.com;
+
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade HTTP_UPGRADE_VAR;
+        proxy_set_header Connection upgrade;
+        proxy_set_header Host HOST_NAME_VAR;
+    }
+}`;
 ---
 
 <html lang="ar" dir="rtl">
@@ -18,7 +60,7 @@ export const pubDate = "2026-08-21";
   
   <main class="linux-guide-main">
     <div class="page-header">
-      <h1>️ دليل Nginx والخوادم الشامل</h1>
+      <h1>⚙️ دليل Nginx والخوادم الشامل</h1>
       <p>من التثبيت إلى الاستضافة العكسية والأمان</p>
     </div>
 
@@ -33,12 +75,12 @@ export const pubDate = "2026-08-21";
       </div>
     </div>
 
-    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">️</button>
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
 
     <article class="guide-article">
       <span class="badge">دليل شامل</span>
       <h2>Nginx: من الصفر إلى الاحتراف</h2>
-      <div class="meta">📅 21 أغسطس 2026 | ️ 30 دقيقة قراءة</div>
+      <div class="meta">📅 21 أغسطس 2026 | ⏱️ 30 دقيقة قراءة</div>
       
       <p class="intro">
         Nginx هو خادم ويب عالي الأداء، يعمل كـ Reverse Proxy، وموازن حمل. يُستخدم من قبل أكبر المواقع في العالم لسرعته واستقراره.
@@ -65,18 +107,13 @@ export const pubDate = "2026-08-21";
       <h4>2.1 التثبيت على Ubuntu/Debian</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>sudo apt update
-sudo apt install nginx -y
-sudo systemctl enable nginx
-sudo systemctl start nginx</code></pre>
+        <pre><code>{codeInstall}</code></pre>
       </div>
 
       <h4>2.2 التحقق من التشغيل</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>sudo systemctl status nginx
-nginx -v
-curl -I http://localhost</code></pre>
+        <pre><code>{codeCheck}</code></pre>
       </div>
 
       <div class="conclusion-box">
@@ -87,38 +124,24 @@ curl -I http://localhost</code></pre>
         </ul>
       </div>
 
-      <h3 id="part3">📂 الجزء الثالث: إعداد المواقع (Server Blocks)</h3>
+      <h3 id="part3"> الجزء الثالث: إعداد المواقع (Server Blocks)</h3>
       <h4>3.1 إنشاء موقع جديد</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>sudo mkdir -p /var/www/mywebsite
-sudo chown -R www-data:www-data /var/www/mywebsite
-sudo chmod -R 755 /var/www/mywebsite</code></pre>
+        <pre><code>{codeMkdir}</code></pre>
       </div>
 
       <h4>3.2 ملف الإعداد الأساسي</h4>
       <p>أنشئ ملف في etc/nginx/sites-available/mywebsite:</p>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <!-- ✅ تم استبدال $uri بـ URI_PATH لضمان نجاح البناء -->
-        <pre><code>server {
-    listen 80;
-    server_name mywebsite.com www.mywebsite.com;
-    root /var/www/mywebsite;
-    index index.html;
-
-    location / {
-        try_files URI_PATH URI_PATH/ =404;
-    }
-}</code></pre>
+        <pre><code>{codeServer}</code></pre>
       </div>
 
       <h4>3.3 تفعيل الموقع</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>sudo ln -s /etc/nginx/sites-available/mywebsite /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl reload nginx</code></pre>
+        <pre><code>{codeEnable}</code></pre>
       </div>
 
       <div class="conclusion-box">
@@ -133,19 +156,7 @@ sudo systemctl reload nginx</code></pre>
       <h4>4.1 توجيه الطلبات لتطبيق داخلي</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <!-- ✅ تم استبدال المتغيرات بأسماء واضحة لضمان نجاح البناء -->
-        <pre><code>server {
-    listen 80;
-    server_name app.mywebsite.com;
-
-    location / {
-        proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade HTTP_UPGRADE_VAR;
-        proxy_set_header Connection upgrade;
-        proxy_set_header Host HOST_NAME_VAR;
-    }
-}</code></pre>
+        <pre><code>{codeProxy}</code></pre>
       </div>
 
       <div class="conclusion-box">
