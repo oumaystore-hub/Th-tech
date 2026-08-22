@@ -5,6 +5,68 @@ import ShareButtons from '../../../components/ShareButtons.astro';
 
 export const title = "دليل Shell Scripting الشامل";
 export const pubDate = "2026-08-22";
+
+// ✅ تخزين الأكواد كمتغيرات (الطريقة الآمنة)
+const codeHello = `#!/bin/bash
+# My first script
+echo "Hello World!"`;
+
+const codeRun = `chmod +x script.sh
+./script.sh`;
+
+const codeVars = `NAME="Ahmed"
+AGE=25
+echo "Name: VARIABLE_NAME"
+echo "Age: VARIABLE_AGE"`;
+
+const codeIf = `#!/bin/bash
+AGE=20
+
+if [ VARIABLE_AGE -gt 18 ]; then
+    echo "You are an adult"
+elif [ VARIABLE_AGE -eq 18 ]; then
+    echo "You are 18 years old"
+else
+    echo "You are a minor"
+fi`;
+
+const codeTextCompare = `STATUS="active"
+if [ "VARIABLE_STATUS" == "active" ]; then
+    echo "Service is running"
+fi`;
+
+const codeFor = `#!/bin/bash
+# Loop through colors
+for COLOR in Red Green Blue
+do
+    echo "Color: VARIABLE_COLOR"
+done`;
+
+const codeWhile = `#!/bin/bash
+COUNTER=0
+while [ VARIABLE_COUNTER -lt 5 ]
+do
+    echo "Number: VARIABLE_COUNTER"
+    COUNTER=$((COUNTER + 1))
+done`;
+
+const codeFunc = `#!/bin/bash
+# Define function
+greet() {
+    echo "Hello VARIABLE_1! Have a great day."
+}
+
+# Call function
+greet "Ahmed"
+greet "Sara"`;
+
+const codeFuncReturn = `add() {
+    sum=$((VARIABLE_1 + VARIABLE_2))
+    echo VARIABLE_sum
+}
+
+result=$(add 5 10)
+echo "Sum: VARIABLE_result"`;
 ---
 
 <html lang="ar" dir="rtl">
@@ -22,12 +84,12 @@ export const pubDate = "2026-08-22";
       <p>أتمتة المهام، الشروط، والحلقات في Bash</p>
     </div>
 
-    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس"></button>
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
     <div class="toc-modal" id="tocModal">
       <div class="toc-box">
         <div class="toc-head">
           <h3>فهرس الدليل</h3>
-          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس">✕</button>
+          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس"></button>
         </div>
         <nav class="toc-nav" id="tocNav"></nav>
       </div>
@@ -38,7 +100,7 @@ export const pubDate = "2026-08-22";
     <article class="guide-article">
       <span class="badge">دليل شامل</span>
       <h2>Shell Scripting: أتمتة مهام Linux</h2>
-      <div class="meta">📅 22 أغسطس 2026 | ⏱️ 25 دقيقة قراءة</div>
+      <div class="meta"> 22 أغسطس 2026 | ⏱️ 25 دقيقة قراءة</div>
       
       <p class="intro">
         Shell Scripting يسمح لك بجمع الأوامر في ملف واحد وتنفيذها تلقائياً. هو الأداة الأقوى لمديري الأنظمة والمطورين لتوفير الوقت.
@@ -48,75 +110,46 @@ export const pubDate = "2026-08-22";
       <h4>1.1 إنشاء سكربت وتشغيله</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>#!/bin/bash
-# My first script
-echo "Hello World!"</code></pre>
+        <pre><code>{codeHello}</code></pre>
       </div>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>chmod +x script.sh
-./script.sh</code></pre>
+        <pre><code>{codeRun}</code></pre>
       </div>
 
       <h4>1.2 المتغيرات (Variables)</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>NAME="Ahmed"
-AGE=25
-echo "Name: &#36;NAME"
-echo "Age: &#36;AGE"</code></pre>
+        <pre><code>{codeVars}</code></pre>
       </div>
 
-      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ لا تترك مسافات حول علامة `=` عند التعريف.</li><li>✅ استخدم `&#36;` لاستدعاء قيمة المتغير.</li></ul></div>
+      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ لا تترك مسافات حول علامة `=` عند التعريف.</li><li>✅ استخدم `$` لاستدعاء قيمة المتغير.</li></ul></div>
 
-      <h3 id="part2">️ الجزء الثاني: الشروط (Conditions)</h3>
+      <h3 id="part2"> الجزء الثاني: الشروط (Conditions)</h3>
       <h4>2.1 جملة If الشرطية</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>#!/bin/bash
-AGE=20
-
-if [ &#36;AGE -gt 18 ]; then
-    echo "You are an adult"
-elif [ &#36;AGE -eq 18 ]; then
-    echo "You are 18 years old"
-else
-    echo "You are a minor"
-fi</code></pre>
+        <pre><code>{codeIf}</code></pre>
       </div>
       <h4>2.2 مقارنة النصوص</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>STATUS="active"
-if [ "&#36;STATUS" == "active" ]; then
-    echo "Service is running"
-fi</code></pre>
+        <pre><code>{codeTextCompare}</code></pre>
       </div>
 
       <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ استخدم `-gt` (أكبر)، `-lt` (أصغر)، `-eq` (يساوي) للأرقام.</li></ul></div>
 
-      <h3 id="part3">🔄 الجزء الثالث: الحلقات (Loops)</h3>
+      <h3 id="part3"> الجزء الثالث: الحلقات (Loops)</h3>
       <h4>3.1 حلقة For</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>#!/bin/bash
-# Loop through colors
-for COLOR in Red Green Blue
-do
-    echo "Color: &#36;COLOR"
-done</code></pre>
+        <pre><code>{codeFor}</code></pre>
       </div>
 
       <h4>3.2 حلقة While</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>#!/bin/bash
-COUNTER=0
-while [ &#36;COUNTER -lt 5 ]
-do
-    echo "Number: &#36;COUNTER"
-    COUNTER=$((COUNTER + 1))
-done</code></pre>
+        <pre><code>{codeWhile}</code></pre>
       </div>
 
       <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ For مثالية لقوائم محددة.</li><li>✅ While مثالية لانتظار شرط معين.</li></ul></div>
@@ -125,31 +158,17 @@ done</code></pre>
       <h4>4.1 تعريف واستدعاء دالة</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>#!/bin/bash
-# Define function
-greet() {
-    echo "Hello &#36;1! Have a great day."
-}
-
-# Call function
-greet "Ahmed"
-greet "Sara"</code></pre>
+        <pre><code>{codeFunc}</code></pre>
       </div>
       <h4>4.2 إرجاع قيم</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
-        <pre><code>add() {
-    sum=$((&#36;1 + &#36;2))
-    echo &#36;sum
-}
-
-result=$(add 5 10)
-echo "Sum: &#36;result"</code></pre>
+        <pre><code>{codeFuncReturn}</code></pre>
       </div>
 
-      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ الدوال تنظم الكود وتقلل التكرار.</li><li>✅ `&#36;1`, `&#36;2` هي المعاملات الممررة للدالة.</li></ul></div>
+      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ الدوال تنظم الكود وتقلل التكرار.</li><li>✅ `$1`, `$2` هي المعاملات الممررة للدالة.</li></ul></div>
 
-      <h3 id="part5">📋 الجزء الخامس: الملخص السريع</h3>
+      <h3 id="part5"> الجزء الخامس: الملخص السريع</h3>
       <div class="table-responsive">
         <table class="cheat-sheet-table">
           <thead>
