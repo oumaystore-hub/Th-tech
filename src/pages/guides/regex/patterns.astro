@@ -6,7 +6,7 @@ import ShareButtons from '../../../components/ShareButtons.astro';
 export const title = "دليل Regex ومعالجة النصوص الشامل";
 export const pubDate = "2026-08-22";
 
-// ✅ تخزين الأكواد كمتغيرات (آمن 100%)
+// ✅ تخزين الأكواد كمتغيرات (تم إصلاح المشكلة)
 const codeBasic = `a        - يطابق الحرف a
 abc      - يطابق النص abc
 a|b      - يطابق a أو b
@@ -14,9 +14,9 @@ a|b      - يطابق a أو b
 [^abc]   - لا يطابق a أو b أو c`;
 
 const codeSpecial = `.        - أي حرف عدا السطر الجديد
-\\d      - أي رقم (0-9)
-\\w      - أي حرف أو رقم أو _
-\\s      - أي مسافة (space, tab)
+\\\\d      - أي رقم (0-9)
+\\\\w      - أي حرف أو رقم أو _
+\\\\s      - أي مسافة (space, tab)
 ^        - بداية السطر
 $        - نهاية السطر`;
 
@@ -30,16 +30,16 @@ a{3,5}   - من 3 إلى 5`;
 const codeGroups = `(abc)    - مجموعة مرقمة
 (?:abc)  - مجموعة غير مرقمة
 (abc)+   - تكرار المجموعة
-\\1      - مرجع للمجموعة الأولى`;
+\\\\1      - مرجع للمجموعة الأولى`;
 
 const codeExamples = `# البريد الإلكتروني
-[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}
+[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\\\.[A-Z|a-z]{2,}
 
 # رقم الهاتف
-\\d{3}-\\d{3}-\\d{4}
+\\\\d{3}-\\\\d{3}-\\\\d{4}
 
 # IP Address
-\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}`;
+\\\\d{1,3}\\\\.\\\\d{1,3}\\\\.\\\\d{1,3}\\\\.\\\\d{1,3}`;
 ---
 
 <html lang="ar" dir="rtl">
@@ -52,13 +52,12 @@ const codeExamples = `# البريد الإلكتروني
   <Header />
   
   <main class="guide-main">
-    <!-- ✅ شريط العنوان العريض والواضح -->
     <div class="page-header">
-      <h1>🔍 دليل Regex ومعالجة النصوص الشامل</h1>
+      <h1> دليل Regex ومعالجة النصوص الشامل</h1>
       <p>الأنماط، البحث، الاستبدال، والتحقق من صحة البيانات</p>
     </div>
 
-    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس"></button>
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
     <div class="toc-modal" id="tocModal">
       <div class="toc-box">
         <div class="toc-head">
@@ -69,7 +68,7 @@ const codeExamples = `# البريد الإلكتروني
       </div>
     </div>
 
-    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">⬆️</button>
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">️⬆️</button>
 
     <article class="guide-article">
       <span class="badge">دليل شامل</span>
@@ -77,59 +76,40 @@ const codeExamples = `# البريد الإلكتروني
       <div class="meta">📅 22 أغسطس 2026 | ⏱️ 30 دقيقة قراءة</div>
       
       <p class="intro">
-        Regular Expressions (Regex) هي لغة قوية للبحث عن أنماط في النصوص. تُستخدم للتحقق من صحة البيانات، البحث والاستبدال، واستخراج المعلومات من النصوص الكبيرة.
+        Regular Expressions (Regex) هي لغة قوية للبحث عن أنماط في النصوص.
       </p>
 
-      <h3 id="part1"> الجزء الأول: الأساسيات</h3>
-      <h4>1.1 المطابقة البسيطة</h4>
+      <h3 id="part1">🔤 الجزء الأول: الأساسيات</h3>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
         <pre><code>{codeBasic}</code></pre>
       </div>
-      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ الأحرف العادية تطابق نفسها.</li><li>✅ استخدم الأقواس المربعة [] لتحديد خيارات.</li></ul></div>
 
-      <h3 id="part2"> الجزء الثاني: الرموز الخاصة</h3>
-      <h4>2.1 الأحرف الشاملة</h4>
+      <h3 id="part2">🔣 الجزء الثاني: الرموز الخاصة</h3>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
         <pre><code>{codeSpecial}</code></pre>
       </div>
-      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ النقطة . تطابق أي حرف.</li><li>✅ \\d للأرقام، \\w للكلمات، \\s للمسافات.</li></ul></div>
 
       <h3 id="part3">🔢 الجزء الثالث: المحددات الكمية</h3>
-      <h4>3.1 تحديد عدد التكرارات</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
         <pre><code>{codeQuantifiers}</code></pre>
       </div>
-      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ * للصفر أو أكثر، + لواحد أو أكثر.</li><li>✅ {n,m} لتحديد نطاق محدد.</li></ul></div>
 
-      <h3 id="part4">📦 الجزء الرابع: المجموعات والمراجع</h3>
-      <h4>4.1 تجميع الأنماط</h4>
+      <h3 id="part4">📦 الجزء الرابع: المجموعات</h3>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
         <pre><code>{codeGroups}</code></pre>
       </div>
-      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ الأقواس () تنشئ مجموعة.</li><li>✅ \\1 تشير للمجموعة الأولى (Backreference).</li></ul></div>
 
       <h3 id="part5">🎨 الجزء الخامس: أمثلة عملية</h3>
-      <h4>5.1 أنماط شائعة الاستخدام</h4>
       <div class="code-block">
         <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
         <pre><code>{codeExamples}</code></pre>
       </div>
-      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ استخدم هذه الأنماط للتحقق من البريد والهاتف.</li><li>✅ عدّل الأنماط حسب احتياجاتك.</li></ul></div>
 
-      <h3 id="part6">🛠️ الجزء السادس: الأدوات</h3>
-      <h4>6.1 مواقع للمساعدة</h4>
-      <ul>
-        <li><strong>Regex101.com:</strong> اختبار وتفسير الأنماط.</li>
-        <li><strong>RegExr.com:</strong> واجهة سهلة للتجربة.</li>
-        <li><strong>Regex Crossword:</strong> تعلم باللعب!</li>
-      </ul>
-      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ تدرب على هذه المواقع لإتقان Regex.</li><li>✅ احفظ الأنماط الشائعة في ملاحظاتك.</li></ul></div>
-
-      <h3 id="part7">📋 الجزء السابع: الملخص السريع</h3>
+      <h3 id="part6">📋 الجزء السادس: الملخص السريع</h3>
       <div class="table-responsive">
         <table class="cheat-sheet-table">
           <thead>
@@ -145,14 +125,13 @@ const codeExamples = `# البريد الإلكتروني
             <tr><td>*</td><td>صفر أو أكثر</td></tr>
             <tr><td>+</td><td>واحد أو أكثر</td></tr>
             <tr><td>?</td><td>صفر أو واحد</td></tr>
-            <tr><td>^</td><td>بداية السطر</td></tr>
-            <tr><td>$</td><td>نهاية السطر</td></tr>
           </tbody>
         </table>
       </div>
+      
       <div class="conclusion-box">
         <h3>🎉 مبارك!</h3>
-        <p style="margin-top: 0.5rem;">أصبحت الآن قادراً على استخدام Regex للبحث عن الأنماط ومعالجة النصوص باحترافية.</p>
+        <p style="margin-top: 0.5rem;">أصبحت الآن قادراً على استخدام Regex.</p>
       </div>
 
     </article>
@@ -218,7 +197,7 @@ const codeExamples = `# البريد الإلكتروني
     --card: #ffffff; 
     --text: #0f172a; 
     --text-sec: #64748b; 
-    --primary: #3b82f6; /* أزرق داكن/كحلي مميز */
+    --primary: #3b82f6;
     --primary-light: #60a5fa; 
     --border: rgba(59, 130, 246, 0.2); 
     --shadow: rgba(0,0,0,0.1); 
@@ -236,73 +215,25 @@ const codeExamples = `# البريد الإلكتروني
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; }
   
-  /* ✅ تصميم عريض ومريح للحاسوب */
-  .guide-main { 
-    max-width: 980px; 
-    margin: 0 auto; 
-    padding: 2rem 1.5rem; 
-    position: relative; 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  /* ✅ شريط العنوان الكبير والواضح */
-  .page-header { 
-    text-align: center; 
-    margin-bottom: 2.5rem; 
-    padding: 3rem 2rem 2rem; 
-    width: 100%;
-    background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(96,165,250,0.05) 100%);
-    border-radius: 20px;
-    border: 2px solid var(--border);
-    box-shadow: 0 4px 15px rgba(59,130,246,0.15);
-  }
-  .page-header h1 { 
-    color: var(--primary); 
-    font-size: 2.2rem; 
-    margin-bottom: 0.6rem; 
-    font-weight: 800; 
-  }
-  .page-header p { 
-    color: var(--text-sec); 
-    font-size: 1.15rem; 
-  }
-  
-  .guide-article { 
-    background: var(--card); 
-    border: 1px solid var(--border); 
-    border-radius: 24px; 
-    padding: 2.5rem; 
-    margin-bottom: 2rem; 
-    box-shadow: 0 8px 30px var(--shadow); 
-    width: 100%; 
-    position: relative; 
-    overflow: hidden; 
-  }
+  .guide-main { max-width: 980px; margin: 0 auto; padding: 2rem 1.5rem; position: relative; display: flex; flex-direction: column; align-items: center; }
+  .page-header { text-align: center; margin-bottom: 2.5rem; padding: 3rem 2rem 2rem; width: 100%; background: linear-gradient(135deg, rgba(59,130,246,0.1) 0%, rgba(96,165,250,0.05) 100%); border-radius: 20px; border: 2px solid var(--border); box-shadow: 0 4px 15px rgba(59,130,246,0.15); }
+  .page-header h1 { color: var(--primary); font-size: 2.2rem; margin-bottom: 0.6rem; font-weight: 800; }
+  .page-header p { color: var(--text-sec); font-size: 1.15rem; }
+  .guide-article { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 2.5rem; margin-bottom: 2rem; box-shadow: 0 8px 30px var(--shadow); width: 100%; position: relative; overflow: hidden; }
   .badge { display: inline-block; background: linear-gradient(135deg,var(--primary),var(--primary-light)); color: white; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; margin-bottom: 1.5rem; }
   .guide-article h2 { color: var(--primary); font-size: 1.8rem; margin: 0 0 0.5rem; }
   .guide-article h3 { color: var(--text); font-size: 1.35rem; margin: 2.5rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
-  .guide-article h4 { color: var(--text-sec); font-size: 1.15rem; margin: 1.5rem 0 0.5rem; font-weight: 600; }
   .meta { color: var(--text-sec); font-size: 0.85rem; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
   .intro { font-size: 1.15rem; color: var(--text-sec); margin-bottom: 2rem; padding: 1.5rem; background: rgba(59,130,246,0.05); border-right: 4px solid var(--primary); border-radius: 12px; line-height: 1.8; }
-  .guide-article ul { padding-right: 1.5rem; margin: 1rem 0; color: var(--text-sec); }
-  .guide-article li { margin-bottom: 0.6rem; line-height: 1.7; }
-  .guide-article li strong { color: var(--primary); }
-  
   .conclusion-box { background: linear-gradient(135deg,var(--primary),var(--primary-light)); color: white; padding: 1.5rem; border-radius: 16px; margin: 2rem 0; box-shadow: 0 4px 15px rgba(59,130,246,0.3); }
   .conclusion-box h3 { color: white; border: none; margin-bottom: 0.8rem; font-size: 1.1rem; }
-  .conclusion-box ul { list-style: none; padding: 0; margin: 0; }
-  .conclusion-box li { color: white; font-size: 1rem; margin: 0.5rem 0; line-height: 1.6; }
   .conclusion-box p { color: white; margin: 0; }
-
   .code-block { background: #1e293b; border-radius: 12px; margin: 1.5rem 0; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
   .code-header { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 1rem; background: rgba(0,0,0,0.4); }
   .copy-btn { background: rgba(255,255,255,0.1); border: none; color: #94a3b8; padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
   .copy-btn:hover { background: rgba(255,255,255,0.2); color: white; }
   .code-block pre { padding: 1.2rem; overflow-x: auto; direction: ltr; text-align: left; }
   .code-block code { background: none; padding: 0; color: #e2e8f0; font-size: 0.9rem; line-height: 1.6; }
-  
   .table-responsive { overflow-x: auto; margin: 1.5rem 0; border-radius: 12px; border: 1px solid var(--border); background: var(--card); }
   .cheat-sheet-table { width: 100%; min-width: 300px; border-collapse: collapse; text-align: right; }
   .cheat-sheet-table thead tr { background: var(--primary); color: white; }
@@ -311,7 +242,6 @@ const codeExamples = `# البريد الإلكتروني
   .cheat-sheet-table tbody tr:nth-child(even) { background: rgba(59, 130, 246, 0.05); }
   html.dark-mode .cheat-sheet-table tbody tr:nth-child(even) { background: rgba(59, 130, 246, 0.1); }
   .cheat-sheet-table td { font-family: monospace; color: var(--text); }
-
   .toc-btn { position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border: none; border-radius: 50%; color: white; font-size: 1.6rem; cursor: pointer; box-shadow: 0 4px 15px rgba(59,130,246,0.5); z-index: 1000; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
   .toc-btn:hover { transform: scale(1.1); }
   .toc-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1001; align-items: center; justify-content: center; padding: 1rem; }
@@ -323,11 +253,9 @@ const codeExamples = `# البريد الإلكتروني
   .toc-nav { padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; }
   .toc-item { padding: 0.8rem 1rem; background: var(--bg); border-radius: 10px; cursor: pointer; color: var(--text); font-weight: 500; font-size: 0.9rem; }
   .toc-item:hover { background: rgba(59,130,246,0.1); color: var(--primary); }
-  
   .back-to-top { position: fixed; bottom: 95px; left: 30px; width: 50px; height: 50px; background: var(--card); border: 2px solid var(--primary); border-radius: 50%; color: var(--primary); font-size: 1.3rem; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s ease; z-index: 999; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px var(--shadow); }
   .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
   .back-to-top:hover { background: var(--primary); color: white; }
-
   @media (max-width: 768px) {
     .guide-main { padding: 1.5rem 1rem; }
     .guide-article { padding: 1.8rem; border-radius: 18px; margin-bottom: 1.5rem; }
