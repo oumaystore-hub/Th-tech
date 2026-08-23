@@ -1,0 +1,336 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+import ShareButtons from '../../../components/ShareButtons.astro';
+
+export const title = "دليل الأمان والتشفير الشامل";
+export const pubDate = "2026-08-22";
+
+// ✅ تخزين الأكواد كمتغيرات (آمن 100%)
+const codeHttps = `server {
+    listen 443 ssl;
+    server_name example.com;
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+}`;
+
+const codeSsh = `ssh-keygen -t rsa -b 4096
+ssh-copy-id user@server
+ssh user@server`;
+
+const codeGpg = `gpg --gen-key
+gpg --encrypt --recipient user@domain.com file.txt
+gpg --decrypt file.txt.gpg`;
+
+const codeHash = `echo "password" | sha256sum
+openssl dgst -sha256 file.txt
+md5sum file.txt`;
+
+const codeFirewall = `ufw enable
+ufw allow 22
+ufw allow 80,443/tcp
+ufw status`;
+---
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+</head>
+<body>
+  <Header />
+  
+  <main class="guide-main">
+    <!-- ✅ شريط العنوان العريض والواضح -->
+    <div class="page-header">
+      <h1>🔐 دليل الأمان والتشفير الشامل</h1>
+      <p>HTTPS, SSH, GPG, الجدران النارية، وأفضل الممارسات</p>
+    </div>
+
+    <button class="toc-btn" id="tocBtn" aria-label="فتح الفهرس">📑</button>
+    <div class="toc-modal" id="tocModal">
+      <div class="toc-box">
+        <div class="toc-head">
+          <h3>فهرس الدليل</h3>
+          <button class="toc-close" id="tocClose" aria-label="إغلاق الفهرس">✕</button>
+        </div>
+        <nav class="toc-nav" id="tocNav"></nav>
+      </div>
+    </div>
+
+    <button class="back-to-top" id="backToTop" aria-label="العودة للأعلى">️⬆️</button>
+
+    <article class="guide-article">
+      <span class="badge">دليل شامل</span>
+      <h2>Security & Encryption: حماية بياناتك</h2>
+      <div class="meta">📅 22 أغسطس 2026 | ⏱️ 35 دقيقة قراءة</div>
+      
+      <p class="intro">
+        الأمان السيبراني والتشفير هما خط الدفاع الأول لحماية بياناتك وأنظمتك. فهم هذه المفاهيم ضروري لكل مطور ومدير أنظمة لضمان حماية المعلومات الحساسة.
+      </p>
+
+      <h3 id="part1">🔒 الجزء الأول: HTTPS و SSL/TLS</h3>
+      <h4>1.1 تأمين الاتصالات</h4>
+      <p>HTTPS يشفّر البيانات بين المتصفح والخادم باستخدام SSL/TLS.</p>
+      <div class="code-block">
+        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <pre><code>{codeHttps}</code></pre>
+      </div>
+      <div class="conclusion-box"><h3> خلاصة:</h3><ul><li>✅ استخدم HTTPS دائماً للمواقع الحساسة.</li><li>✅ Let's Encrypt يوفر شهادات SSL مجانية.</li></ul></div>
+
+      <h3 id="part2">🔑 الجزء الثاني: SSH - الاتصال الآمن</h3>
+      <h4>2.1 المفاتيح العامة والخاصة</h4>
+      <div class="code-block">
+        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <pre><code>{codeSsh}</code></pre>
+      </div>
+      <div class="conclusion-box"><h3> خلاصة:</h3><ul><li>✅ SSH Keys أكثر أماناً من كلمات المرور.</li><li>✅ استخدم RSA 4096-bit أو Ed25519.</li></ul></div>
+
+      <h3 id="part3">🛡️ الجزء الثالث: GPG - التشفير المتناظر</h3>
+      <h4>3.1 تشفير الملفات والبريد</h4>
+      <div class="code-block">
+        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <pre><code>{codeGpg}</code></pre>
+      </div>
+      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ GPG يشفّر الملفات والرسائل بشكل آمن.</li><li>✅ احتفظ بمفتاحك الخاص في مكان آمن!</li></ul></div>
+
+      <h3 id="part4">🔐 الجزء الرابع: التجزئة (Hashing)</h3>
+      <h4>4.1 التحقق من سلامة الملفات</h4>
+      <div class="code-block">
+        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <pre><code>{codeHash}</code></pre>
+      </div>
+      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ SHA-256 آمن للتجزئة.</li><li>✅ MD5 قديم وغير آمن للاستخدامات الحساسة.</li></ul></div>
+
+      <h3 id="part5">🧱 الجزء الخامس: الجدران النارية</h3>
+      <h4>5.1 UFW Firewall</h4>
+      <div class="code-block">
+        <div class="code-header"><button class="copy-btn" onclick="copyCode(this)">نسخ</button></div>
+        <pre><code>{codeFirewall}</code></pre>
+      </div>
+      <div class="conclusion-box"><h3> خلاصة:</h3><ul><li>✅ UFW يسهل إدارة الجدار الناري.</li><li>✅ افتح فقط المنافذ الضرورية (22, 80, 443).</li></ul></div>
+
+      <h3 id="part6">🔐 الجزء السادس: أفضل الممارسات</h3>
+      <h4>6.1 نصائح أمنية أساسية</h4>
+      <ul>
+        <li><strong>كلمات مرور قوية:</strong> استخدم 16+ حرف مع رموز وأرقام.</li>
+        <li><strong>المصادقة الثنائية (2FA):</strong> فعّلها دائماً.</li>
+        <li><strong>التحديثات:</strong> حدّث النظام والبرامج بانتظام.</li>
+        <li><strong>النسخ الاحتياطي:</strong> احتفظ بنسخ مشفرة.</li>
+        <li><strong>مبدأ الأقل امتيازاً:</strong> امنح الحد الأدنى من الصلاحيات.</li>
+      </ul>
+      <div class="conclusion-box"><h3>💡 خلاصة:</h3><ul><li>✅ الأمان عملية مستمرة وليست حدثاً لمرة واحدة.</li><li>✅ التوعية الأمنية لا تقل أهمية عن الأدوات.</li></ul></div>
+
+      <h3 id="part7"> الجزء السابع: الملخص السريع</h3>
+      <div class="table-responsive">
+        <table class="cheat-sheet-table">
+          <thead>
+            <tr>
+              <th>الأداة / المفهوم</th>
+              <th>الاستخدام</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>HTTPS/SSL</td><td>تأمين الاتصالات عبر الويب</td></tr>
+            <tr><td>SSH</td><td>الاتصال الآمن بالخوادم</td></tr>
+            <tr><td>GPG</td><td>تشفير الملفات والبريد</td></tr>
+            <tr><td>SHA-256</td><td>تجزئة آمنة للتحقق</td></tr>
+            <tr><td>UFW</td><td>جدار ناري بسيط</td></tr>
+            <tr><td>2FA</td><td>مصادقة ثنائية</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="conclusion-box">
+        <h3>🎉 مبارك!</h3>
+        <p style="margin-top: 0.5rem;">أصبحت الآن قادراً على حماية أنظمتك وبياناتك بشكل احترافي.</p>
+      </div>
+
+    </article>
+
+    <ShareButtons />
+  </main>
+  
+  <Footer />
+
+  <script>
+    function copyCode(btn) {
+      const code = btn.closest('.code-block').querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.textContent = 'تم النسخ!';
+        setTimeout(() => btn.textContent = 'نسخ', 2000);
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var tocBtn = document.getElementById('tocBtn');
+      var tocModal = document.getElementById('tocModal');
+      var tocClose = document.getElementById('tocClose');
+      var tocNav = document.getElementById('tocNav');
+      
+      if (tocBtn && tocModal && tocNav) {
+        var headings = document.querySelectorAll('h3');
+        headings.forEach(function(h3) {
+          var item = document.createElement('div');
+          item.className = 'toc-item';
+          item.textContent = h3.textContent;
+          item.addEventListener('click', function() {
+            h3.scrollIntoView({ behavior: 'smooth' });
+            tocModal.classList.remove('active');
+          });
+          tocNav.appendChild(item);
+        });
+
+        tocBtn.addEventListener('click', function() { tocModal.classList.add('active'); });
+        tocClose.addEventListener('click', function() { tocModal.classList.remove('active'); });
+        tocModal.addEventListener('click', function(e) {
+          if (e.target === tocModal) tocModal.classList.remove('active');
+        });
+      }
+
+      var backBtn = document.getElementById('backToTop');
+      if (backBtn) {
+        window.addEventListener('scroll', function() {
+          if (window.scrollY > 400) backBtn.classList.add('show');
+          else backBtn.classList.remove('show');
+        });
+        backBtn.addEventListener('click', function() {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+
+<style>
+  :root { 
+    --bg: #f8fafc; 
+    --card: #ffffff; 
+    --text: #0f172a; 
+    --text-sec: #64748b; 
+    --primary: #f59e0b; /* ذهبي/كهرماني مميز */
+    --primary-light: #fbbf24; 
+    --border: rgba(245, 158, 11, 0.2); 
+    --shadow: rgba(0,0,0,0.1); 
+  }
+  html.dark-mode { 
+    --bg: #0f172a; 
+    --card: #1e293b; 
+    --text: #f1f5f9; 
+    --text-sec: #94a3b8; 
+    --primary: #fbbf24; 
+    --primary-light: #f59e0b; 
+    --border: rgba(245, 158, 11, 0.3); 
+    --shadow: rgba(0,0,0,0.4); 
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; line-height: 1.6; }
+  
+  /* ✅ تصميم عريض ومريح للحاسوب */
+  .guide-main { 
+    max-width: 980px; 
+    margin: 0 auto; 
+    padding: 2rem 1.5rem; 
+    position: relative; 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* ✅ شريط العنوان الكبير والواضح */
+  .page-header { 
+    text-align: center; 
+    margin-bottom: 2.5rem; 
+    padding: 3rem 2rem 2rem; 
+    width: 100%;
+    background: linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(251,191,36,0.05) 100%);
+    border-radius: 20px;
+    border: 2px solid var(--border);
+    box-shadow: 0 4px 15px rgba(245,158,11,0.15);
+  }
+  .page-header h1 { 
+    color: var(--primary); 
+    font-size: 2.2rem; 
+    margin-bottom: 0.6rem; 
+    font-weight: 800; 
+  }
+  .page-header p { 
+    color: var(--text-sec); 
+    font-size: 1.15rem; 
+  }
+  
+  .guide-article { 
+    background: var(--card); 
+    border: 1px solid var(--border); 
+    border-radius: 24px; 
+    padding: 2.5rem; 
+    margin-bottom: 2rem; 
+    box-shadow: 0 8px 30px var(--shadow); 
+    width: 100%; 
+    position: relative; 
+    overflow: hidden; 
+  }
+  .badge { display: inline-block; background: linear-gradient(135deg,var(--primary),var(--primary-light)); color: white; padding: 0.4rem 1.2rem; border-radius: 50px; font-size: 0.85rem; margin-bottom: 1.5rem; }
+  .guide-article h2 { color: var(--primary); font-size: 1.8rem; margin: 0 0 0.5rem; }
+  .guide-article h3 { color: var(--text); font-size: 1.35rem; margin: 2.5rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; }
+  .guide-article h4 { color: var(--text-sec); font-size: 1.15rem; margin: 1.5rem 0 0.5rem; font-weight: 600; }
+  .meta { color: var(--text-sec); font-size: 0.85rem; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 1px dashed var(--border); }
+  .intro { font-size: 1.15rem; color: var(--text-sec); margin-bottom: 2rem; padding: 1.5rem; background: rgba(245,158,11,0.05); border-right: 4px solid var(--primary); border-radius: 12px; line-height: 1.8; }
+  .guide-article ul { padding-right: 1.5rem; margin: 1rem 0; color: var(--text-sec); }
+  .guide-article li { margin-bottom: 0.6rem; line-height: 1.7; }
+  .guide-article li strong { color: var(--primary); }
+  
+  .conclusion-box { background: linear-gradient(135deg,var(--primary),var(--primary-light)); color: white; padding: 1.5rem; border-radius: 16px; margin: 2rem 0; box-shadow: 0 4px 15px rgba(245,158,11,0.3); }
+  .conclusion-box h3 { color: white; border: none; margin-bottom: 0.8rem; font-size: 1.1rem; }
+  .conclusion-box ul { list-style: none; padding: 0; margin: 0; }
+  .conclusion-box li { color: white; font-size: 1rem; margin: 0.5rem 0; line-height: 1.6; }
+  .conclusion-box p { color: white; margin: 0; }
+
+  .code-block { background: #1e293b; border-radius: 12px; margin: 1.5rem 0; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+  .code-header { display: flex; justify-content: space-between; align-items: center; padding: 0.6rem 1rem; background: rgba(0,0,0,0.4); }
+  .copy-btn { background: rgba(255,255,255,0.1); border: none; color: #94a3b8; padding: 0.3rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; }
+  .copy-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+  .code-block pre { padding: 1.2rem; overflow-x: auto; direction: ltr; text-align: left; }
+  .code-block code { background: none; padding: 0; color: #e2e8f0; font-size: 0.9rem; line-height: 1.6; }
+  
+  .table-responsive { overflow-x: auto; margin: 1.5rem 0; border-radius: 12px; border: 1px solid var(--border); background: var(--card); }
+  .cheat-sheet-table { width: 100%; min-width: 300px; border-collapse: collapse; text-align: right; }
+  .cheat-sheet-table thead tr { background: var(--primary); color: white; }
+  .cheat-sheet-table th, .cheat-sheet-table td { padding: 12px; border: 1px solid var(--border); }
+  .cheat-sheet-table tbody tr { background: var(--card); }
+  .cheat-sheet-table tbody tr:nth-child(even) { background: rgba(245, 158, 11, 0.05); }
+  html.dark-mode .cheat-sheet-table tbody tr:nth-child(even) { background: rgba(245, 158, 11, 0.1); }
+  .cheat-sheet-table td { font-family: monospace; color: var(--text); }
+
+  .toc-btn { position: fixed; bottom: 30px; left: 30px; width: 55px; height: 55px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border: none; border-radius: 50%; color: white; font-size: 1.6rem; cursor: pointer; box-shadow: 0 4px 15px rgba(245,158,11,0.5); z-index: 1000; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+  .toc-btn:hover { transform: scale(1.1); }
+  .toc-modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 1001; align-items: center; justify-content: center; padding: 1rem; }
+  .toc-modal.active { display: flex; }
+  .toc-box { background: var(--card); width: 100%; max-width: 400px; border-radius: 20px; box-shadow: 0 10px 30px var(--shadow); max-height: 80vh; display: flex; flex-direction: column; overflow: hidden; }
+  .toc-head { display: flex; justify-content: space-between; align-items: center; padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .toc-head h3 { margin: 0; color: var(--primary); font-size: 1.1rem; }
+  .toc-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: var(--text-sec); }
+  .toc-nav { padding: 1rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.5rem; }
+  .toc-item { padding: 0.8rem 1rem; background: var(--bg); border-radius: 10px; cursor: pointer; color: var(--text); font-weight: 500; font-size: 0.9rem; }
+  .toc-item:hover { background: rgba(245,158,11,0.1); color: var(--primary); }
+  
+  .back-to-top { position: fixed; bottom: 95px; left: 30px; width: 50px; height: 50px; background: var(--card); border: 2px solid var(--primary); border-radius: 50%; color: var(--primary); font-size: 1.3rem; cursor: pointer; opacity: 0; visibility: hidden; transform: translateY(20px); transition: all 0.3s ease; z-index: 999; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px var(--shadow); }
+  .back-to-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
+  .back-to-top:hover { background: var(--primary); color: white; }
+
+  @media (max-width: 768px) {
+    .guide-main { padding: 1.5rem 1rem; }
+    .guide-article { padding: 1.8rem; border-radius: 18px; margin-bottom: 1.5rem; }
+    .page-header { padding: 2.5rem 1.2rem 1.8rem; margin-bottom: 2rem; border-radius: 16px; }
+    .page-header h1 { font-size: 1.8rem; }
+    .guide-article h2 { font-size: 1.5rem; }
+    .guide-article h3 { font-size: 1.2rem; margin-top: 2rem; }
+    .intro { padding: 1.2rem; font-size: 1rem; }
+    .code-block pre { padding: 1rem; }
+    .conclusion-box { padding: 1.2rem; }
+    .cheat-sheet-table th, .cheat-sheet-table td { padding: 10px 8px; font-size: 0.9rem; }
+    .toc-btn { bottom: 20px; left: 20px; width: 48px; height: 48px; font-size: 1.4rem; }
+    .back-to-top { bottom: 80px; left: 20px; width: 42px; height: 42px; font-size: 1.1rem; }
+  }
+</style>
