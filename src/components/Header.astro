@@ -65,7 +65,7 @@
     <div id="searchStats" class="search-stats"></div>
   </div>
 
-  <!-- ✅ القائمة المتنقلة - تم إزالة التكرار وتقليص المساحات -->
+  <!-- ✅ القائمة المتنقلة -->
   <nav id="mobile-menu" class="mobile-menu">
     
     <a href="/Th-tech/" class="mobile-link">
@@ -495,7 +495,7 @@
     font-family: var(--font-main);
   }
 
-  /* ✅ القائمة المتنقلة - تقليص المساحات */
+  /* ✅ القائمة المتنقلة */
   .mobile-menu {
     display: none;
     position: absolute;
@@ -656,7 +656,7 @@
   
   .dropdown-list li a:hover .cat-icon { color: var(--primary-light); }
 
-  /* ✅ قسم التواصل الاجتماعي - تقليص */
+  /* ✅ قسم التواصل الاجتماعي */
   .mobile-social-section {
     margin: 0.6rem 0 0.3rem;
     padding: 0.9rem;
@@ -836,6 +836,29 @@
     return results;
   }
 
+  // ========================================
+  // ✅ تأثيرات الظهور عند التمرير (Scroll Reveal)
+  // ========================================
+  function initScrollReveal() {
+    const reveals = document.querySelectorAll('.reveal, .reveal-from-left, .reveal-from-right, .reveal-scale');
+    
+    const revealOnScroll = () => {
+      const windowHeight = window.innerHeight;
+      const elementVisible = 150;
+      
+      reveals.forEach((reveal) => {
+        const elementTop = reveal.getBoundingClientRect().top;
+        
+        if (elementTop < windowHeight - elementVisible) {
+          reveal.classList.add('active');
+        }
+      });
+    };
+    
+    window.addEventListener('scroll', revealOnScroll);
+    revealOnScroll(); // تشغيل مرة واحدة عند التحميل
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     const savedTheme = localStorage.getItem('theme');
     const themeBtn = document.getElementById('theme-btn');
@@ -955,5 +978,8 @@
         menuBtn.setAttribute('aria-expanded', 'false');
       }
     });
+
+    // ✅ تشغيل تأثيرات الظهور
+    initScrollReveal();
   });
 </script>
