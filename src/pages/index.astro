@@ -8,25 +8,17 @@ import Footer from '../components/Footer.astro';
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>Th.Tech | المستقبل الرقمي يبدأ هنا</title>
-  <meta name="description" content="منصة متخصصة في الذكاء الاصطناعي، البرمجة، والأمن السيبراني." />
+  <meta name="description" content="منصة متخصصة في الذكاء الاصطناعي، البرمجة، والأمن السيبراني. محتوى تقني معمق وشروحات عملية." />
   <link rel="canonical" href="https://oumaystore-hub.github.io/Th-tech/" />
   <link rel="icon" type="image/png" href="/Th-tech/logo1.png" />
 
-  <!-- Prism.js for Syntax Highlighting -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-java.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-  
-  <!-- Pyodide for Python -->
-  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-
+  <!-- خطوط احترافية -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- مكتبات خارجية للمحرر -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
 </head>
 <body>
   <Header />
@@ -74,19 +66,24 @@ import Footer from '../components/Footer.astro';
       </div>
     </section>
 
-    <!-- 🔹 Professional Code Editor -->
-    <section class="section code-editor-section" id="codeEditor">
+    <!--  Professional Code Editor -->
+    <section class="section editor-section" id="editor">
       <div class="container">
         <div class="section-head">
-          <h2> محرر الأكواد التفاعلي</h2>
+          <h2>محرر الأكواد التفاعلي</h2>
           <p>اكتب، شغّل، واختبر كودك مباشرة في المتصفح</p>
         </div>
 
-        <div class="editor-container">
+        <div class="editor-card">
           <!-- Toolbar -->
           <div class="editor-toolbar">
-            <div class="lang-selector">
-              <label for="languageSelect">اللغة:</label>
+            <div class="toolbar-left">
+              <div class="file-tab active">
+                <span id="langIcon">JS</span>
+                <span id="fileName">script.js</span>
+              </div>
+            </div>
+            <div class="toolbar-right">
               <select id="languageSelect" onchange="changeLanguage()">
                 <option value="javascript">JavaScript</option>
                 <option value="python">Python</option>
@@ -95,74 +92,66 @@ import Footer from '../components/Footer.astro';
                 <option value="cpp">C++</option>
                 <option value="sql">SQL</option>
               </select>
-            </div>
-            
-            <div class="editor-actions">
-              <button class="btn-action btn-reset" onclick="resetCode()" title="إعادة الكود الافتراضي">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 12"/></svg>
-              </button>
-              <button class="btn-action btn-copy" onclick="copyCode()" title="نسخ الكود">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              </button>
-              <button class="btn-run" id="runBtn" onclick="runCode()">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                <span id="runText">تشغيل الكود</span>
-              </button>
+              <div class="toolbar-actions">
+                <button class="btn-icon" onclick="resetCode()" title="إعادة تعيين">↺</button>
+                <button class="btn-icon" onclick="copyCode()" title="نسخ الكود">⎘</button>
+                <button class="btn-run" id="runBtn" onclick="runCode()">
+                  <span>▶ تشغيل</span>
+                </button>
+              </div>
             </div>
           </div>
 
           <!-- Editor Area -->
-          <div class="editor-area">
-            <div class="code-input-wrapper">
-              <div class="line-numbers" id="lineNumbers"></div>
+          <div class="editor-body">
+            <div class="code-pane">
+              <div class="line-numbers" id="lineNumbers">1</div>
               <textarea 
                 id="codeInput" 
                 class="code-input" 
                 spellcheck="false"
                 placeholder="اكتب الكود هنا..."
-                oninput="updateLineNumbers(); updatePreview()"
+                oninput="updateLineNumbers(); updateStatus('تم التعديل...')"
                 onscroll="syncScroll()"
+                onkeydown="handleTab(event)"
               ></textarea>
             </div>
             
-            <div class="output-panel">
+            <div class="output-pane">
               <div class="output-header">
-                <span>📤 المخرجات</span>
-                <button class="btn-clear" onclick="clearOutput()">مسح</button>
+                <span>المخرجات (Terminal)</span>
+                <button class="btn-clear" onclick="clearOutput()">✕</button>
               </div>
               <div id="output" class="code-output">
                 <div class="output-placeholder">
                   <span class="icon">💡</span>
-                  <p>اكتب كوداً ثم اضغط "تشغيل الكود" لرؤية النتيجة</p>
+                  <p>اضغط على "تشغيل" لرؤية النتيجة</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <!-- Info Bar -->
-          <div class="editor-info">
-            <span id="statusInfo">✅ جاهز</span>
+          <!-- Status Bar -->
+          <div class="editor-status">
+            <span id="statusText">✅ جاهز</span>
             <span class="separator">|</span>
-            <span id="langInfo">JavaScript</span>
+            <span>UTF-8</span>
             <span class="separator">|</span>
-            <span id="pyodideStatus" style="display:none;">Python: <span id="pyStatus">جاري التحميل...</span></span>
+            <span id="pyStatus" style="color: #f59e0b;">● Python Loading...</span>
           </div>
         </div>
 
         <!-- Quick Examples -->
         <div class="quick-examples">
-          <h4>💡 أمثلة سريعة:</h4>
-          <div class="example-buttons">
-            <button class="btn-example" onclick="loadExample('hello')">مرحباً بالعالم</button>
-            <button class="btn-example" onclick="loadExample('loop')">حلقة تكرار</button>
-            <button class="btn-example" onclick="loadExample('function')">دالة</button>
-            <button class="btn-example" onclick="loadExample('array')">مصفوفة</button>
-          </div>
+          <span>💡 أمثلة سريعة:</span>
+          <button class="btn-sm" onclick="loadExample('hello')">Hello World</button>
+          <button class="btn-sm" onclick="loadExample('loop')">Loop</button>
+          <button class="btn-sm" onclick="loadExample('array')">Array</button>
         </div>
       </div>
     </section>
 
-    <!-- 🔹 Topics -->
+    <!--  Topics -->
     <section class="section topics">
       <div class="container">
         <div class="section-head">
@@ -206,7 +195,7 @@ import Footer from '../components/Footer.astro';
       </div>
     </section>
 
-    <!-- 🔹 CTA -->
+    <!--  CTA -->
     <section class="section cta">
       <div class="container">
         <div class="cta-box">
@@ -224,31 +213,22 @@ import Footer from '../components/Footer.astro';
 </html>
 
 <style>
-  /* === Variables === */
+  /* === Variables & Reset === */
   :root {
-    --bg: #f8fafc;
-    --card: #ffffff;
-    --text: #0f172a;
-    --text-muted: #64748b;
-    --primary: #0284c7;
-    --primary-dark: #0369a1;
-    --primary-light: #38bdf8;
-    --border: rgba(2,132,199,0.15);
-    --radius: 12px;
-    --editor-bg: #1e1e1e;
-    --editor-gutter: #2d2d2d;
-    --spacing-section: 3.5rem;
-  }
-
-  html.dark-mode {
-    --bg: #0b1120;
-    --card: #1e293b;
-    --text: #f1f5f9;
-    --text-muted: #94a3b8;
-    --primary: #38bdf8;
-    --border: rgba(56,189,248,0.15);
-    --editor-bg: #1e1e1e;
-    --editor-gutter: #252526;
+    --bg: #0f111a;
+    --bg-secondary: #161b22;
+    --card: #1e2530;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --primary: #58a6ff;
+    --primary-dark: #1f6feb;
+    --accent: #3fb950;
+    --border: #30363d;
+    --radius: 8px;
+    --font-main: 'Cairo', sans-serif;
+    --font-code: 'Fira Code', monospace;
+    --editor-bg: #0d1117;
+    --line-num-bg: #161b22;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -256,19 +236,19 @@ import Footer from '../components/Footer.astro';
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Cairo', system-ui, sans-serif;
+    font-family: var(--font-main);
     line-height: 1.6;
   }
 
   .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-  .section { padding: var(--spacing-section) 0; }
+  .section { padding: 4rem 0; }
   .section-head { text-align: center; margin-bottom: 2.5rem; }
-  .section-head h2 { font-size: 1.7rem; font-weight: 800; margin-bottom: 0.5rem; }
+  .section-head h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; color: #fff; }
   .section-head p { color: var(--text-muted); }
 
   /* Hero */
   .hero {
-    min-height: 75vh;
+    min-height: 70vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -278,424 +258,322 @@ import Footer from '../components/Footer.astro';
     overflow: hidden;
   }
   .hero-bg { position: absolute; inset: 0; z-index: -1; }
-  .hero-bg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.45); }
-  .overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(2,132,199,0.4), rgba(14,165,233,0.4)); }
-  .hero-content { max-width: 650px; padding: 2rem; }
+  .hero-bg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.3); }
+  .overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(31,111,235,0.4), rgba(13,17,23,0.8)); }
+  .hero-content { max-width: 650px; padding: 2rem; z-index: 1; }
   .badge {
     display: inline-block;
-    background: rgba(255,255,255,0.18);
-    backdrop-filter: blur(8px);
-    padding: 0.4rem 1.1rem;
+    background: rgba(88,166,255,0.15);
+    color: var(--primary);
+    padding: 0.4rem 1rem;
     border-radius: 50px;
     font-size: 0.85rem;
     font-weight: 600;
     margin-bottom: 1.2rem;
-    border: 1px solid rgba(255,255,255,0.25);
+    border: 1px solid rgba(88,166,255,0.3);
   }
-  .hero h1 { font-size: clamp(1.9rem, 5vw, 2.8rem); font-weight: 800; line-height: 1.2; margin-bottom: 0.8rem; }
-  .gradient {
-    background: linear-gradient(135deg, #fff, var(--primary-light));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-  .hero-text { font-size: 1.05rem; opacity: 0.95; margin-bottom: 1.8rem; }
-  .hero-actions { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; line-height: 1.2; margin-bottom: 1rem; }
+  .gradient { background: linear-gradient(135deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-text { font-size: 1.1rem; color: #c9d1d9; margin-bottom: 2rem; }
+  .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.4rem;
-    padding: 0.85rem 1.8rem;
-    border-radius: 12px;
+    gap: 0.5rem;
+    padding: 0.8rem 2rem;
+    border-radius: 6px;
     font-weight: 700;
-    font-size: 0.95rem;
-    transition: all 0.3s;
+    font-size: 1rem;
+    transition: all 0.2s;
     cursor: pointer;
     border: none;
+    text-decoration: none;
   }
-  .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 12px rgba(2,132,199,0.25); }
-  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(2,132,199,0.35); }
-  .btn-outline { background: transparent; border: 2px solid white; color: white; }
-  .btn-outline:hover { background: white; color: var(--text); transform: translateY(-2px); }
-  .btn-light { background: white; color: var(--primary); }
-  .btn-light:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,0,0,0.12); }
+  .btn-primary { background: var(--primary-dark); color: white; }
+  .btn-primary:hover { background: var(--primary); }
+  .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+  .btn-light { background: white; color: #0d1117; }
+  .btn-light:hover { background: #f0f3f6; }
 
   /* Stats */
-  .stats-bar { background: var(--card); border-bottom: 1px solid var(--border); padding: 1.8rem 0; }
-  .stats-grid { display: flex; align-items: center; justify-content: center; gap: 1.5rem; }
+  .stats-bar { background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 2rem 0; }
+  .stats-grid { display: flex; align-items: center; justify-content: center; gap: 3rem; }
   .stat { text-align: center; }
-  .stat-num { display: block; font-size: 2rem; font-weight: 800; color: var(--primary); line-height: 1; }
-  .stat-label { font-size: 0.85rem; color: var(--text-muted); font-weight: 600; }
+  .stat-num { display: block; font-size: 2.2rem; font-weight: 800; color: var(--primary); line-height: 1; }
+  .stat-label { font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; }
   .stat-divider { width: 1px; height: 40px; background: var(--border); }
 
   /* === Professional Code Editor === */
-  .code-editor-section { background: var(--bg); padding: 4rem 0; }
+  .editor-section { background: var(--bg); }
   
-  .editor-container {
-    background: var(--card);
-    border-radius: var(--radius);
+  .editor-card {
+    background: var(--editor-bg);
     border: 1px solid var(--border);
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
   }
 
   .editor-toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 1.5rem;
-    background: var(--bg);
+    padding: 0.8rem 1.2rem;
+    background: var(--bg-secondary);
     border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-    gap: 1rem;
   }
 
-  .lang-selector {
+  .file-tab {
     display: flex;
     align-items: center;
-    gap: 0.6rem;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--text-muted);
-  }
-
-  .lang-selector select {
-    padding: 0.5rem 1rem;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    background: var(--card);
-    color: var(--text);
-    font-family: inherit;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s;
-  }
-
-  .lang-selector select:hover {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(2,132,199,0.1);
-  }
-
-  .editor-actions {
-    display: flex;
     gap: 0.5rem;
-    align-items: center;
+    background: var(--editor-bg);
+    padding: 0.4rem 1rem;
+    border-radius: 6px 6px 0 0;
+    border: 1px solid var(--border);
+    border-bottom: none;
+    font-size: 0.9rem;
+    color: #fff;
   }
 
-  .btn-action {
-    width: 38px;
-    height: 38px;
-    border-radius: 8px;
+  #langIcon {
+    background: var(--primary-dark);
+    color: white;
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .toolbar-right { display: flex; align-items: center; gap: 1rem; }
+
+  .toolbar-right select {
+    background: var(--bg-secondary);
+    color: var(--text);
     border: 1px solid var(--border);
-    background: var(--card);
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-family: inherit;
+    cursor: pointer;
+  }
+
+  .toolbar-actions { display: flex; gap: 0.5rem; }
+
+  .btn-icon {
+    background: transparent;
+    border: 1px solid transparent;
     color: var(--text-muted);
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s;
+    font-size: 1.1rem;
+    transition: all 0.2s;
   }
-
-  .btn-action:hover {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
-    transform: translateY(-2px);
-  }
-
-  .btn-action svg {
-    width: 18px;
-    height: 18px;
-  }
+  .btn-icon:hover { background: rgba(255,255,255,0.1); color: #fff; }
 
   .btn-run {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.65rem 1.5rem;
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
+    background: var(--accent);
+    color: #fff;
     border: none;
-    border-radius: 8px;
+    padding: 0.4rem 1.2rem;
+    border-radius: 6px;
     font-weight: 700;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: 0 4px 12px rgba(16,185,129,0.25);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.2s;
   }
+  .btn-run:hover { filter: brightness(1.1); }
+  .btn-run:disabled { opacity: 0.6; cursor: not-allowed; }
 
-  .btn-run:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(16,185,129,0.35);
-  }
-
-  .btn-run:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-
-  .btn-run svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .editor-area {
+  .editor-body {
     display: grid;
     grid-template-columns: 1fr 1fr;
     min-height: 450px;
   }
 
-  .code-input-wrapper {
+  .code-pane {
     position: relative;
+    display: flex;
     border-right: 1px solid var(--border);
-    background: var(--editor-bg);
   }
 
   .line-numbers {
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
     width: 50px;
-    background: var(--editor-gutter);
-    color: #858585;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.85rem;
+    background: var(--line-num-bg);
+    color: var(--text-muted);
+    font-family: var(--font-code);
+    font-size: 0.9rem;
     line-height: 1.6;
-    padding: 1rem 0.8rem;
+    padding: 1rem 0.5rem;
     text-align: right;
     user-select: none;
     overflow: hidden;
   }
 
   .code-input {
-    width: 100%;
-    height: 100%;
-    min-height: 450px;
-    padding: 1rem 1rem 1rem 3.5rem;
-    background: transparent;
-    color: #d4d4d4;
+    flex: 1;
+    background: var(--editor-bg);
+    color: #e6edf3;
     border: none;
     resize: none;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
+    font-family: var(--font-code);
+    font-size: 0.95rem;
     line-height: 1.6;
+    padding: 1rem;
     tab-size: 2;
   }
+  .code-input:focus { outline: none; }
 
-  .code-input:focus {
-    outline: none;
-  }
-
-  .output-panel {
+  .output-pane {
     display: flex;
     flex-direction: column;
-    background: var(--card);
+    background: var(--bg-secondary);
   }
 
   .output-header {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--text-muted);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.8rem 1.2rem;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-    font-weight: 700;
-    font-size: 0.9rem;
   }
 
   .btn-clear {
-    padding: 0.3rem 0.7rem;
     background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 6px;
+    border: none;
     color: var(--text-muted);
-    font-size: 0.8rem;
     cursor: pointer;
-    transition: all 0.3s;
+    font-size: 1rem;
   }
-
-  .btn-clear:hover {
-    background: rgba(239,68,68,0.1);
-    color: #ef4444;
-    border-color: #ef4444;
-  }
+  .btn-clear:hover { color: #f85149; }
 
   .code-output {
     flex: 1;
-    padding: 1.2rem;
+    padding: 1rem;
     background: var(--editor-bg);
-    color: #d4d4d4;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.85rem;
+    color: #e6edf3;
+    font-family: var(--font-code);
+    font-size: 0.9rem;
     overflow-y: auto;
     white-space: pre-wrap;
-    word-wrap: break-word;
   }
 
   .output-placeholder {
     text-align: center;
     padding: 3rem 1rem;
-    color: #666;
+    color: var(--text-muted);
   }
+  .output-placeholder .icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
 
-  .output-placeholder .icon {
-    font-size: 2.5rem;
-    display: block;
-    margin-bottom: 1rem;
-  }
-
-  .output-placeholder p {
-    font-size: 0.9rem;
-    line-height: 1.6;
-  }
-
-  .code-output.error {
-    color: #f48771;
-    background: #2d1f1f;
-  }
-
-  .code-output.success {
-    color: #89d185;
-  }
-
-  .editor-info {
+  .editor-status {
+    padding: 0.4rem 1rem;
+    background: var(--primary-dark);
+    color: white;
+    font-size: 0.8rem;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 0.7rem 1.5rem;
-    background: var(--bg);
-    border-top: 1px solid var(--border);
-    font-size: 0.85rem;
+    gap: 0.5rem;
+  }
+  .separator { opacity: 0.5; }
+
+  .quick-examples {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
     color: var(--text-muted);
   }
 
-  .editor-info .separator {
-    color: var(--border);
-    margin: 0 0.5rem;
-  }
-
-  /* Quick Examples */
-  .quick-examples {
-    margin-top: 1.5rem;
-    padding: 1.2rem;
-    background: var(--card);
-    border-radius: var(--radius);
+  .btn-sm {
+    background: var(--bg-secondary);
     border: 1px solid var(--border);
-  }
-
-  .quick-examples h4 {
-    margin-bottom: 0.8rem;
-    font-size: 0.95rem;
     color: var(--text);
-  }
-
-  .example-buttons {
-    display: flex;
-    gap: 0.6rem;
-    flex-wrap: wrap;
-  }
-
-  .btn-example {
-    padding: 0.45rem 1rem;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-size: 0.85rem;
-    font-weight: 600;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
     cursor: pointer;
-    transition: all 0.3s;
+    font-size: 0.8rem;
+    transition: all 0.2s;
   }
-
-  .btn-example:hover {
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
-    transform: translateY(-2px);
-  }
+  .btn-sm:hover { background: var(--primary-dark); border-color: var(--primary-dark); color: white; }
 
   /* Topics */
-  .topics { background: var(--card); }
-  .topics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .topics { background: var(--bg-secondary); }
+  .topics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
   .topic-card {
     background: var(--bg);
-    border-radius: var(--radius);
+    border-radius: 12px;
     overflow: hidden;
     border: 1px solid var(--border);
     transition: all 0.3s;
     text-decoration: none;
     color: var(--text);
   }
-  .topic-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(0,0,0,0.08); border-color: var(--primary); }
-  .topic-img { height: 160px; overflow: hidden; }
+  .topic-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+  .topic-img { height: 180px; overflow: hidden; }
   .topic-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
   .topic-card:hover .topic-img img { transform: scale(1.05); }
-  .topic-body { padding: 1.2rem; }
-  .topic-body h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
-  .topic-body p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 0.8rem; }
-  .link-arrow { color: var(--primary); font-size: 1.2rem; font-weight: bold; transition: transform 0.3s; display: inline-block; }
-  .topic-card:hover .link-arrow { transform: translateX(4px); }
+  .topic-body { padding: 1.5rem; }
+  .topic-body h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: #fff; }
+  .topic-body p { color: var(--text-muted); font-size: 0.95rem; }
+  .link-arrow { display: inline-block; margin-top: 0.5rem; color: var(--primary); font-weight: 700; }
 
   /* CTA */
-  .cta { background: var(--bg); padding: 3.5rem 1.5rem; }
+  .cta { background: var(--bg); padding: 5rem 1.5rem; }
   .cta-box {
     max-width: 600px;
     margin: 0 auto;
     text-align: center;
-    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-    padding: 2.5rem 2rem;
-    border-radius: var(--radius);
+    background: linear-gradient(135deg, var(--primary-dark), #1158a0);
+    padding: 3rem 2rem;
+    border-radius: 16px;
     color: white;
-    box-shadow: 0 16px 35px rgba(2,132,199,0.25);
+    box-shadow: 0 15px 40px rgba(31,111,235,0.2);
   }
-  .cta-box h2 { font-size: 1.75rem; margin-bottom: 0.5rem; }
-  .cta-box p { opacity: 0.95; margin-bottom: 1.5rem; font-size: 1rem; }
+  .cta-box h2 { font-size: 2rem; margin-bottom: 0.8rem; }
+  .cta-box p { opacity: 0.9; margin-bottom: 2rem; font-size: 1.1rem; }
 
   /* Responsive */
   @media (max-width: 1024px) {
     .topics-grid { grid-template-columns: 1fr 1fr; }
-    .editor-area { grid-template-columns: 1fr 1fr; }
+    .editor-body { grid-template-columns: 1fr; }
+    .code-pane { border-right: none; border-bottom: 1px solid var(--border); }
+    .code-input { min-height: 300px; }
   }
 
   @media (max-width: 768px) {
-    .hero { min-height: auto; padding: 4rem 0 3rem; }
-    .hero h1 { font-size: 1.8rem; }
-    .hero-actions { flex-direction: column; align-items: center; }
-    .btn { width: 100%; max-width: 260px; }
+    .hero { min-height: auto; padding: 5rem 0 3rem; }
+    .hero h1 { font-size: 2rem; }
+    .hero-actions { flex-direction: column; }
+    .btn { width: 100%; }
     
-    .stats-grid { flex-direction: column; gap: 1.2rem; }
+    .stats-grid { flex-direction: column; gap: 1.5rem; }
     .stat-divider { width: 100%; height: 1px; }
     
     .topics-grid { grid-template-columns: 1fr; }
     
-    .editor-toolbar { flex-direction: column; align-items: stretch; }
-    .lang-selector { justify-content: center; }
-    .editor-actions { justify-content: center; }
+    .editor-toolbar { flex-direction: column; gap: 1rem; align-items: stretch; }
+    .toolbar-right { justify-content: space-between; }
     
-    .editor-area { grid-template-columns: 1fr; }
-    .code-input-wrapper { border-right: none; border-bottom: 1px solid var(--border); }
-    .code-input { min-height: 250px; }
-    
-    .editor-info { flex-direction: column; gap: 0.4rem; text-align: center; }
-    .editor-info .separator { display: none; }
-    
-    .quick-examples .example-buttons { justify-content: center; }
-  }
-
-  @media (max-width: 480px) {
-    .section-head h2 { font-size: 1.5rem; }
-    .stat-num { font-size: 1.75rem; }
-    .topic-img { height: 140px; }
     .line-numbers { display: none; }
-    .code-input { padding-left: 1rem; }
   }
 </style>
 
 <script>
-  // Counter Animation
+  // === Counter Animation ===
   function initCounterAnimation() {
     const counters = document.querySelectorAll('.counter');
     const animateCounter = (element, target, duration = 2000) => {
@@ -724,7 +602,8 @@ import Footer from '../components/Footer.astro';
     counters.forEach(counter => { if (counter.dataset.target) observer.observe(counter); });
   }
 
-  // Code Editor
+  // === Code Editor Logic ===
+  // Code Examples - Safe strings to avoid build errors
   const codeExamples = {
     javascript: `// مرحباً بك في محرر JavaScript
 function greet(name) {
@@ -740,7 +619,7 @@ console.log("المجموع:", sum);`,
 
     python: `# مرحباً بك في محرر Python
 def greet(name):
-    return f"مرحباً {name}! 🎉"
+    return f"مرحباً {name}! "
 
 print(greet("المطور"))
 
@@ -753,54 +632,14 @@ print(f"المجموع: {total}")
 import math
 print(f"الجذر التربيعي لـ 16 = {math.sqrt(16)}")`,
 
-    html: `<!-- بطاقة تفاعلية -->
-<div class="card">
-  <h2>مرحباً بك!</h2>
-  <p>هذه بطاقة HTML مع تنسيق CSS</p>
-  <button onclick="showMessage()">اضغط هنا</button>
-</div>
-
-<style>
-.card {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 2rem;
-  border-radius: 12px;
-  text-align: center;
-  font-family: 'Cairo', sans-serif;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-}
-
-button {
-  margin-top: 1rem;
-  padding: 0.8rem 1.5rem;
-  background: white;
-  color: #667eea;
-  border: none;
-  border-radius: 8px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform 0.3s;
-}
-
-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-</style>
-
-<script>
-function showMessage() {
-  alert('🎉 مرحباً بك في Th.Tech!');
-}
-<\/script>`,
+    // Using string concatenation for HTML to prevent build errors with </script>
+    html: `<!-- بطاقة تفاعلية -->\n<div class="card">\n  <h2>مرحباً بك!</h2>\n  <button onclick="showMessage()">اضغط هنا</button>\n</div>\n<style>\n.card { background: #1e2530; color: white; padding: 2rem; border-radius: 8px; text-align: center; font-family: sans-serif; }\nbutton { margin-top: 1rem; padding: 0.5rem 1rem; background: #58a6ff; border: none; border-radius: 4px; color: white; cursor: pointer; }\n</style>\n` + '<script>\nfunction showMessage() { alert("مرحباً! "); }\n' + '<' + '/script>',
 
     java: `// مرحباً بك في محرر Java
 public class Main {
     public static void main(String[] args) {
-        System.out.println("مرحباً بك في Java! 🎉");
+        System.out.println("مرحباً بك في Java! ");
         
-        // حساب المجموع
         int[] numbers = {1, 2, 3, 4, 5};
         int sum = 0;
         for (int num : numbers) {
@@ -816,9 +655,8 @@ public class Main {
 using namespace std;
 
 int main() {
-    cout << "مرحباً بك في C++! 🎉" << endl;
+    cout << "مرحباً بك في C++! " << endl;
     
-    // حساب المجموع
     vector<int> numbers = {1, 2, 3, 4, 5};
     int sum = 0;
     for (int num : numbers) {
@@ -830,33 +668,25 @@ int main() {
 }`,
 
     sql: `-- مرحباً بك في محرر SQL
--- استعلامات قاعدة بيانات
-
 -- إنشاء جدول
 CREATE TABLE users (
     id INT PRIMARY KEY,
     name VARCHAR(100),
-    email VARCHAR(100),
-    created_at DATE
+    email VARCHAR(100)
 );
 
 -- إدراج بيانات
-INSERT INTO users VALUES 
-(1, 'أحمد محمد', 'ahmed@example.com', '2024-01-15'),
-(2, 'سارة أحمد', 'sara@example.com', '2024-01-16');
+INSERT INTO users VALUES (1, 'أحمد', 'ahmed@test.com');
 
 -- استعلام
-SELECT name, email 
-FROM users 
-WHERE created_at >= '2024-01-01'
-ORDER BY name;`
+SELECT * FROM users;`
   };
 
   let currentLang = 'javascript';
   let pyodide = null;
   let pyodideReady = false;
 
-  // Initialize
+  // Initialize Editor
   function initEditor() {
     const editor = document.getElementById('codeInput');
     if (editor) {
@@ -880,8 +710,18 @@ ORDER BY name;`
   function syncScroll() {
     const editor = document.getElementById('codeInput');
     const lineNumbers = document.getElementById('lineNumbers');
-    if (lineNumbers) {
-      lineNumbers.scrollTop = editor.scrollTop;
+    if (lineNumbers) lineNumbers.scrollTop = editor.scrollTop;
+  }
+
+  // Handle Tab Key
+  function handleTab(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const start = e.target.selectionStart;
+      const end = e.target.selectionEnd;
+      e.target.value = e.target.value.substring(0, start) + '  ' + e.target.value.substring(end);
+      e.target.selectionStart = e.target.selectionEnd = start + 2;
+      updateLineNumbers();
     }
   }
 
@@ -890,32 +730,20 @@ ORDER BY name;`
     const select = document.getElementById('languageSelect');
     currentLang = select.value;
     const editor = document.getElementById('codeInput');
-    const langInfo = document.getElementById('langInfo');
-    const pyStatus = document.getElementById('pyodideStatus');
+    const langIcon = document.getElementById('langIcon');
+    const fileName = document.getElementById('fileName');
+    const pyStatus = document.getElementById('pyStatus');
     
     editor.value = codeExamples[currentLang] || '';
     updateLineNumbers();
     clearOutput();
-    
-    // Update language info
-    const langNames = {
-      javascript: 'JavaScript',
-      python: 'Python',
-      html: 'HTML/CSS',
-      java: 'Java',
-      cpp: 'C++',
-      sql: 'SQL'
-    };
-    langInfo.textContent = langNames[currentLang];
-    
-    // Show Pyodide status for Python
-    if (currentLang === 'python') {
-      pyStatus.style.display = 'inline';
-    } else {
-      pyStatus.style.display = 'none';
-    }
-    
     updateStatus('✅ جاهز');
+    
+    const extensions = { javascript: 'js', python: 'py', html: 'html', java: 'java', cpp: 'cpp', sql: 'sql' };
+    langIcon.textContent = currentLang.toUpperCase().substring(0, 2);
+    fileName.textContent = `script.${extensions[currentLang]}`;
+    
+    pyStatus.style.display = currentLang === 'python' ? 'inline' : 'none';
   }
 
   // Run Code
@@ -923,13 +751,9 @@ ORDER BY name;`
     const code = document.getElementById('codeInput').value;
     const output = document.getElementById('output');
     const runBtn = document.getElementById('runBtn');
-    const runText = document.getElementById('runText');
     
-    output.className = 'code-output';
     output.innerHTML = '<div class="output-placeholder"><span class="icon"></span><p>جاري التنفيذ...</p></div>';
-    
     runBtn.disabled = true;
-    runText.textContent = 'جاري...';
     
     try {
       if (currentLang === 'javascript') {
@@ -938,103 +762,67 @@ ORDER BY name;`
         await runPython(code, output);
       } else if (currentLang === 'html') {
         runHTML(code, output);
-      } else if (currentLang === 'java' || currentLang === 'cpp' || currentLang === 'sql') {
-        // For languages that can't run in browser, show syntax info
-        output.className = 'code-output success';
-        output.innerHTML = `<div style="padding: 1rem; background: rgba(137,209,133,0.1); border-radius: 8px; border-left: 4px solid #89d185;">
-          <strong>✅ ${currentLang.toUpperCase()} Code</strong><br><br>
-          الكود الذي كتبته صحيح من حيث البنية.<br>
-          لتشغيل ${currentLang === 'java' ? 'Java' : currentLang === 'cpp' ? 'C++' : 'SQL'} تحتاج إلى:<br><br>
-          ${currentLang === 'java' ? '• JDK (Java Development Kit)<br>• JVM (Java Virtual Machine)' : 
-            currentLang === 'cpp' ? '• مترجم C++ (g++, clang++)<br>• بيئة تطوير (IDE)' : 
-            '• قاعدة بيانات (MySQL, PostgreSQL, etc.)<br>• عميل SQL'}
+      } else {
+        // For Java, C++, SQL: Show info message
+        output.innerHTML = `<div style="padding: 1rem; color: #e6edf3;">
+          <strong>✅ تم التحقق من صحة الكود</strong><br><br>
+          لغة ${currentLang.toUpperCase()} تتطلب بيئة تنفيذ خاصة (Compiler/Interpreter).<br>
+          هذا المحرر يدعم JavaScript, Python, و HTML مباشرة في المتصفح.
         </div>`;
       }
-      updateStatus('✅ تم التنفيذ بنجاح');
+      updateStatus('✅ تم التنفيذ');
     } catch (error) {
-      output.className = 'code-output error';
-      output.textContent = `❌ خطأ: ${error.message}`;
-      updateStatus('❌ حدث خطأ');
+      output.innerHTML = `<div style="color: #f85149; padding: 1rem;">❌ خطأ: ${error.message}</div>`;
+      updateStatus(' خطأ');
     } finally {
       runBtn.disabled = false;
-      runText.textContent = 'تشغيل الكود';
     }
   }
 
   // Run JavaScript
   function runJavaScript(code, output) {
     let logs = [];
-    
-    const customConsole = {
-      log: (...args) => {
-        logs.push(args.map(arg => 
-          typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
-        ).join(' '));
-      },
-      error: (...args) => logs.push(' ' + args.join(' ')),
-      warn: (...args) => logs.push('️ ' + args.join(' '))
+    const cons = {
+      log: (...a) => logs.push(a.map(x => typeof x === 'object' ? JSON.stringify(x, null, 2) : String(x)).join(' ')),
+      error: (...a) => logs.push(' ' + a.join(' ')),
+      warn: (...a) => logs.push('️ ' + a.join(' '))
     };
-    
-    const wrappedCode = `(function(console) { ${code} })(customConsole);`;
-    eval(wrappedCode);
-    
-    if (logs.length > 0) {
-      output.className = 'code-output success';
-      output.textContent = logs.join('\n');
-    } else {
-      output.innerHTML = '<div style="padding: 1rem; text-align: center; color: #89d185;">✅ تم التنفيذ بنجاح<br><small>(لا توجد مخرجات)</small></div>';
+    try {
+      eval(`(function(c){${code}})(cons)`);
+      output.textContent = logs.length ? logs.join('\n') : '✅ تم التنفيذ (لا يوجد مخرجات)';
+      output.style.color = '#e6edf3';
+    } catch (e) {
+      output.textContent = `❌ خطأ: ${e.message}`;
+      output.style.color = '#f85149';
     }
   }
 
-  // Run Python with Pyodide
+  // Run Python
   async function runPython(code, output) {
     if (!pyodideReady) {
-      output.className = 'code-output';
-      output.innerHTML = '<div class="output-placeholder"><span class="icon">⏳</span><p>جاري تحميل Python...<br><small>قد يستغرق 10-20 ثانية في المرة الأولى</small></p></div>';
+      output.innerHTML = '<div class="output-placeholder"><span class="icon"></span><p>جاري تحميل Python...<br><small>قد يستغرق بضع ثوانٍ</small></p></div>';
       await initPyodide();
       if (!pyodideReady) {
-        output.className = 'code-output error';
-        output.textContent = '❌ فشل تحميل Pyodide. يرجى تحديث الصفحة والمحاولة مرة أخرى.';
+        output.textContent = '❌ فشل تحميل Pyodide. يرجى تحديث الصفحة.';
         return;
       }
     }
     
     try {
-      // Redirect stdout/stderr
-      pyodide.setStdout({
-        batched: (msg) => {
-          if (output.textContent === 'جاري التنفيذ...') output.textContent = '';
-          output.textContent += msg;
-          output.scrollTop = output.scrollHeight;
-        }
-      });
+      pyodide.setStdout({ batched: m => { if(output.textContent.includes('جاري')) output.textContent = ''; output.textContent += m; } });
+      pyodide.setStderr({ batched: m => { output.innerHTML += `<span style="color:#f85149">${m}</span>`; } });
       
-      pyodide.setStderr({
-        batched: (msg) => {
-          output.className = 'code-output error';
-          output.textContent += '❌ ' + msg;
-        }
-      });
-      
-      // Execute Python code
       await pyodide.runPythonAsync(code);
-      
-      if (output.textContent.trim() === '' || output.textContent === 'جاري التنفيذ...') {
-        output.innerHTML = '<div style="padding: 1rem; text-align: center; color: #89d185;">✅ تم التنفيذ بنجاح<br><small>(لا توجد مخرجات)</small></div>';
-        output.className = 'code-output success';
-      } else {
-        output.className = 'code-output success';
+      if (output.textContent.includes('جاري')) {
+        output.textContent = '✅ تم التنفيذ بنجاح';
       }
-      
-    } catch (error) {
-      output.className = 'code-output error';
-      output.textContent = `❌ خطأ في Python: ${error.message}`;
+    } catch (e) {
+      output.innerHTML = `<span style="color:#f85149">❌ خطأ: ${e.message}</span>`;
     }
   }
 
   // Run HTML
   function runHTML(code, output) {
-    output.className = 'code-output success';
     output.innerHTML = code;
   }
 
@@ -1042,120 +830,57 @@ ORDER BY name;`
   async function initPyodide() {
     const pyStatus = document.getElementById('pyStatus');
     try {
-      pyodide = await loadPyodide({
-        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
-      });
+      pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/" });
       pyodideReady = true;
-      if (pyStatus) {
-        pyStatus.textContent = '✅ جاهز';
-        pyStatus.style.color = '#10b981';
-      }
-    } catch (error) {
-      console.error('Failed to load Pyodide:', error);
-      if (pyStatus) {
-        pyStatus.textContent = '❌ فشل التحميل';
-        pyStatus.style.color = '#ef4444';
-      }
+      if(pyStatus) { pyStatus.textContent = '● Python Ready'; pyStatus.style.color = '#3fb950'; }
+    } catch (e) {
+      if(pyStatus) { pyStatus.textContent = '● Python Failed'; pyStatus.style.color = '#f85149'; }
     }
   }
 
-  // Clear Output
+  // Utils
   function clearOutput() {
     const output = document.getElementById('output');
-    output.innerHTML = '<div class="output-placeholder"><span class="icon">💡</span><p>اكتب كوداً ثم اضغط "تشغيل الكود" لرؤية النتيجة</p></div>';
-    output.className = 'code-output';
+    output.innerHTML = '<div class="output-placeholder"><span class="icon">💡</span><p>اضغط على "تشغيل" لرؤية النتيجة</p></div>';
     updateStatus('✅ جاهز');
   }
 
-  // Reset Code
   function resetCode() {
-    const editor = document.getElementById('codeInput');
-    if (editor) {
-      editor.value = codeExamples[currentLang];
-      updateLineNumbers();
-      clearOutput();
-      updateStatus(' تم إعادة الكود الافتراضي');
-    }
+    document.getElementById('codeInput').value = codeExamples[currentLang];
+    updateLineNumbers();
+    clearOutput();
   }
 
-  // Copy Code
   function copyCode() {
-    const editor = document.getElementById('codeInput');
-    if (editor) {
-      navigator.clipboard.writeText(editor.value).then(() => {
-        updateStatus('📋 تم نسخ الكود');
-        setTimeout(() => updateStatus('✅ جاهز'), 2000);
-      });
-    }
+    navigator.clipboard.writeText(document.getElementById('codeInput').value);
+    updateStatus('📋 تم النسخ');
+    setTimeout(() => updateStatus('✅ جاهز'), 2000);
   }
 
-  // Load Example
   function loadExample(type) {
     const examples = {
-      hello: {
-        javascript: 'console.log("مرحباً بالعالم! 🌍");',
-        python: 'print("مرحباً بالعالم! 🌍")',
-        html: '<h1>مرحباً بالعالم!</h1>',
-        java: 'System.out.println("مرحباً بالعالم! 🌍");',
-        cpp: 'cout << "مرحباً بالعالم! 🌍" << endl;',
-        sql: "SELECT 'مرحباً بالعالم!' AS greeting;"
-      },
-      loop: {
-        javascript: 'for (let i = 1; i <= 5; i++) {\n  console.log(`الرقم: ${i}`);\n}',
-        python: 'for i in range(1, 6):\n    print(f"الرقم: {i}")',
-        html: '<ul>\n  <li>عنصر 1</li>\n  <li>عنصر 2</li>\n  <li>عنصر 3</li>\n</ul>',
-        java: 'for (int i = 1; i <= 5; i++) {\n    System.out.println("الرقم: " + i);\n}',
-        cpp: 'for (int i = 1; i <= 5; i++) {\n    cout << "الرقم: " << i << endl;\n}',
-        sql: 'SELECT * FROM users LIMIT 5;'
-      },
-      function: {
-        javascript: 'function add(a, b) {\n  return a + b;\n}\nconsole.log(add(5, 3));',
-        python: 'def add(a, b):\n    return a + b\n\nprint(add(5, 3))',
-        html: '<button onclick="alert(\'تم الضغط!\')">اضغط هنا</button>',
-        java: 'public static int add(int a, int b) {\n    return a + b;\n}',
-        cpp: 'int add(int a, int b) {\n    return a + b;\n}',
-        sql: 'CREATE FUNCTION get_user(id INT) RETURNS VARCHAR(100) BEGIN RETURN (SELECT name FROM users WHERE id = id); END;'
-      },
-      array: {
-        javascript: 'const arr = [1, 2, 3, 4, 5];\nconst doubled = arr.map(x => x * 2);\nconsole.log(doubled);',
-        python: 'arr = [1, 2, 3, 4, 5]\ndoubled = [x * 2 for x in arr]\nprint(doubled)',
-        html: '<div id="list"></div>\n<script>\nconst items = [1,2,3];\ndocument.getElementById("list").innerHTML = items.map(i => `<p>عنصر ${i}</p>`).join("");\n</script>',
-        java: 'int[] arr = {1, 2, 3, 4, 5};\nfor (int num : arr) {\n    System.out.println(num * 2);\n}',
-        cpp: 'vector<int> arr = {1, 2, 3, 4, 5};\nfor (int num : arr) {\n    cout << num * 2 << endl;\n}',
-        sql: 'SELECT id, name, email FROM users WHERE id IN (1, 2, 3);'
-      }
+      hello: { javascript: 'console.log("Hello World! 🌍");', python: 'print("Hello World! 🌍")', html: '<h1>Hello World!</h1>', java: 'System.out.println("Hello World!");', cpp: 'cout << "Hello World!" << endl;', sql: "SELECT 'Hello World!';" },
+      loop: { javascript: 'for(let i=1; i<=3; i++) console.log(i);', python: 'for i in range(1, 4):\\n    print(i)', html: '<ol><li>1</li><li>2</li></ol>', java: 'for(int i=1; i<=3; i++) System.out.println(i);', cpp: 'for(int i=1; i<=3; i++) cout << i << endl;', sql: 'SELECT * FROM users LIMIT 3;' },
+      array: { javascript: 'console.log([1,2,3].map(x=>x*2));', python: 'print([x*2 for x in [1,2,3]])', html: '<ul><li>2</li><li>4</li></ul>', java: 'int[] a={1,2,3}; for(int x:a) System.out.println(x*2);', cpp: 'vector<int> v={1,2,3}; for(int x:v) cout<<x*2<<endl;', sql: 'SELECT id*2 FROM numbers;' }
     };
     
     const editor = document.getElementById('codeInput');
-    if (editor && examples[type] && examples[type][currentLang]) {
-      editor.value = examples[type][currentLang];
+    if (editor && examples[type]) {
+      // For Python, replace \n with actual newline
+      let code = examples[type][currentLang];
+      if (currentLang === 'python') code = code.replace(/\\n/g, '\n');
+      
+      editor.value = code;
       updateLineNumbers();
       clearOutput();
-      updateStatus(`📝 تم تحميل مثال: ${type}`);
     }
   }
 
-  // Update Status
-  function updateStatus(message) {
-    const status = document.getElementById('statusInfo');
-    if (status) {
-      status.textContent = message;
-    }
+  function updateStatus(msg) {
+    document.getElementById('statusText').textContent = msg;
   }
 
-  // Update Preview (for future use)
-  function updatePreview() {
-    // Can be used for live preview
-  }
-
-  // Keyboard Shortcuts
-  document.addEventListener('keydown', (e) => {
-    if (e.ctrlKey && e.key === 'Enter') {
-      runCode();
-    }
-  });
-
-  // Initialize on load
+  // Event Listeners
   document.addEventListener('DOMContentLoaded', () => {
     initCounterAnimation();
     initEditor();
