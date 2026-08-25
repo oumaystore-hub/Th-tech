@@ -13,6 +13,13 @@ import '../styles/animations.css';
   <link rel="canonical" href="https://oumaystore-hub.github.io/Th-tech/" />
   <link rel="icon" type="image/png" href="/Th-tech/logo1.png" />
 
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Segoe+UI&display=swap" rel="stylesheet">
+
+  <!-- Pyodide for Python execution -->
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-6QW7XVX75J"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -124,7 +131,7 @@ import '../styles/animations.css';
       </div>
     </section>
 
-    <!--  أحدث المقالات (جديد) -->
+    <!-- 🔹 أحدث المقالات -->
     <section class="articles reveal">
       <div class="container">
         <h2 class="section-title">أحدث المقالات</h2>
@@ -205,7 +212,61 @@ import '../styles/animations.css';
       </div>
     </section>
 
-    <!-- 🔹 النشرة البريدية (جديد) -->
+    <!-- 🔹 محرر الكود المدمج (مع Pyodide) -->
+    <section class="code-editor-section reveal">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">جرّب الكود الآن</h2>
+          <p class="section-subtitle">محرر تفاعلي مع دعم Python الحقيقي عبر Pyodide</p>
+        </div>
+        
+        <div class="code-editor-container">
+          <div class="editor-header">
+            <div class="language-tabs">
+              <button class="tab active" data-lang="javascript" onclick="switchLanguage('javascript')">JavaScript</button>
+              <button class="tab" data-lang="python" onclick="switchLanguage('python')">
+                Python 
+                <span id="py-status" class="py-status">● جاري التحميل</span>
+              </button>
+              <button class="tab" data-lang="html" onclick="switchLanguage('html')">HTML/CSS</button>
+            </div>
+            <button class="run-btn" id="runBtn" onclick="runCode()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              <span id="runBtnText">تشغيل الكود</span>
+            </button>
+          </div>
+          
+          <div class="editor-body">
+            <div class="code-input-wrapper">
+              <textarea 
+                id="codeEditor" 
+                class="code-editor"
+                placeholder="اكتب الكود هنا..."
+                spellcheck="false"
+              ></textarea>
+            </div>
+            
+            <div class="output-wrapper">
+              <div class="output-header">
+                <span>النتيجة</span>
+                <button class="clear-btn" onclick="clearOutput()">مسح</button>
+              </div>
+              <div id="output" class="code-output">
+                <span class="output-placeholder">اكتب كوداً ثم اضغط "تشغيل" لرؤية النتيجة...</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="editor-footer">
+            <span class="hint">💡 Ctrl+Enter للتشغيل السريع • Python يعمل عبر Pyodide (WebAssembly)</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 🔹 النشرة البريدية -->
     <section class="newsletter reveal">
       <div class="container">
         <div class="newsletter-box">
@@ -521,7 +582,7 @@ import '../styles/animations.css';
     .topics-grid { grid-template-columns: 1fr; }
   }
 
-  /* Articles - NEW */
+  /* Articles */
   .articles {
     padding: 4rem 0;
     background: var(--card);
@@ -667,17 +728,245 @@ import '../styles/animations.css';
     .features-grid { grid-template-columns: 1fr; }
   }
 
-  /* Newsletter - NEW */
+  /* Code Editor */
+  .code-editor-section {
+    padding: 5rem 0;
+    background: var(--card);
+  }
+  
+  .code-editor-container {
+    background: var(--bg);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+  }
+  
+  .editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .language-tabs {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .tab {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-sec);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  
+  .tab:hover {
+    background: rgba(2,132,199,0.1);
+    color: var(--primary);
+  }
+  
+  .tab.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  
+  .py-status {
+    font-size: 0.7rem;
+    font-weight: 400;
+    opacity: 0.8;
+  }
+  
+  .py-status.ready {
+    color: #10b981;
+  }
+  
+  .py-status.loading {
+    color: #f59e0b;
+    animation: pulse 1.5s infinite;
+  }
+  
+  @keyframes pulse {
+    0%, 100% { opacity: 0.8; }
+    50% { opacity: 1; }
+  }
+  
+  .run-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.5rem;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .run-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16,185,129,0.4);
+  }
+  
+  .run-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  .run-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .editor-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 450px;
+  }
+  
+  .code-input-wrapper {
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  
+  .code-editor {
+    width: 100%;
+    height: 100%;
+    min-height: 450px;
+    padding: 1.5rem;
+    background: var(--card);
+    color: var(--text);
+    border: none;
+    resize: none;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    tab-size: 2;
+  }
+  
+  .code-editor:focus {
+    outline: none;
+  }
+  
+  .output-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1.5rem;
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+    color: var(--text);
+  }
+  
+  .clear-btn {
+    padding: 0.3rem 0.8rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-sec);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .clear-btn:hover {
+    background: rgba(239,68,68,0.1);
+    color: #ef4444;
+    border-color: #ef4444;
+  }
+  
+  .code-output {
+    flex: 1;
+    padding: 1.5rem;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.9rem;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  .output-placeholder {
+    color: #666;
+    font-style: italic;
+  }
+  
+  .code-output.error {
+    color: #f48771;
+    background: #2d1f1f;
+  }
+  
+  .code-output.success {
+    color: #89d185;
+  }
+  
+  .code-output.loading {
+    color: #f59e0b;
+  }
+  
+  .editor-footer {
+    padding: 0.8rem 1.5rem;
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  
+  .hint {
+    color: var(--text-sec);
+    font-size: 0.85rem;
+  }
+  
+  @media (max-width: 768px) {
+    .editor-body {
+      grid-template-columns: 1fr;
+    }
+    .code-input-wrapper {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .code-editor {
+      min-height: 250px;
+    }
+    .language-tabs {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  /* Newsletter */
   .newsletter {
     padding: 4rem 0;
-    background: var(--card);
+    background: var(--bg);
   }
   
   .newsletter-box {
     max-width: 600px;
     margin: 0 auto;
     text-align: center;
-    background: var(--bg);
+    background: var(--card);
     padding: 3rem 2rem;
     border-radius: var(--radius);
     border: 1px solid var(--border);
@@ -854,9 +1143,256 @@ import '../styles/animations.css';
     });
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
+  // Code Editor with Pyodide
+  const codeExamples = {
+    javascript: `// مرحباً بك في محرر JavaScript
+function greet(name) {
+  return \`مرحباً \${name}! \`;
+}
+
+const result = greet("المطور");
+console.log(result);
+
+// جرب هذا:
+const numbers = [1, 2, 3, 4, 5];
+const doubled = numbers.map(n => n * 2);
+console.log("الأرقام المضاعفة:", doubled);`,
+
+    python: `# مرحباً بك في محرر Python (يعمل عبر Pyodide)
+def greet(name):
+    return f"مرحباً {name}! 🎉"
+
+result = greet("المطور")
+print(result)
+
+# جرب هذا:
+numbers = [1, 2, 3, 4, 5]
+doubled = [n * 2 for n in numbers]
+print("الأرقام المضاعفة:", doubled)
+
+# جرب مكتبات Python:
+import math
+print(f"الجذر التربيعي لـ 16 = {math.sqrt(16)}")`,
+
+    html: `<!-- مرحباً بك في محرر HTML/CSS -->
+<div class="card">
+  <h2> بطاقة تفاعلية</h2>
+  <p>هذه بطاقة HTML مع تنسيق CSS</p>
+  <button onclick="alert('مرحباً!')">اضغط هنا</button>
+</div>
+
+<style>
+.card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.8rem 1.5rem;
+  background: white;
+  color: #667eea;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+</style>`
+  };
+
+  let currentLanguage = 'javascript';
+  let pyodide = null;
+  let pyodideReady = false;
+
+  // Initialize Pyodide
+  async function initPyodide() {
+    const statusEl = document.getElementById('py-status');
+    const runBtn = document.getElementById('runBtn');
+    
+    try {
+      statusEl.textContent = '● جاري التحميل';
+      statusEl.className = 'py-status loading';
+      runBtn.disabled = true;
+      
+      pyodide = await loadPyodide({
+        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
+      });
+      
+      pyodideReady = true;
+      statusEl.textContent = '● جاهز';
+      statusEl.className = 'py-status ready';
+      runBtn.disabled = false;
+      
+      console.log('Pyodide loaded successfully');
+    } catch (error) {
+      console.error('Failed to load Pyodide:', error);
+      statusEl.textContent = '● خطأ في التحميل';
+      statusEl.className = 'py-status';
+      runBtn.disabled = false;
+    }
+  }
+
+  function switchLanguage(lang) {
+    currentLanguage = lang;
+    const editor = document.getElementById('codeEditor');
+    
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.lang === lang);
+    });
+    
+    editor.value = codeExamples[lang];
+    clearOutput();
+  }
+
+  async function runCode() {
+    const code = document.getElementById('codeEditor').value;
+    const output = document.getElementById('output');
+    const runBtn = document.getElementById('runBtn');
+    const runBtnText = document.getElementById('runBtnText');
+    
+    output.className = 'code-output';
+    output.innerHTML = '<span class="output-placeholder">جاري التنفيذ...</span>';
+    
+    // Disable button during execution
+    runBtn.disabled = true;
+    runBtnText.textContent = 'جاري التنفيذ...';
+    
+    try {
+      if (currentLanguage === 'javascript') {
+        runJavaScript(code, output);
+      } else if (currentLanguage === 'python') {
+        await runPython(code, output);
+      } else if (currentLanguage === 'html') {
+        runHTML(code, output);
+      }
+    } catch (error) {
+      output.className = 'code-output error';
+      output.textContent = `❌ خطأ: ${error.message}`;
+    } finally {
+      // Re-enable button
+      runBtn.disabled = false;
+      runBtnText.textContent = 'تشغيل الكود';
+    }
+  }
+
+  function runJavaScript(code, output) {
+    let logs = [];
+    
+    const customConsole = {
+      log: (...args) => {
+        logs.push(args.map(arg => 
+          typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+        ).join(' '));
+      },
+      error: (...args) => {
+        logs.push('❌ ' + args.join(' '));
+      },
+      warn: (...args) => {
+        logs.push('⚠️ ' + args.join(' '));
+      }
+    };
+    
+    const wrappedCode = `
+      (function(console) {
+        ${code}
+      })(customConsole);
+    `;
+    
+    eval(wrappedCode);
+    
+    if (logs.length > 0) {
+      output.className = 'code-output success';
+      output.textContent = logs.join('\n');
+    } else {
+      output.textContent = '✅ تم التنفيذ بنجاح (لا يوجد مخرجات)';
+    }
+  }
+
+  async function runPython(code, output) {
+    if (!pyodideReady) {
+      output.className = 'code-output loading';
+      output.textContent = '⏳ جاري تحميل Python... يرجى الانتظار';
+      await initPyodide();
+      if (!pyodideReady) {
+        output.className = 'code-output error';
+        output.textContent = '❌ فشل تحميل Pyodide. يرجى تحديث الصفحة والمحاولة مرة أخرى.';
+        return;
+      }
+    }
+    
+    try {
+      // Redirect stdout/stderr
+      pyodide.setStdout({
+        batched: (msg) => {
+          output.textContent += msg;
+          output.scrollTop = output.scrollHeight;
+        }
+      });
+      
+      pyodide.setStderr({
+        batched: (msg) => {
+          output.className = 'code-output error';
+          output.textContent += '❌ ' + msg;
+        }
+      });
+      
+      // Execute Python code
+      await pyodide.runPythonAsync(code);
+      
+      if (output.textContent.trim() === '') {
+        output.className = 'code-output success';
+        output.textContent = '✅ تم التنفيذ بنجاح (لا يوجد مخرجات)';
+      } else {
+        output.className = 'code-output success';
+      }
+      
+    } catch (error) {
+      output.className = 'code-output error';
+      output.textContent = `❌ خطأ في Python: ${error.message}`;
+    }
+  }
+
+  function runHTML(code, output) {
+    output.className = 'code-output success';
+    output.innerHTML = code;
+  }
+
+  function clearOutput() {
+    const output = document.getElementById('output');
+    output.innerHTML = '<span class="output-placeholder">اكتب كوداً ثم اضغط "تشغيل" لرؤية النتيجة...</span>';
+    output.className = 'code-output';
+  }
+
+  document.addEventListener('DOMContentLoaded', async () => {
     initScrollReveal();
     initCounterAnimation();
     initTypingEffect();
+    
+    // Initialize Code Editor
+    const editor = document.getElementById('codeEditor');
+    if (editor) {
+      editor.value = codeExamples.javascript;
+      
+      editor.addEventListener('keydown', (e) => {
+        if (e.ctrlKey && e.key === 'Enter') {
+          runCode();
+        }
+        
+        if (e.key === 'Tab') {
+          e.preventDefault();
+          const start = editor.selectionStart;
+          const end = editor.selectionEnd;
+          editor.value = editor.value.substring(0, start) + '  ' + editor.value.substring(end);
+          editor.selectionStart = editor.selectionEnd = start + 2;
+        }
+      });
+    }
+    
+    // Initialize Pyodide in background
+    initPyodide();
   });
 </script>
