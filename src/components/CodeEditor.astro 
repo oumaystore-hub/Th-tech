@@ -1,0 +1,398 @@
+---
+---
+<div class="code-editor-container">
+  <div class="editor-header">
+    <div class="language-tabs">
+      <button class="tab active" data-lang="javascript" onclick="switchLanguage('javascript')">JavaScript</button>
+      <button class="tab" data-lang="python" onclick="switchLanguage('python')">Python</button>
+      <button class="tab" data-lang="html" onclick="switchLanguage('html')">HTML/CSS</button>
+    </div>
+    <button class="run-btn" onclick="runCode()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polygon points="5 3 19 12 5 21 5 3"></polygon>
+      </svg>
+      تشغيل الكود
+    </button>
+  </div>
+  
+  <div class="editor-body">
+    <div class="code-input-wrapper">
+      <textarea 
+        id="codeEditor" 
+        class="code-editor"
+        placeholder="اكتب الكود هنا..."
+        spellcheck="false"
+      ></textarea>
+    </div>
+    
+    <div class="output-wrapper">
+      <div class="output-header">
+        <span>النتيجة</span>
+        <button class="clear-btn" onclick="clearOutput()">مسح</button>
+      </div>
+      <div id="output" class="code-output"></div>
+    </div>
+  </div>
+  
+  <div class="editor-footer">
+    <span class="hint">💡 اضغط Ctrl+Enter لتشغيل الكود بسرعة</span>
+  </div>
+</div>
+
+<style>
+  .code-editor-container {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .language-tabs {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .tab {
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-sec);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .tab:hover {
+    background: rgba(2,132,199,0.1);
+    color: var(--primary);
+  }
+  
+  .tab.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+  
+  .run-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.5rem;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .run-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16,185,129,0.4);
+  }
+  
+  .run-btn svg {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .editor-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 400px;
+  }
+  
+  .code-input-wrapper {
+    border-right: 1px solid var(--border);
+    position: relative;
+  }
+  
+  .code-editor {
+    width: 100%;
+    height: 100%;
+    min-height: 400px;
+    padding: 1.5rem;
+    background: var(--bg);
+    color: var(--text);
+    border: none;
+    resize: none;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    tab-size: 2;
+  }
+  
+  .code-editor:focus {
+    outline: none;
+  }
+  
+  .output-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1.5rem;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+    color: var(--text);
+  }
+  
+  .clear-btn {
+    padding: 0.3rem 0.8rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-sec);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .clear-btn:hover {
+    background: rgba(239,68,68,0.1);
+    color: #ef4444;
+    border-color: #ef4444;
+  }
+  
+  .code-output {
+    flex: 1;
+    padding: 1.5rem;
+    background: #1e1e1e;
+    color: #d4d4d4;
+    font-family: 'Fira Code', 'Courier New', monospace;
+    font-size: 0.9rem;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+  
+  .code-output.error {
+    color: #f48771;
+    background: #2d1f1f;
+  }
+  
+  .code-output.success {
+    color: #89d185;
+  }
+  
+  .editor-footer {
+    padding: 0.8rem 1.5rem;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+  
+  .hint {
+    color: var(--text-sec);
+    font-size: 0.85rem;
+  }
+  
+  @media (max-width: 768px) {
+    .editor-body {
+      grid-template-columns: 1fr;
+    }
+    .code-input-wrapper {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .code-editor {
+      min-height: 250px;
+    }
+    .language-tabs {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // أمثلة جاهزة لكل لغة
+  const codeExamples = {
+    javascript: `// مرحباً بك في محرر JavaScript
+function greet(name) {
+  return \`مرحباً \${name}! \`;
+}
+
+const result = greet("المطور");
+console.log(result);
+
+// جرب هذا:
+const numbers = [1, 2, 3, 4, 5];
+const doubled = numbers.map(n => n * 2);
+console.log("الأرقام المضاعفة:", doubled);`,
+
+    python: `# مرحباً بك في محرر Python
+def greet(name):
+    return f"مرحباً {name}! 🎉"
+
+result = greet("المطور")
+print(result)
+
+# جرب هذا:
+numbers = [1, 2, 3, 4, 5]
+doubled = [n * 2 for n in numbers]
+print("الأرقام المضاعفة:", doubled)`,
+
+    html: `<!-- مرحباً بك في محرر HTML/CSS -->
+<div class="card">
+  <h2> بطاقة تفاعلية</h2>
+  <p>هذه بطاقة HTML مع تنسيق CSS</p>
+  <button onclick="alert('مرحباً!')">اضغط هنا</button>
+</div>
+
+<style>
+.card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+button {
+  margin-top: 1rem;
+  padding: 0.8rem 1.5rem;
+  background: white;
+  color: #667eea;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+</style>`
+  };
+
+  let currentLanguage = 'javascript';
+
+  // تهيئة المحرر
+  document.addEventListener('DOMContentLoaded', () => {
+    const editor = document.getElementById('codeEditor');
+    editor.value = codeExamples.javascript;
+    
+    // تشغيل بالكيبورد
+    editor.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && e.key === 'Enter') {
+        runCode();
+      }
+      
+      // Tab support
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        const start = editor.selectionStart;
+        const end = editor.selectionEnd;
+        editor.value = editor.value.substring(0, start) + '  ' + editor.value.substring(end);
+        editor.selectionStart = editor.selectionEnd = start + 2;
+      }
+    });
+  });
+
+  // تبديل اللغة
+  function switchLanguage(lang) {
+    currentLanguage = lang;
+    const editor = document.getElementById('codeEditor');
+    
+    // تحديث tabs
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.lang === lang);
+    });
+    
+    // تحميل المثال
+    editor.value = codeExamples[lang];
+    
+    // مسح النتيجة
+    clearOutput();
+  }
+
+  // تشغيل الكود
+  function runCode() {
+    const code = document.getElementById('codeEditor').value;
+    const output = document.getElementById('output');
+    
+    output.className = 'code-output';
+    output.textContent = '';
+    
+    try {
+      if (currentLanguage === 'javascript') {
+        runJavaScript(code, output);
+      } else if (currentLanguage === 'python') {
+        runPython(code, output);
+      } else if (currentLanguage === 'html') {
+        runHTML(code, output);
+      }
+    } catch (error) {
+      output.className = 'code-output error';
+      output.textContent = `❌ خطأ: ${error.message}`;
+    }
+  }
+
+  // تشغيل JavaScript
+  function runJavaScript(code, output) {
+    let logs = [];
+    
+    const customConsole = {
+      log: (...args) => {
+        logs.push(args.map(arg => 
+          typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)
+        ).join(' '));
+      },
+      error: (...args) => {
+        logs.push('❌ ' + args.join(' '));
+      },
+      warn: (...args) => {
+        logs.push('⚠️ ' + args.join(' '));
+      }
+    };
+    
+    const wrappedCode = `
+      (function(console) {
+        ${code}
+      })(customConsole);
+    `;
+    
+    eval(wrappedCode);
+    
+    if (logs.length > 0) {
+      output.className = 'code-output success';
+      output.textContent = logs.join('\n');
+    } else {
+      output.textContent = '✅ تم التنفيذ بنجاح (لا يوجد مخرجات)';
+    }
+  }
+
+  // تشغيل Python (محاكاة بسيطة)
+  function runPython(code, output) {
+    // ملاحظة: هذا محاكاة بسيطة. للتشغيل الحقيقي استخدم Pyodide أو Brython
+    output.className = 'code-output';
+    output.textContent = ` Python:\n\nللتشغيل الفعلي لـ Python، نوصي باستخدام:\n- Pyodide (WebAssembly)\n- أو Backend API\n\nالكود الذي كتبته:\n${code}`;
+  }
+
+  // تشغيل HTML
+  function runHTML(code, output) {
+    output.className = 'code-output success';
+    output.innerHTML = code;
+  }
+
+  // مسح النتيجة
+  function clearOutput() {
+    const output = document.getElementById('output');
+    output.textContent = '';
+    output.className = 'code-output';
+  }
+</script>
