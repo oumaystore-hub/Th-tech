@@ -19,52 +19,24 @@ import Footer from '../components/Footer.astro';
   <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
 </head>
 <body>
-
-  <!-- Top Notification Bar -->
-  <div class="top-bar">
-    <div class="container top-bar-content">
-      <span>🎉 جديد: دليل شامل لـ "هندسة الأوامر" (Prompt Engineering) متاح الآن!</span>
-      <a href="/Th-tech/guides/" class="top-link">استكشف الآن &larr;</a>
-    </div>
-  </div>
-
   <Header />
 
   <main class="main-wrapper">
     
-    <!-- Hero Section with Floating Element -->
+    <!-- Hero Section -->
     <section class="section hero">
       <div class="hero-bg">
         <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1920&h=1080&fit=crop" alt="AI" loading="eager" />
         <div class="overlay"></div>
       </div>
-      <div class="container hero-container">
+      <div class="container">
         <div class="hero-content">
-          <span class="badge">🚀 منصة المطورين #1</span>
+          <span class="badge"> منصة المطورين العربية</span>
           <h1><span class="gradient">ابنِ غدك الرقمي</span><br />معنا</h1>
           <p class="hero-text">شروحات عملية في الذكاء الاصطناعي، البرمجة، والأمن السيبراني. تعلم، طبق، وتميز.</p>
           <div class="hero-actions">
             <a href="/Th-tech/guides/" class="btn btn-primary">استكشف الأدلة</a>
             <a href="/Th-tech/articles/" class="btn btn-outline">المقالات</a>
-          </div>
-        </div>
-        
-        <!-- Floating Tech Card to fill empty space -->
-        <div class="hero-visual">
-          <div class="floating-card glass">
-            <div class="card-header">
-              <span class="dot red"></span>
-              <span class="dot yellow"></span>
-              <span class="dot green"></span>
-              <span class="card-title">terminal — bash</span>
-            </div>
-            <div class="card-body">
-              <div class="code-line"><span class="prompt">$</span> npm install future</div>
-              <div class="code-line text-green">+ future@1.0.0</div>
-              <div class="code-line"><span class="prompt">$</span> th-tech run success</div>
-              <div class="code-line text-blue">[SUCCESS] Deployment ready!</div>
-              <div class="code-line"><span class="prompt">$</span> <span class="cursor">_</span></div>
-            </div>
           </div>
         </div>
       </div>
@@ -92,80 +64,62 @@ import Footer from '../components/Footer.astro';
       </div>
     </section>
 
-    <!-- Code Editor Section -->
+    <!-- Professional Code Editor -->
     <section class="section editor-section" id="editor">
       <div class="container">
         <div class="section-head">
           <h2>محرر الأكواد التفاعلي</h2>
-          <p>اكتب، شغّل، واختبر كودك مباشرة في المتصفح</p>
+          <p>اكتب، شغّل، واختبر كودك مباشرة في المتصفح - يدعم JavaScript و Python</p>
         </div>
 
-        <div class="editor-card">
-          <div class="editor-toolbar">
-            <div class="toolbar-left">
-              <div class="file-tab active">
-                <span id="langIcon">JS</span>
-                <span id="fileName">script.js</span>
-              </div>
+        <div class="editor-wrapper">
+          <div class="editor-header">
+            <div class="editor-tabs">
+              <button class="tab active" onclick="setLanguage('javascript')">JavaScript</button>
+              <button class="tab" onclick="setLanguage('python')">Python</button>
+              <button class="tab" onclick="setLanguage('html')">HTML/CSS</button>
             </div>
-            <div class="toolbar-right">
-              <select id="languageSelect" onchange="handleLanguageChange()">
-                <option value="javascript">JavaScript</option>
-                <option value="python">Python</option>
-                <option value="html">HTML/CSS</option>
-                <option value="java">Java</option>
-                <option value="cpp">C++</option>
-              </select>
-              <div class="toolbar-actions">
-                <button class="btn-icon" onclick="resetEditor()" title="إعادة"></button>
-                <button class="btn-icon" onclick="copyEditorCode()" title="نسخ">⎘</button>
-                <button class="btn-run" id="runBtn" onclick="executeCode()">
-                  <span>▶ تشغيل</span>
-                </button>
-              </div>
+            <div class="editor-controls">
+              <button class="btn-reset" onclick="resetCode()" title="إعادة"></button>
+              <button class="btn-run" onclick="runCode()">▶ تشغيل الكود</button>
             </div>
           </div>
 
-          <div class="editor-body">
-            <div class="code-pane">
-              <div class="line-numbers" id="lineNumbers">1</div>
-              <textarea 
-                id="codeInput" 
-                class="code-input" 
-                spellcheck="false"
-                placeholder="اكتب الكود هنا..."
-                oninput="updateLineNumbers()"
-                onscroll="syncScroll()"
-                onkeydown="handleTab(event)"
-              ></textarea>
+          <div class="editor-main">
+            <div class="editor-pane">
+              <div class="pane-header">
+                <span>📝 المحرر</span>
+                <span class="lang-badge" id="langBadge">JavaScript</span>
+              </div>
+              <textarea id="codeInput" class="code-area" spellcheck="false" placeholder="// اكتب الكود هنا..."></textarea>
             </div>
             
-            <div class="output-pane">
-              <div class="output-header">
-                <span>المخرجات</span>
-                <button class="btn-clear" onclick="clearOutput()">✕</button>
+            <div class="editor-pane">
+              <div class="pane-header">
+                <span> المخرجات</span>
+                <button class="btn-clear" onclick="clearOutput()">مسح</button>
               </div>
-              <div id="output" class="code-output">
+              <div id="output" class="output-area">
                 <div class="output-placeholder">
                   <span class="icon">💡</span>
-                  <p>اضغط "تشغيل" لرؤية النتيجة</p>
+                  <p>اكتب كوداً ثم اضغط "تشغيل الكود"</p>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="editor-status">
-            <span id="statusText">✅ جاهز</span>
+          <div class="editor-footer">
+            <span id="status">✅ جاهز</span>
             <span class="separator">|</span>
-            <span id="pyStatus" style="display:none; color: #f59e0b;">● Python Loading...</span>
+            <span id="pyStatus" style="display:none; color:#fbbf24;">⏳ Python Loading...</span>
           </div>
         </div>
 
-        <div class="quick-examples">
-          <span>💡 أمثلة:</span>
-          <button class="btn-sm" onclick="loadExample('hello')">Hello</button>
-          <button class="btn-sm" onclick="loadExample('loop')">Loop</button>
-          <button class="btn-sm" onclick="loadExample('array')">Array</button>
+        <div class="examples-bar">
+          <span>أمثلة سريعة:</span>
+          <button class="btn-example" onclick="loadExample('hello')">Hello World</button>
+          <button class="btn-example" onclick="loadExample('calc')">آلة حاسبة</button>
+          <button class="btn-example" onclick="loadExample('loop')">تكرار</button>
         </div>
       </div>
     </section>
@@ -228,635 +182,538 @@ import Footer from '../components/Footer.astro';
 
 <style>
   :root {
-    --bg: #0f111a;
-    --bg-secondary: #161b22;
-    --card: #1e2530;
-    --text: #e6edf3;
-    --text-muted: #8b949e;
-    --primary: #58a6ff;
-    --primary-dark: #1f6feb;
-    --accent: #3fb950;
-    --border: #30363d;
-    --radius: 8px;
+    --bg: #0a0e1a;
+    --bg-secondary: #111827;
+    --card: #1e293b;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --primary: #3b82f6;
+    --primary-dark: #2563eb;
+    --accent: #10b981;
+    --border: #334155;
+    --radius: 12px;
     --font-main: 'Cairo', sans-serif;
     --font-code: 'Fira Code', monospace;
-    --editor-bg: #0d1117;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body { background: var(--bg); color: var(--text); font-family: var(--font-main); line-height: 1.6; }
 
-  /* Top Bar */
-  .top-bar {
-    background: var(--primary-dark);
-    color: white;
-    font-size: 0.85rem;
-    padding: 0.5rem 0;
-    text-align: center;
-    position: relative;
-    z-index: 100;
-  }
-  .top-bar-content {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    flex-wrap: wrap;
-  }
-  .top-link {
-    color: white;
-    text-decoration: underline;
-    font-weight: 600;
-    opacity: 0.9;
-  }
-  .top-link:hover { opacity: 1; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+  .section { padding: 5rem 0; }
+  .section-head { text-align: center; margin-bottom: 3rem; }
+  .section-head h2 { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; background: linear-gradient(135deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .section-head p { color: var(--text-muted); font-size: 1.1rem; }
 
-  .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
-  .section { padding: 4rem 0; }
-  .section-head { text-align: center; margin-bottom: 2.5rem; }
-  .section-head h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 0.5rem; color: #fff; }
-  .section-head p { color: var(--text-muted); }
-
-  .hero {
-    min-height: 85vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-    position: relative;
-    overflow: hidden;
-    padding-top: 2rem; /* Space for top bar */
-  }
+  /* Hero */
+  .hero { min-height: 80vh; display: flex; align-items: center; justify-content: center; text-align: center; color: white; position: relative; overflow: hidden; }
   .hero-bg { position: absolute; inset: 0; z-index: -1; }
-  .hero-bg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.3); }
-  .overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(31,111,235,0.4), rgba(13,17,23,0.9)); }
-  
-  .hero-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: center;
-    text-align: right;
-  }
-
-  .hero-content { max-width: 100%; }
-  .badge {
-    display: inline-block;
-    background: rgba(88,166,255,0.15);
-    color: var(--primary);
-    padding: 0.4rem 1rem;
-    border-radius: 50px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 1.2rem;
-    border: 1px solid rgba(88,166,255,0.3);
-  }
+  .hero-bg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.35); }
+  .overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(59,130,246,0.4), rgba(15,23,42,0.9)); }
+  .hero-content { max-width: 700px; padding: 2rem; z-index: 1; }
+  .badge { display: inline-block; background: rgba(59,130,246,0.2); color: var(--primary); padding: 0.5rem 1.2rem; border-radius: 50px; font-size: 0.9rem; font-weight: 600; margin-bottom: 1.5rem; border: 1px solid rgba(59,130,246,0.3); }
   .hero h1 { font-size: clamp(2.5rem, 6vw, 3.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.2rem; }
-  .gradient { background: linear-gradient(135deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero-text { font-size: 1.2rem; color: #c9d1d9; margin-bottom: 2rem; line-height: 1.7; }
-  .hero-actions { display: flex; gap: 1rem; justify-content: flex-start; flex-wrap: wrap; }
+  .gradient { background: linear-gradient(135deg, #fff, #60a5fa); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero-text { font-size: 1.2rem; color: #cbd5e1; margin-bottom: 2.5rem; line-height: 1.7; }
+  .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
 
-  /* Floating Visual */
-  .hero-visual {
-    display: flex;
-    justify-content: center;
-    perspective: 1000px;
-  }
-  .floating-card {
-    background: rgba(22, 27, 34, 0.7);
-    backdrop-filter: blur(15px);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 12px;
-    padding: 0;
-    width: 100%;
-    max-width: 450px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    transform: rotateY(-10deg) rotateX(5deg);
-    transition: transform 0.5s ease;
-    overflow: hidden;
-    text-align: left;
-  }
-  .floating-card:hover {
-    transform: rotateY(0deg) rotateX(0deg);
-  }
-  .card-header {
-    background: rgba(0,0,0,0.3);
-    padding: 0.8rem 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-  }
-  .dot { width: 10px; height: 10px; border-radius: 50%; }
-  .red { background: #ff5f56; }
-  .yellow { background: #ffbd2e; }
-  .green { background: #27c93f; }
-  .card-title { margin-right: auto; font-size: 0.8rem; color: #8b949e; font-family: var(--font-code); }
-  .card-body {
-    padding: 1.5rem;
-    font-family: var(--font-code);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    color: #e6edf3;
-  }
-  .code-line { margin-bottom: 0.3rem; }
-  .prompt { color: var(--primary); margin-left: 0.5rem; }
-  .text-green { color: #3fb950; }
-  .text-blue { color: #58a6ff; }
-  .cursor { animation: blink 1s step-end infinite; }
-  @keyframes blink { 50% { opacity: 0; } }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.9rem 2.2rem; border-radius: 10px; font-weight: 700; font-size: 1rem; transition: all 0.3s; cursor: pointer; border: none; text-decoration: none; }
+  .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(59,130,246,0.4); }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(59,130,246,0.5); }
+  .btn-outline { background: transparent; border: 2px solid rgba(255,255,255,0.3); color: white; }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; transform: translateY(-3px); }
+  .btn-light { background: white; color: var(--primary-dark); }
+  .btn-light:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
 
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 0.8rem 2rem;
-    border-radius: 6px;
-    font-weight: 700;
-    font-size: 1rem;
-    transition: all 0.2s;
-    cursor: pointer;
-    border: none;
-    text-decoration: none;
-  }
-  .btn-primary { background: var(--primary-dark); color: white; }
-  .btn-primary:hover { background: var(--primary); }
-  .btn-outline { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: white; }
-  .btn-outline:hover { background: rgba(255,255,255,0.1); }
-  .btn-light { background: white; color: #0d1117; }
-  .btn-light:hover { background: #f0f3f6; }
-
-  .stats-bar { background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 2rem 0; }
-  .stats-grid { display: flex; align-items: center; justify-content: center; gap: 3rem; }
+  /* Stats */
+  .stats-bar { background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 2.5rem 0; }
+  .stats-grid { display: flex; align-items: center; justify-content: center; gap: 4rem; }
   .stat { text-align: center; }
-  .stat-num { display: block; font-size: 2.2rem; font-weight: 800; color: var(--primary); line-height: 1; }
-  .stat-label { font-size: 0.9rem; color: var(--text-muted); margin-top: 0.5rem; }
-  .stat-divider { width: 1px; height: 40px; background: var(--border); }
+  .stat-num { display: block; font-size: 2.5rem; font-weight: 800; color: var(--primary); line-height: 1; }
+  .stat-label { font-size: 0.95rem; color: var(--text-muted); margin-top: 0.5rem; font-weight: 600; }
+  .stat-divider { width: 1px; height: 50px; background: var(--border); }
 
-  .editor-section { background: var(--bg); }
-  .editor-card {
-    background: var(--editor-bg);
+  /* Code Editor - Professional */
+  .editor-section { background: var(--bg-secondary); }
+  
+  .editor-wrapper {
+    background: var(--card);
+    border-radius: var(--radius);
     border: 1px solid var(--border);
-    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
   }
-  .editor-toolbar {
+
+  .editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: rgba(15,23,42,0.5);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .editor-tabs { display: flex; gap: 0.5rem; }
+  .tab {
+    padding: 0.6rem 1.2rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: var(--font-main);
+  }
+  .tab:hover { color: var(--text); background: rgba(59,130,246,0.1); }
+  .tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+  .editor-controls { display: flex; gap: 0.8rem; align-items: center; }
+  
+  .btn-reset {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  .btn-reset:hover { background: var(--primary); color: white; border-color: var(--primary); transform: rotate(180deg); }
+
+  .btn-run {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.7rem 1.8rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(16,185,129,0.3);
+  }
+  .btn-run:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16,185,129,0.4); }
+  .btn-run:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .editor-main { display: grid; grid-template-columns: 1fr 1fr; min-height: 500px; }
+
+  .editor-pane { display: flex; flex-direction: column; }
+  .editor-pane:first-child { border-left: 1px solid var(--border); }
+
+  .pane-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.8rem 1.2rem;
-    background: var(--bg-secondary);
+    background: rgba(15,23,42,0.3);
     border-bottom: 1px solid var(--border);
-  }
-  .file-tab {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--editor-bg);
-    padding: 0.4rem 1rem;
-    border-radius: 6px 6px 0 0;
-    border: 1px solid var(--border);
-    border-bottom: none;
+    font-weight: 600;
     font-size: 0.9rem;
-    color: #fff;
   }
-  #langIcon {
-    background: var(--primary-dark);
+
+  .lang-badge {
+    background: var(--primary);
     color: white;
-    padding: 0.1rem 0.4rem;
-    border-radius: 4px;
-    font-size: 0.7rem;
-    font-weight: 700;
+    padding: 0.2rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
   }
-  .toolbar-right { display: flex; align-items: center; gap: 1rem; }
-  .toolbar-right select {
-    background: var(--bg-secondary);
-    color: var(--text);
-    border: 1px solid var(--border);
-    padding: 0.4rem 0.8rem;
-    border-radius: 6px;
-    font-family: inherit;
-    cursor: pointer;
-  }
-  .toolbar-actions { display: flex; gap: 0.5rem; }
-  .btn-icon {
-    background: transparent;
-    border: 1px solid transparent;
-    color: var(--text-muted);
-    width: 32px;
-    height: 32px;
-    border-radius: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    font-size: 1.1rem;
-    transition: all 0.2s;
-  }
-  .btn-icon:hover { background: rgba(255,255,255,0.1); color: #fff; }
-  .btn-run {
-    background: var(--accent);
-    color: #fff;
-    border: none;
-    padding: 0.4rem 1.2rem;
-    border-radius: 6px;
-    font-weight: 700;
-    font-size: 0.9rem;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-run:hover { filter: brightness(1.1); }
-  .btn-run:disabled { opacity: 0.6; cursor: not-allowed; }
-  .editor-body {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: 450px;
-  }
-  .code-pane {
-    position: relative;
-    display: flex;
-    border-right: 1px solid var(--border);
-  }
-  .line-numbers {
-    width: 50px;
-    background: var(--bg-secondary);
-    color: var(--text-muted);
-    font-family: var(--font-code);
-    font-size: 0.9rem;
-    line-height: 1.6;
-    padding: 1rem 0.5rem;
-    text-align: right;
-    user-select: none;
-    overflow: hidden;
-  }
-  .code-input {
-    flex: 1;
-    background: var(--editor-bg);
-    color: #e6edf3;
-    border: none;
-    resize: none;
-    font-family: var(--font-code);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    padding: 1rem;
-    tab-size: 2;
-  }
-  .code-input:focus { outline: none; }
-  .output-pane {
-    display: flex;
-    flex-direction: column;
-    background: var(--bg-secondary);
-  }
-  .output-header {
-    padding: 0.6rem 1rem;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+
   .btn-clear {
     background: transparent;
-    border: none;
+    border: 1px solid var(--border);
     color: var(--text-muted);
+    padding: 0.3rem 0.8rem;
+    border-radius: 6px;
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 0.85rem;
+    transition: all 0.3s;
   }
-  .btn-clear:hover { color: #f85149; }
-  .code-output {
+  .btn-clear:hover { background: #ef4444; color: white; border-color: #ef4444; }
+
+  .code-area {
     flex: 1;
-    padding: 1rem;
-    background: var(--editor-bg);
-    color: #e6edf3;
+    background: var(--bg);
+    color: #e2e8f0;
+    border: none;
+    padding: 1.5rem;
+    font-family: var(--font-code);
+    font-size: 0.95rem;
+    line-height: 1.7;
+    resize: none;
+    tab-size: 2;
+  }
+  .code-area:focus { outline: none; }
+
+  .output-area {
+    flex: 1;
+    background: var(--bg);
+    padding: 1.5rem;
     font-family: var(--font-code);
     font-size: 0.9rem;
     overflow-y: auto;
+    color: #e2e8f0;
     white-space: pre-wrap;
   }
+
   .output-placeholder {
     text-align: center;
-    padding: 3rem 1rem;
+    padding: 4rem 2rem;
     color: var(--text-muted);
   }
-  .output-placeholder .icon { font-size: 2rem; display: block; margin-bottom: 0.5rem; }
-  .editor-status {
-    padding: 0.4rem 1rem;
-    background: var(--primary-dark);
-    color: white;
-    font-size: 0.8rem;
+  .output-placeholder .icon { font-size: 3rem; display: block; margin-bottom: 1rem; }
+  .output-placeholder p { font-size: 1rem; }
+
+  .editor-footer {
+    padding: 0.8rem 1.5rem;
+    background: rgba(15,23,42,0.5);
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--text-muted);
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.8rem;
   }
   .separator { opacity: 0.5; }
-  .quick-examples {
-    margin-top: 1rem;
+
+  .examples-bar {
+    margin-top: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.8rem;
     flex-wrap: wrap;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     color: var(--text-muted);
   }
-  .btn-sm {
-    background: var(--bg-secondary);
+  .btn-example {
+    background: var(--card);
     border: 1px solid var(--border);
     color: var(--text);
-    padding: 0.3rem 0.8rem;
+    padding: 0.4rem 1rem;
     border-radius: 20px;
     cursor: pointer;
-    font-size: 0.8rem;
-    transition: all 0.2s;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.3s;
   }
-  .btn-sm:hover { background: var(--primary-dark); border-color: var(--primary-dark); color: white; }
+  .btn-example:hover { background: var(--primary); border-color: var(--primary); color: white; transform: translateY(-2px); }
 
-  .topics { background: var(--bg-secondary); }
-  .topics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  /* Topics */
+  .topics { background: var(--bg); }
+  .topics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2rem; }
   .topic-card {
-    background: var(--bg);
-    border-radius: 12px;
+    background: var(--card);
+    border-radius: var(--radius);
     overflow: hidden;
     border: 1px solid var(--border);
     transition: all 0.3s;
     text-decoration: none;
     color: var(--text);
   }
-  .topic-card:hover { transform: translateY(-5px); border-color: var(--primary); }
-  .topic-img { height: 180px; overflow: hidden; }
+  .topic-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: 0 15px 40px rgba(59,130,246,0.2); }
+  .topic-img { height: 200px; overflow: hidden; }
   .topic-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
-  .topic-card:hover .topic-img img { transform: scale(1.05); }
-  .topic-body { padding: 1.5rem; }
-  .topic-body h3 { font-size: 1.2rem; margin-bottom: 0.5rem; color: #fff; }
-  .topic-body p { color: var(--text-muted); font-size: 0.95rem; }
+  .topic-card:hover .topic-img img { transform: scale(1.08); }
+  .topic-body { padding: 1.8rem; }
+  .topic-body h3 { font-size: 1.3rem; margin-bottom: 0.6rem; color: #fff; }
+  .topic-body p { color: var(--text-muted); font-size: 1rem; }
 
-  .cta { background: var(--bg); padding: 5rem 1.5rem; }
+  /* CTA */
+  .cta { background: var(--bg-secondary); padding: 6rem 2rem; }
   .cta-box {
-    max-width: 600px;
+    max-width: 650px;
     margin: 0 auto;
     text-align: center;
-    background: linear-gradient(135deg, var(--primary-dark), #1158a0);
-    padding: 3rem 2rem;
-    border-radius: 16px;
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    padding: 3.5rem 3rem;
+    border-radius: 20px;
     color: white;
+    box-shadow: 0 20px 60px rgba(59,130,246,0.3);
   }
-  .cta-box h2 { font-size: 2rem; margin-bottom: 0.8rem; }
-  .cta-box p { opacity: 0.9; margin-bottom: 2rem; }
+  .cta-box h2 { font-size: 2.2rem; margin-bottom: 1rem; }
+  .cta-box p { opacity: 0.95; margin-bottom: 2rem; font-size: 1.15rem; }
 
+  /* Responsive */
   @media (max-width: 1024px) {
-    .hero-container { grid-template-columns: 1fr; text-align: center; }
-    .hero-actions { justify-content: center; }
-    .hero-visual { margin-top: 3rem; }
-    .floating-card { transform: none; }
     .topics-grid { grid-template-columns: 1fr 1fr; }
-    .editor-body { grid-template-columns: 1fr; }
-    .code-pane { border-right: none; border-bottom: 1px solid var(--border); }
+    .editor-main { grid-template-columns: 1fr; }
+    .editor-pane:first-child { border-left: none; border-bottom: 1px solid var(--border); }
+    .code-area, .output-area { min-height: 300px; }
   }
+
   @media (max-width: 768px) {
-    .hero { min-height: auto; padding: 6rem 0 3rem; }
-    .hero h1 { font-size: 2rem; }
+    .hero { min-height: auto; padding: 6rem 0 4rem; }
+    .hero h1 { font-size: 2.2rem; }
     .hero-actions { flex-direction: column; }
     .btn { width: 100%; }
-    .stats-grid { flex-direction: column; gap: 1.5rem; }
+    
+    .stats-grid { flex-direction: column; gap: 2rem; }
     .stat-divider { width: 100%; height: 1px; }
+    
     .topics-grid { grid-template-columns: 1fr; }
-    .editor-toolbar { flex-direction: column; gap: 1rem; }
-    .toolbar-right { justify-content: space-between; width: 100%; }
-    .line-numbers { display: none; }
+    
+    .editor-header { flex-direction: column; gap: 1rem; }
+    .editor-tabs { width: 100%; justify-content: center; }
+    .editor-controls { width: 100%; justify-content: space-between; }
+    
+    .section { padding: 3rem 0; }
+    .container { padding: 0 1.2rem; }
   }
 </style>
 
 <script>
   // Counter Animation
-  function initCounterAnimation() {
+  function initCounters() {
     const counters = document.querySelectorAll('.counter');
-    const animateCounter = (element, target, duration = 2000) => {
-      let start = 0;
-      const increment = target / (duration / 16);
-      const updateCounter = () => {
-        start += increment;
-        if (start < target) {
-          element.textContent = Math.floor(start) + (element.dataset.suffix || '');
-          requestAnimationFrame(updateCounter);
+    counters.forEach(counter => {
+      const target = parseInt(counter.dataset.target);
+      const suffix = counter.dataset.suffix || '';
+      const duration = 2000;
+      const step = target / (duration / 16);
+      let current = 0;
+      
+      const timer = setInterval(() => {
+        current += step;
+        if (current >= target) {
+          counter.textContent = target + suffix;
+          clearInterval(timer);
         } else {
-          element.textContent = target + (element.dataset.suffix || '');
+          counter.textContent = Math.floor(current) + suffix;
         }
-      };
-      updateCounter();
-    };
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const target = parseInt(entry.target.dataset.target);
-          animateCounter(entry.target, target);
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.5 });
-    counters.forEach(counter => { if (counter.dataset.target) observer.observe(counter); });
+      }, 16);
+    });
   }
 
-  // Code Editor Logic
-  const codeExamples = {
-    javascript: 'console.log("Hello World!");\n\nconst arr = [1,2,3];\nconsole.log(arr.map(x => x*2));',
-    python: 'print("Hello World!")\n\narr = [1,2,3]\nprint([x*2 for x in arr])',
-    html: '<h1>Hello</h1>\n<style>\nh1 { color: #58a6ff; }\n</style>',
-    java: 'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello");\n    }\n}',
-    cpp: '#include <iostream>\nusing namespace std;\n\nint main() {\n    cout << "Hello" << endl;\n    return 0;\n}'
+  // Code Examples
+  const examples = {
+    javascript: {
+      hello: 'console.log(" مرحباً بالعالم!");\nconsole.log("أهلاً بك في Th.Tech");',
+      calc: 'const a = 10;\nconst b = 5;\n\nconsole.log("الجمع:", a + b);\nconsole.log("الطرح:", a - b);\nconsole.log("الضرب:", a * b);\nconsole.log("القسمة:", a / b);',
+      loop: 'for (let i = 1; i <= 5; i++) {\n  console.log("الرقم:", i);\n}\n\nconst arr = [1, 2, 3, 4, 5];\nconsole.log("المجموع:", arr.reduce((a, b) => a + b, 0));'
+    },
+    python: {
+      hello: 'print("👋 مرحباً بالعالم!")\nprint("أهلاً بك في Th.Tech")',
+      calc: 'a = 10\nb = 5\n\nprint("الجمع:", a + b)\nprint("الطرح:", a - b)\nprint("الضرب:", a * b)\nprint("القسمة:", a / b)',
+      loop: 'for i in range(1, 6):\n    print("الرقم:", i)\n\narr = [1, 2, 3, 4, 5]\nprint("المجموع:", sum(arr))'
+    },
+    html: {
+      hello: '<h1 style="color: #3b82f6; text-align: center;">👋 مرحباً!</h1>\n<p style="text-align: center; color: #94a3b8;">أهلاً بك في Th.Tech</p>',
+      calc: '<div style="text-align: center; padding: 2rem;">\n  <h2 style="color: #10b981;">النتيجة: 15</h2>\n  <p>10 + 5 = 15</p>\n</div>',
+      loop: '<ul style="list-style: none; padding: 1rem;">\n  <li style="padding: 0.5rem; background: #1e293b; margin: 0.5rem 0; border-radius: 8px;">📌 عنصر 1</li>\n  <li style="padding: 0.5rem; background: #1e293b; margin: 0.5rem 0; border-radius: 8px;">📌 عنصر 2</li>\n  <li style="padding: 0.5rem; background: #1e293b; margin: 0.5rem 0; border-radius: 8px;">📌 عنصر 3</li>\n</ul>'
+    }
   };
 
   let currentLang = 'javascript';
   let pyodide = null;
   let pyodideReady = false;
 
-  function initEditor() {
-    const editor = document.getElementById('codeInput');
-    if (editor) {
-      editor.value = codeExamples.javascript;
-      updateLineNumbers();
+  // Initialize
+  function init() {
+    const textarea = document.getElementById('codeInput');
+    if (textarea) {
+      textarea.value = examples.javascript.hello;
     }
-    initPyodide();
+    loadPyodideRuntime();
   }
 
-  function updateLineNumbers() {
-    const editor = document.getElementById('codeInput');
-    const lineNumbers = document.getElementById('lineNumbers');
-    if (!editor || !lineNumbers) return;
-    const lines = editor.value.split('\n').length;
-    lineNumbers.innerHTML = Array(lines).fill(0).map((_, i) => i + 1).join('<br>');
-  }
-
-  function syncScroll() {
-    const editor = document.getElementById('codeInput');
-    const lineNumbers = document.getElementById('lineNumbers');
-    if (lineNumbers) lineNumbers.scrollTop = editor.scrollTop;
-  }
-
-  function handleTab(e) {
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      const start = e.target.selectionStart;
-      const end = e.target.selectionEnd;
-      e.target.value = e.target.value.substring(0, start) + '  ' + e.target.value.substring(end);
-      e.target.selectionStart = e.target.selectionEnd = start + 2;
-      updateLineNumbers();
+  // Load Pyodide
+  async function loadPyodideRuntime() {
+    const statusEl = document.getElementById('pyStatus');
+    try {
+      pyodide = await loadPyodide({
+        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
+      });
+      pyodideReady = true;
+      if (statusEl) {
+        statusEl.style.display = 'none';
+      }
+    } catch (error) {
+      console.error('Pyodide load failed:', error);
+      if (statusEl) {
+        statusEl.textContent = '❌ Python Failed';
+        statusEl.style.color = '#ef4444';
+      }
     }
   }
 
-  function handleLanguageChange() {
-    const select = document.getElementById('languageSelect');
-    if (!select) return;
+  // Set Language
+  function setLanguage(lang) {
+    currentLang = lang;
     
-    currentLang = select.value;
-    const editor = document.getElementById('codeInput');
-    const langIcon = document.getElementById('langIcon');
-    const fileName = document.getElementById('fileName');
+    // Update tabs
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.classList.remove('active');
+      if (tab.textContent.toLowerCase().includes(lang === 'javascript' ? 'javascript' : lang === 'python' ? 'python' : 'html')) {
+        tab.classList.add('active');
+      }
+    });
+    
+    // Update badge
+    const badge = document.getElementById('langBadge');
+    if (badge) {
+      const names = { javascript: 'JavaScript', python: 'Python', html: 'HTML/CSS' };
+      badge.textContent = names[lang];
+    }
+    
+    // Load example
+    const textarea = document.getElementById('codeInput');
+    if (textarea && examples[lang]) {
+      textarea.value = examples[lang].hello;
+    }
+    
+    // Show Python status
     const pyStatus = document.getElementById('pyStatus');
-    
-    if (editor) editor.value = codeExamples[currentLang] || '';
-    if (langIcon) langIcon.textContent = currentLang.toUpperCase().substring(0, 2);
-    if (fileName) {
-      const exts = { javascript: 'js', python: 'py', html: 'html', java: 'java', cpp: 'cpp' };
-      fileName.textContent = 'script.' + (exts[currentLang] || 'txt');
+    if (pyStatus) {
+      pyStatus.style.display = lang === 'python' ? 'inline' : 'none';
     }
-    if (pyStatus) pyStatus.style.display = currentLang === 'python' ? 'inline' : 'none';
     
-    if (editor) updateLineNumbers();
     clearOutput();
+    updateStatus('✅ جاهز');
   }
 
-  async function executeCode() {
+  // Run Code
+  async function runCode() {
     const code = document.getElementById('codeInput').value;
     const output = document.getElementById('output');
-    const runBtn = document.getElementById('runBtn');
+    const runBtn = document.querySelector('.btn-run');
     
-    if (!code) return;
-
-    output.innerHTML = '<div class="output-placeholder"><span class="icon"></span><p>جاري التنفيذ...</p></div>';
+    if (!code.trim()) {
+      output.innerHTML = '<div style="color: #fbbf24; padding: 1rem;">⚠️ يرجى كتابة كود أولاً</div>';
+      return;
+    }
+    
+    output.innerHTML = '<div style="color: #94a3b8; padding: 1rem;">⏳ جاري التنفيذ...</div>';
     if (runBtn) runBtn.disabled = true;
     
     try {
       if (currentLang === 'javascript') {
-        runJavaScript(code, output);
+        await runJavaScript(code, output);
       } else if (currentLang === 'python') {
         await runPython(code, output);
       } else if (currentLang === 'html') {
         output.innerHTML = code;
-      } else {
-        output.innerHTML = '<div style="padding:1rem;color:#e6edf3;">⚠️ ' + currentLang.toUpperCase() + ' requires a server-side compiler to run.</div>';
       }
       updateStatus('✅ تم التنفيذ');
     } catch (error) {
-      output.innerHTML = '<div style="color:#f85149;padding:1rem;">❌ ' + error.message + '</div>';
-      updateStatus('❌ خطأ');
+      output.innerHTML = '<div style="color: #ef4444; padding: 1rem;">❌ خطأ: ' + error.message + '</div>';
+      updateStatus('❌ حدث خطأ');
     } finally {
       if (runBtn) runBtn.disabled = false;
     }
   }
 
-  function runJavaScript(code, output) {
-    let logs = [];
-    const cons = {
-      log: function() { logs.push(Array.from(arguments).join(' ')); },
-      error: function() { logs.push('Error: ' + Array.from(arguments).join(' ')); }
+  // Run JavaScript
+  async function runJavaScript(code, output) {
+    const logs = [];
+    const customConsole = {
+      log: (...args) => logs.push(args.map(arg => typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)).join(' ')),
+      error: (...args) => logs.push('❌ ' + args.join(' ')),
+      warn: (...args) => logs.push('⚠️ ' + args.join(' '))
     };
+    
     try {
-      // Safe eval wrapper
-      const wrapped = '(function(console){' + code + '})(arguments[0])';
-      const fn = new Function('console', wrapped);
-      fn(cons);
-      output.textContent = logs.length ? logs.join('\n') : '✅ Executed successfully (no output)';
-      output.style.color = '#e6edf3';
-    } catch (e) {
-      output.textContent = '❌ ' + e.message;
-      output.style.color = '#f85149';
+      const fn = new Function('console', code);
+      fn(customConsole);
+      
+      if (logs.length > 0) {
+        output.innerHTML = '<div style="color: #e2e8f0;">' + logs.join('<br>') + '</div>';
+      } else {
+        output.innerHTML = '<div style="color: #10b981; padding: 1rem;">✅ تم التنفيذ بنجاح<br><small>(لا توجد مخرجات)</small></div>';
+      }
+    } catch (error) {
+      throw error;
     }
   }
 
+  // Run Python
   async function runPython(code, output) {
     if (!pyodideReady) {
-      output.innerHTML = '<div class="output-placeholder"><span class="icon"></span><p>Loading Python environment...<br><small>This may take a few seconds</small></p></div>';
-      await initPyodide();
+      output.innerHTML = '<div style="color: #fbbf24; padding: 1rem;">⏳ جاري تحميل Python...<br><small>قد يستغرق بضع ثوانٍ</small></div>';
+      await loadPyodideRuntime();
       if (!pyodideReady) {
-        output.textContent = '❌ Failed to load Python. Please refresh.';
-        return;
+        throw new Error('فشل تحميل Python');
       }
     }
+    
+    let result = '';
+    pyodide.setStdout({ batched: (msg) => { result += msg; } });
+    pyodide.setStderr({ batched: (msg) => { result += '❌ ' + msg; } });
+    
     try {
-      pyodide.setStdout({ batched: function(m) { 
-        if (output.textContent.includes('Loading')) output.textContent = ''; 
-        output.textContent += m; 
-      }});
       await pyodide.runPythonAsync(code);
-    } catch (e) {
-      output.innerHTML = '<span style="color:#f85149">❌ ' + e.message + '</span>';
-    }
-  }
-
-  async function initPyodide() {
-    const pyStatus = document.getElementById('pyStatus');
-    try {
-      // Check if already loaded
-      if (window.loadPyodide) {
-        pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/" });
-        pyodideReady = true;
-        if (pyStatus) { pyStatus.textContent = '● Ready'; pyStatus.style.color = '#3fb950'; }
+      
+      if (result.trim()) {
+        output.innerHTML = '<div style="color: #e2e8f0; white-space: pre-wrap;">' + result + '</div>';
+      } else {
+        output.innerHTML = '<div style="color: #10b981; padding: 1rem;">✅ تم التنفيذ بنجاح<br><small>(لا توجد مخرجات)</small></div>';
       }
-    } catch (e) {
-      if (pyStatus) { pyStatus.textContent = '● Failed'; pyStatus.style.color = '#f85149'; }
+    } catch (error) {
+      throw error;
     }
   }
 
+  // Clear Output
   function clearOutput() {
     const output = document.getElementById('output');
-    if (output) output.innerHTML = '<div class="output-placeholder"><span class="icon">💡</span><p>اضغط "تشغيل"</p></div>';
+    if (output) {
+      output.innerHTML = '<div class="output-placeholder"><span class="icon">💡</span><p>اكتب كوداً ثم اضغط "تشغيل الكود"</p></div>';
+    }
     updateStatus('✅ جاهز');
   }
 
-  function resetEditor() {
-    const editor = document.getElementById('codeInput');
-    if (editor) {
-      editor.value = codeExamples[currentLang];
-      updateLineNumbers();
-      clearOutput();
+  // Reset Code
+  function resetCode() {
+    const textarea = document.getElementById('codeInput');
+    if (textarea) {
+      textarea.value = examples[currentLang].hello;
     }
+    clearOutput();
+    updateStatus('🔄 تم إعادة الكود');
   }
 
-  function copyEditorCode() {
-    const editor = document.getElementById('codeInput');
-    if (editor) {
-      navigator.clipboard.writeText(editor.value).then(() => {
-        updateStatus('📋 تم النسخ');
-        setTimeout(() => updateStatus('✅ جاهز'), 2000);
-      });
-    }
-  }
-
+  // Load Example
   function loadExample(type) {
-    const ex = {
-      hello: { javascript: 'console.log("Hello!");', python: 'print("Hello!")', html: '<h1>Hello</h1>', java: 'System.out.println("Hello");', cpp: 'cout << "Hello";' },
-      loop: { javascript: 'for(let i=1;i<=3;i++) console.log(i);', python: 'for i in range(1,4):\n    print(i)', html: '<ol><li>1</li></ol>', java: 'for(int i=1;i<=3;i++) System.out.println(i);', cpp: 'for(int i=1;i<=3;i++) cout<<i<<endl;' },
-      array: { javascript: 'console.log([1,2,3].map(x=>x*2));', python: 'print([x*2 for x in [1,2,3]])', html: '<ul><li>2</li></ul>', java: 'int[] a={1,2,3};', cpp: 'vector<int> v={1,2,3};' }
-    };
-    const editor = document.getElementById('codeInput');
-    if (editor && ex[type]) {
-      editor.value = ex[type][currentLang] || '';
-      updateLineNumbers();
+    const textarea = document.getElementById('codeInput');
+    if (textarea && examples[currentLang] && examples[currentLang][type]) {
+      textarea.value = examples[currentLang][type];
       clearOutput();
+      updateStatus('📝 تم تحميل المثال');
     }
   }
 
+  // Update Status
   function updateStatus(msg) {
-    const el = document.getElementById('statusText');
-    if (el) el.textContent = msg;
+    const status = document.getElementById('status');
+    if (status) status.textContent = msg;
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    initCounterAnimation();
-    initEditor();
+  // Tab Support
+  document.addEventListener('keydown', (e) => {
+    if (e.target.id === 'codeInput' && e.key === 'Tab') {
+      e.preventDefault();
+      const start = e.target.selectionStart;
+      const end = e.target.selectionEnd;
+      e.target.value = e.target.value.substring(0, start) + '  ' + e.target.value.substring(end);
+      e.target.selectionStart = e.target.selectionEnd = start + 2;
+    }
+    
+    // Ctrl+Enter to run
+    if (e.ctrlKey && e.key === 'Enter' && e.target.id === 'codeInput') {
+      runCode();
+    }
   });
+
+  // Initialize on load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 </script>
