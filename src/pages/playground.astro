@@ -2,72 +2,74 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Th.Tech | مختبر الأكواد</title>
+  <title>Th.Tech | مختبر الأكواد الاحترافي</title>
   <link rel="icon" type="image/png" href="/Th-tech/logo1.png" />
   <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
   <Header />
   
-  <main style="padding: 2rem 0; min-height: 80vh;">
+  <main class="playground-main">
     <div class="container">
-      <div style="text-align: center; margin-bottom: 2rem;">
-        <h1 style="font-size: 2rem; margin-bottom: 0.5rem;">مختبر الأكواد التفاعلي</h1>
-        <p style="color: var(--text-muted);">بيئة تنفيذ آمنة لـ JavaScript، Python، و HTML/CSS</p>
+      <div class="playground-header">
+        <div>
+          <h1>مختبر الأكواد التفاعلي</h1>
+          <p>بيئة تنفيذ آمنة لـ JavaScript، Python، و HTML/CSS</p>
+        </div>
+        <a href="/Th-tech/" class="btn-back">العودة للرئيسية</a>
       </div>
 
-      <div style="background: var(--card); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+      <div class="editor-wrapper">
         <!-- Toolbar -->
-        <div style="display: flex; justify-content: space-between; padding: 1rem; background: var(--bg-secondary); border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 1rem;">
-          <div style="display: flex; gap: 0.5rem;">
-            <button onclick="switchLang('javascript')" class="lang-btn active" style="padding: 0.5rem 1rem; border: 1px solid var(--border); background: var(--primary); color: white; border-radius: 6px; cursor: pointer; font-weight: 600;">JavaScript</button>
-            <button onclick="switchLang('python')" class="lang-btn" style="padding: 0.5rem 1rem; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 6px; cursor: pointer; font-weight: 600;">Python</button>
-            <button onclick="switchLang('html')" class="lang-btn" style="padding: 0.5rem 1rem; border: 1px solid var(--border); background: var(--card); color: var(--text); border-radius: 6px; cursor: pointer; font-weight: 600;">HTML/CSS</button>
+        <div class="editor-toolbar">
+          <div class="lang-tabs">
+            <button class="lang-tab active" data-lang="javascript" onclick="switchLang('javascript')">JavaScript</button>
+            <button class="lang-tab" data-lang="python" onclick="switchLang('python')">Python</button>
+            <button class="lang-tab" data-lang="html" onclick="switchLang('html')">HTML/CSS</button>
           </div>
-          <div style="display: flex; gap: 0.5rem; align-items: center;">
-            <button onclick="resetCode()" style="width: 36px; height: 36px; border-radius: 6px; border: 1px solid var(--border); background: var(--card); cursor: pointer; font-size: 1.1rem;" title="إعادة">🔄</button>
-            <button onclick="runCode()" id="runBtn" style="padding: 0.6rem 1.5rem; background: #10b981; color: white; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">▶ تشغيل</button>
+          <div class="toolbar-actions">
+            <button class="btn-icon" onclick="copyCode()" title="نسخ">📋</button>
+            <button class="btn-icon" onclick="resetCode()" title="إعادة">🔄</button>
+            <button class="btn-run" id="runBtn" onclick="runCode()">▶ تشغيل</button>
           </div>
         </div>
 
-        <!-- Editor -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; min-height: 500px;">
-          <div style="border-left: 1px solid var(--border);">
-            <div style="display: flex; justify-content: space-between; padding: 0.7rem 1rem; background: var(--bg-secondary); border-bottom: 1px solid var(--border); font-size: 0.9rem; font-weight: 600;">
+        <!-- Split Editor -->
+        <div class="editor-grid">
+          <!-- Code Input -->
+          <div class="code-pane">
+            <div class="pane-header">
+              <span class="file-icon">📄</span>
               <span id="fileName">script.js</span>
-              <span id="langBadge" style="background: var(--primary); color: white; padding: 0.15rem 0.6rem; border-radius: 20px; font-size: 0.75rem;">JS</span>
+              <span class="lang-badge" id="langBadge">JS</span>
             </div>
-            <textarea id="codeEditor" class="code-input" spellcheck="false" style="width: 100%; height: 450px; background: #1e293b; color: #e2e8f0; border: none; padding: 1rem; font-family: 'Fira Code', monospace; font-size: 0.95rem; line-height: 1.6; resize: none;" placeholder="// اكتب الكود هنا..."></textarea>
+            <textarea id="codeEditor" class="code-input" spellcheck="false" placeholder="// اكتب الكود هنا..."></textarea>
           </div>
           
-          <div>
-            <div style="display: flex; justify-content: space-between; padding: 0.7rem 1rem; background: var(--bg-secondary); border-bottom: 1px solid var(--border); font-size: 0.9rem; font-weight: 600;">
-              <span>المخرجات</span>
-              <button onclick="clearOutput()" style="background: transparent; border: none; color: var(--text-muted); cursor: pointer;">مسح</button>
+          <!-- Output -->
+          <div class="output-pane">
+            <div class="pane-header">
+              <span>📤 المخرجات</span>
+              <button class="btn-clear" onclick="clearOutput()">مسح</button>
             </div>
-            <div id="output" style="flex: 1; background: #1e293b; padding: 1rem; font-family: 'Fira Code', monospace; font-size: 0.9rem; overflow-y: auto; color: #e2e8f0; min-height: 450px; white-space: pre-wrap;">
-              <div style="color: #64748b; text-align: center; padding: 4rem 1rem;">اضغط "تشغيل" لرؤية النتيجة</div>
+            <div id="output" class="output-display">
+              <div class="output-placeholder">
+                <div class="placeholder-icon">🚀</div>
+                <p>اضغط "تشغيل" لرؤية النتيجة</p>
+              </div>
             </div>
           </div>
         </div>
 
-        <div style="padding: 0.6rem 1rem; background: var(--bg-secondary); border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-muted);">
+        <!-- Status Bar -->
+        <div class="status-bar">
           <span id="status">✅ جاهز</span>
-          <span id="pyStatus" style="display:none; margin-right: 1rem; color: #f59e0b;">⏳ تحميل Python...</span>
-        </div>
-      </div>
-
-      <!-- Examples -->
-      <div style="margin-top: 2rem;">
-        <h3 style="margin-bottom: 1rem; font-size: 1.2rem;">أمثلة جاهزة:</h3>
-        <div style="display: flex; gap: 0.8rem; flex-wrap: wrap;">
-          <button onclick="loadExample('hello')" style="padding: 0.7rem 1.2rem; background: var(--card); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-weight: 600;">👋 Hello World</button>
-          <button onclick="loadExample('calc')" style="padding: 0.7rem 1.2rem; background: var(--card); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-weight: 600;">🔢 آلة حاسبة</button>
-          <button onclick="loadExample('loop')" style="padding: 0.7rem 1.2rem; background: var(--card); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; font-weight: 600;">🔄 حلقة تكرار</button>
+          <span id="pyStatus" style="display:none; color:#fbbf24;">⏳ تحميل Python...</span>
         </div>
       </div>
     </div>
@@ -79,64 +81,80 @@ import Footer from '../components/Footer.astro';
 
 <style>
   :root {
-    --bg: #ffffff;
-    --bg-secondary: #f8fafc;
-    --card: #ffffff;
-    --text: #0f172a;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --primary: #2563eb;
+    --bg: #ffffff; --bg-secondary: #f8fafc; --bg-tertiary: #f1f5f9;
+    --text: #0f172a; --text-muted: #64748b; --border: #e2e8f0;
+    --primary: #2563eb; --success: #10b981; --danger: #ef4444;
+    --card-bg: #ffffff; --editor-bg: #1e293b; --editor-text: #e2e8f0;
   }
-
   [data-theme="dark"] {
-    --bg: #0b1120;
-    --bg-secondary: #0f172a;
-    --card: #1e293b;
-    --text: #f1f5f9;
-    --text-muted: #94a3b8;
-    --border: #334155;
-    --primary: #3b82f6;
+    --bg: #0b1120; --bg-secondary: #0f172a; --bg-tertiary: #1e293b;
+    --text: #f8fafc; --text-muted: #94a3b8; --border: #1e293b;
+    --primary: #3b82f6; --card-bg: #1e293b; --editor-bg: #0d1117;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; transition: background 0.3s, color 0.3s; }
-  .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+  .container { max-width: 1400px; margin: 0 auto; padding: 0 1.5rem; }
+  .playground-main { padding: 3rem 0; min-height: 90vh; }
+
+  .playground-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
+  .playground-header h1 { font-size: 2rem; font-weight: 800; }
+  .playground-header p { color: var(--text-muted); margin-top: 0.3rem; }
+  .btn-back { color: var(--primary); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+
+  .editor-wrapper { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
+  .editor-toolbar { display: flex; justify-content: space-between; padding: 1rem 1.5rem; background: var(--bg-tertiary); border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 1rem; }
   
-  .lang-btn.active { background: var(--primary) !important; color: white !important; }
-  .code-input { background: var(--editor-bg, #1e293b) !important; color: var(--editor-text, #e2e8f0) !important; }
+  .lang-tabs { display: flex; gap: 0.5rem; }
+  .lang-tab { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.5rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit; transition: 0.2s; }
+  .lang-tab:hover { border-color: var(--primary); color: var(--text); }
+  .lang-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+  .toolbar-actions { display: flex; gap: 0.8rem; align-items: center; }
+  .btn-icon { width: 40px; height: 40px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); cursor: pointer; font-size: 1.2rem; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+  .btn-icon:hover { background: var(--bg-tertiary); border-color: var(--text-muted); }
+  .btn-run { background: var(--success); color: white; border: none; padding: 0.6rem 1.8rem; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: 0.2s; }
+  .btn-run:hover { filter: brightness(1.1); transform: translateY(-2px); }
+
+  .editor-grid { display: grid; grid-template-columns: 1fr 1fr; min-height: 600px; }
+  .code-pane { border-left: 1px solid var(--border); }
+  .pane-header { display: flex; justify-content: space-between; padding: 0.7rem 1.2rem; background: var(--bg-tertiary); border-bottom: 1px solid var(--border); font-size: 0.9rem; font-weight: 600; align-items: center; }
+  .lang-badge { background: var(--primary); color: white; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem; }
+  .btn-clear { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; }
+  .btn-clear:hover { color: var(--danger); }
+
+  .code-input { width: 100%; height: 100%; background: var(--editor-bg); color: var(--editor-text); border: none; padding: 1.5rem; font-family: 'Fira Code', monospace; font-size: 1rem; line-height: 1.6; resize: none; outline: none; }
   .code-input::placeholder { color: #4b5563; }
-  
-  @media (max-width: 900px) {
-    div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
-    div[style*="border-left"] { border-left: none !important; border-bottom: 1px solid var(--border) !important; }
-  }
+  .output-display { flex: 1; background: var(--editor-bg); padding: 1.5rem; font-family: 'Fira Code', monospace; font-size: 0.95rem; overflow-y: auto; color: var(--editor-text); }
+  .output-placeholder { color: #4b5563; text-align: center; padding: 5rem 1rem; }
+  .placeholder-icon { font-size: 4rem; display: block; margin-bottom: 1rem; }
+
+  .status-bar { padding: 0.6rem 1.5rem; background: var(--bg-tertiary); border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-muted); display: flex; gap: 1.5rem; }
+
+  @media (max-width: 900px) { .editor-grid { grid-template-columns: 1fr; } .code-pane { border-left: none; border-bottom: 1px solid var(--border); } }
 </style>
 
 <script>
   const examples = {
-    javascript: {
-      hello: `console.log("مرحباً بالعالم!");\nconst a = 10, b = 5;\nconsole.log(\`المجموع: \${a + b}\`);`,
-      calc: `const a = 15, b = 5;\nconsole.log(a + " + " + b + " = " + (a + b));\nconsole.log(a + " - " + b + " = " + (a - b));\nconsole.log(a + " × " + b + " = " + (a * b));\nconsole.log(a + " ÷ " + b + " = " + (a / b));`,
-      loop: `for (let i = 1; i <= 5; i++) {\n  console.log("الرقم:", i);\n}\nconst arr = [1, 2, 3, 4, 5];\nconsole.log("المجموع:", arr.reduce((a, b) => a + b, 0));`
-    },
-    python: {
-      hello: `print("مرحباً بالعالم!")\na, b = 10, 5\nprint(f"المجموع: {a + b}")`,
-      calc: `a, b = 15, 5\nprint(f"{a} + {b} = {a + b}")\nprint(f"{a} - {b} = {a - b}")\nprint(f"{a} × {b} = {a * b}")\nprint(f"{a} ÷ {b} = {a / b}")`,
-      loop: `for i in range(1, 6):\n    print("الرقم:", i)\narr = [1, 2, 3, 4, 5]\nprint("المجموع:", sum(arr))`
-    },
-    html: {
-      hello: `<h1 style="color:#3b82f6; text-align:center;">مرحباً</h1>\n<p style="color:#64748b; text-align:center;">بيئة HTML/CSS تفاعلية</p>`,
-      calc: `<div style="text-align:center; padding:2rem;"><h2 style="color:#10b981;">النتيجة: 20</h2><p>15 + 5 = 20</p></div>`,
-      loop: `<div style="padding:1rem;"><h3 style="color:#3b82f6;">القائمة:</h3><ul style="list-style:none;"><li style="padding:0.5rem; margin:0.3rem 0; background:#1e293b; border-radius:8px;">عنصر 1</li><li style="padding:0.5rem; margin:0.3rem 0; background:#1e293b; border-radius:8px;">عنصر 2</li><li style="padding:0.5rem; margin:0.3rem 0; background:#1e293b; border-radius:8px;">عنصر 3</li></ul></div>`
-    }
+    javascript: `// JavaScript Example
+console.log("مرحباً بالعالم! 🌍");
+const a = 10, b = 20;
+console.log(\`المجموع: \${a + b}\`);`,
+    python: `# Python Example
+print("مرحباً بالعالم! 🌍")
+a, b = 10, 20
+print(f"المجموع: {a + b}")`,
+    html: `<div style="text-align:center; padding:2rem; background:#1e293b; color:white; border-radius:12px;">
+  <h1>مرحباً </h1>
+  <p>بيئة HTML تفاعلية</p>
+</div>`
   };
 
   let currentLang = 'javascript';
   let pyodide = null;
-  let pyodideReady = false;
 
   function init() {
-    document.getElementById('codeEditor').value = examples.javascript.hello;
+    document.getElementById('codeEditor').value = examples.javascript;
     loadPyodide();
   }
 
@@ -144,41 +162,29 @@ import Footer from '../components/Footer.astro';
     const status = document.getElementById('pyStatus');
     try {
       pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/" });
-      pyodideReady = true;
       status.style.display = 'none';
-    } catch(e) {
-      status.textContent = 'فشل التحميل';
-      status.style.color = '#ef4444';
-    }
+    } catch(e) { status.textContent = 'فشل التحميل'; }
   }
 
   function switchLang(lang) {
     currentLang = lang;
-    document.querySelectorAll('.lang-btn').forEach((btn, idx) => {
-      const langs = ['javascript', 'python', 'html'];
-      btn.classList.toggle('active', langs[idx] === lang);
-    });
-    
-    const files = { javascript: 'script.js', python: 'script.py', html: 'index.html' };
-    const badges = { javascript: 'JS', python: 'PY', html: 'HTML' };
-    document.getElementById('fileName').textContent = files[lang];
-    document.getElementById('langBadge').textContent = badges[lang];
-    document.getElementById('codeEditor').value = examples[lang].hello;
+    document.querySelectorAll('.lang-tab').forEach(t => t.classList.toggle('active', t.dataset.lang === lang));
+    document.getElementById('fileName').textContent = lang === 'javascript' ? 'script.js' : lang === 'python' ? 'script.py' : 'index.html';
+    document.getElementById('langBadge').textContent = lang === 'javascript' ? 'JS' : lang === 'python' ? 'PY' : 'HTML';
+    document.getElementById('codeEditor').value = examples[lang];
     clearOutput();
     document.getElementById('status').textContent = '✅ جاهز';
   }
+
+  document.querySelectorAll('.lang-tab').forEach(tab => tab.addEventListener('click', () => switchLang(tab.dataset.lang)));
 
   async function runCode() {
     const code = document.getElementById('codeEditor').value;
     const output = document.getElementById('output');
     const btn = document.getElementById('runBtn');
-    
-    if (!code.trim()) {
-      output.innerHTML = '<div style="color:#f59e0b; padding:1rem;">⚠️ يرجى كتابة كود أولاً</div>';
-      return;
-    }
+    if (!code.trim()) return;
 
-    output.innerHTML = '<div style="color:#94a3b8; padding:1rem;">⏳ جاري التنفيذ...</div>';
+    output.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:2rem;">⏳ جاري التنفيذ...</div>';
     btn.disabled = true;
 
     try {
@@ -186,48 +192,27 @@ import Footer from '../components/Footer.astro';
         const logs = [];
         const fn = new Function('console', code);
         fn({ log: (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ')) });
-        output.textContent = logs.join('\n') || '✅ تم التنفيذ (بدون مخرجات)';
+        output.textContent = logs.join('\n') || '✅ تم التنفيذ';
       } else if (currentLang === 'html') {
         output.innerHTML = code;
       } else if (currentLang === 'python') {
-        if (!pyodideReady) {
-          output.innerHTML = '<div style="color:#f59e0b; padding:1rem;"> جاري تحميل Python...</div>';
-          await loadPyodide();
-          if (!pyodideReady) throw new Error('فشل تحميل Python');
-        }
+        if (!pyodide) { output.innerHTML = '⏳ تحميل Python...'; await loadPyodide(); }
         let res = '';
         pyodide.setStdout({ batched: m => res += m });
         await pyodide.runPythonAsync(code);
-        output.textContent = res || '✅ تم التنفيذ (بدون مخرجات)';
+        output.textContent = res || '✅ تم التنفيذ';
       }
       document.getElementById('status').textContent = '✅ تم التنفيذ';
     } catch (err) {
-      output.innerHTML = '<span style="color:#ef4444">❌ خطأ: ' + err.message + '</span>';
+      output.innerHTML = `<span style="color:#ef4444">❌ خطأ: ${err.message}</span>`;
       document.getElementById('status').textContent = '❌ خطأ';
-    } finally {
-      btn.disabled = false;
-    }
+    } finally { btn.disabled = false; }
   }
 
-  function clearOutput() {
-    document.getElementById('output').innerHTML = '<div style="color:#64748b; text-align:center; padding:4rem 1rem;">اضغط "تشغيل" لرؤية النتيجة</div>';
-    document.getElementById('status').textContent = '✅ جاهز';
-  }
+  function clearOutput() { document.getElementById('output').innerHTML = '<div class="output-placeholder"><div class="placeholder-icon">🚀</div><p>اضغط "تشغيل" لرؤية النتيجة</p></div>'; }
+  function resetCode() { document.getElementById('codeEditor').value = examples[currentLang]; clearOutput(); }
+  function copyCode() { navigator.clipboard.writeText(document.getElementById('codeEditor').value); }
 
-  function resetCode() {
-    document.getElementById('codeEditor').value = examples[currentLang].hello;
-    clearOutput();
-  }
-
-  function loadExample(type) {
-    document.getElementById('codeEditor').value = examples[currentLang][type];
-    clearOutput();
-  }
-
-  document.addEventListener('keydown', (e) => {
-    if (e.target.id === 'codeEditor' && e.ctrlKey && e.key === 'Enter') runCode();
-  });
-
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
-  else init();
+  document.addEventListener('keydown', (e) => { if (e.target.id === 'codeEditor' && e.ctrlKey && e.key === 'Enter') runCode(); });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 </script>
