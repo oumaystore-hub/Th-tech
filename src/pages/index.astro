@@ -19,24 +19,52 @@ import Footer from '../components/Footer.astro';
   <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
 </head>
 <body>
+
+  <!-- Top Notification Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-content">
+      <span>🎉 جديد: دليل شامل لـ "هندسة الأوامر" (Prompt Engineering) متاح الآن!</span>
+      <a href="/Th-tech/guides/" class="top-link">استكشف الآن &larr;</a>
+    </div>
+  </div>
+
   <Header />
 
   <main class="main-wrapper">
     
-    <!-- Hero Section -->
+    <!-- Hero Section with Floating Element -->
     <section class="section hero">
       <div class="hero-bg">
         <img src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1920&h=1080&fit=crop" alt="AI" loading="eager" />
         <div class="overlay"></div>
       </div>
-      <div class="container">
+      <div class="container hero-container">
         <div class="hero-content">
-          <span class="badge">🚀 نحو المستقبل</span>
+          <span class="badge">🚀 منصة المطورين #1</span>
           <h1><span class="gradient">ابنِ غدك الرقمي</span><br />معنا</h1>
-          <p class="hero-text">شروحات عملية في الذكاء الاصطناعي، البرمجة، والأمن السيبراني</p>
+          <p class="hero-text">شروحات عملية في الذكاء الاصطناعي، البرمجة، والأمن السيبراني. تعلم، طبق، وتميز.</p>
           <div class="hero-actions">
             <a href="/Th-tech/guides/" class="btn btn-primary">استكشف الأدلة</a>
             <a href="/Th-tech/articles/" class="btn btn-outline">المقالات</a>
+          </div>
+        </div>
+        
+        <!-- Floating Tech Card to fill empty space -->
+        <div class="hero-visual">
+          <div class="floating-card glass">
+            <div class="card-header">
+              <span class="dot red"></span>
+              <span class="dot yellow"></span>
+              <span class="dot green"></span>
+              <span class="card-title">terminal — bash</span>
+            </div>
+            <div class="card-body">
+              <div class="code-line"><span class="prompt">$</span> npm install future</div>
+              <div class="code-line text-green">+ future@1.0.0</div>
+              <div class="code-line"><span class="prompt">$</span> th-tech run success</div>
+              <div class="code-line text-blue">[SUCCESS] Deployment ready!</div>
+              <div class="code-line"><span class="prompt">$</span> <span class="cursor">_</span></div>
+            </div>
           </div>
         </div>
       </div>
@@ -81,7 +109,7 @@ import Footer from '../components/Footer.astro';
               </div>
             </div>
             <div class="toolbar-right">
-              <select id="languageSelect" onchange="changeLanguage()">
+              <select id="languageSelect" onchange="handleLanguageChange()">
                 <option value="javascript">JavaScript</option>
                 <option value="python">Python</option>
                 <option value="html">HTML/CSS</option>
@@ -89,9 +117,9 @@ import Footer from '../components/Footer.astro';
                 <option value="cpp">C++</option>
               </select>
               <div class="toolbar-actions">
-                <button class="btn-icon" onclick="resetCode()" title="إعادة"></button>
-                <button class="btn-icon" onclick="copyCode()" title="نسخ">⎘</button>
-                <button class="btn-run" id="runBtn" onclick="runCode()">
+                <button class="btn-icon" onclick="resetEditor()" title="إعادة"></button>
+                <button class="btn-icon" onclick="copyEditorCode()" title="نسخ">⎘</button>
+                <button class="btn-run" id="runBtn" onclick="executeCode()">
                   <span>▶ تشغيل</span>
                 </button>
               </div>
@@ -129,7 +157,7 @@ import Footer from '../components/Footer.astro';
           <div class="editor-status">
             <span id="statusText">✅ جاهز</span>
             <span class="separator">|</span>
-            <span id="pyStatus" style="display:none; color: #f59e0b;">● Python</span>
+            <span id="pyStatus" style="display:none; color: #f59e0b;">● Python Loading...</span>
           </div>
         </div>
 
@@ -217,12 +245,32 @@ import Footer from '../components/Footer.astro';
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-main);
-    line-height: 1.6;
+  body { background: var(--bg); color: var(--text); font-family: var(--font-main); line-height: 1.6; }
+
+  /* Top Bar */
+  .top-bar {
+    background: var(--primary-dark);
+    color: white;
+    font-size: 0.85rem;
+    padding: 0.5rem 0;
+    text-align: center;
+    position: relative;
+    z-index: 100;
   }
+  .top-bar-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .top-link {
+    color: white;
+    text-decoration: underline;
+    font-weight: 600;
+    opacity: 0.9;
+  }
+  .top-link:hover { opacity: 1; }
 
   .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
   .section { padding: 4rem 0; }
@@ -231,7 +279,7 @@ import Footer from '../components/Footer.astro';
   .section-head p { color: var(--text-muted); }
 
   .hero {
-    min-height: 70vh;
+    min-height: 85vh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -239,11 +287,21 @@ import Footer from '../components/Footer.astro';
     color: white;
     position: relative;
     overflow: hidden;
+    padding-top: 2rem; /* Space for top bar */
   }
   .hero-bg { position: absolute; inset: 0; z-index: -1; }
   .hero-bg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.3); }
-  .overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(31,111,235,0.4), rgba(13,17,23,0.8)); }
-  .hero-content { max-width: 650px; padding: 2rem; z-index: 1; }
+  .overlay { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(31,111,235,0.4), rgba(13,17,23,0.9)); }
+  
+  .hero-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: center;
+    text-align: right;
+  }
+
+  .hero-content { max-width: 100%; }
   .badge {
     display: inline-block;
     background: rgba(88,166,255,0.15);
@@ -255,10 +313,60 @@ import Footer from '../components/Footer.astro';
     margin-bottom: 1.2rem;
     border: 1px solid rgba(88,166,255,0.3);
   }
-  .hero h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; line-height: 1.2; margin-bottom: 1rem; }
+  .hero h1 { font-size: clamp(2.5rem, 6vw, 3.5rem); font-weight: 800; line-height: 1.1; margin-bottom: 1.2rem; }
   .gradient { background: linear-gradient(135deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-  .hero-text { font-size: 1.1rem; color: #c9d1d9; margin-bottom: 2rem; }
-  .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+  .hero-text { font-size: 1.2rem; color: #c9d1d9; margin-bottom: 2rem; line-height: 1.7; }
+  .hero-actions { display: flex; gap: 1rem; justify-content: flex-start; flex-wrap: wrap; }
+
+  /* Floating Visual */
+  .hero-visual {
+    display: flex;
+    justify-content: center;
+    perspective: 1000px;
+  }
+  .floating-card {
+    background: rgba(22, 27, 34, 0.7);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    padding: 0;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    transform: rotateY(-10deg) rotateX(5deg);
+    transition: transform 0.5s ease;
+    overflow: hidden;
+    text-align: left;
+  }
+  .floating-card:hover {
+    transform: rotateY(0deg) rotateX(0deg);
+  }
+  .card-header {
+    background: rgba(0,0,0,0.3);
+    padding: 0.8rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .red { background: #ff5f56; }
+  .yellow { background: #ffbd2e; }
+  .green { background: #27c93f; }
+  .card-title { margin-right: auto; font-size: 0.8rem; color: #8b949e; font-family: var(--font-code); }
+  .card-body {
+    padding: 1.5rem;
+    font-family: var(--font-code);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #e6edf3;
+  }
+  .code-line { margin-bottom: 0.3rem; }
+  .prompt { color: var(--primary); margin-left: 0.5rem; }
+  .text-green { color: #3fb950; }
+  .text-blue { color: #58a6ff; }
+  .cursor { animation: blink 1s step-end infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
 
   .btn {
     display: inline-flex;
@@ -500,12 +608,16 @@ import Footer from '../components/Footer.astro';
   .cta-box p { opacity: 0.9; margin-bottom: 2rem; }
 
   @media (max-width: 1024px) {
+    .hero-container { grid-template-columns: 1fr; text-align: center; }
+    .hero-actions { justify-content: center; }
+    .hero-visual { margin-top: 3rem; }
+    .floating-card { transform: none; }
     .topics-grid { grid-template-columns: 1fr 1fr; }
     .editor-body { grid-template-columns: 1fr; }
     .code-pane { border-right: none; border-bottom: 1px solid var(--border); }
   }
   @media (max-width: 768px) {
-    .hero { min-height: auto; padding: 5rem 0 3rem; }
+    .hero { min-height: auto; padding: 6rem 0 3rem; }
     .hero h1 { font-size: 2rem; }
     .hero-actions { flex-direction: column; }
     .btn { width: 100%; }
@@ -519,6 +631,7 @@ import Footer from '../components/Footer.astro';
 </style>
 
 <script>
+  // Counter Animation
   function initCounterAnimation() {
     const counters = document.querySelectorAll('.counter');
     const animateCounter = (element, target, duration = 2000) => {
@@ -547,6 +660,7 @@ import Footer from '../components/Footer.astro';
     counters.forEach(counter => { if (counter.dataset.target) observer.observe(counter); });
   }
 
+  // Code Editor Logic
   const codeExamples = {
     javascript: 'console.log("Hello World!");\n\nconst arr = [1,2,3];\nconsole.log(arr.map(x => x*2));',
     python: 'print("Hello World!")\n\narr = [1,2,3]\nprint([x*2 for x in arr])',
@@ -593,34 +707,37 @@ import Footer from '../components/Footer.astro';
     }
   }
 
-  function changeLanguage() {
+  function handleLanguageChange() {
     const select = document.getElementById('languageSelect');
+    if (!select) return;
+    
     currentLang = select.value;
     const editor = document.getElementById('codeInput');
     const langIcon = document.getElementById('langIcon');
     const fileName = document.getElementById('fileName');
     const pyStatus = document.getElementById('pyStatus');
     
-    editor.value = codeExamples[currentLang] || '';
-    updateLineNumbers();
-    clearOutput();
-    
-    const exts = { javascript: 'js', python: 'py', html: 'html', java: 'java', cpp: 'cpp' };
-    langIcon.textContent = currentLang.toUpperCase().substring(0, 2);
-    fileName.textContent = 'script.' + exts[currentLang];
-    
-    if (pyStatus) {
-      pyStatus.style.display = currentLang === 'python' ? 'inline' : 'none';
+    if (editor) editor.value = codeExamples[currentLang] || '';
+    if (langIcon) langIcon.textContent = currentLang.toUpperCase().substring(0, 2);
+    if (fileName) {
+      const exts = { javascript: 'js', python: 'py', html: 'html', java: 'java', cpp: 'cpp' };
+      fileName.textContent = 'script.' + (exts[currentLang] || 'txt');
     }
+    if (pyStatus) pyStatus.style.display = currentLang === 'python' ? 'inline' : 'none';
+    
+    if (editor) updateLineNumbers();
+    clearOutput();
   }
 
-  async function runCode() {
+  async function executeCode() {
     const code = document.getElementById('codeInput').value;
     const output = document.getElementById('output');
     const runBtn = document.getElementById('runBtn');
     
-    output.innerHTML = '<div class="output-placeholder"><span class="icon"></span><p>جاري...</p></div>';
-    runBtn.disabled = true;
+    if (!code) return;
+
+    output.innerHTML = '<div class="output-placeholder"><span class="icon"></span><p>جاري التنفيذ...</p></div>';
+    if (runBtn) runBtn.disabled = true;
     
     try {
       if (currentLang === 'javascript') {
@@ -630,14 +747,14 @@ import Footer from '../components/Footer.astro';
       } else if (currentLang === 'html') {
         output.innerHTML = code;
       } else {
-        output.innerHTML = '<div style="padding:1rem;color:#e6edf3;">' + currentLang.toUpperCase() + ' requires a compiler</div>';
+        output.innerHTML = '<div style="padding:1rem;color:#e6edf3;">⚠️ ' + currentLang.toUpperCase() + ' requires a server-side compiler to run.</div>';
       }
-      updateStatus('✅ تم');
+      updateStatus('✅ تم التنفيذ');
     } catch (error) {
       output.innerHTML = '<div style="color:#f85149;padding:1rem;">❌ ' + error.message + '</div>';
       updateStatus('❌ خطأ');
     } finally {
-      runBtn.disabled = false;
+      if (runBtn) runBtn.disabled = false;
     }
   }
 
@@ -648,24 +765,32 @@ import Footer from '../components/Footer.astro';
       error: function() { logs.push('Error: ' + Array.from(arguments).join(' ')); }
     };
     try {
-      eval('(function(c){' + code + '})(cons)');
-      output.textContent = logs.length ? logs.join('\n') : '✅ Executed';
+      // Safe eval wrapper
+      const wrapped = '(function(console){' + code + '})(arguments[0])';
+      const fn = new Function('console', wrapped);
+      fn(cons);
+      output.textContent = logs.length ? logs.join('\n') : '✅ Executed successfully (no output)';
+      output.style.color = '#e6edf3';
     } catch (e) {
       output.textContent = '❌ ' + e.message;
+      output.style.color = '#f85149';
     }
   }
 
   async function runPython(code, output) {
     if (!pyodideReady) {
-      output.innerHTML = '<div class="output-placeholder"><span class="icon"></span><p>Loading Python...</p></div>';
+      output.innerHTML = '<div class="output-placeholder"><span class="icon"></span><p>Loading Python environment...<br><small>This may take a few seconds</small></p></div>';
       await initPyodide();
       if (!pyodideReady) {
-        output.textContent = '❌ Failed to load Python';
+        output.textContent = '❌ Failed to load Python. Please refresh.';
         return;
       }
     }
     try {
-      pyodide.setStdout({ batched: function(m) { output.textContent += m; } });
+      pyodide.setStdout({ batched: function(m) { 
+        if (output.textContent.includes('Loading')) output.textContent = ''; 
+        output.textContent += m; 
+      }});
       await pyodide.runPythonAsync(code);
     } catch (e) {
       output.innerHTML = '<span style="color:#f85149">❌ ' + e.message + '</span>';
@@ -675,9 +800,12 @@ import Footer from '../components/Footer.astro';
   async function initPyodide() {
     const pyStatus = document.getElementById('pyStatus');
     try {
-      pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/" });
-      pyodideReady = true;
-      if (pyStatus) { pyStatus.textContent = '● Ready'; pyStatus.style.color = '#3fb950'; }
+      // Check if already loaded
+      if (window.loadPyodide) {
+        pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/" });
+        pyodideReady = true;
+        if (pyStatus) { pyStatus.textContent = '● Ready'; pyStatus.style.color = '#3fb950'; }
+      }
     } catch (e) {
       if (pyStatus) { pyStatus.textContent = '● Failed'; pyStatus.style.color = '#f85149'; }
     }
@@ -685,20 +813,27 @@ import Footer from '../components/Footer.astro';
 
   function clearOutput() {
     const output = document.getElementById('output');
-    output.innerHTML = '<div class="output-placeholder"><span class="icon">💡</span><p>اضغط "تشغيل"</p></div>';
+    if (output) output.innerHTML = '<div class="output-placeholder"><span class="icon">💡</span><p>اضغط "تشغيل"</p></div>';
     updateStatus('✅ جاهز');
   }
 
-  function resetCode() {
-    document.getElementById('codeInput').value = codeExamples[currentLang];
-    updateLineNumbers();
-    clearOutput();
+  function resetEditor() {
+    const editor = document.getElementById('codeInput');
+    if (editor) {
+      editor.value = codeExamples[currentLang];
+      updateLineNumbers();
+      clearOutput();
+    }
   }
 
-  function copyCode() {
-    navigator.clipboard.writeText(document.getElementById('codeInput').value);
-    updateStatus('📋 Copied');
-    setTimeout(function() { updateStatus('✅ جاهز'); }, 2000);
+  function copyEditorCode() {
+    const editor = document.getElementById('codeInput');
+    if (editor) {
+      navigator.clipboard.writeText(editor.value).then(() => {
+        updateStatus('📋 تم النسخ');
+        setTimeout(() => updateStatus('✅ جاهز'), 2000);
+      });
+    }
   }
 
   function loadExample(type) {
@@ -716,7 +851,8 @@ import Footer from '../components/Footer.astro';
   }
 
   function updateStatus(msg) {
-    document.getElementById('statusText').textContent = msg;
+    const el = document.getElementById('statusText');
+    if (el) el.textContent = msg;
   }
 
   document.addEventListener('DOMContentLoaded', function() {
