@@ -1,0 +1,620 @@
+---
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+---
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Th.Tech | مختبر الأكواد التفاعلي</title>
+  <meta name="description" content="محرر أكواد تفاعلي يدعم JavaScript, Python, HTML" />
+  <link rel="canonical" href="https://oumaystore-hub.github.io/Th-tech/playground/" />
+  <link rel="icon" type="image/png" href="/Th-tech/logo1.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Cairo:wght@400;700;800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+</head>
+<body>
+  <Header />
+  
+  <main class="main-wrapper">
+    <section class="playground-section">
+      <div class="container">
+        <div class="playground-header">
+          <div class="header-left">
+            <h1>💻 مختبر الأكواد</h1>
+            <p>اكتب، شغّل، واختبر كودك مباشرة في المتصفح</p>
+          </div>
+          <div class="header-right">
+            <a href="/Th-tech/guides/" class="btn-back">← العودة للأدلة</a>
+          </div>
+        </div>
+
+        <div class="editor-wrapper">
+          <div class="editor-toolbar">
+            <div class="lang-tabs">
+              <button class="lang-tab active" onclick="switchLang('javascript')">
+                <span class="lang-dot js"></span> JavaScript
+              </button>
+              <button class="lang-tab" onclick="switchLang('python')">
+                <span class="lang-dot py"></span> Python
+              </button>
+              <button class="lang-tab" onclick="switchLang('html')">
+                <span class="lang-dot html"></span> HTML/CSS
+              </button>
+            </div>
+            <div class="toolbar-actions">
+              <button class="action-btn" onclick="resetCode()" title="إعادة تعيين">↺</button>
+              <button class="action-btn" onclick="copyCode()" title="نسخ">⎘</button>
+              <button class="btn-run" id="runBtn" onclick="runCode()">▶ تشغيل</button>
+            </div>
+          </div>
+
+          <div class="editor-body">
+            <div class="code-pane">
+              <div class="pane-header">
+                <span id="fileLabel">script.js</span>
+                <span id="langLabel" class="lang-badge">JavaScript</span>
+              </div>
+              <textarea 
+                id="codeInput" 
+                class="code-area" 
+                spellcheck="false"
+                placeholder="// اكتب الكود هنا..."
+                onkeydown="handleTab(event)"
+              ></textarea>
+            </div>
+            
+            <div class="output-pane">
+              <div class="pane-header">
+                <span>📤 المخرجات</span>
+                <button class="clear-btn" onclick="clearOutput()">✕ مسح</button>
+              </div>
+              <div id="output" class="output-area">
+                <div class="output-placeholder">
+                  <span class="ph-icon">🚀</span>
+                  <p>اضغط "تشغيل" لرؤية النتيجة</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="status-bar">
+            <span id="status">✅ جاهز</span>
+            <span class="sep">|</span>
+            <span id="pyStatus" style="display:none; color:#fbbf24;">⏳ Python Loading...</span>
+            <span class="sep">|</span>
+            <span>UTF-8</span>
+            <span class="sep">|</span>
+            <span>Ctrl+Enter للتشغيل</span>
+          </div>
+        </div>
+
+        <div class="examples-section">
+          <h3> أمثلة جاهزة</h3>
+          <div class="examples-grid">
+            <button class="ex-card" onclick="loadExample('hello')">
+              <span class="ex-icon">👋</span>
+              <span>Hello World</span>
+            </button>
+            <button class="ex-card" onclick="loadExample('calc')">
+              <span class="ex-icon">🔢</span>
+              <span>آلة حاسبة</span>
+            </button>
+            <button class="ex-card" onclick="loadExample('loop')">
+              <span class="ex-icon">🔄</span>
+              <span>حلقة تكرار</span>
+            </button>
+            <button class="ex-card" onclick="loadExample('array')">
+              <span class="ex-icon">📦</span>
+              <span>مصفوفة</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</body>
+</html>
+
+<style>
+  :root {
+    --bg: #0b1120;
+    --bg-secondary: #111827;
+    --card: #1e293b;
+    --text: #f1f5f9;
+    --muted: #94a3b8;
+    --primary: #3b82f6;
+    --primary-dark: #2563eb;
+    --accent: #10b981;
+    --border: #334155;
+    --radius: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; line-height: 1.6; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+  .playground-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .playground-header h1 { font-size: 2rem; font-weight: 800; }
+  .playground-header p { color: var(--muted); margin-top: 0.3rem; }
+  .btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .btn-back:hover { background: var(--primary); color: white; border-color: var(--primary); }
+
+  .editor-wrapper {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+  }
+
+  .editor-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: rgba(0,0,0,0.3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lang-tabs { display: flex; gap: 0.5rem; }
+  .lang-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--muted);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+  }
+  .lang-tab:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+  .lang-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+  .lang-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .lang-dot.js { background: #f7df1e; }
+  .lang-dot.py { background: #3776ab; }
+  .lang-dot.html { background: #e34c26; }
+
+  .toolbar-actions { display: flex; gap: 0.5rem; align-items: center; }
+  .action-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .action-btn:hover { background: var(--primary); color: white; border-color: var(--primary); transform: scale(1.05); }
+
+  .btn-run {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(16,185,129,0.3);
+    font-family: inherit;
+  }
+  .btn-run:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(16,185,129,0.4); }
+  .btn-run:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .editor-body { display: grid; grid-template-columns: 1fr 1fr; min-height: 500px; }
+  
+  .code-pane, .output-pane { display: flex; flex-direction: column; }
+  .code-pane { border-left: 1px solid var(--border); }
+  
+  .pane-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 1.2rem;
+    background: rgba(0,0,0,0.2);
+    border-bottom: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .lang-badge {
+    background: var(--primary-dark);
+    color: white;
+    padding: 0.15rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .clear-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.8rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    transition: all 0.3s;
+  }
+  .clear-btn:hover { background: #ef4444; color: white; }
+
+  .code-area {
+    flex: 1;
+    background: #0d1117;
+    color: #e6edf3;
+    border: none;
+    padding: 1.5rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.95rem;
+    line-height: 1.7;
+    resize: none;
+    tab-size: 2;
+  }
+  .code-area:focus { outline: none; }
+  .code-area::placeholder { color: #4b5563; }
+
+  .output-area {
+    flex: 1;
+    background: #0d1117;
+    padding: 1.5rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    overflow-y: auto;
+    color: #e6edf3;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .output-placeholder {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #4b5563;
+  }
+  .ph-icon { font-size: 3rem; display: block; margin-bottom: 1rem; }
+
+  .status-bar {
+    padding: 0.6rem 1.5rem;
+    background: rgba(0,0,0,0.4);
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .sep { opacity: 0.4; }
+
+  .examples-section { margin-top: 2rem; }
+  .examples-section h3 { font-size: 1.1rem; margin-bottom: 1rem; color: var(--muted); }
+  .examples-grid { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .ex-card {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.8rem 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s;
+    font-family: inherit;
+  }
+  .ex-card:hover { background: var(--primary); border-color: var(--primary); color: white; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(59,130,246,0.3); }
+  .ex-icon { font-size: 1.5rem; }
+
+  @media (max-width: 768px) {
+    .playground-header { flex-direction: column; gap: 1rem; text-align: center; }
+    .editor-toolbar { flex-direction: column; gap: 1rem; }
+    .lang-tabs { width: 100%; justify-content: center; }
+    .toolbar-actions { width: 100%; justify-content: space-between; }
+    .editor-body { grid-template-columns: 1fr; }
+    .code-pane { border-left: none; border-bottom: 1px solid var(--border); }
+    .code-area, .output-area { min-height: 250px; }
+    .examples-grid { justify-content: center; }
+  }
+</style>
+
+<script>
+  // Code Examples
+  const examples = {
+    javascript: {
+      hello: `// 👋 مرحباً بالعالم
+console.log("مرحباً بالعالم!");
+console.log("أهلاً بك في Th.Tech");`,
+      calc: `// 🔢 آلة حاسبة
+const a = 15;
+const b = 5;
+
+console.log(a + " + " + b + " = " + (a + b));
+console.log(a + " - " + b + " = " + (a - b));
+console.log(a + " × " + b + " = " + (a * b));
+console.log(a + " ÷ " + b + " = " + (a / b));`,
+      loop: `// 🔄 حلقة تكرار
+for (let i = 1; i <= 5; i++) {
+  console.log("خطوة رقم: " + i);
+}
+
+console.log("---");
+console.log("المجموع: " + (1+2+3+4+5));`,
+      array: `// 📦 مصفوفة
+const fruits = ["تفاح", "موز", "برتقال"];
+console.log("الفاكهة:", fruits.join("، "));
+console.log("العدد:", fruits.length);`
+    },
+    python: {
+      hello: `# 👋 مرحباً بالعالم
+print("مرحباً بالعالم!")
+print("أهلاً بك في Th.Tech")`,
+      calc: `# 🔢 آلة حاسبة
+a = 15
+b = 5
+
+print(f"{a} + {b} = {a + b}")
+print(f"{a} - {b} = {a - b}")
+print(f"{a} × {b} = {a * b}")
+print(f"{a} ÷ {b} = {a / b}")`,
+      loop: `# 🔄 حلقة تكرار
+for i in range(1, 6):
+    print(f"خطوة رقم: {i}")
+
+print("---")
+print(f"المجموع: {sum(range(1, 6))}")`,
+      array: `# 📦 قائمة
+fruits = ["تفاح", "موز", "برتقال"]
+print("الفاكهة:", ", ".join(fruits))
+print("العدد:", len(fruits))`
+    },
+    html: {
+      hello: `<h1 style="color: #3b82f6; text-align: center;">👋 مرحباً!</h1>
+<p style="text-align: center; color: #94a3b8;">أهلاً بك في Th.Tech</p>`,
+      calc: `<div style="text-align: center; padding: 2rem;">
+  <h2 style="color: #10b981;">النتيجة: 20</h2>
+  <p style="color: #94a3b8;">15 + 5 = 20</p>
+</div>`,
+      loop: `<div style="padding: 1rem;">
+  <h3 style="color: #3b82f6;">📋 القائمة:</h3>
+  <ul style="list-style: none; padding: 0;">
+    <li style="padding: 0.5rem; margin: 0.3rem 0; background: #1e293b; border-radius: 8px;">📌 خطوة 1</li>
+    <li style="padding: 0.5rem; margin: 0.3rem 0; background: #1e293b; border-radius: 8px;">📌 خطوة 2</li>
+    <li style="padding: 0.5rem; margin: 0.3rem 0; background: #1e293b; border-radius: 8px;"> خطوة 3</li>
+  </ul>
+</div>`,
+      array: `<div style="padding: 1rem;">
+  <h3 style="color: #f59e0b;">🍎 الفواكه:</h3>
+  <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+    <span style="background: #1e293b; padding: 0.5rem 1rem; border-radius: 20px;">تفاح</span>
+    <span style="background: #1e293b; padding: 0.5rem 1rem; border-radius: 20px;">موز</span>
+    <span style="background: #1e293b; padding: 0.5rem 1rem; border-radius: 20px;">برتقال</span>
+  </div>
+</div>`
+    }
+  };
+
+  let currentLang = 'javascript';
+  let pyodide = null;
+  let pyodideReady = false;
+
+  function init() {
+    const textarea = document.getElementById('codeInput');
+    if (textarea) textarea.value = examples.javascript.hello;
+    loadPyodide();
+  }
+
+  async function loadPyodide() {
+    const status = document.getElementById('pyStatus');
+    try {
+      pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/" });
+      pyodideReady = true;
+      if (status) status.style.display = 'none';
+    } catch(e) {
+      console.error('Pyodide error:', e);
+      if (status) { status.textContent = '❌ Failed'; status.style.color = '#ef4444'; }
+    }
+  }
+
+  function switchLang(lang) {
+    currentLang = lang;
+    
+    // Update tabs
+    document.querySelectorAll('.lang-tab').forEach(tab => {
+      tab.classList.remove('active');
+    });
+    event.target.closest('.lang-tab').classList.add('active');
+    
+    // Update labels
+    const fileLabel = document.getElementById('fileLabel');
+    const langLabel = document.getElementById('langLabel');
+    const pyStatus = document.getElementById('pyStatus');
+    
+    const labels = {
+      javascript: { file: 'script.js', name: 'JavaScript' },
+      python: { file: 'script.py', name: 'Python' },
+      html: { file: 'index.html', name: 'HTML/CSS' }
+    };
+    
+    if (fileLabel) fileLabel.textContent = labels[lang].file;
+    if (langLabel) langLabel.textContent = labels[lang].name;
+    if (pyStatus) pyStatus.style.display = lang === 'python' ? 'inline' : 'none';
+    
+    // Load default example
+    const textarea = document.getElementById('codeInput');
+    if (textarea && examples[lang]) textarea.value = examples[lang].hello;
+    
+    clearOutput();
+    updateStatus('✅ جاهز');
+  }
+
+  function clearOutput() {
+    const output = document.getElementById('output');
+    if (output) output.innerHTML = '<div class="output-placeholder"><span class="ph-icon">🚀</span><p>اضغط "تشغيل" لرؤية النتيجة</p></div>';
+    updateStatus('✅ جاهز');
+  }
+
+  function resetCode() {
+    const textarea = document.getElementById('codeInput');
+    if (textarea && examples[currentLang]) textarea.value = examples[currentLang].hello;
+    clearOutput();
+    updateStatus('🔄 تم الإعادة');
+  }
+
+  function copyCode() {
+    const textarea = document.getElementById('codeInput');
+    if (textarea) {
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        updateStatus('📋 تم النسخ');
+        setTimeout(() => updateStatus('✅ جاهز'), 2000);
+      });
+    }
+  }
+
+  function loadExample(type) {
+    const textarea = document.getElementById('codeInput');
+    if (textarea && examples[currentLang] && examples[currentLang][type]) {
+      textarea.value = examples[currentLang][type];
+      clearOutput();
+      updateStatus('📝 تم تحميل المثال');
+    }
+  }
+
+  async function runCode() {
+    const code = document.getElementById('codeInput').value;
+    const output = document.getElementById('output');
+    const runBtn = document.getElementById('runBtn');
+    
+    if (!code.trim()) {
+      output.innerHTML = '<div style="color: #fbbf24; padding: 1rem;">⚠️ يرجى كتابة كود أولاً</div>';
+      return;
+    }
+    
+    output.innerHTML = '<div style="color: #94a3b8; padding: 1rem;">⏳ جاري التنفيذ...</div>';
+    if (runBtn) runBtn.disabled = true;
+    
+    try {
+      if (currentLang === 'javascript') {
+        await runJavaScript(code, output);
+      } else if (currentLang === 'python') {
+        await runPython(code, output);
+      } else if (currentLang === 'html') {
+        output.innerHTML = code;
+      }
+      updateStatus('✅ تم التنفيذ');
+    } catch (error) {
+      output.innerHTML = '<div style="color: #ef4444; padding: 1rem;">❌ خطأ: ' + error.message + '</div>';
+      updateStatus('❌ حدث خطأ');
+    } finally {
+      if (runBtn) runBtn.disabled = false;
+    }
+  }
+
+  async function runJavaScript(code, output) {
+    const logs = [];
+    const mockConsole = {
+      log: (...args) => logs.push(args.map(arg => typeof arg === 'object' ? JSON.stringify(arg, null, 2) : String(arg)).join(' ')),
+      error: (...args) => logs.push('❌ ' + args.join(' ')),
+      warn: (...args) => logs.push('⚠️ ' + args.join(' '))
+    };
+    
+    try {
+      const fn = new Function('console', code);
+      fn(mockConsole);
+      
+      if (logs.length > 0) {
+        output.innerHTML = '<div style="color: #e6edf3;">' + logs.join('<br>') + '</div>';
+      } else {
+        output.innerHTML = '<div style="color: #10b981; padding: 1rem;">✅ تم التنفيذ بنجاح<br><small>(لا توجد مخرجات)</small></div>';
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async function runPython(code, output) {
+    if (!pyodideReady) {
+      output.innerHTML = '<div style="color: #fbbf24; padding: 1rem;">⏳ جاري تحميل Python...<br><small>قد يستغرق بضع ثوانٍ</small></div>';
+      await loadPyodide();
+      if (!pyodideReady) throw new Error('فشل تحميل Python');
+    }
+    
+    let result = '';
+    pyodide.setStdout({ batched: (msg) => { result += msg; } });
+    pyodide.setStderr({ batched: (msg) => { result += '❌ ' + msg; } });
+    
+    try {
+      await pyodide.runPythonAsync(code);
+      
+      if (result.trim()) {
+        output.innerHTML = '<div style="color: #e6edf3; white-space: pre-wrap;">' + result + '</div>';
+      } else {
+        output.innerHTML = '<div style="color: #10b981; padding: 1rem;">✅ تم التنفيذ بنجاح<br><small>(لا توجد مخرجات)</small></div>';
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  function handleTab(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const start = e.target.selectionStart;
+      const end = e.target.selectionEnd;
+      e.target.value = e.target.value.substring(0, start) + '  ' + e.target.value.substring(end);
+      e.target.selectionStart = e.target.selectionEnd = start + 2;
+    }
+  }
+
+  function updateStatus(msg) {
+    const status = document.getElementById('status');
+    if (status) status.textContent = msg;
+  }
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', (e) => {
+    if (e.target.id === 'codeInput' && e.ctrlKey && e.key === 'Enter') {
+      runCode();
+    }
+  });
+
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+</script>
