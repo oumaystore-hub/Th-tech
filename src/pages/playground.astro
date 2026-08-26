@@ -16,60 +16,126 @@ import Footer from '../components/Footer.astro';
   
   <main class="playground-main">
     <div class="container">
+      <!-- Header -->
       <div class="playground-header">
         <div>
-          <h1>مختبر الأكواد التفاعلي</h1>
-          <p>بيئة تنفيذ آمنة لـ JavaScript، Python، و HTML/CSS</p>
+          <h1>💻 مختبر الأكواد التفاعلي</h1>
+          <p>بيئة تنفيذ آمنة تدعم JavaScript، Python، HTML/CSS والمزيد</p>
         </div>
-        <a href="/Th-tech/" class="btn-back">العودة للرئيسية</a>
+        <a href="/Th-tech/" class="btn-back">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          العودة للرئيسية
+        </a>
       </div>
 
+      <!-- Editor Container -->
       <div class="editor-wrapper">
+        
         <!-- Toolbar -->
         <div class="editor-toolbar">
           <div class="lang-tabs">
-            <button class="lang-tab active" data-lang="javascript" onclick="switchLang('javascript')">JavaScript</button>
-            <button class="lang-tab" data-lang="python" onclick="switchLang('python')">Python</button>
-            <button class="lang-tab" data-lang="html" onclick="switchLang('html')">HTML/CSS</button>
+            <button class="lang-tab active" data-lang="javascript" onclick="switchLang('javascript')">
+              <span class="lang-dot js"></span> JavaScript
+            </button>
+            <button class="lang-tab" data-lang="python" onclick="switchLang('python')">
+              <span class="lang-dot py"></span> Python
+            </button>
+            <button class="lang-tab" data-lang="html" onclick="switchLang('html')">
+              <span class="lang-dot html"></span> HTML/CSS
+            </button>
           </div>
+          
           <div class="toolbar-actions">
-            <button class="btn-icon" onclick="copyCode()" title="نسخ">📋</button>
-            <button class="btn-icon" onclick="resetCode()" title="إعادة">🔄</button>
-            <button class="btn-run" id="runBtn" onclick="runCode()">▶ تشغيل</button>
+            <button class="btn-icon" onclick="copyCode()" title="نسخ الكود (Ctrl+C)">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            </button>
+            <button class="btn-icon" onclick="resetCode()" title="إعادة الكود الافتراضي">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            </button>
+            <button class="btn-run" id="runBtn" onclick="runCode()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+              <span id="runText">تشغيل الكود</span>
+            </button>
           </div>
         </div>
 
-        <!-- Split Editor -->
+        <!-- Editor Split View -->
         <div class="editor-grid">
-          <!-- Code Input -->
+          
+          <!-- Code Editor Pane -->
           <div class="code-pane">
             <div class="pane-header">
-              <span class="file-icon">📄</span>
-              <span id="fileName">script.js</span>
+              <div class="file-info">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                <span id="fileName">script.js</span>
+              </div>
               <span class="lang-badge" id="langBadge">JS</span>
             </div>
-            <textarea id="codeEditor" class="code-input" spellcheck="false" placeholder="// اكتب الكود هنا..."></textarea>
+            <div class="editor-area">
+              <textarea 
+                id="codeEditor" 
+                class="code-input" 
+                spellcheck="false" 
+                placeholder="// اكتب الكود هنا..."
+                oninput="updateStatus('تم التعديل...')"
+                onkeydown="handleTab(event)"
+              ></textarea>
+            </div>
           </div>
           
-          <!-- Output -->
+          <!-- Output Pane -->
           <div class="output-pane">
             <div class="pane-header">
-              <span>📤 المخرجات</span>
-              <button class="btn-clear" onclick="clearOutput()">مسح</button>
+              <div class="output-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+                <span>المخرجات</span>
+              </div>
+              <button class="btn-clear" onclick="clearOutput()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                مسح
+              </button>
             </div>
             <div id="output" class="output-display">
               <div class="output-placeholder">
                 <div class="placeholder-icon">🚀</div>
-                <p>اضغط "تشغيل" لرؤية النتيجة</p>
+                <p>اضغط "تشغيل الكود" لرؤية النتيجة</p>
+                <small>أو استخدم Ctrl+Enter</small>
               </div>
             </div>
           </div>
+          
         </div>
 
         <!-- Status Bar -->
         <div class="status-bar">
-          <span id="status">✅ جاهز</span>
-          <span id="pyStatus" style="display:none; color:#fbbf24;">⏳ تحميل Python...</span>
+          <div class="status-left">
+            <span id="status" class="status-item">
+              <span class="status-dot ready"></span>
+              <span>جاهز</span>
+            </span>
+            <span id="pyStatus" class="status-item" style="display:none;">
+              <span class="status-dot loading"></span>
+              <span>تحميل Python...</span>
+            </span>
+          </div>
+          <div class="status-right">
+            <span>UTF-8</span>
+            <span class="separator">|</span>
+            <span>Ctrl+Enter للتشغيل</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Languages Support Info -->
+      <div class="languages-info">
+        <h3>🌐 اللغات المدعومة:</h3>
+        <div class="lang-chips">
+          <span class="lang-chip supported">✅ JavaScript</span>
+          <span class="lang-chip supported">✅ Python (Pyodide)</span>
+          <span class="lang-chip supported">✅ HTML/CSS</span>
+          <span class="lang-chip preview">👁️ Java (معاينة)</span>
+          <span class="lang-chip preview">👁️ C++ (معاينة)</span>
+          <span class="lang-chip preview">👁️ SQL (معاينة)</span>
         </div>
       </div>
     </div>
@@ -81,138 +147,589 @@ import Footer from '../components/Footer.astro';
 
 <style>
   :root {
-    --bg: #ffffff; --bg-secondary: #f8fafc; --bg-tertiary: #f1f5f9;
-    --text: #0f172a; --text-muted: #64748b; --border: #e2e8f0;
-    --primary: #2563eb; --success: #10b981; --danger: #ef4444;
-    --card-bg: #ffffff; --editor-bg: #1e293b; --editor-text: #e2e8f0;
+    --bg: #ffffff;
+    --bg-secondary: #f8fafc;
+    --bg-tertiary: #f1f5f9;
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --card-bg: #ffffff;
+    --editor-bg: #1e293b;
+    --editor-gutter: #0f172a;
+    --editor-text: #e2e8f0;
+    --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1);
   }
+
   [data-theme="dark"] {
-    --bg: #0b1120; --bg-secondary: #0f172a; --bg-tertiary: #1e293b;
-    --text: #f8fafc; --text-muted: #94a3b8; --border: #1e293b;
-    --primary: #3b82f6; --card-bg: #1e293b; --editor-bg: #0d1117;
+    --bg: #0b1120;
+    --bg-secondary: #0f172a;
+    --bg-tertiary: #1e293b;
+    --text: #f1f5f9;
+    --text-muted: #94a3b8;
+    --border: #334155;
+    --primary: #3b82f6;
+    --primary-hover: #2563eb;
+    --card-bg: #1e293b;
+    --editor-bg: #0d1117;
+    --editor-gutter: #010409;
+    --shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+    --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.5);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; transition: background 0.3s, color 0.3s; }
+  body { background: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; line-height: 1.6; transition: background 0.3s, color 0.3s; }
   .container { max-width: 1400px; margin: 0 auto; padding: 0 1.5rem; }
-  .playground-main { padding: 3rem 0; min-height: 90vh; }
+  .playground-main { padding: 2rem 0; min-height: 90vh; }
 
-  .playground-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; }
-  .playground-header h1 { font-size: 2rem; font-weight: 800; }
-  .playground-header p { color: var(--text-muted); margin-top: 0.3rem; }
-  .btn-back { color: var(--primary); text-decoration: none; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+  /* Header */
+  .playground-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .playground-header h1 { font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; }
+  .playground-header p { color: var(--text-muted); margin-top: 0.3rem; font-size: 1rem; }
+  .btn-back {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    transition: 0.2s;
+  }
+  .btn-back:hover { background: var(--bg-tertiary); }
 
-  .editor-wrapper { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.05); }
-  .editor-toolbar { display: flex; justify-content: space-between; padding: 1rem 1.5rem; background: var(--bg-tertiary); border-bottom: 1px solid var(--border); flex-wrap: wrap; gap: 1rem; }
-  
-  .lang-tabs { display: flex; gap: 0.5rem; }
-  .lang-tab { background: transparent; border: 1px solid var(--border); color: var(--text-muted); padding: 0.5rem 1.2rem; border-radius: 8px; cursor: pointer; font-weight: 600; font-family: inherit; transition: 0.2s; }
+  /* Editor Wrapper */
+  .editor-wrapper {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+
+  /* Toolbar */
+  .editor-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .lang-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .lang-tab {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: inherit;
+    font-size: 0.9rem;
+  }
   .lang-tab:hover { border-color: var(--primary); color: var(--text); }
   .lang-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
+  
+  .lang-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .lang-dot.js { background: #f7df1e; }
+  .lang-dot.py { background: #3776ab; }
+  .lang-dot.html { background: #e34c26; }
 
-  .toolbar-actions { display: flex; gap: 0.8rem; align-items: center; }
-  .btn-icon { width: 40px; height: 40px; border-radius: 8px; background: var(--bg); border: 1px solid var(--border); cursor: pointer; font-size: 1.2rem; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
-  .btn-icon:hover { background: var(--bg-tertiary); border-color: var(--text-muted); }
-  .btn-run { background: var(--success); color: white; border: none; padding: 0.6rem 1.8rem; border-radius: 8px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 0.5rem; transition: 0.2s; }
+  .toolbar-actions { display: flex; gap: 0.5rem; align-items: center; }
+  .btn-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .btn-icon:hover { background: var(--bg-tertiary); border-color: var(--primary); color: var(--primary); transform: scale(1.05); }
+
+  .btn-run {
+    background: var(--success);
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+  }
   .btn-run:hover { filter: brightness(1.1); transform: translateY(-2px); }
+  .btn-run:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-  .editor-grid { display: grid; grid-template-columns: 1fr 1fr; min-height: 600px; }
+  /* Editor Grid */
+  .editor-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 550px;
+  }
+
+  .code-pane, .output-pane {
+    display: flex;
+    flex-direction: column;
+  }
   .code-pane { border-left: 1px solid var(--border); }
-  .pane-header { display: flex; justify-content: space-between; padding: 0.7rem 1.2rem; background: var(--bg-tertiary); border-bottom: 1px solid var(--border); font-size: 0.9rem; font-weight: 600; align-items: center; }
-  .lang-badge { background: var(--primary); color: white; padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.7rem; }
-  .btn-clear { background: transparent; border: none; color: var(--text-muted); cursor: pointer; font-size: 0.85rem; }
+
+  .pane-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 1.2rem;
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .file-info { display: flex; align-items: center; gap: 0.5rem; }
+  .output-title { display: flex; align-items: center; gap: 0.5rem; }
+
+  .lang-badge {
+    background: var(--primary);
+    color: white;
+    padding: 0.2rem 0.7rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  .btn-clear {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    transition: 0.2s;
+  }
   .btn-clear:hover { color: var(--danger); }
 
-  .code-input { width: 100%; height: 100%; background: var(--editor-bg); color: var(--editor-text); border: none; padding: 1.5rem; font-family: 'Fira Code', monospace; font-size: 1rem; line-height: 1.6; resize: none; outline: none; }
+  /* Code Input */
+  .editor-area { flex: 1; position: relative; background: var(--editor-bg); }
+  .code-input {
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    background: var(--editor-bg);
+    color: var(--editor-text);
+    border: none;
+    padding: 1.5rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    resize: none;
+    outline: none;
+    tab-size: 2;
+  }
   .code-input::placeholder { color: #4b5563; }
-  .output-display { flex: 1; background: var(--editor-bg); padding: 1.5rem; font-family: 'Fira Code', monospace; font-size: 0.95rem; overflow-y: auto; color: var(--editor-text); }
-  .output-placeholder { color: #4b5563; text-align: center; padding: 5rem 1rem; }
-  .placeholder-icon { font-size: 4rem; display: block; margin-bottom: 1rem; }
 
-  .status-bar { padding: 0.6rem 1.5rem; background: var(--bg-tertiary); border-top: 1px solid var(--border); font-size: 0.85rem; color: var(--text-muted); display: flex; gap: 1.5rem; }
+  /* Output */
+  .output-display {
+    flex: 1;
+    background: var(--editor-bg);
+    padding: 1.5rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    overflow-y: auto;
+    color: var(--editor-text);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    min-height: 500px;
+  }
+  .output-placeholder {
+    color: #4b5563;
+    text-align: center;
+    padding: 6rem 2rem;
+  }
+  .placeholder-icon { font-size: 4rem; display: block; margin-bottom: 1rem; animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .output-placeholder p { font-size: 1.1rem; margin-bottom: 0.3rem; }
+  .output-placeholder small { font-size: 0.85rem; }
 
-  @media (max-width: 900px) { .editor-grid { grid-template-columns: 1fr; } .code-pane { border-left: none; border-bottom: 1px solid var(--border); } }
+  /* Status Bar */
+  .status-bar {
+    padding: 0.7rem 1.5rem;
+    background: var(--bg-tertiary);
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .status-left, .status-right { display: flex; align-items: center; gap: 1rem; }
+  .status-item { display: flex; align-items: center; gap: 0.5rem; }
+  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
+  .status-dot.loading { background: var(--warning); animation: pulse 1s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+  .separator { opacity: 0.4; }
+
+  /* Languages Info */
+  .languages-info {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .languages-info h3 { font-size: 1.1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+  .lang-chips { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+  .lang-chip {
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border: 1px solid var(--border);
+  }
+  .lang-chip.supported { background: rgba(16,185,129,0.1); color: var(--success); border-color: var(--success); }
+  .lang-chip.preview { background: rgba(245,158,11,0.1); color: var(--warning); border-color: var(--warning); }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .editor-grid { grid-template-columns: 1fr; }
+    .code-pane { border-left: none; border-bottom: 1px solid var(--border); }
+    .code-input, .output-display { min-height: 300px; }
+  }
+
+  @media (max-width: 768px) {
+    .playground-header { flex-direction: column; text-align: center; }
+    .editor-toolbar { flex-direction: column; align-items: stretch; }
+    .lang-tabs { justify-content: center; }
+    .toolbar-actions { justify-content: center; }
+    .btn-run { width: 100%; justify-content: center; }
+    .status-bar { flex-direction: column; text-align: center; }
+    .status-left, .status-right { justify-content: center; }
+    .languages-info { text-align: center; }
+    .lang-chips { justify-content: center; }
+  }
 </style>
 
 <script>
-  const examples = {
-    javascript: `// JavaScript Example
+  // Code Examples Database
+  const codeExamples = {
+    javascript: `// 🚀 JavaScript Example
 console.log("مرحباً بالعالم! 🌍");
+
+// العمليات الحسابية
 const a = 10, b = 20;
-console.log(\`المجموع: \${a + b}\`);`,
-    python: `# Python Example
+console.log(\`المجموع: \${a + b}\`);
+console.log(\`الفرق: \${a - b}\`);
+
+// المصفوفات
+const fruits = ["تفاح", "موز", "برتقال"];
+console.log("الفاكهة:", fruits.join(", "));`,
+
+    python: `# 🐍 Python Example
 print("مرحباً بالعالم! 🌍")
+
+# العمليات الحسابية
 a, b = 10, 20
-print(f"المجموع: {a + b}")`,
-    html: `<div style="text-align:center; padding:2rem; background:#1e293b; color:white; border-radius:12px;">
-  <h1>مرحباً </h1>
-  <p>بيئة HTML تفاعلية</p>
+print(f"المجموع: {a + b}")
+print(f"الفرق: {a - b}")
+
+# القوائم
+fruits = ["تفاح", "موز", "برتقال"]
+print("الفاكهة:", ", ".join(fruits))`,
+
+    html: `<!-- 🎨 HTML/CSS Example -->
+<div style="text-align:center; padding:2rem; background:linear-gradient(135deg, #667eea, #764ba2); color:white; border-radius:12px;">
+  <h1 style="font-size:2rem; margin-bottom:1rem;">مرحباً بك 👋</h1>
+  <p style="opacity:0.9;">بيئة HTML/CSS تفاعلية</p>
+  <button onclick="alert('🎉 تم الضغط!')" style="margin-top:1rem; padding:0.8rem 2rem; background:white; color:#667eea; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">جربني</button>
 </div>`
   };
 
   let currentLang = 'javascript';
   let pyodide = null;
+  let pyodideReady = false;
 
+  // Initialize Editor
   function init() {
-    document.getElementById('codeEditor').value = examples.javascript;
+    const editor = document.getElementById('codeEditor');
+    if (editor) {
+      editor.value = codeExamples.javascript;
+    }
     loadPyodide();
+    
+    // Load saved theme
+    const saved = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', saved);
   }
 
+  // Load Pyodide for Python
   async function loadPyodide() {
     const status = document.getElementById('pyStatus');
     try {
-      pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/" });
-      status.style.display = 'none';
-    } catch(e) { status.textContent = 'فشل التحميل'; }
+      pyodide = await loadPyodide({ 
+        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/" 
+      });
+      pyodideReady = true;
+      if (status) {
+        status.style.display = 'none';
+        updateStatus('✅ جاهز');
+      }
+    } catch(e) {
+      console.error('Pyodide error:', e);
+      if (status) {
+        status.querySelector('.status-dot').className = 'status-dot';
+        status.querySelector('span:last-child').textContent = 'فشل التحميل';
+        status.style.color = 'var(--danger)';
+      }
+    }
   }
 
+  // Switch Language
   function switchLang(lang) {
     currentLang = lang;
-    document.querySelectorAll('.lang-tab').forEach(t => t.classList.toggle('active', t.dataset.lang === lang));
-    document.getElementById('fileName').textContent = lang === 'javascript' ? 'script.js' : lang === 'python' ? 'script.py' : 'index.html';
-    document.getElementById('langBadge').textContent = lang === 'javascript' ? 'JS' : lang === 'python' ? 'PY' : 'HTML';
-    document.getElementById('codeEditor').value = examples[lang];
+    
+    // Update tabs
+    document.querySelectorAll('.lang-tab').forEach(tab => {
+      tab.classList.toggle('active', tab.dataset.lang === lang);
+    });
+    
+    // Update file info
+    const files = { 
+      javascript: { name: 'script.js', badge: 'JS' }, 
+      python: { name: 'script.py', badge: 'PY' }, 
+      html: { name: 'index.html', badge: 'HTML' } 
+    };
+    document.getElementById('fileName').textContent = files[lang].name;
+    document.getElementById('langBadge').textContent = files[lang].badge;
+    
+    // Load example code
+    const editor = document.getElementById('codeEditor');
+    if (editor && codeExamples[lang]) {
+      editor.value = codeExamples[lang];
+    }
+    
+    // Show/hide Python status
+    const pyStatus = document.getElementById('pyStatus');
+    if (pyStatus) {
+      pyStatus.style.display = lang === 'python' ? 'flex' : 'none';
+    }
+    
     clearOutput();
-    document.getElementById('status').textContent = '✅ جاهز';
+    updateStatus('✅ جاهز');
   }
 
-  document.querySelectorAll('.lang-tab').forEach(tab => tab.addEventListener('click', () => switchLang(tab.dataset.lang)));
+  // Handle Tab Key for Indentation
+  function handleTab(e) {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const textarea = e.target;
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      
+      // Insert 2 spaces
+      textarea.value = textarea.value.substring(0, start) + '  ' + textarea.value.substring(end);
+      textarea.selectionStart = textarea.selectionEnd = start + 2;
+    }
+  }
 
+  // Execute Code
   async function runCode() {
     const code = document.getElementById('codeEditor').value;
     const output = document.getElementById('output');
     const btn = document.getElementById('runBtn');
-    if (!code.trim()) return;
+    const runText = document.getElementById('runText');
+    
+    if (!code.trim()) {
+      output.innerHTML = '<div style="color:var(--warning); padding:1rem; text-align:center;">⚠️ يرجى كتابة كود أولاً</div>';
+      return;
+    }
 
-    output.innerHTML = '<div style="color:#94a3b8; text-align:center; padding:2rem;">⏳ جاري التنفيذ...</div>';
+    output.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:2rem;">⏳ جاري التنفيذ...</div>';
     btn.disabled = true;
+    runText.textContent = 'جاري...';
 
     try {
       if (currentLang === 'javascript') {
-        const logs = [];
-        const fn = new Function('console', code);
-        fn({ log: (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : String(a)).join(' ')) });
-        output.textContent = logs.join('\n') || '✅ تم التنفيذ';
+        await runJavaScript(code, output);
       } else if (currentLang === 'html') {
         output.innerHTML = code;
       } else if (currentLang === 'python') {
-        if (!pyodide) { output.innerHTML = '⏳ تحميل Python...'; await loadPyodide(); }
-        let res = '';
-        pyodide.setStdout({ batched: m => res += m });
-        await pyodide.runPythonAsync(code);
-        output.textContent = res || '✅ تم التنفيذ';
+        await runPython(code, output);
       }
-      document.getElementById('status').textContent = '✅ تم التنفيذ';
+      updateStatus('✅ تم التنفيذ');
     } catch (err) {
-      output.innerHTML = `<span style="color:#ef4444">❌ خطأ: ${err.message}</span>`;
-      document.getElementById('status').textContent = '❌ خطأ';
-    } finally { btn.disabled = false; }
+      output.innerHTML = `<span style="color:var(--danger)">❌ خطأ: ${err.message}</span>`;
+      updateStatus('❌ حدث خطأ');
+    } finally {
+      btn.disabled = false;
+      runText.textContent = 'تشغيل الكود';
+    }
   }
 
-  function clearOutput() { document.getElementById('output').innerHTML = '<div class="output-placeholder"><div class="placeholder-icon">🚀</div><p>اضغط "تشغيل" لرؤية النتيجة</p></div>'; }
-  function resetCode() { document.getElementById('codeEditor').value = examples[currentLang]; clearOutput(); }
-  function copyCode() { navigator.clipboard.writeText(document.getElementById('codeEditor').value); }
+  // Run JavaScript
+  async function runJavaScript(code, output) {
+    const logs = [];
+    
+    // Custom console to capture output
+    const customConsole = {
+      log: (...args) => {
+        logs.push(args.map(arg => {
+          if (typeof arg === 'object') {
+            try { return JSON.stringify(arg, null, 2); }
+            catch (e) { return String(arg); }
+          }
+          return String(arg);
+        }).join(' '));
+      },
+      error: (...args) => logs.push('❌ ' + args.join(' ')),
+      warn: (...args) => logs.push('⚠️ ' + args.join(' '))
+    };
+    
+    try {
+      // Safe execution wrapper
+      const wrappedCode = `(function(console) { ${code} })(arguments[0])`;
+      const fn = new Function('console', wrappedCode);
+      fn(customConsole);
+      
+      if (logs.length > 0) {
+        output.textContent = logs.join('\n');
+        output.style.color = 'var(--editor-text)';
+      } else {
+        output.innerHTML = '<div style="color:var(--success); padding:1.5rem; text-align:center; background:rgba(16,185,129,0.1); border-radius:8px;">✅ تم التنفيذ بنجاح<br><small style="color:var(--text-muted)">(لا توجد مخرجات)</small></div>';
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
 
-  document.addEventListener('keydown', (e) => { if (e.target.id === 'codeEditor' && e.ctrlKey && e.key === 'Enter') runCode(); });
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  // Run Python via Pyodide
+  async function runPython(code, output) {
+    if (!pyodideReady) {
+      output.innerHTML = '<div style="color:var(--warning); padding:1rem; text-align:center;">⏳ جاري تحميل Python...<br><small>قد يستغرق بضع ثوانٍ في المرة الأولى</small></div>';
+      await loadPyodide();
+      if (!pyodideReady) {
+        throw new Error('فشل تحميل Python. يرجى تحديث الصفحة.');
+      }
+    }
+    
+    let result = '';
+    let hasError = false;
+    
+    try {
+      // Redirect stdout/stderr
+      pyodide.setStdout({
+        batched: (msg) => {
+          result += msg;
+        }
+      });
+      pyodide.setStderr({
+        batched: (msg) => {
+          result += '❌ ' + msg;
+          hasError = true;
+        }
+      });
+      
+      // Execute Python code
+      await pyodide.runPythonAsync(code);
+      
+      if (result.trim()) {
+        output.textContent = result;
+        output.style.color = hasError ? 'var(--danger)' : 'var(--editor-text)';
+      } else {
+        output.innerHTML = '<div style="color:var(--success); padding:1.5rem; text-align:center; background:rgba(16,185,129,0.1); border-radius:8px;">✅ تم التنفيذ بنجاح<br><small style="color:var(--text-muted)">(لا توجد مخرجات)</small></div>';
+      }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  // Clear Output
+  function clearOutput() {
+    const output = document.getElementById('output');
+    if (output) {
+      output.innerHTML = '<div class="output-placeholder"><div class="placeholder-icon">🚀</div><p>اضغط "تشغيل الكود" لرؤية النتيجة</p><small>أو استخدم Ctrl+Enter</small></div>';
+    }
+    updateStatus('✅ جاهز');
+  }
+
+  // Reset Code to Default
+  function resetCode() {
+    const editor = document.getElementById('codeEditor');
+    if (editor && codeExamples[currentLang]) {
+      editor.value = codeExamples[currentLang];
+      clearOutput();
+      updateStatus('🔄 تم الإعادة');
+    }
+  }
+
+  // Copy Code to Clipboard
+  async function copyCode() {
+    const editor = document.getElementById('codeEditor');
+    if (editor) {
+      try {
+        await navigator.clipboard.writeText(editor.value);
+        updateStatus('📋 تم النسخ');
+        setTimeout(() => updateStatus('✅ جاهز'), 2000);
+      } catch (err) {
+        updateStatus('❌ فشل النسخ');
+      }
+    }
+  }
+
+  // Update Status Bar
+  function updateStatus(message) {
+    const status = document.getElementById('status');
+    if (status) {
+      const parts = message.split(' ');
+      status.innerHTML = `<span class="status-dot ${parts[0] === '✅' ? 'ready' : ''}"></span><span>${parts.slice(1).join(' ') || 'جاهز'}</span>`;
+    }
+  }
+
+  // Keyboard Shortcuts
+  document.addEventListener('keydown', (e) => {
+    // Ctrl+Enter to run code
+    if (e.target.id === 'codeEditor' && e.ctrlKey && e.key === 'Enter') {
+      e.preventDefault();
+      runCode();
+    }
+  });
+
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 </script>
