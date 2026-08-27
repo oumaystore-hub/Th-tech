@@ -2,144 +2,1753 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
+
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>محرر الأكواد | Th.Tech</title>
+
+  <title>Th.Tech | محرر الأكواد الاحترافي</title>
+
+  <link rel="icon" type="image/png" href="/Th-tech/logo1.png" />
+
+  <!-- Pyodide -->
   <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Cairo:wght@600;700&display=swap" rel="stylesheet" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Cairo:wght@400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
 </head>
+
 <body>
+
   <Header />
 
-  <div style="max-width: 1000px; margin: 0 auto; padding: 2rem 1rem;">
-    
-    <!-- Header -->
-    <div style="margin-bottom: 2rem;">
-      <h1 style="font-size: 1.8rem; margin-bottom: 0.5rem;">💻 محرر الأكواد</h1>
-      <p style="color: #8b949e;">اكتب الكود وشغّله مباشرة</p>
-    </div>
+  <main class="playground-main">
 
-    <!-- Language Selector -->
-    <div style="margin-bottom: 1rem; display: flex; gap: 1rem; align-items: center;">
-      <select id="lang" onchange="changeLang()" style="padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #30363d; background: #161b22; color: #c9d1d9; font-family: inherit;">
-        <option value="python">Python</option>
-        <option value="javascript">JavaScript</option>
-        <option value="html">HTML</option>
-      </select>
-      <a href="/Th-tech/" style="color: #58a6ff; text-decoration: none;">← الرئيسية</a>
-    </div>
+    <div class="container">
 
-    <!-- Editor Box -->
-    <div style="background: #161b22; border: 1px solid #30363d; border-radius: 8px; overflow: hidden;">
-      
-      <!-- Toolbar -->
-      <div style="display: flex; justify-content: space-between; padding: 0.8rem 1rem; background: #21262d; border-bottom: 1px solid #30363d;">
-        <span id="fname" style="font-family: 'Fira Code', monospace;">main.py</span>
-        <div style="display: flex; gap: 0.5rem;">
-          <button onclick="copy()" style="padding: 0.4rem 0.8rem; background: transparent; border: 1px solid #30363d; color: #8b949e; border-radius: 4px; cursor: pointer;">نسخ</button>
-          <button onclick="run()" id="runBtn" style="padding: 0.4rem 1.2rem; background: #238636; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">▶ تشغيل</button>
+      <!-- Page Header -->
+      <div class="page-header">
+
+        <div class="header-title">
+          <h1>💻 محرر الأكواد الاحترافي</h1>
+
+          <p>
+            اكتب الكود، شغّله، وشاهد النتيجة فوراً
+          </p>
         </div>
+
+        <div class="header-actions">
+
+          <select id="langSelect">
+            <option value="python">🐍 Python</option>
+            <option value="javascript">📜 JavaScript</option>
+            <option value="html">🌐 HTML / CSS</option>
+          </select>
+
+          <a href="/Th-tech/" class="btn-home">
+            الرئيسية
+          </a>
+
+        </div>
+
       </div>
 
-      <!-- Code Area -->
-      <textarea id="code" style="width: 100%; min-height: 300px; background: #0d1117; color: #e6edf3; border: none; padding: 1rem; font-family: 'Fira Code', monospace; font-size: 0.95rem; resize: vertical;" spellcheck="false"></textarea>
 
-      <!-- Output -->
-      <div style="border-top: 1px solid #30363d;">
-        <div style="padding: 0.6rem 1rem; background: #21262d; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; font-weight: 600; font-size: 0.9rem;">
-          <span> المخرجات</span>
-          <button onclick="clearOut()" style="background: transparent; border: none; color: #8b949e; cursor: pointer;">مسح</button>
+      <!-- Editor -->
+      <div class="editor-container">
+
+        <!-- Toolbar -->
+        <div class="toolbar">
+
+          <div class="file-info">
+
+            <span class="file-icon" id="fileIcon">
+              🐍
+            </span>
+
+            <span class="file-name" id="fileName">
+              main.py
+            </span>
+
+          </div>
+
+
+          <div class="toolbar-buttons">
+
+            <button
+              class="btn-tool"
+              id="copyBtn"
+              title="نسخ الكود"
+            >
+              📋
+            </button>
+
+            <button
+              class="btn-tool"
+              id="resetBtn"
+              title="إعادة تعيين"
+            >
+              🔄
+            </button>
+
+            <button
+              class="btn-run"
+              id="runBtn"
+            >
+              ▶ تشغيل الكود
+            </button>
+
+          </div>
+
         </div>
-        <div id="out" style="padding: 1rem; background: #0d1117; min-height: 150px; font-family: 'Fira Code', monospace; white-space: pre-wrap; color: #c9d1d9; font-size: 0.9rem;">
-          <div style="text-align: center; color: #8b949e; padding: 2rem;">اضغط تشغيل لرؤية النتيجة</div>
+
+
+        <!-- Python Input -->
+        <div
+          class="input-section"
+          id="inputSection"
+        >
+
+          <label class="input-label">
+            المدخلات Input
+          </label>
+
+          <textarea
+            id="userInput"
+            class="input-field"
+            placeholder="ضع قيم input() هنا، كل قيمة في سطر..."
+          ></textarea>
+
         </div>
+
+
+        <!-- Code Editor -->
+        <div class="code-section">
+
+          <textarea
+            id="codeEditor"
+            class="code-editor"
+            spellcheck="false"
+          ></textarea>
+
+        </div>
+
+
+        <!-- Output -->
+        <div class="output-section">
+
+          <div class="output-header">
+
+            <span class="output-title">
+              📤 المخرجات
+            </span>
+
+            <button
+              class="btn-clear"
+              id="clearBtn"
+            >
+              مسح
+            </button>
+
+          </div>
+
+
+          <div
+            id="output"
+            class="output-content"
+          >
+
+            <div class="output-placeholder">
+
+              <p>
+                اضغط على "تشغيل الكود" لرؤية النتيجة
+              </p>
+
+              <small>
+                Ctrl + Enter لتشغيل الكود
+              </small>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- Features -->
+      <div class="features-section">
+
+        <h3>
+          ✨ المميزات
+        </h3>
+
+        <div class="features-grid">
+
+          <div class="feature-item">
+
+            <span class="feature-icon">
+              🐍
+            </span>
+
+            <div>
+
+              <h4>
+                Python
+              </h4>
+
+              <p>
+                تشغيل Python مباشرة داخل المتصفح باستخدام Pyodide.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="feature-item">
+
+            <span class="feature-icon">
+              📜
+            </span>
+
+            <div>
+
+              <h4>
+                JavaScript
+              </h4>
+
+              <p>
+                تشغيل JavaScript وعرض console.log مباشرة.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="feature-item">
+
+            <span class="feature-icon">
+              🌐
+            </span>
+
+            <div>
+
+              <h4>
+                HTML / CSS
+              </h4>
+
+              <p>
+                معاينة صفحات HTML وCSS داخل نافذة مستقلة.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="feature-item">
+
+            <span class="feature-icon">
+              📱
+            </span>
+
+            <div>
+
+              <h4>
+                متجاوب
+              </h4>
+
+              <p>
+                يعمل على الهاتف والتابلت والكمبيوتر.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
       </div>
 
     </div>
 
-  </div>
+  </main>
 
   <Footer />
 
-  <script>
-    const examples = {
-      python: 'print("مرحباً!")\nname = input("اسمك: ")\nprint("أهلاً " + name)',
-      javascript: 'console.log("مرحباً!");\nconst name = prompt("اسمك:");\nconsole.log("أهلاً " + name);',
-      html: '<h1 style="color:cyan;text-align:center">مرحباً!</h1>'
-    };
 
-    let pyodide = null;
+<style>
 
-    // Init
-    window.onload = function() {
-      document.getElementById('code').value = examples.python;
-      loadPy();
-    };
+:root {
 
-    // Load Python
-    async function loadPy() {
-      try {
-        pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/" });
-      } catch(e) { console.error(e); }
+  --bg-primary: #0d1117;
+  --bg-secondary: #161b22;
+  --bg-tertiary: #21262d;
+
+  --text-primary: #c9d1d9;
+  --text-secondary: #8b949e;
+
+  --border-color: #30363d;
+
+  --accent-color: #58a6ff;
+
+  --success-color: #238636;
+  --success-hover: #2ea043;
+
+  --danger-color: #f85149;
+
+  --warning-color: #d29922;
+
+  --font-main: 'Cairo', sans-serif;
+  --font-code: 'Fira Code', monospace;
+
+}
+
+
+* {
+
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+
+}
+
+
+body {
+
+  background: var(--bg-primary);
+  color: var(--text-primary);
+
+  font-family: var(--font-main);
+
+  line-height: 1.6;
+
+}
+
+
+.playground-main {
+
+  min-height: 90vh;
+
+  padding:
+    2rem 1rem 4rem;
+
+}
+
+
+.container {
+
+  max-width: 1200px;
+
+  margin: auto;
+
+}
+
+
+/* Header */
+
+.page-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 1.5rem;
+
+  margin-bottom: 2rem;
+
+  padding-bottom: 1.5rem;
+
+  border-bottom:
+    1px solid var(--border-color);
+
+}
+
+
+.header-title h1 {
+
+  color: var(--accent-color);
+
+  font-size: 2rem;
+
+  font-weight: 800;
+
+  margin-bottom: .5rem;
+
+}
+
+
+.header-title p {
+
+  color: var(--text-secondary);
+
+}
+
+
+.header-actions {
+
+  display: flex;
+
+  gap: .8rem;
+
+  align-items: center;
+
+}
+
+
+#langSelect {
+
+  padding: .7rem 1rem;
+
+  border-radius: 9px;
+
+  border:
+    1px solid var(--border-color);
+
+  background: var(--bg-secondary);
+
+  color: var(--text-primary);
+
+  font-family: var(--font-main);
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+}
+
+
+.btn-home {
+
+  text-decoration: none;
+
+  color: var(--accent-color);
+
+  padding: .7rem 1.1rem;
+
+  border:
+    1px solid var(--border-color);
+
+  border-radius: 9px;
+
+}
+
+
+.btn-home:hover {
+
+  background: var(--bg-secondary);
+
+}
+
+
+/* Container */
+
+.editor-container {
+
+  background: var(--bg-secondary);
+
+  border:
+    1px solid var(--border-color);
+
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 15px 50px rgba(0,0,0,.3);
+
+}
+
+
+/* Toolbar */
+
+.toolbar {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 1rem 1.2rem;
+
+  background: var(--bg-tertiary);
+
+  border-bottom:
+    1px solid var(--border-color);
+
+}
+
+
+.file-info {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: .6rem;
+
+  font-family: var(--font-code);
+
+}
+
+
+.file-icon {
+
+  font-size: 1.3rem;
+
+}
+
+
+.toolbar-buttons {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: .6rem;
+
+}
+
+
+.btn-tool {
+
+  width: 42px;
+
+  height: 42px;
+
+  border:
+    1px solid var(--border-color);
+
+  border-radius: 8px;
+
+  background: transparent;
+
+  color: var(--text-secondary);
+
+  cursor: pointer;
+
+  font-size: 1.1rem;
+
+}
+
+
+.btn-tool:hover {
+
+  background: var(--bg-secondary);
+
+  color: white;
+
+}
+
+
+.btn-run {
+
+  min-height: 42px;
+
+  padding: .7rem 1.3rem;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: var(--success-color);
+
+  color: white;
+
+  font-family: var(--font-main);
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+}
+
+
+.btn-run:hover {
+
+  background: var(--success-hover);
+
+}
+
+
+.btn-run:disabled {
+
+  opacity: .6;
+
+  cursor: not-allowed;
+
+}
+
+
+/* Input */
+
+.input-section {
+
+  padding: 1rem 1.2rem;
+
+  background: var(--bg-primary);
+
+  border-bottom:
+    1px solid var(--border-color);
+
+}
+
+
+.input-label {
+
+  display: block;
+
+  margin-bottom: .5rem;
+
+  color: var(--text-secondary);
+
+  font-weight: 600;
+
+}
+
+
+.input-field {
+
+  width: 100%;
+
+  min-height: 70px;
+
+  resize: vertical;
+
+  padding: .8rem;
+
+  border:
+    1px solid var(--border-color);
+
+  border-radius: 8px;
+
+  outline: none;
+
+  background: var(--bg-secondary);
+
+  color: var(--text-primary);
+
+  font-family: var(--font-code);
+
+}
+
+
+.input-field:focus {
+
+  border-color:
+    var(--accent-color);
+
+}
+
+
+/* Editor */
+
+.code-editor {
+
+  display: block;
+
+  width: 100%;
+
+  min-height: 400px;
+
+  padding: 1.4rem;
+
+  resize: vertical;
+
+  outline: none;
+
+  border: none;
+
+  background: var(--bg-primary);
+
+  color: #e6edf3;
+
+  font-family: var(--font-code);
+
+  font-size: 15px;
+
+  line-height: 1.7;
+
+  direction: ltr;
+
+  text-align: left;
+
+  tab-size: 4;
+
+}
+
+
+/* Output */
+
+.output-section {
+
+  border-top:
+    1px solid var(--border-color);
+
+}
+
+
+.output-header {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: .8rem 1.2rem;
+
+  background: var(--bg-tertiary);
+
+  border-bottom:
+    1px solid var(--border-color);
+
+}
+
+
+.output-title {
+
+  font-weight: 700;
+
+}
+
+
+.btn-clear {
+
+  background: transparent;
+
+  border: none;
+
+  color: var(--text-secondary);
+
+  cursor: pointer;
+
+  font-family: var(--font-main);
+
+}
+
+
+.btn-clear:hover {
+
+  color: var(--danger-color);
+
+}
+
+
+.output-content {
+
+  min-height: 220px;
+
+  padding: 1.3rem;
+
+  background: var(--bg-primary);
+
+  font-family: var(--font-code);
+
+  direction: ltr;
+
+  text-align: left;
+
+  white-space: pre-wrap;
+
+  overflow-x: auto;
+
+}
+
+
+.output-placeholder {
+
+  text-align: center;
+
+  color: var(--text-secondary);
+
+  padding: 3rem 1rem;
+
+  direction: rtl;
+
+}
+
+
+.output-placeholder p {
+
+  margin-bottom: .5rem;
+
+}
+
+
+/* HTML Preview */
+
+.preview-frame {
+
+  width: 100%;
+
+  min-height: 350px;
+
+  border: none;
+
+  background: white;
+
+}
+
+
+/* Features */
+
+.features-section {
+
+  margin-top: 2rem;
+
+  padding: 1.7rem;
+
+  background: var(--bg-secondary);
+
+  border:
+    1px solid var(--border-color);
+
+  border-radius: 14px;
+
+}
+
+
+.features-section h3 {
+
+  color: var(--accent-color);
+
+  margin-bottom: 1.5rem;
+
+}
+
+
+.features-grid {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(auto-fit, minmax(220px, 1fr));
+
+  gap: 1.5rem;
+
+}
+
+
+.feature-item {
+
+  display: flex;
+
+  gap: 1rem;
+
+}
+
+
+.feature-icon {
+
+  font-size: 1.8rem;
+
+}
+
+
+.feature-item h4 {
+
+  margin-bottom: .3rem;
+
+}
+
+
+.feature-item p {
+
+  color: var(--text-secondary);
+
+  font-size: .9rem;
+
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+  .page-header {
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+  }
+
+
+  .header-title h1 {
+
+    font-size: 1.5rem;
+
+  }
+
+
+  .header-actions {
+
+    flex-direction: column;
+
+  }
+
+
+  #langSelect,
+  .btn-home {
+
+    width: 100%;
+
+    text-align: center;
+
+  }
+
+
+  .toolbar {
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+  }
+
+
+  .toolbar-buttons {
+
+    width: 100%;
+
+  }
+
+
+  .btn-run {
+
+    flex: 1;
+
+  }
+
+
+  .code-editor {
+
+    min-height: 320px;
+
+    font-size: 13px;
+
+  }
+
+}
+
+</style>
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  const editor =
+    document.getElementById('codeEditor');
+
+  const output =
+    document.getElementById('output');
+
+  const langSelect =
+    document.getElementById('langSelect');
+
+  const inputSection =
+    document.getElementById('inputSection');
+
+  const userInput =
+    document.getElementById('userInput');
+
+  const runBtn =
+    document.getElementById('runBtn');
+
+  const copyBtn =
+    document.getElementById('copyBtn');
+
+  const resetBtn =
+    document.getElementById('resetBtn');
+
+  const clearBtn =
+    document.getElementById('clearBtn');
+
+  const fileName =
+    document.getElementById('fileName');
+
+  const fileIcon =
+    document.getElementById('fileIcon');
+
+
+  let currentLang = 'python';
+
+  let pyodideInstance = null;
+
+  let pyodideLoading = null;
+
+
+  /* --------------------------------
+     Code Examples
+  -------------------------------- */
+
+
+  const examples = {
+
+    python: `# مرحباً بك في Th.Tech 🐍
+
+name = input("أدخل اسمك: ")
+
+print("مرحباً", name)
+
+for i in range(1, 6):
+    print("الرقم:", i)`,
+
+
+
+    javascript: `// مرحباً بك في Th.Tech 📜
+
+console.log("مرحباً بالعالم!");
+
+const numbers = [1, 2, 3, 4, 5];
+
+console.log("الأرقام:", numbers);
+
+const sum = numbers.reduce(
+  (a, b) => a + b,
+  0
+);
+
+console.log("المجموع:", sum);`,
+
+
+    html: `<!DOCTYPE html>
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+<meta charset="UTF-8">
+
+<title>Th.Tech</title>
+
+<style>
+
+body {
+
+  font-family: Arial;
+
+  background: #f4f9fc;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  min-height: 100vh;
+
+}
+
+.card {
+
+  background: white;
+
+  padding: 40px;
+
+  border-radius: 20px;
+
+  text-align: center;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,.15);
+
+}
+
+h1 {
+
+  color: #168acb;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>مرحباً بك في Th.Tech 👋</h1>
+
+<p>هذه معاينة HTML / CSS</p>
+
+</div>
+
+</body>
+
+</html>`
+
+  };
+
+
+  const extensions = {
+
+    python: 'py',
+
+    javascript: 'js',
+
+    html: 'html'
+
+  };
+
+
+  const icons = {
+
+    python: '🐍',
+
+    javascript: '📜',
+
+    html: '🌐'
+
+  };
+
+
+  /* --------------------------------
+     Initialize
+  -------------------------------- */
+
+
+  function initialize() {
+
+    editor.value =
+      examples.python;
+
+    updateInterface();
+
+  }
+
+
+  /* --------------------------------
+     Interface
+  -------------------------------- */
+
+
+  function updateInterface() {
+
+    currentLang =
+      langSelect.value;
+
+    editor.value =
+      examples[currentLang];
+
+
+    fileName.textContent =
+      'main.' + extensions[currentLang];
+
+
+    fileIcon.textContent =
+      icons[currentLang];
+
+
+    if (currentLang === 'python') {
+
+      inputSection.style.display =
+        'block';
+
+    } else {
+
+      inputSection.style.display =
+        'none';
+
     }
 
-    // Change Language
-    function changeLang() {
-      const l = document.getElementById('lang').value;
-      document.getElementById('code').value = examples[l];
-      document.getElementById('fname').textContent = l === 'html' ? 'index.html' : 'main.' + (l === 'javascript' ? 'js' : 'py');
-      clearOut();
+
+    clearOutput();
+
+  }
+
+
+  /* --------------------------------
+     Pyodide
+  -------------------------------- */
+
+
+  async function getPyodide() {
+
+    if (pyodideInstance) {
+
+      return pyodideInstance;
+
     }
 
-    // Run Code
-    async function run() {
-      const code = document.getElementById('code').value;
-      const lang = document.getElementById('lang').value;
-      const out = document.getElementById('out');
-      const btn = document.getElementById('runBtn');
 
-      if (!code.trim()) {
-        out.innerHTML = '<span style="color:orange">اكتب كود أولاً!</span>';
-        return;
-      }
+    if (pyodideLoading) {
 
-      out.innerHTML = '<span style="color:#8b949e">جاري...</span>';
-      btn.disabled = true;
+      return pyodideLoading;
 
-      try {
-        if (lang === 'javascript') {
-          let logs = [];
-          const cons = { log: (...a) => logs.push(a.join(' ')) };
-          new Function('console', code)(cons);
-          out.textContent = logs.join('\n') || '(لا مخرجات)';
-        } else if (lang === 'html') {
-          out.innerHTML = code;
-        } else if (lang === 'python') {
-          if (!pyodide) await loadPy();
-          let res = '';
-          pyodide.setStdout({ batched: m => res += m });
-          await pyodide.runPythonAsync(code);
-          out.textContent = res || '(لا مخرجات)';
+    }
+
+
+    pyodideLoading =
+      window.loadPyodide({
+
+        indexURL:
+          'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/'
+
+      });
+
+
+    try {
+
+      pyodideInstance =
+        await pyodideLoading;
+
+      return pyodideInstance;
+
+    } catch (error) {
+
+      pyodideLoading = null;
+
+      throw error;
+
+    }
+
+  }
+
+
+  /* --------------------------------
+     Python
+  -------------------------------- */
+
+
+  async function runPython(code) {
+
+    const py =
+      await getPyodide();
+
+
+    let result = '';
+
+
+    const inputText =
+      userInput.value;
+
+
+    const inputLines =
+      inputText
+        .split(/\r?\n/)
+        .filter(Boolean);
+
+
+    let inputIndex = 0;
+
+
+    py.setStdin({
+
+      stdin: () => {
+
+        if (
+          inputIndex <
+          inputLines.length
+        ) {
+
+          return inputLines[inputIndex++];
+
         }
-      } catch (err) {
-        out.innerHTML = '<span style="color:#f85149">خطأ: ' + err.message + '</span>';
+
+        return '';
+
       }
 
-      btn.disabled = false;
+    });
+
+
+    py.setStdout({
+
+      batched: (text) => {
+
+        result += text;
+
+      }
+
+    });
+
+
+    py.setStderr({
+
+      batched: (text) => {
+
+        result += text;
+
+      }
+
+    });
+
+
+    await py.runPythonAsync(code);
+
+
+    return result;
+
+  }
+
+
+  /* --------------------------------
+     JavaScript
+  -------------------------------- */
+
+
+  function runJavaScript(code) {
+
+    const logs = [];
+
+
+    const customConsole = {
+
+      log: (...args) => {
+
+        logs.push(
+          args
+            .map(formatValue)
+            .join(' ')
+        );
+
+      },
+
+
+      warn: (...args) => {
+
+        logs.push(
+          '⚠️ ' +
+          args
+            .map(formatValue)
+            .join(' ')
+        );
+
+      },
+
+
+      error: (...args) => {
+
+        logs.push(
+          '❌ ' +
+          args
+            .map(formatValue)
+            .join(' ')
+        );
+
+      }
+
+    };
+
+
+    const fn =
+      new Function(
+        'console',
+        code
+      );
+
+
+    fn(customConsole);
+
+
+    return logs.join('\n');
+
+  }
+
+
+  function formatValue(value) {
+
+    if (
+      typeof value === 'object' &&
+      value !== null
+    ) {
+
+      try {
+
+        return JSON.stringify(
+          value,
+          null,
+          2
+        );
+
+      } catch {
+
+        return String(value);
+
+      }
+
     }
 
-    // Copy
-    function copy() {
-      navigator.clipboard.writeText(document.getElementById('code').value);
-      alert('تم النسخ!');
+
+    return String(value);
+
+  }
+
+
+  /* --------------------------------
+     HTML
+  -------------------------------- */
+
+
+  function runHTML(code) {
+
+    output.innerHTML = '';
+
+
+    const iframe =
+      document.createElement('iframe');
+
+
+    iframe.className =
+      'preview-frame';
+
+
+    iframe.setAttribute(
+      'sandbox',
+      'allow-scripts'
+    );
+
+
+    output.appendChild(iframe);
+
+
+    const frameDocument =
+      iframe.contentDocument ||
+      iframe.contentWindow.document;
+
+
+    frameDocument.open();
+
+    frameDocument.write(code);
+
+    frameDocument.close();
+
+  }
+
+
+  /* --------------------------------
+     Run
+  -------------------------------- */
+
+
+  async function runCode() {
+
+    const code =
+      editor.value.trim();
+
+
+    if (!code) {
+
+      output.innerHTML =
+        '<span style="color:#d29922">⚠️ اكتب كوداً أولاً</span>';
+
+      return;
+
     }
 
-    // Clear
-    function clearOut() {
-      document.getElementById('out').innerHTML = '<div style="text-align:center;color:#8b949e;padding:2rem">اضغط تشغيل لرؤية النتيجة</div>';
+
+    runBtn.disabled = true;
+
+    runBtn.innerHTML =
+      '⏳ جاري التشغيل...';
+
+
+    try {
+
+      if (
+        currentLang === 'html'
+      ) {
+
+        runHTML(code);
+
+        return;
+
+      }
+
+
+      output.innerHTML =
+        '<span style="color:#8b949e">⏳ جاري التنفيذ...</span>';
+
+
+      let result = '';
+
+
+      if (
+        currentLang === 'python'
+      ) {
+
+        result =
+          await runPython(code);
+
+      }
+
+
+      if (
+        currentLang === 'javascript'
+      ) {
+
+        result =
+          runJavaScript(code);
+
+      }
+
+
+      if (result.trim()) {
+
+        output.textContent =
+          result;
+
+      } else {
+
+        output.innerHTML =
+          `<div style="
+            color:#238636;
+            text-align:center;
+            padding:2rem;
+            direction:rtl;
+          ">
+            ✅ تم التنفيذ بنجاح
+            <br>
+            <small>
+              لا توجد مخرجات
+            </small>
+          </div>`;
+
+      }
+
+    } catch (error) {
+
+      output.innerHTML =
+        `<div style="
+          color:#f85149;
+          white-space:pre-wrap;
+          direction:ltr;
+          text-align:left;
+        ">
+          ❌ Error
+
+          ${escapeHTML(
+            error.message ||
+            String(error)
+          )}
+        </div>`;
+
+    } finally {
+
+      runBtn.disabled = false;
+
+      runBtn.innerHTML =
+        '▶ تشغيل الكود';
+
     }
-  </script>
+
+  }
+
+
+  /* --------------------------------
+     Escape HTML
+  -------------------------------- */
+
+
+  function escapeHTML(value) {
+
+    return String(value)
+
+      .replaceAll('&', '&amp;')
+
+      .replaceAll('<', '&lt;')
+
+      .replaceAll('>', '&gt;')
+
+      .replaceAll('"', '&quot;')
+
+      .replaceAll("'", '&#039;');
+
+  }
+
+
+  /* --------------------------------
+     Clear
+  -------------------------------- */
+
+
+  function clearOutput() {
+
+    output.innerHTML = `
+
+      <div class="output-placeholder">
+
+        <p>
+          اضغط على "تشغيل الكود" لرؤية النتيجة
+        </p>
+
+        <small>
+          Ctrl + Enter لتشغيل الكود
+        </small>
+
+      </div>
+
+    `;
+
+  }
+
+
+  /* --------------------------------
+     Reset
+  -------------------------------- */
+
+
+  function resetCode() {
+
+    editor.value =
+      examples[currentLang];
+
+    userInput.value = '';
+
+    clearOutput();
+
+  }
+
+
+  /* --------------------------------
+     Copy
+  -------------------------------- */
+
+
+  async function copyCode() {
+
+    try {
+
+      await navigator.clipboard.writeText(
+        editor.value
+      );
+
+
+      copyBtn.textContent = '✓';
+
+
+      setTimeout(() => {
+
+        copyBtn.textContent = '📋';
+
+      }, 1200);
+
+
+    } catch {
+
+      alert(
+        'تعذر نسخ الكود'
+      );
+
+    }
+
+  }
+
+
+  /* --------------------------------
+     Tab
+  -------------------------------- */
+
+
+  editor.addEventListener(
+    'keydown',
+    (event) => {
+
+      if (
+        event.key === 'Tab'
+      ) {
+
+        event.preventDefault();
+
+
+        const start =
+          editor.selectionStart;
+
+        const end =
+          editor.selectionEnd;
+
+
+        editor.value =
+          editor.value.substring(
+            0,
+            start
+          ) +
+
+          '    ' +
+
+          editor.value.substring(
+            end
+          );
+
+
+        editor.selectionStart =
+          editor.selectionEnd =
+          start + 4;
+
+      }
+
+
+      /* Ctrl + Enter */
+
+      if (
+        event.ctrlKey &&
+        event.key === 'Enter'
+      ) {
+
+        event.preventDefault();
+
+        runCode();
+
+      }
+
+    }
+  );
+
+
+  /* --------------------------------
+     Events
+  -------------------------------- */
+
+
+  langSelect.addEventListener(
+    'change',
+    updateInterface
+  );
+
+
+  runBtn.addEventListener(
+    'click',
+    runCode
+  );
+
+
+  copyBtn.addEventListener(
+    'click',
+    copyCode
+  );
+
+
+  resetBtn.addEventListener(
+    'click',
+    resetCode
+  );
+
+
+  clearBtn.addEventListener(
+    'click',
+    clearOutput
+  );
+
+
+  /* Start */
+
+  initialize();
+
+});
+
+</script>
+
 </body>
 </html>
