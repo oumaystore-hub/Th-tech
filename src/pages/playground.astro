@@ -2,949 +2,474 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Th.Tech | مختبر الأكواد الاحترافي</title>
+  <title>Th.Tech | مختبر الأكواد</title>
   <link rel="icon" type="image/png" href="/Th-tech/logo1.png" />
+  <!-- خط احترافي للأكواد -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+  <!-- مكتبة Pyodide لتشغيل Python -->
   <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
-<body>
-  <Header />
+<body class="bg-dark text-light font-cairo">
   
-  <main class="playground-main">
-    <div class="container">
-      <!-- Header -->
-      <div class="playground-header">
-        <div class="header-title">
-          <h1>💻 مختبر الأكواد التفاعلي</h1>
-          <p>اكتب الأكواد البرمجية، شغّلها وشاركها - بدون أي إعداد</p>
+  <Header />
+
+  <main class="playground-container">
+    
+    <!-- رأس الصفحة -->
+    <header class="page-header">
+      <div>
+        <h1>💻 مختبر الأكواد</h1>
+        <p>اكتب الكود، شغّله، وشاهد النتيجة فوراً</p>
+      </div>
+      <div class="header-actions">
+        <select id="langSelect" onchange="changeLanguage()">
+          <option value="python">Python</option>
+          <option value="javascript">JavaScript</option>
+          <option value="html">HTML/CSS</option>
+        </select>
+        <a href="/Th-tech/" class="btn-outline">الرئيسية</a>
+      </div>
+    </header>
+
+    <!-- منطقة العمل (Editor) -->
+    <div class="ide-wrapper">
+      
+      <!-- شريط الأدوات -->
+      <div class="toolbar">
+        <div class="file-info">
+          <span class="icon">🐍</span>
+          <span id="fileName">main.py</span>
         </div>
-        <div class="header-actions">
-          <button class="btn-secondary" onclick="toggleLanguageMenu()">
-            <span id="currentLang">Python</span>
-            <span class="dropdown-arrow">▼</span>
+        <div class="actions">
+          <button class="btn-tool" onclick="clearOutput()" title="مسح المخرجات">🗑️</button>
+          <button class="btn-tool" onclick="resetCode()" title="إعادة تعيين">🔄</button>
+          <button class="btn-tool" onclick="copyCode()" title="نسخ"></button>
+          <button class="btn-run" onclick="runCode()" id="runBtn">
+            ▶ تشغيل
           </button>
-          <a href="/Th-tech/" class="btn-back">العودة للرئيسية</a>
         </div>
       </div>
 
-      <!-- Language Menu Modal -->
-      <div id="languageMenu" class="language-menu" style="display: none;">
-        <div class="menu-header">
-          <h3>قائمة اللغات</h3>
-          <button class="close-btn" onclick="toggleLanguageMenu()">×</button>
+      <!-- المدخلات (STDIN) - تظهر فقط لـ Python -->
+      <div class="stdin-container" id="stdinBox">
+        <label>مدخلات (Input):</label>
+        <input type="text" id="stdinInput" placeholder="أدخل القيم هنا (مثال: اسمك)..." />
+      </div>
+
+      <!-- محرر الكود -->
+      <div class="editor-pane">
+        <textarea id="codeEditor" spellcheck="false" placeholder="اكتب الكود هنا..."></textarea>
+      </div>
+
+      <!-- المخرجات (Output) -->
+      <div class="output-pane">
+        <div class="output-header">
+          <span>📤 المخرجات</span>
+          <span id="statusText" class="status-ready">جاهز</span>
         </div>
-        <div class="menu-search">
-          <input type="text" placeholder="ابحث عن لغة..." id="langSearch" oninput="filterLanguages()" />
-        </div>
-        <div class="languages-list">
-          <div class="lang-item active" onclick="selectLanguage('python')">
-            <span class="lang-icon">🐍</span>
-            <span>Python</span>
-          </div>
-          <div class="lang-item" onclick="selectLanguage('javascript')">
-            <span class="lang-icon">📜</span>
-            <span>JavaScript</span>
-          </div>
-          <div class="lang-item" onclick="selectLanguage('java')">
-            <span class="lang-icon">☕</span>
-            <span>Java</span>
-          </div>
-          <div class="lang-item" onclick="selectLanguage('cpp')">
-            <span class="lang-icon"></span>
-            <span>C++</span>
-          </div>
-          <div class="lang-item" onclick="selectLanguage('html')">
-            <span class="lang-icon">🌐</span>
-            <span>Web (HTML/CSS)</span>
-          </div>
-          <div class="lang-item" onclick="selectLanguage('sql')">
-            <span class="lang-icon">🗄️</span>
-            <span>SQL</span>
-          </div>
+        <div id="output" class="output-content">
+          <div class="placeholder">اضغط "تشغيل" لرؤية النتيجة...</div>
         </div>
       </div>
 
-      <!-- Editor Container -->
-      <div class="editor-wrapper">
-        
-        <!-- Toolbar -->
-        <div class="editor-toolbar">
-          <div class="file-info">
-            <span class="file-icon">🐍</span>
-            <span class="file-name" id="fileName">main.py</span>
-          </div>
-          <div class="toolbar-actions">
-            <button class="btn-icon" onclick="copyCode()" title="نسخ"></button>
-            <button class="btn-icon" onclick="resetCode()" title="إعادة تعيين">🔄</button>
-            <button class="btn-clear" onclick="clearOutput()">مسح</button>
-            <button class="btn-run" id="runBtn" onclick="runCode()">
-              <span>▶ تشغيل</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- STDIN Section -->
-        <div class="stdin-section">
-          <div class="section-header">
-            <span class="section-title">STDIN</span>
-            <span class="lines-count" id="stdinLines">أسطر 0</span>
-          </div>
-          <textarea 
-            id="stdinInput" 
-            class="stdin-input" 
-            placeholder="أدخل المدخلات هنا (اختياري)..."
-            oninput="updateStdinLines()"
-          ></textarea>
-        </div>
-
-        <!-- Code Editor -->
-        <div class="code-section">
-          <div class="editor-area">
-            <div class="line-numbers" id="lineNumbers">1</div>
-            <textarea 
-              id="codeEditor" 
-              class="code-input" 
-              spellcheck="false" 
-              placeholder="# اكتب الكود هنا..."
-              oninput="updateLineNumbers(); updateStatus('تم التعديل...')"
-              onscroll="syncScroll()"
-              onkeydown="handleTab(event)"
-            ></textarea>
-          </div>
-        </div>
-
-        <!-- Output Section -->
-        <div class="output-section">
-          <div class="section-header">
-            <span class="section-title">المخرجات</span>
-            <button class="btn-icon-small" onclick="clearOutput()">🗑️</button>
-          </div>
-          <div id="output" class="output-display">
-            <div class="output-placeholder">
-              <p>انقر على تشغيل لرؤية المخرجات هنا.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Status Bar -->
-        <div class="status-bar">
-          <div class="status-left">
-            <span id="status" class="status-item">
-              <span class="status-dot ready"></span>
-              <span>جاهز</span>
-            </span>
-            <span id="pyStatus" class="status-item" style="display:none;">
-              <span class="status-dot loading"></span>
-              <span>تحميل Python...</span>
-            </span>
-          </div>
-          <div class="status-right">
-            <span>UTF-8</span>
-            <span class="separator">|</span>
-            <span id="cursorPos">سطر 1، عمود 1</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Info Section -->
-      <div class="info-section">
-        <h2> شغّل Python اون لاين في متصفحك</h2>
-        <p>
-          ساحة ومترجم Python مجانية اون لاين. اكتب Python في متصفحك، اضغط Run، ويعود الناتج خلال ثوانٍ.
-          بدون تثبيت، بدون تسجيل، وبدون إعداد Python محلي يقلقك.
-        </p>
-      </div>
     </div>
+
+    <!-- نصائح -->
+    <div class="tips">
+      <h3>💡 كيف يعمل؟</h3>
+      <ul>
+        <li><strong>Python:</strong> يدعم <code>print()</code> و <code>input()</code>.</li>
+        <li><strong>JavaScript:</strong> يدعم <code>console.log()</code>.</li>
+        <li><strong>HTML:</strong> يعرض النتيجة مباشرة.</li>
+      </ul>
+    </div>
+
   </main>
 
   <Footer />
-</body>
-</html>
 
-<style>
-  :root {
-    --bg: #1e1e1e;
-    --bg-secondary: #252526;
-    --bg-tertiary: #2d2d2d;
-    --text: #d4d4d4;
-    --text-muted: #858585;
-    --border: #3e3e3e;
-    --primary: #0e639c;
-    --primary-hover: #1177bb;
-    --success: #10b981;
-    --danger: #f44336;
-    --warning: #ffa500;
-    --accent: #007acc;
-    --editor-bg: #1e1e1e;
-    --editor-text: #d4d4d4;
-  }
-
-  [data-theme="light"] {
-    --bg: #ffffff;
-    --bg-secondary: #f3f3f3;
-    --bg-tertiary: #e8e8e8;
-    --text: #333333;
-    --text-muted: #666666;
-    --border: #e0e0e0;
-    --primary: #007acc;
-    --primary-hover: #005a9e;
-    --editor-bg: #f5f5f5;
-    --editor-text: #333333;
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { 
-    background: var(--bg); 
-    color: var(--text); 
-    font-family: 'Cairo', sans-serif; 
-    line-height: 1.6;
-    transition: background 0.3s, color 0.3s;
-  }
-  .container { max-width: 1400px; margin: 0 auto; padding: 0 1.5rem; }
-  .playground-main { padding: 2rem 0; min-height: 90vh; }
-
-  /* Header */
-  .playground-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1.5rem;
-    border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  .header-title h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.3rem; }
-  .header-title p { color: var(--text-muted); font-size: 0.95rem; }
-  .header-actions { display: flex; gap: 1rem; align-items: center; }
-  
-  .btn-secondary {
-    background: var(--bg-tertiary);
-    color: var(--text);
-    border: 1px solid var(--border);
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: inherit;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: 0.2s;
-  }
-  .btn-secondary:hover { background: var(--border); }
-  .dropdown-arrow { font-size: 0.7rem; }
-  
-  .btn-back {
-    color: var(--primary);
-    text-decoration: none;
-    font-weight: 600;
-    padding: 0.6rem 1.2rem;
-    border-radius: 6px;
-    transition: 0.2s;
-  }
-  .btn-back:hover { background: var(--bg-tertiary); }
-
-  /* Language Menu */
-  .language-menu {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 400px;
-    height: 100vh;
-    background: var(--bg-secondary);
-    border-left: 1px solid var(--border);
-    z-index: 1000;
-    overflow-y: auto;
-    box-shadow: -5px 0 20px rgba(0,0,0,0.3);
-  }
-  .menu-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .menu-header h3 { font-size: 1.3rem; }
-  .close-btn {
-    background: transparent;
-    border: none;
-    color: var(--text);
-    font-size: 2rem;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .menu-search { padding: 1rem 1.5rem; }
-  .menu-search input {
-    width: 100%;
-    padding: 0.8rem;
-    background: var(--bg-tertiary);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    color: var(--text);
-    font-family: inherit;
-    font-size: 0.95rem;
-  }
-  .menu-search input:focus { outline: 2px solid var(--primary); border-color: transparent; }
-  .languages-list { padding: 0 1rem 1rem; }
-  .lang-item {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    margin-bottom: 0.5rem;
-    background: var(--bg-tertiary);
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.2s;
-  }
-  .lang-item:hover { background: var(--border); }
-  .lang-item.active { background: var(--primary); color: white; }
-  .lang-icon { font-size: 1.5rem; width: 30px; text-align: center; }
-
-  /* Editor Wrapper */
-  .editor-wrapper {
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-  }
-
-  /* Toolbar */
-  .editor-toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 1.5rem;
-    background: var(--bg-tertiary);
-    border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  .file-info { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; }
-  .file-icon { font-size: 1.3rem; }
-  .toolbar-actions { display: flex; gap: 0.5rem; align-items: center; }
-  
-  .btn-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 6px;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    color: var(--text);
-    cursor: pointer;
-    transition: 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-  }
-  .btn-icon:hover { background: var(--border); }
-  
-  .btn-clear {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text);
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-family: inherit;
-    transition: 0.2s;
-  }
-  .btn-clear:hover { background: var(--danger); color: white; border-color: var(--danger); }
-  
-  .btn-run {
-    background: var(--primary);
-    color: white;
-    border: none;
-    padding: 0.7rem 2rem;
-    border-radius: 6px;
-    font-weight: 700;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: 0.2s;
-  }
-  .btn-run:hover { background: var(--primary-hover); transform: translateY(-2px); }
-  .btn-run:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-
-  /* STDIN Section */
-  .stdin-section { border-bottom: 1px solid var(--border); }
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.7rem 1.2rem;
-    background: var(--bg-tertiary);
-    font-size: 0.9rem;
-    font-weight: 600;
-  }
-  .section-title { display: flex; align-items: center; gap: 0.5rem; }
-  .lines-count { color: var(--text-muted); font-size: 0.85rem; }
-  .stdin-input {
-    width: 100%;
-    min-height: 100px;
-    background: var(--editor-bg);
-    color: var(--editor-text);
-    border: none;
-    border-top: 1px solid var(--border);
-    padding: 1rem;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.95rem;
-    resize: vertical;
-    outline: none;
-  }
-
-  /* Code Section */
-  .code-section { border-bottom: 1px solid var(--border); }
-  .editor-area { display: flex; min-height: 300px; }
-  .line-numbers {
-    width: 50px;
-    background: var(--bg-tertiary);
-    color: var(--text-muted);
-    font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
-    line-height: 1.6;
-    padding: 1rem 0.8rem;
-    text-align: left;
-    user-select: none;
-    border-left: 1px solid var(--border);
-  }
-  .code-input {
-    flex: 1;
-    background: var(--editor-bg);
-    color: var(--editor-text);
-    border: none;
-    padding: 1rem;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.95rem;
-    line-height: 1.6;
-    resize: none;
-    outline: none;
-    min-height: 300px;
-    tab-size: 2;
-  }
-
-  /* Output Section */
-  .output-section { }
-  .btn-icon-small {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 1.1rem;
-    padding: 0.3rem;
-  }
-  .btn-icon-small:hover { color: var(--danger); }
-  .output-display {
-    min-height: 200px;
-    background: var(--editor-bg);
-    padding: 1.5rem;
-    font-family: 'Fira Code', monospace;
-    font-size: 0.9rem;
-    overflow-y: auto;
-    color: var(--editor-text);
-    white-space: pre-wrap;
-    word-wrap: break-word;
-  }
-  .output-placeholder { color: var(--text-muted); text-align: center; padding: 3rem 1rem; }
-
-  /* Status Bar */
-  .status-bar {
-    padding: 0.6rem 1.5rem;
-    background: var(--bg-tertiary);
-    border-top: 1px solid var(--border);
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .status-left, .status-right { display: flex; align-items: center; gap: 1rem; }
-  .status-item { display: flex; align-items: center; gap: 0.5rem; }
-  .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
-  .status-dot.loading { background: var(--warning); animation: pulse 1s infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-  .separator { opacity: 0.4; }
-
-  /* Info Section */
-  .info-section {
-    margin-top: 3rem;
-    padding: 2rem;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-  }
-  .info-section h2 { font-size: 1.5rem; margin-bottom: 1rem; }
-  .info-section p { color: var(--text-muted); line-height: 1.8; margin-bottom: 1rem; }
-
-  /* Responsive */
-  @media (max-width: 768px) {
-    .playground-header { flex-direction: column; text-align: center; }
-    .header-actions { width: 100%; justify-content: center; }
-    .language-menu { width: 100%; }
-    .editor-toolbar { flex-direction: column; align-items: stretch; }
-    .toolbar-actions { justify-content: center; }
-    .btn-run { width: 100%; justify-content: center; }
-    .status-bar { flex-direction: column; text-align: center; gap: 0.5rem; }
-    .status-left, .status-right { justify-content: center; }
-  }
-</style>
-
-<script>
-  // Code Examples Database - Using Template Literals ONLY for data strings
-  const codeExamples = {
-    python: `# مرحباً بالعالم! 
-name = input("أدخل اسمك: ")
-age = int(input("أدخل عمرك: "))
-
-print(f"مرحباً {name}! عمرك {age} سنة.")
-print("🎉 أهلاً بك في Th.Tech!")`,
-
-    javascript: `// مرحباً بالعالم! 
-const name = prompt("أدخل اسمك:");
-const age = parseInt(prompt("أدخل عمرك:"));
-
-console.log(\`مرحباً \${name}! عمرك \${age} سنة.\`);
-console.log("🎉 أهلاً بك في Th.Tech!");`,
-
-    java: `// مرحباً بالعالم! 🌍
-import java.util.Scanner;
-
-public class Main {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        
-        System.out.print("أدخل اسمك: ");
-        String name = scanner.nextLine();
-        
-        System.out.print("أدخل عمرك: ");
-        int age = scanner.nextInt();
-        
-        System.out.println("مرحباً " + name + "! عمرك " + age + " سنة.");
-        System.out.println("🎉 أهلاً بك في Th.Tech!");
-    }
-}`,
-
-    cpp: `// مرحباً بالعالم! 
-#include <iostream>
-#include <string>
-using namespace std;
-
-int main() {
-    string name;
-    int age;
-    
-    cout << "أدخل اسمك: ";
-    getline(cin, name);
-    
-    cout << "أدخل عمرك: ";
-    cin >> age;
-    
-    cout << "مرحباً " << name << "! عمرك " << age << " سنة." << endl;
-    cout << "🎉 أهلاً بك في Th.Tech!" << endl;
-    
-    return 0;
-}`,
-
-    html: `<!-- مرحباً بالعالم!  -->
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <title>Th.Tech</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background: white;
-            padding: 3rem;
-            border-radius: 15px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            text-align: center;
-        }
-        h1 { color: #667eea; margin-bottom: 1rem; }
-        p { color: #666; font-size: 1.1rem; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>👋 مرحباً بك!</h1>
-        <p>أهلاً بك في Th.Tech - منصة المطورين</p>
-        <p>🎉 ابدأ رحلتك في البرمجة الآن!</p>
-    </div>
-</body>
-</html>`
-  };
-
-  const fileExtensions = {
-    python: 'py',
-    javascript: 'js',
-    java: 'java',
-    cpp: 'cpp',
-    html: 'html',
-    sql: 'sql'
-  };
-
-  const langIcons = {
-    python: '',
-    javascript: '📜',
-    java: '☕',
-    cpp: '⚡',
-    html: '',
-    sql: '🗄️'
-  };
-
-  let currentLang = 'python';
-  let pyodide = null;
-  let pyodideReady = false;
-
-  // Initialize Editor
-  function init() {
-    const editor = document.getElementById('codeEditor');
-    if (editor) {
-      editor.value = codeExamples.python;
-      updateLineNumbers();
-    }
-    loadPyodide();
-    
-    // Load saved theme
-    const saved = localStorage.getItem('theme') || 'dark';
-    document.documentElement.setAttribute('data-theme', saved);
-  }
-
-  // Toggle Language Menu
-  function toggleLanguageMenu() {
-    const menu = document.getElementById('languageMenu');
-    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-  }
-
-  // Filter Languages
-  function filterLanguages() {
-    const search = document.getElementById('langSearch').value.toLowerCase();
-    const items = document.querySelectorAll('.lang-item');
-    
-    items.forEach(item => {
-      const text = item.textContent.toLowerCase();
-      item.style.display = text.includes(search) ? 'flex' : 'none';
-    });
-  }
-
-  // Select Language
-  function selectLanguage(lang) {
-    currentLang = lang;
-    
-    // Update UI
-    document.getElementById('currentLang').textContent = 
-      lang.charAt(0).toUpperCase() + lang.slice(1);
-    document.getElementById('fileName').textContent = 'main.' + fileExtensions[lang];
-    document.querySelector('.file-icon').textContent = langIcons[lang] || '📄';
-    
-    // Update active state
-    document.querySelectorAll('.lang-item').forEach(item => {
-      item.classList.remove('active');
-      if (item.textContent.toLowerCase().includes(lang)) {
-        item.classList.add('active');
-      }
-    });
-    
-    // Load example
-    const editor = document.getElementById('codeEditor');
-    if (editor && codeExamples[lang]) {
-      editor.value = codeExamples[lang];
-      updateLineNumbers();
-    }
-    
-    // Show/hide Python status
-    const pyStatus = document.getElementById('pyStatus');
-    if (pyStatus) {
-      pyStatus.style.display = lang === 'python' ? 'flex' : 'none';
-    }
-    
-    clearOutput();
-    updateStatus('✅ جاهز');
-    toggleLanguageMenu();
-  }
-
-  // Load Pyodide for Python
-  async function loadPyodide() {
-    const status = document.getElementById('pyStatus');
-    try {
-      pyodide = await loadPyodide({ 
-        indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/" 
-      });
-      pyodideReady = true;
-      if (status) {
-        status.style.display = 'none';
-        updateStatus('✅ جاهز');
-      }
-    } catch(e) {
-      console.error('Pyodide error:', e);
-      if (status) {
-        status.querySelector('.status-dot').className = 'status-dot';
-        status.querySelector('span:last-child').textContent = 'فشل التحميل';
-        status.style.color = 'var(--danger)';
-      }
-    }
-  }
-
-  // Update Line Numbers
-  function updateLineNumbers() {
-    const editor = document.getElementById('codeEditor');
-    const lineNumbers = document.getElementById('lineNumbers');
-    if (!editor || !lineNumbers) return;
-    
-    const lines = editor.value.split('\n').length;
-    lineNumbers.innerHTML = Array(lines).fill(0).map((_, i) => i + 1).join('<br>');
-  }
-
-  // Update STDIN Lines
-  function updateStdinLines() {
-    const stdin = document.getElementById('stdinInput');
-    const linesCount = document.getElementById('stdinLines');
-    if (stdin && linesCount) {
-      const lines = stdin.value.split('\n').length;
-      // Using concatenation instead of template literal to avoid build errors
-      linesCount.textContent = 'أسطر ' + lines;
-    }
-  }
-
-  // Sync Scroll
-  function syncScroll() {
-    const editor = document.getElementById('codeEditor');
-    const lineNumbers = document.getElementById('lineNumbers');
-    if (lineNumbers) lineNumbers.scrollTop = editor.scrollTop;
-  }
-
-  // Handle Tab Key
-  function handleTab(e) {
-    if (e.key === 'Tab') {
-      e.preventDefault();
-      const textarea = e.target;
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      
-      textarea.value = textarea.value.substring(0, start) + '    ' + textarea.value.substring(end);
-      textarea.selectionStart = textarea.selectionEnd = start + 4;
-      updateLineNumbers();
-    }
-    
-    // Update cursor position
-    updateCursorPosition(e);
-  }
-
-  // Update Cursor Position
-  function updateCursorPosition(e) {
-    const editor = e.target;
-    const cursorPos = document.getElementById('cursorPos');
-    if (cursorPos) {
-      const text = editor.value.substring(0, editor.selectionStart);
-      const lines = text.split('\n');
-      const line = lines.length;
-      const column = lines[lines.length - 1].length + 1;
-      // Using concatenation instead of template literal
-      cursorPos.textContent = 'سطر ' + line + '، عمود ' + column;
-    }
-  }
-
-  // Execute Code
-  async function runCode() {
-    const code = document.getElementById('codeEditor').value;
-    const stdin = document.getElementById('stdinInput').value;
-    const output = document.getElementById('output');
-    const btn = document.getElementById('runBtn');
-    
-    if (!code.trim()) {
-      output.innerHTML = '<div style="color:var(--warning); padding:1rem; text-align:center;">⚠️ يرجى كتابة كود أولاً</div>';
-      return;
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg-secondary: #161b22;
+      --bg-tertiary: #21262d;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --text-muted: #8b949e;
+      --primary: #238636; /* Green for Run button like GitHub */
+      --primary-hover: #2ea043;
+      --accent: #58a6ff;
+      --danger: #f85149;
+      --font-code: 'Fira Code', monospace;
+      --font-main: 'Cairo', sans-serif;
     }
 
-    output.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:2rem;">⏳ جاري التنفيذ...</div>';
-    btn.disabled = true;
-
-    try {
-      if (currentLang === 'python') {
-        await runPython(code, stdin, output);
-      } else if (currentLang === 'javascript') {
-        await runJavaScript(code, output);
-      } else if (currentLang === 'html') {
-        output.innerHTML = code;
-      } else {
-        // For other languages, show preview message
-        // Using concatenation
-        output.innerHTML = '<div style="color:var(--warning); padding:1rem; text-align:center;">' +
-          '👁️ ' + currentLang.toUpperCase() + ' - معاينة الكود<br>' +
-          '<small>التنفيذ الفعلي يتطلب بيئة تشغيل خاصة</small>' +
-          '</div>';
-      }
-      updateStatus('✅ تم التنفيذ');
-    } catch (err) {
-      // Using concatenation
-      output.innerHTML = '<span style="color:var(--danger)">❌ خطأ: ' + err.message + '</span>';
-      updateStatus(' حدث خطأ');
-    } finally {
-      btn.disabled = false;
+    /* Light Mode Variables (optional toggle later) */
+    html.light {
+      --bg: #ffffff;
+      --bg-secondary: #f6f8fa;
+      --bg-tertiary: #eaeef2;
+      --border: #d0d7de;
+      --text: #1f2328;
+      --text-muted: #656d76;
     }
-  }
 
-  // Run JavaScript
-  async function runJavaScript(code, output) {
-    const logs = [];
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     
-    const customConsole = {
-      log: (...args) => {
-        logs.push(args.map(arg => {
-          if (typeof arg === 'object') {
-            try { return JSON.stringify(arg, null, 2); }
-            catch (e) { return String(arg); }
-          }
-          return String(arg);
-        }).join(' '));
-      },
-      error: (...args) => logs.push(' ' + args.join(' ')),
-      warn: (...args) => logs.push('⚠️ ' + args.join(' '))
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-main);
+      line-height: 1.6;
+    }
+
+    .playground-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+
+    /* Header */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1rem;
+    }
+    .page-header h1 { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
+    .page-header p { color: var(--text-muted); }
+
+    .header-actions { display: flex; gap: 1rem; align-items: center; }
+    select {
+      background: var(--bg-secondary);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-family: var(--font-main);
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-outline {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      transition: 0.2s;
+    }
+    .btn-outline:hover { background: var(--bg-secondary); }
+
+    /* IDE Wrapper */
+    .ide-wrapper {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    /* Toolbar */
+    .toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border);
+    }
+    .file-info { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-code); font-size: 0.9rem; }
+    .actions { display: flex; gap: 0.5rem; }
+    
+    .btn-tool {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: 0.2s;
+    }
+    .btn-tool:hover { color: var(--text); border-color: var(--text-muted); }
+
+    .btn-run {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      border-radius: 6px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: 0.2s;
+    }
+    .btn-run:hover { background: var(--primary-hover); transform: translateY(-1px); }
+    .btn-run:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Input Area */
+    .stdin-container {
+      padding: 1rem;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .stdin-container label { color: var(--text-muted); font-size: 0.9rem; font-weight: 600; }
+    .stdin-container input {
+      flex: 1;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem;
+      border-radius: 4px;
+      font-family: var(--font-code);
+    }
+    .stdin-container input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+
+    /* Editor & Output Grid */
+    .editor-pane, .output-pane {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Desktop Layout: Side by Side */
+    @media (min-width: 768px) {
+      .ide-body { display: grid; grid-template-columns: 1fr 1fr; min-height: 500px; }
+      .editor-pane { border-left: 1px solid var(--border); } /* RTL border logic */
+    }
+    /* Mobile Layout: Stacked */
+    @media (max-width: 767px) {
+      .ide-body { display: flex; flex-direction: column; }
+    }
+
+    .editor-pane textarea {
+      width: 100%;
+      height: 100%;
+      min-height: 300px;
+      background: var(--bg);
+      color: #e6edf3;
+      border: none;
+      padding: 1.5rem;
+      font-family: var(--font-code);
+      font-size: 1rem;
+      line-height: 1.5;
+      resize: vertical;
+      outline: none;
+      tab-size: 2;
+    }
+    .editor-pane textarea::placeholder { color: #484f58; }
+
+    .output-pane {
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+      min-height: 200px;
+    }
+    .output-header {
+      padding: 0.8rem 1rem;
+      background: var(--bg-tertiary);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .status-ready { color: var(--primary); }
+    .status-running { color: var(--accent); }
+    .status-error { color: var(--danger); }
+
+    .output-content {
+      padding: 1.5rem;
+      font-family: var(--font-code);
+      font-size: 0.95rem;
+      white-space: pre-wrap;
+      word-break: break-all;
+      color: var(--text);
+      overflow-y: auto;
+      min-height: 150px;
+    }
+    .placeholder { color: var(--text-muted); text-align: center; margin-top: 2rem; }
+
+    /* Tips */
+    .tips { margin-top: 2rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border); }
+    .tips h3 { margin-bottom: 1rem; color: var(--accent); }
+    .tips ul { padding-right: 1.5rem; color: var(--text-muted); }
+    .tips li { margin-bottom: 0.5rem; }
+    code { background: var(--bg-tertiary); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: var(--font-code); font-size: 0.85rem; }
+
+  </style>
+
+  <script>
+    // Configuration
+    const examples = {
+      python: `print("مرحباً بك في Th.Tech!")\nname = input("أدخل اسمك: ")\nprint("أهلاً " + name + "! ")`,
+      javascript: `console.log("مرحباً بك في Th.Tech!");\nconst name = prompt("أدخل اسمك:");\nconsole.log("أهلاً " + name + "! 👋");`,
+      html: `<h1 style="color: cyan; text-align: center;">مرحباً!</h1>\n<p style="text-align: center;">هذا مثال HTML/CSS</p>`
     };
-    
-    try {
-      // Using concatenation for wrappedCode to avoid template literal parsing issues in Astro
-      const wrappedCode = '(function(console) { ' + code + ' })(arguments[0])';
-      const fn = new Function('console', wrappedCode);
-      fn(customConsole);
-      
-      if (logs.length > 0) {
-        output.textContent = logs.join('\n');
-      } else {
-        output.innerHTML = '<div style="color:var(--success); padding:1.5rem; text-align:center;">✅ تم التنفيذ بنجاح<br><small>(لا توجد مخرجات)</small></div>';
-      }
-    } catch (error) {
-      throw error;
-    }
-  }
 
-  // Run Python via Pyodide
-  async function runPython(code, stdin, output) {
-    if (!pyodideReady) {
-      output.innerHTML = '<div style="color:var(--warning); padding:1rem; text-align:center;">⏳ جاري تحميل Python...<br><small>قد يستغرق بضع ثوانٍ</small></div>';
-      await loadPyodide();
-      if (!pyodideReady) {
-        throw new Error('فشل تحميل Python. يرجى تحديث الصفحة.');
+    let pyodide = null;
+    let pyodideReady = false;
+
+    // Initialize
+    function init() {
+      const editor = document.getElementById('codeEditor');
+      editor.value = examples.python;
+      
+      // Load Pyodide asynchronously
+      loadPyodide().then(() => {
+        console.log("Pyodide loaded");
+      }).catch(err => console.error(err));
+    }
+
+    // Load Python Environment
+    async function loadPyodide() {
+      try {
+        pyodide = await loadPyodide({
+          indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
+        });
+        pyodideReady = true;
+      } catch (e) {
+        console.error("Failed to load Pyodide", e);
       }
     }
-    
-    let result = '';
-    
-    try {
-      // Set up stdin
-      if (stdin) {
-        const inputLines = stdin.split('\n');
-        let inputIndex = 0;
-        
-        pyodide.setStdin({
-          stdin: () => {
-            if (inputIndex < inputLines.length) {
-              return inputLines[inputIndex++];
-            }
-            return '';
-          }
-        });
+
+    // Change Language
+    function changeLanguage() {
+      const lang = document.getElementById('langSelect').value;
+      const editor = document.getElementById('codeEditor');
+      const fileName = document.getElementById('fileName');
+      const icon = document.querySelector('.file-info .icon');
+      const stdinBox = document.getElementById('stdinBox');
+
+      // Update UI
+      editor.value = examples[lang] || "";
+      fileName.textContent = lang === 'html' ? 'index.html' : 'main.' + (lang === 'javascript' ? 'js' : 'py');
+      
+      // Update Icon & Input Visibility
+      if (lang === 'python') {
+        icon.textContent = '🐍';
+        stdinBox.style.display = 'flex'; // Show input for python
+      } else if (lang === 'javascript') {
+        icon.textContent = '';
+        stdinBox.style.display = 'none'; // JS uses prompt()
+      } else {
+        icon.textContent = '🌐';
+        stdinBox.style.display = 'none';
       }
       
-      pyodide.setStdout({
-        batched: (msg) => {
-          result += msg;
+      clearOutput();
+    }
+
+    // Run Code Logic
+    async function runCode() {
+      const code = document.getElementById('codeEditor').value;
+      const lang = document.getElementById('langSelect').value;
+      const output = document.getElementById('output');
+      const status = document.getElementById('statusText');
+      const runBtn = document.getElementById('runBtn');
+
+      if (!code.trim()) return;
+
+      // UI State: Running
+      output.innerHTML = '';
+      status.textContent = 'جاري التنفيذ...';
+      status.className = 'status-running';
+      runBtn.disabled = true;
+
+      try {
+        if (lang === 'javascript') {
+          await runJS(code, output);
+        } else if (lang === 'html') {
+          output.innerHTML = code;
+        } else if (lang === 'python') {
+          await runPython(code, output);
         }
-      });
+        status.textContent = 'تم بنجاح ✅';
+        status.className = 'status-ready';
+      } catch (err) {
+        output.innerHTML = `<span style="color: #f85149">❌ خطأ: ${err.message}</span>`;
+        status.textContent = 'خطأ';
+        status.className = 'status-error';
+      } finally {
+        runBtn.disabled = false;
+      }
+    }
+
+    // Execute JavaScript
+    function runJS(code, output) {
+      let logs = [];
+      // Override console.log
+      const customConsole = {
+        log: (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ')),
+        error: (...args) => logs.push('Error: ' + args.join(' '))
+      };
       
+      // Wrap code to capture output
+      const wrapped = `(function(console) { ${code} })(customConsole);`;
+      const fn = new Function('customConsole', wrapped);
+      fn(customConsole);
+
+      output.textContent = logs.join('\n') || '(لا توجد مخرجات)';
+    }
+
+    // Execute Python
+    async function runPython(code, output) {
+      if (!pyodideReady) {
+        output.textContent = ' جاري تحميل بيئة Python... (قد يستغرق لحظات)';
+        await loadPyodide();
+        if (!pyodideReady) throw new Error("فشل تحميل Python");
+      }
+
+      let result = "";
+      
+      // Setup Stdin
+      const inputVal = document.getElementById('stdinInput').value;
+      if (inputVal) {
+        pyodide.setStdin({ stdin: () => inputVal });
+      }
+
+      // Capture Stdout
+      pyodide.setStdout({
+        batched: (msg) => { result += msg + "\n"; }
+      });
+
+      // Run
       await pyodide.runPythonAsync(code);
       
-      if (result.trim()) {
-        output.textContent = result;
-      } else {
-        output.innerHTML = '<div style="color:var(--success); padding:1.5rem; text-align:center;">✅ تم التنفيذ بنجاح<br><small>(لا توجد مخرجات)</small></div>';
-      }
-    } catch (error) {
-      throw error;
+      output.textContent = result.trim() || '(لا توجد مخرجات)';
     }
-  }
 
-  // Clear Output
-  function clearOutput() {
-    const output = document.getElementById('output');
-    if (output) {
-      output.innerHTML = '<div class="output-placeholder"><p>انقر على تشغيل لرؤية المخرجات هنا.</p></div>';
+    // Utilities
+    function clearOutput() {
+      document.getElementById('output').innerHTML = '<div class="placeholder">اضغط "تشغيل" لرؤية النتيجة...</div>';
+      document.getElementById('statusText').textContent = 'جاهز';
+      document.getElementById('statusText').className = 'status-ready';
     }
-    updateStatus('✅ جاهز');
-  }
 
-  // Reset Code
-  function resetCode() {
-    const editor = document.getElementById('codeEditor');
-    if (editor && codeExamples[currentLang]) {
-      editor.value = codeExamples[currentLang];
-      updateLineNumbers();
-      clearOutput();
-      updateStatus('🔄 تم الإعادة');
+    function resetCode() {
+      changeLanguage(); // Reloads example
     }
-  }
 
-  // Copy Code
-  async function copyCode() {
-    const editor = document.getElementById('codeEditor');
-    if (editor) {
-      try {
-        await navigator.clipboard.writeText(editor.value);
-        updateStatus(' تم النسخ');
-        setTimeout(() => updateStatus('✅ جاهز'), 2000);
-      } catch (err) {
-        updateStatus('❌ فشل النسخ');
-      }
+    function copyCode() {
+      const code = document.getElementById('codeEditor').value;
+      navigator.clipboard.writeText(code);
+      alert('تم نسخ الكود!');
     }
-  }
 
-  // Update Status
-  function updateStatus(message) {
-    const status = document.getElementById('status');
-    if (status) {
-      const parts = message.split(' ');
-      const iconClass = parts[0] === '✅' ? 'ready' : '';
-      const text = parts.slice(1).join(' ') || 'جاهز';
-      // Using concatenation
-      status.innerHTML = '<span class="status-dot ' + iconClass + '"></span><span>' + text + '</span>';
-    }
-  }
-
-  // Keyboard Shortcuts
-  document.addEventListener('keydown', (e) => {
-    if (e.target.id === 'codeEditor') {
-      if (e.ctrlKey && e.key === 'Enter') {
-        e.preventDefault();
-        runCode();
-      }
-      updateCursorPosition(e);
-    }
-  });
-
-  // Initialize on load
-  if (document.readyState === 'loading') {
+    // Run on Load
     document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-</script>
+  </script>
+</body>
+</html>
