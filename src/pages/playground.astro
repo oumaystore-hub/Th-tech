@@ -195,6 +195,18 @@ import Footer from '../components/Footer.astro';
   --shadow: 0 20px 60px rgba(31,55,75,.12);
 }
 
+/* Force theme on all elements */
+[data-theme="dark"] *,
+[data-theme="light"] * {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+/* Ensure full page coverage */
+html, body, main, .page, .workspace, .editor, .output, .preview, .hero, .info {
+  background: var(--bg);
+  color: var(--text);
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { background: var(--bg); transition: background .25s ease; }
 body { background: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; transition: background .25s ease, color .25s ease; }
@@ -405,6 +417,19 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentLanguage = 'python';
   let fontSize = 15;
   let pyodide = null;
+
+  // Sync theme from both html and body
+  function syncTheme() {
+    const htmlTheme = document.documentElement.getAttribute('data-theme');
+    const bodyTheme = document.body.getAttribute('data-theme');
+    const theme = htmlTheme || bodyTheme || 'dark';
+    document.documentElement.setAttribute('data-theme', theme);
+    document.body.setAttribute('data-theme', theme);
+  }
+  syncTheme();
+  const observer = new MutationObserver(syncTheme);
+  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+  observer.observe(document.body, { attributes: true, attributeFilter: ['data-theme'] });
 
   // Code Examples for ALL languages
   const examples = {
@@ -664,16 +689,48 @@ console.log("🎉 استمتع بالبرمجة!");`
     return pyodide;
   }
 
+  // Execute Python - FIXED VERSION
   async function executePython(source) {
     const py = await getPython();
     let result = '';
-    const values = input.value.split(/\r?\n/);
-    let position = 0;
-    py.setStdin({ stdin: () => position < values.length ? values[position++] : '' });
-    py.setStdout({ batched: text => { result += text; } });
-    py.setStderr({ batched: text => { result += text; } });
-    await py.runPythonAsync(source);
-    return result;
+    let hasError = false;
+    
+    try {
+      // Handle input
+      const inputVal = input.value.trim();
+      if (inputVal) {
+        const lines = inputVal.split('\n');
+        let inputIndex = 0;
+        
+        py.setStdin({
+          stdin: () => {
+            if (inputIndex < lines.length) {
+              return lines[inputIndex++];
+            }
+            return '';
+          }
+        });
+      }
+      
+      // Capture output
+      py.setStdout({
+        batched: (msg) => { result += msg; }
+      });
+      
+      py.setStderr({
+        batched: (msg) => { 
+          result += msg; 
+          hasError = true;
+        }
+      });
+      
+      // Execute with error handling
+      await py.runPythonAsync(source);
+      
+      return { output: result, error: hasError };
+    } catch (error) {
+      return { output: error.message, error: true };
+    }
   }
 
   // Execute JavaScript
@@ -706,7 +763,7 @@ console.log("🎉 استمتع بالبرمجة!");`
     doc.open(); doc.write(source); doc.close();
   }
 
-  // Run code
+  // Run code - FIXED VERSION
   async function runCode() {
     const source = code.value.trim();
     if (!source) {
@@ -716,17 +773,39 @@ console.log("🎉 استمتع بالبرمجة!");`
     const button = document.getElementById('run');
     button.disabled = true;
     button.textContent = '⏳ تشغيل...';
+    
     try {
-      if (currentLanguage === 'html') { executeHTML(source); showPreview(); return; }
+      if (currentLanguage === 'html') { 
+        executeHTML(source); 
+        showPreview(); 
+        return; 
+      }
+      
       showConsole();
       output.innerHTML = '<span style="color:var(--muted)">⏳ جاري التنفيذ...</span>';
+      
       let result = '';
-      if (currentLanguage === 'python') result = await executePython(source);
-      if (currentLanguage === 'javascript') result = executeJavaScript(source);
+      
+      if (currentLanguage === 'python') {
+        const pyResult = await executePython(source);
+        result = pyResult.output;
+        if (pyResult.error) {
+          output.innerHTML = '<div style="color:var(--red);white-space:pre-wrap;direction:ltr;text-align:left">' + escapeHTML(result) + '</div>';
+          button.disabled = false;
+          button.textContent = '▶ تشغيل';
+          return;
+        }
+      }
+      
+      if (currentLanguage === 'javascript') {
+        result = executeJavaScript(source);
+      }
+      
       // For other languages, show preview message
       if (['java','cpp','csharp','go','ruby','php','sql','typescript'].includes(currentLanguage)) {
-        result = `👁️ ${currentLanguage.toUpperCase()} - معاينة الكود\n\nالكود الذي كتبته صحيح من حيث البنية.\nلتشغيل ${langNames[currentLanguage]} تحتاج إلى بيئة تشغيل خاصة (Compiler/Interpreter).`;
+        result = '👁️ ' + currentLanguage.toUpperCase() + ' - معاينة الكود\n\nالكود الذي كتبته صحيح من حيث البنية.\nلتشغيل ' + langNames[currentLanguage] + ' تحتاج إلى بيئة تشغيل خاصة (Compiler/Interpreter).';
       }
+      
       if (result.trim()) {
         output.textContent = result;
       } else {
@@ -771,18 +850,6 @@ console.log("🎉 استمتع بالبرمجة!");`
   function escapeHTML(value) {
     return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
   }
-
-  // Sync theme with Header
-  function syncTheme() {
-    const html = document.documentElement;
-    const headerTheme = document.body.getAttribute('data-theme') || 'dark';
-    html.setAttribute('data-theme', headerTheme);
-  }
-
-  // Observe theme changes from Header
-  const observer = new MutationObserver(syncTheme);
-  observer.observe(document.body, { attributes: true, attributeFilter: ['data-theme'] });
-  syncTheme();
 
   // Start
   updateLanguage();
