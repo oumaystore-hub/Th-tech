@@ -10,6 +10,10 @@ import Footer from '../components/Footer.astro';
   <link rel="icon" type="image/png" href="/Th-tech/logo1.png" />
   <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
 </head>
 <body>
   <Header />
@@ -18,14 +22,94 @@ import Footer from '../components/Footer.astro';
     <div class="container">
       <!-- Header -->
       <div class="playground-header">
-        <div>
-          <h1> مختبر الأكواد التفاعلي</h1>
-          <p>بيئة تنفيذ آمنة تدعم JavaScript، Python، HTML/CSS والمزيد</p>
+        <div class="header-title">
+          <h1>💻 مختبر الأكواد التفاعلي</h1>
+          <p>اكتب الأكواد البرمجية، شغّلها وشاركها - بدون أي إعداد</p>
         </div>
-        <a href="/Th-tech/" class="btn-back">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          العودة للرئيسية
-        </a>
+        <div class="header-actions">
+          <button class="btn-secondary" onclick="toggleLanguageMenu()">
+            <span id="currentLang">Python</span>
+            <span class="dropdown-arrow">▼</span>
+          </button>
+          <a href="/Th-tech/" class="btn-back">العودة للرئيسية</a>
+        </div>
+      </div>
+
+      <!-- Language Menu Modal -->
+      <div id="languageMenu" class="language-menu" style="display: none;">
+        <div class="menu-header">
+          <h3>قائمة اللغات</h3>
+          <button class="close-btn" onclick="toggleLanguageMenu()">×</button>
+        </div>
+        <div class="menu-search">
+          <input type="text" placeholder="ابحث عن لغة..." id="langSearch" oninput="filterLanguages()" />
+        </div>
+        <div class="languages-list">
+          <div class="lang-item active" onclick="selectLanguage('python')">
+            <span class="lang-icon">🐍</span>
+            <span>Python</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('javascript')">
+            <span class="lang-icon">📜</span>
+            <span>JavaScript</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('java')">
+            <span class="lang-icon">☕</span>
+            <span>Java</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('cpp')">
+            <span class="lang-icon"></span>
+            <span>C++</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('typescript')">
+            <span class="lang-icon"></span>
+            <span>TypeScript</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('c')">
+            <span class="lang-icon">️</span>
+            <span>C</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('csharp')">
+            <span class="lang-icon"></span>
+            <span>C#</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('go')">
+            <span class="lang-icon"></span>
+            <span>Go</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('ruby')">
+            <span class="lang-icon">💎</span>
+            <span>Ruby</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('rust')">
+            <span class="lang-icon"></span>
+            <span>Rust</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('php')">
+            <span class="lang-icon">🐘</span>
+            <span>PHP</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('dart')">
+            <span class="lang-icon"></span>
+            <span>Dart</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('lua')">
+            <span class="lang-icon"></span>
+            <span>Lua</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('swift')">
+            <span class="lang-icon">🦅</span>
+            <span>Swift</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('sql')">
+            <span class="lang-icon">🗄️</span>
+            <span>SQL</span>
+          </div>
+          <div class="lang-item" onclick="selectLanguage('html')">
+            <span class="lang-icon">🌐</span>
+            <span>Web (HTML/CSS)</span>
+          </div>
+        </div>
       </div>
 
       <!-- Editor Container -->
@@ -33,77 +117,61 @@ import Footer from '../components/Footer.astro';
         
         <!-- Toolbar -->
         <div class="editor-toolbar">
-          <div class="lang-tabs">
-            <button class="lang-tab active" data-lang="javascript" onclick="switchLang('javascript')">
-              <span class="lang-dot js"></span> JavaScript
-            </button>
-            <button class="lang-tab" data-lang="python" onclick="switchLang('python')">
-              <span class="lang-dot py"></span> Python
-            </button>
-            <button class="lang-tab" data-lang="html" onclick="switchLang('html')">
-              <span class="lang-dot html"></span> HTML/CSS
-            </button>
+          <div class="file-info">
+            <span class="file-icon"></span>
+            <span class="file-name" id="fileName">main.py</span>
           </div>
-          
           <div class="toolbar-actions">
-            <button class="btn-icon" onclick="copyCode()" title="نسخ الكود (Ctrl+C)">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-            </button>
-            <button class="btn-icon" onclick="resetCode()" title="إعادة الكود الافتراضي">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
-            </button>
+            <button class="btn-icon" onclick="copyCode()" title="نسخ">📋</button>
+            <button class="btn-icon" onclick="resetCode()" title="إعادة تعيين">🔄</button>
+            <button class="btn-clear" onclick="clearOutput()">مسح</button>
             <button class="btn-run" id="runBtn" onclick="runCode()">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-              <span id="runText">تشغيل الكود</span>
+              <span>▶ تشغيل</span>
             </button>
           </div>
         </div>
 
-        <!-- Editor Split View -->
-        <div class="editor-grid">
-          
-          <!-- Code Editor Pane -->
-          <div class="code-pane">
-            <div class="pane-header">
-              <div class="file-info">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                <span id="fileName">script.js</span>
-              </div>
-              <span class="lang-badge" id="langBadge">JS</span>
-            </div>
-            <div class="editor-area">
-              <textarea 
-                id="codeEditor" 
-                class="code-input" 
-                spellcheck="false" 
-                placeholder="// اكتب الكود هنا..."
-                oninput="updateStatus('تم التعديل...')"
-                onkeydown="handleTab(event)"
-              ></textarea>
+        <!-- STDIN Section -->
+        <div class="stdin-section">
+          <div class="section-header">
+            <span class="section-title">STDIN</span>
+            <span class="lines-count" id="stdinLines">أسطر 0</span>
+          </div>
+          <textarea 
+            id="stdinInput" 
+            class="stdin-input" 
+            placeholder="أدخل المدخلات هنا (اختياري)..."
+            oninput="updateStdinLines()"
+          ></textarea>
+        </div>
+
+        <!-- Code Editor -->
+        <div class="code-section">
+          <div class="editor-area">
+            <div class="line-numbers" id="lineNumbers">1</div>
+            <textarea 
+              id="codeEditor" 
+              class="code-input" 
+              spellcheck="false" 
+              placeholder="# اكتب الكود هنا..."
+              oninput="updateLineNumbers(); updateStatus('تم التعديل...')"
+              onscroll="syncScroll()"
+              onkeydown="handleTab(event)"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Output Section -->
+        <div class="output-section">
+          <div class="section-header">
+            <span class="section-title">المخرجات</span>
+            <button class="btn-icon-small" onclick="clearOutput()">🗑️</button>
+          </div>
+          <div id="output" class="output-display">
+            <div class="output-placeholder">
+              <p>انقر على تشغيل لرؤية المخرجات هنا.</p>
             </div>
           </div>
-          
-          <!-- Output Pane -->
-          <div class="output-pane">
-            <div class="pane-header">
-              <div class="output-title">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-                <span>المخرجات</span>
-              </div>
-              <button class="btn-clear" onclick="clearOutput()">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-                مسح
-              </button>
-            </div>
-            <div id="output" class="output-display">
-              <div class="output-placeholder">
-                <div class="placeholder-icon">🚀</div>
-                <p>اضغط "تشغيل الكود" لرؤية النتيجة</p>
-                <small>أو استخدم Ctrl+Enter</small>
-              </div>
-            </div>
-          </div>
-          
         </div>
 
         <!-- Status Bar -->
@@ -121,22 +189,23 @@ import Footer from '../components/Footer.astro';
           <div class="status-right">
             <span>UTF-8</span>
             <span class="separator">|</span>
-            <span>Ctrl+Enter للتشغيل</span>
+            <span id="cursorPos">سطر 1، عمود 1</span>
           </div>
         </div>
       </div>
 
-      <!-- Languages Support Info -->
-      <div class="languages-info">
-        <h3>🌐 اللغات المدعومة:</h3>
-        <div class="lang-chips">
-          <span class="lang-chip supported">✅ JavaScript</span>
-          <span class="lang-chip supported">✅ Python (Pyodide)</span>
-          <span class="lang-chip supported">✅ HTML/CSS</span>
-          <span class="lang-chip preview">👁️ Java (معاينة)</span>
-          <span class="lang-chip preview">👁️ C++ (معاينة)</span>
-          <span class="lang-chip preview">👁️ SQL (معاينة)</span>
-        </div>
+      <!-- Info Section -->
+      <div class="info-section">
+        <h2>🐍 شغّل Python اون لاين في متصفحك</h2>
+        <p>
+          ساحة ومترجم Python مجانية اون لاين. اكتب Python في متصفحك، اضغط Run، ويعود الناتج خلال ثوانٍ.
+          بدون تثبيت، بدون تسجيل، وبدون إعداد Python محلي يقلقك.
+        </p>
+        <p>
+          المحرر مبني على نفس محرك VS Code، فتحصل على تلوين بنية الكود، إكمال تلقائي، وتنبيهات للأخطاء.
+          يعمل على الخادم في بيئة Python 3 معزولة - سواء كنت تتحقق من list comprehension، أو تجرب regex، 
+          أو تنفّذ تمرينًا من درس، هذا المُجمّع الفوري لـ Python ينقلك من الفكرة إلى الناتج في ثوانٍ.
+        </p>
       </div>
     </div>
   </main>
@@ -147,43 +216,43 @@ import Footer from '../components/Footer.astro';
 
 <style>
   :root {
-    --bg: #ffffff;
-    --bg-secondary: #f8fafc;
-    --bg-tertiary: #f1f5f9;
-    --text: #0f172a;
-    --text-muted: #64748b;
-    --border: #e2e8f0;
-    --primary: #2563eb;
-    --primary-hover: #1d4ed8;
+    --bg: #1e1e1e;
+    --bg-secondary: #252526;
+    --bg-tertiary: #2d2d2d;
+    --text: #d4d4d4;
+    --text-muted: #858585;
+    --border: #3e3e3e;
+    --primary: #0e639c;
+    --primary-hover: #1177bb;
     --success: #10b981;
-    --danger: #ef4444;
-    --warning: #f59e0b;
-    --card-bg: #ffffff;
-    --editor-bg: #1e293b;
-    --editor-gutter: #0f172a;
-    --editor-text: #e2e8f0;
-    --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-    --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.1);
+    --danger: #f44336;
+    --warning: #ffa500;
+    --accent: #007acc;
+    --editor-bg: #1e1e1e;
+    --editor-text: #d4d4d4;
   }
 
-  [data-theme="dark"] {
-    --bg: #0b1120;
-    --bg-secondary: #0f172a;
-    --bg-tertiary: #1e293b;
-    --text: #f1f5f9;
-    --text-muted: #94a3b8;
-    --border: #334155;
-    --primary: #3b82f6;
-    --primary-hover: #2563eb;
-    --card-bg: #1e293b;
-    --editor-bg: #0d1117;
-    --editor-gutter: #010409;
-    --shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
-    --shadow-lg: 0 20px 25px -5px rgba(0,0,0,0.5);
+  [data-theme="light"] {
+    --bg: #ffffff;
+    --bg-secondary: #f3f3f3;
+    --bg-tertiary: #e8e8e8;
+    --text: #333333;
+    --text-muted: #666666;
+    --border: #e0e0e0;
+    --primary: #007acc;
+    --primary-hover: #005a9e;
+    --editor-bg: #f5f5f5;
+    --editor-text: #333333;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; line-height: 1.6; transition: background 0.3s, color 0.3s; }
+  body { 
+    background: var(--bg); 
+    color: var(--text); 
+    font-family: 'Cairo', sans-serif; 
+    line-height: 1.6;
+    transition: background 0.3s, color 0.3s;
+  }
   .container { max-width: 1400px; margin: 0 auto; padding: 0 1.5rem; }
   .playground-main { padding: 2rem 0; min-height: 90vh; }
 
@@ -191,35 +260,112 @@ import Footer from '../components/Footer.astro';
   .playground-header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     margin-bottom: 2rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--border);
     flex-wrap: wrap;
     gap: 1rem;
   }
-  .playground-header h1 { font-size: 1.8rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; }
-  .playground-header p { color: var(--text-muted); margin-top: 0.3rem; font-size: 1rem; }
+  .header-title h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .header-title p { color: var(--text-muted); font-size: 0.95rem; }
+  .header-actions { display: flex; gap: 1rem; align-items: center; }
+  
+  .btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: 0.2s;
+  }
+  .btn-secondary:hover { background: var(--border); }
+  .dropdown-arrow { font-size: 0.7rem; }
+  
   .btn-back {
     color: var(--primary);
     text-decoration: none;
     font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
     transition: 0.2s;
   }
   .btn-back:hover { background: var(--bg-tertiary); }
 
+  /* Language Menu */
+  .language-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 400px;
+    height: 100vh;
+    background: var(--bg-secondary);
+    border-left: 1px solid var(--border);
+    z-index: 1000;
+    overflow-y: auto;
+    box-shadow: -5px 0 20px rgba(0,0,0,0.3);
+  }
+  .menu-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .menu-header h3 { font-size: 1.3rem; }
+  .close-btn {
+    background: transparent;
+    border: none;
+    color: var(--text);
+    font-size: 2rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .menu-search { padding: 1rem 1.5rem; }
+  .menu-search input {
+    width: 100%;
+    padding: 0.8rem;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.95rem;
+  }
+  .menu-search input:focus { outline: 2px solid var(--primary); border-color: transparent; }
+  .languages-list { padding: 0 1rem 1rem; }
+  .lang-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+  .lang-item:hover { background: var(--border); }
+  .lang-item.active { background: var(--primary); color: white; }
+  .lang-icon { font-size: 1.5rem; width: 30px; text-align: center; }
+
   /* Editor Wrapper */
   .editor-wrapper {
-    background: var(--card-bg);
+    background: var(--bg-secondary);
     border: 1px solid var(--border);
-    border-radius: 16px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: var(--shadow-lg);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
   }
 
   /* Toolbar */
@@ -233,135 +379,124 @@ import Footer from '../components/Footer.astro';
     flex-wrap: wrap;
     gap: 1rem;
   }
-
-  .lang-tabs { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-  .lang-tab {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    background: transparent;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text-muted);
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-family: inherit;
-    font-size: 0.9rem;
-  }
-  .lang-tab:hover { border-color: var(--primary); color: var(--text); }
-  .lang-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
-  
-  .lang-dot { width: 10px; height: 10px; border-radius: 50%; }
-  .lang-dot.js { background: #f7df1e; }
-  .lang-dot.py { background: #3776ab; }
-  .lang-dot.html { background: #e34c26; }
-
+  .file-info { display: flex; align-items: center; gap: 0.5rem; font-weight: 600; }
+  .file-icon { font-size: 1.3rem; }
   .toolbar-actions { display: flex; gap: 0.5rem; align-items: center; }
+  
   .btn-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 8px;
-    background: var(--card-bg);
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background: var(--bg-secondary);
     border: 1px solid var(--border);
-    color: var(--text-muted);
+    color: var(--text);
     cursor: pointer;
-    transition: all 0.2s;
+    transition: 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
+    font-size: 1.1rem;
   }
-  .btn-icon:hover { background: var(--bg-tertiary); border-color: var(--primary); color: var(--primary); transform: scale(1.05); }
-
+  .btn-icon:hover { background: var(--border); }
+  
+  .btn-clear {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: 0.2s;
+  }
+  .btn-clear:hover { background: var(--danger); color: white; border-color: var(--danger); }
+  
   .btn-run {
-    background: var(--success);
+    background: var(--primary);
     color: white;
     border: none;
-    padding: 0.6rem 1.5rem;
-    border-radius: 8px;
+    padding: 0.7rem 2rem;
+    border-radius: 6px;
     font-weight: 700;
-    font-size: 0.95rem;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: all 0.2s;
+    transition: 0.2s;
   }
-  .btn-run:hover { filter: brightness(1.1); transform: translateY(-2px); }
+  .btn-run:hover { background: var(--primary-hover); transform: translateY(-2px); }
   .btn-run:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
 
-  /* Editor Grid */
-  .editor-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    min-height: 550px;
-  }
-
-  .code-pane, .output-pane {
-    display: flex;
-    flex-direction: column;
-  }
-  .code-pane { border-left: 1px solid var(--border); }
-
-  .pane-header {
+  /* STDIN Section */
+  .stdin-section { border-bottom: 1px solid var(--border); }
+  .section-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0.7rem 1.2rem;
     background: var(--bg-tertiary);
-    border-bottom: 1px solid var(--border);
     font-size: 0.9rem;
     font-weight: 600;
   }
-
-  .file-info { display: flex; align-items: center; gap: 0.5rem; }
-  .output-title { display: flex; align-items: center; gap: 0.5rem; }
-
-  .lang-badge {
-    background: var(--primary);
-    color: white;
-    padding: 0.2rem 0.7rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 700;
-  }
-
-  .btn-clear {
-    background: transparent;
-    border: none;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 0.85rem;
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
-    transition: 0.2s;
-  }
-  .btn-clear:hover { color: var(--danger); }
-
-  /* Code Input */
-  .editor-area { flex: 1; position: relative; background: var(--editor-bg); }
-  .code-input {
+  .section-title { display: flex; align-items: center; gap: 0.5rem; }
+  .lines-count { color: var(--text-muted); font-size: 0.85rem; }
+  .stdin-input {
     width: 100%;
-    height: 100%;
-    min-height: 500px;
+    min-height: 100px;
     background: var(--editor-bg);
     color: var(--editor-text);
     border: none;
-    padding: 1.5rem;
+    border-top: 1px solid var(--border);
+    padding: 1rem;
+    font-family: 'Fira Code', monospace;
+    font-size: 0.95rem;
+    resize: vertical;
+    outline: none;
+  }
+
+  /* Code Section */
+  .code-section { border-bottom: 1px solid var(--border); }
+  .editor-area { display: flex; min-height: 300px; }
+  .line-numbers {
+    width: 50px;
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    font-family: 'Fira Code', monospace;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    padding: 1rem 0.8rem;
+    text-align: left;
+    user-select: none;
+    border-left: 1px solid var(--border);
+  }
+  .code-input {
+    flex: 1;
+    background: var(--editor-bg);
+    color: var(--editor-text);
+    border: none;
+    padding: 1rem;
     font-family: 'Fira Code', monospace;
     font-size: 0.95rem;
     line-height: 1.6;
     resize: none;
     outline: none;
+    min-height: 300px;
     tab-size: 2;
   }
-  .code-input::placeholder { color: #4b5563; }
 
-  /* Output */
+  /* Output Section */
+  .output-section { }
+  .btn-icon-small {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.1rem;
+    padding: 0.3rem;
+  }
+  .btn-icon-small:hover { color: var(--danger); }
   .output-display {
-    flex: 1;
+    min-height: 200px;
     background: var(--editor-bg);
     padding: 1.5rem;
     font-family: 'Fira Code', monospace;
@@ -370,21 +505,12 @@ import Footer from '../components/Footer.astro';
     color: var(--editor-text);
     white-space: pre-wrap;
     word-wrap: break-word;
-    min-height: 500px;
   }
-  .output-placeholder {
-    color: #4b5563;
-    text-align: center;
-    padding: 6rem 2rem;
-  }
-  .placeholder-icon { font-size: 4rem; display: block; margin-bottom: 1rem; animation: float 3s ease-in-out infinite; }
-  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
-  .output-placeholder p { font-size: 1.1rem; margin-bottom: 0.3rem; }
-  .output-placeholder small { font-size: 0.85rem; }
+  .output-placeholder { color: var(--text-muted); text-align: center; padding: 3rem 1rem; }
 
   /* Status Bar */
   .status-bar {
-    padding: 0.7rem 1.5rem;
+    padding: 0.6rem 1.5rem;
     background: var(--bg-tertiary);
     border-top: 1px solid var(--border);
     font-size: 0.85rem;
@@ -392,8 +518,6 @@ import Footer from '../components/Footer.astro';
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
   }
   .status-left, .status-right { display: flex; align-items: center; gap: 1rem; }
   .status-item { display: flex; align-items: center; gap: 0.5rem; }
@@ -402,82 +526,162 @@ import Footer from '../components/Footer.astro';
   @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
   .separator { opacity: 0.4; }
 
-  /* Languages Info */
-  .languages-info {
-    margin-top: 2rem;
-    padding: 1.5rem;
-    background: var(--card-bg);
+  /* Info Section */
+  .info-section {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: var(--bg-secondary);
     border: 1px solid var(--border);
     border-radius: 12px;
   }
-  .languages-info h3 { font-size: 1.1rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
-  .lang-chips { display: flex; gap: 0.8rem; flex-wrap: wrap; }
-  .lang-chip {
-    padding: 0.4rem 1rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    border: 1px solid var(--border);
-  }
-  .lang-chip.supported { background: rgba(16,185,129,0.1); color: var(--success); border-color: var(--success); }
-  .lang-chip.preview { background: rgba(245,158,11,0.1); color: var(--warning); border-color: var(--warning); }
+  .info-section h2 { font-size: 1.5rem; margin-bottom: 1rem; }
+  .info-section p { color: var(--text-muted); line-height: 1.8; margin-bottom: 1rem; }
 
   /* Responsive */
-  @media (max-width: 1024px) {
-    .editor-grid { grid-template-columns: 1fr; }
-    .code-pane { border-left: none; border-bottom: 1px solid var(--border); }
-    .code-input, .output-display { min-height: 300px; }
-  }
-
   @media (max-width: 768px) {
     .playground-header { flex-direction: column; text-align: center; }
+    .header-actions { width: 100%; justify-content: center; }
+    .language-menu { width: 100%; }
     .editor-toolbar { flex-direction: column; align-items: stretch; }
-    .lang-tabs { justify-content: center; }
     .toolbar-actions { justify-content: center; }
     .btn-run { width: 100%; justify-content: center; }
-    .status-bar { flex-direction: column; text-align: center; }
+    .status-bar { flex-direction: column; text-align: center; gap: 0.5rem; }
     .status-left, .status-right { justify-content: center; }
-    .languages-info { text-align: center; }
-    .lang-chips { justify-content: center; }
   }
 </style>
 
 <script>
   // Code Examples Database
   const codeExamples = {
-    javascript: `// 🚀 JavaScript Example
-console.log("مرحباً بالعالم! 🌍");
+    python: `# مرحباً بالعالم! 
+name = input("أدخل اسمك: ")
+age = int(input("أدخل عمرك: "))
 
-// العمليات الحسابية
-const a = 10, b = 20;
-console.log(\`المجموع: \${a + b}\`);
-console.log(\`الفرق: \${a - b}\`);
+print(f"مرحباً {name}! عمرك {age} سنة.")
+print("🎉 أهلاً بك في Th.Tech!")`,
 
-// المصفوفات
-const fruits = ["تفاح", "موز", "برتقال"];
-console.log("الفاكهة:", fruits.join(", "));`,
+    javascript: `// مرحباً بالعالم! 
+const name = prompt("أدخل اسمك:");
+const age = parseInt(prompt("أدخل عمرك:"));
 
-    python: `# 🐍 Python Example
-print("مرحباً بالعالم! 🌍")
+console.log(\`مرحباً \${name}! عمرك \${age} سنة.\`);
+console.log("🎉 أهلاً بك في Th.Tech!");`,
 
-# العمليات الحسابية
-a, b = 10, 20
-print(f"المجموع: {a + b}")
-print(f"الفرق: {a - b}")
+    java: `// مرحباً بالعالم! 🌍
+import java.util.Scanner;
 
-# القوائم
-fruits = ["تفاح", "موز", "برتقال"]
-print("الفاكهة:", ", ".join(fruits))`,
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.print("أدخل اسمك: ");
+        String name = scanner.nextLine();
+        
+        System.out.print("أدخل عمرك: ");
+        int age = scanner.nextInt();
+        
+        System.out.println("مرحباً " + name + "! عمرك " + age + " سنة.");
+        System.out.println("🎉 أهلاً بك في Th.Tech!");
+    }
+}`,
 
-    html: `<!-- 🎨 HTML/CSS Example -->
-<div style="text-align:center; padding:2rem; background:linear-gradient(135deg, #667eea, #764ba2); color:white; border-radius:12px;">
-  <h1 style="font-size:2rem; margin-bottom:1rem;">مرحباً بك 👋</h1>
-  <p style="opacity:0.9;">بيئة HTML/CSS تفاعلية</p>
-  <button onclick="alert('🎉 تم الضغط!')" style="margin-top:1rem; padding:0.8rem 2rem; background:white; color:#667eea; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">جربني</button>
-</div>`
+    cpp: `// مرحباً بالعالم! 🌍
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+    string name;
+    int age;
+    
+    cout << "أدخل اسمك: ";
+    getline(cin, name);
+    
+    cout << "أدخل عمرك: ";
+    cin >> age;
+    
+    cout << "مرحباً " << name << "! عمرك " << age << " سنة." << endl;
+    cout << "🎉 أهلاً بك في Th.Tech!" << endl;
+    
+    return 0;
+}`,
+
+    html: `<!-- مرحباً بالعالم!  -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>Th.Tech</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        h1 { color: #667eea; margin-bottom: 1rem; }
+        p { color: #666; font-size: 1.1rem; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👋 مرحباً بك!</h1>
+        <p>أهلاً بك في Th.Tech - منصة المطورين</p>
+        <p>🎉 ابدأ رحلتك في البرمجة الآن!</p>
+    </div>
+</body>
+</html>`
   };
 
-  let currentLang = 'javascript';
+  const fileExtensions = {
+    python: 'py',
+    javascript: 'js',
+    java: 'java',
+    cpp: 'cpp',
+    typescript: 'ts',
+    c: 'c',
+    csharp: 'cs',
+    go: 'go',
+    ruby: 'rb',
+    rust: 'rs',
+    php: 'php',
+    dart: 'dart',
+    lua: 'lua',
+    swift: 'swift',
+    sql: 'sql',
+    html: 'html'
+  };
+
+  const langIcons = {
+    python: '🐍',
+    javascript: '📜',
+    java: '☕',
+    cpp: '⚡',
+    typescript: '📘',
+    c: '⚙️',
+    csharp: '🎯',
+    go: '🔵',
+    ruby: '💎',
+    rust: '',
+    php: '🐘',
+    dart: '🎯',
+    lua: '🌙',
+    swift: '🦅',
+    sql: '🗄️',
+    html: '🌐'
+  };
+
+  let currentLang = 'python';
   let pyodide = null;
   let pyodideReady = false;
 
@@ -485,13 +689,67 @@ print("الفاكهة:", ", ".join(fruits))`,
   function init() {
     const editor = document.getElementById('codeEditor');
     if (editor) {
-      editor.value = codeExamples.javascript;
+      editor.value = codeExamples.python;
+      updateLineNumbers();
     }
     loadPyodide();
     
     // Load saved theme
     const saved = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', saved);
+  }
+
+  // Toggle Language Menu
+  function toggleLanguageMenu() {
+    const menu = document.getElementById('languageMenu');
+    menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+  }
+
+  // Filter Languages
+  function filterLanguages() {
+    const search = document.getElementById('langSearch').value.toLowerCase();
+    const items = document.querySelectorAll('.lang-item');
+    
+    items.forEach(item => {
+      const text = item.textContent.toLowerCase();
+      item.style.display = text.includes(search) ? 'flex' : 'none';
+    });
+  }
+
+  // Select Language
+  function selectLanguage(lang) {
+    currentLang = lang;
+    
+    // Update UI
+    document.getElementById('currentLang').textContent = 
+      lang.charAt(0).toUpperCase() + lang.slice(1);
+    document.getElementById('fileName').textContent = 'main.' + fileExtensions[lang];
+    document.querySelector('.file-icon').textContent = langIcons[lang] || '📄';
+    
+    // Update active state
+    document.querySelectorAll('.lang-item').forEach(item => {
+      item.classList.remove('active');
+      if (item.textContent.toLowerCase().includes(lang)) {
+        item.classList.add('active');
+      }
+    });
+    
+    // Load example
+    const editor = document.getElementById('codeEditor');
+    if (editor && codeExamples[lang]) {
+      editor.value = codeExamples[lang];
+      updateLineNumbers();
+    }
+    
+    // Show/hide Python status
+    const pyStatus = document.getElementById('pyStatus');
+    if (pyStatus) {
+      pyStatus.style.display = lang === 'python' ? 'flex' : 'none';
+    }
+    
+    clearOutput();
+    updateStatus('✅ جاهز');
+    toggleLanguageMenu();
   }
 
   // Load Pyodide for Python
@@ -516,41 +774,34 @@ print("الفاكهة:", ", ".join(fruits))`,
     }
   }
 
-  // Switch Language
-  function switchLang(lang) {
-    currentLang = lang;
-    
-    // Update tabs
-    document.querySelectorAll('.lang-tab').forEach(tab => {
-      tab.classList.toggle('active', tab.dataset.lang === lang);
-    });
-    
-    // Update file info
-    const files = { 
-      javascript: { name: 'script.js', badge: 'JS' }, 
-      python: { name: 'script.py', badge: 'PY' }, 
-      html: { name: 'index.html', badge: 'HTML' } 
-    };
-    document.getElementById('fileName').textContent = files[lang].name;
-    document.getElementById('langBadge').textContent = files[lang].badge;
-    
-    // Load example code
+  // Update Line Numbers
+  function updateLineNumbers() {
     const editor = document.getElementById('codeEditor');
-    if (editor && codeExamples[lang]) {
-      editor.value = codeExamples[lang];
-    }
+    const lineNumbers = document.getElementById('lineNumbers');
+    if (!editor || !lineNumbers) return;
     
-    // Show/hide Python status
-    const pyStatus = document.getElementById('pyStatus');
-    if (pyStatus) {
-      pyStatus.style.display = lang === 'python' ? 'flex' : 'none';
-    }
-    
-    clearOutput();
-    updateStatus('✅ جاهز');
+    const lines = editor.value.split('\n').length;
+    lineNumbers.innerHTML = Array(lines).fill(0).map((_, i) => i + 1).join('<br>');
   }
 
-  // Handle Tab Key for Indentation
+  // Update STDIN Lines
+  function updateStdinLines() {
+    const stdin = document.getElementById('stdinInput');
+    const linesCount = document.getElementById('stdinLines');
+    if (stdin && linesCount) {
+      const lines = stdin.value.split('\n').length;
+      linesCount.textContent = \`أسطر \${lines}\`;
+    }
+  }
+
+  // Sync Scroll
+  function syncScroll() {
+    const editor = document.getElementById('codeEditor');
+    const lineNumbers = document.getElementById('lineNumbers');
+    if (lineNumbers) lineNumbers.scrollTop = editor.scrollTop;
+  }
+
+  // Handle Tab Key
   function handleTab(e) {
     if (e.key === 'Tab') {
       e.preventDefault();
@@ -558,43 +809,63 @@ print("الفاكهة:", ", ".join(fruits))`,
       const start = textarea.selectionStart;
       const end = textarea.selectionEnd;
       
-      // Insert 2 spaces
-      textarea.value = textarea.value.substring(0, start) + '  ' + textarea.value.substring(end);
-      textarea.selectionStart = textarea.selectionEnd = start + 2;
+      textarea.value = textarea.value.substring(0, start) + '    ' + textarea.value.substring(end);
+      textarea.selectionStart = textarea.selectionEnd = start + 4;
+      updateLineNumbers();
+    }
+    
+    // Update cursor position
+    updateCursorPosition(e);
+  }
+
+  // Update Cursor Position
+  function updateCursorPosition(e) {
+    const editor = e.target;
+    const cursorPos = document.getElementById('cursorPos');
+    if (cursorPos) {
+      const text = editor.value.substring(0, editor.selectionStart);
+      const lines = text.split('\n');
+      const line = lines.length;
+      const column = lines[lines.length - 1].length + 1;
+      cursorPos.textContent = \`سطر \${line}، عمود \${column}\`;
     }
   }
 
   // Execute Code
   async function runCode() {
     const code = document.getElementById('codeEditor').value;
+    const stdin = document.getElementById('stdinInput').value;
     const output = document.getElementById('output');
     const btn = document.getElementById('runBtn');
-    const runText = document.getElementById('runText');
     
     if (!code.trim()) {
-      output.innerHTML = '<div style="color:var(--warning); padding:1rem; text-align:center;">️ يرجى كتابة كود أولاً</div>';
+      output.innerHTML = '<div style="color:var(--warning); padding:1rem; text-align:center;">⚠️ يرجى كتابة كود أولاً</div>';
       return;
     }
 
     output.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:2rem;">⏳ جاري التنفيذ...</div>';
     btn.disabled = true;
-    runText.textContent = 'جاري...';
 
     try {
-      if (currentLang === 'javascript') {
+      if (currentLang === 'python') {
+        await runPython(code, stdin, output);
+      } else if (currentLang === 'javascript') {
         await runJavaScript(code, output);
       } else if (currentLang === 'html') {
         output.innerHTML = code;
-      } else if (currentLang === 'python') {
-        await runPython(code, output);
+      } else {
+        // For other languages, show preview message
+        output.innerHTML = \`<div style="color:var(--warning); padding:1rem; text-align:center;">
+          👁️ \${currentLang.toUpperCase()} - معاينة الكود<br>
+          <small>التنفيذ الفعلي يتطلب بيئة تشغيل خاصة</small>
+        </div>\`;
       }
       updateStatus('✅ تم التنفيذ');
     } catch (err) {
-      output.innerHTML = `<span style="color:var(--danger)">❌ خطأ: ${err.message}</span>`;
+      output.innerHTML = \`<span style="color:var(--danger)">❌ خطأ: \${err.message}</span>\`;
       updateStatus('❌ حدث خطأ');
     } finally {
       btn.disabled = false;
-      runText.textContent = 'تشغيل الكود';
     }
   }
 
@@ -602,7 +873,6 @@ print("الفاكهة:", ", ".join(fruits))`,
   async function runJavaScript(code, output) {
     const logs = [];
     
-    // Custom console to capture output
     const customConsole = {
       log: (...args) => {
         logs.push(args.map(arg => {
@@ -618,16 +888,14 @@ print("الفاكهة:", ", ".join(fruits))`,
     };
     
     try {
-      // Safe execution wrapper
-      const wrappedCode = `(function(console) { ${code} })(arguments[0])`;
+      const wrappedCode = \`(function(console) { \${code} })(arguments[0])\`;
       const fn = new Function('console', wrappedCode);
       fn(customConsole);
       
       if (logs.length > 0) {
-        output.textContent = logs.join('\n');
-        output.style.color = 'var(--editor-text)';
+        output.textContent = logs.join('\\n');
       } else {
-        output.innerHTML = '<div style="color:var(--success); padding:1.5rem; text-align:center; background:rgba(16,185,129,0.1); border-radius:8px;">✅ تم التنفيذ بنجاح<br><small style="color:var(--text-muted)">(لا توجد مخرجات)</small></div>';
+        output.innerHTML = '<div style="color:var(--success); padding:1.5rem; text-align:center;">✅ تم التنفيذ بنجاح<br><small>(لا توجد مخرجات)</small></div>';
       }
     } catch (error) {
       throw error;
@@ -635,9 +903,9 @@ print("الفاكهة:", ", ".join(fruits))`,
   }
 
   // Run Python via Pyodide
-  async function runPython(code, output) {
+  async function runPython(code, stdin, output) {
     if (!pyodideReady) {
-      output.innerHTML = '<div style="color:var(--warning); padding:1rem; text-align:center;">⏳ جاري تحميل Python...<br><small>قد يستغرق بضع ثوانٍ في المرة الأولى</small></div>';
+      output.innerHTML = '<div style="color:var(--warning); padding:1rem; text-align:center;">⏳ جاري تحميل Python...<br><small>قد يستغرق بضع ثوانٍ</small></div>';
       await loadPyodide();
       if (!pyodideReady) {
         throw new Error('فشل تحميل Python. يرجى تحديث الصفحة.');
@@ -645,30 +913,35 @@ print("الفاكهة:", ", ".join(fruits))`,
     }
     
     let result = '';
-    let hasError = false;
     
     try {
-      // Redirect stdout/stderr
+      // Set up stdin
+      if (stdin) {
+        const inputLines = stdin.split('\\n');
+        let inputIndex = 0;
+        
+        pyodide.setStdin({
+          stdin: () => {
+            if (inputIndex < inputLines.length) {
+              return inputLines[inputIndex++];
+            }
+            return '';
+          }
+        });
+      }
+      
       pyodide.setStdout({
         batched: (msg) => {
           result += msg;
         }
       });
-      pyodide.setStderr({
-        batched: (msg) => {
-          result += '❌ ' + msg;
-          hasError = true;
-        }
-      });
       
-      // Execute Python code
       await pyodide.runPythonAsync(code);
       
       if (result.trim()) {
         output.textContent = result;
-        output.style.color = hasError ? 'var(--danger)' : 'var(--editor-text)';
       } else {
-        output.innerHTML = '<div style="color:var(--success); padding:1.5rem; text-align:center; background:rgba(16,185,129,0.1); border-radius:8px;">✅ تم التنفيذ بنجاح<br><small style="color:var(--text-muted)">(لا توجد مخرجات)</small></div>';
+        output.innerHTML = '<div style="color:var(--success); padding:1.5rem; text-align:center;">✅ تم التنفيذ بنجاح<br><small>(لا توجد مخرجات)</small></div>';
       }
     } catch (error) {
       throw error;
@@ -679,22 +952,23 @@ print("الفاكهة:", ", ".join(fruits))`,
   function clearOutput() {
     const output = document.getElementById('output');
     if (output) {
-      output.innerHTML = '<div class="output-placeholder"><div class="placeholder-icon">🚀</div><p>اضغط "تشغيل الكود" لرؤية النتيجة</p><small>أو استخدم Ctrl+Enter</small></div>';
+      output.innerHTML = '<div class="output-placeholder"><p>انقر على تشغيل لرؤية المخرجات هنا.</p></div>';
     }
     updateStatus('✅ جاهز');
   }
 
-  // Reset Code to Default
+  // Reset Code
   function resetCode() {
     const editor = document.getElementById('codeEditor');
     if (editor && codeExamples[currentLang]) {
       editor.value = codeExamples[currentLang];
+      updateLineNumbers();
       clearOutput();
       updateStatus('🔄 تم الإعادة');
     }
   }
 
-  // Copy Code to Clipboard
+  // Copy Code
   async function copyCode() {
     const editor = document.getElementById('codeEditor');
     if (editor) {
@@ -708,25 +982,27 @@ print("الفاكهة:", ", ".join(fruits))`,
     }
   }
 
-  // Update Status Bar
+  // Update Status
   function updateStatus(message) {
     const status = document.getElementById('status');
     if (status) {
       const parts = message.split(' ');
-      status.innerHTML = `<span class="status-dot ${parts[0] === '✅' ? 'ready' : ''}"></span><span>${parts.slice(1).join(' ') || 'جاهز'}</span>`;
+      status.innerHTML = \`<span class="status-dot \${parts[0] === '✅' ? 'ready' : ''}"></span><span>\${parts.slice(1).join(' ') || 'جاهز'}</span>\`;
     }
   }
 
   // Keyboard Shortcuts
   document.addEventListener('keydown', (e) => {
-    // Ctrl+Enter to run code
-    if (e.target.id === 'codeEditor' && e.ctrlKey && e.key === 'Enter') {
-      e.preventDefault();
-      runCode();
+    if (e.target.id === 'codeEditor') {
+      if (e.ctrlKey && e.key === 'Enter') {
+        e.preventDefault();
+        runCode();
+      }
+      updateCursorPosition(e);
     }
   });
 
-  // Initialize on page load
+  // Initialize on load
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
