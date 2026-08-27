@@ -2,89 +2,81 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
-<html lang="ar" dir="rtl" class="dark">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Th.Tech | مختبر الأكواد</title>
+  <title>Th.Tech | محرر الأكواد</title>
   <link rel="icon" type="image/png" href="/Th-tech/logo1.png" />
-  <!-- خط احترافي للأكواد -->
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
-  <!-- مكتبة Pyodide لتشغيل Python -->
   <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
-<body class="bg-dark text-light font-cairo">
-  
+<body>
   <Header />
 
-  <main class="playground-container">
+  <main style="padding: 2rem 1rem; max-width: 1200px; margin: 0 auto;">
     
-    <!-- رأس الصفحة -->
-    <header class="page-header">
+    <!-- Header -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
       <div>
-        <h1>💻 مختبر الأكواد</h1>
-        <p>اكتب الكود، شغّله، وشاهد النتيجة فوراً</p>
+        <h1 style="font-size: 1.8rem; margin-bottom: 0.5rem;">💻 محرر الأكواد</h1>
+        <p style="color: #8b949e;">اكتب وشغّل الكود مباشرة</p>
       </div>
-      <div class="header-actions">
-        <select id="langSelect" onchange="changeLanguage()">
+      <div style="display: flex; gap: 1rem; align-items: center;">
+        <select id="langSelect" onchange="changeLang()" style="padding: 0.5rem 1rem; border-radius: 6px; border: 1px solid #30363d; background: #161b22; color: #c9d1d9;">
           <option value="python">Python</option>
           <option value="javascript">JavaScript</option>
-          <option value="html">HTML/CSS</option>
+          <option value="html">HTML</option>
         </select>
-        <a href="/Th-tech/" class="btn-outline">الرئيسية</a>
+        <a href="/Th-tech/" style="color: #58a6ff; text-decoration: none; padding: 0.5rem 1rem; border: 1px solid #30363d; border-radius: 6px;">الرئيسية</a>
       </div>
-    </header>
+    </div>
 
-    <!-- منطقة العمل (Editor) -->
-    <div class="ide-wrapper">
+    <!-- Editor Box -->
+    <div style="background: #161b22; border: 1px solid #30363d; border-radius: 12px; overflow: hidden;">
       
-      <!-- شريط الأدوات -->
-      <div class="toolbar">
-        <div class="file-info">
-          <span class="icon">🐍</span>
+      <!-- Toolbar -->
+      <div style="display: flex; justify-content: space-between; padding: 1rem; background: #21262d; border-bottom: 1px solid #30363d; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem; font-family: 'Fira Code', monospace;">
+          <span id="fileIcon">🐍</span>
           <span id="fileName">main.py</span>
         </div>
-        <div class="actions">
-          <button class="btn-tool" onclick="clearOutput()" title="مسح المخرجات">🗑️</button>
-          <button class="btn-tool" onclick="resetCode()" title="إعادة تعيين">🔄</button>
-          <button class="btn-tool" onclick="copyCode()" title="نسخ"></button>
-          <button class="btn-run" onclick="runCode()" id="runBtn">
-            ▶ تشغيل
-          </button>
+        <div style="display: flex; gap: 0.5rem;">
+          <button onclick="copyCode()" style="padding: 0.5rem; background: transparent; border: 1px solid #30363d; color: #8b949e; border-radius: 6px; cursor: pointer;">📋</button>
+          <button onclick="resetCode()" style="padding: 0.5rem; background: transparent; border: 1px solid #30363d; color: #8b949e; border-radius: 6px; cursor: pointer;">🔄</button>
+          <button onclick="runCode()" id="runBtn" style="padding: 0.5rem 1.5rem; background: #238636; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: bold;">▶ تشغيل</button>
         </div>
       </div>
 
-      <!-- المدخلات (STDIN) - تظهر فقط لـ Python -->
-      <div class="stdin-container" id="stdinBox">
-        <label>مدخلات (Input):</label>
-        <input type="text" id="stdinInput" placeholder="أدخل القيم هنا (مثال: اسمك)..." />
+      <!-- Input Area -->
+      <div id="inputArea" style="padding: 1rem; background: #0d1117; border-bottom: 1px solid #30363d;">
+        <label style="color: #8b949e; font-size: 0.9rem; display: block; margin-bottom: 0.5rem;">المدخلات (لـ Python):</label>
+        <input type="text" id="userInput" placeholder="أدخل القيمة هنا..." style="width: 100%; padding: 0.5rem; background: #161b22; border: 1px solid #30363d; color: #c9d1d9; border-radius: 6px; font-family: 'Fira Code', monospace;">
       </div>
 
-      <!-- محرر الكود -->
-      <div class="editor-pane">
-        <textarea id="codeEditor" spellcheck="false" placeholder="اكتب الكود هنا..."></textarea>
-      </div>
+      <!-- Code Editor -->
+      <textarea id="editor" style="width: 100%; min-height: 300px; background: #0d1117; color: #e6edf3; border: none; padding: 1.5rem; font-family: 'Fira Code', monospace; font-size: 1rem; resize: vertical; outline: none;" spellcheck="false"></textarea>
 
-      <!-- المخرجات (Output) -->
-      <div class="output-pane">
-        <div class="output-header">
-          <span>📤 المخرجات</span>
-          <span id="statusText" class="status-ready">جاهز</span>
+      <!-- Output -->
+      <div style="border-top: 1px solid #30363d;">
+        <div style="padding: 0.8rem 1rem; background: #21262d; border-bottom: 1px solid #30363d; display: flex; justify-content: space-between; font-weight: 600;">
+          <span> المخرجات</span>
+          <button onclick="clearOutput()" style="background: transparent; border: none; color: #8b949e; cursor: pointer;">مسح</button>
         </div>
-        <div id="output" class="output-content">
-          <div class="placeholder">اضغط "تشغيل" لرؤية النتيجة...</div>
+        <div id="output" style="padding: 1.5rem; background: #0d1117; min-height: 200px; font-family: 'Fira Code', monospace; white-space: pre-wrap; color: #c9d1d9;">
+          <div style="text-align: center; color: #8b949e; margin-top: 3rem;">اضغط "تشغيل" لرؤية النتيجة</div>
         </div>
       </div>
 
     </div>
 
-    <!-- نصائح -->
-    <div class="tips">
-      <h3>💡 كيف يعمل؟</h3>
-      <ul>
-        <li><strong>Python:</strong> يدعم <code>print()</code> و <code>input()</code>.</li>
-        <li><strong>JavaScript:</strong> يدعم <code>console.log()</code>.</li>
-        <li><strong>HTML:</strong> يعرض النتيجة مباشرة.</li>
+    <!-- Info -->
+    <div style="margin-top: 2rem; padding: 1.5rem; background: #161b22; border: 1px solid #30363d; border-radius: 8px;">
+      <h3 style="margin-bottom: 1rem; color: #58a6ff;">💡 اللغات المدعومة:</h3>
+      <ul style="color: #8b949e; padding-right: 1.5rem; line-height: 2;">
+        <li><strong>Python:</strong> يدعم print() و input()</li>
+        <li><strong>JavaScript:</strong> يدعم console.log()</li>
+        <li><strong>HTML:</strong> يعرض النتيجة مباشرة</li>
       </ul>
     </div>
 
@@ -92,383 +84,91 @@ import Footer from '../components/Footer.astro';
 
   <Footer />
 
-  <style>
-    :root {
-      --bg: #0d1117;
-      --bg-secondary: #161b22;
-      --bg-tertiary: #21262d;
-      --border: #30363d;
-      --text: #c9d1d9;
-      --text-muted: #8b949e;
-      --primary: #238636; /* Green for Run button like GitHub */
-      --primary-hover: #2ea043;
-      --accent: #58a6ff;
-      --danger: #f85149;
-      --font-code: 'Fira Code', monospace;
-      --font-main: 'Cairo', sans-serif;
-    }
-
-    /* Light Mode Variables (optional toggle later) */
-    html.light {
-      --bg: #ffffff;
-      --bg-secondary: #f6f8fa;
-      --bg-tertiary: #eaeef2;
-      --border: #d0d7de;
-      --text: #1f2328;
-      --text-muted: #656d76;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-main);
-      line-height: 1.6;
-    }
-
-    .playground-container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 2rem 1rem;
-    }
-
-    /* Header */
-    .page-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-      flex-wrap: wrap;
-      gap: 1rem;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 1rem;
-    }
-    .page-header h1 { font-size: 1.8rem; font-weight: 700; color: var(--accent); }
-    .page-header p { color: var(--text-muted); }
-
-    .header-actions { display: flex; gap: 1rem; align-items: center; }
-    select {
-      background: var(--bg-secondary);
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      font-family: var(--font-main);
-      font-weight: 600;
-      cursor: pointer;
-    }
-    .btn-outline {
-      color: var(--accent);
-      text-decoration: none;
-      font-weight: 600;
-      padding: 0.5rem 1rem;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      transition: 0.2s;
-    }
-    .btn-outline:hover { background: var(--bg-secondary); }
-
-    /* IDE Wrapper */
-    .ide-wrapper {
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    }
-
-    /* Toolbar */
-    .toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0.8rem 1rem;
-      background: var(--bg-tertiary);
-      border-bottom: 1px solid var(--border);
-    }
-    .file-info { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-code); font-size: 0.9rem; }
-    .actions { display: flex; gap: 0.5rem; }
-    
-    .btn-tool {
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      padding: 0.4rem 0.8rem;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: 0.2s;
-    }
-    .btn-tool:hover { color: var(--text); border-color: var(--text-muted); }
-
-    .btn-run {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 0.5rem 1.5rem;
-      border-radius: 6px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      transition: 0.2s;
-    }
-    .btn-run:hover { background: var(--primary-hover); transform: translateY(-1px); }
-    .btn-run:disabled { opacity: 0.6; cursor: not-allowed; }
-
-    /* Input Area */
-    .stdin-container {
-      padding: 1rem;
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .stdin-container label { color: var(--text-muted); font-size: 0.9rem; font-weight: 600; }
-    .stdin-container input {
-      flex: 1;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 0.5rem;
-      border-radius: 4px;
-      font-family: var(--font-code);
-    }
-    .stdin-container input:focus { outline: 2px solid var(--accent); border-color: transparent; }
-
-    /* Editor & Output Grid */
-    .editor-pane, .output-pane {
-      display: flex;
-      flex-direction: column;
-    }
-    
-    /* Desktop Layout: Side by Side */
-    @media (min-width: 768px) {
-      .ide-body { display: grid; grid-template-columns: 1fr 1fr; min-height: 500px; }
-      .editor-pane { border-left: 1px solid var(--border); } /* RTL border logic */
-    }
-    /* Mobile Layout: Stacked */
-    @media (max-width: 767px) {
-      .ide-body { display: flex; flex-direction: column; }
-    }
-
-    .editor-pane textarea {
-      width: 100%;
-      height: 100%;
-      min-height: 300px;
-      background: var(--bg);
-      color: #e6edf3;
-      border: none;
-      padding: 1.5rem;
-      font-family: var(--font-code);
-      font-size: 1rem;
-      line-height: 1.5;
-      resize: vertical;
-      outline: none;
-      tab-size: 2;
-    }
-    .editor-pane textarea::placeholder { color: #484f58; }
-
-    .output-pane {
-      background: var(--bg);
-      border-top: 1px solid var(--border);
-      min-height: 200px;
-    }
-    .output-header {
-      padding: 0.8rem 1rem;
-      background: var(--bg-tertiary);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.9rem;
-      font-weight: 600;
-    }
-    .status-ready { color: var(--primary); }
-    .status-running { color: var(--accent); }
-    .status-error { color: var(--danger); }
-
-    .output-content {
-      padding: 1.5rem;
-      font-family: var(--font-code);
-      font-size: 0.95rem;
-      white-space: pre-wrap;
-      word-break: break-all;
-      color: var(--text);
-      overflow-y: auto;
-      min-height: 150px;
-    }
-    .placeholder { color: var(--text-muted); text-align: center; margin-top: 2rem; }
-
-    /* Tips */
-    .tips { margin-top: 2rem; padding: 1.5rem; background: var(--bg-secondary); border-radius: 8px; border: 1px solid var(--border); }
-    .tips h3 { margin-bottom: 1rem; color: var(--accent); }
-    .tips ul { padding-right: 1.5rem; color: var(--text-muted); }
-    .tips li { margin-bottom: 0.5rem; }
-    code { background: var(--bg-tertiary); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: var(--font-code); font-size: 0.85rem; }
-
-  </style>
-
   <script>
-    // Configuration
-    const examples = {
-      python: `print("مرحباً بك في Th.Tech!")\nname = input("أدخل اسمك: ")\nprint("أهلاً " + name + "! ")`,
-      javascript: `console.log("مرحباً بك في Th.Tech!");\nconst name = prompt("أدخل اسمك:");\nconsole.log("أهلاً " + name + "! 👋");`,
-      html: `<h1 style="color: cyan; text-align: center;">مرحباً!</h1>\n<p style="text-align: center;">هذا مثال HTML/CSS</p>`
+    // الكود الافتراضي
+    const codes = {
+      python: `print("مرحباً!")\nname = input("اسمك: ")\nprint("أهلاً " + name)`,
+      javascript: `console.log("مرحباً!");\nconst name = prompt("اسمك:");\nconsole.log("أهلاً " + name);`,
+      html: `<h1 style="color: cyan; text-align: center;">مرحباً!</h1>`
     };
 
     let pyodide = null;
-    let pyodideReady = false;
 
-    // Initialize
+    // التهيئة
     function init() {
-      const editor = document.getElementById('codeEditor');
-      editor.value = examples.python;
-      
-      // Load Pyodide asynchronously
-      loadPyodide().then(() => {
-        console.log("Pyodide loaded");
-      }).catch(err => console.error(err));
+      document.getElementById('editor').value = codes.python;
+      loadPyodide();
     }
 
-    // Load Python Environment
+    // تحميل Python
     async function loadPyodide() {
       try {
-        pyodide = await loadPyodide({
-          indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/"
-        });
-        pyodideReady = true;
-      } catch (e) {
-        console.error("Failed to load Pyodide", e);
-      }
+        pyodide = await loadPyodide({ indexURL: "https://cdn.jsdelivr.net/pyodide/v0.24.1/full/" });
+        console.log("Python loaded");
+      } catch(e) { console.error(e); }
     }
 
-    // Change Language
-    function changeLanguage() {
+    // تغيير اللغة
+    function changeLang() {
       const lang = document.getElementById('langSelect').value;
-      const editor = document.getElementById('codeEditor');
-      const fileName = document.getElementById('fileName');
-      const icon = document.querySelector('.file-info .icon');
-      const stdinBox = document.getElementById('stdinBox');
-
-      // Update UI
-      editor.value = examples[lang] || "";
-      fileName.textContent = lang === 'html' ? 'index.html' : 'main.' + (lang === 'javascript' ? 'js' : 'py');
-      
-      // Update Icon & Input Visibility
-      if (lang === 'python') {
-        icon.textContent = '🐍';
-        stdinBox.style.display = 'flex'; // Show input for python
-      } else if (lang === 'javascript') {
-        icon.textContent = '';
-        stdinBox.style.display = 'none'; // JS uses prompt()
-      } else {
-        icon.textContent = '🌐';
-        stdinBox.style.display = 'none';
-      }
-      
+      document.getElementById('editor').value = codes[lang];
+      document.getElementById('fileName').textContent = lang === 'html' ? 'index.html' : 'main.' + (lang === 'javascript' ? 'js' : 'py');
+      document.getElementById('fileIcon').textContent = lang === 'python' ? '🐍' : lang === 'javascript' ? '' : '🌐';
+      document.getElementById('inputArea').style.display = lang === 'python' ? 'block' : 'none';
       clearOutput();
     }
 
-    // Run Code Logic
+    // تشغيل الكود
     async function runCode() {
-      const code = document.getElementById('codeEditor').value;
+      const code = document.getElementById('editor').value;
       const lang = document.getElementById('langSelect').value;
       const output = document.getElementById('output');
-      const status = document.getElementById('statusText');
-      const runBtn = document.getElementById('runBtn');
+      const btn = document.getElementById('runBtn');
+      
+      if (!code.trim()) { output.innerHTML = '<span style="color: orange">اكتب كود أولاً!</span>'; return; }
 
-      if (!code.trim()) return;
-
-      // UI State: Running
-      output.innerHTML = '';
-      status.textContent = 'جاري التنفيذ...';
-      status.className = 'status-running';
-      runBtn.disabled = true;
+      output.innerHTML = '<span style="color: #8b949e">جاري التنفيذ...</span>';
+      btn.disabled = true;
 
       try {
         if (lang === 'javascript') {
-          await runJS(code, output);
-        } else if (lang === 'html') {
+          let logs = [];
+          const cons = { log: (...a) => logs.push(a.join(' ')) };
+          new Function('console', code)(cons);
+          output.textContent = logs.join('\n') || '(لا مخرجات)';
+        } 
+        else if (lang === 'html') {
           output.innerHTML = code;
-        } else if (lang === 'python') {
-          await runPython(code, output);
+        } 
+        else if (lang === 'python') {
+          if (!pyodide) await loadPyodide();
+          let res = '';
+          const inputVal = document.getElementById('userInput').value;
+          if (inputVal) pyodide.setStdin({ stdin: () => inputVal });
+          pyodide.setStdout({ batched: m => res += m });
+          await pyodide.runPythonAsync(code);
+          output.textContent = res || '(لا مخرجات)';
         }
-        status.textContent = 'تم بنجاح ✅';
-        status.className = 'status-ready';
       } catch (err) {
-        output.innerHTML = `<span style="color: #f85149">❌ خطأ: ${err.message}</span>`;
-        status.textContent = 'خطأ';
-        status.className = 'status-error';
-      } finally {
-        runBtn.disabled = false;
+        output.innerHTML = '<span style="color: #f85149">خطأ: ' + err.message + '</span>';
       }
+      
+      btn.disabled = false;
     }
 
-    // Execute JavaScript
-    function runJS(code, output) {
-      let logs = [];
-      // Override console.log
-      const customConsole = {
-        log: (...args) => logs.push(args.map(a => typeof a === 'object' ? JSON.stringify(a) : a).join(' ')),
-        error: (...args) => logs.push('Error: ' + args.join(' '))
-      };
-      
-      // Wrap code to capture output
-      const wrapped = `(function(console) { ${code} })(customConsole);`;
-      const fn = new Function('customConsole', wrapped);
-      fn(customConsole);
-
-      output.textContent = logs.join('\n') || '(لا توجد مخرجات)';
-    }
-
-    // Execute Python
-    async function runPython(code, output) {
-      if (!pyodideReady) {
-        output.textContent = ' جاري تحميل بيئة Python... (قد يستغرق لحظات)';
-        await loadPyodide();
-        if (!pyodideReady) throw new Error("فشل تحميل Python");
-      }
-
-      let result = "";
-      
-      // Setup Stdin
-      const inputVal = document.getElementById('stdinInput').value;
-      if (inputVal) {
-        pyodide.setStdin({ stdin: () => inputVal });
-      }
-
-      // Capture Stdout
-      pyodide.setStdout({
-        batched: (msg) => { result += msg + "\n"; }
-      });
-
-      // Run
-      await pyodide.runPythonAsync(code);
-      
-      output.textContent = result.trim() || '(لا توجد مخرجات)';
-    }
-
-    // Utilities
     function clearOutput() {
-      document.getElementById('output').innerHTML = '<div class="placeholder">اضغط "تشغيل" لرؤية النتيجة...</div>';
-      document.getElementById('statusText').textContent = 'جاهز';
-      document.getElementById('statusText').className = 'status-ready';
+      document.getElementById('output').innerHTML = '<div style="text-align: center; color: #8b949e; margin-top: 3rem;">اضغط "تشغيل" لرؤية النتيجة</div>';
     }
 
     function resetCode() {
-      changeLanguage(); // Reloads example
+      changeLang();
     }
 
     function copyCode() {
-      const code = document.getElementById('codeEditor').value;
-      navigator.clipboard.writeText(code);
-      alert('تم نسخ الكود!');
+      navigator.clipboard.writeText(document.getElementById('editor').value);
+      alert('تم النسخ!');
     }
 
-    // Run on Load
     document.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
