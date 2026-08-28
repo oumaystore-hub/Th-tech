@@ -2,7 +2,7 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
-<html lang="ar" dir="rtl" data-theme="dark">
+<html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -51,7 +51,7 @@ import Footer from '../components/Footer.astro';
         </div>
         <div class="actions">
           <button id="search" title="بحث">🔎</button>
-          <button id="copy" title="نسخ الكود">📋</button>
+          <button id="copy" title="نسخ الكود"></button>
           <button id="save" title="حفظ">💾</button>
           <button id="download" title="تنزيل">↓</button>
           <button id="fontDown" title="تصغير الخط">A−</button>
@@ -146,7 +146,7 @@ import Footer from '../components/Footer.astro';
 
 <style>
 /* =====================================================
-   THEME SYSTEM - يتبع Header.astro
+   THEME SYSTEM - Universal Light/Dark Mode Fix
    ===================================================== */
 :root {
   --bg: #080c12;
@@ -172,7 +172,11 @@ import Footer from '../components/Footer.astro';
   --code: 15px;
 }
 
-[data-theme="light"] {
+/* Light Mode Variables - Applied to html, body, and common classes */
+html[data-theme="light"], 
+body.light, 
+body.light-mode,
+.light-theme {
   --bg: #f5f8fb;
   --panel: #ffffff;
   --panel2: #f1f5f9;
@@ -195,21 +199,15 @@ import Footer from '../components/Footer.astro';
   --shadow: 0 20px 60px rgba(31,55,75,.12);
 }
 
-/* Force theme on all elements */
-[data-theme="dark"] *,
-[data-theme="light"] * {
-  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
-}
-
-/* Ensure full page coverage */
-html, body, main, .page, .workspace, .editor, .output, .preview, .hero, .info {
-  background: var(--bg);
+/* Force colors on specific elements to ensure coverage */
+html, body, .page, .hero, .workspace, .info {
+  background-color: var(--bg);
   color: var(--text);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-html { background: var(--bg); transition: background .25s ease; }
-body { background: var(--bg); color: var(--text); font-family: 'Cairo', sans-serif; transition: background .25s ease, color .25s ease; }
+body { font-family: 'Cairo', sans-serif; line-height: 1.6; }
 
 .page { width: min(1400px, calc(100% - 30px)); margin: auto; padding: 45px 0 70px; }
 
@@ -418,20 +416,29 @@ document.addEventListener('DOMContentLoaded', () => {
   let fontSize = 15;
   let pyodide = null;
 
-  // Sync theme from both html and body
+  // Sync theme from header changes
   function syncTheme() {
-    const htmlTheme = document.documentElement.getAttribute('data-theme');
-    const bodyTheme = document.body.getAttribute('data-theme');
-    const theme = htmlTheme || bodyTheme || 'dark';
-    document.documentElement.setAttribute('data-theme', theme);
-    document.body.setAttribute('data-theme', theme);
+    // Try to detect class or attribute changes on body
+    const isLight = document.body.classList.contains('light') || 
+                    document.body.classList.contains('light-mode') ||
+                    document.documentElement.getAttribute('data-theme') === 'light';
+    
+    if (isLight) {
+      document.documentElement.setAttribute('data-theme', 'light');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
   }
+
+  // Initial sync
   syncTheme();
+
+  // Observe changes (in case header toggles class later)
   const observer = new MutationObserver(syncTheme);
   observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-  observer.observe(document.body, { attributes: true, attributeFilter: ['data-theme'] });
+  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
-  // Code Examples for ALL languages
+  // Code Examples
   const examples = {
     python: `# Th.Tech Python Playground 🐍
 name = input("أدخل اسمك: ")
@@ -491,7 +498,7 @@ using System;
 class Program {
     static void Main() {
         Console.WriteLine("مرحباً بالعالم!");
-        Console.WriteLine("🎉 استمتع بالبرمجة!");
+        Console.WriteLine(" استمتع بالبرمجة!");
     }
 }`,
 
@@ -501,10 +508,10 @@ import "fmt"
 
 func main() {
     fmt.Println("مرحباً بالعالم!")
-    fmt.Println("🎉 استمتع بالبرمجة!")
+    fmt.Println(" استمتع بالبرمجة!")
 }`,
 
-    ruby: `# Th.Tech Ruby Playground 💎
+    ruby: `# Th.Tech Ruby Playground 
 puts "مرحباً بالعالم!"
 puts "🎉 استمتع بالبرمجة!"`,
 
@@ -514,8 +521,7 @@ echo "مرحباً بالعالم!\\n";
 echo "🎉 استمتع بالبرمجة!";
 ?>`,
 
-    sql: `-- Th.Tech SQL Playground 🗄️
--- استعلامات قاعدة بيانات
+    sql: `-- Th.Tech SQL Playground ️
 SELECT 'مرحباً بالعالم!' AS greeting;
 SELECT '🎉 استمتع بالبرمجة!' AS message;`,
 
@@ -533,7 +539,7 @@ console.log("🎉 استمتع بالبرمجة!");`
   };
 
   const icons = {
-    python: '', javascript: '', html: '', java: '☕', cpp: '⚡',
+    python: '', javascript: '', html: '', java: '☕', cpp: '',
     csharp: '', go: '', ruby: '', php: '', sql: '', typescript: ''
   };
 
@@ -542,7 +548,6 @@ console.log("🎉 استمتع بالبرمجة!");`
     cpp: 'C++', csharp: 'C#', go: 'Go', ruby: 'Ruby', php: 'PHP', sql: 'SQL', typescript: 'TypeScript'
   };
 
-  // Storage helpers
   function storageKey() { return 'thtech-playground-' + currentLanguage; }
 
   function loadCode() {
@@ -552,7 +557,6 @@ console.log("🎉 استمتع بالبرمجة!");`
     dirty.style.display = saved !== null ? 'none' : 'inline';
   }
 
-  // Update language
   function updateLanguage() {
     currentLanguage = language.value;
     fileName.textContent = 'main.' + extensions[currentLanguage];
@@ -564,20 +568,17 @@ console.log("🎉 استمتع بالبرمجة!");`
 
   language.addEventListener('change', updateLanguage);
 
-  // Line numbers
   function updateLines() {
     const count = code.value.split('\n').length;
     numbers.innerHTML = Array.from({length: count}, (_, i) => i + 1).join('<br>');
   }
 
-  // Stats
   function updateStats() {
     const lines = code.value.split('\n').length;
     const chars = code.value.length;
     stats.textContent = `${lines} lines • ${chars} chars`;
   }
 
-  // Cursor position
   function updateCursor() {
     const before = code.value.substring(0, code.selectionStart);
     const line = before.split('\n').length;
@@ -585,7 +586,6 @@ console.log("🎉 استمتع بالبرمجة!");`
     cursor.textContent = `Ln ${line}, Col ${column}`;
   }
 
-  // Edit events
   code.addEventListener('input', () => {
     updateLines(); updateStats(); updateCursor();
     dirty.style.display = 'inline';
@@ -596,7 +596,6 @@ console.log("🎉 استمتع بالبرمجة!");`
   code.addEventListener('keyup', updateCursor);
   code.addEventListener('scroll', () => { numbers.scrollTop = code.scrollTop; });
 
-  // Tab key
   code.addEventListener('keydown', event => {
     if (event.key === 'Tab') {
       event.preventDefault();
@@ -610,14 +609,12 @@ console.log("🎉 استمتع بالبرمجة!");`
     if (event.ctrlKey && event.key.toLowerCase() === 's') { event.preventDefault(); saveCode(); }
   });
 
-  // Save
   function saveCode() {
     localStorage.setItem(storageKey(), code.value);
     dirty.style.display = 'none';
   }
   document.getElementById('save').addEventListener('click', saveCode);
 
-  // Copy
   document.getElementById('copy').addEventListener('click', async () => {
     try {
       await navigator.clipboard.writeText(code.value);
@@ -628,7 +625,6 @@ console.log("🎉 استمتع بالبرمجة!");`
     } catch { alert('تعذر نسخ الكود'); }
   });
 
-  // Download
   document.getElementById('download').addEventListener('click', () => {
     const blob = new Blob([code.value], { type: 'text/plain;charset=utf-8' });
     const url = URL.createObjectURL(blob);
@@ -641,7 +637,6 @@ console.log("🎉 استمتع بالبرمجة!");`
     URL.revokeObjectURL(url);
   });
 
-  // Font size
   document.getElementById('fontUp').addEventListener('click', () => {
     fontSize = Math.min(24, fontSize + 1);
     code.style.fontSize = fontSize + 'px';
@@ -653,7 +648,6 @@ console.log("🎉 استمتع بالبرمجة!");`
     numbers.style.fontSize = fontSize + 'px';
   });
 
-  // Search
   document.getElementById('search').addEventListener('click', () => {
     searchBar.classList.add('show');
     searchInput.focus();
@@ -675,13 +669,11 @@ console.log("🎉 استمتع بالبرمجة!");`
     }
   });
 
-  // Clear output
   function clearOutput() {
     output.innerHTML = '<div class="welcome-terminal"><div class="terminal-logo">&gt;_</div><h3>Th.Tech Terminal</h3><p>اضغط تشغيل لتنفيذ الكود</p><small>Ctrl + Enter</small></div>';
   }
   document.getElementById('clear').addEventListener('click', clearOutput);
 
-  // Load Pyodide
   async function getPython() {
     if (pyodide) return pyodide;
     if (typeof window.loadPyodide !== 'function') throw new Error('محرك Python غير متاح.');
@@ -689,51 +681,26 @@ console.log("🎉 استمتع بالبرمجة!");`
     return pyodide;
   }
 
-  // Execute Python - FIXED VERSION
   async function executePython(source) {
     const py = await getPython();
     let result = '';
     let hasError = false;
-    
     try {
-      // Handle input
       const inputVal = input.value.trim();
       if (inputVal) {
         const lines = inputVal.split('\n');
         let inputIndex = 0;
-        
-        py.setStdin({
-          stdin: () => {
-            if (inputIndex < lines.length) {
-              return lines[inputIndex++];
-            }
-            return '';
-          }
-        });
+        py.setStdin({ stdin: () => inputIndex < lines.length ? lines[inputIndex++] : '' });
       }
-      
-      // Capture output
-      py.setStdout({
-        batched: (msg) => { result += msg; }
-      });
-      
-      py.setStderr({
-        batched: (msg) => { 
-          result += msg; 
-          hasError = true;
-        }
-      });
-      
-      // Execute with error handling
+      py.setStdout({ batched: (msg) => { result += msg; } });
+      py.setStderr({ batched: (msg) => { result += msg; hasError = true; } });
       await py.runPythonAsync(source);
-      
       return { output: result, error: hasError };
     } catch (error) {
       return { output: error.message, error: true };
     }
   }
 
-  // Execute JavaScript
   function executeJavaScript(source) {
     const logs = [];
     const consoleAPI = {
@@ -753,7 +720,6 @@ console.log("🎉 استمتع بالبرمجة!");`
     return String(value);
   }
 
-  // Execute HTML
   function executeHTML(source) {
     preview.innerHTML = '';
     const iframe = document.createElement('iframe');
@@ -763,7 +729,6 @@ console.log("🎉 استمتع بالبرمجة!");`
     doc.open(); doc.write(source); doc.close();
   }
 
-  // Run code - FIXED VERSION
   async function runCode() {
     const source = code.value.trim();
     if (!source) {
@@ -801,9 +766,14 @@ console.log("🎉 استمتع بالبرمجة!");`
         result = executeJavaScript(source);
       }
       
-      // For other languages, show preview message
+      // Better message for compiled languages
       if (['java','cpp','csharp','go','ruby','php','sql','typescript'].includes(currentLanguage)) {
-        result = '👁️ ' + currentLanguage.toUpperCase() + ' - معاينة الكود\n\nالكود الذي كتبته صحيح من حيث البنية.\nلتشغيل ' + langNames[currentLanguage] + ' تحتاج إلى بيئة تشغيل خاصة (Compiler/Interpreter).';
+        result = `👁️ معاينة الكود لـ ${currentLanguage.toUpperCase()}\n\n` +
+                 `✅ الكود الذي كتبته صحيح من حيث البنية.\n\n` +
+                 `⚠️ ملاحظة تقنية:\n` +
+                 `لغات مثل C++ و Java و C# هي لغات "مُجمَّعة" (Compiled). ` +
+                 `المتصفح لا يستطيع تشغيلها مباشرة لأنه يفهم فقط JavaScript.\n` +
+                 `لتشغيلها فعلياً تحتاج إلى سيرفر خارجي (Backend Compiler).`;
       }
       
       if (result.trim()) {
@@ -820,7 +790,6 @@ console.log("🎉 استمتع بالبرمجة!");`
   }
   document.getElementById('run').addEventListener('click', runCode);
 
-  // Tabs
   const consoleTab = document.getElementById('consoleTab');
   const previewTab = document.getElementById('previewTab');
   function showConsole() {
@@ -834,24 +803,20 @@ console.log("🎉 استمتع بالبرمجة!");`
   consoleTab.addEventListener('click', showConsole);
   previewTab.addEventListener('click', showPreview);
 
-  // Fullscreen
   document.getElementById('fullscreen').addEventListener('click', () => {
     document.getElementById('workspace').classList.toggle('fullscreen');
   });
 
-  // Reset
   document.getElementById('reset').addEventListener('click', () => {
     if (!confirm('إعادة الكود إلى المثال الأصلي؟')) return;
     localStorage.removeItem(storageKey());
     loadCode(); clearOutput();
   });
 
-  // Escape HTML
   function escapeHTML(value) {
     return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
   }
 
-  // Start
   updateLanguage();
 });
 </script>
