@@ -2,835 +2,4092 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
+
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
   <title>Th.Tech | محرر الأكواد الاحترافي</title>
+
   <link rel="icon" type="image/png" href="/Th-tech/logo1.png" />
+
   <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
 </head>
+
 <body>
+
   <Header />
 
   <main class="page">
 
-    <!-- HERO -->
+    <!-- =====================================================
+         HERO
+    ====================================================== -->
+
     <section class="hero">
+
       <div class="hero-text">
-        <div class="eyebrow">TH.TECH • DEVELOPER TOOLS</div>
-        <h1>محرر الأكواد <span>الاحترافي</span></h1>
-        <p>اكتب الكود، اختبره وشاهد النتيجة مباشرة من المتصفح.</p>
+
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          TH.TECH
+          <span>•</span>
+          DEVELOPER TOOLS
+        </div>
+
+        <h1>
+          محرر الأكواد
+          <span>الاحترافي</span>
+        </h1>
+
+        <p>
+          اكتب الكود، اختبره وشاهد النتيجة مباشرة من المتصفح.
+        </p>
+
       </div>
+
       <div class="hero-actions">
-        <select id="language">
-          <option value="python"><i class="fab fa-python"></i> Python</option>
-          <option value="javascript"><i class="fab fa-js"></i> JavaScript</option>
-          <option value="html"><i class="fab fa-html5"></i> HTML / CSS</option>
-          <option value="java"><i class="fab fa-java"></i> Java</option>
-          <option value="cpp"><i class="fas fa-bolt"></i> C++</option>
-          <option value="csharp"><i class="fas fa-cube"></i> C#</option>
-          <option value="go"><i class="fab fa-golang"></i> Go</option>
-          <option value="ruby"><i class="fab fa-ruby"></i> Ruby</option>
-          <option value="php"><i class="fab fa-php"></i> PHP</option>
-          <option value="sql"><i class="fas fa-database"></i> SQL</option>
-          <option value="typescript"><i class="fab fa-js"></i> TypeScript</option>
-        </select>
+
+        <div class="language-select-wrapper">
+
+          <i id="languageSelectIcon" class="fab fa-python select-icon"></i>
+
+          <select id="language" aria-label="اختيار لغة البرمجة">
+
+            <option value="python">Python</option>
+            <option value="javascript">JavaScript</option>
+            <option value="html">HTML / CSS</option>
+            <option value="java">Java</option>
+            <option value="cpp">C++</option>
+            <option value="csharp">C#</option>
+            <option value="go">Go</option>
+            <option value="ruby">Ruby</option>
+            <option value="php">PHP</option>
+            <option value="sql">SQL</option>
+            <option value="typescript">TypeScript</option>
+
+          </select>
+
+          <i class="fas fa-chevron-down select-arrow"></i>
+
+        </div>
+
       </div>
+
     </section>
 
-    <!-- WORKSPACE -->
+
+    <!-- =====================================================
+         WORKSPACE
+    ====================================================== -->
+
     <section class="workspace" id="workspace">
+
       <!-- TOP BAR -->
+
       <div class="topbar">
+
         <div class="file-tab">
-          <span id="fileIcon"><i class="fab fa-python"></i></span>
+
+          <span id="fileIcon" class="file-icon">
+            <i class="fab fa-python"></i>
+          </span>
+
           <span id="fileName">main.py</span>
-          <span id="dirty" class="dirty">●</span>
+
+          <span id="dirty" class="dirty" title="تغييرات غير محفوظة">
+            <i class="fas fa-circle"></i>
+          </span>
+
+          <span id="savedLabel" class="saved-label">
+            <i class="fas fa-check"></i>
+            محفوظ
+          </span>
+
         </div>
+
+
         <div class="actions">
-          <button id="search" title="بحث"><i class="fas fa-search"></i></button>
-          <button id="copy" title="نسخ الكود"><i class="fas fa-copy"></i></button>
-          <button id="save" title="حفظ"><i class="fas fa-save"></i></button>
-          <button id="download" title="تنزيل"><i class="fas fa-download"></i></button>
-          <button id="fontDown" title="تصغير الخط"><i class="fas fa-font"></i>−</button>
-          <button id="fontUp" title="تكبير الخط"><i class="fas fa-font"></i>+</button>
-          <button id="fullscreen" title="ملء الشاشة"><i class="fas fa-expand"></i></button>
-          <button id="reset" title="إعادة تعيين"><i class="fas fa-redo"></i></button>
-          <button id="run" class="run"><i class="fas fa-play"></i> تشغيل</button>
+
+          <button
+            id="search"
+            class="tool-button"
+            title="بحث داخل الكود"
+            aria-label="بحث داخل الكود"
+          >
+            <i class="fas fa-magnifying-glass"></i>
+          </button>
+
+
+          <button
+            id="copy"
+            class="tool-button"
+            title="نسخ الكود"
+            aria-label="نسخ الكود"
+          >
+            <i class="far fa-copy"></i>
+          </button>
+
+
+          <button
+            id="save"
+            class="tool-button"
+            title="حفظ الكود"
+            aria-label="حفظ الكود"
+          >
+            <i class="far fa-floppy-disk"></i>
+          </button>
+
+
+          <button
+            id="download"
+            class="tool-button"
+            title="تنزيل الملف"
+            aria-label="تنزيل الملف"
+          >
+            <i class="fas fa-download"></i>
+          </button>
+
+
+          <button
+            id="fontDown"
+            class="tool-button font-button"
+            title="تصغير حجم الخط"
+            aria-label="تصغير حجم الخط"
+          >
+            <i class="fas fa-font"></i>
+            <span>−</span>
+          </button>
+
+
+          <button
+            id="fontUp"
+            class="tool-button font-button"
+            title="تكبير حجم الخط"
+            aria-label="تكبير حجم الخط"
+          >
+            <i class="fas fa-font"></i>
+            <span>+</span>
+          </button>
+
+
+          <button
+            id="fullscreen"
+            class="tool-button"
+            title="ملء الشاشة"
+            aria-label="ملء الشاشة"
+          >
+            <i class="fas fa-expand"></i>
+          </button>
+
+
+          <button
+            id="reset"
+            class="tool-button"
+            title="إعادة تعيين الكود"
+            aria-label="إعادة تعيين الكود"
+          >
+            <i class="fas fa-rotate-right"></i>
+          </button>
+
+
+          <button
+            id="run"
+            class="run"
+            title="تشغيل الكود - Ctrl + Enter"
+          >
+            <i class="fas fa-play"></i>
+            <span>تشغيل</span>
+          </button>
+
         </div>
+
       </div>
+
 
       <!-- SEARCH -->
+
       <div id="searchBar" class="search-bar">
-        <input id="searchInput" placeholder="ابحث داخل الكود..." />
+
+        <div class="search-icon">
+          <i class="fas fa-magnifying-glass"></i>
+        </div>
+
+        <input
+          id="searchInput"
+          placeholder="ابحث داخل الكود..."
+          autocomplete="off"
+        />
+
         <span id="searchResult">0 نتيجة</span>
-        <button id="closeSearch">×</button>
+
+        <button id="closeSearch" title="إغلاق البحث" aria-label="إغلاق البحث">
+          <i class="fas fa-xmark"></i>
+        </button>
+
       </div>
+
 
       <!-- WORKSPACE BODY -->
+
       <div class="workspace-body">
-        <!-- EDITOR -->
+
+
+        <!-- =================================================
+             EDITOR
+        ================================================== -->
+
         <div class="editor-panel">
+
           <div class="editor-head">
-            <span>EDITOR</span>
-            <span id="languageBadge">Python</span>
+
+            <div class="editor-title">
+
+              <span class="editor-status-dot"></span>
+
+              <span>EDITOR</span>
+
+            </div>
+
+            <div class="language-badge">
+
+              <span id="languageBadge">
+                Python
+              </span>
+
+            </div>
+
           </div>
+
+
           <div class="editor">
-            <div id="numbers" class="numbers">1</div>
-            <textarea id="code" spellcheck="false" autocomplete="off" autocorrect="off" autocapitalize="off" placeholder="// اكتب الكود هنا..."></textarea>
+
+            <div
+              id="numbers"
+              class="numbers"
+              aria-hidden="true"
+            >
+              1
+            </div>
+
+
+            <textarea
+              id="code"
+              spellcheck="false"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              placeholder="// اكتب الكود هنا..."
+            ></textarea>
+
           </div>
+
+
+          <!-- STATUS BAR -->
+
           <div class="status">
-            <span id="cursor">Ln 1, Col 1</span>
-            <span id="stats">1 line • 0 chars</span>
-            <span>UTF-8</span>
-            <span>Spaces: 4</span>
+
+            <span id="cursor">
+              Ln 1, Col 1
+            </span>
+
+            <span id="stats">
+              1 line • 0 chars
+            </span>
+
+            <span>
+              UTF-8
+            </span>
+
+            <span>
+              Spaces: 4
+            </span>
+
           </div>
+
         </div>
 
-        <!-- OUTPUT -->
+
+        <!-- =================================================
+             OUTPUT
+        ================================================== -->
+
         <div class="output-panel">
+
           <div class="output-head">
+
             <div class="output-tabs">
-              <button class="active" id="consoleTab">TERMINAL</button>
-              <button id="previewTab">PREVIEW</button>
+
+              <button
+                class="active"
+                id="consoleTab"
+              >
+                <i class="fas fa-terminal"></i>
+                TERMINAL
+              </button>
+
+              <button id="previewTab">
+                <i class="fas fa-display"></i>
+                PREVIEW
+              </button>
+
             </div>
-            <button id="clear" class="clear"><i class="fas fa-trash"></i> مسح</button>
+
+
+            <button
+              id="clear"
+              class="clear"
+              title="مسح النتائج"
+            >
+              <i class="fas fa-trash-can"></i>
+              <span>مسح</span>
+            </button>
+
           </div>
+
+
           <div id="output" class="output">
+
             <div class="welcome-terminal">
-              <div class="terminal-logo"><i class="fas fa-terminal"></i></div>
-              <h3>Th.Tech Terminal</h3>
-              <p>اضغط تشغيل لتنفيذ الكود</p>
-              <small>Ctrl + Enter</small>
+
+              <div class="terminal-logo">
+
+                <i class="fas fa-terminal"></i>
+
+              </div>
+
+              <h3>
+                Th.Tech Terminal
+              </h3>
+
+              <p>
+                اضغط تشغيل لتنفيذ الكود
+              </p>
+
+              <small>
+                <kbd>Ctrl</kbd>
+                +
+                <kbd>Enter</kbd>
+              </small>
+
             </div>
+
           </div>
+
+
           <div id="preview" class="preview"></div>
+
         </div>
+
       </div>
 
-      <!-- PYTHON INPUT -->
-      <div id="inputArea" class="input-area">
-        <div>
-          <strong><i class="fas fa-keyboard"></i> Input</strong>
-          <span>قيم input() — كل قيمة في سطر</span>
+
+      <!-- =================================================
+           PYTHON INPUT
+      ================================================== -->
+
+      <div
+        id="inputArea"
+        class="input-area"
+      >
+
+        <div class="input-title">
+
+          <div>
+
+            <strong>
+              <i class="fas fa-keyboard"></i>
+              Input
+            </strong>
+
+            <span>
+              قيم input() — كل قيمة في سطر
+            </span>
+
+          </div>
+
+          <span class="input-badge">
+            Python
+          </span>
+
         </div>
-        <textarea id="input" placeholder="مثال:&#10;Ahmed&#10;25"></textarea>
+
+
+        <textarea
+          id="input"
+          placeholder="مثال:
+Ahmed
+25"
+        ></textarea>
+
       </div>
+
     </section>
 
-    <!-- FEATURES -->
+
+    <!-- =====================================================
+         FEATURES
+    ====================================================== -->
+
     <section class="info">
-      <div>
-        <span class="info-icon"><i class="fas fa-bolt"></i></span>
-        <div><strong>تشغيل سريع</strong><p>نتائج مباشرة داخل المتصفح</p></div>
+
+      <div class="info-card">
+
+        <span class="info-icon">
+          <i class="fas fa-bolt"></i>
+        </span>
+
+        <div>
+          <strong>تشغيل سريع</strong>
+          <p>نتائج مباشرة داخل المتصفح</p>
+        </div>
+
       </div>
-      <div>
-        <span class="info-icon"><i class="fas fa-save"></i></span>
-        <div><strong>حفظ تلقائي</strong><p>الكود محفوظ على جهازك</p></div>
+
+
+      <div class="info-card">
+
+        <span class="info-icon">
+          <i class="fas fa-floppy-disk"></i>
+        </span>
+
+        <div>
+          <strong>حفظ تلقائي</strong>
+          <p>الكود محفوظ على جهازك</p>
+        </div>
+
       </div>
-      <div>
-        <span class="info-icon"><i class="fas fa-mobile-alt"></i></span>
-        <div><strong>متجاوب</strong><p>مصمم للهاتف والكمبيوتر</p></div>
+
+
+      <div class="info-card">
+
+        <span class="info-icon">
+          <i class="fas fa-mobile-screen-button"></i>
+        </span>
+
+        <div>
+          <strong>متجاوب</strong>
+          <p>مصمم للهاتف والكمبيوتر</p>
+        </div>
+
       </div>
-      <div>
-        <span class="info-icon"><i class="fas fa-lock"></i></span>
-        <div><strong>محلي</strong><p>التنفيذ يتم داخل المتصفح</p></div>
+
+
+      <div class="info-card">
+
+        <span class="info-icon">
+          <i class="fas fa-shield-halved"></i>
+        </span>
+
+        <div>
+          <strong>محلي</strong>
+          <p>التنفيذ يتم داخل المتصفح</p>
+        </div>
+
       </div>
+
     </section>
 
   </main>
 
+
   <Footer />
 
+
 <style>
-/* =====================================================
-   THEME SYSTEM - Universal Light/Dark Mode Fix
-   ===================================================== */
+
+/* =========================================================
+   THEME SYSTEM
+========================================================= */
+
 :root {
+
   --bg: #080c12;
   --panel: #0d131b;
   --panel2: #111923;
   --bar: #151e29;
+
   --editor-bg: #080c11;
   --editor-numbers: #070b10;
+
   --input-bg: #0a1017;
   --status-bg: #0d141c;
+
   --border: #202c39;
-  --border-soft: #263442;
+  --border-soft: #2b3a49;
+
   --text: #e6edf3;
   --text-soft: #c5d0da;
+
   --muted: #7d8b99;
   --muted-dark: #536271;
+
   --blue: #38a8ff;
   --blue2: #168bd0;
+
   --green: #3fb950;
   --red: #f85149;
   --warning: #d29922;
-  --shadow: 0 25px 80px rgba(0,0,0,.35);
+
+  --shadow:
+    0 25px 80px rgba(0,0,0,.35);
+
   --code: 15px;
+
+  color-scheme: dark;
 }
 
-/* Light Mode Variables - Applied to html, body, and common classes */
-html[data-theme="light"], 
-body.light, 
+
+/* LIGHT */
+
+html[data-theme="light"],
+body.light,
 body.light-mode,
 .light-theme {
+
   --bg: #f5f8fb;
   --panel: #ffffff;
   --panel2: #f1f5f9;
   --bar: #edf2f7;
+
   --editor-bg: #fbfdff;
   --editor-numbers: #f1f5f9;
+
   --input-bg: #f7f9fc;
   --status-bg: #edf2f7;
+
   --border: #d9e2ea;
   --border-soft: #c8d4df;
+
   --text: #17212b;
   --text-soft: #334454;
+
   --muted: #667788;
   --muted-dark: #8795a3;
+
   --blue: #087fc5;
   --blue2: #087fc5;
+
   --green: #16883a;
   --red: #d92d27;
   --warning: #9a6700;
-  --shadow: 0 20px 60px rgba(31,55,75,.12);
+
+  --shadow:
+    0 20px 60px rgba(31,55,75,.12);
+
+  color-scheme: light;
 }
 
-/* Force colors on specific elements to ensure coverage */
-html, body, .page, .hero, .workspace, .info {
-  background-color: var(--bg);
+
+/* =========================================================
+   GLOBAL
+========================================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--bg);
+  transition:
+    background-color .25s ease,
+    color .25s ease;
+}
+
+body {
+  min-height: 100vh;
+
+  font-family: 'Cairo', sans-serif;
+
+  line-height: 1.6;
+
+  background: var(--bg);
   color: var(--text);
-  transition: background-color 0.3s ease, color 0.3s ease;
+
+  transition:
+    background-color .25s ease,
+    color .25s ease;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Cairo', sans-serif; line-height: 1.6; }
+.page {
+  width: min(1400px, calc(100% - 30px));
 
-.page { width: min(1400px, calc(100% - 30px)); margin: auto; padding: 45px 0 70px; }
+  margin: auto;
 
-/* Hero */
-.hero { display: flex; align-items: flex-end; justify-content: space-between; gap: 25px; margin-bottom: 25px; }
-.eyebrow { color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 8px; }
-.hero h1 { color: var(--text); font-size: clamp(28px, 4vw, 46px); line-height: 1.2; font-weight: 800; }
-.hero h1 span { color: var(--blue); }
-.hero p { margin: 10px 0 0; color: var(--muted); font-size: 15px; }
-.hero-actions { display: flex; gap: 8px; }
-.hero-actions select {
-  height: 44px; min-width: 180px; padding: 0 15px; border: 1px solid var(--border);
-  border-radius: 9px; background: var(--panel); color: var(--text); font-family: inherit;
-  font-weight: 600; outline: none; cursor: pointer; transition: .2s ease;
-  display: flex; align-items: center; gap: 8px;
+  padding:
+    45px 0 70px;
+
+  background: var(--bg);
 }
-.hero-actions select:hover { border-color: var(--blue); }
-.hero-actions select i { font-size: 1.1rem; }
 
-/* Workspace */
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+
+  display: flex;
+
+  align-items: flex-end;
+
+  justify-content: space-between;
+
+  gap: 25px;
+
+  margin-bottom: 25px;
+}
+
+.hero-text {
+  min-width: 0;
+}
+
+.eyebrow {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  color: var(--blue);
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.5px;
+
+  margin-bottom: 8px;
+}
+
+.eyebrow-dot {
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: var(--blue);
+
+  box-shadow:
+    0 0 12px rgba(56,168,255,.55);
+}
+
+.hero h1 {
+
+  color: var(--text);
+
+  font-size:
+    clamp(28px, 4vw, 46px);
+
+  line-height: 1.2;
+
+  font-weight: 800;
+}
+
+.hero h1 span {
+  color: var(--blue);
+}
+
+.hero p {
+
+  margin-top: 10px;
+
+  color: var(--muted);
+
+  font-size: 15px;
+}
+
+
+/* =========================================================
+   LANGUAGE SELECT
+========================================================= */
+
+.hero-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.language-select-wrapper {
+
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  width: 205px;
+
+  height: 46px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 10px;
+
+  background: var(--panel);
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.language-select-wrapper:hover {
+
+  border-color: var(--blue);
+
+  box-shadow:
+    0 0 0 3px rgba(56,168,255,.07);
+}
+
+.select-icon {
+
+  position: absolute;
+
+  right: 13px;
+
+  color: var(--blue);
+
+  font-size: 17px;
+
+  pointer-events: none;
+
+  z-index: 2;
+}
+
+.language-select-wrapper select {
+
+  appearance: none;
+
+  width: 100%;
+  height: 100%;
+
+  border: 0;
+  outline: 0;
+
+  padding:
+    0 42px 0 38px;
+
+  background: transparent;
+
+  color: var(--text);
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+}
+
+.language-select-wrapper option {
+  background: var(--panel);
+  color: var(--text);
+}
+
+.select-arrow {
+
+  position: absolute;
+
+  left: 13px;
+
+  color: var(--muted);
+
+  font-size: 10px;
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   WORKSPACE
+========================================================= */
+
 .workspace {
-  background: var(--panel); border: 1px solid var(--border); border-radius: 14px;
-  overflow: hidden; box-shadow: var(--shadow); transition: background .25s ease, border-color .25s ease;
+
+  position: relative;
+
+  background: var(--panel);
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  box-shadow: var(--shadow);
+
+  transition:
+    background-color .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
 }
 
-/* Topbar */
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
 .topbar {
-  min-height: 58px; display: flex; align-items: center; justify-content: space-between;
-  background: var(--bar); border-bottom: 1px solid var(--border); padding: 0 12px; gap: 10px;
+
+  min-height: 58px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  background: var(--bar);
+
+  border-bottom:
+    1px solid var(--border);
+
+  padding:
+    0 12px;
+
+  gap: 10px;
 }
+
 .file-tab {
-  height: 58px; display: flex; align-items: center; gap: 9px; padding: 0 15px;
-  border-right: 1px solid var(--border); font-family: 'Fira Code', monospace; font-size: 13px; color: var(--text);
+
+  height: 58px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding:
+    0 15px;
+
+  border-right:
+    1px solid var(--border);
+
+  font-family:
+    'Fira Code',
+    monospace;
+
+  font-size: 13px;
+
+  color: var(--text);
+
+  white-space: nowrap;
 }
-.file-tab i { font-size: 1.2rem; color: var(--blue); }
-.dirty { color: var(--blue); font-size: 8px; }
-.actions { display: flex; align-items: center; gap: 5px; }
+
+.file-icon {
+
+  width: 24px;
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+}
+
+.file-icon i {
+  color: var(--blue);
+  font-size: 18px;
+}
+
+.dirty {
+
+  color: var(--blue);
+
+  font-size: 7px;
+
+  transition: opacity .2s ease;
+}
+
+.saved-label {
+
+  display: none;
+
+  align-items: center;
+
+  gap: 5px;
+
+  color: var(--green);
+
+  font-family: Cairo, sans-serif;
+
+  font-size: 9px;
+
+  font-weight: 600;
+}
+
+.saved-label i {
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.actions {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 5px;
+
+  min-width: 0;
+}
+
 .actions button {
-  height: 36px; min-width: 36px; padding: 0 9px; border: 1px solid var(--border);
-  border-radius: 7px; background: transparent; color: var(--muted); cursor: pointer;
-  font-family: inherit; font-size: 12px; transition: .2s ease;
-  display: flex; align-items: center; justify-content: center; gap: 5px;
-}
-.actions button i { font-size: 0.9rem; }
-.actions button:hover { color: var(--text); border-color: var(--border-soft); background: rgba(128,128,128,.08); }
-.actions .run { padding: 0 18px; border: 0; background: var(--blue2); color: white; font-weight: 700; }
-.actions .run:hover { background: var(--blue); }
-.actions .run:disabled { opacity: .6; cursor: not-allowed; }
 
-/* Search */
+  position: relative;
+
+  height: 36px;
+
+  min-width: 36px;
+
+  padding:
+    0 9px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 7px;
+
+  background: transparent;
+
+  color: var(--muted);
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  transition:
+    color .2s ease,
+    border-color .2s ease,
+    background .2s ease,
+    transform .15s ease;
+}
+
+.actions button i {
+  font-size: 13px;
+}
+
+.actions button:hover {
+
+  color: var(--text);
+
+  border-color:
+    var(--border-soft);
+
+  background:
+    rgba(128,128,128,.08);
+
+  transform:
+    translateY(-1px);
+}
+
+.actions button:active {
+  transform: translateY(0);
+}
+
+.actions button:focus-visible {
+
+  outline:
+    2px solid var(--blue);
+
+  outline-offset: 2px;
+}
+
+.actions .run {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 7px;
+
+  padding:
+    0 18px;
+
+  border: 0;
+
+  background:
+    var(--blue2);
+
+  color: white;
+
+  font-weight: 700;
+
+  box-shadow:
+    0 5px 18px rgba(22,139,208,.22);
+}
+
+.actions .run:hover {
+
+  background:
+    var(--blue);
+
+  color: white;
+
+  border-color: transparent;
+
+  box-shadow:
+    0 7px 22px rgba(22,139,208,.30);
+}
+
+.actions .run:disabled {
+
+  opacity: .6;
+
+  cursor: not-allowed;
+
+  transform: none;
+}
+
+.font-button {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 4px;
+}
+
+.font-button span {
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
 .search-bar {
-  display: none; height: 50px; align-items: center; gap: 10px; padding: 7px 12px;
-  background: var(--input-bg); border-bottom: 1px solid var(--border);
+
+  display: none;
+
+  height: 50px;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+    7px 12px;
+
+  background:
+    var(--input-bg);
+
+  border-bottom:
+    1px solid var(--border);
 }
-.search-bar.show { display: flex; }
+
+.search-bar.show {
+  display: flex;
+}
+
+.search-icon {
+
+  width: 30px;
+  height: 30px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: var(--blue);
+}
+
 .search-bar input {
-  flex: 1; height: 35px; border: 1px solid var(--border); border-radius: 7px;
-  background: var(--panel); color: var(--text); padding: 0 12px; outline: none; font-family: inherit;
+
+  flex: 1;
+
+  min-width: 0;
+
+  height: 35px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 7px;
+
+  background:
+    var(--panel);
+
+  color:
+    var(--text);
+
+  padding:
+    0 12px;
+
+  outline: none;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
 }
-.search-bar input:focus { border-color: var(--blue); }
-.search-bar input::placeholder { color: var(--muted); }
-.search-bar span { color: var(--muted); font-size: 12px; }
-.search-bar button { border: 0; background: transparent; color: var(--muted); font-size: 22px; cursor: pointer; }
 
-/* Workspace Body */
-.workspace-body { display: grid; grid-template-columns: 1.15fr .85fr; min-height: 600px; }
-.editor-panel { min-width: 0; border-left: 1px solid var(--border); }
+.search-bar input:focus {
 
-/* Editor Head */
-.editor-head, .output-head {
-  height: 43px; display: flex; align-items: center; justify-content: space-between;
-  padding: 0 14px; background: var(--panel2); border-bottom: 1px solid var(--border);
-  color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: .7px;
+  border-color:
+    var(--blue);
+
+  box-shadow:
+    0 0 0 3px rgba(56,168,255,.07);
 }
-#languageBadge { color: var(--blue); }
 
-/* Code Editor */
-.editor { display: flex; height: 550px; background: var(--editor-bg); direction: ltr; }
+.search-bar input::placeholder {
+  color: var(--muted);
+}
+
+.search-bar span {
+
+  color: var(--muted);
+
+  font-size: 11px;
+
+  white-space: nowrap;
+}
+
+.search-bar button {
+
+  width: 32px;
+  height: 32px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: var(--muted);
+
+  cursor: pointer;
+
+  border-radius: 6px;
+}
+
+.search-bar button:hover {
+
+  background:
+    rgba(128,128,128,.08);
+
+  color:
+    var(--red);
+}
+
+
+/* =========================================================
+   WORKSPACE BODY
+========================================================= */
+
+.workspace-body {
+
+  display: grid;
+
+  grid-template-columns:
+    1.15fr .85fr;
+
+  min-height: 600px;
+}
+
+.editor-panel {
+
+  min-width: 0;
+
+  border-left:
+    1px solid var(--border);
+}
+
+.output-panel {
+
+  min-width: 0;
+
+  background:
+    var(--editor-bg);
+}
+
+
+/* =========================================================
+   EDITOR HEADER / OUTPUT HEADER
+========================================================= */
+
+.editor-head,
+.output-head {
+
+  height: 43px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  padding:
+    0 14px;
+
+  background:
+    var(--panel2);
+
+  border-bottom:
+    1px solid var(--border);
+
+  color:
+    var(--muted);
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: .7px;
+}
+
+.editor-title {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.editor-status-dot {
+
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background:
+    var(--green);
+
+  box-shadow:
+    0 0 9px rgba(63,185,80,.35);
+}
+
+.language-badge {
+
+  padding:
+    3px 8px;
+
+  border:
+    1px solid rgba(56,168,255,.15);
+
+  border-radius: 5px;
+
+  background:
+    rgba(56,168,255,.07);
+
+  color:
+    var(--blue);
+
+  font-size: 10px;
+
+  letter-spacing: 0;
+}
+
+
+/* =========================================================
+   EDITOR
+========================================================= */
+
+.editor {
+
+  display: flex;
+
+  height: 550px;
+
+  background:
+    var(--editor-bg);
+
+  direction: ltr;
+}
+
 .numbers {
-  width: 55px; flex: none; padding: 18px 12px; background: var(--editor-numbers);
-  border-right: 1px solid var(--border); color: var(--muted-dark);
-  font: var(--code) / 1.75 'Fira Code', monospace; text-align: right; overflow: hidden; user-select: none;
+
+  width: 55px;
+
+  flex: none;
+
+  padding:
+    18px 12px;
+
+  background:
+    var(--editor-numbers);
+
+  border-right:
+    1px solid var(--border);
+
+  color:
+    var(--muted-dark);
+
+  font:
+    var(--code) / 1.75
+    'Fira Code',
+    monospace;
+
+  text-align: right;
+
+  overflow: hidden;
+
+  user-select: none;
 }
+
 #code {
-  flex: 1; width: 100%; height: 100%; resize: none; border: 0; outline: 0; padding: 18px;
-  background: var(--editor-bg); color: var(--text); font: var(--code) / 1.75 'Fira Code', monospace;
-  white-space: pre; overflow: auto; tab-size: 4; transition: background .25s ease, color .25s ease;
-}
-#code::placeholder { color: var(--muted-dark); }
-#code::selection { background: rgba(56,168,255,.25); }
 
-/* Output */
-.output-panel { min-width: 0; background: var(--editor-bg); }
-.output-tabs { display: flex; gap: 18px; }
+  flex: 1;
+
+  width: 100%;
+  height: 100%;
+
+  resize: none;
+
+  border: 0;
+
+  outline: 0;
+
+  padding:
+    18px;
+
+  background:
+    var(--editor-bg);
+
+  color:
+    var(--text);
+
+  font:
+    var(--code) / 1.75
+    'Fira Code',
+    monospace;
+
+  white-space: pre;
+
+  overflow: auto;
+
+  tab-size: 4;
+
+  transition:
+    background-color .25s ease,
+    color .25s ease;
+}
+
+#code::placeholder {
+  color: var(--muted-dark);
+}
+
+#code::selection {
+  background:
+    rgba(56,168,255,.25);
+}
+
+
+/* =========================================================
+   OUTPUT
+========================================================= */
+
+.output-tabs {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 18px;
+
+  height: 100%;
+}
+
 .output-tabs button {
-  height: 43px; border: 0; background: transparent; color: var(--muted);
-  cursor: pointer; font-family: inherit; font-size: 11px; font-weight: 700;
+
+  height: 43px;
+
+  border: 0;
+
+  background: transparent;
+
+  color: var(--muted);
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  position: relative;
 }
-.output-tabs button.active { color: var(--blue); border-bottom: 2px solid var(--blue); }
-.clear { background: transparent; border: 0; color: var(--muted); cursor: pointer; font-family: inherit; }
-.clear:hover { color: var(--red); }
+
+.output-tabs button i {
+  font-size: 10px;
+}
+
+.output-tabs button.active {
+
+  color:
+    var(--blue);
+}
+
+.output-tabs button.active::after {
+
+  content: "";
+
+  position: absolute;
+
+  bottom: 0;
+
+  right: 0;
+  left: 0;
+
+  height: 2px;
+
+  background:
+    var(--blue);
+
+  border-radius:
+    2px 2px 0 0;
+}
+
+.clear {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  background: transparent;
+
+  border: 0;
+
+  color: var(--muted);
+
+  cursor: pointer;
+
+  font-family: inherit;
+
+  font-size: 10px;
+}
+
+.clear:hover {
+  color: var(--red);
+}
+
 .output {
-  height: 550px; padding: 20px; overflow: auto; font: 14px / 1.7 'Fira Code', monospace;
-  white-space: pre-wrap; word-break: break-word; color: var(--text);
+
+  height: 550px;
+
+  padding: 20px;
+
+  overflow: auto;
+
+  font:
+    14px / 1.7
+    'Fira Code',
+    monospace;
+
+  white-space: pre-wrap;
+
+  word-break: break-word;
+
+  color: var(--text);
 }
+
 .welcome-terminal {
-  height: 100%; display: flex; flex-direction: column; align-items: center;
-  justify-content: center; text-align: center; color: var(--muted);
+
+  height: 100%;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  color: var(--muted);
 }
+
 .terminal-logo {
-  width: 65px; height: 65px; display: flex; align-items: center; justify-content: center;
-  margin-bottom: 15px; border: 1px solid var(--border); border-radius: 15px;
-  background: var(--panel2); color: var(--blue); font-size: 28px;
+
+  width: 65px;
+  height: 65px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin-bottom: 15px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 15px;
+
+  background:
+    var(--panel2);
+
+  color:
+    var(--blue);
+
+  font-size: 26px;
+
+  box-shadow:
+    0 8px 30px rgba(0,0,0,.10);
 }
-.welcome-terminal h3 { margin: 0 0 4px; color: var(--text); }
-.welcome-terminal p { margin: 0 0 5px; }
 
-/* Preview */
-.preview { display: none; height: 550px; background: white; }
-.preview iframe { width: 100%; height: 100%; border: 0; }
+.welcome-terminal h3 {
 
-/* Input */
-.input-area { padding: 12px 15px; border-top: 1px solid var(--border); background: var(--input-bg); }
-.input-area > div { display: flex; gap: 8px; align-items: center; margin-bottom: 7px; }
-.input-area strong { color: var(--blue); font-size: 12px; }
-.input-area strong i { margin-left: 5px; }
-.input-area span { color: var(--muted); font-size: 11px; }
+  margin:
+    0 0 4px;
+
+  color:
+    var(--text);
+
+  font-size: 16px;
+}
+
+.welcome-terminal p {
+
+  margin:
+    0 0 8px;
+
+  font-size: 12px;
+}
+
+.welcome-terminal small {
+
+  color:
+    var(--muted-dark);
+
+  font-size: 10px;
+}
+
+kbd {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-width: 23px;
+
+  height: 20px;
+
+  padding: 0 5px;
+
+  border:
+    1px solid var(--border);
+
+  border-bottom-width: 2px;
+
+  border-radius: 4px;
+
+  background:
+    var(--panel2);
+
+  color:
+    var(--text-soft);
+
+  font-family:
+    'Fira Code',
+    monospace;
+
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   PREVIEW
+========================================================= */
+
+.preview {
+
+  display: none;
+
+  height: 550px;
+
+  background: white;
+}
+
+.preview iframe {
+
+  width: 100%;
+  height: 100%;
+
+  border: 0;
+}
+
+
+/* =========================================================
+   INPUT
+========================================================= */
+
+.input-area {
+
+  padding:
+    12px 15px;
+
+  border-top:
+    1px solid var(--border);
+
+  background:
+    var(--input-bg);
+}
+
+.input-title {
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  margin-bottom: 7px;
+}
+
+.input-title > div {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.input-area strong {
+
+  color:
+    var(--blue);
+
+  font-size: 12px;
+}
+
+.input-area strong i {
+  margin-left: 4px;
+}
+
+.input-area span {
+
+  color:
+    var(--muted);
+
+  font-size: 10px;
+}
+
+.input-badge {
+
+  padding:
+    2px 7px;
+
+  border-radius: 4px;
+
+  background:
+    rgba(56,168,255,.07);
+
+  color:
+    var(--blue) !important;
+
+  font-size: 9px !important;
+
+  font-family:
+    'Fira Code',
+    monospace;
+}
+
 .input-area textarea {
-  width: 100%; min-height: 55px; resize: vertical; border: 1px solid var(--border);
-  border-radius: 7px; background: var(--panel); color: var(--text); padding: 9px;
-  outline: none; font: 12px 'Fira Code';
-}
-.input-area textarea:focus { border-color: var(--blue); }
 
-/* Status */
+  width: 100%;
+
+  min-height: 55px;
+
+  resize: vertical;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 7px;
+
+  background:
+    var(--panel);
+
+  color:
+    var(--text);
+
+  padding: 9px;
+
+  outline: none;
+
+  font:
+    12px
+    'Fira Code',
+    monospace;
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.input-area textarea:focus {
+
+  border-color:
+    var(--blue);
+
+  box-shadow:
+    0 0 0 3px rgba(56,168,255,.07);
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
 .status {
-  height: 31px; display: flex; align-items: center; justify-content: flex-end;
-  gap: 20px; padding: 0 12px; background: var(--status-bg); border-top: 1px solid var(--border);
-  color: var(--muted); font-size: 10px; direction: ltr;
+
+  height: 31px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  gap: 20px;
+
+  padding:
+    0 12px;
+
+  background:
+    var(--status-bg);
+
+  border-top:
+    1px solid var(--border);
+
+  color:
+    var(--muted);
+
+  font-size: 9px;
+
+  direction: ltr;
 }
 
-/* Info Cards */
-.info { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 18px; }
-.info > div {
-  display: flex; align-items: center; gap: 12px; padding: 15px;
-  border: 1px solid var(--border); border-radius: 11px; background: var(--panel);
-  transition: background .25s ease, border-color .25s ease;
+
+/* =========================================================
+   INFO CARDS
+========================================================= */
+
+.info {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 12px;
+
+  margin-top: 18px;
 }
+
+.info-card {
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 15px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius: 11px;
+
+  background:
+    var(--panel);
+
+  transition:
+    transform .2s ease,
+    background-color .25s ease,
+    border-color .25s ease,
+    box-shadow .2s ease;
+}
+
+.info-card:hover {
+
+  transform:
+    translateY(-2px);
+
+  border-color:
+    var(--border-soft);
+
+  box-shadow:
+    0 8px 25px rgba(0,0,0,.07);
+}
+
 .info-icon {
-  width: 38px; height: 38px; flex: none; display: flex; align-items: center;
-  justify-content: center; border-radius: 9px; background: rgba(56,168,255,.08); color: var(--blue);
-  font-size: 1.2rem;
-}
-.info strong { display: block; font-size: 12px; color: var(--text); }
-.info p { margin: 2px 0 0; color: var(--muted); font-size: 10px; }
 
-/* Fullscreen */
-.workspace.fullscreen {
-  position: fixed; inset: 0; z-index: 9999; border-radius: 0; width: 100%; height: 100vh;
+  width: 38px;
+  height: 38px;
+
+  flex: none;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background:
+    rgba(56,168,255,.08);
+
+  color:
+    var(--blue);
+
+  font-size: 16px;
 }
-.workspace.fullscreen .workspace-body { height: calc(100vh - 58px); }
+
+.info strong {
+
+  display: block;
+
+  font-size: 12px;
+
+  color:
+    var(--text);
+}
+
+.info p {
+
+  margin:
+    2px 0 0;
+
+  color:
+    var(--muted);
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   FULLSCREEN
+========================================================= */
+
+.workspace.fullscreen {
+
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  border-radius: 0;
+
+  width: 100%;
+
+  height: 100vh;
+
+  max-height: 100vh;
+}
+
+.workspace.fullscreen .workspace-body {
+
+  height:
+    calc(100vh - 58px);
+
+  min-height: 0;
+}
+
 .workspace.fullscreen .editor,
 .workspace.fullscreen .output,
-.workspace.fullscreen .preview { height: calc(100vh - 101px); }
+.workspace.fullscreen .preview {
 
-/* Mobile */
-@media(max-width:900px) {
-  .workspace-body { grid-template-columns: 1fr; }
-  .editor-panel { border-left: 0; border-bottom: 1px solid var(--border); }
-  .output-panel { min-height: 400px; }
-  .info { grid-template-columns: repeat(2,1fr); }
+  height:
+    calc(100vh - 101px);
 }
-@media(max-width:650px) {
-  .page { width: calc(100% - 16px); padding-top: 25px; }
-  .hero { flex-direction: column; align-items: stretch; }
-  .hero-actions { width: 100%; }
-  .hero-actions select { width: 100%; }
-  .topbar { padding: 0 7px; }
-  .file-tab { padding: 0 7px; font-size: 11px; }
-  .actions { overflow-x: auto; max-width: 70%; }
-  .actions button { flex: none; }
-  .actions button:nth-child(1), .actions button:nth-child(2) { display: none; }
-  .actions .run { padding: 0 13px; }
-  .editor { height: 430px; }
-  .output { height: 350px; }
-  .preview { height: 350px; }
-  .status { gap: 10px; }
-  .status span:nth-child(2), .status span:nth-child(3) { display: none; }
-  .info { grid-template-columns: 1fr; }
+
+
+/* =========================================================
+   SCROLLBARS
+========================================================= */
+
+#code::-webkit-scrollbar,
+.output::-webkit-scrollbar,
+.numbers::-webkit-scrollbar {
+
+  width: 9px;
+  height: 9px;
 }
-</style>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const code = document.getElementById('code');
-  const numbers = document.getElementById('numbers');
-  const output = document.getElementById('output');
-  const preview = document.getElementById('preview');
-  const inputArea = document.getElementById('inputArea');
-  const input = document.getElementById('input');
-  const language = document.getElementById('language');
-  const fileName = document.getElementById('fileName');
-  const fileIcon = document.getElementById('fileIcon');
-  const badge = document.getElementById('languageBadge');
-  const dirty = document.getElementById('dirty');
-  const stats = document.getElementById('stats');
-  const cursor = document.getElementById('cursor');
-  const searchBar = document.getElementById('searchBar');
-  const searchInput = document.getElementById('searchInput');
-  const searchResult = document.getElementById('searchResult');
+#code::-webkit-scrollbar-track,
+.output::-webkit-scrollbar-track,
+.numbers::-webkit-scrollbar-track {
 
-  let currentLanguage = 'python';
-  let fontSize = 15;
-  let pyodide = null;
+  background:
+    transparent;
+}
 
-  // Sync theme from header changes
-  function syncTheme() {
-    const isLight = document.body.classList.contains('light') || 
-                    document.body.classList.contains('light-mode') ||
-                    document.documentElement.getAttribute('data-theme') === 'light';
-    
-    if (isLight) {
-      document.documentElement.setAttribute('data-theme', 'light');
-    } else {
-      document.documentElement.setAttribute('data-theme', 'dark');
-    }
+#code::-webkit-scrollbar-thumb,
+.output::-webkit-scrollbar-thumb {
+
+  background:
+    var(--border);
+
+  border-radius: 20px;
+}
+
+#code::-webkit-scrollbar-thumb:hover,
+.output::-webkit-scrollbar-thumb:hover {
+
+  background:
+    var(--border-soft);
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media(max-width: 900px) {
+
+  .workspace-body {
+
+    grid-template-columns: 1fr;
   }
 
-  syncTheme();
+  .editor-panel {
 
-  const observer = new MutationObserver(syncTheme);
-  observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
-  observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    border-left: 0;
+
+    border-bottom:
+      1px solid var(--border);
+  }
+
+  .output-panel {
+
+    min-height: 400px;
+  }
+
+  .info {
+
+    grid-template-columns:
+      repeat(2, 1fr);
+  }
+}
+
+
+@media(max-width: 650px) {
+
+  .page {
+
+    width:
+      calc(100% - 16px);
+
+    padding-top: 25px;
+  }
+
+  .hero {
+
+    flex-direction: column;
+
+    align-items: stretch;
+
+    gap: 18px;
+  }
+
+  .hero h1 {
+
+    font-size: 31px;
+  }
+
+  .hero p {
+
+    font-size: 13px;
+  }
+
+  .hero-actions {
+
+    width: 100%;
+  }
+
+  .language-select-wrapper {
+
+    width: 100%;
+  }
+
+  .topbar {
+
+    padding:
+      0 7px;
+  }
+
+  .file-tab {
+
+    padding:
+      0 7px;
+
+    font-size: 10px;
+
+    min-width: 0;
+  }
+
+  .saved-label {
+    display: none !important;
+  }
+
+  .actions {
+
+    overflow-x: auto;
+
+    max-width: 72%;
+
+    scrollbar-width: none;
+  }
+
+  .actions::-webkit-scrollbar {
+    display: none;
+  }
+
+  .actions button {
+
+    flex: none;
+  }
+
+  .actions button:nth-child(1) {
+
+    display: none;
+  }
+
+  .actions .run {
+
+    padding:
+      0 13px;
+  }
+
+  .actions .run span {
+
+    display: none;
+  }
+
+  .actions .run {
+
+    width: 38px;
+
+    padding: 0;
+  }
+
+  .editor {
+
+    height: 430px;
+  }
+
+  .output {
+
+    height: 350px;
+  }
+
+  .preview {
+
+    height: 350px;
+  }
+
+  .status {
+
+    gap: 10px;
+  }
+
+  .status span:nth-child(2),
+  .status span:nth-child(3) {
+
+    display: none;
+  }
+
+  .info {
+
+    grid-template-columns: 1fr;
+  }
+
+  .search-bar span {
+    display: none;
+  }
+}
+
+
+/* =========================================================
+   SMALL PHONES
+========================================================= */
+
+@media(max-width: 400px) {
+
+  .file-icon {
+    display: none;
+  }
+
+  .file-tab {
+
+    padding-right: 5px;
+
+    border-right: 0;
+  }
+
+  .actions {
+
+    max-width: 76%;
+  }
+
+  .actions button {
+
+    min-width: 34px;
+
+    padding:
+      0 7px;
+  }
+
+  .font-button span {
+    display: none;
+  }
+}
+
+</style>
+
+
+<script>
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* =====================================================
+     ELEMENTS
+  ====================================================== */
+
+  const code =
+    document.getElementById('code');
+
+  const numbers =
+    document.getElementById('numbers');
+
+  const output =
+    document.getElementById('output');
+
+  const preview =
+    document.getElementById('preview');
+
+  const inputArea =
+    document.getElementById('inputArea');
+
+  const input =
+    document.getElementById('input');
+
+  const language =
+    document.getElementById('language');
+
+  const languageSelectIcon =
+    document.getElementById('languageSelectIcon');
+
+  const fileName =
+    document.getElementById('fileName');
+
+  const fileIcon =
+    document.getElementById('fileIcon');
+
+  const badge =
+    document.getElementById('languageBadge');
+
+  const dirty =
+    document.getElementById('dirty');
+
+  const savedLabel =
+    document.getElementById('savedLabel');
+
+  const stats =
+    document.getElementById('stats');
+
+  const cursor =
+    document.getElementById('cursor');
+
+  const searchBar =
+    document.getElementById('searchBar');
+
+  const searchInput =
+    document.getElementById('searchInput');
+
+  const searchResult =
+    document.getElementById('searchResult');
+
+
+  let currentLanguage =
+    'python';
+
+  let fontSize =
+    15;
+
+  let pyodide =
+    null;
+
+
+  /* =====================================================
+     LANGUAGE DATA
+  ====================================================== */
 
   const examples = {
-    python: `# Th.Tech Python Playground 🐍
+
+    python: `# Th.Tech Python Playground
 name = input("أدخل اسمك: ")
 age = input("أدخل عمرك: ")
-print(f"مرحباً {name}! عمرك {age} سنة.")
-print("🎉 استمتع بالبرمجة!")`,
 
-    javascript: `// Th.Tech JavaScript Playground 
+print(f"مرحباً {name}! عمرك {age} سنة.")
+print("استمتع بالبرمجة!")`,
+
+    javascript: `// Th.Tech JavaScript Playground
+
 console.log("مرحباً بالعالم!");
+
 const name = prompt("أدخل اسمك:");
 const age = prompt("أدخل عمرك:");
+
 console.log(\`أهلاً \${name}! عمرك \${age} سنة.\`);
-console.log("🎉 استمتع بالبرمجة!");`,
+console.log("استمتع بالبرمجة!");`,
 
     html: `<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
   <title>Th.Tech</title>
+
   <style>
-    body { font-family: 'Cairo', sans-serif; background: linear-gradient(135deg, #667eea, #764ba2); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; }
-    .card { background: white; padding: 3rem; border-radius: 15px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,.2); }
-    h1 { color: #667eea; margin-bottom: 1rem; }
-    p { color: #666; }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .card {
+      background: white;
+      padding: 3rem;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,.2);
+    }
+
+    h1 {
+      color: #667eea;
+    }
+
+    p {
+      color: #666;
+    }
   </style>
 </head>
+
 <body>
+
   <div class="card">
     <h1>👋 مرحباً بك!</h1>
     <p>أهلاً بك في Th.Tech</p>
-    <p>🎉 ابدأ رحلتك في البرمجة الآن!</p>
+    <p>ابدأ رحلتك في البرمجة الآن!</p>
   </div>
+
 </body>
 </html>`,
 
-    java: `// Th.Tech Java Playground 
+    java: `// Th.Tech Java Playground
+
 public class Main {
+
     public static void main(String[] args) {
+
         System.out.println("مرحباً بالعالم!");
-        System.out.println("🎉 استمتع بالبرمجة!");
+        System.out.println("استمتع بالبرمجة!");
+
     }
 }`,
 
-    cpp: `// Th.Tech C++ Playground 
+    cpp: `// Th.Tech C++ Playground
+
 #include <iostream>
+
 using namespace std;
 
 int main() {
+
     cout << "مرحباً بالعالم!" << endl;
-    cout << "🎉 استمتع بالبرمجة!" << endl;
+    cout << "استمتع بالبرمجة!" << endl;
+
     return 0;
 }`,
 
-    csharp: `// Th.Tech C# Playground 
+    csharp: `// Th.Tech C# Playground
+
 using System;
 
 class Program {
+
     static void Main() {
+
         Console.WriteLine("مرحباً بالعالم!");
-        Console.WriteLine(" استمتع بالبرمجة!");
+        Console.WriteLine("استمتع بالبرمجة!");
+
     }
 }`,
 
-    go: `// Th.Tech Go Playground 
+    go: `// Th.Tech Go Playground
+
 package main
+
 import "fmt"
 
 func main() {
+
     fmt.Println("مرحباً بالعالم!")
-    fmt.Println(" استمتع بالبرمجة!")
+    fmt.Println("استمتع بالبرمجة!")
+
 }`,
 
-    ruby: `# Th.Tech Ruby Playground 
+    ruby: `# Th.Tech Ruby Playground
+
 puts "مرحباً بالعالم!"
-puts "🎉 استمتع بالبرمجة!"`,
+puts "استمتع بالبرمجة!"`,
 
     php: `<?php
-// Th.Tech PHP Playground 
+
+// Th.Tech PHP Playground
+
 echo "مرحباً بالعالم!\\n";
-echo "🎉 استمتع بالبرمجة!";
+echo "استمتع بالبرمجة!";
+
 ?>`,
 
-    sql: `-- Th.Tech SQL Playground 
-SELECT 'مرحباً بالعالم!' AS greeting;
-SELECT '🎉 استمتع بالبرمجة!' AS message;`,
+    sql: `-- Th.Tech SQL Playground
 
-    typescript: `// Th.Tech TypeScript Playground 
+SELECT 'مرحباً بالعالم!' AS greeting;
+
+SELECT 'استمتع بالبرمجة!' AS message;`,
+
+    typescript: `// Th.Tech TypeScript Playground
+
 const greet = (name: string): string => {
+
   return \`مرحباً \${name}!\`;
+
 };
+
 console.log(greet("المطور"));
-console.log("🎉 استمتع بالبرمجة!");`
+console.log("استمتع بالبرمجة!");`
+
   };
+
 
   const extensions = {
-    python: 'py', javascript: 'js', html: 'html', java: 'java',
-    cpp: 'cpp', csharp: 'cs', go: 'go', ruby: 'rb', php: 'php', sql: 'sql', typescript: 'ts'
+
+    python: 'py',
+    javascript: 'js',
+    html: 'html',
+    java: 'java',
+    cpp: 'cpp',
+    csharp: 'cs',
+    go: 'go',
+    ruby: 'rb',
+    php: 'php',
+    sql: 'sql',
+    typescript: 'ts'
+
   };
+
 
   const icons = {
-    python: '<i class="fab fa-python"></i>',
-    javascript: '<i class="fab fa-js"></i>',
-    html: '<i class="fab fa-html5"></i>',
-    java: '<i class="fab fa-java"></i>',
-    cpp: '<i class="fas fa-bolt"></i>',
-    csharp: '<i class="fas fa-cube"></i>',
-    go: '<i class="fab fa-golang"></i>',
-    ruby: '<i class="fab fa-ruby"></i>',
-    php: '<i class="fab fa-php"></i>',
-    sql: '<i class="fas fa-database"></i>',
-    typescript: '<i class="fab fa-js"></i>'
+
+    python:
+      '<i class="fab fa-python"></i>',
+
+    javascript:
+      '<i class="fab fa-js"></i>',
+
+    html:
+      '<i class="fab fa-html5"></i>',
+
+    java:
+      '<i class="fab fa-java"></i>',
+
+    cpp:
+      '<i class="fas fa-code"></i>',
+
+    csharp:
+      '<i class="fas fa-cube"></i>',
+
+    go:
+      '<i class="fab fa-golang"></i>',
+
+    ruby:
+      '<i class="far fa-gem"></i>',
+
+    php:
+      '<i class="fab fa-php"></i>',
+
+    sql:
+      '<i class="fas fa-database"></i>',
+
+    typescript:
+      '<i class="fab fa-js"></i>'
+
   };
+
+
+  const selectIcons = {
+
+    python:
+      'fab fa-python',
+
+    javascript:
+      'fab fa-js',
+
+    html:
+      'fab fa-html5',
+
+    java:
+      'fab fa-java',
+
+    cpp:
+      'fas fa-code',
+
+    csharp:
+      'fas fa-cube',
+
+    go:
+      'fab fa-golang',
+
+    ruby:
+      'far fa-gem',
+
+    php:
+      'fab fa-php',
+
+    sql:
+      'fas fa-database',
+
+    typescript:
+      'fab fa-js'
+
+  };
+
 
   const langNames = {
-    python: 'Python', javascript: 'JavaScript', html: 'HTML/CSS', java: 'Java',
-    cpp: 'C++', csharp: 'C#', go: 'Go', ruby: 'Ruby', php: 'PHP', sql: 'SQL', typescript: 'TypeScript'
+
+    python: 'Python',
+    javascript: 'JavaScript',
+    html: 'HTML/CSS',
+    java: 'Java',
+    cpp: 'C++',
+    csharp: 'C#',
+    go: 'Go',
+    ruby: 'Ruby',
+    php: 'PHP',
+    sql: 'SQL',
+    typescript: 'TypeScript'
+
   };
 
-  function storageKey() { return 'thtech-playground-' + currentLanguage; }
+
+  /* =====================================================
+     THEME
+  ====================================================== */
+
+  function syncTheme() {
+
+    const body =
+      document.body;
+
+    const html =
+      document.documentElement;
+
+    const bodyLight =
+      body.classList.contains('light') ||
+      body.classList.contains('light-mode');
+
+    const htmlTheme =
+      html.getAttribute('data-theme');
+
+    const isLight =
+      bodyLight ||
+      htmlTheme === 'light';
+
+    html.setAttribute(
+      'data-theme',
+      isLight ? 'light' : 'dark'
+    );
+  }
+
+
+  syncTheme();
+
+
+  const themeObserver =
+    new MutationObserver(() => {
+
+      syncTheme();
+
+    });
+
+
+  themeObserver.observe(
+    document.documentElement,
+    {
+      attributes: true,
+      attributeFilter: ['data-theme']
+    }
+  );
+
+
+  themeObserver.observe(
+    document.body,
+    {
+      attributes: true,
+      attributeFilter: ['class']
+    }
+  );
+
+
+  /* =====================================================
+     STORAGE
+  ====================================================== */
+
+  function storageKey() {
+
+    return 'thtech-playground-' +
+      currentLanguage;
+
+  }
+
+
+  function showSaved() {
+
+    dirty.style.display =
+      'none';
+
+    savedLabel.style.display =
+      'inline-flex';
+
+    clearTimeout(
+      window.thSavedTimer
+    );
+
+    window.thSavedTimer =
+      setTimeout(() => {
+
+        savedLabel.style.display =
+          'none';
+
+      }, 1800);
+
+  }
+
 
   function loadCode() {
-    const saved = localStorage.getItem(storageKey());
-    code.value = saved !== null ? saved : examples[currentLanguage];
-    updateLines(); updateStats(); updateCursor();
-    dirty.style.display = saved !== null ? 'none' : 'inline';
+
+    const saved =
+      localStorage.getItem(
+        storageKey()
+      );
+
+    code.value =
+      saved !== null
+        ? saved
+        : examples[currentLanguage];
+
+    updateLines();
+    updateStats();
+    updateCursor();
+
+    if (saved !== null) {
+
+      dirty.style.display =
+        'none';
+
+    } else {
+
+      dirty.style.display =
+        'inline';
+
+    }
+
   }
+
+
+  /* =====================================================
+     LANGUAGE
+  ====================================================== */
 
   function updateLanguage() {
-    currentLanguage = language.value;
-    fileName.textContent = 'main.' + extensions[currentLanguage];
-    fileIcon.innerHTML = icons[currentLanguage] || '';
-    badge.textContent = langNames[currentLanguage];
-    inputArea.style.display = currentLanguage === 'python' ? 'block' : 'none';
-    loadCode(); clearOutput();
+
+    currentLanguage =
+      language.value;
+
+    fileName.textContent =
+      'main.' +
+      extensions[currentLanguage];
+
+    fileIcon.innerHTML =
+      icons[currentLanguage] || '';
+
+    badge.textContent =
+      langNames[currentLanguage];
+
+    inputArea.style.display =
+      currentLanguage === 'python'
+        ? 'block'
+        : 'none';
+
+
+    languageSelectIcon.className =
+      selectIcons[currentLanguage] ||
+      'fas fa-code';
+
+
+    loadCode();
+
+    clearOutput();
+
   }
 
-  language.addEventListener('change', updateLanguage);
+
+  language.addEventListener(
+    'change',
+    updateLanguage
+  );
+
+
+  /* =====================================================
+     LINE NUMBERS
+  ====================================================== */
 
   function updateLines() {
-    const count = code.value.split('\n').length;
-    numbers.innerHTML = Array.from({length: count}, (_, i) => i + 1).join('<br>');
+
+    const count =
+      code.value.split('\n').length;
+
+    numbers.innerHTML =
+      Array.from(
+        { length: count },
+        (_, i) => i + 1
+      ).join('<br>');
+
   }
+
+
+  /* =====================================================
+     STATS
+  ====================================================== */
 
   function updateStats() {
-    const lines = code.value.split('\n').length;
-    const chars = code.value.length;
-    stats.textContent = `${lines} lines • ${chars} chars`;
+
+    const lines =
+      code.value.split('\n').length;
+
+    const chars =
+      code.value.length;
+
+    stats.textContent =
+      `${lines} lines • ${chars} chars`;
+
   }
+
+
+  /* =====================================================
+     CURSOR
+  ====================================================== */
 
   function updateCursor() {
-    const before = code.value.substring(0, code.selectionStart);
-    const line = before.split('\n').length;
-    const column = before.length - before.lastIndexOf('\n');
-    cursor.textContent = `Ln ${line}, Col ${column}`;
+
+    const before =
+      code.value.substring(
+        0,
+        code.selectionStart
+      );
+
+    const line =
+      before.split('\n').length;
+
+    const column =
+      before.length -
+      before.lastIndexOf('\n');
+
+    cursor.textContent =
+      `Ln ${line}, Col ${column}`;
+
   }
 
-  code.addEventListener('input', () => {
-    updateLines(); updateStats(); updateCursor();
-    dirty.style.display = 'inline';
-    clearTimeout(window.thSave);
-    window.thSave = setTimeout(saveCode, 700);
-  });
-  code.addEventListener('click', updateCursor);
-  code.addEventListener('keyup', updateCursor);
-  code.addEventListener('scroll', () => { numbers.scrollTop = code.scrollTop; });
 
-  code.addEventListener('keydown', event => {
-    if (event.key === 'Tab') {
-      event.preventDefault();
-      const start = code.selectionStart;
-      const end = code.selectionEnd;
-      code.value = code.value.substring(0, start) + '    ' + code.value.substring(end);
-      code.selectionStart = code.selectionEnd = start + 4;
-      updateLines(); updateStats(); updateCursor();
+  /* =====================================================
+     CODE INPUT
+  ====================================================== */
+
+  code.addEventListener(
+    'input',
+    () => {
+
+      updateLines();
+
+      updateStats();
+
+      updateCursor();
+
+      dirty.style.display =
+        'inline';
+
+      savedLabel.style.display =
+        'none';
+
+      clearTimeout(
+        window.thSave
+      );
+
+      window.thSave =
+        setTimeout(
+          saveCode,
+          700
+        );
+
     }
-    if (event.ctrlKey && event.key === 'Enter') { event.preventDefault(); runCode(); }
-    if (event.ctrlKey && event.key.toLowerCase() === 's') { event.preventDefault(); saveCode(); }
-  });
+  );
+
+
+  code.addEventListener(
+    'click',
+    updateCursor
+  );
+
+  code.addEventListener(
+    'keyup',
+    updateCursor
+  );
+
+  code.addEventListener(
+    'select',
+    updateCursor
+  );
+
+
+  code.addEventListener(
+    'scroll',
+    () => {
+
+      numbers.scrollTop =
+        code.scrollTop;
+
+    }
+  );
+
+
+  /* =====================================================
+     KEYBOARD
+  ====================================================== */
+
+  code.addEventListener(
+    'keydown',
+    event => {
+
+      if (event.key === 'Tab') {
+
+        event.preventDefault();
+
+        const start =
+          code.selectionStart;
+
+        const end =
+          code.selectionEnd;
+
+        code.value =
+          code.value.substring(
+            0,
+            start
+          ) +
+          '    ' +
+          code.value.substring(
+            end
+          );
+
+        code.selectionStart =
+          code.selectionEnd =
+            start + 4;
+
+        updateLines();
+        updateStats();
+        updateCursor();
+
+      }
+
+
+      if (
+        event.ctrlKey &&
+        event.key === 'Enter'
+      ) {
+
+        event.preventDefault();
+
+        runCode();
+
+      }
+
+
+      if (
+        event.ctrlKey &&
+        event.key.toLowerCase() === 's'
+      ) {
+
+        event.preventDefault();
+
+        saveCode();
+
+      }
+
+
+      if (
+        event.ctrlKey &&
+        event.key.toLowerCase() === 'f'
+      ) {
+
+        event.preventDefault();
+
+        searchBar.classList.add(
+          'show'
+        );
+
+        searchInput.focus();
+
+      }
+
+    }
+  );
+
+
+  /* =====================================================
+     SAVE
+  ====================================================== */
 
   function saveCode() {
-    localStorage.setItem(storageKey(), code.value);
-    dirty.style.display = 'none';
+
+    localStorage.setItem(
+      storageKey(),
+      code.value
+    );
+
+    showSaved();
+
   }
-  document.getElementById('save').addEventListener('click', saveCode);
 
-  document.getElementById('copy').addEventListener('click', async () => {
-    try {
-      await navigator.clipboard.writeText(code.value);
-      const btn = document.getElementById('copy');
-      const old = btn.innerHTML;
-      btn.innerHTML = '<i class="fas fa-check"></i>';
-      setTimeout(() => { btn.innerHTML = old; }, 1000);
-    } catch { alert('تعذر نسخ الكود'); }
-  });
 
-  document.getElementById('download').addEventListener('click', () => {
-    const blob = new Blob([code.value], { type: 'text/plain;charset=utf-8' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = 'main.' + extensions[currentLanguage];
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-  });
+  document
+    .getElementById('save')
+    .addEventListener(
+      'click',
+      saveCode
+    );
 
-  document.getElementById('fontUp').addEventListener('click', () => {
-    fontSize = Math.min(24, fontSize + 1);
-    code.style.fontSize = fontSize + 'px';
-    numbers.style.fontSize = fontSize + 'px';
-  });
-  document.getElementById('fontDown').addEventListener('click', () => {
-    fontSize = Math.max(10, fontSize - 1);
-    code.style.fontSize = fontSize + 'px';
-    numbers.style.fontSize = fontSize + 'px';
-  });
 
-  document.getElementById('search').addEventListener('click', () => {
-    searchBar.classList.add('show');
-    searchInput.focus();
-  });
-  document.getElementById('closeSearch').addEventListener('click', () => {
-    searchBar.classList.remove('show');
-    searchInput.value = '';
-    searchResult.textContent = '0 نتيجة';
-  });
-  searchInput.addEventListener('input', () => {
-    const value = searchInput.value;
-    if (!value) { searchResult.textContent = '0 نتيجة'; return; }
-    const matches = code.value.toLowerCase().split(value.toLowerCase()).length - 1;
-    searchResult.textContent = `${matches} نتيجة`;
-    const index = code.value.toLowerCase().indexOf(value.toLowerCase());
-    if (index >= 0) {
-      code.focus();
-      code.setSelectionRange(index, index + value.length);
+  /* =====================================================
+     COPY
+  ====================================================== */
+
+  document
+    .getElementById('copy')
+    .addEventListener(
+      'click',
+      async () => {
+
+        try {
+
+          await navigator.clipboard.writeText(
+            code.value
+          );
+
+          const btn =
+            document.getElementById(
+              'copy'
+            );
+
+          const old =
+            btn.innerHTML;
+
+          btn.innerHTML =
+            '<i class="fas fa-check"></i>';
+
+          btn.style.color =
+            'var(--green)';
+
+          btn.style.borderColor =
+            'var(--green)';
+
+          showToast(
+            'تم نسخ الكود بنجاح'
+          );
+
+          setTimeout(() => {
+
+            btn.innerHTML =
+              old;
+
+            btn.style.color =
+              '';
+
+            btn.style.borderColor =
+              '';
+
+          }, 1200);
+
+        } catch {
+
+          showToast(
+            'تعذر نسخ الكود'
+          );
+
+        }
+
+      }
+    );
+
+
+  /* =====================================================
+     DOWNLOAD
+  ====================================================== */
+
+  document
+    .getElementById('download')
+    .addEventListener(
+      'click',
+      () => {
+
+        const blob =
+          new Blob(
+            [code.value],
+            {
+              type:
+                'text/plain;charset=utf-8'
+            }
+          );
+
+        const url =
+          URL.createObjectURL(
+            blob
+          );
+
+        const link =
+          document.createElement(
+            'a'
+          );
+
+        link.href =
+          url;
+
+        link.download =
+          'main.' +
+          extensions[currentLanguage];
+
+        document.body.appendChild(
+          link
+        );
+
+        link.click();
+
+        link.remove();
+
+        URL.revokeObjectURL(
+          url
+        );
+
+        showToast(
+          'تم تجهيز الملف للتنزيل'
+        );
+
+      }
+    );
+
+
+  /* =====================================================
+     FONT SIZE
+  ====================================================== */
+
+  document
+    .getElementById('fontUp')
+    .addEventListener(
+      'click',
+      () => {
+
+        fontSize =
+          Math.min(
+            24,
+            fontSize + 1
+          );
+
+        code.style.fontSize =
+          fontSize + 'px';
+
+        numbers.style.fontSize =
+          fontSize + 'px';
+
+      }
+    );
+
+
+  document
+    .getElementById('fontDown')
+    .addEventListener(
+      'click',
+      () => {
+
+        fontSize =
+          Math.max(
+            10,
+            fontSize - 1
+          );
+
+        code.style.fontSize =
+          fontSize + 'px';
+
+        numbers.style.fontSize =
+          fontSize + 'px';
+
+      }
+    );
+
+
+  /* =====================================================
+     SEARCH
+  ====================================================== */
+
+  document
+    .getElementById('search')
+    .addEventListener(
+      'click',
+      () => {
+
+        searchBar.classList.add(
+          'show'
+        );
+
+        searchInput.focus();
+
+      }
+    );
+
+
+  document
+    .getElementById('closeSearch')
+    .addEventListener(
+      'click',
+      () => {
+
+        searchBar.classList.remove(
+          'show'
+        );
+
+        searchInput.value =
+          '';
+
+        searchResult.textContent =
+          '0 نتيجة';
+
+      }
+    );
+
+
+  searchInput.addEventListener(
+    'input',
+    () => {
+
+      const value =
+        searchInput.value;
+
+      if (!value) {
+
+        searchResult.textContent =
+          '0 نتيجة';
+
+        return;
+
+      }
+
+
+      const matches =
+        code.value
+          .toLowerCase()
+          .split(
+            value.toLowerCase()
+          )
+          .length - 1;
+
+
+      searchResult.textContent =
+        `${matches} نتيجة`;
+
+
+      const index =
+        code.value
+          .toLowerCase()
+          .indexOf(
+            value.toLowerCase()
+          );
+
+
+      if (index >= 0) {
+
+        code.focus();
+
+        code.setSelectionRange(
+          index,
+          index + value.length
+        );
+
+      }
+
     }
-  });
+  );
+
+
+  /* =====================================================
+     CLEAR OUTPUT
+  ====================================================== */
 
   function clearOutput() {
-    output.innerHTML = '<div class="welcome-terminal"><div class="terminal-logo"><i class="fas fa-terminal"></i></div><h3>Th.Tech Terminal</h3><p>اضغط تشغيل لتنفيذ الكود</p><small>Ctrl + Enter</small></div>';
+
+    output.innerHTML = `
+
+      <div class="welcome-terminal">
+
+        <div class="terminal-logo">
+
+          <i class="fas fa-terminal"></i>
+
+        </div>
+
+        <h3>
+          Th.Tech Terminal
+        </h3>
+
+        <p>
+          اضغط تشغيل لتنفيذ الكود
+        </p>
+
+        <small>
+          <kbd>Ctrl</kbd>
+          +
+          <kbd>Enter</kbd>
+        </small>
+
+      </div>
+
+    `;
+
   }
-  document.getElementById('clear').addEventListener('click', clearOutput);
+
+
+  document
+    .getElementById('clear')
+    .addEventListener(
+      'click',
+      clearOutput
+    );
+
+
+  /* =====================================================
+     PYTHON
+  ====================================================== */
 
   async function getPython() {
-    if (pyodide) return pyodide;
-    if (typeof window.loadPyodide !== 'function') throw new Error('محرك Python غير متاح.');
-    pyodide = await window.loadPyodide({ indexURL: 'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/' });
-    return pyodide;
-  }
 
-  async function executePython(source) {
-    const py = await getPython();
-    let result = '';
-    let hasError = false;
-    try {
-      const inputVal = input.value.trim();
-      if (inputVal) {
-        const lines = inputVal.split('\n');
-        let inputIndex = 0;
-        py.setStdin({ stdin: () => inputIndex < lines.length ? lines[inputIndex++] : '' });
-      }
-      py.setStdout({ batched: (msg) => { result += msg; } });
-      py.setStderr({ batched: (msg) => { result += msg; hasError = true; } });
-      await py.runPythonAsync(source);
-      return { output: result, error: hasError };
-    } catch (error) {
-      return { output: error.message, error: true };
+    if (pyodide)
+      return pyodide;
+
+    if (
+      typeof window.loadPyodide !==
+      'function'
+    ) {
+
+      throw new Error(
+        'محرك Python غير متاح.'
+      );
+
     }
+
+    pyodide =
+      await window.loadPyodide({
+        indexURL:
+          'https://cdn.jsdelivr.net/pyodide/v0.24.1/full/'
+      });
+
+    return pyodide;
+
   }
 
-  function executeJavaScript(source) {
-    const logs = [];
-    const consoleAPI = {
-      log: (...args) => logs.push(args.map(format).join(' ')),
-      warn: (...args) => logs.push('⚠️ ' + args.map(format).join(' ')),
-      error: (...args) => logs.push('❌ ' + args.map(format).join(' '))
-    };
-    const fn = new Function('console', source);
-    fn(consoleAPI);
-    return logs.join('\n');
+
+  async function executePython(
+    source
+  ) {
+
+    const py =
+      await getPython();
+
+    let result =
+      '';
+
+    let hasError =
+      false;
+
+
+    try {
+
+      const inputVal =
+        input.value.trim();
+
+
+      if (inputVal) {
+
+        const lines =
+          inputVal.split('\n');
+
+        let inputIndex =
+          0;
+
+        py.setStdin({
+
+          stdin: () => {
+
+            return inputIndex <
+              lines.length
+
+              ? lines[inputIndex++]
+
+              : '';
+
+          }
+
+        });
+
+      }
+
+
+      py.setStdout({
+
+        batched: msg => {
+
+          result += msg;
+
+        }
+
+      });
+
+
+      py.setStderr({
+
+        batched: msg => {
+
+          result += msg;
+
+          hasError =
+            true;
+
+        }
+
+      });
+
+
+      await py.runPythonAsync(
+        source
+      );
+
+
+      return {
+        output: result,
+        error: hasError
+      };
+
+
+    } catch (error) {
+
+      return {
+        output:
+          error.message,
+        error: true
+      };
+
+    }
+
   }
+
+
+  /* =====================================================
+     JAVASCRIPT
+  ====================================================== */
+
+  function executeJavaScript(
+    source
+  ) {
+
+    const logs = [];
+
+
+    const consoleAPI = {
+
+      log: (...args) => {
+
+        logs.push(
+          args
+            .map(format)
+            .join(' ')
+        );
+
+      },
+
+      warn: (...args) => {
+
+        logs.push(
+          '⚠️ ' +
+          args
+            .map(format)
+            .join(' ')
+        );
+
+      },
+
+      error: (...args) => {
+
+        logs.push(
+          '❌ ' +
+          args
+            .map(format)
+            .join(' ')
+        );
+
+      }
+
+    };
+
+
+    const fn =
+      new Function(
+        'console',
+        source
+      );
+
+    fn(consoleAPI);
+
+    return logs.join('\n');
+
+  }
+
 
   function format(value) {
-    if (typeof value === 'object' && value !== null) {
-      try { return JSON.stringify(value, null, 2); } catch { return String(value); }
+
+    if (
+      typeof value === 'object' &&
+      value !== null
+    ) {
+
+      try {
+
+        return JSON.stringify(
+          value,
+          null,
+          2
+        );
+
+      } catch {
+
+        return String(value);
+
+      }
+
     }
+
     return String(value);
+
   }
+
+
+  /* =====================================================
+     HTML
+  ====================================================== */
 
   function executeHTML(source) {
-    preview.innerHTML = '';
-    const iframe = document.createElement('iframe');
-    iframe.setAttribute('sandbox', 'allow-scripts');
-    preview.appendChild(iframe);
-    const doc = iframe.contentDocument;
-    doc.open(); doc.write(source); doc.close();
+
+    preview.innerHTML =
+      '';
+
+    const iframe =
+      document.createElement(
+        'iframe'
+      );
+
+    iframe.setAttribute(
+      'sandbox',
+      'allow-scripts'
+    );
+
+    preview.appendChild(
+      iframe
+    );
+
+    const doc =
+      iframe.contentDocument;
+
+    doc.open();
+
+    doc.write(source);
+
+    doc.close();
+
   }
+
+
+  /* =====================================================
+     RUN
+  ====================================================== */
 
   async function runCode() {
-    const source = code.value.trim();
+
+    const source =
+      code.value.trim();
+
+
     if (!source) {
-      output.innerHTML = '<div style="color:var(--warning);text-align:center;padding:50px">⚠️ يرجى كتابة الكود أولاً</div>';
+
+      output.innerHTML = `
+
+        <div style="
+          color:var(--warning);
+          text-align:center;
+          padding:50px;
+        ">
+
+          <i class="fas fa-triangle-exclamation"></i>
+
+          يرجى كتابة الكود أولاً
+
+        </div>
+
+      `;
+
       return;
+
     }
-    const button = document.getElementById('run');
-    button.disabled = true;
-    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> تشغيل...';
-    
+
+
+    const button =
+      document.getElementById(
+        'run'
+      );
+
+
+    button.disabled =
+      true;
+
+
+    button.innerHTML = `
+
+      <i class="fas fa-spinner fa-spin"></i>
+      <span>تشغيل...</span>
+
+    `;
+
+
     try {
-      if (currentLanguage === 'html') { 
-        executeHTML(source); 
-        showPreview(); 
-        return; 
+
+      if (
+        currentLanguage ===
+        'html'
+      ) {
+
+        executeHTML(
+          source
+        );
+
+        showPreview();
+
+        return;
+
       }
-      
+
+
       showConsole();
-      output.innerHTML = '<span style="color:var(--muted)"><i class="fas fa-spinner fa-spin"></i> جاري التنفيذ...</span>';
-      
-      let result = '';
-      
-      if (currentLanguage === 'python') {
-        const pyResult = await executePython(source);
-        result = pyResult.output;
+
+
+      output.innerHTML = `
+
+        <span style="
+          color:var(--muted)
+        ">
+
+          <i class="fas fa-spinner fa-spin"></i>
+
+          جاري التنفيذ...
+
+        </span>
+
+      `;
+
+
+      let result =
+        '';
+
+
+      if (
+        currentLanguage ===
+        'python'
+      ) {
+
+        const pyResult =
+          await executePython(
+            source
+          );
+
+        result =
+          pyResult.output;
+
+
         if (pyResult.error) {
-          output.innerHTML = '<div style="color:var(--red);white-space:pre-wrap;direction:ltr;text-align:left">' + escapeHTML(result) + '</div>';
-          button.disabled = false;
-          button.innerHTML = '<i class="fas fa-play"></i> تشغيل';
+
+          output.innerHTML = `
+
+            <div style="
+              color:var(--red);
+              white-space:pre-wrap;
+              direction:ltr;
+              text-align:left;
+            ">
+
+              <i class="fas fa-circle-exclamation"></i>
+
+              ${escapeHTML(result)}
+
+            </div>
+
+          `;
+
           return;
+
         }
+
       }
-      
-      if (currentLanguage === 'javascript') {
-        result = executeJavaScript(source);
+
+
+      if (
+        currentLanguage ===
+        'javascript'
+      ) {
+
+        result =
+          executeJavaScript(
+            source
+          );
+
       }
-      
-      if (['java','cpp','csharp','go','ruby','php','sql','typescript'].includes(currentLanguage)) {
-        result = `️ معاينة الكود لـ ${currentLanguage.toUpperCase()}\n\n` +
-                 `✅ الكود الذي كتبته صحيح من حيث البنية.\n\n` +
-                 `⚠️ ملاحظة تقنية:\n` +
-                 `لغات مثل C++ و Java و C# هي لغات "مُجمَّعة" (Compiled). ` +
-                 `المتصفح لا يستطيع تشغيلها مباشرة لأنه يفهم فقط JavaScript.\n` +
-                 `لتشغيلها فعلياً تحتاج إلى سيرفر خارجي (Backend Compiler).`;
+
+
+      if (
+        [
+          'java',
+          'cpp',
+          'csharp',
+          'go',
+          'ruby',
+          'php',
+          'sql',
+          'typescript'
+        ].includes(
+          currentLanguage
+        )
+      ) {
+
+        result =
+          `معاينة الكود لـ ${currentLanguage.toUpperCase()}
+
+✅ الكود الذي كتبته جاهز للمعاينة.
+
+⚠️ ملاحظة تقنية:
+
+هذه اللغة تحتاج إلى بيئة تنفيذ أو Compiler
+خاص بها لتشغيل الكود فعلياً.
+
+المتصفح يستطيع تنفيذ JavaScript
+وPython عبر Pyodide وHTML/CSS مباشرة.
+
+لتشغيل اللغات المجمعة فعلياً تحتاج إلى Backend Compiler.`;
+
       }
-      
+
+
       if (result.trim()) {
-        output.textContent = result;
+
+        output.textContent =
+          result;
+
       } else {
-        output.innerHTML = '<div style="color:var(--green);text-align:center;padding:60px;direction:rtl"><i class="fas fa-check-circle" style="font-size:3rem;margin-bottom:1rem"></i><br>✓ تم التنفيذ بنجاح<br><small>لا توجد مخرجات</small></div>';
+
+        output.innerHTML = `
+
+          <div style="
+            color:var(--green);
+            text-align:center;
+            padding:60px;
+            direction:rtl;
+          ">
+
+            <i
+              class="fas fa-circle-check"
+              style="
+                font-size:3rem;
+                margin-bottom:1rem;
+              "
+            ></i>
+
+            <br>
+
+            ✓ تم التنفيذ بنجاح
+
+            <br>
+
+            <small>
+              لا توجد مخرجات
+            </small>
+
+          </div>
+
+        `;
+
       }
+
+
     } catch(error) {
-      output.innerHTML = '<div style="color:var(--red);white-space:pre-wrap;direction:ltr;text-align:left"><i class="fas fa-exclamation-circle"></i> Error\n' + escapeHTML(error.message || String(error)) + '</div>';
+
+      output.innerHTML = `
+
+        <div style="
+          color:var(--red);
+          white-space:pre-wrap;
+          direction:ltr;
+          text-align:left;
+        ">
+
+          <i class="fas fa-circle-exclamation"></i>
+
+          Error
+
+          ${escapeHTML(
+            error.message ||
+            String(error)
+          )}
+
+        </div>
+
+      `;
+
     } finally {
-      button.disabled = false;
-      button.innerHTML = '<i class="fas fa-play"></i> تشغيل';
+
+      button.disabled =
+        false;
+
+      button.innerHTML = `
+
+        <i class="fas fa-play"></i>
+
+        <span>تشغيل</span>
+
+      `;
+
     }
-  }
-  document.getElementById('run').addEventListener('click', runCode);
 
-  const consoleTab = document.getElementById('consoleTab');
-  const previewTab = document.getElementById('previewTab');
+  }
+
+
+  document
+    .getElementById('run')
+    .addEventListener(
+      'click',
+      runCode
+    );
+
+
+  /* =====================================================
+     TABS
+  ====================================================== */
+
+  const consoleTab =
+    document.getElementById(
+      'consoleTab'
+    );
+
+  const previewTab =
+    document.getElementById(
+      'previewTab'
+    );
+
+
   function showConsole() {
-    consoleTab.classList.add('active'); previewTab.classList.remove('active');
-    output.style.display = 'block'; preview.style.display = 'none';
+
+    consoleTab.classList.add(
+      'active'
+    );
+
+    previewTab.classList.remove(
+      'active'
+    );
+
+    output.style.display =
+      'block';
+
+    preview.style.display =
+      'none';
+
   }
+
+
   function showPreview() {
-    previewTab.classList.add('active'); consoleTab.classList.remove('active');
-    output.style.display = 'none'; preview.style.display = 'block';
+
+    previewTab.classList.add(
+      'active'
+    );
+
+    consoleTab.classList.remove(
+      'active'
+    );
+
+    output.style.display =
+      'none';
+
+    preview.style.display =
+      'block';
+
   }
-  consoleTab.addEventListener('click', showConsole);
-  previewTab.addEventListener('click', showPreview);
 
-  document.getElementById('fullscreen').addEventListener('click', () => {
-    document.getElementById('workspace').classList.toggle('fullscreen');
-  });
 
-  document.getElementById('reset').addEventListener('click', () => {
-    if (!confirm('إعادة الكود إلى المثال الأصلي؟')) return;
-    localStorage.removeItem(storageKey());
-    loadCode(); clearOutput();
-  });
+  consoleTab.addEventListener(
+    'click',
+    showConsole
+  );
+
+  previewTab.addEventListener(
+    'click',
+    showPreview
+  );
+
+
+  /* =====================================================
+     FULLSCREEN
+  ====================================================== */
+
+  document
+    .getElementById('fullscreen')
+    .addEventListener(
+      'click',
+      () => {
+
+        const workspace =
+          document.getElementById(
+            'workspace'
+          );
+
+        workspace.classList.toggle(
+          'fullscreen'
+        );
+
+
+        const btn =
+          document.getElementById(
+            'fullscreen'
+          );
+
+
+        if (
+          workspace.classList.contains(
+            'fullscreen'
+          )
+        ) {
+
+          btn.innerHTML =
+            '<i class="fas fa-compress"></i>';
+
+          btn.title =
+            'الخروج من ملء الشاشة';
+
+        } else {
+
+          btn.innerHTML =
+            '<i class="fas fa-expand"></i>';
+
+          btn.title =
+            'ملء الشاشة';
+
+        }
+
+      }
+    );
+
+
+  /* =====================================================
+     RESET
+  ====================================================== */
+
+  document
+    .getElementById('reset')
+    .addEventListener(
+      'click',
+      () => {
+
+        if (
+          !confirm(
+            'إعادة الكود إلى المثال الأصلي؟'
+          )
+        )
+          return;
+
+
+        localStorage.removeItem(
+          storageKey()
+        );
+
+
+        loadCode();
+
+        clearOutput();
+
+        showToast(
+          'تمت إعادة الكود إلى المثال الأصلي'
+        );
+
+      }
+    );
+
+
+  /* =====================================================
+     TOAST
+  ====================================================== */
+
+  function showToast(message) {
+
+    const old =
+      document.querySelector(
+        '.th-toast'
+      );
+
+    if (old)
+      old.remove();
+
+
+    const toast =
+      document.createElement(
+        'div'
+      );
+
+
+    toast.className =
+      'th-toast';
+
+
+    toast.innerHTML = `
+
+      <i class="fas fa-circle-check"></i>
+
+      <span>
+        ${escapeHTML(message)}
+      </span>
+
+    `;
+
+
+    document.body.appendChild(
+      toast
+    );
+
+
+    requestAnimationFrame(() => {
+
+      toast.classList.add(
+        'show'
+      );
+
+    });
+
+
+    setTimeout(() => {
+
+      toast.classList.remove(
+        'show'
+      );
+
+      setTimeout(
+        () => toast.remove(),
+        250
+      );
+
+    }, 1800);
+
+  }
+
+
+  /* =====================================================
+     ESCAPE HTML
+  ====================================================== */
 
   function escapeHTML(value) {
-    return String(value).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+
+    return String(value)
+
+      .replaceAll(
+        '&',
+        '&amp;'
+      )
+
+      .replaceAll(
+        '<',
+        '&lt;'
+      )
+
+      .replaceAll(
+        '>',
+        '&gt;'
+      );
+
   }
 
+
+  /* =====================================================
+     TOAST STYLE
+  ====================================================== */
+
+  const toastStyle =
+    document.createElement(
+      'style'
+    );
+
+
+  toastStyle.textContent = `
+
+    .th-toast {
+
+      position:fixed;
+
+      left:50%;
+
+      bottom:28px;
+
+      z-index:100000;
+
+      transform:
+        translate(-50%, 20px);
+
+      display:flex;
+
+      align-items:center;
+
+      gap:9px;
+
+      padding:
+        10px 15px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius:9px;
+
+      background:
+        var(--panel);
+
+      color:
+        var(--text);
+
+      box-shadow:
+        0 12px 35px rgba(0,0,0,.20);
+
+      font-family:
+        Cairo,
+        sans-serif;
+
+      font-size:11px;
+
+      opacity:0;
+
+      pointer-events:none;
+
+      transition:
+        opacity .25s ease,
+        transform .25s ease;
+
+      direction:rtl;
+    }
+
+    .th-toast.show {
+
+      opacity:1;
+
+      transform:
+        translate(-50%, 0);
+
+    }
+
+    .th-toast i {
+
+      color:
+        var(--green);
+
+      font-size:13px;
+
+    }
+
+  `;
+
+
+  document.head.appendChild(
+    toastStyle
+  );
+
+
+  /* =====================================================
+     INITIALIZE
+  ====================================================== */
+
   updateLanguage();
+
 });
+
 </script>
+
 </body>
 </html>
