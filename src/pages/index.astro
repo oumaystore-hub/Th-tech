@@ -2,7 +2,6 @@
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 ---
-
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
@@ -14,15 +13,15 @@ import Footer from '../components/Footer.astro';
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   
-  <!-- تطبيق الثيم فوراً قبل تحميل الصفحة -->
+  <!-- تطبيق الثيم فوراً قبل تحميل الصفحة (بنفس نظام صفحة Windows) -->
   <script is:inline>
     (() => {
       try {
-        const saved = localStorage.getItem('theme') || 'dark';
-        document.documentElement.setAttribute('data-theme', saved);
-      } catch {
-        document.documentElement.setAttribute('data-theme', 'dark');
-      }
+        const saved = localStorage.getItem('theme');
+        if (saved === 'dark') {
+          document.documentElement.classList.add('dark-mode');
+        }
+      } catch {}
     })();
   </script>
 </head>
@@ -66,12 +65,11 @@ import Footer from '../components/Footer.astro';
           </div>
         </div>
 
-        <!-- Hero Visual with MORE floating icons -->
+        <!-- Hero Visual -->
         <div class="hero-visual">
           <div class="visual-orbit orbit-1"></div>
           <div class="visual-orbit orbit-2"></div>
 
-          <!-- Python -->
           <div class="float-card card-1">
             <div class="card-top">
               <div class="language-icon python"><i class="fab fa-python"></i></div>
@@ -84,38 +82,32 @@ import Footer from '../components/Footer.astro';
             </div>
           </div>
 
-          <!-- JavaScript -->
           <div class="float-card card-2">
             <div class="small-icon js-icon"><i class="fab fa-js"></i></div>
             <div><strong>JavaScript</strong><small>Modern Web</small></div>
             <i class="fas fa-check-circle status-icon"></i>
           </div>
 
-          <!-- Terminal -->
           <div class="float-card card-3">
             <div class="small-icon terminal-icon"><i class="fas fa-terminal"></i></div>
             <div><strong>Terminal</strong><small>Ready to code</small></div>
           </div>
 
-          <!-- Lessons -->
           <div class="float-card card-4">
             <div class="progress-icon"><i class="fas fa-check"></i></div>
             <div><strong>+150 درس</strong><small>جاهز للتعلم</small></div>
           </div>
 
-          <!-- NEW: React Icon -->
           <div class="float-card card-5">
             <div class="small-icon react-icon"><i class="fab fa-react"></i></div>
             <div><strong>React</strong><small>UI Library</small></div>
           </div>
 
-          <!-- NEW: Docker Icon -->
           <div class="float-card card-6">
             <div class="small-icon docker-icon"><i class="fab fa-docker"></i></div>
             <div><strong>Docker</strong><small>Container</small></div>
           </div>
 
-          <!-- Center Logo -->
           <div class="visual-center">
             <div class="center-ring">
               <div class="center-logo"><span>Th</span><small>.Tech</small></div>
@@ -139,7 +131,6 @@ import Footer from '../components/Footer.astro';
         <div class="tech-item"><i class="fab fa-docker"></i> Docker</div>
         <div class="tech-item"><i class="fab fa-node-js"></i> Node.js</div>
         <div class="tech-item"><i class="fas fa-database"></i> SQL</div>
-        <!-- Duplicate -->
         <div class="tech-item"><i class="fab fa-js"></i> JavaScript</div>
         <div class="tech-item"><i class="fab fa-python"></i> Python</div>
         <div class="tech-item"><i class="fab fa-react"></i> React</div>
@@ -317,8 +308,27 @@ import Footer from '../components/Footer.astro';
   </button>
 
   <style>
-    /* ===== THEME VARIABLES - FIXED FOR FULL PAGE ===== */
+    /* ===== THEME SYSTEM - نفس نظام صفحة Windows ===== */
     :root {
+      /* Light Mode (Default) */
+      --bg: #f8fafc;
+      --bg2: #f1f5f9;
+      --bg3: #eaf0f7;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --cyan: #0891b2;
+      --border: rgba(15, 23, 42, 0.09);
+      --border-strong: rgba(37, 99, 235, 0.25);
+      --card: #ffffff;
+      --card-solid: #ffffff;
+      --shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+      --radius: 20px;
+    }
+
+    /* Dark Mode - باستخدام class مثل صفحة Windows */
+    html.dark-mode {
       --bg: #07101f;
       --bg2: #0b1426;
       --bg3: #111d32;
@@ -332,38 +342,19 @@ import Footer from '../components/Footer.astro';
       --card: rgba(17, 29, 50, 0.82);
       --card-solid: #111d32;
       --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
-      --radius: 20px;
-    }
-
-    [data-theme="light"] {
-      --bg: #f8fafc;
-      --bg2: #f1f5f9;
-      --bg3: #eaf0f7;
-      --text: #0f172a;
-      --text-muted: #64748b;
-      --primary: #2563eb;
-      --primary-hover: #1d4ed8;
-      --cyan: #0891b2;
-      --border: rgba(15, 23, 42, 0.09);
-      --border-strong: rgba(37, 99, 235, 0.25);
-      --card: rgba(255, 255, 255, 0.9);
-      --card-solid: #ffffff;
-      --shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
-    }
-
-    /* Apply theme to ALL elements */
-    html, body, main, section, .container, .hero, .hero-bg, .hero-overlay,
-    .badge, .btn, .btn-primary, .btn-secondary, .float-card, .track, .feature-box,
-    .faq-item, .cta-box, .stats, .tech-ticker, .scroll-top {
-      background: var(--bg);
-      color: var(--text);
-      transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
     }
 
     /* Reset & Base */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { font-family: 'Cairo', sans-serif; line-height: 1.7; overflow-x: hidden; }
+    body { 
+      background: var(--bg); 
+      color: var(--text); 
+      font-family: 'Cairo', sans-serif; 
+      line-height: 1.7; 
+      overflow-x: hidden;
+      transition: background-color 0.25s ease, color 0.25s ease;
+    }
     img { max-width: 100%; display: block; }
     a { color: inherit; text-decoration: none; }
     button, a { -webkit-tap-highlight-color: transparent; }
@@ -373,18 +364,19 @@ import Footer from '../components/Footer.astro';
     /* HERO */
     .hero { min-height: 720px; height: calc(100vh - 0px); max-height: 900px; display: flex; align-items: center; position: relative; overflow: hidden; padding: 130px 0 90px; }
     .hero-bg { position: absolute; inset: 0; z-index: -2; overflow: hidden; }
-    .hero-bg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.34) saturate(0.8); }
-    [data-theme="light"] .hero-bg img { filter: brightness(0.52) saturate(0.7); }
-    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(7,16,31,0.97) 0%, rgba(7,16,31,0.84) 38%, rgba(7,16,31,0.55) 70%, rgba(7,16,31,0.86) 100%); }
-    [data-theme="light"] .hero-overlay { background: linear-gradient(90deg, rgba(248,250,252,0.96) 0%, rgba(248,250,252,0.85) 45%, rgba(248,250,252,0.60) 100%); }
-    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(59,130,246,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.07) 1px, transparent 1px); background-size: 60px 60px; mask-image: linear-gradient(to bottom, black, transparent 90%); opacity: 0.6; }
+    .hero-bg img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.52) saturate(0.7); }
+    html.dark-mode .hero-bg img { filter: brightness(0.34) saturate(0.8); }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(248,250,252,0.96) 0%, rgba(248,250,252,0.85) 45%, rgba(248,250,252,0.60) 100%); }
+    html.dark-mode .hero-overlay { background: linear-gradient(90deg, rgba(7,16,31,0.97) 0%, rgba(7,16,31,0.84) 38%, rgba(7,16,31,0.55) 70%, rgba(7,16,31,0.86) 100%); }
+    .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(37,99,235,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(37,99,235,0.07) 1px, transparent 1px); background-size: 60px 60px; mask-image: linear-gradient(to bottom, black, transparent 90%); opacity: 0.6; }
+    html.dark-mode .hero-grid { background-image: linear-gradient(rgba(59,130,246,0.07) 1px, transparent 1px), linear-gradient(90deg, rgba(59,130,246,0.07) 1px, transparent 1px); }
     .hero-glow { position: absolute; width: 500px; height: 500px; border-radius: 50%; filter: blur(100px); opacity: 0.14; pointer-events: none; }
     .hero-glow-1 { background: var(--primary); top: -200px; right: 10%; }
     .hero-glow-2 { background: var(--cyan); bottom: -300px; left: 10%; }
     .hero-container { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
     .hero-content { position: relative; z-index: 5; }
-    .badge { width: fit-content; display: inline-flex; align-items: center; gap: 9px; padding: 8px 16px; border-radius: 50px; background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25); color: #60a5fa; font-size: 0.9rem; font-weight: 700; margin-bottom: 25px; backdrop-filter: blur(12px); }
-    [data-theme="light"] .badge { color: #2563eb; background: rgba(37,99,235,0.08); }
+    .badge { width: fit-content; display: inline-flex; align-items: center; gap: 9px; padding: 8px 16px; border-radius: 50px; background: rgba(37,99,235,0.08); border: 1px solid rgba(37,99,235,0.25); color: #2563eb; font-size: 0.9rem; font-weight: 700; margin-bottom: 25px; backdrop-filter: blur(12px); }
+    html.dark-mode .badge { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25); color: #60a5fa; }
     .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 5px rgba(34,197,94,0.1), 0 0 15px rgba(34,197,94,0.5); }
     .hero h1 { max-width: 700px; font-size: clamp(2.6rem, 5vw, 4.5rem); line-height: 1.18; letter-spacing: -1px; margin-bottom: 24px; }
     .gradient-text { background: linear-gradient(135deg, #60a5fa, #3b82f6 45%, #22d3ee); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: transparent; }
@@ -397,14 +389,16 @@ import Footer from '../components/Footer.astro';
     .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(37,99,235,0.35); }
     .btn-arrow { transition: transform 0.25s ease; }
     .btn-primary:hover .btn-arrow { transform: translateX(-4px); }
-    .btn-secondary { background: rgba(15,23,42,0.55); color: var(--text); border-color: rgba(148,163,184,0.2); backdrop-filter: blur(12px); }
-    [data-theme="light"] .btn-secondary { background: rgba(255,255,255,0.75); }
+    .btn-secondary { background: rgba(255,255,255,0.75); color: var(--text); border-color: rgba(15,23,42,0.09); backdrop-filter: blur(12px); }
+    html.dark-mode .btn-secondary { background: rgba(15,23,42,0.55); color: var(--text); border-color: rgba(148,163,184,0.2); }
     .btn-secondary:hover { transform: translateY(-3px); border-color: var(--primary); color: var(--primary); }
     .hero-features { display: flex; align-items: center; gap: 25px; flex-wrap: wrap; }
     .hero-feature { display: flex; align-items: center; gap: 8px; color: var(--text-muted); font-size: 0.88rem; font-weight: 600; }
-    .feature-check { width: 27px; height: 27px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: rgba(59,130,246,0.12); color: #60a5fa; font-size: 0.75rem; }
+    .hero-feature i { color: var(--primary); }
+    .feature-check { width: 27px; height: 27px; display: flex; align-items: center; justify-content: center; border-radius: 8px; background: rgba(37,99,235,0.08); color: #2563eb; font-size: 0.75rem; }
+    html.dark-mode .feature-check { background: rgba(59,130,246,0.12); color: #60a5fa; }
 
-    /* HERO VISUAL - More floating cards */
+    /* HERO VISUAL */
     .hero-visual { height: 520px; position: relative; display: flex; align-items: center; justify-content: center; }
     .visual-center { width: 230px; height: 230px; position: absolute; display: flex; align-items: center; justify-content: center; }
     .center-ring { width: 190px; height: 190px; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid rgba(96,165,250,0.3); background: radial-gradient(circle, rgba(59,130,246,0.16), rgba(59,130,246,0.03) 65%, transparent 70%); box-shadow: 0 0 80px rgba(59,130,246,0.15); animation: centerPulse 5s ease-in-out infinite; }
@@ -416,8 +410,8 @@ import Footer from '../components/Footer.astro';
     .orbit-1 { width: 390px; height: 390px; transform: rotate(-18deg); }
     .orbit-2 { width: 500px; height: 300px; transform: rotate(28deg); }
     
-    .float-card { position: absolute; z-index: 5; background: rgba(15,23,42,0.84); border: 1px solid rgba(148,163,184,0.15); box-shadow: 0 25px 60px rgba(0,0,0,0.35); backdrop-filter: blur(18px); color: #f8fafc; border-radius: 16px; animation: floating 6s ease-in-out infinite; }
-    [data-theme="light"] .float-card { background: rgba(255,255,255,0.88); color: #0f172a; box-shadow: 0 20px 50px rgba(15,23,42,0.12); }
+    .float-card { position: absolute; z-index: 5; background: rgba(255,255,255,0.88); border: 1px solid rgba(15,23,42,0.09); box-shadow: 0 20px 50px rgba(15,23,42,0.12); backdrop-filter: blur(18px); color: #0f172a; border-radius: 16px; animation: floating 6s ease-in-out infinite; }
+    html.dark-mode .float-card { background: rgba(15,23,42,0.84); border: 1px solid rgba(148,163,184,0.15); box-shadow: 0 25px 60px rgba(0,0,0,0.35); color: #f8fafc; }
     
     .card-1 { width: 270px; top: 35px; right: 20px; padding: 18px; animation-delay: 0s; }
     .card-2 { display: flex; align-items: center; gap: 12px; top: 230px; left: 0; min-width: 190px; padding: 14px 17px; animation-delay: 1.2s; }
@@ -429,7 +423,8 @@ import Footer from '../components/Footer.astro';
     @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-13px); } }
     
     .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
-    .language-icon { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: rgba(59,130,246,0.12); color: #60a5fa; font-size: 1.35rem; }
+    .language-icon { width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; border-radius: 10px; background: rgba(37,99,235,0.08); color: #2563eb; font-size: 1.35rem; }
+    html.dark-mode .language-icon { background: rgba(59,130,246,0.12); color: #60a5fa; }
     .window-dots { display: flex; gap: 5px; }
     .window-dots span { width: 6px; height: 6px; border-radius: 50%; background: #64748b; }
     .code-box { direction: ltr; text-align: left; font-family: 'Fira Code', Consolas, monospace; font-size: 0.78rem; line-height: 1.8; }
@@ -468,7 +463,7 @@ import Footer from '../components/Footer.astro';
     .stats { padding: 45px 0; background: var(--bg2); border-bottom: 1px solid var(--border); }
     .stats-grid { display: flex; align-items: center; justify-content: center; gap: 70px; }
     .stat-item { min-width: 170px; display: flex; align-items: center; gap: 16px; }
-    .stat-icon-wrap { width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 15px; background: rgba(59,130,246,0.1); color: var(--primary); font-size: 1.25rem; border: 1px solid rgba(59,130,246,0.12); }
+    .stat-icon-wrap { width: 54px; height: 54px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border-radius: 15px; background: rgba(37,99,235,0.1); color: var(--primary); font-size: 1.25rem; border: 1px solid rgba(37,99,235,0.12); }
     .stat-num { display: block; color: var(--primary); font-size: 2rem; font-weight: 800; line-height: 1.1; }
     .stat-label { display: block; color: var(--text-muted); font-size: 0.78rem; }
     .stat-divider { width: 1px; height: 55px; background: var(--border); }
@@ -482,20 +477,23 @@ import Footer from '../components/Footer.astro';
 
     /* TRACKS */
     .tracks { background: var(--bg); }
-    .tracks-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .tracks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
     .track { display: flex; flex-direction: column; min-height: 480px; overflow: hidden; border-radius: var(--radius); background: var(--card); border: 1px solid var(--border); text-decoration: none; box-shadow: var(--shadow); transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease; }
     .track:hover { transform: translateY(-8px); border-color: var(--border-strong); box-shadow: 0 25px 65px rgba(0,0,0,0.18); }
     .track-img { height: 195px; position: relative; overflow: hidden; }
     .track-img img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
     .track:hover .track-img img { transform: scale(1.08); }
     .track-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(7,16,31,0.72), transparent 70%); }
+    html.dark-mode .track-img-overlay { background: linear-gradient(to top, rgba(7,16,31,0.72), transparent 70%); }
     .track-number { position: absolute; top: 15px; left: 15px; width: 39px; height: 39px; display: flex; align-items: center; justify-content: center; border-radius: 11px; background: rgba(7,16,31,0.6); border: 1px solid rgba(255,255,255,0.15); color: #fff; font-size: 0.75rem; font-weight: 800; backdrop-filter: blur(10px); }
     .track-body { flex: 1; display: flex; flex-direction: column; padding: 23px; }
-    .track-icon { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 14px; background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.1); color: var(--primary); font-size: 1.25rem; margin-bottom: 15px; transition: transform 0.3s ease, background 0.3s ease; }
-    .track:hover .track-icon { transform: rotate(-5deg) scale(1.05); background: rgba(59,130,246,0.16); }
+    .track-icon { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 14px; background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.1); color: var(--primary); font-size: 1.25rem; margin-bottom: 15px; transition: transform 0.3s ease, background 0.3s ease; }
+    .track:hover .track-icon { transform: rotate(-5deg) scale(1.05); background: rgba(37,99,235,0.16); }
+    html.dark-mode .track-icon { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.1); }
+    html.dark-mode .track:hover .track-icon { background: rgba(59,130,246,0.16); }
     .track-title-row { display: flex; align-items: center; gap: 10px; }
     .track-title-row h3 { font-size: 1.12rem; margin: 0; flex: 1; }
-    .track-arrow { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: var(--primary); background: rgba(59,130,246,0.08); font-size: 0.7rem; transition: transform 0.3s ease; }
+    .track-arrow { width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: var(--primary); background: rgba(37,99,235,0.08); font-size: 0.7rem; transition: transform 0.3s ease; }
     .track:hover .track-arrow { transform: translateX(-4px); }
     .track-body > p { color: var(--text-muted); font-size: 0.82rem; line-height: 1.8; margin: 10px 0 17px; }
     .track-list { list-style: none; margin-top: auto; }
@@ -504,27 +502,30 @@ import Footer from '../components/Footer.astro';
 
     /* FEATURES */
     .features { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
     .feature-box { position: relative; overflow: hidden; padding: 30px 25px; min-height: 245px; border-radius: var(--radius); background: var(--card); border: 1px solid var(--border); text-align: center; transition: transform 0.3s ease, border-color 0.3s ease; }
     .feature-box:hover { transform: translateY(-7px); border-color: var(--border-strong); }
-    .feature-icon { width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; border-radius: 18px; color: var(--primary); background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.1); font-size: 1.45rem; }
+    .feature-icon { width: 65px; height: 65px; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; border-radius: 18px; color: var(--primary); background: rgba(37,99,235,0.1); border: 1px solid rgba(37,99,235,0.1); font-size: 1.45rem; }
+    html.dark-mode .feature-icon { background: rgba(59,130,246,0.1); border: 1px solid rgba(59,130,246,0.1); }
     .feature-box h3 { font-size: 1.05rem; margin-bottom: 7px; }
     .feature-box p { color: var(--text-muted); font-size: 0.8rem; line-height: 1.8; }
     .feature-number { position: absolute; bottom: -10px; left: 15px; color: var(--primary); font-size: 3rem; font-weight: 800; opacity: 0.045; }
 
     /* FAQ */
     .faq { background: var(--bg); }
-    .faq-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 17px; max-width: 950px; margin: auto; }
+    .faq-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 17px; max-width: 950px; margin: auto; }
     .faq-item { display: flex; gap: 17px; padding: 24px; border-radius: 17px; background: var(--card); border: 1px solid var(--border); transition: transform 0.3s ease, border-color 0.3s ease; }
     .faq-item:hover { transform: translateY(-4px); border-color: var(--border-strong); }
-    .faq-icon { width: 45px; height: 45px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: rgba(59,130,246,0.1); color: var(--primary); font-size: 1rem; }
+    .faq-icon { width: 45px; height: 45px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border-radius: 12px; background: rgba(37,99,235,0.1); color: var(--primary); font-size: 1rem; }
+    html.dark-mode .faq-icon { background: rgba(59,130,246,0.1); }
     .faq-item h3 { font-size: 0.95rem; margin-bottom: 6px; }
     .faq-item p { color: var(--text-muted); font-size: 0.78rem; line-height: 1.8; }
 
     /* FINAL CTA */
     .final-cta { padding-top: 40px; padding-bottom: 100px; background: var(--bg); }
-    .cta-box { position: relative; overflow: hidden; min-height: 310px; display: flex; align-items: center; padding: 50px; border-radius: 28px; background: linear-gradient(135deg, rgba(37,99,235,0.18), rgba(6,182,212,0.08)); border: 1px solid rgba(59,130,246,0.2); }
-    .cta-box::before { content: ''; position: absolute; width: 450px; height: 450px; border-radius: 50%; right: -150px; top: -250px; background: radial-gradient(circle, rgba(59,130,246,0.18), transparent 65%); }
+    .cta-box { position: relative; overflow: hidden; min-height: 310px; display: flex; align-items: center; padding: 50px; border-radius: 28px; background: linear-gradient(135deg, rgba(37,99,235,0.18), rgba(6,182,212,0.08)); border: 1px solid rgba(37,99,235,0.2); }
+    html.dark-mode .cta-box { background: linear-gradient(135deg, rgba(59,130,246,0.18), rgba(6,182,212,0.08)); border: 1px solid rgba(59,130,246,0.2); }
+    .cta-box::before { content: ''; position: absolute; width: 450px; height: 450px; border-radius: 50%; right: -150px; top: -250px; background: radial-gradient(circle, rgba(37,99,235,0.18), transparent 65%); }
     .cta-content { position: relative; z-index: 2; max-width: 650px; }
     .cta-content h2 { font-size: clamp(2rem, 4vw, 3rem); line-height: 1.35; margin-bottom: 10px; }
     .cta-content h2 span { color: var(--primary); }
@@ -539,7 +540,7 @@ import Footer from '../components/Footer.astro';
     .scroll-top.show { opacity: 1; visibility: visible; transform: translateY(0); }
     .scroll-top:hover { background: var(--primary-hover); transform: translateY(-4px); }
 
-    /* ===== RESPONSIVE - IMPROVED MOBILE ===== */
+    /* ===== RESPONSIVE ===== */
     @media (max-width: 1100px) {
       .hero-container { gap: 35px; }
       .hero h1 { font-size: 3.4rem; }
@@ -619,45 +620,48 @@ import Footer from '../components/Footer.astro';
   </style>
 
   <script>
-    /* THEME SYNC - FIXED */
+    /* THEME SYNC - بنفس نظام صفحة Windows */
     (() => {
-      const applyTheme = (theme) => {
-        if (theme !== 'light' && theme !== 'dark') return;
-        document.documentElement.setAttribute('data-theme', theme);
-        try { localStorage.setItem('theme', theme); } catch {}
+      const applyTheme = (isDark) => {
+        if (isDark) {
+          document.documentElement.classList.add('dark-mode');
+        } else {
+          document.documentElement.classList.remove('dark-mode');
+        }
+        try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch {}
       };
 
       // Initial load
       try {
         const saved = localStorage.getItem('theme');
-        if (saved === 'light' || saved === 'dark') {
-          document.documentElement.setAttribute('data-theme', saved);
+        if (saved === 'dark') {
+          document.documentElement.classList.add('dark-mode');
         }
       } catch {}
 
       // Listen for themeChange event from Header
       window.addEventListener('themeChange', (event) => {
         const theme = event?.detail;
-        if (theme === 'light' || theme === 'dark') applyTheme(theme);
+        if (theme === 'light' || theme === 'dark') {
+          applyTheme(theme === 'dark');
+        }
       });
 
-      // Observe data-theme changes directly
+      // Observe class changes on html element
       const themeObserver = new MutationObserver((mutations) => {
         for (const mutation of mutations) {
-          if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
-            const current = document.documentElement.getAttribute('data-theme');
-            if (current === 'light' || current === 'dark') {
-              try { localStorage.setItem('theme', current); } catch {}
-            }
+          if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+            const isDark = document.documentElement.classList.contains('dark-mode');
+            try { localStorage.setItem('theme', isDark ? 'dark' : 'light'); } catch {}
           }
         }
       });
-      themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+      themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
       // Sync across tabs
       window.addEventListener('storage', (event) => {
-        if (event.key === 'theme' && (event.newValue === 'light' || event.newValue === 'dark')) {
-          applyTheme(event.newValue);
+        if (event.key === 'theme') {
+          applyTheme(event.newValue === 'dark');
         }
       });
     })();
