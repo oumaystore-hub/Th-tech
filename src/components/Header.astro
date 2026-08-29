@@ -177,6 +177,7 @@
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
+  /* ===== THEME SYSTEM - Unified with Windows page ===== */
   :root {
     --bg: #f8fafc;
     --card: #ffffff;
@@ -189,6 +190,7 @@
     --font-main: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
   }
 
+  /* Dark Mode using class like Windows page */
   html.dark-mode {
     --bg: #0b1120;
     --card: #1e293b;
@@ -217,6 +219,7 @@
     padding: 0.5rem 0;
     box-shadow: 0 2px 20px var(--shadow);
     backdrop-filter: blur(10px);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
   }
   
   .container {
@@ -366,6 +369,7 @@
     z-index: 999;
     box-shadow: 0 10px 40px var(--shadow);
     animation: slideDown 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
   }
   
   @keyframes slideDown {
@@ -513,6 +517,7 @@
     max-height: calc(100vh - 80px);
     overflow-y: auto;
     font-family: var(--font-main);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
   }
 
   .mobile-menu::-webkit-scrollbar { width: 6px; }
@@ -784,19 +789,27 @@
     ]
   };
 
+  /* =====================================================
+     THEME SYSTEM - Unified with Windows page
+  ====================================================== */
   function toggleTheme() {
     const html = document.documentElement;
     const btn = document.getElementById('theme-btn');
     
-    html.classList.toggle('dark-mode');
-    
+    // Toggle dark-mode class like Windows page
     if (html.classList.contains('dark-mode')) {
-      localStorage.setItem('theme', 'dark');
-      btn.setAttribute('title', 'الوضع النهاري');
-    } else {
+      html.classList.remove('dark-mode');
       localStorage.setItem('theme', 'light');
       btn.setAttribute('title', 'الوضع الليلي');
+    } else {
+      html.classList.add('dark-mode');
+      localStorage.setItem('theme', 'dark');
+      btn.setAttribute('title', 'الوضع النهاري');
     }
+    
+    // Dispatch event for other pages to sync
+    const currentTheme = html.classList.contains('dark-mode') ? 'dark' : 'light';
+    window.dispatchEvent(new CustomEvent('themeChange', { detail: currentTheme }));
   }
 
   function highlightText(text, query) {
@@ -860,15 +873,30 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    // Initial theme load - check for dark-mode class
     const savedTheme = localStorage.getItem('theme');
     const themeBtn = document.getElementById('theme-btn');
+    const html = document.documentElement;
     
     if (savedTheme === 'dark') {
-      document.documentElement.classList.add('dark-mode');
+      html.classList.add('dark-mode');
       themeBtn.setAttribute('title', 'الوضع النهاري');
     }
 
+    // Theme toggle click handler
     themeBtn.addEventListener('click', toggleTheme);
+
+    // Listen for theme changes from other pages
+    window.addEventListener('themeChange', (event) => {
+      const theme = event?.detail;
+      if (theme === 'dark') {
+        html.classList.add('dark-mode');
+        themeBtn.setAttribute('title', 'الوضع النهاري');
+      } else if (theme === 'light') {
+        html.classList.remove('dark-mode');
+        themeBtn.setAttribute('title', 'الوضع الليلي');
+      }
+    });
 
     const menuBtn = document.getElementById('menu-btn');
     const mobileMenu = document.getElementById('mobile-menu');
