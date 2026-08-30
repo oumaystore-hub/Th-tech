@@ -1,43 +1,33 @@
 ---
 import ToolLayout from '../../layouts/ToolLayout.astro';
-
-// SEO Data
-const toolData = {
-  title: "JSON Formatter Online | Format & Minify JSON - Th.Tech",
-  description: "أداة تنسيق JSON مجانية عبر الإنترنت. قم بتنسيق (Beautify)، تصغير (Minify)، والتحقق من صحة بيانات JSON بسهولة وسرعة.",
-  toolName: "JSON Formatter",
-  canonical: "/tools/json-formatter/"
-};
 ---
 
 <ToolLayout 
-  title={toolData.title} 
-  description={toolData.description}
-  toolName={toolData.toolName}
+  title="JSON Formatter Online - تنسيق وتجميل JSON | Th.Tech"
+  description="أداة تنسيق JSON مجانية. قم بتنسيق، تجميل، تصغير والتحقق من صحة بيانات JSON مباشرة في المتصفح."
+  toolName="JSON Formatter"
+  canonical="/tools/json-formatter/"
 >
-
   <div class="tool-container">
-    <!-- Tool Header -->
     <header class="tool-header">
       <div class="icon-wrapper">
         <i class="fas fa-code"></i>
       </div>
       <div class="titles">
-        <h1>أداة تنسيق JSON</h1>
-        <p>قم بتنسيق، تصغير، والتحقق من كود JSON الخاص بك.</p>
+        <h1>JSON Formatter</h1>
+        <p>قم بتنسيق، تجميل والتحقق من كود JSON الخاص بك</p>
       </div>
     </header>
 
-    <!-- Toolbar -->
     <div class="toolbar">
       <div class="actions">
-        <button onclick="formatJSON()" class="btn btn-primary" title="تنسيق الكود">
+        <button onclick="formatJSON()" class="btn btn-primary">
           <i class="fas fa-magic"></i> تنسيق
         </button>
-        <button onclick="minifyJSON()" class="btn btn-secondary" title="تصغير الكود">
+        <button onclick="minifyJSON()" class="btn btn-secondary">
           <i class="fas fa-compress-arrows-alt"></i> Minify
         </button>
-        <button onclick="validateJSON()" class="btn btn-outline" title="التحقق من الصحة">
+        <button onclick="validateJSON()" class="btn btn-outline">
           <i class="fas fa-check-circle"></i> تحقق
         </button>
       </div>
@@ -54,9 +44,8 @@ const toolData = {
       </div>
     </div>
 
-    <!-- Editor Area -->
     <div class="editor-wrapper">
-      <div class="editor-stats" id="editorStats">
+      <div class="editor-stats">
         <span id="charCount">0 Char</span> | <span id="lineCount">0 Line</span>
       </div>
       <textarea 
@@ -67,7 +56,6 @@ const toolData = {
       ></textarea>
     </div>
 
-    <!-- Error Message Area -->
     <div id="errorBox" class="error-box hidden">
       <i class="fas fa-exclamation-circle"></i>
       <div>
@@ -77,20 +65,17 @@ const toolData = {
     </div>
   </div>
 
-  <!-- Toast Notification -->
   <div id="toast" class="toast">تم النسخ بنجاح!</div>
 
 </ToolLayout>
 
 <style>
-  /* Tool Specific Styles */
   .tool-container {
     max-width: 1000px;
     margin: 0 auto;
     padding-bottom: 3rem;
   }
 
-  /* Header */
   .tool-header {
     display: flex;
     align-items: center;
@@ -101,8 +86,8 @@ const toolData = {
   .icon-wrapper {
     width: 60px;
     height: 60px;
-    background: var(--primary-light, rgba(37, 99, 235, 0.1));
-    color: var(--primary);
+    background: rgba(59, 130, 246, 0.1);
+    color: #3b82f6;
     border-radius: 16px;
     display: flex;
     align-items: center;
@@ -114,21 +99,19 @@ const toolData = {
   .titles h1 {
     font-size: 1.8rem;
     margin-bottom: 0.3rem;
-    line-height: 1.2;
   }
 
   .titles p {
-    color: var(--text-muted);
+    color: var(--text-sec);
     font-size: 1rem;
     margin: 0;
   }
 
-  /* Toolbar */
   .toolbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: var(--card-bg);
+    background: var(--card);
     padding: 1rem;
     border-radius: 12px 12px 0 0;
     border: 1px solid var(--border);
@@ -146,14 +129,11 @@ const toolData = {
   .utilities {
     display: flex;
     gap: 0.5rem;
-    align-items: center;
   }
 
-  /* Buttons */
   .btn {
     padding: 0.6rem 1.2rem;
     border-radius: 8px;
-    font-family: 'Cairo', sans-serif;
     font-weight: 600;
     cursor: pointer;
     display: flex;
@@ -165,23 +145,20 @@ const toolData = {
   }
 
   .btn-primary {
-    background: var(--primary);
+    background: #3b82f6;
     color: white;
   }
-  .btn-primary:hover { filter: brightness(1.1); }
 
   .btn-secondary {
-    background: var(--bg-secondary, #f1f5f9);
-    color: var(--text);
+    background: #f1f5f9;
+    color: #0f172a;
   }
-  .btn-secondary:hover { background: #e2e8f0; }
 
   .btn-outline {
     background: transparent;
     border: 1px solid var(--border);
-    color: var(--text-muted);
+    color: var(--text-sec);
   }
-  .btn-outline:hover { border-color: var(--primary); color: var(--primary); }
 
   .btn-icon {
     width: 36px;
@@ -189,37 +166,32 @@ const toolData = {
     border-radius: 8px;
     border: 1px solid var(--border);
     background: transparent;
-    color: var(--text-muted);
+    color: var(--text-sec);
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
   }
-  .btn-icon:hover { color: var(--primary); border-color: var(--primary); }
-  .btn-danger:hover { color: var(--danger, #ef4444); border-color: var(--danger); }
 
-  /* Editor */
+  .btn-danger:hover {
+    color: #ef4444;
+    border-color: #ef4444;
+  }
+
   .editor-wrapper {
     position: relative;
     border: 1px solid var(--border);
     border-radius: 0 0 12px 12px;
-    background: var(--editor-bg, #f8fafc);
+    background: var(--bg);
     min-height: 400px;
-  }
-  
-  html.dark-mode .editor-wrapper {
-    background: #0f172a;
-    border-color: #334155;
   }
 
   .editor-stats {
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
-    color: var(--text-muted);
+    color: var(--text-sec);
     border-bottom: 1px solid var(--border);
-    background: rgba(0,0,0,0.02);
-    font-family: 'Fira Code', monospace;
+    font-family: monospace;
   }
 
   #jsonInput {
@@ -235,34 +207,32 @@ const toolData = {
     font-family: 'Fira Code', monospace;
     font-size: 14px;
     line-height: 1.6;
-    direction: ltr; /* Code is always LTR */
+    direction: ltr;
     box-sizing: border-box;
   }
 
-  /* Error Box */
   .error-box {
     margin-top: 1rem;
     padding: 1rem;
     background: rgba(239, 68, 68, 0.1);
     border: 1px solid rgba(239, 68, 68, 0.3);
-    color: var(--danger, #ef4444);
+    color: #ef4444;
     border-radius: 8px;
     display: flex;
     align-items: center;
     gap: 0.8rem;
-    animation: fadeIn 0.3s ease;
   }
-  .error-box.hidden { display: none; }
-  
-  .error-box strong { display: block; margin-bottom: 0.2rem; }
 
-  /* Toast */
+  .error-box.hidden {
+    display: none;
+  }
+
   .toast {
     position: fixed;
     bottom: 2rem;
     left: 50%;
     transform: translateX(-50%) translateY(20px);
-    background: var(--primary);
+    background: #10b981;
     color: white;
     padding: 0.8rem 1.5rem;
     border-radius: 50px;
@@ -272,29 +242,25 @@ const toolData = {
     transition: all 0.3s;
     z-index: 100;
   }
+
   .toast.show {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(0);
   }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-5px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Responsive */
-  @media (max-width: 640px) {
-    .tool-header { flex-direction: column; text-align: center; }
-    .toolbar { flex-direction: column; align-items: stretch; }
-    .actions { justify-content: center; }
-    .utilities { justify-content: center; }
-    .btn { flex: 1; justify-content: center; }
+  @media (max-width: 768px) {
+    .toolbar {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .actions, .utilities {
+      justify-content: center;
+    }
   }
 </style>
 
 <script is:inline>
-  // Logic
   const textarea = document.getElementById('jsonInput');
   const errorBox = document.getElementById('errorBox');
   const errorMessage = document.getElementById('errorMessage');
@@ -302,7 +268,6 @@ const toolData = {
   const lineCount = document.getElementById('lineCount');
   const toast = document.getElementById('toast');
 
-  // Live Stats Update
   textarea.addEventListener('input', updateStats);
 
   function updateStats() {
@@ -341,7 +306,6 @@ const toolData = {
     if (!text.trim()) return;
     try {
       JSON.parse(text);
-      // If no error, show a temporary success state or just hide error
       hideError();
       showToast('✅ JSON صحيح وصالح!');
     } catch (e) {
@@ -387,6 +351,5 @@ const toolData = {
     setTimeout(() => toast.classList.remove('show'), 2000);
   }
 
-  // Initial stats
   updateStats();
 </script>
