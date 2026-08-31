@@ -4,14 +4,17 @@ import Footer from '../../../components/Footer.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-export const title = 'JSON Validator';
-export const description =
-  'تحقق من صحة JSON واكتشف أخطاء الصياغة بسرعة وسهولة.';
+const title =
+  "JSON Validator - التحقق من صحة JSON أونلاين مجاناً | Th.Tech";
+
+const description =
+  "أداة JSON Validator مجانية للتحقق من صحة JSON واكتشاف أخطاء الصياغة والبنية مباشرة من المتصفح.";
 ---
 
 <html lang="ar" dir="rtl">
 
 <head>
+
   <meta charset="UTF-8" />
 
   <meta
@@ -19,1423 +22,1865 @@ export const description =
     content="width=device-width, initial-scale=1.0"
   />
 
-  <title>JSON Validator | Th.Tech</title>
+  <title>{title}</title>
 
   <meta
     name="description"
     content={description}
   />
 
-  <style>
-    :global(*) {
-      box-sizing: border-box;
-    }
+  <meta
+    name="robots"
+    content="index, follow"
+  />
+
+  <link
+    rel="canonical"
+    href={`https://oumaystore-hub.github.io${base}/tools/json-validator/`}
+  />
+
+  <link
+    rel="icon"
+    type="image/png"
+    href={`${base}/logo1.png`}
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
 
-    :global(html) {
-      scroll-behavior: smooth;
-    }
-
-    :global(body) {
-      margin: 0;
-
-      font-family:
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-
-      background: #f5f7fb;
-      color: #172033;
-
-      transition:
-        background 0.3s ease,
-        color 0.3s ease;
-    }
-
-    main {
-      min-height: calc(100vh - 160px);
-
-      padding:
-        32px 16px 60px;
-    }
-
-    .container {
-      width: min(1100px, 100%);
-
-      margin: 0 auto;
-    }
-
-    /* =========================
-       BACK
-    ========================= */
-
-    .back {
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 7px;
-
-      margin-bottom: 18px;
-
-      color: #667085;
-
-      text-decoration: none;
-
-      font-size: 13px;
-
-      font-weight: 700;
-
-      transition:
-        color 0.2s ease;
-    }
-
-    .back:hover {
-      color: #008ff5;
-    }
-
-    .back svg {
-      width: 17px;
-      height: 17px;
-    }
-
-    /* =========================
-       HERO
-    ========================= */
-
-    .hero {
-      text-align: center;
-
-      margin-bottom: 28px;
-    }
-
-    .tool-badge {
-      display: inline-flex;
-
-      align-items: center;
-
-      gap: 7px;
-
-      padding:
-        7px 13px;
-
-      border-radius: 999px;
-
-      background:
-        rgba(0, 143, 245, 0.1);
-
-      color: #008ff5;
-
-      font-size: 12px;
-
-      font-weight: 800;
-
-      margin-bottom: 12px;
-    }
-
-    .tool-badge svg {
-      width: 16px;
-      height: 16px;
-
-      fill: none;
-
-      stroke: currentColor;
-
-      stroke-width: 1.8;
-
-      stroke-linecap: round;
-
-      stroke-linejoin: round;
-    }
-
-    .hero h1 {
-      margin:
-        0 0 10px;
-
-      font-size:
-        clamp(30px, 5vw, 44px);
-
-      line-height: 1.2;
-
-      letter-spacing: -0.5px;
-    }
-
-    .hero p {
-      max-width: 650px;
-
-      margin: 0 auto;
-
-      color: #667085;
-
-      font-size: 14px;
-
-      line-height: 1.8;
-    }
-
-    /* =========================
-       TOOL
-    ========================= */
-
-    .tool-box {
-      overflow: hidden;
-
-      border:
-        1px solid #e3e8f0;
-
-      border-radius: 20px;
-
-      background: #ffffff;
-
-      box-shadow:
-        0 12px 35px
-        rgba(20, 35, 60, 0.07);
-    }
-
-    /* =========================
-       TOOL HEADER
-    ========================= */
-
-    .tool-header {
-      display: flex;
-
-      align-items: center;
-
-      justify-content: space-between;
-
-      padding:
-        14px 18px;
-
-      border-bottom:
-        1px solid #edf0f5;
-
-      background:
-        linear-gradient(
-          180deg,
-          #ffffff,
-          #fbfcfe
-        );
-    }
-
-    .tool-title {
-      display: flex;
-
-      align-items: center;
-
-      gap: 10px;
-    }
-
-    .mini-icon {
-      display: flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      width: 39px;
-      height: 39px;
-
-      border-radius: 11px;
-
-      background:
-        rgba(0, 143, 245, 0.1);
-
-      color: #008ff5;
-    }
-
-    .mini-icon svg {
-      width: 22px;
-      height: 22px;
-
-      fill: none;
-
-      stroke: currentColor;
-
-      stroke-width: 1.8;
-
-      stroke-linecap: round;
-
-      stroke-linejoin: round;
-    }
-
-    .tool-title strong {
-      display: block;
-
-      font-size: 14px;
-    }
-
-    .tool-title span {
-      display: block;
-
-      margin-top: 2px;
-
-      color: #98a2b3;
-
-      font-size: 11px;
-    }
-
-    /* =========================
-       EDITOR AREA
-    ========================= */
-
-    .editor-area {
-      padding: 18px;
-    }
-
-    /* =========================
-       ACTIONS
-       فوق المحرر
-    ========================= */
-
-    .actions {
-      display: flex;
-
-      flex-wrap: wrap;
-
-      gap: 8px;
-
-      margin-bottom: 12px;
-    }
-
-    .action {
-      display: inline-flex;
-
-      align-items: center;
-
-      justify-content: center;
-
-      gap: 7px;
-
-      min-height: 40px;
-
-      padding:
-        0 14px;
-
-      border:
-        1px solid #dce3ec;
-
-      border-radius: 10px;
-
-      background: #ffffff;
-
-      color: #344054;
-
-      font-family: inherit;
-
-      font-size: 12px;
-
-      font-weight: 800;
-
-      cursor: pointer;
-
-      transition:
-        transform 0.15s ease,
-        background 0.2s ease,
-        border-color 0.2s ease;
-    }
-
-    .action:hover {
-      transform:
-        translateY(-1px);
-
-      border-color:
-        #b8c3d2;
-
-      background:
-        #f8fafc;
-    }
-
-    .action.primary {
-      background:
-        #008ff5;
-
-      border-color:
-        #008ff5;
-
-      color: #ffffff;
-    }
-
-    .action.primary:hover {
-      background:
-        #007bd4;
-
-      border-color:
-        #007bd4;
-    }
-
-    .action svg {
-      width: 16px;
-      height: 16px;
-
-      fill: none;
-
-      stroke: currentColor;
-
-      stroke-width: 1.8;
-
-      stroke-linecap: round;
-
-      stroke-linejoin: round;
-    }
-
-    /* =========================
-       TEXTAREA
-    ========================= */
-
-    textarea {
-      display: block;
-
-      width: 100%;
-
-      min-height: 360px;
-
-      resize: vertical;
-
-      padding: 17px;
-
-      border:
-        1px solid #dce3ec;
-
-      border-radius: 14px;
-
-      outline: none;
-
-      background:
-        #f9fafc;
-
-      color: #172033;
-
-      font-family:
-        "SFMono-Regular",
-        Consolas,
-        "Liberation Mono",
-        monospace;
-
-      font-size: 13px;
-
-      line-height: 1.7;
-
-      direction: ltr;
-
-      text-align: left;
-
-      tab-size: 2;
-
-      transition:
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
-    }
-
-    textarea::placeholder {
-      color: #98a2b3;
-
-      opacity: 1;
-    }
-
-    textarea:focus {
-      border-color:
-        #008ff5;
-
-      box-shadow:
-        0 0 0 4px
-        rgba(0, 143, 245, 0.1);
-    }
-
-    textarea.valid {
-      border-color:
-        #12b76a;
-
-      box-shadow:
-        0 0 0 3px
-        rgba(18, 183, 106, 0.08);
-    }
-
-    textarea.invalid {
-      border-color:
-        #f04438;
-
-      box-shadow:
-        0 0 0 3px
-        rgba(240, 68, 56, 0.08);
-    }
-
-    /* =========================
-       RESULT
-    ========================= */
-
-    .result {
-      display: none;
-
-      margin:
-        0 18px 18px;
-
-      padding: 15px;
-
-      border:
-        1px solid transparent;
-
-      border-radius: 13px;
-    }
-
-    .result.show {
-      display: block;
-    }
-
-    .result.valid {
-      border-color:
-        #abefc6;
-
-      background:
-        #ecfdf3;
-
-      color:
-        #067647;
-    }
-
-    .result.invalid {
-      border-color:
-        #fecdca;
-
-      background:
-        #fef3f2;
-
-      color:
-        #b42318;
-    }
-
-    .result-title {
-      display: flex;
-
-      align-items: center;
-
-      gap: 8px;
-
-      font-size: 14px;
-
-      font-weight: 900;
-    }
-
-    .result-title svg {
-      width: 20px;
-      height: 20px;
-
-      fill: none;
-
-      stroke: currentColor;
-
-      stroke-width: 2;
-
-      stroke-linecap: round;
-
-      stroke-linejoin: round;
-    }
-
-    .result-message {
-      margin-top: 6px;
-
-      font-size: 12px;
-
-      line-height: 1.7;
-
-      direction: rtl;
-
-      text-align: right;
-
-      word-break: break-word;
-    }
-
-    /* =========================
-       INFO CARDS
-    ========================= */
-
-    .info-grid {
-      display: grid;
-
-      grid-template-columns:
-        repeat(3, 1fr);
-
-      gap: 12px;
-
-      margin-top: 16px;
-    }
-
-    .info-card {
-      padding: 15px;
-
-      border:
-        1px solid #e5e9f0;
-
-      border-radius: 14px;
-
-      background: #ffffff;
-    }
-
-    .info-card strong {
-      display: block;
-
-      margin-bottom: 5px;
-
-      font-size: 13px;
-    }
-
-    .info-card span {
-      color: #667085;
-
-      font-size: 11px;
-
-      line-height: 1.7;
-    }
-
-    /* =========================
-       DARK MODE
-    ========================= */
-
-    :global(html.dark) body {
-      background: #0b1220;
-
-      color: #f2f4f7;
-    }
-
-    :global(html.dark) .back {
-      color: #98a2b3;
-    }
-
-    :global(html.dark) .hero p {
-      color: #98a2b3;
-    }
-
-    :global(html.dark) .tool-box {
-      background: #111a2b;
-
-      border-color:
-        #263247;
-
-      box-shadow:
-        0 15px 40px
-        rgba(0, 0, 0, 0.25);
-    }
-
-    :global(html.dark) .tool-header {
-      background:
-        linear-gradient(
-          180deg,
-          #111a2b,
-          #0f1727
-        );
-
-      border-color:
-        #263247;
-    }
-
-    :global(html.dark) .editor-area {
-      background: #111a2b;
-    }
-
-    :global(html.dark) textarea {
-      background:
-        #0b1220;
-
-      border-color:
-        #2b3950;
-
-      color: #e6edf5;
-    }
-
-    :global(html.dark) textarea::placeholder {
-      color: #667085;
-    }
-
-    :global(html.dark) .action {
-      background:
-        #172236;
-
-      border-color:
-        #2b3950;
-
-      color: #d0d5dd;
-    }
-
-    :global(html.dark) .action:hover {
-      background:
-        #1c2a41;
-
-      border-color:
-        #3a4b66;
-    }
-
-    :global(html.dark) .action.primary {
-      background:
-        #008ff5;
-
-      border-color:
-        #008ff5;
-
-      color: #ffffff;
-    }
-
-    :global(html.dark) .info-card {
-      background:
-        #111a2b;
-
-      border-color:
-        #263247;
-    }
-
-    :global(html.dark) .info-card span {
-      color: #98a2b3;
-    }
-
-    :global(html.dark) .result.valid {
-      background:
-        rgba(6, 118, 71, 0.12);
-
-      border-color:
-        rgba(18, 183, 106, 0.35);
-
-      color:
-        #75e0a7;
-    }
-
-    :global(html.dark) .result.invalid {
-      background:
-        rgba(180, 35, 24, 0.12);
-
-      border-color:
-        rgba(240, 68, 56, 0.35);
-
-      color:
-        #fda29b;
-    }
-
-    /* =========================
-       MOBILE
-    ========================= */
-
-    @media (max-width: 650px) {
-
-      main {
-        padding:
-          24px 10px 50px;
-      }
-
-      .hero {
-        margin-bottom: 21px;
-      }
-
-      .hero h1 {
-        font-size: 30px;
-      }
-
-      .hero p {
-        font-size: 13px;
-      }
-
-      .tool-box {
-        border-radius: 16px;
-      }
-
-      .tool-header {
-        padding:
-          12px 13px;
-      }
-
-      .editor-area {
-        padding: 11px;
-      }
-
-      /*
-        الأزرار فوق المحرر
-        وعمودان على الهاتف
-      */
-
-      .actions {
-        display: grid;
-
-        grid-template-columns:
-          repeat(2, 1fr);
-
-        gap: 7px;
-
-        margin-bottom: 10px;
-      }
-
-      .action {
-        width: 100%;
-
-        min-height: 40px;
-
-        padding:
-          0 8px;
-
-        font-size: 11px;
-      }
-
-      textarea {
-        min-height: 310px;
-
-        padding: 13px;
-
-        font-size: 12px;
-      }
-
-      .result {
-        margin:
-          0 11px 11px;
-
-        padding: 13px;
-      }
-
-      .info-grid {
-        grid-template-columns: 1fr;
-
-        gap: 8px;
-      }
-
-      .info-card {
-        padding: 13px;
-      }
-    }
-  </style>
 </head>
+
 
 <body>
 
   <Header />
 
-  <main>
 
-    <div class="container">
+  <main class="page">
 
-      <!-- العودة إلى الأدوات -->
+    <!-- HEADER -->
 
-      <a
-        class="back"
-        href={`${base}/tools/`}
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="m15 18-6-6 6-6" />
-        </svg>
+    <section class="tool-hero">
 
-        العودة إلى الأدوات
-      </a>
+      <div class="breadcrumb">
 
-      <!-- HERO -->
+        <a href={`${base}/`}>
+          الرئيسية
+        </a>
 
-      <section class="hero">
+        <i class="fas fa-chevron-left"></i>
 
-        <div class="tool-badge">
+        <a href={`${base}/tools/`}>
+          أدوات المطورين
+        </a>
 
-          <svg viewBox="0 0 24 24">
-            <path d="M6 3h9l4 4v14H6z" />
-            <path d="M15 3v5h5" />
-            <path d="m9 15 2 2 4-5" />
-          </svg>
+        <i class="fas fa-chevron-left"></i>
 
-          JSON Tool
-
-        </div>
-
-        <h1>
+        <span>
           JSON Validator
-        </h1>
+        </span>
 
-        <p>
-          تحقق من صحة JSON بسرعة واكتشف أخطاء
-          الصياغة والبنية قبل استخدام البيانات في مشروعك.
-        </p>
+      </div>
 
-      </section>
 
-      <!-- TOOL -->
+      <div class="tool-title">
 
-      <section class="tool-box">
+        <div class="tool-icon">
 
-        <!-- TOOL HEADER -->
-
-        <header class="tool-header">
-
-          <div class="tool-title">
-
-            <div class="mini-icon">
-
-              <svg viewBox="0 0 24 24">
-                <path d="M6 3h9l4 4v14H6z" />
-                <path d="M15 3v5h5" />
-                <path d="m9 15 2 2 4-5" />
-              </svg>
-
-            </div>
-
-            <div>
-
-              <strong>
-                JSON Validator
-              </strong>
-
-              <span>
-                التحقق من صحة JSON
-              </span>
-
-            </div>
-
-          </div>
-
-        </header>
-
-        <!-- EDITOR -->
-
-        <div class="editor-area">
-
-          <!-- الأزرار فوق المحرر -->
-
-          <div class="actions">
-
-            <button
-              class="action primary"
-              id="validateBtn"
-              type="button"
-            >
-
-              <svg viewBox="0 0 24 24">
-                <path d="m5 12 4 4L19 6" />
-              </svg>
-
-              تحقق من JSON
-
-            </button>
-
-            <button
-              class="action"
-              id="formatBtn"
-              type="button"
-            >
-
-              <svg viewBox="0 0 24 24">
-                <path d="M8 4h8" />
-                <path d="M8 8h8" />
-                <path d="M8 12h5" />
-                <path d="M8 16h8" />
-                <path d="M8 20h8" />
-              </svg>
-
-              تنسيق
-
-            </button>
-
-            <button
-              class="action"
-              id="copyBtn"
-              type="button"
-            >
-
-              <svg viewBox="0 0 24 24">
-                <rect
-                  x="8"
-                  y="8"
-                  width="12"
-                  height="12"
-                  rx="2"
-                />
-
-                <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
-              </svg>
-
-              نسخ
-
-            </button>
-
-            <button
-              class="action"
-              id="clearBtn"
-              type="button"
-            >
-
-              <svg viewBox="0 0 24 24">
-                <path d="M4 7h16" />
-                <path d="M10 11v6" />
-                <path d="M14 11v6" />
-                <path d="M6 7l1 13h10l1-13" />
-                <path d="M9 7V4h6v3" />
-              </svg>
-
-              مسح
-
-            </button>
-
-          </div>
-
-          <!-- محرر JSON -->
-
-          <textarea
-            id="jsonInput"
-            spellcheck="false"
-            placeholder={`{
-  "name": "Th.Tech",
-  "version": "1.0",
-  "tools": [
-    "JSON Formatter",
-    "JSON Validator"
-  ]
-}`}
-          ></textarea>
+          <i class="fas fa-circle-check"></i>
 
         </div>
 
-        <!-- RESULT -->
 
-        <div
-          class="result"
-          id="result"
-          aria-live="polite"
-        >
+        <div>
 
-          <div class="result-title">
+          <span class="eyebrow">
+            DEVELOPER TOOL
+          </span>
 
-            <svg
-              id="resultIcon"
-              viewBox="0 0 24 24"
-            ></svg>
+          <h1>
+            JSON Validator
+          </h1>
 
-            <span id="resultTitle">
-              النتيجة
+          <p>
+            تحقّق من صحة JSON واكتشف الأخطاء في الصياغة والبنية بسهولة.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- TOOL -->
+
+    <section class="workspace">
+
+
+      <!-- TOOLBAR -->
+
+      <div class="toolbar">
+
+
+        <div class="toolbar-group">
+
+          <button
+            id="validateBtn"
+            class="primary"
+          >
+
+            <i class="fas fa-circle-check"></i>
+
+            تحقق
+
+          </button>
+
+
+          <button
+            id="formatBtn"
+          >
+
+            <i class="fas fa-wand-magic-sparkles"></i>
+
+            تنسيق
+
+          </button>
+
+
+          <button
+            id="exampleBtn"
+          >
+
+            <i class="fas fa-flask"></i>
+
+            مثال
+
+          </button>
+
+        </div>
+
+
+        <div class="toolbar-group">
+
+          <button
+            id="copyBtn"
+          >
+
+            <i class="fas fa-copy"></i>
+
+            نسخ
+
+          </button>
+
+
+          <button
+            id="clearBtn"
+          >
+
+            <i class="fas fa-trash"></i>
+
+            مسح
+
+          </button>
+
+        </div>
+
+
+      </div>
+
+
+      <!-- STATUS -->
+
+      <div
+        id="status"
+        class="status"
+        aria-live="polite"
+      >
+
+        <i class="fas fa-circle-info"></i>
+
+        أدخل JSON ثم اضغط «تحقق».
+
+      </div>
+
+
+      <!-- EDITOR -->
+
+      <div class="editor-grid">
+
+
+        <div class="editor-card">
+
+
+          <div class="editor-header">
+
+            <span>
+
+              <i class="fas fa-pen"></i>
+
+              JSON INPUT
+
+            </span>
+
+
+            <span id="inputStats">
+              0 chars
             </span>
 
           </div>
 
-          <div
-            class="result-message"
-            id="resultMessage"
-          ></div>
+
+          <textarea
+            id="input"
+            spellcheck="false"
+            placeholder={`{
+  "name": "Th.Tech",
+  "version": "1.0",
+  "active": true
+}`}
+          ></textarea>
+
 
         </div>
 
-      </section>
 
-      <!-- INFO -->
+      </div>
 
-      <section class="info-grid">
 
-        <div class="info-card">
+    </section>
+
+
+    <!-- INFO -->
+
+    <section class="info">
+
+
+      <h2>
+        JSON Validator أونلاين
+      </h2>
+
+
+      <p>
+        JSON Validator من Th.Tech هي أداة مجانية تساعد المطورين
+        على التحقق من صحة JSON واكتشاف أخطاء الصياغة والبنية بسرعة.
+        تتم معالجة البيانات مباشرة داخل المتصفح دون الحاجة إلى رفعها إلى خادم.
+      </p>
+
+
+      <div class="info-grid">
+
+
+        <div>
+
+          <i class="fas fa-bolt"></i>
 
           <strong>
-            ✓ تحقق فوري
+            سريعة
           </strong>
 
           <span>
-            يتم تحليل JSON مباشرة داخل المتصفح
-            دون إرسال البيانات إلى خادم خارجي.
+            تحقق فوري من صحة JSON.
           </span>
 
         </div>
 
-        <div class="info-card">
+
+        <div>
+
+          <i class="fas fa-lock"></i>
 
           <strong>
-            ⚡ سريع وآمن
+            خصوصية
           </strong>
 
           <span>
-            بياناتك تبقى على جهازك أثناء عملية
-            التحقق والتنسيق.
+            البيانات تبقى داخل المتصفح.
           </span>
 
         </div>
 
-        <div class="info-card">
+
+        <div>
+
+          <i class="fas fa-bug-slash"></i>
 
           <strong>
-            {} JSON
+            كشف الأخطاء
           </strong>
 
           <span>
-            يدعم الكائنات والمصفوفات والقيم النصية
-            والأرقام والقيم المنطقية.
+            تحديد موقع الخطأ في السطر والعمود.
           </span>
 
         </div>
 
-      </section>
 
-    </div>
+      </div>
+
+
+    </section>
+
 
   </main>
 
+
   <Footer />
 
-  <script>
 
-    const input =
-      document.getElementById(
-        'jsonInput'
-      ) as HTMLTextAreaElement;
+<script>
 
-    const validateBtn =
-      document.getElementById(
-        'validateBtn'
-      ) as HTMLButtonElement;
-
-    const formatBtn =
-      document.getElementById(
-        'formatBtn'
-      ) as HTMLButtonElement;
-
-    const copyBtn =
-      document.getElementById(
-        'copyBtn'
-      ) as HTMLButtonElement;
-
-    const clearBtn =
-      document.getElementById(
-        'clearBtn'
-      ) as HTMLButtonElement;
-
-    const result =
-      document.getElementById(
-        'result'
-      ) as HTMLDivElement;
-
-    const resultTitle =
-      document.getElementById(
-        'resultTitle'
-      ) as HTMLSpanElement;
-
-    const resultMessage =
-      document.getElementById(
-        'resultMessage'
-      ) as HTMLDivElement;
-
-    const resultIcon =
-      document.getElementById(
-        'resultIcon'
-      ) as SVGElement;
+const input =
+  document.getElementById("input");
 
 
-    /* =========================
-       RESULT
-    ========================= */
+const status =
+  document.getElementById("status");
 
-    function showResult(
-      valid: boolean,
-      message: string
+
+const inputStats =
+  document.getElementById("inputStats");
+
+
+const validateBtn =
+  document.getElementById("validateBtn");
+
+
+const formatBtn =
+  document.getElementById("formatBtn");
+
+
+const exampleBtn =
+  document.getElementById("exampleBtn");
+
+
+const copyBtn =
+  document.getElementById("copyBtn");
+
+
+const clearBtn =
+  document.getElementById("clearBtn");
+
+
+/* =========================
+   EXAMPLE
+========================= */
+
+const example = {
+
+  name: "Th.Tech",
+
+  website: "Developer Tools",
+
+  language: "Arabic",
+
+  free: true,
+
+  tools: [
+    "JSON Formatter",
+    "JSON Validator",
+    "HTML Formatter"
+  ],
+
+  features: {
+
+    fast: true,
+
+    private: true,
+
+    responsive: true
+
+  }
+
+};
+
+
+/* =========================
+   STATS
+========================= */
+
+function updateStats() {
+
+  inputStats.textContent =
+    `${input.value.length} chars`;
+
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+function showStatus(
+  message,
+  type = "info"
+) {
+
+  const icons = {
+
+    info:
+      "fa-circle-info",
+
+    success:
+      "fa-circle-check",
+
+    error:
+      "fa-circle-xmark"
+
+  };
+
+
+  status.className =
+    `status ${type}`;
+
+
+  status.innerHTML =
+    `<i class="fas ${icons[type]}"></i> ${message}`;
+
+}
+
+
+/* =========================
+   ERROR POSITION
+========================= */
+
+function getJSONError(error) {
+
+  const message =
+    error?.message ||
+    "JSON غير صالح.";
+
+
+  /*
+    معظم المتصفحات الحديثة
+    تعطي position داخل رسالة الخطأ
+  */
+
+  const match =
+    message.match(
+      /position\s+(\d+)/i
+    );
+
+
+  if (match) {
+
+    const position =
+      Number(match[1]);
+
+
+    const before =
+      input.value.slice(
+        0,
+        position
+      );
+
+
+    const line =
+      before.split("\n").length;
+
+
+    const lastNewLine =
+      before.lastIndexOf("\n");
+
+
+    const column =
+      position -
+      lastNewLine;
+
+
+    return `
+      JSON غير صالح — السطر ${line}،
+      العمود ${column}.
+    `;
+
+  }
+
+
+  /*
+    دعم رسائل بعض المتصفحات
+    مثل line/column
+  */
+
+  const lineMatch =
+    message.match(
+      /line\s+(\d+)/i
+    );
+
+
+  const columnMatch =
+    message.match(
+      /column\s+(\d+)/i
+    );
+
+
+  if (
+    lineMatch &&
+    columnMatch
+  ) {
+
+    return `
+      JSON غير صالح — السطر
+      ${lineMatch[1]}،
+      العمود ${columnMatch[1]}.
+    `;
+
+  }
+
+
+  return `
+    JSON غير صالح: ${message}
+  `;
+
+}
+
+
+/* =========================
+   VALIDATE
+========================= */
+
+function validateJSON() {
+
+
+  if (
+    !input.value.trim()
+  ) {
+
+    showStatus(
+      "يرجى إدخال JSON أولاً.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    const data =
+      JSON.parse(
+        input.value
+      );
+
+
+    let type =
+      Array.isArray(data)
+        ? "Array"
+        : data !== null &&
+          typeof data === "object"
+        ? "Object"
+        : typeof data;
+
+
+    showStatus(
+      `JSON صالح ✓ — نوع البيانات: ${type}. لا توجد أخطاء في البنية.`,
+      "success"
+    );
+
+
+    input.classList.remove(
+      "invalid"
+    );
+
+
+    input.classList.add(
+      "valid"
+    );
+
+
+  } catch (error) {
+
+
+    showStatus(
+      getJSONError(error),
+      "error"
+    );
+
+
+    input.classList.remove(
+      "valid"
+    );
+
+
+    input.classList.add(
+      "invalid"
+    );
+
+  }
+
+}
+
+
+/* =========================
+   FORMAT
+========================= */
+
+function formatJSON() {
+
+
+  if (
+    !input.value.trim()
+  ) {
+
+    showStatus(
+      "يرجى إدخال JSON أولاً.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    const data =
+      JSON.parse(
+        input.value
+      );
+
+
+    input.value =
+      JSON.stringify(
+        data,
+        null,
+        2
+      );
+
+
+    updateStats();
+
+
+    input.classList.remove(
+      "invalid"
+    );
+
+
+    input.classList.add(
+      "valid"
+    );
+
+
+    showStatus(
+      "JSON صالح وتم تنسيقه بنجاح.",
+      "success"
+    );
+
+
+  } catch (error) {
+
+
+    showStatus(
+      getJSONError(error),
+      "error"
+    );
+
+
+    input.classList.remove(
+      "valid"
+    );
+
+
+    input.classList.add(
+      "invalid"
+    );
+
+  }
+
+}
+
+
+/* =========================
+   EXAMPLE
+========================= */
+
+function loadExample() {
+
+
+  input.value =
+    JSON.stringify(
+      example,
+      null,
+      2
+    );
+
+
+  input.classList.remove(
+    "valid",
+    "invalid"
+  );
+
+
+  updateStats();
+
+
+  showStatus(
+    "تم تحميل مثال JSON صالح.",
+    "info"
+  );
+
+}
+
+
+/* =========================
+   COPY
+========================= */
+
+async function copyJSON() {
+
+
+  if (
+    !input.value
+  ) {
+
+    showStatus(
+      "لا توجد بيانات لنسخها.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  try {
+
+    await navigator.clipboard.writeText(
+      input.value
+    );
+
+
+    showStatus(
+      "تم نسخ JSON إلى الحافظة.",
+      "success"
+    );
+
+
+  } catch {
+
+
+    input.select();
+
+    document.execCommand(
+      "copy"
+    );
+
+
+    showStatus(
+      "تم نسخ JSON.",
+      "success"
+    );
+
+  }
+
+}
+
+
+/* =========================
+   CLEAR
+========================= */
+
+function clearAll() {
+
+
+  input.value = "";
+
+
+  input.classList.remove(
+    "valid",
+    "invalid"
+  );
+
+
+  updateStats();
+
+
+  showStatus(
+    "تم مسح المحتوى.",
+    "info"
+  );
+
+
+  input.focus();
+
+}
+
+
+/* =========================
+   EVENTS
+========================= */
+
+validateBtn.addEventListener(
+  "click",
+  validateJSON
+);
+
+
+formatBtn.addEventListener(
+  "click",
+  formatJSON
+);
+
+
+exampleBtn.addEventListener(
+  "click",
+  loadExample
+);
+
+
+copyBtn.addEventListener(
+  "click",
+  copyJSON
+);
+
+
+clearBtn.addEventListener(
+  "click",
+  clearAll
+);
+
+
+input.addEventListener(
+  "input",
+  () => {
+
+    updateStats();
+
+    input.classList.remove(
+      "valid",
+      "invalid"
+    );
+
+    status.className =
+      "status";
+
+    status.innerHTML =
+      `
+        <i class="fas fa-circle-info"></i>
+        أدخل JSON ثم اضغط «تحقق».
+      `;
+
+  }
+);
+
+
+/* =========================
+   CTRL + ENTER
+========================= */
+
+input.addEventListener(
+  "keydown",
+  (event) => {
+
+    if (
+      event.ctrlKey &&
+      event.key === "Enter"
     ) {
 
-      result.className =
-        `result show ${
-          valid
-            ? 'valid'
-            : 'invalid'
-        }`;
+      event.preventDefault();
 
-      resultTitle.textContent =
-        valid
-          ? 'JSON صالح'
-          : 'JSON غير صالح';
+      validateJSON();
 
-      resultMessage.textContent =
-        message;
-
-      resultIcon.innerHTML =
-        valid
-          ? `
-            <path d="m5 12 4 4L19 6"></path>
-          `
-          : `
-            <circle
-              cx="12"
-              cy="12"
-              r="9"
-            ></circle>
-
-            <path d="M12 8v5"></path>
-
-            <path d="M12 16h.01"></path>
-          `;
-
-      input.classList.toggle(
-        'valid',
-        valid
-      );
-
-      input.classList.toggle(
-        'invalid',
-        !valid
-      );
     }
 
 
-    /* =========================
-       VALIDATE
-    ========================= */
+    /*
+      Tab داخل المحرر
+    */
 
-    function validateJSON() {
+    if (
+      event.key === "Tab"
+    ) {
 
-      const value =
-        input.value.trim();
+      event.preventDefault();
 
-      if (!value) {
 
-        showResult(
-          false,
-          'يرجى إدخال JSON للتحقق منه.'
+      const start =
+        input.selectionStart;
+
+
+      const end =
+        input.selectionEnd;
+
+
+      input.value =
+        input.value.substring(
+          0,
+          start
+        ) +
+        "  " +
+        input.value.substring(
+          end
         );
 
-        return;
-      }
 
-      try {
+      input.selectionStart =
+        input.selectionEnd =
+          start + 2;
 
-        const parsed =
-          JSON.parse(value);
 
-        let type =
-          Array.isArray(parsed)
-            ? 'مصفوفة Array'
-            : typeof parsed ===
-                'object' &&
-              parsed !== null
-            ? 'كائن Object'
-            : typeof parsed;
+      updateStats();
 
-        showResult(
-          true,
-          `تم التحقق بنجاح. نوع البيانات: ${type}.`
-        );
-
-      } catch (error) {
-
-        const message =
-          error instanceof Error
-            ? error.message
-            : 'خطأ غير معروف في JSON.';
-
-        showResult(
-          false,
-          `تفاصيل الخطأ: ${message}`
-        );
-      }
     }
 
-
-    /* =========================
-       FORMAT
-    ========================= */
-
-    formatBtn.addEventListener(
-      'click',
-      () => {
-
-        const value =
-          input.value.trim();
-
-        if (!value) {
-
-          showResult(
-            false,
-            'أدخل JSON أولًا حتى يتم تنسيقه.'
-          );
-
-          return;
-        }
-
-        try {
-
-          const parsed =
-            JSON.parse(value);
-
-          input.value =
-            JSON.stringify(
-              parsed,
-              null,
-              2
-            );
-
-          showResult(
-            true,
-            'JSON صالح وتم تنسيقه بنجاح.'
-          );
-
-        } catch (error) {
-
-          const message =
-            error instanceof Error
-              ? error.message
-              : 'JSON غير صالح.';
-
-          showResult(
-            false,
-            `لا يمكن التنسيق لأن JSON غير صالح. ${message}`
-          );
-        }
-      }
-    );
+  }
+);
 
 
-    /* =========================
-       COPY
-    ========================= */
+/* =========================
+   INIT
+========================= */
 
-    copyBtn.addEventListener(
-      'click',
-      async () => {
+updateStats();
 
-        if (!input.value) {
-
-          showResult(
-            false,
-            'لا يوجد محتوى لنسخه.'
-          );
-
-          return;
-        }
-
-        try {
-
-          await navigator.clipboard.writeText(
-            input.value
-          );
-
-          const original =
-            copyBtn.innerHTML;
-
-          copyBtn.innerHTML = `
-            <svg viewBox="0 0 24 24">
-              <path d="m5 12 4 4L19 6"></path>
-            </svg>
-            تم النسخ
-          `;
-
-          setTimeout(() => {
-
-            copyBtn.innerHTML =
-              original;
-
-          }, 1400);
-
-        } catch {
-
-          showResult(
-            false,
-            'تعذر نسخ النص. حاول النسخ يدويًا.'
-          );
-        }
-      }
-    );
-
-
-    /* =========================
-       CLEAR
-    ========================= */
-
-    clearBtn.addEventListener(
-      'click',
-      () => {
-
-        input.value = '';
-
-        result.className =
-          'result';
-
-        input.classList.remove(
-          'valid',
-          'invalid'
-        );
-
-        input.focus();
-      }
-    );
-
-
-    /* =========================
-       VALIDATE BUTTON
-    ========================= */
-
-    validateBtn.addEventListener(
-      'click',
-      validateJSON
-    );
-
-
-    /* =========================
-       INPUT
-    ========================= */
-
-    input.addEventListener(
-      'input',
-      () => {
-
-        result.className =
-          'result';
-
-        input.classList.remove(
-          'valid',
-          'invalid'
-        );
-      }
-    );
-
-
-    /* =========================
-       KEYBOARD
-    ========================= */
-
-    input.addEventListener(
-      'keydown',
-      (event) => {
-
-        /* Ctrl + Enter */
-
-        if (
-          event.ctrlKey &&
-          event.key === 'Enter'
-        ) {
-
-          event.preventDefault();
-
-          validateJSON();
-        }
-
-
-        /* Tab */
-
-        if (
-          event.key === 'Tab'
-        ) {
-
-          event.preventDefault();
-
-          const start =
-            input.selectionStart;
-
-          const end =
-            input.selectionEnd;
-
-          input.value =
-            input.value.substring(
-              0,
-              start
-            ) +
-            '  ' +
-            input.value.substring(
-              end
-            );
-
-          input.selectionStart =
-            input.selectionEnd =
-              start + 2;
-        }
-      }
-    );
-
-  </script>
+</script>
 
 </body>
 
 </html>
+
+
+<style>
+
+:root {
+
+  --bg: #f6f8fb;
+
+  --card: #ffffff;
+
+  --text: #0f172a;
+
+  --muted: #64748b;
+
+  --border: #e2e8f0;
+
+  --soft: #f1f5f9;
+
+  --primary: #2563eb;
+
+}
+
+
+/* =========================
+   BASE
+========================= */
+
+* {
+
+  box-sizing: border-box;
+
+  margin: 0;
+
+  padding: 0;
+
+}
+
+
+body {
+
+  background:
+    var(--bg);
+
+  color:
+    var(--text);
+
+  font-family:
+    "Cairo",
+    sans-serif;
+
+  line-height: 1.7;
+
+}
+
+
+/* =========================
+   PAGE
+========================= */
+
+.page {
+
+  width:
+    min(
+      1180px,
+      calc(100% - 32px)
+    );
+
+  margin:
+    auto;
+
+  padding:
+    35px 0 70px;
+
+}
+
+
+/* =========================
+   BREADCRUMB
+========================= */
+
+.breadcrumb {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap: 9px;
+
+  margin-bottom:
+    30px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    11px;
+
+}
+
+
+.breadcrumb a {
+
+  color:
+    var(--primary);
+
+  text-decoration:
+    none;
+
+}
+
+
+.breadcrumb i {
+
+  font-size:
+    8px;
+
+}
+
+
+/* =========================
+   TOOL TITLE
+========================= */
+
+.tool-title {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap: 17px;
+
+  margin-bottom:
+    30px;
+
+}
+
+
+.tool-icon {
+
+  width: 65px;
+
+  height: 65px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  border-radius:
+    17px;
+
+  background:
+    rgba(37, 99, 235, .10);
+
+  color:
+    var(--primary);
+
+  font-size:
+    27px;
+
+  flex:
+    none;
+
+}
+
+
+.eyebrow {
+
+  display:
+    block;
+
+  color:
+    var(--primary);
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    1.2px;
+
+}
+
+
+.tool-title h1 {
+
+  font-size:
+    30px;
+
+  font-weight:
+    800;
+
+  line-height:
+    1.3;
+
+}
+
+
+.tool-title p {
+
+  color:
+    var(--muted);
+
+  font-size:
+    13px;
+
+  margin-top:
+    3px;
+
+}
+
+
+/* =========================
+   WORKSPACE
+========================= */
+
+.workspace {
+
+  background:
+    var(--card);
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    18px;
+
+  overflow:
+    hidden;
+
+  box-shadow:
+    0 20px 60px
+    rgba(15, 23, 42, .07);
+
+}
+
+
+/* =========================
+   TOOLBAR
+========================= */
+
+.toolbar {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  gap:
+    10px;
+
+  padding:
+    12px;
+
+  border-bottom:
+    1px solid var(--border);
+
+  background:
+    var(--soft);
+
+}
+
+
+.toolbar-group {
+
+  display:
+    flex;
+
+  gap:
+    7px;
+
+  flex-wrap:
+    wrap;
+
+}
+
+
+.toolbar button {
+
+  height:
+    37px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    center;
+
+  gap:
+    7px;
+
+  padding:
+    0 13px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    8px;
+
+  background:
+    var(--card);
+
+  color:
+    var(--text);
+
+  font-family:
+    inherit;
+
+  font-size:
+    11px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+
+  transition:
+    .2s ease;
+
+}
+
+
+.toolbar button:hover {
+
+  border-color:
+    var(--primary);
+
+  color:
+    var(--primary);
+
+}
+
+
+.toolbar button.primary {
+
+  background:
+    var(--primary);
+
+  border-color:
+    var(--primary);
+
+  color:
+    white;
+
+}
+
+
+/* =========================
+   STATUS
+========================= */
+
+.status {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    8px;
+
+  min-height:
+    43px;
+
+  padding:
+    8px 15px;
+
+  border-bottom:
+    1px solid var(--border);
+
+  color:
+    var(--muted);
+
+  font-size:
+    11px;
+
+}
+
+
+.status.success {
+
+  color:
+    #15803d;
+
+  background:
+    rgba(34, 197, 94, .06);
+
+}
+
+
+.status.error {
+
+  color:
+    #dc2626;
+
+  background:
+    rgba(239, 68, 68, .06);
+
+}
+
+
+/* =========================
+   EDITOR
+========================= */
+
+.editor-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr;
+
+  min-height:
+    480px;
+
+}
+
+
+.editor-card {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  min-width:
+    0;
+
+}
+
+
+.editor-header {
+
+  height:
+    43px;
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  padding:
+    0 13px;
+
+  background:
+    var(--soft);
+
+  border-bottom:
+    1px solid var(--border);
+
+  color:
+    var(--muted);
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    .7px;
+
+}
+
+
+.editor-header span:first-child {
+
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  gap:
+    7px;
+
+}
+
+
+.editor-header i {
+
+  color:
+    var(--primary);
+
+}
+
+
+.editor-header span:last-child {
+
+  font-family:
+    "Fira Code",
+    monospace;
+
+  font-size:
+    9px;
+
+}
+
+
+textarea {
+
+  flex:
+    1;
+
+  width:
+    100%;
+
+  min-height:
+    437px;
+
+  resize:
+    vertical;
+
+  border:
+    0;
+
+  outline:
+    0;
+
+  padding:
+    18px;
+
+  background:
+    var(--card);
+
+  color:
+    var(--text);
+
+  direction:
+    ltr;
+
+  text-align:
+    left;
+
+  font:
+    13px / 1.8
+    "Fira Code",
+    monospace;
+
+  tab-size:
+    2;
+
+  transition:
+    .2s ease;
+
+}
+
+
+textarea::placeholder {
+
+  color:
+    #94a3b8;
+
+}
+
+
+textarea:focus {
+
+  background:
+    #fbfdff;
+
+}
+
+
+textarea.valid {
+
+  background:
+    rgba(34, 197, 94, .025);
+
+}
+
+
+textarea.invalid {
+
+  background:
+    rgba(239, 68, 68, .025);
+
+}
+
+
+/* =========================
+   INFO
+========================= */
+
+.info {
+
+  margin-top:
+    50px;
+
+  text-align:
+    center;
+
+}
+
+
+.info h2 {
+
+  font-size:
+    25px;
+
+  font-weight:
+    800;
+
+}
+
+
+.info > p {
+
+  max-width:
+    750px;
+
+  margin:
+    10px auto;
+
+  color:
+    var(--muted);
+
+  font-size:
+    13px;
+
+}
+
+
+.info-grid {
+
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap:
+    15px;
+
+  margin-top:
+    25px;
+
+}
+
+
+.info-grid div {
+
+  display:
+    flex;
+
+  flex-direction:
+    column;
+
+  align-items:
+    center;
+
+  gap:
+    3px;
+
+  padding:
+    20px;
+
+  border:
+    1px solid var(--border);
+
+  border-radius:
+    13px;
+
+  background:
+    var(--card);
+
+}
+
+
+.info-grid i {
+
+  color:
+    var(--primary);
+
+  font-size:
+    20px;
+
+  margin-bottom:
+    5px;
+
+}
+
+
+.info-grid strong {
+
+  font-size:
+    13px;
+
+}
+
+
+.info-grid span {
+
+  color:
+    var(--muted);
+
+  font-size:
+    10px;
+
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 800px) {
+
+  .toolbar {
+
+    flex-direction:
+      column;
+
+    align-items:
+      stretch;
+
+  }
+
+
+  .toolbar-group {
+
+    justify-content:
+      center;
+
+  }
+
+
+  .toolbar button {
+
+    flex:
+      1;
+
+  }
+
+}
+
+
+@media (max-width: 600px) {
+
+  .page {
+
+    width:
+      calc(100% - 16px);
+
+    padding-top:
+      22px;
+
+  }
+
+
+  .tool-title {
+
+    gap:
+      12px;
+
+  }
+
+
+  .tool-title h1 {
+
+    font-size:
+      24px;
+
+  }
+
+
+  .tool-title p {
+
+    font-size:
+      11px;
+
+  }
+
+
+  .tool-icon {
+
+    width:
+      54px;
+
+    height:
+      54px;
+
+    font-size:
+      22px;
+
+    border-radius:
+      14px;
+
+  }
+
+
+  .breadcrumb {
+
+    overflow-x:
+      auto;
+
+    white-space:
+      nowrap;
+
+  }
+
+
+  .toolbar {
+
+    padding:
+      10px;
+
+  }
+
+
+  .toolbar-group {
+
+    width:
+      100%;
+
+    display:
+      grid;
+
+    grid-template-columns:
+      repeat(3, 1fr);
+
+  }
+
+
+  .toolbar-group:last-child {
+
+    grid-template-columns:
+      repeat(2, 1fr);
+
+  }
+
+
+  .toolbar button {
+
+    width:
+      100%;
+
+    padding:
+      0 7px;
+
+    font-size:
+      10px;
+
+  }
+
+
+  .editor-grid {
+
+    min-height:
+      400px;
+
+  }
+
+
+  textarea {
+
+    min-height:
+      400px;
+
+    padding:
+      14px;
+
+    font-size:
+      12px;
+
+  }
+
+
+  .info {
+
+    margin-top:
+      38px;
+
+  }
+
+
+  .info h2 {
+
+    font-size:
+      21px;
+
+  }
+
+
+  .info > p {
+
+    font-size:
+      11px;
+
+  }
+
+
+  .info-grid {
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+}
+
+</style>
