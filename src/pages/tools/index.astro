@@ -6,532 +6,753 @@ import Footer from '../../components/Footer.astro';
 const base = import.meta.env.BASE_URL.replace(//$/, '');
 
 const tools = [
-{ name: 'JSON Formatter', ar: 'تنسيق JSON', slug: 'json-formatter', icon: 'json', color: 'blue' },
-{ name: 'JSON Validator', ar: 'التحقق من JSON', slug: 'json-validator', icon: 'check', color: 'green' },
-{ name: 'JSON Minifier', ar: 'تصغير JSON', slug: 'json-minifier', icon: 'compress', color: 'purple' },
-{ name: 'JSON Tree Viewer', ar: 'عرض JSON كشجرة', slug: 'json-tree-viewer', icon: 'tree', color: 'cyan' },
-{ name: 'JSON Diff', ar: 'مقارنة JSON', slug: 'json-diff', icon: 'diff', color: 'orange' },
+{ name: 'JSON Formatter', nameAr: 'منسق JSON', slug: 'json-formatter', icon: '{}', color: '#2563eb' },
+{ name: 'JSON Validator', nameAr: 'مدقق JSON', slug: 'json-validator', icon: '✓', color: '#16a34a' },
+{ name: 'JSON Minifier', nameAr: 'ضغط JSON', slug: 'json-minifier', icon: '↓', color: '#0891b2' },
+{ name: 'JSON Viewer', nameAr: 'عارض JSON', slug: 'json-viewer', icon: '⌘', color: '#7c3aed' },
+{ name: 'JSON to CSV', nameAr: 'تحويل JSON إلى CSV', slug: 'json-to-csv', icon: '↔', color: '#ea580c' },
 
-{ name: 'HTML Formatter', ar: 'تنسيق HTML', slug: 'html-formatter', icon: 'html', color: 'orange' },
-{ name: 'HTML Validator', ar: 'التحقق من HTML', slug: 'html-validator', icon: 'check', color: 'green' },
-{ name: 'HTML Minifier', ar: 'تصغير HTML', slug: 'html-minifier', icon: 'compress', color: 'red' },
-{ name: 'HTML Preview', ar: 'معاينة HTML', slug: 'html-preview', icon: 'preview', color: 'cyan' },
-{ name: 'HTML Entity Encoder', ar: 'ترميز HTML Entities', slug: 'html-entity-encoder', icon: 'html', color: 'blue' },
+{ name: 'HTML Formatter', nameAr: 'منسق HTML', slug: 'html-formatter', icon: '<>', color: '#f97316' },
+{ name: 'HTML Validator', nameAr: 'مدقق HTML', slug: 'html-validator', icon: '✓', color: '#dc2626' },
+{ name: 'HTML Minifier', nameAr: 'ضغط HTML', slug: 'html-minifier', icon: '↓', color: '#db2777' },
+{ name: 'HTML Encoder', nameAr: 'ترميز HTML', slug: 'html-encoder', icon: '&', color: '#9333ea' },
+{ name: 'HTML Decoder', nameAr: 'فك ترميز HTML', slug: 'html-decoder', icon: '↺', color: '#4f46e5' },
 
-{ name: 'CSS Formatter', ar: 'تنسيق CSS', slug: 'css-formatter', icon: 'css', color: 'cyan' },
-{ name: 'CSS Minifier', ar: 'تصغير CSS', slug: 'css-minifier', icon: 'compress', color: 'blue' },
-{ name: 'CSS Validator', ar: 'التحقق من CSS', slug: 'css-validator', icon: 'check', color: 'green' },
-{ name: 'Gradient Generator', ar: 'إنشاء تدرجات CSS', slug: 'gradient-generator', icon: 'gradient', color: 'violet' },
-{ name: 'Box Shadow Generator', ar: 'إنشاء Box Shadow', slug: 'box-shadow-generator', icon: 'shadow', color: 'purple' },
-{ name: 'Border Radius Generator', ar: 'إنشاء Border Radius', slug: 'border-radius-generator', icon: 'square', color: 'orange' },
-{ name: 'CSS Color Converter', ar: 'تحويل ألوان CSS', slug: 'css-color-converter', icon: 'color', color: 'pink' },
-{ name: 'CSS Units Converter', ar: 'تحويل وحدات CSS', slug: 'css-units-converter', icon: 'ruler', color: 'indigo' },
+{ name: 'JavaScript Formatter', nameAr: 'منسق JavaScript', slug: 'javascript-formatter', icon: 'JS', color: '#eab308' },
+{ name: 'JavaScript Minifier', nameAr: 'ضغط JavaScript', slug: 'javascript-minifier', icon: '↓', color: '#ca8a04' },
+{ name: 'JavaScript Validator', nameAr: 'مدقق JavaScript', slug: 'javascript-validator', icon: '✓', color: '#65a30d' },
+{ name: 'JavaScript Beautifier', nameAr: 'تجميل JavaScript', slug: 'javascript-beautifier', icon: '✦', color: '#84cc16' },
+{ name: 'JS to JSON', nameAr: 'تحويل JS إلى JSON', slug: 'js-to-json', icon: '{}', color: '#0d9488' },
 
-{ name: 'JavaScript Formatter', ar: 'تنسيق JavaScript', slug: 'javascript-formatter', icon: 'js', color: 'yellow' },
-{ name: 'JavaScript Validator', ar: 'التحقق من JavaScript', slug: 'javascript-validator', icon: 'check', color: 'green' },
-{ name: 'JavaScript Minifier', ar: 'تصغير JavaScript', slug: 'javascript-minifier', icon: 'compress', color: 'yellow' },
-{ name: 'JavaScript Beautifier', ar: 'تجميل JavaScript', slug: 'javascript-beautifier', icon: 'js', color: 'orange' },
-{ name: 'Regex Tester', ar: 'اختبار Regular Expression', slug: 'regex-tester', icon: 'regex', color: 'red' },
-{ name: 'Regex Generator', ar: 'إنشاء Regex', slug: 'regex-generator', icon: 'regex', color: 'purple' },
+{ name: 'CSS Formatter', nameAr: 'منسق CSS', slug: 'css-formatter', icon: '#', color: '#0284c7' },
+{ name: 'CSS Minifier', nameAr: 'ضغط CSS', slug: 'css-minifier', icon: '↓', color: '#0369a1' },
+{ name: 'CSS Beautifier', nameAr: 'تجميل CSS', slug: 'css-beautifier', icon: '✦', color: '#2563eb' },
+{ name: 'CSS Validator', nameAr: 'مدقق CSS', slug: 'css-validator', icon: '✓', color: '#4f46e5' },
+{ name: 'CSS Gradient Generator', nameAr: 'مولد تدرجات CSS', slug: 'css-gradient-generator', icon: '◈', color: '#9333ea' },
 
-{ name: 'XML Formatter', ar: 'تنسيق XML', slug: 'xml-formatter', icon: 'xml', color: 'orange' },
-{ name: 'XML Validator', ar: 'التحقق من XML', slug: 'xml-validator', icon: 'check', color: 'green' },
-{ name: 'XML Minifier', ar: 'تصغير XML', slug: 'xml-minifier', icon: 'compress', color: 'purple' },
-{ name: 'YAML Formatter', ar: 'تنسيق YAML', slug: 'yaml-formatter', icon: 'yaml', color: 'blue' },
-{ name: 'YAML Validator', ar: 'التحقق من YAML', slug: 'yaml-validator', icon: 'check', color: 'green' },
-{ name: 'YAML to JSON', ar: 'تحويل YAML إلى JSON', slug: 'yaml-to-json', icon: 'convert', color: 'cyan' },
+{ name: 'XML Formatter', nameAr: 'منسق XML', slug: 'xml-formatter', icon: '</>', color: '#0891b2' },
+{ name: 'XML Validator', nameAr: 'مدقق XML', slug: 'xml-validator', icon: '✓', color: '#0e7490' },
+{ name: 'XML Minifier', nameAr: 'ضغط XML', slug: 'xml-minifier', icon: '↓', color: '#0369a1' },
+{ name: 'XML to JSON', nameAr: 'تحويل XML إلى JSON', slug: 'xml-to-json', icon: '↔', color: '#7c3aed' },
+{ name: 'JSON to XML', nameAr: 'تحويل JSON إلى XML', slug: 'json-to-xml', icon: '↔', color: '#9333ea' },
 
-{ name: 'SQL Formatter', ar: 'تنسيق SQL', slug: 'sql-formatter', icon: 'sql', color: 'indigo' },
-{ name: 'SQL Validator', ar: 'التحقق من SQL', slug: 'sql-validator', icon: 'check', color: 'green' },
-{ name: 'SQL Minifier', ar: 'تصغير SQL', slug: 'sql-minifier', icon: 'compress', color: 'purple' },
-{ name: 'SQL to JSON', ar: 'تحويل SQL إلى JSON', slug: 'sql-to-json', icon: 'convert', color: 'blue' },
-{ name: 'SQL Query Builder', ar: 'بناء استعلامات SQL', slug: 'sql-query-builder', icon: 'database', color: 'orange' },
+{ name: 'YAML Formatter', nameAr: 'منسق YAML', slug: 'yaml-formatter', icon: 'Y', color: '#dc2626' },
+{ name: 'YAML Validator', nameAr: 'مدقق YAML', slug: 'yaml-validator', icon: '✓', color: '#b91c1c' },
+{ name: 'YAML to JSON', nameAr: 'تحويل YAML إلى JSON', slug: 'yaml-to-json', icon: '↔', color: '#be123c' },
+{ name: 'JSON to YAML', nameAr: 'تحويل JSON إلى YAML', slug: 'json-to-yaml', icon: '↔', color: '#9f1239' },
+{ name: 'YAML Minifier', nameAr: 'ضغط YAML', slug: 'yaml-minifier', icon: '↓', color: '#e11d48' },
 
-{ name: 'Word Counter', ar: 'حساب الكلمات', slug: 'word-counter', icon: 'words', color: 'purple' },
-{ name: 'Character Counter', ar: 'حساب الأحرف', slug: 'character-counter', icon: 'text', color: 'violet' },
-{ name: 'Line Counter', ar: 'حساب الأسطر', slug: 'line-counter', icon: 'lines', color: 'blue' },
-{ name: 'Text Case Converter', ar: 'تحويل حالة النص', slug: 'text-case-converter', icon: 'case', color: 'cyan' },
-{ name: 'Text Reverser', ar: 'عكس النص', slug: 'text-reverser', icon: 'reverse', color: 'violet' },
-{ name: 'Remove Duplicates', ar: 'إزالة النصوص المكررة', slug: 'remove-duplicates', icon: 'duplicates', color: 'green' },
-{ name: 'Sort Lines', ar: 'ترتيب الأسطر', slug: 'sort-lines', icon: 'sort', color: 'orange' },
-{ name: 'Text Diff', ar: 'مقارنة النصوص', slug: 'text-diff', icon: 'diff', color: 'red' },
-{ name: 'Lorem Ipsum Generator', ar: 'إنشاء نص تجريبي', slug: 'lorem-ipsum-generator', icon: 'text', color: 'blue' },
-{ name: 'Text Cleaner', ar: 'تنظيف النص', slug: 'text-cleaner', icon: 'clean', color: 'green' },
+{ name: 'Base64 Encoder', nameAr: 'ترميز Base64', slug: 'base64-encoder', icon: '64', color: '#059669' },
+{ name: 'Base64 Decoder', nameAr: 'فك Base64', slug: 'base64-decoder', icon: '↺', color: '#047857' },
+{ name: 'URL Encoder', nameAr: 'ترميز URL', slug: 'url-encoder', icon: '%', color: '#0d9488' },
+{ name: 'URL Decoder', nameAr: 'فك URL', slug: 'url-decoder', icon: '↺', color: '#0f766e' },
+{ name: 'HTML Entity Encoder', nameAr: 'ترميز HTML Entities', slug: 'html-entity-encoder', icon: '&', color: '#15803d' },
 
-{ name: 'Base64 Encoder', ar: 'ترميز Base64', slug: 'base64-encoder', icon: 'encode', color: 'indigo' },
-{ name: 'Base64 Decoder', ar: 'فك ترميز Base64', slug: 'base64-decoder', icon: 'decode', color: 'violet' },
-{ name: 'URL Encoder', ar: 'ترميز URL', slug: 'url-encoder', icon: 'encode', color: 'blue' },
-{ name: 'URL Decoder', ar: 'فك ترميز URL', slug: 'url-decoder', icon: 'decode', color: 'cyan' },
-{ name: 'HTML URL Encoder', ar: 'ترميز HTML URL', slug: 'html-url-encoder', icon: 'encode', color: 'orange' },
-{ name: 'Unicode Converter', ar: 'تحويل Unicode', slug: 'unicode-converter', icon: 'unicode', color: 'purple' },
-{ name: 'ASCII Converter', ar: 'تحويل ASCII', slug: 'ascii-converter', icon: 'ascii', color: 'blue' },
-{ name: 'Binary Converter', ar: 'تحويل Binary', slug: 'binary-converter', icon: 'binary', color: 'indigo' },
-{ name: 'Hex Converter', ar: 'تحويل Hexadecimal', slug: 'hex-converter', icon: 'hex', color: 'violet' },
-{ name: 'Decimal Converter', ar: 'تحويل Decimal', slug: 'decimal-converter', icon: 'number', color: 'green' },
+{ name: 'UUID Generator', nameAr: 'مولد UUID', slug: 'uuid-generator', icon: 'ID', color: '#7c3aed' },
+{ name: 'Password Generator', nameAr: 'مولد كلمات المرور', slug: 'password-generator', icon: '✦', color: '#6d28d9' },
+{ name: 'Hash Generator', nameAr: 'مولد Hash', slug: 'hash-generator', icon: '#', color: '#9333ea' },
+{ name: 'MD5 Generator', nameAr: 'مولد MD5', slug: 'md5-generator', icon: 'M', color: '#a21caf' },
+{ name: 'SHA256 Generator', nameAr: 'مولد SHA-256', slug: 'sha256-generator', icon: 'S', color: '#86198f' },
 
-{ name: 'UUID Generator', ar: 'إنشاء UUID', slug: 'uuid-generator', icon: 'uuid', color: 'purple' },
-{ name: 'Password Generator', ar: 'إنشاء كلمة مرور', slug: 'password-generator', icon: 'password', color: 'red' },
-{ name: 'Random Number Generator', ar: 'أرقام عشوائية', slug: 'random-number-generator', icon: 'random', color: 'green' },
-{ name: 'Random String Generator', ar: 'نصوص عشوائية', slug: 'random-string-generator', icon: 'random', color: 'blue' },
-{ name: 'Hash Generator', ar: 'إنشاء Hash', slug: 'hash-generator', icon: 'hash', color: 'indigo' },
-{ name: 'MD5 Generator', ar: 'إنشاء MD5', slug: 'md5-generator', icon: 'hash', color: 'purple' },
-{ name: 'SHA Generator', ar: 'إنشاء SHA', slug: 'sha-generator', icon: 'hash', color: 'blue' },
-{ name: 'JWT Decoder', ar: 'قراءة JWT', slug: 'jwt-decoder', icon: 'jwt', color: 'violet' },
-{ name: 'JWT Generator', ar: 'إنشاء JWT', slug: 'jwt-generator', icon: 'jwt', color: 'orange' },
-{ name: 'Token Generator', ar: 'إنشاء Token', slug: 'token-generator', icon: 'token', color: 'red' },
+{ name: 'Timestamp Converter', nameAr: 'محول Timestamp', slug: 'timestamp-converter', icon: '◷', color: '#ea580c' },
+{ name: 'Unix Timestamp', nameAr: 'Unix Timestamp', slug: 'unix-timestamp', icon: '01', color: '#c2410c' },
+{ name: 'Date Calculator', nameAr: 'حاسبة التاريخ', slug: 'date-calculator', icon: '▣', color: '#9a3412' },
+{ name: 'Timezone Converter', nameAr: 'محول المناطق الزمنية', slug: 'timezone-converter', icon: '◉', color: '#b45309' },
+{ name: 'Cron Expression', nameAr: 'مولد Cron', slug: 'cron-expression', icon: '⏱', color: '#a16207' },
 
-{ name: 'JSON to CSV', ar: 'تحويل JSON إلى CSV', slug: 'json-to-csv', icon: 'convert', color: 'green' },
-{ name: 'CSV to JSON', ar: 'تحويل CSV إلى JSON', slug: 'csv-to-json', icon: 'convert', color: 'purple' },
-{ name: 'JSON to XML', ar: 'تحويل JSON إلى XML', slug: 'json-to-xml', icon: 'convert', color: 'orange' },
-{ name: 'XML to JSON', ar: 'تحويل XML إلى JSON', slug: 'xml-to-json', icon: 'convert', color: 'blue' },
-{ name: 'JSON to YAML', ar: 'تحويل JSON إلى YAML', slug: 'json-to-yaml', icon: 'convert', color: 'cyan' },
-{ name: 'YAML to JSON', ar: 'تحويل YAML إلى JSON', slug: 'yaml-to-json', icon: 'convert', color: 'violet' },
-{ name: 'CSV Viewer', ar: 'عرض CSV', slug: 'csv-viewer', icon: 'table', color: 'green' },
-{ name: 'CSV Formatter', ar: 'تنسيق CSV', slug: 'csv-formatter', icon: 'table', color: 'blue' },
-{ name: 'CSV Validator', ar: 'التحقق من CSV', slug: 'csv-validator', icon: 'check', color: 'green' },
-{ name: 'Data Table Generator', ar: 'إنشاء جدول بيانات', slug: 'data-table-generator', icon: 'table', color: 'indigo' },
+{ name: 'Word Counter', nameAr: 'عداد الكلمات', slug: 'word-counter', icon: 'W', color: '#2563eb' },
+{ name: 'Character Counter', nameAr: 'عداد الأحرف', slug: 'character-counter', icon: 'A', color: '#1d4ed8' },
+{ name: 'Line Counter', nameAr: 'عداد الأسطر', slug: 'line-counter', icon: '☰', color: '#1e40af' },
+{ name: 'Text Case Converter', nameAr: 'تحويل حالة النص', slug: 'text-case-converter', icon: 'Aa', color: '#3730a3' },
+{ name: 'Text Sorter', nameAr: 'ترتيب النصوص', slug: 'text-sorter', icon: '↕', color: '#4338ca' },
 
-{ name: 'Color Picker', ar: 'اختيار الألوان', slug: 'color-picker', icon: 'color', color: 'pink' },
-{ name: 'Color Converter', ar: 'تحويل الألوان', slug: 'color-converter', icon: 'color', color: 'violet' },
-{ name: 'HEX to RGB', ar: 'HEX إلى RGB', slug: 'hex-to-rgb', icon: 'color', color: 'blue' },
-{ name: 'RGB to HEX', ar: 'RGB إلى HEX', slug: 'rgb-to-hex', icon: 'color', color: 'cyan' },
-{ name: 'Gradient Generator', ar: 'إنشاء Gradient', slug: 'gradient-generator-2', icon: 'gradient', color: 'purple' },
-{ name: 'Palette Generator', ar: 'إنشاء لوحة ألوان', slug: 'palette-generator', icon: 'palette', color: 'pink' },
-{ name: 'Contrast Checker', ar: 'فحص تباين الألوان', slug: 'contrast-checker', icon: 'contrast', color: 'indigo' },
-{ name: 'CSS Color Generator', ar: 'إنشاء CSS Color', slug: 'css-color-generator', icon: 'color', color: 'orange' },
+{ name: 'Lorem Ipsum Generator', nameAr: 'مولد Lorem Ipsum', slug: 'lorem-ipsum-generator', icon: 'L', color: '#7c3aed' },
+{ name: 'Text Diff', nameAr: 'مقارنة النصوص', slug: 'text-diff', icon: '±', color: '#6d28d9' },
+{ name: 'Text Cleaner', nameAr: 'تنظيف النص', slug: 'text-cleaner', icon: '✧', color: '#5b21b6' },
+{ name: 'Duplicate Line Remover', nameAr: 'حذف الأسطر المكررة', slug: 'duplicate-line-remover', icon: '≠', color: '#4c1d95' },
+{ name: 'Whitespace Remover', nameAr: 'حذف المسافات', slug: 'whitespace-remover', icon: '␠', color: '#581c87' },
 
-{ name: 'Percentage Calculator', ar: 'حساب النسبة المئوية', slug: 'percentage-calculator', icon: 'percent', color: 'orange' },
-{ name: 'Age Calculator', ar: 'حساب العمر', slug: 'age-calculator', icon: 'calendar', color: 'purple' },
-{ name: 'Date Calculator', ar: 'حساب التاريخ', slug: 'date-calculator', icon: 'calendar', color: 'blue' },
-{ name: 'Time Calculator', ar: 'حساب الوقت', slug: 'time-calculator', icon: 'clock', color: 'cyan' },
-{ name: 'Timestamp Converter', ar: 'تحويل Timestamp', slug: 'timestamp-converter', icon: 'clock', color: 'indigo' },
-{ name: 'Unix Timestamp', ar: 'Unix Timestamp', slug: 'unix-timestamp', icon: 'clock', color: 'violet' },
+{ name: 'Color Picker', nameAr: 'منتقي الألوان', slug: 'color-picker', icon: '◉', color: '#ec4899' },
+{ name: 'Color Converter', nameAr: 'محول الألوان', slug: 'color-converter', icon: 'RGB', color: '#db2777' },
+{ name: 'HEX to RGB', nameAr: 'HEX إلى RGB', slug: 'hex-to-rgb', icon: '#', color: '#be185d' },
+{ name: 'RGB to HEX', nameAr: 'RGB إلى HEX', slug: 'rgb-to-hex', icon: 'RGB', color: '#9d174d' },
+{ name: 'HSL Converter', nameAr: 'محول HSL', slug: 'hsl-converter', icon: 'HSL', color: '#c026d3' },
 
-{ name: 'Meta Tag Generator', ar: 'إنشاء Meta Tags', slug: 'meta-tag-generator', icon: 'seo', color: 'orange' },
-{ name: 'Slug Generator', ar: 'إنشاء Slug', slug: 'slug-generator', icon: 'slug', color: 'blue' },
-{ name: 'Robots.txt Generator', ar: 'إنشاء Robots.txt', slug: 'robots-generator', icon: 'robots', color: 'green' },
-{ name: 'Sitemap Generator', ar: 'إنشاء Sitemap', slug: 'sitemap-generator', icon: 'sitemap', color: 'purple' },
-{ name: 'QR Code Generator', ar: 'إنشاء QR Code', slug: 'qr-code-generator', icon: 'qr', color: 'green' },
-{ name: 'Barcode Generator', ar: 'إنشاء Barcode', slug: 'barcode-generator', icon: 'barcode', color: 'red' },
-{ name: 'Open Graph Generator', ar: 'إنشاء Open Graph', slug: 'open-graph-generator', icon: 'seo', color: 'indigo' },
-{ name: 'Schema Generator', ar: 'إنشاء Schema Markup', slug: 'schema-generator', icon: 'schema', color: 'violet' },
-{ name: 'Favicon Generator', ar: 'إنشاء Favicon', slug: 'favicon-generator', icon: 'favicon', color: 'blue' },
-{ name: 'HTAccess Generator', ar: 'إنشاء .htaccess', slug: 'htaccess-generator', icon: 'server', color: 'orange' },
+{ name: 'Regex Tester', nameAr: 'اختبار Regex', slug: 'regex-tester', icon: '.*', color: '#0891b2' },
+{ name: 'Regex Generator', nameAr: 'مولد Regex', slug: 'regex-generator', icon: 'R', color: '#0e7490' },
+{ name: 'Regex Escape', nameAr: 'Regex Escape', slug: 'regex-escape', icon: '\', color: '#155e75' },
+{ name: 'Email Validator', nameAr: 'مدقق البريد الإلكتروني', slug: 'email-validator', icon: '@', color: '#0369a1' },
+{ name: 'IP Validator', nameAr: 'مدقق IP', slug: 'ip-validator', icon: 'IP', color: '#1d4ed8' },
 
-{ name: 'Unix Permissions', ar: 'حساب صلاحيات Unix', slug: 'unix-permissions', icon: 'terminal', color: 'indigo' },
-{ name: 'Chmod Calculator', ar: 'حاسبة Chmod', slug: 'chmod-calculator', icon: 'terminal', color: 'purple' },
-{ name: 'Cron Expression', ar: 'مولد Cron', slug: 'cron-expression', icon: 'clock', color: 'blue' },
-{ name: 'IP Address Info', ar: 'معلومات IP', slug: 'ip-address-info', icon: 'network', color: 'cyan' },
-{ name: 'HTTP Status Codes', ar: 'رموز HTTP', slug: 'http-status-codes', icon: 'server', color: 'green' },
-{ name: 'MIME Type Lookup', ar: 'البحث عن MIME Type', slug: 'mime-type-lookup', icon: 'file', color: 'orange' },
-{ name: 'User Agent Parser', ar: 'تحليل User Agent', slug: 'user-agent-parser', icon: 'browser', color: 'violet' },
-{ name: 'Port Checker', ar: 'فحص المنافذ', slug: 'port-checker', icon: 'network', color: 'red' },
-{ name: 'DNS Lookup', ar: 'البحث عن DNS', slug: 'dns-lookup', icon: 'network', color: 'blue' },
-{ name: 'URL Parser', ar: 'تحليل URL', slug: 'url-parser', icon: 'link', color: 'purple' }
+{ name: 'IP Address Info', nameAr: 'معلومات IP', slug: 'ip-address-info', icon: 'IP', color: '#4338ca' },
+{ name: 'IPv4 Calculator', nameAr: 'حاسبة IPv4', slug: 'ipv4-calculator', icon: '4', color: '#4f46e5' },
+{ name: 'IPv6 Calculator', nameAr: 'حاسبة IPv6', slug: 'ipv6-calculator', icon: '6', color: '#6366f1' },
+{ name: 'Subnet Calculator', nameAr: 'حاسبة الشبكات', slug: 'subnet-calculator', icon: '⌘', color: '#7c3aed' },
+{ name: 'MAC Address Generator', nameAr: 'مولد MAC Address', slug: 'mac-address-generator', icon: 'M', color: '#6d28d9' },
+
+{ name: 'JWT Decoder', nameAr: 'فك JWT', slug: 'jwt-decoder', icon: 'JWT', color: '#ea580c' },
+{ name: 'JWT Generator', nameAr: 'مولد JWT', slug: 'jwt-generator', icon: 'JWT', color: '#c2410c' },
+{ name: 'JWT Validator', nameAr: 'مدقق JWT', slug: 'jwt-validator', icon: '✓', color: '#9a3412' },
+{ name: 'OAuth Helper', nameAr: 'مساعد OAuth', slug: 'oauth-helper', icon: 'O', color: '#7c2d12' },
+{ name: 'HTTP Header Parser', nameAr: 'محلل HTTP Headers', slug: 'http-header-parser', icon: 'H', color: '#b45309' },
+
+{ name: 'URL Parser', nameAr: 'محلل URL', slug: 'url-parser', icon: '↗', color: '#059669' },
+{ name: 'Query String Parser', nameAr: 'محلل Query String', slug: 'query-string-parser', icon: '?', color: '#047857' },
+{ name: 'User Agent Parser', nameAr: 'محلل User Agent', slug: 'user-agent-parser', icon: 'UA', color: '#065f46' },
+{ name: 'MIME Type Lookup', nameAr: 'بحث MIME Type', slug: 'mime-type-lookup', icon: 'M', color: '#064e3b' },
+{ name: 'HTTP Status Codes', nameAr: 'أكواد HTTP', slug: 'http-status-codes', icon: '2xx', color: '#166534' },
+
+{ name: 'Markdown Editor', nameAr: 'محرر Markdown', slug: 'markdown-editor', icon: 'M↓', color: '#2563eb' },
+{ name: 'Markdown Formatter', nameAr: 'منسق Markdown', slug: 'markdown-formatter', icon: 'M', color: '#1d4ed8' },
+{ name: 'Markdown to HTML', nameAr: 'Markdown إلى HTML', slug: 'markdown-to-html', icon: '↔', color: '#1e40af' },
+{ name: 'HTML to Markdown', nameAr: 'HTML إلى Markdown', slug: 'html-to-markdown', icon: '↔', color: '#3730a3' },
+{ name: 'Markdown Table Generator', nameAr: 'مولد جداول Markdown', slug: 'markdown-table-generator', icon: '▦', color: '#4338ca' },
+
+{ name: 'SQL Formatter', nameAr: 'منسق SQL', slug: 'sql-formatter', icon: 'SQL', color: '#0284c7' },
+{ name: 'SQL Minifier', nameAr: 'ضغط SQL', slug: 'sql-minifier', icon: '↓', color: '#0369a1' },
+{ name: 'SQL Validator', nameAr: 'مدقق SQL', slug: 'sql-validator', icon: '✓', color: '#075985' },
+{ name: 'SQL Generator', nameAr: 'مولد SQL', slug: 'sql-generator', icon: 'DB', color: '#0c4a6e' },
+{ name: 'SQL to JSON', nameAr: 'SQL إلى JSON', slug: 'sql-to-json', icon: '↔', color: '#164e63' },
+
+{ name: 'CSV Viewer', nameAr: 'عارض CSV', slug: 'csv-viewer', icon: 'CSV', color: '#16a34a' },
+{ name: 'CSV Formatter', nameAr: 'منسق CSV', slug: 'csv-formatter', icon: '▦', color: '#15803d' },
+{ name: 'CSV to JSON', nameAr: 'CSV إلى JSON', slug: 'csv-to-json', icon: '↔', color: '#166534' },
+{ name: 'JSON to CSV Advanced', nameAr: 'JSON إلى CSV متقدم', slug: 'json-to-csv-advanced', icon: '↔', color: '#14532d' },
+{ name: 'CSV Column Extractor', nameAr: 'استخراج أعمدة CSV', slug: 'csv-column-extractor', icon: '▥', color: '#065f46' },
+
+{ name: 'Number Base Converter', nameAr: 'تحويل أنظمة الأعداد', slug: 'number-base-converter', icon: '01', color: '#7c3aed' },
+{ name: 'Binary Converter', nameAr: 'محول Binary', slug: 'binary-converter', icon: '01', color: '#6d28d9' },
+{ name: 'Hex Converter', nameAr: 'محول Hex', slug: 'hex-converter', icon: '16', color: '#5b21b6' },
+{ name: 'Decimal Converter', nameAr: 'محول Decimal', slug: 'decimal-converter', icon: '10', color: '#4c1d95' },
+{ name: 'ASCII Converter', nameAr: 'محول ASCII', slug: 'ascii-converter', icon: 'A', color: '#581c87' },
+
+{ name: 'Unit Converter', nameAr: 'محول الوحدات', slug: 'unit-converter', icon: '↔', color: '#ea580c' },
+{ name: 'Bytes Converter', nameAr: 'محول Bytes', slug: 'bytes-converter', icon: 'B', color: '#c2410c' },
+{ name: 'Percentage Calculator', nameAr: 'حاسبة النسبة المئوية', slug: 'percentage-calculator', icon: '%', color: '#9a3412' },
+{ name: 'Average Calculator', nameAr: 'حاسبة المتوسط', slug: 'average-calculator', icon: 'x̄', color: '#7c2d12' },
+{ name: 'Random Number Generator', nameAr: 'مولد أرقام عشوائية', slug: 'random-number-generator', icon: 'R', color: '#b45309' },
+
+{ name: 'QR Code Generator', nameAr: 'مولد QR Code', slug: 'qr-code-generator', icon: '▦', color: '#111827' },
+{ name: 'Barcode Generator', nameAr: 'مولد Barcode', slug: 'barcode-generator', icon: '▥', color: '#374151' },
+{ name: 'Data URI Generator', nameAr: 'مولد Data URI', slug: 'data-uri-generator', icon: 'URI', color: '#4b5563' },
+{ name: 'Favicon Generator', nameAr: 'مولد Favicon', slug: 'favicon-generator', icon: '★', color: '#6b7280' },
+{ name: 'SVG Optimizer', nameAr: 'تحسين SVG', slug: 'svg-optimizer', icon: 'SVG', color: '#374151' }
 ];
 
-const iconSvg = (icon: string) => {
-const icons: Record<string, string> = {
-json: '<path d="M7 4H5a2 2 0 0 0-2 2v3a2 2 0 0 1-2 2 2 2 0 0 1 2 2v3a2 2 0 0 0 2 2h2M17 4h2a2 2 0 0 1 2 2v3a2 2 0 0 0 2 2 2 2 0 0 0-2 2v3a2 2 0 0 1-2 2h-2"/>',
-check: '<path d="m5 12 4 4L19 6"/>',
-compress: '<path d="M8 3H5v3M16 3h3v3M8 21H5v-3M16 21h3v-3"/><path d="m9 9 6 6M15 9l-6 6"/>',
-tree: '<circle cx="6" cy="5" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="6" cy="19" r="2"/><path d="M8 5h4a4 4 0 0 1 4 4v1M8 19h4a4 4 0 0 0 4-4v-1"/>',
-diff: '<path d="M5 7h14M5 12h8M5 17h14"/><path d="m16 10 3 2-3 2"/>',
-html: '<path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/>',
-preview: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h8M8 17h5"/>',
-css: '<path d="M6 4h12l-1 15-5 2-5-2L6 4Z"/><path d="M9 8h6M9 12h5M9 16h4"/>',
-gradient: '<defs><linearGradient id="g" x1="0" x2="1"><stop offset="0"/><stop offset="1"/></linearGradient></defs><rect x="3" y="5" width="18" height="14" rx="2" fill="url(#g)"/>',
-shadow: '<rect x="5" y="5" width="13" height="13" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/>',
-square: '<rect x="5" y="5" width="14" height="14" rx="5"/>',
-color: '<circle cx="12" cy="12" r="8"/><path d="M8 9h.01M12 7h.01M16 9h.01M9 15h.01M15 15h.01"/>',
-ruler: '<path d="m4 17 13-13 3 3L7 20H4v-3Z"/><path d="m9 8 3 3M13 4l3 3"/>',
-js: '<path d="M4 4h16v16H4z"/><path d="M13 16c1 1 3 1 3-1 0-2-3-2-3-4 0-2 2-2 3-1M9 10v5c0 2-3 2-3 0"/>',
-regex: '<path d="M4 12h16M12 4v16M6 6l12 12M18 6 6 18"/><circle cx="12" cy="12" r="8"/>',
-xml: '<path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/>',
-yaml: '<path d="M6 5h12v4H6zM6 11h12v4H6zM6 17h7v2H6z"/>',
-convert: '<path d="M7 7h13l-3-3M17 17H4l3 3"/><path d="M20 7 17 4M4 17l3 3"/>',
-sql: '<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 2 16 2 16 0V6M4 12v6c0 2 16 2 16 0v-6"/>',
-database: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v7c0 2 16 2 16 0V5M4 12v7c0 2 16 2 16 0v-7"/>',
-words: '<path d="M4 6h16M4 12h11M4 18h16"/>',
-text: '<path d="M5 4h14M12 4v16M8 20h8"/>',
-lines: '<path d="M5 6h14M5 12h14M5 18h9"/>',
-case: '<path d="M5 18 10 6l5 12M7 14h6M15 18l3-7 3 7M16 16h4"/>',
-reverse: '<path d="M5 7h14M5 12h10M5 17h14"/><path d="m17 10 3 2-3 2"/>',
-duplicates: '<path d="M7 7h10v10H7z"/><path d="M4 4h10v10"/>',
-sort: '<path d="M7 5v14M4 8l3-3 3 3M17 19V5M14 16l3 3 3-3"/>',
-encode: '<path d="M8 4 4 8l4 4M16 12l4-4-4-4M13 3l-2 18"/>',
-decode: '<path d="m8 4-4 4 4 4M16 12l4-4-4-4M11 3l2 18"/>',
-unicode: '<circle cx="12" cy="12" r="8"/><path d="M8 16h8M9 9h6M12 8v8"/>',
-ascii: '<path d="M5 5h14v14H5z"/><path d="M9 9h6M9 12h6M9 15h4"/>',
-binary: '<path d="M7 5v14M17 5v14M4 9h16M4 15h16"/>',
-hex: '<path d="M7 4h10l5 8-5 8H7l-5-8 5-8Z"/>',
-number: '<circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/>',
-uuid: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 8h8v8H8z"/>',
-password: '<rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/>',
-random: '<path d="M4 7h4l8 10h4M4 17h4l3-4M16 7h4l-3 4"/>',
-hash: '<path d="M9 4 7 20M17 4l-2 16M4 9h16M3 15h16"/>',
-jwt: '<path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m8 9 8 6M16 9l-8 6"/>',
-token: '<circle cx="12" cy="12" r="8"/><path d="M9 12h6M12 9v6"/>',
-table: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 9v11M15 9v11"/>',
-palette: '<path d="M12 3a9 9 0 1 0 0 18h2a2 2 0 0 0 0-4h-1a2 2 0 0 1 0-4h2a7 7 0 0 0-3-10Z"/><circle cx="8" cy="9" r="1"/><circle cx="12" cy="7" r="1"/>',
-contrast: '<path d="M12 3a9 9 0 1 0 0 18V3Z"/><circle cx="12" cy="12" r="9"/>',
-percent: '<circle cx="7" cy="7" r="2"/><circle cx="17" cy="17" r="2"/><path d="M18 6 6 18"/>',
-calendar: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/>',
-clock: '<circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/>',
-seo: '<circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/>',
-slug: '<path d="M9 15 7 17a3 3 0 0 1-4-4l3-3a3 3 0 0 1 4 0M15 9l2-2a3 3 0 0 1 4 4l-3 3a3 3 0 0 1-4 0M8 12h8"/>',
-robots: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h6M8 17h4"/>',
-sitemap: '<circle cx="12" cy="5" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><path d="M12 7v5M12 12H6v4M12 12h6v4"/>',
-qr: '<path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h3M20 17v3h-3M14 20h3"/>',
-barcode: '<path d="M5 5v14M8 5v14M11 5v14M14 5v14M17 5v14M20 5v14"/>',
-schema: '<path d="M5 5h14v14H5z"/><path d="M8 9h8M8 13h8M8 17h5"/>',
-favicon: '<circle cx="12" cy="12" r="8"/><path d="M9 9h6v6H9z"/>',
-server: '<rect x="4" y="4" width="16" height="6" rx="1"/><rect x="4" y="14" width="16" height="6" rx="1"/><path d="M8 7h.01M8 17h.01"/>',
-terminal: '<path d="m6 8 4 4-4 4M12 16h6"/>',
-network: '<circle cx="12" cy="5" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="m11 7-5 9M13 7l5 9M7 18h10"/>',
-file: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/>',
-browser: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6h.01M10 6h.01"/>',
-link: '<path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/>',
-clean: '<path d="M5 6h14M8 6v14h8V6M10 3h4M10 10v6M14 10v6"/>'
+const categories = [
+{ name: 'الكل', value: 'all' },
+{ name: 'JSON', value: 'json' },
+{ name: 'HTML / CSS / JS', value: 'web' },
+{ name: 'النصوص', value: 'text' },
+{ name: 'الترميز والأمان', value: 'encoding' },
+{ name: 'الشبكات', value: 'network' },
+{ name: 'البيانات', value: 'data' },
+{ name: 'الحسابات', value: 'utility' }
+];
+
+const categoryFor = (slug: string) => {
+if (slug.startsWith('json')) return 'json';
+if (
+slug.includes('html') ||
+slug.includes('javascript') ||
+slug.startsWith('js-') ||
+slug.includes('css-') ||
+slug.includes('xml-')
+) return 'web';
+if (
+slug.includes('word') ||
+slug.includes('character') ||
+slug.includes('line-') ||
+slug.includes('text-') ||
+slug.includes('lorem') ||
+slug.includes('duplicate') ||
+slug.includes('whitespace')
+) return 'text';
+if (
+slug.includes('base64') ||
+slug.includes('url-') ||
+slug.includes('jwt') ||
+slug.includes('oauth') ||
+slug.includes('hash') ||
+slug.includes('md5') ||
+slug.includes('sha')
+) return 'encoding';
+if (
+slug.includes('ip-') ||
+slug.includes('ipv') ||
+slug.includes('subnet') ||
+slug.includes('mac-') ||
+slug.includes('http-') ||
+slug.includes('user-agent') ||
+slug.includes('mime')
+) return 'network';
+if (
+slug.includes('csv') ||
+slug.includes('sql') ||
+slug.includes('yaml') ||
+slug.includes('markdown') ||
+slug.includes('data-uri')
+) return 'data';
+return 'utility';
 };
 
-return icons[icon] || icons.json;
-};
+const toolsWithCategory = tools.map((tool) => ({
+...tool,
+category: categoryFor(tool.slug)
+}));
 
-<Header /><main class="tools-page">  <section class="hero"><div class="badge">
-  <span class="pulse"></span>
-  TH.TECH · DEVELOPER TOOLS
-</div>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <title>أدوات المطورين أونلاين | Th.Tech</title><meta
+name="description"
+content="مجموعة احترافية من أدوات المطورين المجانية لتنسيق JSON وHTML وCSS وJavaScript وتحويل النصوص والبيانات والمزيد."
+/>
 
-<h1>
-  أدوات المطورين
-  <strong>في مكان واحد</strong>
-</h1>
+  <meta name="robots" content="index, follow" />  <link
+    rel="canonical"
+    href={`https://oumaystore-hub.github.io${base}/tools/`}
+  />  <link
+    rel="icon"
+    type="image/png"
+    href={`${base}/logo1.png`}
+  />  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+</head><body>
+  <Header />  <main class="page"><section class="hero">
 
-<p>
-  مجموعة احترافية من الأدوات المجانية للمطورين والمبرمجين.
-  اضغط على أي بطاقة لفتح الأداة مباشرة.
-</p>
-
-<div class="stats">
-
-  <div class="stat">
-    <strong>100</strong>
-    <span>أداة</span>
+  <div class="breadcrumb">
+    <a href={`${base}/`}>الرئيسية</a>
+    <span>/</span>
+    <strong>أدوات المطورين</strong>
   </div>
 
-  <div class="stat">
-    <strong>100%</strong>
-    <span>مجانية</span>
+  <div class="hero-content">
+
+    <div class="hero-icon">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <rect x="8" y="8" width="48" height="48" rx="14"></rect>
+        <path d="M25 22L17 32l8 10"></path>
+        <path d="M39 22l8 10-8 10"></path>
+        <path d="M36 17L28 47"></path>
+      </svg>
+    </div>
+
+    <div>
+      <span class="eyebrow">TH.TECH • DEVELOPER TOOLS</span>
+      <h1>أدوات المطورين</h1>
+      <p>
+        مجموعة أدوات تقنية سريعة ومجانية تعمل مباشرة من المتصفح.
+      </p>
+    </div>
+
   </div>
 
-  <div class="stat">
-    <strong>0</strong>
-    <span>تسجيل مطلوب</span>
+  <div class="hero-stats">
+    <div>
+      <strong>{tools.length}+</strong>
+      <span>أداة تقنية</span>
+    </div>
+
+    <div>
+      <strong>100%</strong>
+      <span>مجانية</span>
+    </div>
+
+    <div>
+      <strong>0</strong>
+      <span>تثبيت مطلوب</span>
+    </div>
   </div>
 
-</div>
+</section>
 
-  </section>  <section class="tools-section"><div class="section-header">
 
-  <div>
-    <span class="section-label">
-      DEVELOPER TOOLBOX
-    </span>
+<section class="tools-section">
 
-    <h2>
-      جميع الأدوات
-    </h2>
+  <div class="section-top">
+
+    <div>
+      <span class="section-label">TOOLS LIBRARY</span>
+      <h2>اختر الأداة المناسبة</h2>
+    </div>
+
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="11" cy="11" r="7"></circle>
+        <path d="M16 16l5 5"></path>
+      </svg>
+
+      <input
+        id="toolSearch"
+        type="search"
+        placeholder="ابحث عن أداة..."
+        autocomplete="off"
+      />
+    </div>
+
   </div>
 
-  <span class="tool-count">
-    100 Tools
-  </span>
 
-</div>
+  <div class="categories" id="categories">
+
+    {categories.map((category) => (
+      <button
+        type="button"
+        class:list={{ active: category.value === 'all' }}
+        data-category={category.value}
+      >
+        {category.name}
+      </button>
+    ))}
+
+  </div>
 
 
-<div class="tools-grid">
+  <div class="tools-grid" id="toolsGrid">
 
-  {tools.map((tool) => (
+    {toolsWithCategory.map((tool, index) => (
+      <a
+        class="tool-card"
+        href={`${base}/tools/${tool.slug}/`}
+        data-name={`${tool.name} ${tool.nameAr}`.toLowerCase()}
+        data-category={tool.category}
+        style={`--tool-color:${tool.color};--delay:${index * 18}ms;`}
+        aria-label={`فتح ${tool.nameAr}`}
+      >
 
-    <a
-      href={`${base}/tools/${tool.slug}/`}
-      class={`tool-card ${tool.color}`}
-      aria-label={tool.name}
-    >
+        <div class="card-glow"></div>
 
-      <div class="tool-icon">
+        <div class="tool-svg">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <rect
+              class="svg-box"
+              x="7"
+              y="7"
+              width="50"
+              height="50"
+              rx="16"
+            ></rect>
 
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.8"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-          set:html={iconSvg(tool.icon)}
-        />
+            <path
+              class="svg-line"
+              d="M20 24h24M20 32h16M20 40h20"
+            ></path>
 
-      </div>
+            <circle
+              class="svg-dot"
+              cx="46"
+              cy="40"
+              r="4"
+            ></circle>
 
-      <div class="tool-info">
+            <text
+              class="svg-text"
+              x="32"
+              y="37"
+              text-anchor="middle"
+            >
+              {tool.icon}
+            </text>
+          </svg>
+        </div>
 
-        <small>
-          DEVELOPER TOOL
-        </small>
+        <div class="tool-info">
+          <strong>{tool.nameAr}</strong>
+          <span>{tool.name}</span>
+        </div>
 
-        <h3>
-          {tool.name}
-        </h3>
+        <div class="arrow">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 5l7 7-7 7"></path>
+          </svg>
+        </div>
 
-        <p>
-          {tool.ar}
-        </p>
+      </a>
+    ))}
 
-      </div>
+  </div>
 
-      <span class="arrow">
-        ‹
-      </span>
 
-    </a>
+  <div class="no-results" id="noResults">
+    <div class="no-results-icon">⌕</div>
+    <strong>لم يتم العثور على أداة</strong>
+    <span>جرّب البحث باسم أداة أخرى.</span>
+  </div>
 
-  ))}
+</section>
 
-</div>
 
-  </section></main><Footer /><style>
+<section class="bottom-info">
 
-:global(*) {
-  box-sizing: border-box;
+  <div class="info-card">
+    <div class="info-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 3v18M3 12h18"></path>
+        <circle cx="12" cy="12" r="9"></circle>
+      </svg>
+    </div>
+
+    <div>
+      <strong>سريعة</strong>
+      <p>الأدوات مصممة للعمل مباشرة داخل المتصفح.</p>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-icon">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"></path>
+        <path d="M8 12l2.5 2.5L16 9"></path>
+      </svg>
+    </div>
+
+    <div>
+      <strong>خصوصية</strong>
+      <p>معظم الأدوات تعالج البيانات محليًا في جهازك.</p>
+    </div>
+  </div>
+
+  <div class="info-card">
+    <div class="info-icon">
+      <svg viewBox="0 0 24 24">
+        <rect x="7" y="2" width="10" height="20" rx="2"></rect>
+        <path d="M10 18h4"></path>
+      </svg>
+    </div>
+
+    <div>
+      <strong>متجاوبة</strong>
+      <p>واجهة محسنة للهاتف والكمبيوتر واللوحي.</p>
+    </div>
+  </div>
+
+</section>
+
+  </main>  <Footer />  <script>
+    const searchInput = document.getElementById('toolSearch');
+    const cards = Array.from(document.querySelectorAll('.tool-card'));
+    const categoryButtons = Array.from(
+      document.querySelectorAll('#categories button')
+    );
+    const noResults = document.getElementById('noResults');
+
+    let selectedCategory = 'all';
+
+    function filterTools() {
+      const query = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const name = card.dataset.name || '';
+        const category = card.dataset.category || '';
+
+        const matchesSearch = !query || name.includes(query);
+        const matchesCategory =
+          selectedCategory === 'all' ||
+          category === selectedCategory;
+
+        if (matchesSearch && matchesCategory) {
+          card.style.display = '';
+          visibleCount += 1;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      noResults.classList.toggle('show', visibleCount === 0);
+    }
+
+    searchInput.addEventListener('input', filterTools);
+
+    categoryButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        categoryButtons.forEach((item) => {
+          item.classList.remove('active');
+        });
+
+        button.classList.add('active');
+        selectedCategory = button.dataset.category || 'all';
+
+        filterTools();
+      });
+    });
+  </script></body>
+</html><style>
+:root {
+  --bg: #f6f8fc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --border: #e2e8f0;
+  --soft: #f1f5f9;
+  --primary: #2563eb;
 }
 
-:global(html) {
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
   scroll-behavior: smooth;
 }
 
-:global(body) {
-  margin: 0;
-  min-height: 100vh;
+body {
   background:
-    radial-gradient(
-      circle at 50% -10%,
-      rgba(37, 99, 235, .12),
-      transparent 45%
-    ),
-    #f5f8fc;
-  color: #0f172a;
-  font-family:
-    Arial,
-    "Cairo",
-    sans-serif;
+    radial-gradient(circle at 10% 0%, rgba(37, 99, 235, .07), transparent 30%),
+    radial-gradient(circle at 90% 10%, rgba(124, 58, 237, .06), transparent 28%),
+    var(--bg);
+
+  color: var(--text);
+  font-family: "Cairo", sans-serif;
+  line-height: 1.7;
+}
+
+.page {
+  width: min(1180px, calc(100% - 32px));
+  margin: auto;
+  padding: 30px 0 70px;
 }
 
 
-/* PAGE */
+/* BREADCRUMB */
 
-.tools-page {
-  width:
-    min(
-      1180px,
-      calc(100% - 30px)
-    );
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 25px;
+  color: var(--muted);
+  font-size: 11px;
+}
 
-  margin: auto;
+.breadcrumb a {
+  color: var(--primary);
+  text-decoration: none;
+}
 
-  padding:
-    30px 0 70px;
+.breadcrumb span {
+  opacity: .5;
 }
 
 
 /* HERO */
 
 .hero {
-  text-align: center;
-
-  padding:
-    25px 10px 45px;
+  position: relative;
+  overflow: hidden;
+  padding: 30px;
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, .82);
+  box-shadow: 0 20px 60px rgba(15, 23, 42, .06);
 }
 
-.badge {
-  display: inline-flex;
-
-  align-items: center;
-
-  gap: 8px;
-
-  padding:
-    7px 13px;
-
-  border:
-    1px solid
-    rgba(37, 99, 235, .15);
-
-  border-radius: 999px;
-
-  background:
-    rgba(37, 99, 235, .06);
-
-  color:
-    #2563eb;
-
-  font-size: 9px;
-
-  font-weight: 800;
-
-  letter-spacing: .6px;
-}
-
-.pulse {
-  width: 7px;
-  height: 7px;
-
+.hero::before {
+  content: "";
+  position: absolute;
+  width: 240px;
+  height: 240px;
   border-radius: 50%;
-
-  background: #22c55e;
-
-  animation:
-    pulse 2s infinite;
+  background: rgba(37, 99, 235, .06);
+  top: -130px;
+  left: -90px;
 }
 
-.hero h1 {
-  margin:
-    20px 0 8px;
-
-  font-size:
-    clamp(30px, 5vw, 46px);
-
-  line-height: 1.3;
-
-  font-weight: 800;
-}
-
-.hero h1 strong {
-  display: block;
-
-  background:
-    linear-gradient(
-      90deg,
-      #2563eb,
-      #7c3aed
-    );
-
-  -webkit-background-clip: text;
-  background-clip: text;
-
-  color: transparent;
-}
-
-.hero p {
-  max-width: 650px;
-
-  margin:
-    10px auto;
-
-  color: #64748b;
-
-  font-size: 13px;
-
-  line-height: 1.9;
-}
-
-
-/* STATS */
-
-.stats {
+.hero-content {
+  position: relative;
   display: flex;
-
-  justify-content: center;
-
-  gap: 8px;
-
-  margin-top: 24px;
+  align-items: center;
+  gap: 18px;
 }
 
-.stat {
-  min-width: 100px;
-
-  padding:
-    8px 13px;
-
-  border:
-    1px solid #e2e8f0;
-
-  border-radius: 13px;
-
-  background: #fff;
-
-  box-shadow:
-    0 5px 20px
-    rgba(15, 23, 42, .04);
+.hero-icon {
+  width: 72px;
+  height: 72px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 21px;
+  color: #2563eb;
+  background: rgba(37, 99, 235, .09);
 }
 
-.stat strong,
-.stat span {
+.hero-icon svg {
+  width: 42px;
+  height: 42px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.eyebrow {
   display: block;
-}
-
-.stat strong {
-  color: #2563eb;
-
-  font-size: 17px;
-}
-
-.stat span {
-  color: #64748b;
-
+  margin-bottom: 3px;
+  color: var(--primary);
+  font-family: "Fira Code", monospace;
   font-size: 9px;
-}
-
-
-/* HEADER */
-
-.section-header {
-  display: flex;
-
-  align-items: end;
-
-  justify-content: space-between;
-
-  margin-bottom: 18px;
-}
-
-.section-label {
-  color: #2563eb;
-
-  font-family: monospace;
-
-  font-size: 9px;
-
-  font-weight: 800;
-
+  font-weight: 700;
   letter-spacing: 1px;
 }
 
-.section-header h2 {
-  margin:
-    2px 0 0;
-
-  font-size: 24px;
-
+.hero h1 {
+  font-size: 31px;
+  line-height: 1.3;
   font-weight: 800;
 }
 
-.tool-count {
-  padding:
-    6px 11px;
+.hero p {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
 
-  border-radius: 8px;
+.hero-stats {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  margin-top: 25px;
+}
 
-  background: #eef2ff;
+.hero-stats div {
+  min-width: 105px;
+  padding: 10px 15px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  background: rgba(248, 250, 252, .75);
+}
 
-  color: #4f46e5;
+.hero-stats strong,
+.hero-stats span {
+  display: block;
+}
 
+.hero-stats strong {
+  color: var(--primary);
+  font-size: 17px;
+  line-height: 1.2;
+}
+
+.hero-stats span {
+  color: var(--muted);
   font-size: 9px;
+}
 
+
+/* TOOLS */
+
+.tools-section {
+  margin-top: 38px;
+}
+
+.section-top {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.section-label {
+  color: var(--primary);
+  font-family: "Fira Code", monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.section-top h2 {
+  margin-top: 2px;
+  font-size: 23px;
   font-weight: 800;
+}
+
+
+/* SEARCH */
+
+.search-box {
+  position: relative;
+  width: 280px;
+}
+
+.search-box svg {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  width: 17px;
+  height: 17px;
+  transform: translateY(-50%);
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.search-box input {
+  width: 100%;
+  height: 44px;
+  padding: 0 42px 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 13px;
+  outline: none;
+  background: white;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 11px;
+  transition: .2s ease;
+}
+
+.search-box input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, .08);
+}
+
+
+/* CATEGORIES */
+
+.categories {
+  display: flex;
+  gap: 7px;
+  overflow-x: auto;
+  padding-bottom: 13px;
+  scrollbar-width: none;
+}
+
+.categories::-webkit-scrollbar {
+  display: none;
+}
+
+.categories button {
+  flex: none;
+  height: 35px;
+  padding: 0 14px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: white;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: .2s ease;
+}
+
+.categories button:hover {
+  color: var(--primary);
+  border-color: rgba(37, 99, 235, .4);
+}
+
+.categories button.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: white;
 }
 
 
@@ -539,13 +760,7 @@ return icons[icon] || icons.json;
 
 .tools-grid {
   display: grid;
-
-  grid-template-columns:
-    repeat(
-      3,
-      minmax(0, 1fr)
-    );
-
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 13px;
 }
 
@@ -553,123 +768,103 @@ return icons[icon] || icons.json;
 /* CARD */
 
 .tool-card {
+  --tool-color: #2563eb;
+
   position: relative;
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 13px;
-
   min-height: 106px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
 
   padding: 14px;
 
   overflow: hidden;
 
-  border:
-    1px solid #e2e8f0;
+  border: 1px solid var(--border);
+  border-radius: 19px;
 
-  border-radius: 20px;
+  background: rgba(255, 255, 255, .94);
 
-  background:
-    rgba(255,255,255,.97);
-
-  color: #0f172a;
-
+  color: var(--text);
   text-decoration: none;
 
-  box-shadow:
-    0 6px 20px
-    rgba(15,23,42,.04);
+  box-shadow: 0 7px 22px rgba(15, 23, 42, .035);
+
+  opacity: 0;
+  animation: cardIn .5s ease forwards;
+  animation-delay: var(--delay);
 
   transition:
     transform .25s ease,
-    box-shadow .25s ease,
-    border-color .25s ease;
-}
-
-.tool-card::before {
-  content: "";
-
-  position: absolute;
-
-  width: 130px;
-  height: 130px;
-
-  top: -70px;
-  left: -70px;
-
-  border-radius: 50%;
-
-  background: currentColor;
-
-  opacity: .06;
-
-  transition:
-    transform .45s ease;
+    border-color .25s ease,
+    box-shadow .25s ease;
 }
 
 .tool-card:hover {
-  transform:
-    translateY(-5px);
-
-  border-color:
-    currentColor;
-
+  transform: translateY(-5px);
+  border-color: color-mix(in srgb, var(--tool-color) 45%, white);
   box-shadow:
-    0 18px 42px
-    rgba(15,23,42,.12);
+    0 15px 35px rgba(15, 23, 42, .09),
+    0 0 0 1px color-mix(in srgb, var(--tool-color) 12%, transparent);
 }
 
-.tool-card:hover::before {
-  transform:
-    scale(3);
+.card-glow {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  right: -50px;
+  bottom: -55px;
+  border-radius: 50%;
+  background: var(--tool-color);
+  opacity: .045;
+  transition: .3s ease;
+}
+
+.tool-card:hover .card-glow {
+  transform: scale(1.8);
+  opacity: .08;
 }
 
 
-/* ICON */
+/* SVG */
 
-.tool-icon {
+.tool-svg {
   position: relative;
-
   z-index: 1;
-
   width: 56px;
   height: 56px;
-
   flex: none;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
-  border-radius: 17px;
-
-  background:
-    currentColor;
-
-  color: #fff;
-
-  box-shadow:
-    0 8px 18px
-    rgba(15,23,42,.14);
-
-  transition:
-    transform .3s ease;
 }
 
-.tool-icon svg {
-  width: 29px;
-  height: 29px;
+.tool-svg svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
-.tool-card:hover .tool-icon {
-  transform:
-    rotate(-5deg)
-    scale(1.08);
+.svg-box {
+  fill: color-mix(in srgb, var(--tool-color) 8%, white);
+  stroke: color-mix(in srgb, var(--tool-color) 32%, white);
+  stroke-width: 1.5;
+}
+
+.svg-line {
+  fill: none;
+  stroke: color-mix(in srgb, var(--tool-color) 42%, white);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.svg-dot {
+  fill: var(--tool-color);
+  opacity: .75;
+}
+
+.svg-text {
+  fill: var(--tool-color);
+  font-family: "Fira Code", monospace;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 
@@ -677,60 +872,30 @@ return icons[icon] || icons.json;
 
 .tool-info {
   position: relative;
-
   z-index: 1;
-
   min-width: 0;
-
   flex: 1;
 }
 
-.tool-info small {
+.tool-info strong {
   display: block;
-
-  color: #94a3b8;
-
-  font-family: monospace;
-
-  font-size: 7px;
-
-  font-weight: 700;
-
-  letter-spacing: .4px;
-
-  white-space: nowrap;
-}
-
-.tool-info h3 {
-  margin:
-    2px 0 0;
-
-  color: #0f172a;
-
-  font-size: 13px;
-
+  overflow: hidden;
+  color: var(--text);
+  font-size: 12px;
   font-weight: 800;
-
-  white-space: nowrap;
-
-  overflow: hidden;
-
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.tool-info p {
-  margin:
-    2px 0 0;
-
-  color: #64748b;
-
-  font-size: 9px;
-
-  white-space: nowrap;
-
+.tool-info span {
+  display: block;
+  margin-top: 1px;
   overflow: hidden;
-
+  color: var(--muted);
+  font-family: "Fira Code", monospace;
+  font-size: 8px;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 
@@ -738,271 +903,244 @@ return icons[icon] || icons.json;
 
 .arrow {
   position: relative;
-
   z-index: 1;
-
-  width: 27px;
-  height: 27px;
-
+  width: 26px;
+  height: 26px;
   flex: none;
-
-  display: flex;
-
-  align-items: center;
-
-  justify-content: center;
-
+  display: grid;
+  place-items: center;
   border-radius: 50%;
+  background: var(--soft);
+  color: var(--muted);
+  transition: .25s ease;
+}
 
-  background:
-    #f1f5f9;
-
-  color:
-    #64748b;
-
-  font-size: 23px;
-
-  line-height: 1;
-
-  transition:
-    .25s ease;
+.arrow svg {
+  width: 13px;
+  height: 13px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .tool-card:hover .arrow {
-  background:
-    currentColor;
-
-  color: #fff;
-
-  transform:
-    translateX(-4px);
+  transform: translateX(-3px);
+  background: var(--tool-color);
+  color: white;
 }
 
 
-/* COLORS */
+/* NO RESULTS */
 
-.blue {
-  color: #2563eb;
+.no-results {
+  display: none;
+  padding: 55px 20px;
+  text-align: center;
+  color: var(--muted);
 }
 
-.green {
-  color: #16a34a;
+.no-results.show {
+  display: block;
 }
 
-.orange {
-  color: #ea580c;
+.no-results-icon {
+  margin-bottom: 8px;
+  color: var(--primary);
+  font-size: 38px;
 }
 
-.yellow {
-  color: #ca8a04;
+.no-results strong,
+.no-results span {
+  display: block;
 }
 
-.purple {
-  color: #9333ea;
+.no-results strong {
+  color: var(--text);
+  font-size: 15px;
 }
 
-.cyan {
-  color: #0891b2;
-}
-
-.indigo {
-  color: #4f46e5;
-}
-
-.violet {
-  color: #7c3aed;
-}
-
-.red {
-  color: #dc2626;
-}
-
-.pink {
-  color: #db2777;
+.no-results span {
+  font-size: 11px;
 }
 
 
-/* PULSE */
+/* BOTTOM INFO */
 
-@keyframes pulse {
+.bottom-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 13px;
+  margin-top: 35px;
+}
 
-  0%,
-  100% {
-    box-shadow:
-      0 0 0 4px
-      rgba(34,197,94,.10);
+.info-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 17px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: white;
+}
+
+.info-icon {
+  width: 40px;
+  height: 40px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(37, 99, 235, .08);
+  color: var(--primary);
+}
+
+.info-icon svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.info-card strong {
+  display: block;
+  font-size: 11px;
+}
+
+.info-card p {
+  margin-top: 1px;
+  color: var(--muted);
+  font-size: 9px;
+}
+
+
+/* ANIMATION */
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(.98);
   }
 
-  50% {
-    box-shadow:
-      0 0 0 8px
-      rgba(34,197,94,.02);
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
-
 }
 
 
 /* TABLET */
 
 @media (max-width: 900px) {
-
   .tools-grid {
-    grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .bottom-info {
+    grid-template-columns: 1fr;
+  }
 }
 
 
 /* MOBILE */
 
 @media (max-width: 600px) {
-
-  .tools-page {
-    width:
-      calc(100% - 14px);
-
-    padding:
-      18px 0 55px;
+  .page {
+    width: calc(100% - 16px);
+    padding-top: 20px;
   }
 
   .hero {
-    padding:
-      15px 5px 32px;
+    padding: 21px;
+    border-radius: 20px;
+  }
+
+  .hero-content {
+    gap: 12px;
+  }
+
+  .hero-icon {
+    width: 57px;
+    height: 57px;
+    border-radius: 17px;
+  }
+
+  .hero-icon svg {
+    width: 34px;
+    height: 34px;
   }
 
   .hero h1 {
-    font-size: 29px;
+    font-size: 23px;
   }
 
   .hero p {
-    font-size: 11px;
-  }
-
-  .stats {
-    gap: 5px;
-  }
-
-  .stat {
-    min-width: 0;
-
-    flex: 1;
-
-    padding:
-      8px 4px;
-  }
-
-  .stat strong {
-    font-size: 14px;
-  }
-
-  .stat span {
-    font-size: 8px;
-  }
-
-  .section-header h2 {
-    font-size: 20px;
-  }
-
-  .tool-count {
-    font-size: 8px;
-  }
-
-  .tools-grid {
-    grid-template-columns:
-      repeat(
-        2,
-        minmax(0, 1fr)
-      );
-
-    gap: 8px;
-  }
-
-  .tool-card {
-    min-height: 128px;
-
-    padding:
-      10px 6px;
-
-    flex-direction: column;
-
-    justify-content: center;
-
-    text-align: center;
-
-    gap: 7px;
-
-    border-radius: 18px;
-  }
-
-  .tool-icon {
-    width: 48px;
-    height: 48px;
-
-    border-radius: 15px;
-  }
-
-  .tool-icon svg {
-    width: 25px;
-    height: 25px;
-  }
-
-  .tool-info small {
-    font-size: 6px;
-  }
-
-  .tool-info h3 {
-    font-size: 11px;
-  }
-
-  .tool-info p {
-    display: none;
-  }
-
-  .arrow {
-    position: absolute;
-
-    top: 6px;
-    left: 6px;
-
-    width: 19px;
-    height: 19px;
-
-    font-size: 16px;
-  }
-
-}
-
-
-/* SMALL PHONES */
-
-@media (max-width: 360px) {
-
-  .tools-grid {
-    gap: 6px;
-  }
-
-  .tool-card {
-    min-height: 116px;
-  }
-
-  .tool-icon {
-    width: 44px;
-    height: 44px;
-  }
-
-  .tool-icon svg {
-    width: 23px;
-    height: 23px;
-  }
-
-  .tool-info h3 {
     font-size: 10px;
   }
 
-}
+  .hero-stats {
+    gap: 7px;
+  }
 
+  .hero-stats div {
+    min-width: 0;
+    flex: 1;
+    padding: 8px 9px;
+  }
+
+  .hero-stats strong {
+    font-size: 14px;
+  }
+
+  .hero-stats span {
+    font-size: 8px;
+  }
+
+  .section-top {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .search-box {
+    width: 100%;
+  }
+
+  .tools-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .tool-card {
+    min-height: 91px;
+    padding: 10px;
+    gap: 8px;
+    border-radius: 16px;
+  }
+
+  .tool-svg {
+    width: 45px;
+    height: 45px;
+  }
+
+  .tool-info strong {
+    font-size: 10px;
+  }
+
+  .tool-info span {
+    font-size: 7px;
+  }
+
+  .arrow {
+    display: none;
+  }
+
+  .bottom-info {
+    gap: 9px;
+  }
+}
 </style>
