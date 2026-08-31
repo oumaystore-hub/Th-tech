@@ -3,7 +3,78 @@
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
-<Header /><main class="tools-page">  <!-- HERO -->  <section class="hero"><div class="badge">
+const base = import.meta.env.BASE_URL.replace(//$/, '');
+
+const tools = [
+{ name: 'JSON Formatter', ar: 'تنسيق JSON', slug: 'json-formatter', icon: '{}', color: 'blue' },
+{ name: 'JSON Validator', ar: 'التحقق من JSON', slug: 'json-validator', icon: '✓', color: 'green' },
+{ name: 'HTML Formatter', ar: 'تنسيق HTML', slug: 'html-formatter', icon: '</>', color: 'orange' },
+{ name: 'JavaScript Formatter', ar: 'تنسيق JavaScript', slug: 'javascript-formatter', icon: 'JS', color: 'yellow' },
+{ name: 'Word Counter', ar: 'حساب الكلمات', slug: 'word-counter', icon: 'Aa', color: 'purple' },
+
+{ name: 'CSS Formatter', ar: 'تنسيق CSS', slug: 'css-formatter', icon: '#', color: 'cyan' },
+{ name: 'CSS Minifier', ar: 'تصغير CSS', slug: 'css-minifier', icon: '#', color: 'blue' },
+{ name: 'HTML Validator', ar: 'التحقق من HTML', slug: 'html-validator', icon: '✓', color: 'green' },
+{ name: 'HTML Minifier', ar: 'تصغير HTML', slug: 'html-minifier', icon: '</>', color: 'red' },
+
+{ name: 'JavaScript Validator', ar: 'التحقق من JavaScript', slug: 'javascript-validator', icon: '✓', color: 'green' },
+{ name: 'JavaScript Minifier', ar: 'تصغير JavaScript', slug: 'javascript-minifier', icon: 'JS', color: 'yellow' },
+{ name: 'JSON Minifier', ar: 'تصغير JSON', slug: 'json-minifier', icon: '{}', color: 'purple' },
+
+{ name: 'XML Formatter', ar: 'تنسيق XML', slug: 'xml-formatter', icon: 'XML', color: 'orange' },
+{ name: 'XML Validator', ar: 'التحقق من XML', slug: 'xml-validator', icon: '✓', color: 'green' },
+
+{ name: 'YAML Formatter', ar: 'تنسيق YAML', slug: 'yaml-formatter', icon: 'Y', color: 'blue' },
+{ name: 'YAML Validator', ar: 'التحقق من YAML', slug: 'yaml-validator', icon: '✓', color: 'green' },
+
+{ name: 'SQL Formatter', ar: 'تنسيق SQL', slug: 'sql-formatter', icon: 'SQL', color: 'indigo' },
+{ name: 'SQL Minifier', ar: 'تصغير SQL', slug: 'sql-minifier', icon: 'SQL', color: 'purple' },
+{ name: 'SQL Validator', ar: 'التحقق من SQL', slug: 'sql-validator', icon: '✓', color: 'green' },
+
+{ name: 'Character Counter', ar: 'حساب الأحرف', slug: 'character-counter', icon: 'Aa', color: 'violet' },
+{ name: 'Text Case Converter', ar: 'تحويل حالة النص', slug: 'text-case-converter', icon: 'Aa', color: 'blue' },
+{ name: 'Text Reverser', ar: 'عكس النص', slug: 'text-reverser', icon: '↔', color: 'violet' },
+{ name: 'Remove Duplicates', ar: 'إزالة التكرار', slug: 'remove-duplicates', icon: '≠', color: 'green' },
+{ name: 'Sort Lines', ar: 'ترتيب الأسطر', slug: 'sort-lines', icon: '↕', color: 'orange' },
+
+{ name: 'Base64 Encoder', ar: 'ترميز Base64', slug: 'base64-encoder', icon: '64', color: 'indigo' },
+{ name: 'Base64 Decoder', ar: 'فك ترميز Base64', slug: 'base64-decoder', icon: '↙', color: 'violet' },
+{ name: 'URL Encoder', ar: 'ترميز URL', slug: 'url-encoder', icon: '↗', color: 'blue' },
+{ name: 'URL Decoder', ar: 'فك ترميز URL', slug: 'url-decoder', icon: '↙', color: 'cyan' },
+
+{ name: 'UUID Generator', ar: 'إنشاء UUID', slug: 'uuid-generator', icon: 'ID', color: 'purple' },
+{ name: 'Password Generator', ar: 'كلمة مرور قوية', slug: 'password-generator', icon: '●', color: 'red' },
+{ name: 'Random Number', ar: 'أرقام عشوائية', slug: 'random-number-generator', icon: '#', color: 'green' },
+{ name: 'Hash Generator', ar: 'إنشاء Hash', slug: 'hash-generator', icon: '#', color: 'blue' },
+{ name: 'JWT Decoder', ar: 'قراءة JWT', slug: 'jwt-decoder', icon: 'JWT', color: 'violet' },
+{ name: 'Regex Tester', ar: 'اختبار Regex', slug: 'regex-tester', icon: '.*', color: 'red' },
+
+{ name: 'JSON to CSV', ar: 'تحويل JSON إلى CSV', slug: 'json-to-csv', icon: '⇄', color: 'green' },
+{ name: 'CSV to JSON', ar: 'تحويل CSV إلى JSON', slug: 'csv-to-json', icon: '⇄', color: 'purple' },
+{ name: 'Binary Converter', ar: 'تحويل النظام الثنائي', slug: 'binary-converter', icon: '01', color: 'blue' },
+{ name: 'Hex Converter', ar: 'تحويل Hex', slug: 'hex-converter', icon: 'HEX', color: 'violet' },
+
+{ name: 'Percentage Calculator', ar: 'حساب النسبة المئوية', slug: 'percentage-calculator', icon: '%', color: 'orange' },
+{ name: 'Age Calculator', ar: 'حساب العمر', slug: 'age-calculator', icon: '18', color: 'purple' },
+{ name: 'Date Calculator', ar: 'حساب التاريخ', slug: 'date-calculator', icon: '▣', color: 'blue' },
+
+{ name: 'Meta Tag Generator', ar: 'إنشاء Meta Tags', slug: 'meta-tag-generator', icon: 'SEO', color: 'orange' },
+{ name: 'Slug Generator', ar: 'إنشاء Slug', slug: 'slug-generator', icon: '↗', color: 'blue' },
+{ name: 'QR Code Generator', ar: 'إنشاء QR Code', slug: 'qr-code-generator', icon: 'QR', color: 'green' },
+
+{ name: 'Color Picker', ar: 'اختيار الألوان', slug: 'color-picker', icon: '●', color: 'pink' },
+{ name: 'Gradient Generator', ar: 'إنشاء تدرجات CSS', slug: 'gradient-generator', icon: '◐', color: 'violet' },
+{ name: 'HTML Preview', ar: 'معاينة HTML', slug: 'html-preview', icon: '▣', color: 'cyan' },
+
+{ name: 'JSON Tree Viewer', ar: 'عرض JSON كشجرة', slug: 'json-tree-viewer', icon: '⌘', color: 'cyan' },
+{ name: 'JSON Diff', ar: 'مقارنة JSON', slug: 'json-diff', icon: '≠', color: 'orange' },
+
+{ name: 'Lorem Ipsum Generator', ar: 'إنشاء نص تجريبي', slug: 'lorem-ipsum-generator', icon: 'TXT', color: 'blue' },
+{ name: 'Timestamp Converter', ar: 'تحويل Timestamp', slug: 'timestamp-converter', icon: 'TS', color: 'purple' },
+{ name: 'Unix Timestamp', ar: 'Unix Timestamp', slug: 'unix-timestamp', icon: '01', color: 'indigo' }
+];
+
+<Header /><main class="tools-page">  <section class="hero"><div class="badge">
   <span class="pulse"></span>
   TH.TECH · DEVELOPER TOOLS
 </div>
@@ -15,13 +86,13 @@ import Footer from '../../components/Footer.astro';
 
 <p>
   مجموعة احترافية من الأدوات المجانية للمطورين والمبرمجين.
-  اختر الأداة لفتحها مباشرة.
+  اضغط على أي بطاقة لفتح الأداة مباشرة.
 </p>
 
 <div class="stats">
 
   <div class="stat">
-    <strong>50+</strong>
+    <strong>{tools.length}+</strong>
     <span>أداة</span>
   </div>
 
@@ -37,7 +108,7 @@ import Footer from '../../components/Footer.astro';
 
 </div>
 
-  </section>  <!-- TOOLS HEADER -->  <section class="tools-section"><div class="section-header">
+  </section>  <section class="tools-section"><div class="section-header">
 
   <div>
     <span class="section-label">
@@ -50,923 +121,49 @@ import Footer from '../../components/Footer.astro';
   </div>
 
   <span class="tool-count">
-    50+ Tools
+    {tools.length} Tools
   </span>
 
 </div>
 
 
-<!-- TOOLS GRID -->
 <div class="tools-grid">
 
+  {tools.map((tool) => (
 
-  <!-- JSON -->
+    <a
+      href={`${base}/tools/${tool.slug}/`}
+      class={`tool-card ${tool.color}`}
+      aria-label={tool.name}
+    >
 
-  <a
-    href="/Th-tech/tools/json-formatter/"
-    class="tool-card blue"
-  >
-    <div class="tool-icon">
-      <span>{ }</span>
-    </div>
+      <div class="tool-icon">
+        <span>{tool.icon}</span>
+      </div>
 
-    <div class="tool-info">
-      <small>JSON FORMATTER</small>
-      <h3>JSON Formatter</h3>
-      <p>تنسيق JSON</p>
-    </div>
+      <div class="tool-info">
 
-    <span class="arrow">‹</span>
-  </a>
+        <small>
+          DEVELOPER TOOL
+        </small>
 
+        <h3>
+          {tool.name}
+        </h3>
 
-  <a
-    href="/Th-tech/tools/json-validator/"
-    class="tool-card green"
-  >
-    <div class="tool-icon">
-      <span>✓</span>
-    </div>
+        <p>
+          {tool.ar}
+        </p>
 
-    <div class="tool-info">
-      <small>JSON VALIDATOR</small>
-      <h3>JSON Validator</h3>
-      <p>التحقق من JSON</p>
-    </div>
+      </div>
 
-    <span class="arrow">‹</span>
-  </a>
+      <span class="arrow">
+        ‹
+      </span>
 
+    </a>
 
-  <a
-    href="/Th-tech/tools/json-minifier/"
-    class="tool-card purple"
-  >
-    <div class="tool-icon">
-      <span>{}</span>
-    </div>
-
-    <div class="tool-info">
-      <small>JSON MINIFIER</small>
-      <h3>JSON Minifier</h3>
-      <p>تصغير JSON</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/json-tree-viewer/"
-    class="tool-card cyan"
-  >
-    <div class="tool-icon">
-      <span>⌘</span>
-    </div>
-
-    <div class="tool-info">
-      <small>JSON TREE</small>
-      <h3>JSON Tree Viewer</h3>
-      <p>عرض JSON كشجرة</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/json-diff/"
-    class="tool-card orange"
-  >
-    <div class="tool-icon">
-      <span>≠</span>
-    </div>
-
-    <div class="tool-info">
-      <small>JSON DIFF</small>
-      <h3>JSON Diff</h3>
-      <p>مقارنة JSON</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <!-- HTML -->
-
-  <a
-    href="/Th-tech/tools/html-formatter/"
-    class="tool-card orange"
-  >
-    <div class="tool-icon">
-      <span>&lt;/&gt;</span>
-    </div>
-
-    <div class="tool-info">
-      <small>HTML FORMATTER</small>
-      <h3>HTML Formatter</h3>
-      <p>تنسيق HTML</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/html-minifier/"
-    class="tool-card red"
-  >
-    <div class="tool-icon">
-      <span>&lt;/&gt;</span>
-    </div>
-
-    <div class="tool-info">
-      <small>HTML MINIFIER</small>
-      <h3>HTML Minifier</h3>
-      <p>تصغير HTML</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/html-validator/"
-    class="tool-card green"
-  >
-    <div class="tool-icon">
-      <span>✓</span>
-    </div>
-
-    <div class="tool-info">
-      <small>HTML VALIDATOR</small>
-      <h3>HTML Validator</h3>
-      <p>التحقق من HTML</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/html-preview/"
-    class="tool-card cyan"
-  >
-    <div class="tool-icon">
-      <span>▣</span>
-    </div>
-
-    <div class="tool-info">
-      <small>HTML PREVIEW</small>
-      <h3>HTML Preview</h3>
-      <p>معاينة HTML</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <!-- CSS -->
-
-  <a
-    href="/Th-tech/tools/css-formatter/"
-    class="tool-card cyan"
-  >
-    <div class="tool-icon">
-      <span>#</span>
-    </div>
-
-    <div class="tool-info">
-      <small>CSS FORMATTER</small>
-      <h3>CSS Formatter</h3>
-      <p>تنسيق CSS</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/css-minifier/"
-    class="tool-card blue"
-  >
-    <div class="tool-icon">
-      <span>#</span>
-    </div>
-
-    <div class="tool-info">
-      <small>CSS MINIFIER</small>
-      <h3>CSS Minifier</h3>
-      <p>تصغير CSS</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/gradient-generator/"
-    class="tool-card violet"
-  >
-    <div class="tool-icon">
-      <span>◐</span>
-    </div>
-
-    <div class="tool-info">
-      <small>GRADIENT</small>
-      <h3>Gradient Generator</h3>
-      <p>إنشاء تدرجات CSS</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/color-picker/"
-    class="tool-card pink"
-  >
-    <div class="tool-icon">
-      <span>●</span>
-    </div>
-
-    <div class="tool-info">
-      <small>COLOR PICKER</small>
-      <h3>Color Picker</h3>
-      <p>اختيار الألوان</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <!-- JAVASCRIPT -->
-
-  <a
-    href="/Th-tech/tools/javascript-formatter/"
-    class="tool-card yellow"
-  >
-    <div class="tool-icon">
-      <span>JS</span>
-    </div>
-
-    <div class="tool-info">
-      <small>JAVASCRIPT FORMATTER</small>
-      <h3>JavaScript Formatter</h3>
-      <p>تنسيق JavaScript</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/javascript-minifier/"
-    class="tool-card yellow"
-  >
-    <div class="tool-icon">
-      <span>JS</span>
-    </div>
-
-    <div class="tool-info">
-      <small>JAVASCRIPT MINIFIER</small>
-      <h3>JavaScript Minifier</h3>
-      <p>تصغير JavaScript</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/javascript-validator/"
-    class="tool-card green"
-  >
-    <div class="tool-icon">
-      <span>✓</span>
-    </div>
-
-    <div class="tool-info">
-      <small>JAVASCRIPT VALIDATOR</small>
-      <h3>JavaScript Validator</h3>
-      <p>التحقق من JavaScript</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <!-- XML -->
-
-  <a
-    href="/Th-tech/tools/xml-formatter/"
-    class="tool-card orange"
-  >
-    <div class="tool-icon">
-      <span>XML</span>
-    </div>
-
-    <div class="tool-info">
-      <small>XML FORMATTER</small>
-      <h3>XML Formatter</h3>
-      <p>تنسيق XML</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/xml-validator/"
-    class="tool-card green"
-  >
-    <div class="tool-icon">
-      <span>✓</span>
-    </div>
-
-    <div class="tool-info">
-      <small>XML VALIDATOR</small>
-      <h3>XML Validator</h3>
-      <p>التحقق من XML</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <!-- YAML -->
-
-  <a
-    href="/Th-tech/tools/yaml-formatter/"
-    class="tool-card blue"
-  >
-    <div class="tool-icon">
-      <span>Y</span>
-    </div>
-
-    <div class="tool-info">
-      <small>YAML FORMATTER</small>
-      <h3>YAML Formatter</h3>
-      <p>تنسيق YAML</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/yaml-validator/"
-    class="tool-card green"
-  >
-    <div class="tool-icon">
-      <span>✓</span>
-    </div>
-
-    <div class="tool-info">
-      <small>YAML VALIDATOR</small>
-      <h3>YAML Validator</h3>
-      <p>التحقق من YAML</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <!-- SQL -->
-
-  <a
-    href="/Th-tech/tools/sql-formatter/"
-    class="tool-card indigo"
-  >
-    <div class="tool-icon">
-      <span>SQL</span>
-    </div>
-
-    <div class="tool-info">
-      <small>SQL FORMATTER</small>
-      <h3>SQL Formatter</h3>
-      <p>تنسيق SQL</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/sql-minifier/"
-    class="tool-card purple"
-  >
-    <div class="tool-icon">
-      <span>SQL</span>
-    </div>
-
-    <div class="tool-info">
-      <small>SQL MINIFIER</small>
-      <h3>SQL Minifier</h3>
-      <p>تصغير SQL</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/sql-validator/"
-    class="tool-card green"
-  >
-    <div class="tool-icon">
-      <span>✓</span>
-    </div>
-
-    <div class="tool-info">
-      <small>SQL VALIDATOR</small>
-      <h3>SQL Validator</h3>
-      <p>التحقق من SQL</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <!-- TEXT -->
-
-  <a
-    href="/Th-tech/tools/word-counter/"
-    class="tool-card purple"
-  >
-    <div class="tool-icon">
-      <span>Aa</span>
-    </div>
-
-    <div class="tool-info">
-      <small>WORD COUNTER</small>
-      <h3>Word Counter</h3>
-      <p>حساب الكلمات</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/character-counter/"
-    class="tool-card violet"
-  >
-    <div class="tool-icon">
-      <span>Aa</span>
-    </div>
-
-    <div class="tool-info">
-      <small>CHARACTER COUNTER</small>
-      <h3>Character Counter</h3>
-      <p>حساب الأحرف</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/text-case-converter/"
-    class="tool-card blue"
-  >
-    <div class="tool-icon">
-      <span>Aa</span>
-    </div>
-
-    <div class="tool-info">
-      <small>TEXT CASE</small>
-      <h3>Text Case Converter</h3>
-      <p>تحويل حالة النص</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/text-reverser/"
-    class="tool-card violet"
-  >
-    <div class="tool-icon">
-      <span>↔</span>
-    </div>
-
-    <div class="tool-info">
-      <small>TEXT REVERSER</small>
-      <h3>Text Reverser</h3>
-      <p>عكس النص</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/remove-duplicates/"
-    class="tool-card green"
-  >
-    <div class="tool-icon">
-      <span>≠</span>
-    </div>
-
-    <div class="tool-info">
-      <small>DUPLICATES</small>
-      <h3>Remove Duplicates</h3>
-      <p>إزالة التكرار</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/sort-lines/"
-    class="tool-card orange"
-  >
-    <div class="tool-icon">
-      <span>↕</span>
-    </div>
-
-    <div class="tool-info">
-      <small>SORT LINES</small>
-      <h3>Sort Lines</h3>
-      <p>ترتيب الأسطر</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <!-- ENCODING -->
-
-  <a
-    href="/Th-tech/tools/base64-encoder/"
-    class="tool-card indigo"
-  >
-    <div class="tool-icon">
-      <span>64</span>
-    </div>
-
-    <div class="tool-info">
-      <small>BASE64 ENCODER</small>
-      <h3>Base64 Encoder</h3>
-      <p>ترميز Base64</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/base64-decoder/"
-    class="tool-card violet"
-  >
-    <div class="tool-icon">
-      <span>↙</span>
-    </div>
-
-    <div class="tool-info">
-      <small>BASE64 DECODER</small>
-      <h3>Base64 Decoder</h3>
-      <p>فك ترميز Base64</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/url-encoder/"
-    class="tool-card blue"
-  >
-    <div class="tool-icon">
-      <span>↗</span>
-    </div>
-
-    <div class="tool-info">
-      <small>URL ENCODER</small>
-      <h3>URL Encoder</h3>
-      <p>ترميز URL</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/url-decoder/"
-    class="tool-card cyan"
-  >
-    <div class="tool-icon">
-      <span>↙</span>
-    </div>
-
-    <div class="tool-info">
-      <small>URL DECODER</small>
-      <h3>URL Decoder</h3>
-      <p>فك ترميز URL</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <!-- GENERATORS -->
-
-  <a
-    href="/Th-tech/tools/uuid-generator/"
-    class="tool-card purple"
-  >
-    <div class="tool-icon">
-      <span>ID</span>
-    </div>
-
-    <div class="tool-info">
-      <small>UUID GENERATOR</small>
-      <h3>UUID Generator</h3>
-      <p>إنشاء UUID</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/password-generator/"
-    class="tool-card red"
-  >
-    <div class="tool-icon">
-      <span>●</span>
-    </div>
-
-    <div class="tool-info">
-      <small>PASSWORD GENERATOR</small>
-      <h3>Password Generator</h3>
-      <p>إنشاء كلمة مرور قوية</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/random-number-generator/"
-    class="tool-card green"
-  >
-    <div class="tool-icon">
-      <span>#</span>
-    </div>
-
-    <div class="tool-info">
-      <small>RANDOM NUMBER</small>
-      <h3>Random Number Generator</h3>
-      <p>أرقام عشوائية</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/hash-generator/"
-    class="tool-card blue"
-  >
-    <div class="tool-icon">
-      <span>#</span>
-    </div>
-
-    <div class="tool-info">
-      <small>HASH GENERATOR</small>
-      <h3>Hash Generator</h3>
-      <p>إنشاء Hash</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/jwt-decoder/"
-    class="tool-card violet"
-  >
-    <div class="tool-icon">
-      <span>JWT</span>
-    </div>
-
-    <div class="tool-info">
-      <small>JWT DECODER</small>
-      <h3>JWT Decoder</h3>
-      <p>قراءة JWT</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/regex-tester/"
-    class="tool-card red"
-  >
-    <div class="tool-icon">
-      <span>.*</span>
-    </div>
-
-    <div class="tool-info">
-      <small>REGEX TESTER</small>
-      <h3>Regex Tester</h3>
-      <p>اختبار Regex</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <!-- CONVERTERS -->
-
-  <a
-    href="/Th-tech/tools/json-to-csv/"
-    class="tool-card green"
-  >
-    <div class="tool-icon">
-      <span>⇄</span>
-    </div>
-
-    <div class="tool-info">
-      <small>JSON TO CSV</small>
-      <h3>JSON to CSV</h3>
-      <p>تحويل JSON إلى CSV</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/csv-to-json/"
-    class="tool-card purple"
-  >
-    <div class="tool-icon">
-      <span>⇄</span>
-    </div>
-
-    <div class="tool-info">
-      <small>CSV TO JSON</small>
-      <h3>CSV to JSON</h3>
-      <p>تحويل CSV إلى JSON</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/binary-converter/"
-    class="tool-card blue"
-  >
-    <div class="tool-icon">
-      <span>01</span>
-    </div>
-
-    <div class="tool-info">
-      <small>BINARY</small>
-      <h3>Binary Converter</h3>
-      <p>تحويل النظام الثنائي</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/hex-converter/"
-    class="tool-card violet"
-  >
-    <div class="tool-icon">
-      <span>HEX</span>
-    </div>
-
-    <div class="tool-info">
-      <small>HEX CONVERTER</small>
-      <h3>Hex Converter</h3>
-      <p>تحويل Hex</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <!-- CALCULATORS -->
-
-  <a
-    href="/Th-tech/tools/percentage-calculator/"
-    class="tool-card orange"
-  >
-    <div class="tool-icon">
-      <span>%</span>
-    </div>
-
-    <div class="tool-info">
-      <small>PERCENTAGE</small>
-      <h3>Percentage Calculator</h3>
-      <p>حساب النسبة المئوية</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/age-calculator/"
-    class="tool-card purple"
-  >
-    <div class="tool-icon">
-      <span>18+</span>
-    </div>
-
-    <div class="tool-info">
-      <small>AGE CALCULATOR</small>
-      <h3>Age Calculator</h3>
-      <p>حساب العمر</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/date-calculator/"
-    class="tool-card blue"
-  >
-    <div class="tool-icon">
-      <span>▣</span>
-    </div>
-
-    <div class="tool-info">
-      <small>DATE CALCULATOR</small>
-      <h3>Date Calculator</h3>
-      <p>حساب التاريخ</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <!-- SEO -->
-
-  <a
-    href="/Th-tech/tools/meta-tag-generator/"
-    class="tool-card orange"
-  >
-    <div class="tool-icon">
-      <span>SEO</span>
-    </div>
-
-    <div class="tool-info">
-      <small>META TAGS</small>
-      <h3>Meta Tag Generator</h3>
-      <p>إنشاء Meta Tags</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/slug-generator/"
-    class="tool-card blue"
-  >
-    <div class="tool-icon">
-      <span>↗</span>
-    </div>
-
-    <div class="tool-info">
-      <small>SLUG GENERATOR</small>
-      <h3>Slug Generator</h3>
-      <p>إنشاء Slug</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
-
-  <a
-    href="/Th-tech/tools/qr-code-generator/"
-    class="tool-card green"
-  >
-    <div class="tool-icon">
-      <span>QR</span>
-    </div>
-
-    <div class="tool-info">
-      <small>QR CODE</small>
-      <h3>QR Code Generator</h3>
-      <p>إنشاء QR Code</p>
-    </div>
-
-    <span class="arrow">‹</span>
-  </a>
-
+  ))}
 
 </div>
 
@@ -983,22 +180,18 @@ import Footer from '../../components/Footer.astro';
 :global(body) {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(
-      circle at 50% -10%,
-      rgba(37, 99, 235, .12),
-      transparent 45%
-    ),
-    #f5f8fc;
+  background: #f5f8fc;
   color: #0f172a;
   font-family: Arial, "Cairo", sans-serif;
 }
 
 
+/* PAGE */
+
 .tools-page {
   width: min(1180px, calc(100% - 30px));
   margin: auto;
-  padding: 35px 0 80px;
+  padding: 30px 0 70px;
 }
 
 
@@ -1006,18 +199,23 @@ import Footer from '../../components/Footer.astro';
 
 .hero {
   text-align: center;
-  padding: 25px 10px 48px;
+  padding: 25px 10px 45px;
 }
 
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 8px 14px;
+
+  padding: 7px 13px;
+
   border: 1px solid rgba(37, 99, 235, .15);
   border-radius: 999px;
+
   background: rgba(37, 99, 235, .06);
+
   color: #2563eb;
+
   font-size: 9px;
   font-weight: 800;
   letter-spacing: .6px;
@@ -1026,52 +224,74 @@ import Footer from '../../components/Footer.astro';
 .pulse {
   width: 7px;
   height: 7px;
+
   border-radius: 50%;
+
   background: #22c55e;
+
   animation: pulse 2s infinite;
 }
 
 .hero h1 {
   margin: 20px 0 8px;
+
   font-size: clamp(30px, 5vw, 46px);
   line-height: 1.3;
+
   font-weight: 800;
 }
 
 .hero h1 strong {
   display: block;
-  background: linear-gradient(
-    90deg,
-    #2563eb,
-    #7c3aed
-  );
+
+  background:
+    linear-gradient(
+      90deg,
+      #2563eb,
+      #7c3aed
+    );
+
   -webkit-background-clip: text;
   background-clip: text;
+
   color: transparent;
 }
 
 .hero p {
   max-width: 650px;
-  margin: 10px auto 0;
+
+  margin: 10px auto;
+
   color: #64748b;
+
   font-size: 13px;
+  line-height: 1.9;
 }
 
+
+/* STATS */
 
 .stats {
   display: flex;
   justify-content: center;
+
   gap: 8px;
+
   margin-top: 24px;
 }
 
 .stat {
   min-width: 100px;
+
   padding: 8px 13px;
+
   border: 1px solid #e2e8f0;
   border-radius: 13px;
-  background: rgba(255,255,255,.9);
-  box-shadow: 0 5px 20px rgba(15,23,42,.04);
+
+  background: #fff;
+
+  box-shadow:
+    0 5px 20px rgba(15, 23, 42, .04);
 }
 
 .stat strong,
@@ -1090,34 +310,43 @@ import Footer from '../../components/Footer.astro';
 }
 
 
-/* SECTION HEADER */
+/* SECTION */
 
 .section-header {
   display: flex;
   align-items: end;
   justify-content: space-between;
+
   margin-bottom: 18px;
 }
 
 .section-label {
   color: #2563eb;
+
   font-family: monospace;
+
   font-size: 9px;
   font-weight: 800;
+
   letter-spacing: 1px;
 }
 
 .section-header h2 {
   margin: 2px 0 0;
+
   font-size: 24px;
   font-weight: 800;
 }
 
 .tool-count {
   padding: 6px 11px;
+
   border-radius: 8px;
+
   background: #eef2ff;
+
   color: #4f46e5;
+
   font-size: 9px;
   font-weight: 800;
 }
@@ -1127,7 +356,10 @@ import Footer from '../../components/Footer.astro';
 
 .tools-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
   gap: 13px;
 }
 
@@ -1136,23 +368,29 @@ import Footer from '../../components/Footer.astro';
 
 .tool-card {
   position: relative;
+
   display: flex;
   align-items: center;
+
   gap: 13px;
+
   min-height: 106px;
+
   padding: 14px;
+
   overflow: hidden;
 
   border: 1px solid #e2e8f0;
   border-radius: 20px;
 
-  background: rgba(255,255,255,.96);
+  background: #fff;
 
   color: #0f172a;
+
   text-decoration: none;
 
   box-shadow:
-    0 6px 20px rgba(15,23,42,.04);
+    0 6px 20px rgba(15, 23, 42, .04);
 
   transition:
     transform .25s ease,
@@ -1162,26 +400,36 @@ import Footer from '../../components/Footer.astro';
 
 .tool-card::before {
   content: "";
+
   position: absolute;
+
   width: 120px;
   height: 120px;
+
   top: -65px;
   left: -65px;
+
   border-radius: 50%;
+
   background: currentColor;
-  opacity: .05;
-  transition: transform .45s ease;
+
+  opacity: .06;
+
+  transition:
+    transform .45s ease;
 }
 
 .tool-card:hover {
   transform: translateY(-5px);
+
   border-color: currentColor;
+
   box-shadow:
-    0 18px 42px rgba(15,23,42,.11);
+    0 18px 42px rgba(15, 23, 42, .12);
 }
 
 .tool-card:hover::before {
-  transform: scale(2.7);
+  transform: scale(3);
 }
 
 
@@ -1193,6 +441,7 @@ import Footer from '../../components/Footer.astro';
 
   width: 56px;
   height: 56px;
+
   flex: none;
 
   display: flex;
@@ -1202,60 +451,59 @@ import Footer from '../../components/Footer.astro';
   border-radius: 17px;
 
   background: currentColor;
+
   color: #fff;
 
   box-shadow:
-    0 8px 18px rgba(15,23,42,.14);
+    0 8px 18px rgba(15, 23, 42, .14);
 
   transition:
-    transform .3s ease,
-    box-shadow .3s ease;
+    transform .3s ease;
 }
 
 .tool-icon span {
   max-width: 50px;
+
   overflow: hidden;
 
   font-family: monospace;
+
   font-size: 11px;
   font-weight: 800;
 
   white-space: nowrap;
-  text-align: center;
 }
 
 .tool-card:hover .tool-icon {
   transform:
     rotate(-5deg)
     scale(1.08);
-
-  box-shadow:
-    0 12px 25px rgba(15,23,42,.18);
 }
 
 
-/* CONTENT */
+/* INFO */
 
 .tool-info {
   position: relative;
   z-index: 1;
+
   min-width: 0;
+
   flex: 1;
 }
 
 .tool-info small {
   display: block;
-  overflow: hidden;
 
-  color: #64748b;
+  color: #94a3b8;
 
   font-family: monospace;
+
   font-size: 7px;
   font-weight: 700;
 
-  letter-spacing: .3px;
+  letter-spacing: .4px;
 
-  text-overflow: ellipsis;
   white-space: nowrap;
 }
 
@@ -1266,7 +514,9 @@ import Footer from '../../components/Footer.astro';
   font-weight: 800;
 
   white-space: nowrap;
+
   overflow: hidden;
+
   text-overflow: ellipsis;
 }
 
@@ -1278,7 +528,9 @@ import Footer from '../../components/Footer.astro';
   font-size: 9px;
 
   white-space: nowrap;
+
   overflow: hidden;
+
   text-overflow: ellipsis;
 }
 
@@ -1291,6 +543,7 @@ import Footer from '../../components/Footer.astro';
 
   width: 27px;
   height: 27px;
+
   flex: none;
 
   display: flex;
@@ -1299,19 +552,20 @@ import Footer from '../../components/Footer.astro';
 
   border-radius: 50%;
 
-  background: rgba(100,116,139,.08);
+  background: #f1f5f9;
+
   color: #64748b;
 
   font-size: 23px;
-  line-height: 1;
 
   transition: .25s ease;
 }
 
 .tool-card:hover .arrow {
-  transform: translateX(-4px);
   background: currentColor;
   color: #fff;
+
+  transform: translateX(-4px);
 }
 
 
@@ -1366,13 +620,13 @@ import Footer from '../../components/Footer.astro';
   100% {
     box-shadow:
       0 0 0 4px
-      rgba(34,197,94,.10);
+      rgba(34, 197, 94, .10);
   }
 
   50% {
     box-shadow:
       0 0 0 8px
-      rgba(34,197,94,.02);
+      rgba(34, 197, 94, .02);
   }
 
 }
@@ -1396,13 +650,14 @@ import Footer from '../../components/Footer.astro';
 
   .tools-page {
     width: calc(100% - 14px);
+
     padding:
-      20px 0 60px;
+      18px 0 55px;
   }
 
   .hero {
     padding:
-      15px 5px 35px;
+      15px 5px 32px;
   }
 
   .hero h1 {
@@ -1420,8 +675,7 @@ import Footer from '../../components/Footer.astro';
   .stat {
     min-width: 0;
     flex: 1;
-    padding:
-      8px 4px;
+    padding: 8px 4px;
   }
 
   .stat strong {
@@ -1450,10 +704,10 @@ import Footer from '../../components/Footer.astro';
   .tool-card {
     min-height: 125px;
 
-    padding:
-      10px 6px;
+    padding: 10px 6px;
 
     flex-direction: column;
+
     justify-content: center;
 
     text-align: center;
@@ -1466,11 +720,8 @@ import Footer from '../../components/Footer.astro';
   .tool-icon {
     width: 48px;
     height: 48px;
-    border-radius: 15px;
-  }
 
-  .tool-icon span {
-    font-size: 10px;
+    border-radius: 15px;
   }
 
   .tool-info small {
@@ -1500,7 +751,7 @@ import Footer from '../../components/Footer.astro';
 }
 
 
-/* VERY SMALL PHONES */
+/* SMALL PHONES */
 
 @media (max-width: 360px) {
 
