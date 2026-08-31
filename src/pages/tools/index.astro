@@ -3,145 +3,40 @@
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
-const base = import.meta.env.BASE_URL.replace(//$/, '');
+<html lang="ar" dir="rtl"><head>  <meta charset="UTF-8" /><meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+/>
 
-const title = 'أدوات المطورين | Th.Tech';
-const description =
-'مجموعة مجانية من أدوات المطورين والمبرمجين لتنسيق وتحويل وتحليل النصوص والأكواد والبيانات.';
+  <title>أدوات المطورين | Th.Tech</title><meta
+name="description"
+content="مجموعة احترافية من أدوات المطورين والمبرمجين المجانية."
+/>
 
-const tools = [
-['json-formatter', 'JSON Formatter', 'منسق JSON', 'تنسيق وتجميل JSON', 'blue', '⌘'],
-['json-validator', 'JSON Validator', 'مدقق JSON', 'التحقق من صحة JSON', 'green', '✓'],
-['html-formatter', 'HTML Formatter', 'منسق HTML', 'تنسيق وترتيب HTML', 'orange', '</>'],
-['javascript-formatter', 'JavaScript Formatter', 'منسق JavaScript', 'تنسيق JavaScript', 'yellow', 'JS'],
-['word-counter', 'Word Counter', 'عداد الكلمات', 'حساب الكلمات والأحرف', 'purple', 'Aa'],
+<meta
+name="robots"
+content="index, follow"
+/>
 
-['css-formatter', 'CSS Formatter', 'منسق CSS', 'تنسيق CSS', 'cyan', '#'],
-['css-minifier', 'CSS Minifier', 'ضغط CSS', 'تصغير CSS', 'blue', '↓'],
-['javascript-minifier', 'JavaScript Minifier', 'ضغط JavaScript', 'تصغير JavaScript', 'yellow', 'JS'],
-['html-minifier', 'HTML Minifier', 'ضغط HTML', 'تصغير HTML', 'orange', '</>'],
-['json-minifier', 'JSON Minifier', 'ضغط JSON', 'تصغير JSON', 'green', '{}'],
-
-['base64-encoder', 'Base64 Encoder', 'ترميز Base64', 'تحويل النص إلى Base64', 'indigo', '64'],
-['base64-decoder', 'Base64 Decoder', 'فك Base64', 'فك ترميز Base64', 'violet', '↙'],
-['url-encoder', 'URL Encoder', 'ترميز URL', 'ترميز الروابط', 'blue', '↗'],
-['url-decoder', 'URL Decoder', 'فك URL', 'فك ترميز الروابط', 'cyan', '↙'],
-['html-entity-encoder', 'HTML Entity Encoder', 'ترميز HTML', 'ترميز HTML Entities', 'orange', '&'],
-
-['uuid-generator', 'UUID Generator', 'مولد UUID', 'إنشاء UUID', 'purple', 'ID'],
-['password-generator', 'Password Generator', 'مولد كلمات المرور', 'كلمات مرور قوية', 'red', '●'],
-['random-number-generator', 'Random Number', 'مولد أرقام', 'توليد أرقام عشوائية', 'green', '#'],
-['timestamp-converter', 'Timestamp Converter', 'محول Timestamp', 'تحويل Unix Timestamp', 'indigo', 'T'],
-['unix-time', 'Unix Time', 'وقت Unix', 'أداة Unix Time', 'blue', '◷'],
-
-['color-converter', 'Color Converter', 'محول الألوان', 'تحويل HEX وRGB وHSL', 'pink', '◉'],
-['hex-to-rgb', 'HEX to RGB', 'HEX إلى RGB', 'تحويل HEX إلى RGB', 'cyan', '#'],
-['rgb-to-hex', 'RGB to HEX', 'RGB إلى HEX', 'تحويل RGB إلى HEX', 'blue', 'RGB'],
-['color-picker', 'Color Picker', 'منتقي الألوان', 'اختيار وتحليل الألوان', 'pink', '●'],
-['gradient-generator', 'Gradient Generator', 'مولد التدرجات', 'إنشاء تدرجات CSS', 'violet', '◐'],
-
-['text-case-converter', 'Text Case Converter', 'تحويل حالة النص', 'Uppercase وLowercase', 'purple', 'Aa'],
-['remove-duplicates', 'Remove Duplicates', 'إزالة التكرار', 'إزالة الأسطر المكررة', 'green', '≠'],
-['sort-lines', 'Sort Lines', 'ترتيب الأسطر', 'ترتيب النصوص والأسطر', 'blue', '↕'],
-['text-reverser', 'Text Reverser', 'عكس النص', 'عكس ترتيب النص', 'orange', '↔'],
-['text-cleaner', 'Text Cleaner', 'تنظيف النص', 'تنظيف المسافات والنصوص', 'cyan', '✦'],
-
-['markdown-preview', 'Markdown Preview', 'معاينة Markdown', 'معاينة Markdown', 'indigo', 'M'],
-['markdown-to-html', 'Markdown to HTML', 'Markdown إلى HTML', 'تحويل Markdown إلى HTML', 'orange', 'M>'],
-['html-to-markdown', 'HTML to Markdown', 'HTML إلى Markdown', 'تحويل HTML إلى Markdown', 'blue', '<M'],
-['json-to-csv', 'JSON to CSV', 'JSON إلى CSV', 'تحويل JSON إلى CSV', 'green', '⇄'],
-['csv-to-json', 'CSV to JSON', 'CSV إلى JSON', 'تحويل CSV إلى JSON', 'purple', '⇄'],
-
-['xml-formatter', 'XML Formatter', 'منسق XML', 'تنسيق XML', 'orange', 'XML'],
-['xml-validator', 'XML Validator', 'مدقق XML', 'التحقق من XML', 'green', '✓'],
-['sql-formatter', 'SQL Formatter', 'منسق SQL', 'تنسيق SQL', 'indigo', 'SQL'],
-['sql-minifier', 'SQL Minifier', 'ضغط SQL', 'تصغير SQL', 'blue', '↓'],
-['regex-tester', 'Regex Tester', 'اختبار Regex', 'اختبار التعبيرات النمطية', 'red', '.*'],
-
-['jwt-decoder', 'JWT Decoder', 'فك JWT', 'قراءة محتوى JWT', 'violet', 'JWT'],
-['jwt-generator', 'JWT Generator', 'مولد JWT', 'إنشاء JWT', 'purple', 'JWT'],
-['hash-generator', 'Hash Generator', 'مولد Hash', 'إنشاء Hash', 'blue', '#'],
-['md5-generator', 'MD5 Generator', 'مولد MD5', 'إنشاء MD5', 'orange', 'MD5'],
-['sha256-generator', 'SHA256 Generator', 'مولد SHA-256', 'إنشاء SHA-256', 'green', '256'],
-
-['date-calculator', 'Date Calculator', 'حاسبة التاريخ', 'حساب الفروقات بين التواريخ', 'blue', '▣'],
-['date-format-converter', 'Date Converter', 'محول التاريخ', 'تحويل صيغ التاريخ', 'purple', '▣'],
-['timezone-converter', 'Timezone Converter', 'محول المناطق الزمنية', 'تحويل الوقت', 'cyan', '◉'],
-['age-calculator', 'Age Calculator', 'حاسبة العمر', 'حساب العمر', 'green', '18+'],
-['percentage-calculator', 'Percentage Calculator', 'حاسبة النسبة', 'حساب النسب المئوية', 'orange', '%'],
-
-['binary-converter', 'Binary Converter', 'محول ثنائي', 'تحويل الأرقام الثنائية', 'blue', '01'],
-['hex-converter', 'Hex Converter', 'محول Hex', 'تحويل الأرقام السداسية', 'violet', 'HEX'],
-['decimal-to-binary', 'Decimal to Binary', 'عشري إلى ثنائي', 'تحويل عشري إلى ثنائي', 'cyan', '01'],
-['binary-to-decimal', 'Binary to Decimal', 'ثنائي إلى عشري', 'تحويل ثنائي إلى عشري', 'green', '10'],
-['number-base-converter', 'Number Base Converter', 'محول أنظمة الأعداد', 'تحويل أنظمة الأعداد', 'indigo', '123'],
-
-['json-tree-viewer', 'JSON Tree Viewer', 'عارض JSON', 'عرض JSON كشجرة', 'green', '⌘'],
-['json-to-typescript', 'JSON to TypeScript', 'JSON إلى TypeScript', 'إنشاء Types', 'blue', 'TS'],
-['json-to-interface', 'JSON to Interface', 'JSON إلى Interface', 'إنشاء Interfaces', 'cyan', 'TS'],
-['json-diff', 'JSON Diff', 'مقارنة JSON', 'مقارنة ملفي JSON', 'orange', '≠'],
-['json-prettifier', 'JSON Prettifier', 'تجميل JSON', 'تجميل JSON بسرعة', 'purple', '{}'],
-
-['lorem-ipsum', 'Lorem Ipsum', 'مولد Lorem Ipsum', 'إنشاء نصوص تجريبية', 'indigo', 'L'],
-['slug-generator', 'Slug Generator', 'مولد Slug', 'إنشاء روابط SEO', 'blue', '↗'],
-['username-generator', 'Username Generator', 'مولد أسماء المستخدمين', 'إنشاء أسماء مستخدمين', 'purple', '@'],
-['email-validator', 'Email Validator', 'مدقق البريد الإلكتروني', 'التحقق من البريد', 'green', '@'],
-['ip-address-validator', 'IP Validator', 'مدقق IP', 'التحقق من عناوين IP', 'cyan', 'IP'],
-
-['http-status-codes', 'HTTP Status Codes', 'أكواد HTTP', 'مرجع أكواد HTTP', 'blue', '200'],
-['user-agent-parser', 'User Agent Parser', 'محلل User Agent', 'تحليل معلومات المتصفح', 'orange', 'UA'],
-['mime-types', 'MIME Types', 'MIME Types', 'مرجع أنواع MIME', 'violet', 'M'],
-['cron-generator', 'Cron Generator', 'مولد Cron', 'إنشاء Cron Expressions', 'green', 'CR'],
-['cron-parser', 'Cron Parser', 'محلل Cron', 'تحليل Cron Expressions', 'blue', 'CR'],
-
-['image-to-base64', 'Image to Base64', 'صورة إلى Base64', 'تحويل الصور إلى Base64', 'purple', 'IMG'],
-['base64-to-image', 'Base64 to Image', 'Base64 إلى صورة', 'تحويل Base64 إلى صورة', 'pink', 'IMG'],
-['svg-optimizer', 'SVG Optimizer', 'محسن SVG', 'تحسين ملفات SVG', 'orange', 'SVG'],
-['svg-to-data-uri', 'SVG to Data URI', 'SVG إلى Data URI', 'تحويل SVG إلى Data URI', 'blue', 'SVG'],
-['image-dimensions', 'Image Dimensions', 'أبعاد الصورة', 'معرفة أبعاد الصور', 'cyan', '↗'],
-
-['url-parser', 'URL Parser', 'محلل URL', 'تحليل مكونات URL', 'blue', 'URL'],
-['query-string-parser', 'Query String Parser', 'محلل Query String', 'تحليل معاملات URL', 'purple', '?'],
-['http-header-parser', 'HTTP Header Parser', 'محلل HTTP Headers', 'تحليل HTTP Headers', 'orange', 'H'],
-['meta-tag-generator', 'Meta Tag Generator', 'مولد Meta Tags', 'إنشاء Meta Tags', 'green', 'META'],
-['robots-generator', 'Robots.txt Generator', 'مولد Robots.txt', 'إنشاء robots.txt', 'indigo', 'R'],
-
-['sitemap-generator', 'Sitemap Generator', 'مولد Sitemap', 'إنشاء Sitemap', 'blue', 'MAP'],
-['qr-code-generator', 'QR Code Generator', 'مولد QR Code', 'إنشاء رموز QR', 'purple', 'QR'],
-['barcode-generator', 'Barcode Generator', 'مولد Barcode', 'إنشاء Barcode', 'orange', '|||'],
-['data-uri-generator', 'Data URI Generator', 'مولد Data URI', 'إنشاء Data URI', 'cyan', 'URI'],
-['html-preview', 'HTML Preview', 'معاينة HTML', 'تشغيل HTML مباشرة', 'green', '</>'],
-
-['code-line-counter', 'Code Line Counter', 'عداد أسطر الكود', 'حساب أسطر البرمجة', 'blue', '123'],
-['character-counter', 'Character Counter', 'عداد الأحرف', 'حساب الأحرف', 'purple', 'Aa'],
-['sentence-counter', 'Sentence Counter', 'عداد الجمل', 'حساب الجمل', 'cyan', '.'],
-['reading-time', 'Reading Time', 'وقت القراءة', 'تقدير وقت القراءة', 'orange', '◷'],
-['text-to-binary', 'Text to Binary', 'النص إلى ثنائي', 'تحويل النص إلى Binary', 'green', '01'],
-
-['yaml-formatter', 'YAML Formatter', 'منسق YAML', 'تنسيق YAML', 'orange', 'Y'],
-['yaml-validator', 'YAML Validator', 'مدقق YAML', 'التحقق من YAML', 'green', '✓'],
-['toml-formatter', 'TOML Formatter', 'منسق TOML', 'تنسيق TOML', 'blue', 'T'],
-['dockerfile-formatter', 'Dockerfile Formatter', 'منسق Dockerfile', 'تنسيق Dockerfile', 'cyan', 'D'],
-['gitignore-generator', 'Gitignore Generator', 'مولد Gitignore', 'إنشاء ملفات Gitignore', 'violet', 'G']
-];
-
-const toolCount = tools.length;
-
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />  <title>{title}</title>
-  <meta name="description" content={description} />
-  <meta name="robots" content="index, follow" />  <link
+  <link
     rel="canonical"
-    href={`https://oumaystore-hub.github.io${base}/tools/`}
-  />  <link rel="icon" type="image/png" href={`${base}/logo1.png`} />  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />  <link
+    href={`https://oumaystore-hub.github.io${import.meta.env.BASE_URL}tools/`}
+  />  <link
+    rel="icon"
+    type="image/png"
+    href={`${import.meta.env.BASE_URL}logo1.png`}
+  />  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />  <link
     href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
     rel="stylesheet"
-  />
-</head><body>
-  <Header />  <main class="page"><section class="hero">
+  /></head><body>  <Header />  <main class="page"><!-- HERO -->
+
+<section class="hero">
+
   <div class="badge">
     <span class="pulse"></span>
     TH.TECH · DEVELOPER TOOLBOX
@@ -153,13 +48,14 @@ const toolCount = tools.length;
   </h1>
 
   <p>
-    أدوات مجانية وسريعة للمبرمجين والمطورين.
-    اختر الأداة واضغط عليها للبدء مباشرة.
+    مجموعة احترافية من الأدوات المجانية للمطورين والمبرمجين.
+    اضغط على أي بطاقة لفتح الأداة مباشرة.
   </p>
 
   <div class="stats">
+
     <div>
-      <b>{toolCount}+</b>
+      <b>100+</b>
       <span>أداة</span>
     </div>
 
@@ -172,59 +68,1242 @@ const toolCount = tools.length;
       <b>0</b>
       <span>تسجيل مطلوب</span>
     </div>
+
   </div>
+
 </section>
+
+
+<!-- TOOLS -->
 
 <section class="tools-section">
 
   <div class="section-head">
+
     <div>
-      <small>DEVELOPER TOOLS</small>
-      <h2>جميع الأدوات</h2>
+
+      <small>
+        DEVELOPER TOOLS
+      </small>
+
+      <h2>
+        جميع الأدوات
+      </h2>
+
     </div>
 
-    <span class="count">{toolCount} أداة</span>
+    <span class="count">
+      100+ أداة
+    </span>
+
   </div>
 
+
   <div class="tools-grid">
-    {tools.map((tool, index) => (
-      <a
-        href={`${base}/tools/${tool[0]}/`}
-        class={`tool-card ${tool[4]}`}
-        style={`--delay:${Math.min(index * 0.018, 0.8)}s`}
-      >
-        <div class="icon">
-          <span>{tool[5]}</span>
-        </div>
 
-        <div class="content">
-          <span class="english">{tool[1]}</span>
-          <h3>{tool[2]}</h3>
-          <p>{tool[3]}</p>
-        </div>
 
-        <span class="arrow" aria-hidden="true">
-          <svg viewBox="0 0 24 24">
-            <path d="M9 18l6-6-6-6" />
-          </svg>
-        </span>
-      </a>
-    ))}
+    <!-- 01 JSON FORMATTER -->
+
+    <a
+      class="tool-card blue"
+      href={`${import.meta.env.BASE_URL}tools/json-formatter/`}
+    >
+
+      <div class="icon">
+        <span>{}</span>
+      </div>
+
+      <div class="content">
+        <span class="english">JSON FORMATTER</span>
+        <h3>JSON Formatter</h3>
+        <p>تنسيق وتجميل JSON</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 02 JSON VALIDATOR -->
+
+    <a
+      class="tool-card green"
+      href={`${import.meta.env.BASE_URL}tools/json-validator/`}
+    >
+
+      <div class="icon">
+        <span>✓</span>
+      </div>
+
+      <div class="content">
+        <span class="english">JSON VALIDATOR</span>
+        <h3>JSON Validator</h3>
+        <p>التحقق من صحة JSON</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 03 JSON MINIFIER -->
+
+    <a
+      class="tool-card purple"
+      href={`${import.meta.env.BASE_URL}tools/json-minifier/`}
+    >
+
+      <div class="icon">
+        <span>{}</span>
+      </div>
+
+      <div class="content">
+        <span class="english">JSON MINIFIER</span>
+        <h3>JSON Minifier</h3>
+        <p>تصغير حجم JSON</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 04 JSON TREE -->
+
+    <a
+      class="tool-card cyan"
+      href={`${import.meta.env.BASE_URL}tools/json-tree-viewer/`}
+    >
+
+      <div class="icon">
+        <span>⌘</span>
+      </div>
+
+      <div class="content">
+        <span class="english">JSON TREE</span>
+        <h3>JSON Tree Viewer</h3>
+        <p>عرض JSON كشجرة</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 05 JSON DIFF -->
+
+    <a
+      class="tool-card orange"
+      href={`${import.meta.env.BASE_URL}tools/json-diff/`}
+    >
+
+      <div class="icon">
+        <span>≠</span>
+      </div>
+
+      <div class="content">
+        <span class="english">JSON DIFF</span>
+        <h3>JSON Diff</h3>
+        <p>مقارنة ملفات JSON</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 06 HTML FORMATTER -->
+
+    <a
+      class="tool-card orange"
+      href={`${import.meta.env.BASE_URL}tools/html-formatter/`}
+    >
+
+      <div class="icon">
+        <span>&lt;/&gt;</span>
+      </div>
+
+      <div class="content">
+        <span class="english">HTML FORMATTER</span>
+        <h3>HTML Formatter</h3>
+        <p>تنسيق HTML</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 07 HTML MINIFIER -->
+
+    <a
+      class="tool-card red"
+      href={`${import.meta.env.BASE_URL}tools/html-minifier/`}
+    >
+
+      <div class="icon">
+        <span>&lt;/&gt;</span>
+      </div>
+
+      <div class="content">
+        <span class="english">HTML MINIFIER</span>
+        <h3>HTML Minifier</h3>
+        <p>تصغير HTML</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 08 JAVASCRIPT FORMATTER -->
+
+    <a
+      class="tool-card yellow"
+      href={`${import.meta.env.BASE_URL}tools/javascript-formatter/`}
+    >
+
+      <div class="icon">
+        <span>JS</span>
+      </div>
+
+      <div class="content">
+        <span class="english">JAVASCRIPT FORMATTER</span>
+        <h3>JavaScript Formatter</h3>
+        <p>تنسيق JavaScript</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 09 JAVASCRIPT MINIFIER -->
+
+    <a
+      class="tool-card yellow"
+      href={`${import.meta.env.BASE_URL}tools/javascript-minifier/`}
+    >
+
+      <div class="icon">
+        <span>JS</span>
+      </div>
+
+      <div class="content">
+        <span class="english">JAVASCRIPT MINIFIER</span>
+        <h3>JavaScript Minifier</h3>
+        <p>تصغير JavaScript</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 10 CSS FORMATTER -->
+
+    <a
+      class="tool-card cyan"
+      href={`${import.meta.env.BASE_URL}tools/css-formatter/`}
+    >
+
+      <div class="icon">
+        <span>#</span>
+      </div>
+
+      <div class="content">
+        <span class="english">CSS FORMATTER</span>
+        <h3>CSS Formatter</h3>
+        <p>تنسيق CSS</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 11 CSS MINIFIER -->
+
+    <a
+      class="tool-card blue"
+      href={`${import.meta.env.BASE_URL}tools/css-minifier/`}
+    >
+
+      <div class="icon">
+        <span>#</span>
+      </div>
+
+      <div class="content">
+        <span class="english">CSS MINIFIER</span>
+        <h3>CSS Minifier</h3>
+        <p>تصغير CSS</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 12 WORD COUNTER -->
+
+    <a
+      class="tool-card purple"
+      href={`${import.meta.env.BASE_URL}tools/word-counter/`}
+    >
+
+      <div class="icon">
+        <span>Aa</span>
+      </div>
+
+      <div class="content">
+        <span class="english">WORD COUNTER</span>
+        <h3>Word Counter</h3>
+        <p>حساب الكلمات والأحرف</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 13 CHARACTER COUNTER -->
+
+    <a
+      class="tool-card violet"
+      href={`${import.meta.env.BASE_URL}tools/character-counter/`}
+    >
+
+      <div class="icon">
+        <span>Aa</span>
+      </div>
+
+      <div class="content">
+        <span class="english">CHARACTER COUNTER</span>
+        <h3>Character Counter</h3>
+        <p>حساب عدد الأحرف</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 14 TEXT CASE -->
+
+    <a
+      class="tool-card blue"
+      href={`${import.meta.env.BASE_URL}tools/text-case-converter/`}
+    >
+
+      <div class="icon">
+        <span>Aa</span>
+      </div>
+
+      <div class="content">
+        <span class="english">TEXT CASE</span>
+        <h3>Text Case Converter</h3>
+        <p>تحويل حالة النص</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 15 REMOVE DUPLICATES -->
+
+    <a
+      class="tool-card green"
+      href={`${import.meta.env.BASE_URL}tools/remove-duplicates/`}
+    >
+
+      <div class="icon">
+        <span>≠</span>
+      </div>
+
+      <div class="content">
+        <span class="english">DUPLICATES</span>
+        <h3>Remove Duplicates</h3>
+        <p>إزالة النصوص المكررة</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 16 SORT LINES -->
+
+    <a
+      class="tool-card orange"
+      href={`${import.meta.env.BASE_URL}tools/sort-lines/`}
+    >
+
+      <div class="icon">
+        <span>↕</span>
+      </div>
+
+      <div class="content">
+        <span class="english">SORT LINES</span>
+        <h3>Sort Lines</h3>
+        <p>ترتيب الأسطر</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 17 TEXT REVERSER -->
+
+    <a
+      class="tool-card violet"
+      href={`${import.meta.env.BASE_URL}tools/text-reverser/`}
+    >
+
+      <div class="icon">
+        <span>↔</span>
+      </div>
+
+      <div class="content">
+        <span class="english">TEXT REVERSER</span>
+        <h3>Text Reverser</h3>
+        <p>عكس النص</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 18 BASE64 ENCODER -->
+
+    <a
+      class="tool-card indigo"
+      href={`${import.meta.env.BASE_URL}tools/base64-encoder/`}
+    >
+
+      <div class="icon">
+        <span>64</span>
+      </div>
+
+      <div class="content">
+        <span class="english">BASE64 ENCODER</span>
+        <h3>Base64 Encoder</h3>
+        <p>ترميز النص إلى Base64</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 19 BASE64 DECODER -->
+
+    <a
+      class="tool-card violet"
+      href={`${import.meta.env.BASE_URL}tools/base64-decoder/`}
+    >
+
+      <div class="icon">
+        <span>↙</span>
+      </div>
+
+      <div class="content">
+        <span class="english">BASE64 DECODER</span>
+        <h3>Base64 Decoder</h3>
+        <p>فك ترميز Base64</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 20 URL ENCODER -->
+
+    <a
+      class="tool-card blue"
+      href={`${import.meta.env.BASE_URL}tools/url-encoder/`}
+    >
+
+      <div class="icon">
+        <span>↗</span>
+      </div>
+
+      <div class="content">
+        <span class="english">URL ENCODER</span>
+        <h3>URL Encoder</h3>
+        <p>ترميز الروابط</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 21 URL DECODER -->
+
+    <a
+      class="tool-card cyan"
+      href={`${import.meta.env.BASE_URL}tools/url-decoder/`}
+    >
+
+      <div class="icon">
+        <span>↙</span>
+      </div>
+
+      <div class="content">
+        <span class="english">URL DECODER</span>
+        <h3>URL Decoder</h3>
+        <p>فك ترميز الروابط</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 22 UUID -->
+
+    <a
+      class="tool-card purple"
+      href={`${import.meta.env.BASE_URL}tools/uuid-generator/`}
+    >
+
+      <div class="icon">
+        <span>ID</span>
+      </div>
+
+      <div class="content">
+        <span class="english">UUID GENERATOR</span>
+        <h3>UUID Generator</h3>
+        <p>إنشاء UUID</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 23 PASSWORD -->
+
+    <a
+      class="tool-card red"
+      href={`${import.meta.env.BASE_URL}tools/password-generator/`}
+    >
+
+      <div class="icon">
+        <span>●</span>
+      </div>
+
+      <div class="content">
+        <span class="english">PASSWORD GENERATOR</span>
+        <h3>Password Generator</h3>
+        <p>توليد كلمات مرور قوية</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 24 RANDOM -->
+
+    <a
+      class="tool-card green"
+      href={`${import.meta.env.BASE_URL}tools/random-number-generator/`}
+    >
+
+      <div class="icon">
+        <span>#</span>
+      </div>
+
+      <div class="content">
+        <span class="english">RANDOM NUMBER</span>
+        <h3>Random Number</h3>
+        <p>توليد أرقام عشوائية</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 25 COLOR -->
+
+    <a
+      class="tool-card pink"
+      href={`${import.meta.env.BASE_URL}tools/color-picker/`}
+    >
+
+      <div class="icon">
+        <span>●</span>
+      </div>
+
+      <div class="content">
+        <span class="english">COLOR PICKER</span>
+        <h3>Color Picker</h3>
+        <p>اختيار وتحليل الألوان</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 26 GRADIENT -->
+
+    <a
+      class="tool-card violet"
+      href={`${import.meta.env.BASE_URL}tools/gradient-generator/`}
+    >
+
+      <div class="icon">
+        <span>◐</span>
+      </div>
+
+      <div class="content">
+        <span class="english">GRADIENT GENERATOR</span>
+        <h3>Gradient Generator</h3>
+        <p>إنشاء تدرجات CSS</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 27 JSON TO CSV -->
+
+    <a
+      class="tool-card green"
+      href={`${import.meta.env.BASE_URL}tools/json-to-csv/`}
+    >
+
+      <div class="icon">
+        <span>⇄</span>
+      </div>
+
+      <div class="content">
+        <span class="english">JSON TO CSV</span>
+        <h3>JSON to CSV</h3>
+        <p>تحويل JSON إلى CSV</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 28 CSV TO JSON -->
+
+    <a
+      class="tool-card purple"
+      href={`${import.meta.env.BASE_URL}tools/csv-to-json/`}
+    >
+
+      <div class="icon">
+        <span>⇄</span>
+      </div>
+
+      <div class="content">
+        <span class="english">CSV TO JSON</span>
+        <h3>CSV to JSON</h3>
+        <p>تحويل CSV إلى JSON</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 29 XML FORMATTER -->
+
+    <a
+      class="tool-card orange"
+      href={`${import.meta.env.BASE_URL}tools/xml-formatter/`}
+    >
+
+      <div class="icon">
+        <span>XML</span>
+      </div>
+
+      <div class="content">
+        <span class="english">XML FORMATTER</span>
+        <h3>XML Formatter</h3>
+        <p>تنسيق XML</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 30 XML VALIDATOR -->
+
+    <a
+      class="tool-card green"
+      href={`${import.meta.env.BASE_URL}tools/xml-validator/`}
+    >
+
+      <div class="icon">
+        <span>✓</span>
+      </div>
+
+      <div class="content">
+        <span class="english">XML VALIDATOR</span>
+        <h3>XML Validator</h3>
+        <p>التحقق من XML</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 31 SQL -->
+
+    <a
+      class="tool-card indigo"
+      href={`${import.meta.env.BASE_URL}tools/sql-formatter/`}
+    >
+
+      <div class="icon">
+        <span>SQL</span>
+      </div>
+
+      <div class="content">
+        <span class="english">SQL FORMATTER</span>
+        <h3>SQL Formatter</h3>
+        <p>تنسيق SQL</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 32 REGEX -->
+
+    <a
+      class="tool-card red"
+      href={`${import.meta.env.BASE_URL}tools/regex-tester/`}
+    >
+
+      <div class="icon">
+        <span>.*</span>
+      </div>
+
+      <div class="content">
+        <span class="english">REGEX TESTER</span>
+        <h3>Regex Tester</h3>
+        <p>اختبار التعبيرات النمطية</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 33 JWT -->
+
+    <a
+      class="tool-card violet"
+      href={`${import.meta.env.BASE_URL}tools/jwt-decoder/`}
+    >
+
+      <div class="icon">
+        <span>JWT</span>
+      </div>
+
+      <div class="content">
+        <span class="english">JWT DECODER</span>
+        <h3>JWT Decoder</h3>
+        <p>قراءة محتوى JWT</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 34 HASH -->
+
+    <a
+      class="tool-card blue"
+      href={`${import.meta.env.BASE_URL}tools/hash-generator/`}
+    >
+
+      <div class="icon">
+        <span>#</span>
+      </div>
+
+      <div class="content">
+        <span class="english">HASH GENERATOR</span>
+        <h3>Hash Generator</h3>
+        <p>إنشاء Hash</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 35 MD5 -->
+
+    <a
+      class="tool-card orange"
+      href={`${import.meta.env.BASE_URL}tools/md5-generator/`}
+    >
+
+      <div class="icon">
+        <span>MD5</span>
+      </div>
+
+      <div class="content">
+        <span class="english">MD5 GENERATOR</span>
+        <h3>MD5 Generator</h3>
+        <p>إنشاء MD5</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 36 SHA256 -->
+
+    <a
+      class="tool-card green"
+      href={`${import.meta.env.BASE_URL}tools/sha256-generator/`}
+    >
+
+      <div class="icon">
+        <span>256</span>
+      </div>
+
+      <div class="content">
+        <span class="english">SHA256 GENERATOR</span>
+        <h3>SHA256 Generator</h3>
+        <p>إنشاء SHA-256</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 37 DATE -->
+
+    <a
+      class="tool-card blue"
+      href={`${import.meta.env.BASE_URL}tools/date-calculator/`}
+    >
+
+      <div class="icon">
+        <span>▣</span>
+      </div>
+
+      <div class="content">
+        <span class="english">DATE CALCULATOR</span>
+        <h3>Date Calculator</h3>
+        <p>حساب الفرق بين التواريخ</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 38 AGE -->
+
+    <a
+      class="tool-card purple"
+      href={`${import.meta.env.BASE_URL}tools/age-calculator/`}
+    >
+
+      <div class="icon">
+        <span>18+</span>
+      </div>
+
+      <div class="content">
+        <span class="english">AGE CALCULATOR</span>
+        <h3>Age Calculator</h3>
+        <p>حساب العمر</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 39 PERCENTAGE -->
+
+    <a
+      class="tool-card orange"
+      href={`${import.meta.env.BASE_URL}tools/percentage-calculator/`}
+    >
+
+      <div class="icon">
+        <span>%</span>
+      </div>
+
+      <div class="content">
+        <span class="english">PERCENTAGE</span>
+        <h3>Percentage Calculator</h3>
+        <p>حساب النسب المئوية</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 40 BINARY -->
+
+    <a
+      class="tool-card blue"
+      href={`${import.meta.env.BASE_URL}tools/binary-converter/`}
+    >
+
+      <div class="icon">
+        <span>01</span>
+      </div>
+
+      <div class="content">
+        <span class="english">BINARY CONVERTER</span>
+        <h3>Binary Converter</h3>
+        <p>تحويل الأرقام الثنائية</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 41 HEX -->
+
+    <a
+      class="tool-card violet"
+      href={`${import.meta.env.BASE_URL}tools/hex-converter/`}
+    >
+
+      <div class="icon">
+        <span>HEX</span>
+      </div>
+
+      <div class="content">
+        <span class="english">HEX CONVERTER</span>
+        <h3>Hex Converter</h3>
+        <p>تحويل الأرقام السداسية</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 42 DECIMAL -->
+
+    <a
+      class="tool-card cyan"
+      href={`${import.meta.env.BASE_URL}tools/decimal-to-binary/`}
+    >
+
+      <div class="icon">
+        <span>01</span>
+      </div>
+
+      <div class="content">
+        <span class="english">DECIMAL TO BINARY</span>
+        <h3>Decimal to Binary</h3>
+        <p>تحويل عشري إلى ثنائي</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 43 URL PARSER -->
+
+    <a
+      class="tool-card blue"
+      href={`${import.meta.env.BASE_URL}tools/url-parser/`}
+    >
+
+      <div class="icon">
+        <span>URL</span>
+      </div>
+
+      <div class="content">
+        <span class="english">URL PARSER</span>
+        <h3>URL Parser</h3>
+        <p>تحليل مكونات URL</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 44 EMAIL -->
+
+    <a
+      class="tool-card green"
+      href={`${import.meta.env.BASE_URL}tools/email-validator/`}
+    >
+
+      <div class="icon">
+        <span>@</span>
+      </div>
+
+      <div class="content">
+        <span class="english">EMAIL VALIDATOR</span>
+        <h3>Email Validator</h3>
+        <p>التحقق من البريد الإلكتروني</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 45 HTTP -->
+
+    <a
+      class="tool-card indigo"
+      href={`${import.meta.env.BASE_URL}tools/http-status-codes/`}
+    >
+
+      <div class="icon">
+        <span>200</span>
+      </div>
+
+      <div class="content">
+        <span class="english">HTTP STATUS</span>
+        <h3>HTTP Status Codes</h3>
+        <p>مرجع أكواد HTTP</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 46 META -->
+
+    <a
+      class="tool-card orange"
+      href={`${import.meta.env.BASE_URL}tools/meta-tag-generator/`}
+    >
+
+      <div class="icon">
+        <span>META</span>
+      </div>
+
+      <div class="content">
+        <span class="english">META TAGS</span>
+        <h3>Meta Tag Generator</h3>
+        <p>إنشاء Meta Tags</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 47 QR -->
+
+    <a
+      class="tool-card green"
+      href={`${import.meta.env.BASE_URL}tools/qr-code-generator/`}
+    >
+
+      <div class="icon">
+        <span>QR</span>
+      </div>
+
+      <div class="content">
+        <span class="english">QR CODE</span>
+        <h3>QR Code Generator</h3>
+        <p>إنشاء رموز QR</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 48 LOREM -->
+
+    <a
+      class="tool-card purple"
+      href={`${import.meta.env.BASE_URL}tools/lorem-ipsum/`}
+    >
+
+      <div class="icon">
+        <span>L</span>
+      </div>
+
+      <div class="content">
+        <span class="english">LOREM IPSUM</span>
+        <h3>Lorem Ipsum</h3>
+        <p>إنشاء نصوص تجريبية</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 49 SLUG -->
+
+    <a
+      class="tool-card blue"
+      href={`${import.meta.env.BASE_URL}tools/slug-generator/`}
+    >
+
+      <div class="icon">
+        <span>↗</span>
+      </div>
+
+      <div class="content">
+        <span class="english">SLUG GENERATOR</span>
+        <h3>Slug Generator</h3>
+        <p>إنشاء روابط SEO</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 50 HTML PREVIEW -->
+
+    <a
+      class="tool-card cyan"
+      href={`${import.meta.env.BASE_URL}tools/html-preview/`}
+    >
+
+      <div class="icon">
+        <span>&lt;/&gt;</span>
+      </div>
+
+      <div class="content">
+        <span class="english">HTML PREVIEW</span>
+        <h3>HTML Preview</h3>
+        <p>معاينة HTML مباشرة</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 51 READING TIME -->
+
+    <a
+      class="tool-card orange"
+      href={`${import.meta.env.BASE_URL}tools/reading-time/`}
+    >
+
+      <div class="icon">
+        <span>◷</span>
+      </div>
+
+      <div class="content">
+        <span class="english">READING TIME</span>
+        <h3>Reading Time</h3>
+        <p>تقدير وقت القراءة</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 52 YAML FORMATTER -->
+
+    <a
+      class="tool-card green"
+      href={`${import.meta.env.BASE_URL}tools/yaml-formatter/`}
+    >
+
+      <div class="icon">
+        <span>Y</span>
+      </div>
+
+      <div class="content">
+        <span class="english">YAML FORMATTER</span>
+        <h3>YAML Formatter</h3>
+        <p>تنسيق YAML</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 53 YAML VALIDATOR -->
+
+    <a
+      class="tool-card violet"
+      href={`${import.meta.env.BASE_URL}tools/yaml-validator/`}
+    >
+
+      <div class="icon">
+        <span>✓</span>
+      </div>
+
+      <div class="content">
+        <span class="english">YAML VALIDATOR</span>
+        <h3>YAML Validator</h3>
+        <p>التحقق من YAML</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
+    <!-- 54 DOCKERFILE -->
+
+    <a
+      class="tool-card blue"
+      href={`${import.meta.env.BASE_URL}tools/dockerfile-formatter/`}
+    >
+
+      <div class="icon">
+        <span>D</span>
+      </div>
+
+      <div class="content">
+        <span class="english">DOCKERFILE</span>
+        <h3>Dockerfile Formatter</h3>
+        <p>تنسيق Dockerfile</p>
+      </div>
+
+      <span class="arrow">‹</span>
+
+    </a>
+
+
   </div>
 
 </section>
 
-  </main>  <Footer />
-</body>
-</html><style>
+  </main>  <Footer /></body></html><style>
+
 :root {
   --bg: #f5f8fc;
   --card: #ffffff;
   --text: #0f172a;
   --muted: #64748b;
   --border: #e2e8f0;
-  --primary: #2563eb;
 }
+
 
 * {
   box-sizing: border-box;
@@ -232,213 +1311,326 @@ const toolCount = tools.length;
   padding: 0;
 }
 
+
 html {
   scroll-behavior: smooth;
 }
 
+
 body {
   min-height: 100vh;
+
   background:
     radial-gradient(
       circle at 50% -10%,
-      rgba(37, 99, 235, .10),
-      transparent 38%
+      rgba(37, 99, 235, .12),
+      transparent 42%
     ),
     var(--bg);
+
   color: var(--text);
+
   font-family: "Cairo", sans-serif;
 }
 
+
 .page {
   width: min(1180px, calc(100% - 30px));
+
   margin: auto;
-  padding: 45px 0 80px;
+
+  padding:
+    35px 0 75px;
 }
+
 
 /* HERO */
 
 .hero {
-  padding: 25px 10px 55px;
   text-align: center;
+
+  padding:
+    25px 10px 50px;
 }
+
 
 .badge {
   display: inline-flex;
+
   align-items: center;
-  gap: 9px;
-  padding: 8px 14px;
-  border: 1px solid rgba(37, 99, 235, .15);
+
+  gap: 8px;
+
+  padding:
+    8px 14px;
+
+  border:
+    1px solid rgba(37, 99, 235, .15);
+
   border-radius: 999px;
-  background: rgba(37, 99, 235, .06);
-  color: var(--primary);
-  font: 700 9px "Fira Code", monospace;
+
+  background:
+    rgba(37, 99, 235, .06);
+
+  color: #2563eb;
+
+  font:
+    700 9px "Fira Code", monospace;
+
   letter-spacing: .7px;
 }
+
 
 .pulse {
   width: 7px;
   height: 7px;
+
   border-radius: 50%;
+
   background: #22c55e;
-  box-shadow: 0 0 0 5px rgba(34,197,94,.10);
-  animation: pulse 2s infinite;
+
+  animation:
+    pulse 2s infinite;
 }
+
 
 .hero h1 {
   margin-top: 20px;
-  font-size: clamp(30px, 5vw, 48px);
-  font-weight: 800;
+
+  font-size:
+    clamp(30px, 5vw, 48px);
+
   line-height: 1.3;
+
+  font-weight: 800;
 }
+
 
 .hero h1 strong {
   display: block;
-  background: linear-gradient(90deg, #2563eb, #7c3aed);
+
+  background:
+    linear-gradient(
+      90deg,
+      #2563eb,
+      #7c3aed
+    );
+
   -webkit-background-clip: text;
   background-clip: text;
+
   color: transparent;
 }
 
-.hero > p {
+
+.hero p {
   max-width: 650px;
-  margin: 12px auto 0;
+
+  margin:
+    12px auto 0;
+
   color: var(--muted);
+
   font-size: 13px;
 }
 
+
 .stats {
   display: flex;
+
   justify-content: center;
-  gap: 10px;
-  margin-top: 27px;
+
+  gap: 9px;
+
+  margin-top: 25px;
 }
+
 
 .stats div {
   min-width: 100px;
-  padding: 9px 15px;
-  border: 1px solid var(--border);
+
+  padding:
+    9px 14px;
+
+  border:
+    1px solid var(--border);
+
   border-radius: 13px;
-  background: rgba(255,255,255,.85);
+
+  background:
+    rgba(255,255,255,.9);
+
+  box-shadow:
+    0 5px 20px rgba(15,23,42,.035);
 }
+
 
 .stats b,
 .stats span {
   display: block;
 }
 
+
 .stats b {
-  color: var(--primary);
+  color: #2563eb;
+
   font-size: 17px;
-  line-height: 1.3;
 }
+
 
 .stats span {
   color: var(--muted);
+
   font-size: 9px;
 }
+
 
 /* SECTION */
 
 .section-head {
   display: flex;
-  align-items: end;
+
   justify-content: space-between;
+
+  align-items: end;
+
   margin-bottom: 18px;
 }
 
+
 .section-head small {
-  color: var(--primary);
-  font: 800 9px "Fira Code", monospace;
+  color: #2563eb;
+
+  font:
+    800 9px "Fira Code", monospace;
+
   letter-spacing: 1px;
 }
 
+
 .section-head h2 {
   margin-top: 2px;
+
   font-size: 24px;
+
   font-weight: 800;
 }
 
+
 .count {
-  padding: 6px 11px;
+  padding:
+    6px 11px;
+
   border-radius: 8px;
+
   background: #eef2ff;
+
   color: #4f46e5;
+
   font-size: 10px;
+
   font-weight: 800;
 }
+
 
 /* GRID */
 
 .tools-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
   gap: 13px;
 }
+
 
 /* CARD */
 
 .tool-card {
   position: relative;
+
   display: flex;
+
   align-items: center;
+
   gap: 12px;
+
   min-height: 106px;
+
   padding: 14px;
 
   overflow: hidden;
 
   color: var(--text);
+
   text-decoration: none;
 
-  border: 1px solid var(--border);
+  border:
+    1px solid var(--border);
+
   border-radius: 20px;
-  background: rgba(255,255,255,.94);
+
+  background:
+    rgba(255,255,255,.96);
 
   box-shadow:
-    0 5px 18px rgba(15,23,42,.035);
-
-  opacity: 0;
-
-  animation:
-    cardIn .5s cubic-bezier(.2,.8,.2,1)
-    forwards;
-
-  animation-delay: var(--delay);
+    0 5px 18px
+    rgba(15,23,42,.035);
 
   transition:
     transform .25s ease,
-    border-color .25s ease,
-    box-shadow .25s ease;
+    box-shadow .25s ease,
+    border-color .25s ease;
 }
+
 
 .tool-card::before {
   content: "";
+
   position: absolute;
-  width: 100px;
-  height: 100px;
-  top: -50px;
-  left: -50px;
+
+  width: 120px;
+  height: 120px;
+
+  left: -60px;
+  top: -60px;
+
   border-radius: 50%;
+
   background: currentColor;
-  opacity: .045;
-  transition: transform .4s ease;
+
+  opacity: .05;
+
+  transition:
+    transform .45s ease;
 }
+
 
 .tool-card:hover {
-  transform: translateY(-5px);
-  border-color: currentColor;
+  transform:
+    translateY(-5px);
+
+  border-color:
+    currentColor;
+
   box-shadow:
-    0 16px 35px rgba(15,23,42,.09);
+    0 18px 40px
+    rgba(15,23,42,.11);
 }
 
+
 .tool-card:hover::before {
-  transform: scale(2.5);
+  transform:
+    scale(2.7);
 }
+
 
 /* ICON */
 
 .icon {
   position: relative;
+
   z-index: 1;
 
   flex: none;
@@ -447,30 +1639,42 @@ body {
   height: 56px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   border-radius: 17px;
 
-  background: currentColor;
+  background:
+    currentColor;
+
   color: #fff;
 
   box-shadow:
-    0 8px 18px rgba(15,23,42,.13);
+    0 8px 18px
+    rgba(15,23,42,.13);
 
   transition:
     transform .3s ease;
 }
 
+
 .icon span {
   max-width: 48px;
+
   overflow: hidden;
-  font-family: "Fira Code", monospace;
-  font-size: 12px;
-  font-weight: 800;
+
+  font:
+    800 11px
+    "Fira Code",
+    monospace;
+
   text-align: center;
+
   white-space: nowrap;
 }
+
 
 .tool-card:hover .icon {
   transform:
@@ -478,80 +1682,106 @@ body {
     scale(1.08);
 }
 
+
 /* CONTENT */
 
 .content {
   position: relative;
+
   z-index: 1;
+
   min-width: 0;
+
   flex: 1;
 }
 
+
 .english {
   display: block;
+
   overflow: hidden;
+
   color: var(--muted);
-  font: 600 8px "Fira Code", monospace;
+
+  font:
+    600 8px
+    "Fira Code",
+    monospace;
+
   text-overflow: ellipsis;
+
   white-space: nowrap;
 }
+
 
 .content h3 {
   margin-top: 1px;
+
   font-size: 13px;
+
   font-weight: 800;
 }
 
+
 .content p {
   margin-top: 2px;
+
   overflow: hidden;
+
   color: var(--muted);
+
   font-size: 9px;
+
   text-overflow: ellipsis;
+
   white-space: nowrap;
 }
+
 
 /* ARROW */
 
 .arrow {
   position: relative;
-  z-index: 2;
+
+  z-index: 1;
 
   flex: none;
 
-  width: 25px;
-  height: 25px;
+  width: 27px;
+  height: 27px;
 
   display: flex;
+
   align-items: center;
+
   justify-content: center;
 
   border-radius: 50%;
 
-  background: rgba(100,116,139,.08);
+  background:
+    rgba(100,116,139,.08);
+
   color: var(--muted);
 
+  font-size: 23px;
+
+  line-height: 1;
+
   transition:
-    transform .25s ease,
-    background .25s ease,
-    color .25s ease;
+    .25s ease;
 }
 
-.arrow svg {
-  width: 13px;
-  height: 13px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
 
 .tool-card:hover .arrow {
-  transform: translateX(-4px);
-  background: currentColor;
+  transform:
+    translateX(-4px);
+
+  background:
+    currentColor;
+
   color: #fff;
 }
+
 
 /* COLORS */
 
@@ -595,159 +1825,164 @@ body {
   color: #db2777;
 }
 
+
 /* ANIMATION */
 
-@keyframes cardIn {
-  from {
-    opacity: 0;
-    transform: translateY(18px) scale(.97);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
 @keyframes pulse {
+
   0%,
   100% {
     box-shadow:
-      0 0 0 5px rgba(34,197,94,.10);
+      0 0 0 5px
+      rgba(34,197,94,.10);
   }
 
   50% {
     box-shadow:
-      0 0 0 9px rgba(34,197,94,.02);
+      0 0 0 9px
+      rgba(34,197,94,.02);
   }
+
 }
+
 
 /* TABLET */
 
 @media (max-width: 900px) {
+
   .tools-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
   }
+
 }
+
 
 /* MOBILE */
 
 @media (max-width: 600px) {
+
   .page {
-    width: calc(100% - 14px);
-    padding-top: 22px;
+    width:
+      calc(100% - 14px);
+
+    padding-top: 20px;
   }
 
+
   .hero {
-    padding: 15px 5px 35px;
+    padding:
+      15px 5px 35px;
   }
+
 
   .hero h1 {
     font-size: 29px;
   }
 
-  .hero > p {
+
+  .hero p {
     font-size: 11px;
   }
+
 
   .stats {
     gap: 5px;
   }
 
+
   .stats div {
     min-width: 0;
+
     flex: 1;
-    padding: 8px 4px;
+
+    padding:
+      8px 4px;
   }
+
 
   .stats b {
     font-size: 14px;
   }
 
+
   .stats span {
     font-size: 8px;
   }
+
 
   .section-head h2 {
     font-size: 20px;
   }
 
+
+  /* عمودان على الهاتف */
+
   .tools-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
     gap: 8px;
   }
 
+
   .tool-card {
-    min-height: 119px;
-    padding: 10px 7px;
+    min-height: 122px;
+
+    padding: 10px 6px;
 
     flex-direction: column;
+
     justify-content: center;
+
     text-align: center;
 
     gap: 6px;
+
     border-radius: 18px;
   }
+
 
   .icon {
     width: 48px;
     height: 48px;
+
     border-radius: 15px;
   }
+
 
   .icon span {
     font-size: 10px;
   }
 
+
   .english {
     font-size: 6.5px;
   }
+
 
   .content h3 {
     font-size: 11px;
   }
 
+
   .content p {
     display: none;
   }
 
+
   .arrow {
     position: absolute;
+
     top: 6px;
     left: 6px;
+
     width: 19px;
     height: 19px;
+
+    font-size: 16px;
   }
 
-  .arrow svg {
-    width: 9px;
-    height: 9px;
-  }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-
-  .tool-card {
-    opacity: 1;
-    animation: none;
-    transition: none;
-  }
-
-  .tool-card:hover {
-    transform: none;
-  }
-
-  .icon,
-  .arrow,
-  .tool-card::before {
-    transition: none;
-  }
-
-  .pulse {
-    animation: none;
-  }
-}
 </style>
