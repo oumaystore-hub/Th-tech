@@ -2,342 +2,726 @@
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
-const pageTitle = "أدوات المطورين المجانية - Th.Tech";
-const pageDesc = "مجموعة أدوات المطورين المجانية والسريعة: تنسيق JSON، التحقق من الصحة، تنسيق HTML و JavaScript، وعدّاد الكلمات. أدوات بسيطة تعمل على المتصفح مباشرة.";
+const pageTitle = "أدوات المطورين المجانية | Th.Tech";
+const pageDesc =
+  "أدوات مطورين مجانية وسريعة تعمل مباشرة في المتصفح، تشمل JSON Formatter وJSON Validator وأدوات HTML وJavaScript والنصوص.";
 
-// قائمة الأدوات (سنزيد هنا لاحقاً)
 const tools = [
   {
     name: "JSON Formatter",
     slug: "json-formatter",
-    icon: "fa-code", // Font Awesome class
-    color: "#2563eb", // Blue
-    desc: "تنسيق وتجميل ملفات JSON. تحويل JSON غير مرتب إلى كود مقروء، Minify، والتحقق من الصحة.",
-    tags: ["JSON", "Format", "Validator"]
+    icon: "fa-code",
+    color: "#2563eb",
+    desc: "تنسيق وتجميل JSON وتحويل الأكواد غير المرتبة إلى كود واضح ومقروء مع التحقق من صحة JSON.",
+    tags: ["JSON", "Format", "Developer"]
   },
   {
     name: "JSON Validator",
     slug: "json-validator",
-    icon: "fa-check-circle",
-    color: "#10b981", // Green
-    desc: "فحص أكواد JSON واكتشاف الأخطاء البرمجية بدقة. معرفة رقم السطر والعمود للخطأ.",
+    icon: "fa-circle-check",
+    color: "#10b981",
+    desc: "تحقق من صحة JSON واكتشف أخطاء الصياغة مع معرفة مكان الخطأ بسهولة.",
     tags: ["JSON", "Validate", "Debug"]
   },
   {
     name: "HTML Formatter",
     slug: "html-formatter",
     icon: "fa-html5",
-    color: "#f97316", // Orange
-    desc: "تنسيق كود HTML وجعله قابلاً للقراءة. إزالة المسافات الزائدة (Minify) أو تجميل الكود.",
+    color: "#f97316",
+    desc: "تنسيق وترتيب HTML وجعل الكود أسهل في القراءة مع إمكانية ضغط الكود.",
     tags: ["HTML", "Beautify", "Minify"]
   },
   {
     name: "JavaScript Formatter",
     slug: "javascript-formatter",
     icon: "fa-js",
-    color: "#eab308", // Yellow
-    desc: "تجميل وتنسيق كود JavaScript. تحويل الكود المضغوط إلى هيكل واضح ومنظم.",
-    tags: ["JS", "Code", "Format"]
+    color: "#eab308",
+    desc: "تنسيق JavaScript وتحويل الكود المضغوط إلى كود منظم وأسهل في القراءة.",
+    tags: ["JavaScript", "JS", "Format"]
   },
   {
     name: "Word Counter",
     slug: "word-counter",
     icon: "fa-font",
-    color: "#8b5cf6", // Purple
-    desc: "أداة لحساب عدد الكلمات، الأحرف، الجمل، والفقرات، بالإضافة إلى وقت القراءة التقديري.",
+    color: "#8b5cf6",
+    desc: "احسب الكلمات والأحرف والجمل والفقرات مع تقدير وقت القراءة.",
     tags: ["Text", "Counter", "SEO"]
   }
 ];
+
+const base = import.meta.env.BASE_URL;
 ---
 
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
   <title>{pageTitle}</title>
-  <meta name="description" content={pageDesc} />
-  <link rel="canonical" href="https://th-tech.github.io/tools/" />
-  <link rel="icon" type="image/png" href="/Th-tech/logo1.png" />
-  <!-- Fonts & Icons -->
+
+  <meta
+    name="description"
+    content={pageDesc}
+  />
+
+  <meta
+    name="robots"
+    content="index, follow, max-image-preview:large"
+  />
+
+  <link
+    rel="canonical"
+    href="https://th-tech.github.io/Th-tech/tools/"
+  />
+
+  <link
+    rel="icon"
+    type="image/png"
+    href={`${base}logo1.png`}
+  />
+
+  <meta
+    property="og:title"
+    content={pageTitle}
+  />
+
+  <meta
+    property="og:description"
+    content={pageDesc}
+  />
+
+  <meta
+    property="og:type"
+    content="website"
+  />
+
+  <meta
+    property="og:url"
+    content="https://th-tech.github.io/Th-tech/tools/"
+  />
+
+  <meta
+    property="og:site_name"
+    content="Th.Tech"
+  />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  
-  <!-- Open Graph -->
-  <meta property="og:title" content={pageTitle} />
-  <meta property="og:description" content={pageDesc} />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://th-tech.github.io/tools/" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": pageTitle,
+    "description": pageDesc,
+    "url": "https://th-tech.github.io/Th-tech/tools/",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "Th.Tech",
+      "url": "https://th-tech.github.io/Th-tech/"
+    }
+  })} />
 </head>
+
 <body>
+
   <Header />
 
   <main class="tools-page">
-    <!-- Hero Section -->
+
     <section class="hero">
       <div class="container">
-        <h1>️ أدوات المطورين</h1>
-        <p>أدوات مجانية، سريعة، وآمنة تعمل مباشرة داخل المتصفح.</p>
+
+        <span class="eyebrow">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          أدوات مجانية للمطورين
+        </span>
+
+        <h1>
+          أدوات المطورين
+          <span>السريعة والمجانية</span>
+        </h1>
+
+        <p>
+          أدوات برمجية بسيطة وسريعة تعمل مباشرة داخل متصفحك.
+          بدون تسجيل وبدون رفع ملفات إلى الخادم.
+        </p>
+
+        <div class="hero-stats">
+          <div>
+            <strong>{tools.length}+</strong>
+            <span>أدوات</span>
+          </div>
+
+          <div>
+            <strong>100%</strong>
+            <span>مجانية</span>
+          </div>
+
+          <div>
+            <strong>0</strong>
+            <span>رفع للملفات</span>
+          </div>
+        </div>
+
       </div>
     </section>
 
-    <!-- Tools Grid -->
+
     <section class="tools-section">
       <div class="container">
-        <div class="tools-grid">
-          {tools.map((tool) => (
-            <a href={`/tools/${tool.slug}/`} class="tool-card">
-              <div class="card-header">
-                <div class="icon-box" style={`background: ${tool.color}15; color: ${tool.color};`}>
-                  <i class={`fas ${tool.icon}`}></i>
-                </div>
-                <div class="tags">
-                  {tool.tags.map(tag => <span class="tag">{tag}</span>)}
-                </div>
-              </div>
-              <div class="card-body">
-                <h2>{tool.name}</h2>
-                <p>{tool.desc}</p>
-              </div>
-              <div class="card-footer">
-                <span class="action-text">
-                  فتح الأداة <i class="fas fa-arrow-left"></i>
-                </span>
-              </div>
-            </a>
-          ))}
+
+        <div class="section-heading">
+          <div>
+            <span>TOOLKIT</span>
+            <h2>اختر الأداة التي تحتاجها</h2>
+          </div>
+
+          <p>
+            أدوات عملية للمبرمجين والطلاب وصناع المحتوى
+            والمستخدمين التقنيين.
+          </p>
         </div>
+
+
+        <div class="tools-grid">
+
+          {tools.map((tool) => (
+
+            <a
+              href={`${base}tools/${tool.slug}/`}
+              class="tool-card"
+              aria-label={`فتح ${tool.name}`}
+            >
+
+              <div class="card-header">
+
+                <div
+                  class="icon-box"
+                  style={`--icon-color:${tool.color};`}
+                >
+                  <i class={`fa-solid ${tool.icon}`}></i>
+                </div>
+
+                <div class="tags">
+                  {tool.tags.map((tag) => (
+                    <span class="tag">{tag}</span>
+                  ))}
+                </div>
+
+              </div>
+
+
+              <div class="card-body">
+
+                <h2>{tool.name}</h2>
+
+                <p>
+                  {tool.desc}
+                </p>
+
+              </div>
+
+
+              <div class="card-footer">
+
+                <span>
+                  فتح الأداة
+                </span>
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+              </div>
+
+            </a>
+
+          ))}
+
+        </div>
+
       </div>
     </section>
 
-    <!-- SEO Content / Intro -->
+
     <section class="info-section">
+
       <div class="container">
-        <h2>لماذا استخدام أدوات Th.Tech؟</h2>
-        <div class="features-grid">
-          <div class="feature">
-            <i class="fas fa-bolt"></i>
-            <h3>سرعة فائقة</h3>
-            <p>لا داعي لرفع ملفات أو انتظار الخوادم. كل شيء يعمل على جهازك فوراً.</p>
-          </div>
-          <div class="feature">
-            <i class="fas fa-lock"></i>
-            <h3>خصوصية تامة</h3>
-            <p>بياناتك لا تغادر متصفحك. لا نقوم بتخزين أي أكواد أو مدخلات.</p>
-          </div>
-          <div class="feature">
-            <i class="fas fa-mobile-alt"></i>
-            <h3>متجاوب بالكامل</h3>
-            <p>استخدم الأدوات من هاتفك المحمول أو الكمبيوتر بكفاءة عالية.</p>
-          </div>
+
+        <div class="info-heading">
+
+          <span>TH.TECH</span>
+
+          <h2>
+            لماذا تستخدم أدوات Th.Tech؟
+          </h2>
+
+          <p>
+            صممنا الأدوات لتكون بسيطة وسريعة ومناسبة
+            للاستخدام اليومي.
+          </p>
+
         </div>
+
+
+        <div class="features-grid">
+
+          <article class="feature">
+
+            <div class="feature-icon">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+
+            <h3>سرعة عالية</h3>
+
+            <p>
+              تعمل الأدوات مباشرة داخل المتصفح دون الحاجة
+              إلى انتظار معالجة الخادم.
+            </p>
+
+          </article>
+
+
+          <article class="feature">
+
+            <div class="feature-icon">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <h3>خصوصية أفضل</h3>
+
+            <p>
+              الأدوات التي تعمل محليًا لا تحتاج إلى إرسال
+              مدخلاتك إلى خادم خارجي.
+            </p>
+
+          </article>
+
+
+          <article class="feature">
+
+            <div class="feature-icon">
+              <i class="fa-solid fa-mobile-screen"></i>
+            </div>
+
+            <h3>متجاوبة مع الهاتف</h3>
+
+            <p>
+              استخدم أدواتك من الهاتف أو الجهاز اللوحي
+              أو الكمبيوتر بسهولة.
+            </p>
+
+          </article>
+
+        </div>
+
       </div>
+
     </section>
+
+
+    <section class="seo-section">
+
+      <div class="container">
+
+        <h2>
+          أدوات برمجية مجانية عبر الإنترنت
+        </h2>
+
+        <p>
+          توفر Th.Tech مجموعة من الأدوات المجانية التي تساعد
+          المطورين والمبرمجين في إنجاز المهام اليومية بسرعة.
+          يمكنك تنسيق JSON والتحقق من صحة الأكواد وتنسيق HTML
+          وJavaScript وحساب الكلمات دون الحاجة إلى تثبيت برامج.
+        </p>
+
+        <p>
+          تم تصميم الأدوات لتعمل بشكل بسيط على الهاتف والكمبيوتر،
+          مع التركيز على السرعة وسهولة الاستخدام وتجربة المستخدم.
+        </p>
+
+      </div>
+
+    </section>
+
   </main>
 
   <Footer />
+
 </body>
 </html>
 
+
 <style>
-  :root {
-    --bg: #f8fafc;
-    --card-bg: #ffffff;
-    --text-main: #0f172a;
-    --text-muted: #64748b;
-    --primary: #2563eb;
-    --border: #e2e8f0;
-    --radius: 16px;
-  }
 
-  html.dark-mode {
-    --bg: #0b1120;
-    --card-bg: #1e293b;
-    --text-main: #f1f5f9;
-    --text-muted: #94a3b8;
-    --primary: #3b82f6;
-    --border: #334155;
-  }
+:root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --primary: #2563eb;
+  --border: #e2e8f0;
+  --soft: #eff6ff;
+}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  
-  body {
-    background: var(--bg);
-    color: var(--text-main);
-    font-family: 'Cairo', sans-serif;
-    line-height: 1.6;
-    transition: background 0.3s, color 0.3s;
-  }
+html.dark-mode {
+  --bg: #080f1d;
+  --card: #111c2e;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --primary: #60a5fa;
+  --border: #26364d;
+  --soft: #172554;
+}
 
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  .tools-page {
-    padding-bottom: 4rem;
-  }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Cairo', sans-serif;
+  line-height: 1.7;
+}
 
-  /* Hero */
-  .hero {
-    text-align: center;
-    padding: 4rem 0 2rem;
-  }
-  .hero h1 {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-  }
-  .hero p {
-    font-size: 1.1rem;
-    color: var(--text-muted);
-    max-width: 600px;
-    margin: 0 auto;
-  }
+.container {
+  width: min(1200px, calc(100% - 32px));
+  margin: auto;
+}
 
-  /* Tools Grid */
-  .tools-section {
-    margin-bottom: 4rem;
-  }
+
+/* HERO */
+
+.hero {
+  text-align: center;
+  padding: 70px 0 50px;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--primary);
+  background: var(--soft);
+  padding: 7px 14px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  line-height: 1.25;
+  font-weight: 800;
+  margin-bottom: 18px;
+}
+
+.hero h1 span {
+  color: var(--primary);
+}
+
+.hero p {
+  max-width: 680px;
+  margin: auto;
+  color: var(--muted);
+  font-size: 1.05rem;
+}
+
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 55px;
+  margin-top: 35px;
+}
+
+.hero-stats div {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-stats strong {
+  font-size: 1.5rem;
+  color: var(--primary);
+}
+
+.hero-stats span {
+  color: var(--muted);
+  font-size: .8rem;
+}
+
+
+/* SECTION */
+
+.tools-section {
+  padding: 20px 0 70px;
+}
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+.section-heading span,
+.info-heading span {
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+
+.section-heading h2 {
+  font-size: 1.8rem;
+}
+
+.section-heading p {
+  color: var(--muted);
+  max-width: 450px;
+}
+
+
+/* GRID */
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+
+/* CARD */
+
+.tool-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 22px;
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 255px;
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease,
+    border-color .2s ease;
+}
+
+.tool-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--primary);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, .10);
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.icon-box {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  background: color-mix(
+    in srgb,
+    var(--icon-color) 12%,
+    transparent
+  );
+  color: var(--icon-color);
+  font-size: 21px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.tag {
+  font-size: 10px;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  color: var(--muted);
+}
+
+.card-body {
+  margin-top: 22px;
+}
+
+.card-body h2 {
+  font-size: 1.2rem;
+  margin-bottom: 7px;
+}
+
+.card-body p {
+  color: var(--muted);
+  font-size: .88rem;
+  line-height: 1.7;
+}
+
+.card-footer {
+  margin-top: auto;
+  padding-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: .85rem;
+}
+
+.card-footer i {
+  transition: transform .2s ease;
+}
+
+.tool-card:hover .card-footer i {
+  transform: translateX(-5px);
+}
+
+
+/* INFO */
+
+.info-section {
+  padding: 75px 0;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.info-heading {
+  text-align: center;
+  max-width: 650px;
+  margin: auto auto 45px;
+}
+
+.info-heading h2 {
+  font-size: 2rem;
+  margin: 7px 0;
+}
+
+.info-heading p {
+  color: var(--muted);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.feature {
+  text-align: center;
+}
+
+.feature-icon {
+  width: 58px;
+  height: 58px;
+  display: grid;
+  place-items: center;
+  margin: auto auto 15px;
+  border-radius: 16px;
+  background: var(--soft);
+  color: var(--primary);
+  font-size: 21px;
+}
+
+.feature h3 {
+  margin-bottom: 7px;
+}
+
+.feature p {
+  color: var(--muted);
+  font-size: .88rem;
+}
+
+
+/* SEO */
+
+.seo-section {
+  padding: 65px 0;
+}
+
+.seo-section > .container {
+  max-width: 850px;
+}
+
+.seo-section h2 {
+  font-size: 1.7rem;
+  margin-bottom: 15px;
+}
+
+.seo-section p {
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 900px) {
+
   .tools-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 2rem;
-  }
-
-  /* Tool Card */
-  .tool-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-    height: 100%;
-  }
-
-  .tool-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
-    border-color: var(--primary);
-  }
-
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1.5rem;
-  }
-
-  .icon-box {
-    width: 50px;
-    height: 50px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-  }
-
-  .tags {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-
-  .tag {
-    font-size: 0.7rem;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    padding: 0.2rem 0.6rem;
-    border-radius: 20px;
-    color: var(--text-muted);
-    font-weight: 600;
-  }
-
-  .card-body h2 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-
-  .card-body p {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-
-  .card-footer {
-    margin-top: auto;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-  }
-
-  .action-text {
-    font-weight: 700;
-    color: var(--primary);
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .action-text i {
-    font-size: 0.8rem;
-    transition: transform 0.2s;
-  }
-
-  .tool-card:hover .action-text i {
-    transform: translateX(-4px); /* RTL flip logic handled by transform direction usually, but here simple shift */
-  }
-
-  /* Info Section */
-  .info-section {
-    background: var(--card-bg);
-    padding: 4rem 0;
-    border-top: 1px solid var(--border);
-  }
-  
-  .info-section h2 {
-    text-align: center;
-    margin-bottom: 3rem;
-    font-size: 2rem;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    text-align: center;
+    grid-template-columns: 1fr;
   }
 
-  .feature i {
+}
+
+@media (max-width: 640px) {
+
+  .hero {
+    padding: 45px 0 35px;
+  }
+
+  .hero-stats {
+    gap: 25px;
+  }
+
+  .section-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tools-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tool-card {
+    min-height: 230px;
+  }
+
+  .hero h1 {
     font-size: 2rem;
-    color: var(--primary);
-    margin-bottom: 1rem;
   }
 
-  .feature h3 {
-    margin-bottom: 0.5rem;
-    font-weight: 700;
-  }
+}
 
-  .feature p {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-  }
-
-  /* Responsive */
-  @media (max-width: 640px) {
-    .hero h1 { font-size: 2rem; }
-    .tools-grid { grid-template-columns: 1fr; }
-    .card-header { flex-direction: column; gap: 1rem; }
-    .tags { justify-content: flex-start; }
-  }
 </style>
