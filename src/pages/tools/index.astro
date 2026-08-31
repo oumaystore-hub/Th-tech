@@ -1,735 +1,319 @@
 ---
-
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
-const base = import.meta.env.BASE_URL.replace(//$/, '');
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const tools = [
-{ name: 'JSON Formatter', slug: 'json-formatter', desc: 'تنسيق وتجميل JSON', cat: 'JSON', color: 'blue', icon: 'braces' },
-{ name: 'JSON Validator', slug: 'json-validator', desc: 'التحقق من صحة JSON', cat: 'JSON', color: 'green', icon: 'check' },
-{ name: 'JSON Minifier', slug: 'json-minifier', desc: 'تصغير JSON', cat: 'JSON', color: 'cyan', icon: 'compress' },
-{ name: 'JSON to CSV', slug: 'json-to-csv', desc: 'تحويل JSON إلى CSV', cat: 'JSON', color: 'orange', icon: 'convert' },
-{ name: 'CSV to JSON', slug: 'csv-to-json', desc: 'تحويل CSV إلى JSON', cat: 'JSON', color: 'purple', icon: 'table' },
-{ name: 'JSON to XML', slug: 'json-to-xml', desc: 'تحويل JSON إلى XML', cat: 'JSON', color: 'blue', icon: 'xml' },
-{ name: 'XML to JSON', slug: 'xml-to-json', desc: 'تحويل XML إلى JSON', cat: 'JSON', color: 'green', icon: 'convert' },
-{ name: 'JSON Diff', slug: 'json-diff', desc: 'مقارنة ملفي JSON', cat: 'JSON', color: 'red', icon: 'diff' },
-{ name: 'JSON Path Tester', slug: 'json-path-tester', desc: 'اختبار JSONPath', cat: 'JSON', color: 'yellow', icon: 'search' },
-{ name: 'JSON Escape', slug: 'json-escape', desc: 'تهريب نصوص JSON', cat: 'JSON', color: 'cyan', icon: 'code' },
+  { name: 'JSON Formatter', slug: 'json-formatter', desc: 'تنسيق وتجميل JSON', color: 'blue' },
+  { name: 'JSON Validator', slug: 'json-validator', desc: 'التحقق من صحة JSON', color: 'green' },
+  { name: 'JSON Minifier', slug: 'json-minifier', desc: 'تصغير JSON', color: 'cyan' },
+  { name: 'JSON to CSV', slug: 'json-to-csv', desc: 'تحويل JSON إلى CSV', color: 'orange' },
+  { name: 'CSV to JSON', slug: 'csv-to-json', desc: 'تحويل CSV إلى JSON', color: 'purple' },
+  { name: 'JSON to XML', slug: 'json-to-xml', desc: 'تحويل JSON إلى XML', color: 'blue' },
+  { name: 'XML to JSON', slug: 'xml-to-json', desc: 'تحويل XML إلى JSON', color: 'green' },
+  { name: 'JSON Diff', slug: 'json-diff', desc: 'مقارنة ملفات JSON', color: 'orange' },
+  { name: 'JSON Path Tester', slug: 'json-path-tester', desc: 'اختبار JSONPath', color: 'purple' },
+  { name: 'JSON Escape', slug: 'json-escape', desc: 'تهريب نصوص JSON', color: 'cyan' },
 
-{ name: 'HTML Formatter', slug: 'html-formatter', desc: 'تنسيق HTML', cat: 'HTML', color: 'orange', icon: 'html' },
-{ name: 'HTML Minifier', slug: 'html-minifier', desc: 'تصغير HTML', cat: 'HTML', color: 'red', icon: 'compress' },
-{ name: 'HTML Entity Encoder', slug: 'html-entity-encoder', desc: 'ترميز HTML Entities', cat: 'HTML', color: 'blue', icon: 'encode' },
-{ name: 'HTML Entity Decoder', slug: 'html-entity-decoder', desc: 'فك HTML Entities', cat: 'HTML', color: 'green', icon: 'decode' },
-{ name: 'HTML to Markdown', slug: 'html-to-markdown', desc: 'تحويل HTML إلى Markdown', cat: 'HTML', color: 'purple', icon: 'convert' },
-{ name: 'HTML Validator', slug: 'html-validator', desc: 'التحقق من HTML', cat: 'HTML', color: 'cyan', icon: 'check' },
-{ name: 'HTML Preview', slug: 'html-preview', desc: 'معاينة HTML', cat: 'HTML', color: 'blue', icon: 'eye' },
-{ name: 'Meta Tag Generator', slug: 'meta-tag-generator', desc: 'إنشاء Meta Tags', cat: 'HTML', color: 'yellow', icon: 'tag' },
-{ name: 'Open Graph Generator', slug: 'open-graph-generator', desc: 'إنشاء Open Graph', cat: 'HTML', color: 'orange', icon: 'share' },
-{ name: 'Favicon Generator', slug: 'favicon-generator', desc: 'إنشاء Favicon', cat: 'HTML', color: 'purple', icon: 'star' },
+  { name: 'HTML Formatter', slug: 'html-formatter', desc: 'تنسيق HTML', color: 'orange' },
+  { name: 'HTML Minifier', slug: 'html-minifier', desc: 'تصغير HTML', color: 'blue' },
+  { name: 'HTML Validator', slug: 'html-validator', desc: 'التحقق من HTML', color: 'green' },
+  { name: 'HTML Preview', slug: 'html-preview', desc: 'معاينة HTML', color: 'purple' },
+  { name: 'HTML Entity Encoder', slug: 'html-entity-encoder', desc: 'ترميز HTML Entities', color: 'cyan' },
+  { name: 'HTML Entity Decoder', slug: 'html-entity-decoder', desc: 'فك ترميز HTML Entities', color: 'blue' },
+  { name: 'HTML to Markdown', slug: 'html-to-markdown', desc: 'تحويل HTML إلى Markdown', color: 'green' },
+  { name: 'Meta Tag Generator', slug: 'meta-tag-generator', desc: 'إنشاء Meta Tags', color: 'orange' },
+  { name: 'Open Graph Generator', slug: 'open-graph-generator', desc: 'إنشاء Open Graph', color: 'purple' },
+  { name: 'Favicon Generator', slug: 'favicon-generator', desc: 'إنشاء Favicon', color: 'cyan' },
 
-{ name: 'CSS Formatter', slug: 'css-formatter', desc: 'تنسيق CSS', cat: 'CSS', color: 'blue', icon: 'css' },
-{ name: 'CSS Minifier', slug: 'css-minifier', desc: 'تصغير CSS', cat: 'CSS', color: 'cyan', icon: 'compress' },
-{ name: 'CSS Gradient Generator', slug: 'css-gradient-generator', desc: 'إنشاء CSS Gradient', cat: 'CSS', color: 'purple', icon: 'gradient' },
-{ name: 'CSS Shadow Generator', slug: 'css-shadow-generator', desc: 'إنشاء Box Shadow', cat: 'CSS', color: 'blue', icon: 'shadow' },
-{ name: 'CSS Border Radius', slug: 'css-border-radius', desc: 'إنشاء Border Radius', cat: 'CSS', color: 'green', icon: 'square' },
-{ name: 'CSS Color Generator', slug: 'css-color-generator', desc: 'اختيار ألوان CSS', cat: 'CSS', color: 'orange', icon: 'palette' },
-{ name: 'CSS Flexbox Generator', slug: 'css-flexbox-generator', desc: 'إنشاء Flexbox', cat: 'CSS', color: 'cyan', icon: 'layout' },
-{ name: 'CSS Grid Generator', slug: 'css-grid-generator', desc: 'إنشاء CSS Grid', cat: 'CSS', color: 'purple', icon: 'grid' },
-{ name: 'CSS Clamp Generator', slug: 'css-clamp-generator', desc: 'إنشاء CSS Clamp', cat: 'CSS', color: 'yellow', icon: 'code' },
-{ name: 'CSS Selector Tester', slug: 'css-selector-tester', desc: 'اختبار CSS Selectors', cat: 'CSS', color: 'red', icon: 'search' },
+  { name: 'CSS Formatter', slug: 'css-formatter', desc: 'تنسيق CSS', color: 'blue' },
+  { name: 'CSS Minifier', slug: 'css-minifier', desc: 'تصغير CSS', color: 'cyan' },
+  { name: 'CSS Gradient Generator', slug: 'css-gradient-generator', desc: 'إنشاء تدرجات CSS', color: 'purple' },
+  { name: 'CSS Shadow Generator', slug: 'css-shadow-generator', desc: 'إنشاء ظلال CSS', color: 'green' },
+  { name: 'CSS Border Radius', slug: 'css-border-radius', desc: 'إنشاء Border Radius', color: 'orange' },
+  { name: 'CSS Color Generator', slug: 'css-color-generator', desc: 'إنشاء ألوان CSS', color: 'blue' },
+  { name: 'CSS Flexbox Generator', slug: 'css-flexbox-generator', desc: 'مولد Flexbox', color: 'purple' },
+  { name: 'CSS Grid Generator', slug: 'css-grid-generator', desc: 'مولد CSS Grid', color: 'green' },
+  { name: 'CSS Clamp Generator', slug: 'css-clamp-generator', desc: 'إنشاء CSS Clamp', color: 'cyan' },
+  { name: 'CSS Selector Tester', slug: 'css-selector-tester', desc: 'اختبار CSS Selectors', color: 'orange' },
 
-{ name: 'JavaScript Formatter', slug: 'javascript-formatter', desc: 'تنسيق JavaScript', cat: 'JavaScript', color: 'yellow', icon: 'js' },
-{ name: 'JavaScript Minifier', slug: 'javascript-minifier', desc: 'تصغير JavaScript', cat: 'JavaScript', color: 'orange', icon: 'compress' },
-{ name: 'JavaScript Validator', slug: 'javascript-validator', desc: 'التحقق من JavaScript', cat: 'JavaScript', color: 'green', icon: 'check' },
-{ name: 'JavaScript Beautifier', slug: 'javascript-beautifier', desc: 'تجميل JavaScript', cat: 'JavaScript', color: 'yellow', icon: 'wand' },
-{ name: 'JavaScript Escape', slug: 'javascript-escape', desc: 'تهريب JavaScript', cat: 'JavaScript', color: 'purple', icon: 'code' },
-{ name: 'JavaScript Regex Tester', slug: 'javascript-regex-tester', desc: 'اختبار Regex', cat: 'JavaScript', color: 'blue', icon: 'regex' },
-{ name: 'JS Object Viewer', slug: 'js-object-viewer', desc: 'عرض JavaScript Object', cat: 'JavaScript', color: 'cyan', icon: 'braces' },
-{ name: 'JS Array Generator', slug: 'js-array-generator', desc: 'إنشاء JavaScript Array', cat: 'JavaScript', color: 'green', icon: 'list' },
-{ name: 'JS Timestamp', slug: 'js-timestamp', desc: 'أداة Timestamp', cat: 'JavaScript', color: 'orange', icon: 'clock' },
-{ name: 'JS Error Helper', slug: 'js-error-helper', desc: 'مساعدة أخطاء JavaScript', cat: 'JavaScript', color: 'red', icon: 'bug' },
+  { name: 'JavaScript Formatter', slug: 'javascript-formatter', desc: 'تنسيق JavaScript', color: 'yellow' },
+  { name: 'JavaScript Minifier', slug: 'javascript-minifier', desc: 'تصغير JavaScript', color: 'orange' },
+  { name: 'JavaScript Validator', slug: 'javascript-validator', desc: 'التحقق من JavaScript', color: 'blue' },
+  { name: 'JavaScript Playground', slug: 'javascript-playground', desc: 'تجربة JavaScript', color: 'yellow' },
+  { name: 'TypeScript Formatter', slug: 'typescript-formatter', desc: 'تنسيق TypeScript', color: 'cyan' },
+  { name: 'TypeScript Validator', slug: 'typescript-validator', desc: 'التحقق من TypeScript', color: 'blue' },
+  { name: 'Code Formatter', slug: 'code-formatter', desc: 'تنسيق الأكواد', color: 'green' },
+  { name: 'Code Minifier', slug: 'code-minifier', desc: 'تصغير الأكواد', color: 'purple' },
+  { name: 'Code Diff', slug: 'code-diff', desc: 'مقارنة الأكواد', color: 'orange' },
+  { name: 'Source Code Counter', slug: 'source-code-counter', desc: 'إحصائيات الكود', color: 'cyan' },
 
-{ name: 'SQL Formatter', slug: 'sql-formatter', desc: 'تنسيق SQL', cat: 'SQL', color: 'purple', icon: 'database' },
-{ name: 'SQL Minifier', slug: 'sql-minifier', desc: 'تصغير SQL', cat: 'SQL', color: 'cyan', icon: 'compress' },
-{ name: 'SQL Validator', slug: 'sql-validator', desc: 'التحقق من SQL', cat: 'SQL', color: 'green', icon: 'check' },
-{ name: 'SQL Query Builder', slug: 'sql-query-builder', desc: 'إنشاء SQL Query', cat: 'SQL', color: 'blue', icon: 'database' },
-{ name: 'SQL Insert Generator', slug: 'sql-insert-generator', desc: 'إنشاء INSERT', cat: 'SQL', color: 'orange', icon: 'plus' },
+  { name: 'SQL Formatter', slug: 'sql-formatter', desc: 'تنسيق SQL', color: 'purple' },
+  { name: 'SQL Minifier', slug: 'sql-minifier', desc: 'تصغير SQL', color: 'blue' },
+  { name: 'SQL Validator', slug: 'sql-validator', desc: 'التحقق من SQL', color: 'green' },
+  { name: 'SQL Query Builder', slug: 'sql-query-builder', desc: 'إنشاء استعلامات SQL', color: 'orange' },
+  { name: 'YAML Formatter', slug: 'yaml-formatter', desc: 'تنسيق YAML', color: 'cyan' },
+  { name: 'YAML Validator', slug: 'yaml-validator', desc: 'التحقق من YAML', color: 'blue' },
+  { name: 'XML Formatter', slug: 'xml-formatter', desc: 'تنسيق XML', color: 'orange' },
+  { name: 'XML Validator', slug: 'xml-validator', desc: 'التحقق من XML', color: 'green' },
+  { name: 'Markdown Formatter', slug: 'markdown-formatter', desc: 'تنسيق Markdown', color: 'purple' },
+  { name: 'Markdown Preview', slug: 'markdown-preview', desc: 'معاينة Markdown', color: 'cyan' },
 
-{ name: 'YAML Formatter', slug: 'yaml-formatter', desc: 'تنسيق YAML', cat: 'Data', color: 'cyan', icon: 'yaml' },
-{ name: 'YAML Validator', slug: 'yaml-validator', desc: 'التحقق من YAML', cat: 'Data', color: 'blue', icon: 'check' },
-{ name: 'XML Formatter', slug: 'xml-formatter', desc: 'تنسيق XML', cat: 'Data', color: 'orange', icon: 'xml' },
-{ name: 'XML Validator', slug: 'xml-validator', desc: 'التحقق من XML', cat: 'Data', color: 'green', icon: 'check' },
-{ name: 'CSV Formatter', slug: 'csv-formatter', desc: 'تنسيق CSV', cat: 'Data', color: 'purple', icon: 'table' },
-{ name: 'CSV Validator', slug: 'csv-validator', desc: 'التحقق من CSV', cat: 'Data', color: 'cyan', icon: 'check' },
-{ name: 'CSV to TSV', slug: 'csv-to-tsv', desc: 'تحويل CSV إلى TSV', cat: 'Data', color: 'blue', icon: 'convert' },
-{ name: 'TSV to CSV', slug: 'tsv-to-csv', desc: 'تحويل TSV إلى CSV', cat: 'Data', color: 'green', icon: 'convert' },
-{ name: 'Data Cleaner', slug: 'data-cleaner', desc: 'تنظيف البيانات', cat: 'Data', color: 'orange', icon: 'clean' },
-{ name: 'Data Table Generator', slug: 'data-table-generator', desc: 'إنشاء جدول بيانات', cat: 'Data', color: 'purple', icon: 'table' },
+  { name: 'Markdown to HTML', slug: 'markdown-to-html', desc: 'تحويل Markdown إلى HTML', color: 'blue' },
+  { name: 'Lorem Ipsum Generator', slug: 'lorem-ipsum-generator', desc: 'إنشاء نص تجريبي', color: 'purple' },
+  { name: 'Word Counter', slug: 'word-counter', desc: 'حساب الكلمات', color: 'green' },
+  { name: 'Character Counter', slug: 'character-counter', desc: 'حساب الأحرف', color: 'orange' },
+  { name: 'Line Counter', slug: 'line-counter', desc: 'حساب الأسطر', color: 'cyan' },
+  { name: 'Text Case Converter', slug: 'text-case-converter', desc: 'تغيير حالة النص', color: 'blue' },
+  { name: 'Text Cleaner', slug: 'text-cleaner', desc: 'تنظيف النصوص', color: 'green' },
+  { name: 'Text Reverser', slug: 'text-reverser', desc: 'عكس النص', color: 'purple' },
+  { name: 'Remove Duplicate Lines', slug: 'remove-duplicate-lines', desc: 'حذف الأسطر المتكررة', color: 'orange' },
+  { name: 'Sort Lines', slug: 'sort-lines', desc: 'ترتيب الأسطر', color: 'cyan' },
 
-{ name: 'Base64 Encoder', slug: 'base64-encoder', desc: 'ترميز Base64', cat: 'Encoding', color: 'blue', icon: 'encode' },
-{ name: 'Base64 Decoder', slug: 'base64-decoder', desc: 'فك Base64', cat: 'Encoding', color: 'green', icon: 'decode' },
-{ name: 'URL Encoder', slug: 'url-encoder', desc: 'ترميز URL', cat: 'Encoding', color: 'orange', icon: 'link' },
-{ name: 'URL Decoder', slug: 'url-decoder', desc: 'فك ترميز URL', cat: 'Encoding', color: 'purple', icon: 'unlock' },
-{ name: 'Unicode Converter', slug: 'unicode-converter', desc: 'تحويل Unicode', cat: 'Encoding', color: 'cyan', icon: 'unicode' },
-{ name: 'ASCII Converter', slug: 'ascii-converter', desc: 'تحويل ASCII', cat: 'Encoding', color: 'blue', icon: 'ascii' },
-{ name: 'Text to Binary', slug: 'text-to-binary', desc: 'النص إلى Binary', cat: 'Encoding', color: 'green', icon: 'binary' },
-{ name: 'Binary to Text', slug: 'binary-to-text', desc: 'Binary إلى نص', cat: 'Encoding', color: 'orange', icon: 'binary' },
-{ name: 'Hex to Decimal', slug: 'hex-to-decimal', desc: 'Hex إلى Decimal', cat: 'Encoding', color: 'purple', icon: 'hash' },
-{ name: 'Decimal to Hex', slug: 'decimal-to-hex', desc: 'Decimal إلى Hex', cat: 'Encoding', color: 'cyan', icon: 'hash' },
+  { name: 'Base64 Encoder', slug: 'base64-encoder', desc: 'ترميز Base64', color: 'blue' },
+  { name: 'Base64 Decoder', slug: 'base64-decoder', desc: 'فك ترميز Base64', color: 'green' },
+  { name: 'URL Encoder', slug: 'url-encoder', desc: 'ترميز URL', color: 'orange' },
+  { name: 'URL Decoder', slug: 'url-decoder', desc: 'فك ترميز URL', color: 'purple' },
+  { name: 'URL Parser', slug: 'url-parser', desc: 'تحليل URL', color: 'cyan' },
+  { name: 'Query String Parser', slug: 'query-string-parser', desc: 'تحليل Query String', color: 'blue' },
+  { name: 'JWT Decoder', slug: 'jwt-decoder', desc: 'قراءة JWT', color: 'purple' },
+  { name: 'JWT Generator', slug: 'jwt-generator', desc: 'إنشاء JWT', color: 'green' },
+  { name: 'UUID Generator', slug: 'uuid-generator', desc: 'إنشاء UUID', color: 'orange' },
+  { name: 'Password Generator', slug: 'password-generator', desc: 'إنشاء كلمات مرور', color: 'cyan' },
 
-{ name: 'JWT Decoder', slug: 'jwt-decoder', desc: 'قراءة JWT', cat: 'Security', color: 'purple', icon: 'key' },
-{ name: 'JWT Generator', slug: 'jwt-generator', desc: 'إنشاء JWT', cat: 'Security', color: 'green', icon: 'key' },
-{ name: 'UUID Generator', slug: 'uuid-generator', desc: 'إنشاء UUID', cat: 'Generators', color: 'blue', icon: 'fingerprint' },
-{ name: 'Password Generator', slug: 'password-generator', desc: 'إنشاء كلمات مرور', cat: 'Security', color: 'red', icon: 'lock' },
-{ name: 'Hash Generator', slug: 'hash-generator', desc: 'إنشاء Hash', cat: 'Security', color: 'purple', icon: 'hash' },
-{ name: 'SHA256 Generator', slug: 'sha256-generator', desc: 'إنشاء SHA-256', cat: 'Security', color: 'green', icon: 'shield' },
-{ name: 'SHA512 Generator', slug: 'sha512-generator', desc: 'إنشاء SHA-512', cat: 'Security', color: 'blue', icon: 'shield' },
-{ name: 'MD5 Generator', slug: 'md5-generator', desc: 'إنشاء MD5', cat: 'Security', color: 'orange', icon: 'hash' },
-{ name: 'Email Validator', slug: 'email-validator', desc: 'التحقق من البريد', cat: 'Validation', color: 'green', icon: 'mail' },
-{ name: 'URL Validator', slug: 'url-validator', desc: 'التحقق من URL', cat: 'Validation', color: 'cyan', icon: 'check' },
+  { name: 'Hash Generator', slug: 'hash-generator', desc: 'إنشاء Hash', color: 'purple' },
+  { name: 'MD5 Generator', slug: 'md5-generator', desc: 'إنشاء MD5', color: 'blue' },
+  { name: 'SHA256 Generator', slug: 'sha256-generator', desc: 'إنشاء SHA-256', color: 'green' },
+  { name: 'SHA512 Generator', slug: 'sha512-generator', desc: 'إنشاء SHA-512', color: 'orange' },
+  { name: 'Timestamp Converter', slug: 'timestamp-converter', desc: 'تحويل Unix Timestamp', color: 'cyan' },
+  { name: 'Unix Timestamp', slug: 'unix-timestamp', desc: 'إنشاء Timestamp', color: 'blue' },
+  { name: 'Date Formatter', slug: 'date-formatter', desc: 'تنسيق التاريخ', color: 'purple' },
+  { name: 'Time Converter', slug: 'time-converter', desc: 'تحويل الوقت', color: 'green' },
+  { name: 'Timezone Converter', slug: 'timezone-converter', desc: 'تحويل المناطق الزمنية', color: 'orange' },
+  { name: 'Cron Generator', slug: 'cron-generator', desc: 'إنشاء Cron Expression', color: 'cyan' },
 
-{ name: 'Regex Tester', slug: 'regex-tester', desc: 'اختبار Regular Expression', cat: 'Testing', color: 'purple', icon: 'regex' },
-{ name: 'Regex Generator', slug: 'regex-generator', desc: 'إنشاء Regex', cat: 'Testing', color: 'blue', icon: 'regex' },
-{ name: 'Text Diff', slug: 'text-diff', desc: 'مقارنة النصوص', cat: 'Text', color: 'orange', icon: 'diff' },
-{ name: 'Code Diff', slug: 'code-diff', desc: 'مقارنة الأكواد', cat: 'Testing', color: 'cyan', icon: 'diff' },
-{ name: 'Word Counter', slug: 'word-counter', desc: 'حساب الكلمات والأحرف', cat: 'Text', color: 'purple', icon: 'text' },
-{ name: 'Character Counter', slug: 'character-counter', desc: 'حساب الأحرف', cat: 'Text', color: 'blue', icon: 'text' },
-{ name: 'Line Counter', slug: 'line-counter', desc: 'حساب الأسطر', cat: 'Text', color: 'green', icon: 'lines' },
-{ name: 'Text Cleaner', slug: 'text-cleaner', desc: 'تنظيف النصوص', cat: 'Text', color: 'orange', icon: 'clean' },
-{ name: 'Text Case Converter', slug: 'text-case-converter', desc: 'تغيير حالة النص', cat: 'Text', color: 'cyan', icon: 'case' },
-{ name: 'Text Reverser', slug: 'text-reverser', desc: 'عكس النص', cat: 'Text', color: 'yellow', icon: 'reverse' },
+  { name: 'Color Converter', slug: 'color-converter', desc: 'تحويل الألوان', color: 'blue' },
+  { name: 'HEX to RGB', slug: 'hex-to-rgb', desc: 'تحويل HEX إلى RGB', color: 'purple' },
+  { name: 'RGB to HEX', slug: 'rgb-to-hex', desc: 'تحويل RGB إلى HEX', color: 'green' },
+  { name: 'HEX to HSL', slug: 'hex-to-hsl', desc: 'تحويل HEX إلى HSL', color: 'orange' },
+  { name: 'RGB to HSL', slug: 'rgb-to-hsl', desc: 'تحويل RGB إلى HSL', color: 'cyan' },
+  { name: 'Color Palette', slug: 'color-palette', desc: 'إنشاء لوحة ألوان', color: 'blue' },
+  { name: 'Contrast Checker', slug: 'contrast-checker', desc: 'فحص تباين الألوان', color: 'purple' },
+  { name: 'QR Code Generator', slug: 'qr-code-generator', desc: 'إنشاء QR Code', color: 'green' },
+  { name: 'Barcode Generator', slug: 'barcode-generator', desc: 'إنشاء Barcode', color: 'orange' },
+  { name: 'ASCII Table', slug: 'ascii-table', desc: 'جدول ASCII', color: 'cyan' },
 
-{ name: 'Lorem Ipsum Generator', slug: 'lorem-ipsum-generator', desc: 'إنشاء نص تجريبي', cat: 'Generators', color: 'purple', icon: 'text' },
-{ name: 'Slug Generator', slug: 'slug-generator', desc: 'إنشاء Slug', cat: 'Generators', color: 'blue', icon: 'link' },
-{ name: 'QR Code Generator', slug: 'qr-code-generator', desc: 'إنشاء QR Code', cat: 'Generators', color: 'green', icon: 'qr' },
-{ name: 'Barcode Generator', slug: 'barcode-generator', desc: 'إنشاء Barcode', cat: 'Generators', color: 'orange', icon: 'barcode' },
-{ name: 'Color Converter', slug: 'color-converter', desc: 'تحويل الألوان', cat: 'Color', color: 'cyan', icon: 'palette' },
-{ name: 'HEX to RGB', slug: 'hex-to-rgb', desc: 'HEX إلى RGB', cat: 'Color', color: 'blue', icon: 'palette' },
-{ name: 'RGB to HEX', slug: 'rgb-to-hex', desc: 'RGB إلى HEX', cat: 'Color', color: 'purple', icon: 'palette' },
-{ name: 'HEX to HSL', slug: 'hex-to-hsl', desc: 'HEX إلى HSL', cat: 'Color', color: 'green', icon: 'palette' },
-{ name: 'RGB to HSL', slug: 'rgb-to-hsl', desc: 'RGB إلى HSL', cat: 'Color', color: 'orange', icon: 'palette' },
-{ name: 'Contrast Checker', slug: 'contrast-checker', desc: 'فحص تباين الألوان', cat: 'Color', color: 'red', icon: 'contrast' },
-
-{ name: 'Unix Timestamp', slug: 'unix-timestamp', desc: 'إنشاء Timestamp', cat: 'Time', color: 'blue', icon: 'clock' },
-{ name: 'Timestamp Converter', slug: 'timestamp-converter', desc: 'تحويل Unix Timestamp', cat: 'Time', color: 'green', icon: 'clock' },
-{ name: 'Date Formatter', slug: 'date-formatter', desc: 'تنسيق التاريخ', cat: 'Time', color: 'purple', icon: 'calendar' },
-{ name: 'Time Converter', slug: 'time-converter', desc: 'تحويل الوقت', cat: 'Time', color: 'orange', icon: 'clock' },
-{ name: 'Timezone Converter', slug: 'timezone-converter', desc: 'تحويل المناطق الزمنية', cat: 'Time', color: 'cyan', icon: 'globe' },
-
-{ name: 'IP Address Validator', slug: 'ip-validator', desc: 'التحقق من IP', cat: 'Network', color: 'blue', icon: 'network' },
-{ name: 'IPv4 Calculator', slug: 'ipv4-calculator', desc: 'حساب IPv4', cat: 'Network', color: 'purple', icon: 'network' },
-{ name: 'IPv6 Calculator', slug: 'ipv6-calculator', desc: 'حساب IPv6', cat: 'Network', color: 'green', icon: 'network' },
-{ name: 'CIDR Calculator', slug: 'cidr-calculator', desc: 'حساب CIDR', cat: 'Network', color: 'orange', icon: 'network' },
-{ name: 'Subnet Calculator', slug: 'subnet-calculator', desc: 'حساب الشبكات الفرعية', cat: 'Network', color: 'cyan', icon: 'network' },
-
-{ name: 'URL Parser', slug: 'url-parser', desc: 'تحليل URL', cat: 'Web', color: 'blue', icon: 'link' },
-{ name: 'Query String Parser', slug: 'query-string-parser', desc: 'تحليل Query String', cat: 'Web', color: 'purple', icon: 'search' },
-{ name: 'HTTP Status Codes', slug: 'http-status-codes', desc: 'مرجع أكواد HTTP', cat: 'Web', color: 'green', icon: 'http' },
-{ name: 'MIME Type Lookup', slug: 'mime-type-lookup', desc: 'البحث عن MIME Types', cat: 'Web', color: 'orange', icon: 'file' },
-{ name: 'HTTP Header Parser', slug: 'http-header-parser', desc: 'تحليل HTTP Headers', cat: 'Web', color: 'cyan', icon: 'header' }
+  { name: 'ASCII Converter', slug: 'ascii-converter', desc: 'تحويل ASCII', color: 'blue' },
+  { name: 'Unicode Converter', slug: 'unicode-converter', desc: 'تحويل Unicode', color: 'purple' },
+  { name: 'Text to Binary', slug: 'text-to-binary', desc: 'تحويل النص إلى Binary', color: 'green' },
+  { name: 'Binary to Text', slug: 'binary-to-text', desc: 'تحويل Binary إلى نص', color: 'orange' },
+  { name: 'Decimal to Binary', slug: 'decimal-to-binary', desc: 'Decimal إلى Binary', color: 'cyan' },
+  { name: 'Binary to Decimal', slug: 'binary-to-decimal', desc: 'Binary إلى Decimal', color: 'blue' },
+  { name: 'Hex to Decimal', slug: 'hex-to-decimal', desc: 'Hex إلى Decimal', color: 'purple' },
+  { name: 'Decimal to Hex', slug: 'decimal-to-hex', desc: 'Decimal إلى Hex', color: 'green' },
+  { name: 'Number Base Converter', slug: 'number-base-converter', desc: 'تحويل أنظمة الأعداد', color: 'orange' },
+  { name: 'Regex Tester', slug: 'regex-tester', desc: 'اختبار Regex', color: 'cyan' }
 ];
 
-const categories = ['الكل', ...Array.from(new Set(tools.map((tool) => tool.cat)))];
+const toolCount = tools.length;
+---
 
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>أدوات المطورين | Th.Tech</title>
-    <meta name="description" content="مجموعة متكاملة من أدوات المطورين المجانية والسريعة." />
+
+    <meta
+      name="description"
+      content="مجموعة كبيرة من أدوات المطورين المجانية والسريعة من Th.Tech."
+    />
+
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href={`https://oumaystore-hub.github.io${base}/tools/`} />
-    <link rel="icon" type="image/png" href={`${base}/logo1.png`} /><link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link
-  href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-  rel="stylesheet"
-/>
-
-  </head>  <body>
-    <Header /><main class="page">
-  <section class="hero">
-    <div class="breadcrumb">
-      <a href={`${base}/`}>الرئيسية</a>
-      <span>›</span>
-      <strong>أدوات المطورين</strong>
-    </div>
-
-    <div class="hero-content">
-      <div class="hero-icon">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4 5h16v14H4z" />
-          <path d="M8 9h8M8 13h5" />
-          <path d="M8 17h3" />
-        </svg>
-      </div>
-
-      <div>
-        <span class="eyebrow">TH.TECH DEVELOPER TOOLS</span>
-        <h1>أدوات المطورين</h1>
-        <p>
-          مجموعة احترافية من الأدوات السريعة والمجانية للمطورين وصناع المحتوى والتقنيين.
-        </p>
-      </div>
-    </div>
-  </section>
-
-  <section class="tools-section">
-    <div class="section-head">
-      <div>
-        <span class="section-label">TOOLBOX</span>
-        <h2>جميع الأدوات</h2>
-      </div>
-
-      <div class="count">
-        <span id="toolCount">{tools.length}</span>
-        أداة
-      </div>
-    </div>
-
-    <div class="controls">
-      <div class="search-box">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-4-4" />
-        </svg>
-
-        <input
-          id="searchInput"
-          type="search"
-          placeholder="ابحث عن أداة..."
-          aria-label="البحث عن أداة"
-        />
-      </div>
-
-      <div class="categories" id="categories">
-        {
-          categories.map((category, index) => (
-            <button
-              type="button"
-              class:list={{ active: index === 0 }}
-              data-category={category}
-            >
-              {category}
-            </button>
-          ))
-        }
-      </div>
-    </div>
-
-    <div class="tools-grid" id="toolsGrid">
-      {
-        tools.map((tool, index) => (
-          <a
-            href={`${base}/tools/${tool.slug}/`}
-            class={`tool-card ${tool.color}`}
-            data-name={tool.name.toLowerCase()}
-            data-description={tool.desc.toLowerCase()}
-            data-category={tool.cat}
-          >
-            <span class="number">
-              {String(index + 1).padStart(2, '0')}
-            </span>
-
-            <span class="icon">
-              {tool.icon === 'braces' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M8 4c-2 0-2 2-2 4v1c0 2-1 3-3 3 2 0 3 1 3 3v1c0 2 0 4 2 4" />
-                  <path d="M16 4c2 0 2 2 2 4v1c0 2 1 3 3 3-2 0-3 1-3 3v1c0 2 0 4-2 4" />
-                </svg>
-              )}
-
-              {tool.icon === 'check' && (
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="9" />
-                  <path d="m8 12 3 3 5-6" />
-                </svg>
-              )}
-
-              {tool.icon === 'compress' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M8 3v5H3M16 3v5h5M8 21v-5H3M16 21v-5h5" />
-                  <path d="M3 8l5-5M21 8l-5-5M3 16l5 5M21 16l-5 5" />
-                </svg>
-              )}
-
-              {tool.icon === 'convert' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 7h13l-3-3M20 17H7l3 3" />
-                  <path d="M17 4v3M7 17v3" />
-                </svg>
-              )}
-
-              {tool.icon === 'table' && (
-                <svg viewBox="0 0 24 24">
-                  <rect x="4" y="5" width="16" height="14" rx="2" />
-                  <path d="M4 10h16M10 5v14M16 5v14" />
-                </svg>
-              )}
-
-              {tool.icon === 'xml' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="m9 7-5 5 5 5M15 7l5 5-5 5M13 5l-2 14" />
-                </svg>
-              )}
-
-              {tool.icon === 'diff' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M5 5h14M5 9h8M5 13h14M5 17h9" />
-                  <path d="M18 8v8M15 11h6" />
-                </svg>
-              )}
-
-              {tool.icon === 'search' && (
-                <svg viewBox="0 0 24 24">
-                  <circle cx="10.5" cy="10.5" r="6.5" />
-                  <path d="m16 16 5 5" />
-                </svg>
-              )}
-
-              {tool.icon === 'code' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="m8 8-4 4 4 4M16 8l4 4-4 4M14 5l-4 14" />
-                </svg>
-              )}
-
-              {tool.icon === 'html' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="m8 5-5 7 5 7M16 5l5 7-5 7M13 3l-2 18" />
-                </svg>
-              )}
-
-              {tool.icon === 'encode' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 7h16M4 12h10M4 17h16" />
-                  <circle cx="17" cy="12" r="3" />
-                </svg>
-              )}
-
-              {tool.icon === 'decode' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 7h16M4 12h10M4 17h16" />
-                  <path d="m18 9 3 3-3 3" />
-                </svg>
-              )}
-
-              {tool.icon === 'eye' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12Z" />
-                  <circle cx="12" cy="12" r="3" />
-                </svg>
-              )}
-
-              {tool.icon === 'tag' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 5v7l8 8 8-8-8-8H4Z" />
-                  <circle cx="8" cy="9" r="1" />
-                </svg>
-              )}
-
-              {tool.icon === 'share' && (
-                <svg viewBox="0 0 24 24">
-                  <circle cx="18" cy="5" r="2.5" />
-                  <circle cx="6" cy="12" r="2.5" />
-                  <circle cx="18" cy="19" r="2.5" />
-                  <path d="m8.2 10.8 7.5-4.5M8.2 13.2l7.5 4.5" />
-                </svg>
-              )}
-
-              {tool.icon === 'star' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z" />
-                </svg>
-              )}
-
-              {tool.icon === 'css' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="m5 4 1.5 16L12 22l5.5-2L19 4H5Z" />
-                  <path d="M8 8h8M8.5 12h7M9 16h6" />
-                </svg>
-              )}
-
-              {tool.icon === 'js' && (
-                <svg viewBox="0 0 24 24">
-                  <rect x="4" y="4" width="16" height="16" rx="2" />
-                  <path d="M9 9v6c0 1-1 2-2 2M13 17c2 1 4 0 4-2 0-2-1-2-3-3-2-1-1-3 1-3 1 0 2 0 2 1" />
-                </svg>
-              )}
-
-              {tool.icon === 'wand' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="m5 19 14-14" />
-                  <path d="m16 3 1 3 3 1-3 1-1 3-1-3-3-1 3-1 1-3Z" />
-                </svg>
-              )}
-
-              {tool.icon === 'regex' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M5 12h14M12 5v14M7 7l10 10M17 7 7 17" />
-                </svg>
-              )}
-
-              {tool.icon === 'list' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M8 6h12M8 12h12M8 18h12" />
-                  <circle cx="4" cy="6" r="1" />
-                  <circle cx="4" cy="12" r="1" />
-                  <circle cx="4" cy="18" r="1" />
-                </svg>
-              )}
-
-              {tool.icon === 'clock' && (
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="9" />
-                  <path d="M12 7v5l3 2" />
-                </svg>
-              )}
-
-              {tool.icon === 'bug' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M9 7h6M8 11h8M9 15h6M12 5v14" />
-                  <path d="M5 9h3M16 9h3M5 15h3M16 15h3" />
-                </svg>
-              )}
-
-              {tool.icon === 'database' && (
-                <svg viewBox="0 0 24 24">
-                  <ellipse cx="12" cy="6" rx="7" ry="3" />
-                  <path d="M5 6v6c0 2 3 3 7 3s7-1 7-3V6M5 12v6c0 2 3 3 7 3s7-1 7-3v-6" />
-                </svg>
-              )}
-
-              {tool.icon === 'yaml' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M5 5h14v14H5z" />
-                  <path d="M8 9h8M8 12h5M8 15h7" />
-                </svg>
-              )}
-
-              {tool.icon === 'clean' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M5 19h14M7 16l7-7M11 5l8 8M15 4l5 5" />
-                </svg>
-              )}
-
-              {tool.icon === 'key' && (
-                <svg viewBox="0 0 24 24">
-                  <circle cx="8" cy="15" r="4" />
-                  <path d="m11 12 8-8M16 5l3 3M14 7l3 3" />
-                </svg>
-              )}
-
-              {tool.icon === 'fingerprint' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M8 17c-1-4 0-8 4-8s5 4 4 8M5 19c-2-7 0-13 7-13s9 6 7 13M11 21c-1-3-1-7 1-7s2 4 1 7" />
-                </svg>
-              )}
-
-              {tool.icon === 'lock' && (
-                <svg viewBox="0 0 24 24">
-                  <rect x="5" y="10" width="14" height="10" rx="2" />
-                  <path d="M8 10V7a4 4 0 0 1 8 0v3" />
-                </svg>
-              )}
-
-              {tool.icon === 'hash' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M9 4 7 20M17 4l-2 16M4 9h16M3 15h16" />
-                </svg>
-              )}
-
-              {tool.icon === 'shield' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M12 3 20 6v6c0 5-3 8-8 10-5-2-8-5-8-10V6l8-3Z" />
-                  <path d="m9 12 2 2 4-4" />
-                </svg>
-              )}
-
-              {tool.icon === 'mail' && (
-                <svg viewBox="0 0 24 24">
-                  <rect x="4" y="6" width="16" height="12" rx="2" />
-                  <path d="m5 8 7 5 7-5" />
-                </svg>
-              )}
-
-              {tool.icon === 'text' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M5 6h14M12 6v13M8 19h8M8 10h8" />
-                </svg>
-              )}
-
-              {tool.icon === 'lines' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M5 6h14M5 12h14M5 18h14" />
-                </svg>
-              )}
-
-              {tool.icon === 'case' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M5 18 10 6h4l5 12M7 14h10" />
-                </svg>
-              )}
-
-              {tool.icon === 'reverse' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 7h13l-3-3M20 17H7l3 3" />
-                </svg>
-              )}
-
-              {tool.icon === 'qr' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM15 15h2v2h-2zM19 15h1v5h-5v-2M14 19h2" />
-                </svg>
-              )}
-
-              {tool.icon === 'barcode' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 5v14M7 5v14M10 5v14M14 5v14M17 5v14M20 5v14" />
-                </svg>
-              )}
-
-              {tool.icon === 'palette' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M12 4a8 8 0 0 0 0 16h1c1 0 2-1 1-2s0-3 2-3h2a4 4 0 0 0 4-4 7 7 0 0 0-10-7Z" />
-                  <circle cx="8" cy="10" r="1" />
-                  <circle cx="12" cy="8" r="1" />
-                  <circle cx="16" cy="10" r="1" />
-                </svg>
-              )}
-
-              {tool.icon === 'contrast' && (
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="8" />
-                  <path d="M12 4a8 8 0 0 1 0 16Z" />
-                </svg>
-              )}
-
-              {tool.icon === 'calendar' && (
-                <svg viewBox="0 0 24 24">
-                  <rect x="4" y="5" width="16" height="15" rx="2" />
-                  <path d="M8 3v4M16 3v4M4 10h16" />
-                </svg>
-              )}
-
-              {tool.icon === 'globe' && (
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="9" />
-                  <path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18" />
-                </svg>
-              )}
-
-              {tool.icon === 'network' && (
-                <svg viewBox="0 0 24 24">
-                  <rect x="9" y="3" width="6" height="5" rx="1" />
-                  <rect x="3" y="16" width="6" height="5" rx="1" />
-                  <rect x="15" y="16" width="6" height="5" rx="1" />
-                  <path d="M12 8v4M6 16l6-4 6 4" />
-                </svg>
-              )}
-
-              {tool.icon === 'link' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1" />
-                  <path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1" />
-                </svg>
-              )}
-
-              {tool.icon === 'unlock' && (
-                <svg viewBox="0 0 24 24">
-                  <rect x="5" y="10" width="14" height="10" rx="2" />
-                  <path d="M8 10V7a4 4 0 0 1 7-3" />
-                </svg>
-              )}
-
-              {tool.icon === 'unicode' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M6 5h12M9 5v8a3 3 0 0 0 6 0V5M4 19h16" />
-                </svg>
-              )}
-
-              {tool.icon === 'ascii' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M5 18 9 6l4 12M7 14h4M15 6v12M19 6v12" />
-                </svg>
-              )}
-
-              {tool.icon === 'binary' && (
-                <svg viewBox="0 0 24 24">
-                  <circle cx="7" cy="8" r="2" />
-                  <circle cx="17" cy="8" r="2" />
-                  <circle cx="7" cy="16" r="2" />
-                  <circle cx="17" cy="16" r="2" />
-                  <path d="M9 8h6M9 16h6" />
-                </svg>
-              )}
-
-              {tool.icon === 'http' && (
-                <svg viewBox="0 0 24 24">
-                  <rect x="3" y="5" width="18" height="14" rx="2" />
-                  <path d="M7 10h10M7 14h6" />
-                </svg>
-              )}
-
-              {tool.icon === 'file' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M6 3h8l4 4v14H6z" />
-                  <path d="M14 3v5h5" />
-                </svg>
-              )}
-
-              {tool.icon === 'header' && (
-                <svg viewBox="0 0 24 24">
-                  <path d="M5 5h14M5 10h14M5 15h9M5 19h6" />
-                </svg>
-              )}
-
-              {tool.icon === 'grid' && (
-                <svg viewBox="0 0 24 24">
-                  <rect x="4" y="4" width="6" height="6" />
-                  <rect x="14" y="4" width="6" height="6" />
-                  <rect x="4" y="14" width="6" height="6" />
-                  <rect x="14" y="14" width="6" height="6" />
-                </svg>
-              )}
-
-              {tool.icon === 'layout' && (
-                <svg viewBox="0 0 24 24">
-                  <rect x="4" y="5" width="16" height="14" rx="2" />
-                  <path d="M4 10h16M10 10v9" />
-                </svg>
-              )}
-
-              {tool.icon === 'gradient' && (
-                <svg viewBox="0 0 24 24">
-                  <circle cx="7" cy="12" r="4" />
-                  <circle cx="17" cy="12" r="4" />
-                  <path d="M7 8h10M7 16h10" />
-                </svg>
-              )}
-
-              {tool.icon === 'shadow' && (
-                <svg viewBox="0 0 24 24">
-                  <rect x="5" y="5" width="12" height="12" rx="2" />
-                  <path d="M9 19h9a2 2 0 0 0 2-2V9" />
-                </svg>
-              )}
-
-              {tool.icon === 'square' && (
-                <svg viewBox="0 0 24 24">
-                  <rect x="5" y="5" width="14" height="14" rx="4" />
-                </svg>
-              )}
-
-              {tool.icon === 'plus' && (
-                <svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="8" />
-                  <path d="M12 8v8M8 12h8" />
-                </svg>
-              )}
-            </span>
-
-            <span class="content">
-              <span class="tool-name">{tool.name}</span>
-              <span class="tool-desc">{tool.desc}</span>
-            </span>
-
-            <span class="arrow" aria-hidden="true">←</span>
-          </a>
-        ))
-      }
-    </div>
-
-    <div class="empty" id="empty">
-      <div class="empty-icon">
-        <svg viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="7" />
-          <path d="m20 20-4-4" />
-        </svg>
-      </div>
-      <strong>لم يتم العثور على أداة</strong>
-      <span>جرّب كلمة بحث أخرى أو اختر تصنيفًا مختلفًا.</span>
-    </div>
-  </section>
-
-  <section class="info">
-    <div class="info-icon">
-      <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="9" />
-        <path d="M12 8v4l3 2" />
-      </svg>
-    </div>
-
-    <div>
-      <h2>أدوات مجانية وسريعة</h2>
-      <p>
-        جميع أدوات Th.Tech مصممة لتعمل مباشرة من المتصفح، مع واجهات بسيطة وسريعة ومتجاوبة مع الهاتف والكمبيوتر.
-      </p>
-    </div>
-  </section>
-</main>
-
-<Footer />
-
-<script>
-  const searchInput = document.getElementById('searchInput');
-  const cards = Array.from(document.querySelectorAll('.tool-card'));
-  const categoryButtons = Array.from(document.querySelectorAll('#categories button'));
-  const countElement = document.getElementById('toolCount');
-  const emptyElement = document.getElementById('empty');
-
-  let selectedCategory = 'الكل';
-
-  function filterTools() {
-    const query = searchInput.value.trim().toLowerCase();
-    let visibleCount = 0;
-
-    cards.forEach((card) => {
-      const name = card.getAttribute('data-name') || '';
-      const description = card.getAttribute('data-description') || '';
-      const category = card.getAttribute('data-category') || '';
-
-      const matchesSearch =
-        query === '' ||
-        name.includes(query) ||
-        description.includes(query);
-
-      const matchesCategory =
-        selectedCategory === 'الكل' ||
-        category === selectedCategory;
-
-      const visible = matchesSearch && matchesCategory;
-
-      card.hidden = !visible;
-
-      if (visible) {
-        visibleCount += 1;
-      }
-    });
-
-    countElement.textContent = String(visibleCount);
-    emptyElement.classList.toggle('show', visibleCount === 0);
-  }
-
-  searchInput.addEventListener('input', filterTools);
-
-  categoryButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      selectedCategory = button.getAttribute('data-category') || 'الكل';
-
-      categoryButtons.forEach((item) => {
-        item.classList.remove('active');
-      });
-
-      button.classList.add('active');
-
-      filterTools();
-    });
-  });
-</script>
+
+    <link
+      rel="canonical"
+      href={`https://oumaystore-hub.github.io${base}/tools/`}
+    />
+
+    <link
+      rel="icon"
+      type="image/png"
+      href={`${base}/logo1.png`}
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="page">
+
+      <!-- HERO -->
+      <section class="hero">
+
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <span>›</span>
+          <strong>أدوات المطورين</strong>
+        </div>
+
+        <div class="hero-box">
+
+          <div class="hero-icon">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 5h16v14H4z"></path>
+              <path d="M8 9h8"></path>
+              <path d="M8 13h5"></path>
+              <path d="M8 17h3"></path>
+            </svg>
+          </div>
+
+          <div class="hero-text">
+            <span class="eyebrow">TH.TECH TOOLBOX</span>
+
+            <h1>أدوات المطورين</h1>
+
+            <p>
+              أدوات تقنية سريعة ومجانية تساعدك على إنجاز مهامك اليومية
+              مباشرة من المتصفح.
+            </p>
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- SECTION HEADER -->
+      <section class="tools-section">
+
+        <div class="section-head">
+
+          <div>
+            <span class="section-label">DEVELOPER TOOLS</span>
+            <h2>جميع الأدوات</h2>
+          </div>
+
+          <div class="count">
+            <strong>{toolCount}</strong>
+            <span>أداة</span>
+          </div>
+
+        </div>
+
+
+        <!-- TOOLS -->
+        <div class="tools-grid">
+
+          {
+            tools.map((tool, index) => (
+              <a
+                class={`tool-card ${tool.color}`}
+                href={`${base}/tools/${tool.slug}/`}
+                aria-label={tool.name}
+              >
+
+                <div class="tool-number">
+                  {String(index + 1).padStart(2, '0')}
+                </div>
+
+                <div class="tool-icon">
+
+                  <svg
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <rect
+                      x="4"
+                      y="4"
+                      width="16"
+                      height="16"
+                      rx="4"
+                    ></rect>
+
+                    <path d="M8 9h8"></path>
+                    <path d="M8 13h5"></path>
+                    <path d="M8 16h3"></path>
+                  </svg>
+
+                </div>
+
+                <div class="tool-info">
+
+                  <h3>{tool.name}</h3>
+
+                  <p>{tool.desc}</p>
+
+                </div>
+
+                <div class="tool-arrow">
+                  ←
+                </div>
+
+              </a>
+            ))
+          }
+
+        </div>
+
+      </section>
+
+
+      <!-- INFO -->
+      <section class="info-box">
+
+        <div class="info-icon">
+
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle
+              cx="12"
+              cy="12"
+              r="9"
+            ></circle>
+
+            <path d="M12 8v4"></path>
+            <circle
+              cx="12"
+              cy="16"
+              r=".5"
+            ></circle>
+          </svg>
+
+        </div>
+
+        <div>
+
+          <h2>أدوات مجانية وسريعة</h2>
+
+          <p>
+            اختر أي أداة بالضغط على البطاقة مباشرة.
+            لا يوجد زر فتح منفصل، وكل بطاقة مرتبطة بصفحة الأداة الخاصة بها.
+          </p>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <Footer />
 
   </body>
-</html><style>
+</html>
+
+
+<style>
+
   :global(*) {
     box-sizing: border-box;
   }
@@ -740,19 +324,31 @@ const categories = ['الكل', ...Array.from(new Set(tools.map((tool) => tool.c
 
   :global(body) {
     margin: 0;
-    background: #f6f8fc;
+    background:
+      radial-gradient(
+        circle at 10% 10%,
+        rgba(37, 99, 235, 0.06),
+        transparent 30%
+      ),
+      #f6f8fc;
     color: #0f172a;
     font-family: "Cairo", sans-serif;
   }
 
+
+  /* PAGE */
+
   .page {
     width: min(1200px, calc(100% - 32px));
-    margin: auto;
-    padding: 32px 0 70px;
+    margin: 0 auto;
+    padding: 30px 0 80px;
   }
 
+
+  /* HERO */
+
   .hero {
-    padding: 10px 0 35px;
+    padding: 8px 0 35px;
   }
 
   .breadcrumb {
@@ -767,52 +363,96 @@ const categories = ['الكل', ...Array.from(new Set(tools.map((tool) => tool.c
   .breadcrumb a {
     color: #2563eb;
     text-decoration: none;
+    transition: color .2s ease;
   }
 
   .breadcrumb a:hover {
-    text-decoration: underline;
+    color: #06b6d4;
   }
 
   .breadcrumb span {
     color: #94a3b8;
   }
 
-  .hero-content {
+
+  .hero-box {
+    position: relative;
     display: flex;
     align-items: center;
-    gap: 18px;
+    gap: 20px;
+    padding: 24px;
+    overflow: hidden;
+    border: 1px solid rgba(226, 232, 240, .9);
+    border-radius: 30px;
+    background:
+      linear-gradient(
+        135deg,
+        rgba(255,255,255,.98),
+        rgba(248,250,252,.92)
+      );
+    box-shadow:
+      0 15px 45px rgba(15, 23, 42, .07);
   }
 
+  .hero-box::before {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    left: -80px;
+    top: -90px;
+    border-radius: 50%;
+    background: rgba(37, 99, 235, .06);
+    pointer-events: none;
+  }
+
+
   .hero-icon {
-    width: 68px;
-    height: 68px;
+    position: relative;
+    width: 72px;
+    height: 72px;
     flex: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 20px;
-    background: linear-gradient(135deg, #2563eb, #06b6d4);
-    box-shadow: 0 15px 35px rgba(37, 99, 235, 0.2);
-    animation: floatIcon 4s ease-in-out infinite;
+    border-radius: 24px;
+    background:
+      linear-gradient(
+        135deg,
+        #2563eb,
+        #06b6d4
+      );
+    box-shadow:
+      0 15px 35px rgba(37, 99, 235, .22);
+    animation: heroFloat 4s ease-in-out infinite;
   }
 
   .hero-icon svg {
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     fill: none;
     stroke: white;
-    stroke-width: 1.8;
+    stroke-width: 1.7;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
 
-  @keyframes floatIcon {
-    0%, 100% {
+  @keyframes heroFloat {
+
+    0%,
+    100% {
       transform: translateY(0);
     }
+
     50% {
       transform: translateY(-5px);
     }
+
+  }
+
+
+  .hero-text {
+    position: relative;
   }
 
   .eyebrow,
@@ -820,12 +460,13 @@ const categories = ['الكل', ...Array.from(new Set(tools.map((tool) => tool.c
     color: #2563eb;
     font-size: 10px;
     font-weight: 800;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
   }
 
   .hero h1 {
-    margin: 3px 0;
-    font-size: clamp(27px, 4vw, 38px);
+    margin: 4px 0;
+    font-size: clamp(27px, 4vw, 40px);
+    line-height: 1.3;
     font-weight: 800;
   }
 
@@ -833,7 +474,11 @@ const categories = ['الكل', ...Array.from(new Set(tools.map((tool) => tool.c
     margin: 0;
     color: #64748b;
     font-size: 13px;
+    line-height: 1.8;
   }
+
+
+  /* SECTION */
 
   .tools-section {
     margin-top: 10px;
@@ -841,204 +486,341 @@ const categories = ['الكل', ...Array.from(new Set(tools.map((tool) => tool.c
 
   .section-head {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 18px;
+    justify-content: space-between;
+    margin-bottom: 22px;
   }
 
   .section-head h2 {
     margin: 3px 0 0;
     font-size: 21px;
+    font-weight: 800;
   }
 
   .count {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 7px;
     color: #64748b;
     font-size: 11px;
   }
 
-  .count span {
-    min-width: 35px;
-    padding: 5px 9px;
-    border-radius: 9px;
+  .count strong {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 38px;
+    height: 30px;
+    padding: 0 9px;
+    border-radius: 50px;
     background: #eaf1ff;
     color: #2563eb;
+    font-size: 12px;
     font-weight: 800;
-    text-align: center;
   }
 
-  .controls {
-    margin-bottom: 20px;
-  }
 
-  .search-box {
-    position: relative;
-    max-width: 520px;
-    margin-bottom: 12px;
-  }
-
-  .search-box svg {
-    position: absolute;
-    top: 50%;
-    right: 15px;
-    width: 18px;
-    height: 18px;
-    transform: translateY(-50%);
-    fill: none;
-    stroke: #64748b;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-  }
-
-  .search-box input {
-    width: 100%;
-    height: 45px;
-    padding: 0 45px 0 15px;
-    border: 1px solid #e2e8f0;
-    border-radius: 13px;
-    outline: none;
-    background: white;
-    color: #0f172a;
-    font-family: inherit;
-    font-size: 11px;
-    box-shadow: 0 5px 20px rgba(15, 23, 42, 0.04);
-    transition: 0.2s ease;
-  }
-
-  .search-box input:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
-  }
-
-  .categories {
-    display: flex;
-    gap: 7px;
-    flex-wrap: wrap;
-  }
-
-  .categories button {
-    border: 1px solid #e2e8f0;
-    border-radius: 9px;
-    background: white;
-    color: #64748b;
-    padding: 7px 12px;
-    font-family: inherit;
-    font-size: 9px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: 0.2s ease;
-  }
-
-  .categories button:hover {
-    border-color: #2563eb;
-    color: #2563eb;
-    transform: translateY(-1px);
-  }
-
-  .categories button.active {
-    border-color: #2563eb;
-    background: #2563eb;
-    color: white;
-  }
+  /* GRID */
 
   .tools-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
   }
+
+
+  /* CIRCULAR CARD */
 
   .tool-card {
     position: relative;
+    aspect-ratio: 1 / 1;
+    min-width: 0;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    gap: 13px;
-    min-height: 116px;
-    padding: 16px;
+    justify-content: center;
+    padding: 20px;
     overflow: hidden;
+
     border: 1px solid #e2e8f0;
-    border-radius: 22px;
-    background: white;
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, .96);
     color: #0f172a;
     text-decoration: none;
-    box-shadow: 0 7px 25px rgba(15, 23, 42, 0.05);
-    opacity: 0;
-    animation: cardIn 0.45s ease forwards;
+
+    box-shadow:
+      0 10px 28px rgba(15, 23, 42, .07);
+
     transition:
-      transform 0.25s ease,
-      box-shadow 0.25s ease,
-      border-color 0.25s ease;
+      transform .35s cubic-bezier(.2,.8,.2,1),
+      box-shadow .35s ease,
+      border-color .35s ease;
   }
 
-  .tool-card:nth-child(1) { animation-delay: 0.02s; }
-  .tool-card:nth-child(2) { animation-delay: 0.04s; }
-  .tool-card:nth-child(3) { animation-delay: 0.06s; }
-  .tool-card:nth-child(4) { animation-delay: 0.08s; }
-  .tool-card:nth-child(5) { animation-delay: 0.1s; }
-
-  @keyframes cardIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .tool-card:hover {
-    transform: translateY(-5px);
-    border-color: #cbd5e1;
-    box-shadow: 0 18px 40px rgba(15, 23, 42, 0.11);
-  }
 
   .tool-card::before {
     content: "";
     position: absolute;
-    width: 90px;
-    height: 90px;
-    top: -45px;
-    left: -45px;
+    width: 55%;
+    height: 55%;
+    top: -22%;
+    right: -15%;
     border-radius: 50%;
     background: currentColor;
-    opacity: 0.035;
-    transition: 0.3s ease;
+    opacity: .035;
+    transition:
+      transform .45s ease,
+      opacity .35s ease;
+  }
+
+
+  .tool-card::after {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border-radius: 50%;
+    border: 1px solid rgba(148, 163, 184, .12);
+    pointer-events: none;
+  }
+
+
+  .tool-card:hover {
+    transform:
+      translateY(-8px)
+      scale(1.025);
+
+    border-color: rgba(37, 99, 235, .22);
+
+    box-shadow:
+      0 22px 50px rgba(15, 23, 42, .13);
   }
 
   .tool-card:hover::before {
-    transform: scale(1.5);
-    opacity: 0.06;
+    transform: scale(1.6);
+    opacity: .07;
   }
 
-  .number {
+  .tool-card:active {
+    transform:
+      translateY(-2px)
+      scale(.98);
+  }
+
+
+  /* NUMBER */
+
+  .tool-number {
     position: absolute;
-    top: 8px;
-    left: 10px;
+    top: 15%;
+    left: 20%;
+    z-index: 2;
+
     color: #cbd5e1;
-    font-size: 8px;
+    font-size: 9px;
     font-weight: 700;
+
+    transition:
+      color .3s ease,
+      transform .3s ease;
   }
 
-  .icon {
-    width: 52px;
-    height: 52px;
-    flex: none;
+  .tool-card:hover .tool-number {
+    color: #94a3b8;
+    transform: scale(1.1);
+  }
+
+
+  /* ICON */
+
+  .tool-icon {
+    position: relative;
+    z-index: 2;
+
+    width: 58px;
+    height: 58px;
+
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 17px;
-    transition: transform 0.3s ease;
+
+    border-radius: 50%;
+
+    transition:
+      transform .35s cubic-bezier(.2,.8,.2,1),
+      box-shadow .35s ease;
   }
 
-  .tool-card:hover .icon {
-    transform: rotate(-6deg) scale(1.08);
+  .tool-card:hover .tool-icon {
+    transform:
+      rotate(-8deg)
+      scale(1.12);
+
+    box-shadow:
+      0 8px 22px rgba(15, 23, 42, .08);
   }
 
-  .icon svg {
+  .tool-icon svg {
+    width: 28px;
+    height: 28px;
+
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+
+  /* CONTENT */
+
+  .tool-info {
+    position: relative;
+    z-index: 2;
+
+    width: 100%;
+    margin-top: 11px;
+
+    text-align: center;
+  }
+
+  .tool-info h3 {
+    margin: 0;
+
+    overflow: hidden;
+
+    color: #0f172a;
+    font-size: 12px;
+    line-height: 1.45;
+    font-weight: 800;
+
+    text-overflow: ellipsis;
+  }
+
+  .tool-info p {
+    margin: 5px 0 0;
+
+    color: #64748b;
+    font-size: 9px;
+    line-height: 1.5;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+
+    overflow: hidden;
+  }
+
+
+  /* ARROW */
+
+  .tool-arrow {
+    position: absolute;
+    z-index: 3;
+
+    left: 19%;
+    bottom: 18%;
+
     width: 27px;
     height: 27px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f1f5f9;
+    color: #64748b;
+
+    font-size: 12px;
+
+    transition:
+      background .3s ease,
+      color .3s ease,
+      transform .3s ease;
+  }
+
+  .tool-card:hover .tool-arrow {
+    background: #2563eb;
+    color: white;
+    transform: translateX(-4px);
+  }
+
+
+  /* COLORS */
+
+  .blue .tool-icon {
+    background: #eaf1ff;
+    color: #2563eb;
+  }
+
+  .green .tool-icon {
+    background: #e9f9ef;
+    color: #16a34a;
+  }
+
+  .orange .tool-icon {
+    background: #fff1e8;
+    color: #ea580c;
+  }
+
+  .yellow .tool-icon {
+    background: #fff8d8;
+    color: #ca8a04;
+  }
+
+  .purple .tool-icon {
+    background: #f2eaff;
+    color: #7c3aed;
+  }
+
+  .cyan .tool-icon {
+    background: #e5f9fc;
+    color: #0891b2;
+  }
+
+
+  /* INFO */
+
+  .info-box {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    margin-top: 50px;
+    padding: 25px;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 25px;
+
+    background: white;
+
+    box-shadow:
+      0 10px 30px rgba(15, 23, 42, .04);
+  }
+
+  .info-icon {
+    width: 55px;
+    height: 55px;
+    flex: none;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #eaf1ff;
+    color: #2563eb;
+  }
+
+  .info-icon svg {
+    width: 27px;
+    height: 27px;
+
     fill: none;
     stroke: currentColor;
     stroke-width: 1.7;
@@ -1046,297 +828,232 @@ const categories = ['الكل', ...Array.from(new Set(tools.map((tool) => tool.c
     stroke-linejoin: round;
   }
 
-  .content {
-    min-width: 0;
-    flex: 1;
-  }
-
-  .tool-name {
-    display: block;
-    margin: 0;
-    font-size: 13px;
-    font-weight: 800;
-    line-height: 1.4;
-  }
-
-  .tool-desc {
-    display: block;
-    margin-top: 4px;
-    color: #64748b;
-    font-size: 10px;
-    line-height: 1.5;
-  }
-
-  .arrow {
-    width: 29px;
-    height: 29px;
-    flex: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    background: #f1f5f9;
-    color: #64748b;
-    font-size: 12px;
-    transition: 0.25s ease;
-  }
-
-  .tool-card:hover .arrow {
-    background: #2563eb;
-    color: white;
-    transform: translateX(-3px);
-  }
-
-  .blue .icon {
-    background: #eaf1ff;
-    color: #2563eb;
-  }
-
-  .green .icon {
-    background: #e9f9ef;
-    color: #16a34a;
-  }
-
-  .orange .icon {
-    background: #fff1e8;
-    color: #ea580c;
-  }
-
-  .yellow .icon {
-    background: #fff8d8;
-    color: #ca8a04;
-  }
-
-  .purple .icon {
-    background: #f2eaff;
-    color: #7c3aed;
-  }
-
-  .cyan .icon {
-    background: #e5f9fc;
-    color: #0891b2;
-  }
-
-  .red .icon {
-    background: #feecec;
-    color: #dc2626;
-  }
-
-  .empty {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 55px 20px;
-    color: #64748b;
-    text-align: center;
-  }
-
-  .empty.show {
-    display: flex;
-  }
-
-  .empty-icon {
-    width: 55px;
-    height: 55px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 12px;
-    border-radius: 17px;
-    background: #eaf1ff;
-    color: #2563eb;
-  }
-
-  .empty-icon svg {
-    width: 25px;
-    height: 25px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.8;
-    stroke-linecap: round;
-  }
-
-  .empty strong {
-    color: #0f172a;
-    font-size: 14px;
-  }
-
-  .empty span {
-    margin-top: 4px;
-    font-size: 10px;
-  }
-
-  .info {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-    margin-top: 45px;
-    padding: 25px;
-    border: 1px solid #e2e8f0;
-    border-radius: 20px;
-    background: white;
-  }
-
-  .info-icon {
-    width: 52px;
-    height: 52px;
-    flex: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 16px;
-    background: #eaf1ff;
-    color: #2563eb;
-  }
-
-  .info-icon svg {
-    width: 25px;
-    height: 25px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.7;
-    stroke-linecap: round;
-  }
-
   .info h2 {
     margin: 0;
     font-size: 16px;
+    font-weight: 800;
   }
 
   .info p {
-    margin: 4px 0 0;
+    margin: 5px 0 0;
     color: #64748b;
     font-size: 11px;
+    line-height: 1.7;
   }
 
-  .tool-card[hidden] {
-    display: none;
-  }
 
-  @media (max-width: 950px) {
+  /* TABLET */
+
+  @media (max-width: 1050px) {
+
     .tools-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
     }
+
   }
 
-  @media (max-width: 600px) {
+
+  /* MOBILE */
+
+  @media (max-width: 700px) {
+
     .page {
-      width: calc(100% - 16px);
+      width: calc(100% - 18px);
       padding-top: 20px;
+      padding-bottom: 55px;
     }
 
-    .hero-content {
-      gap: 12px;
+
+    .hero {
+      padding-bottom: 25px;
+    }
+
+    .breadcrumb {
+      margin-bottom: 18px;
+      font-size: 10px;
+    }
+
+
+    .hero-box {
+      gap: 13px;
+      padding: 18px;
+      border-radius: 24px;
     }
 
     .hero-icon {
       width: 55px;
       height: 55px;
-      border-radius: 16px;
+      border-radius: 19px;
     }
 
     .hero-icon svg {
-      width: 27px;
-      height: 27px;
+      width: 28px;
+      height: 28px;
     }
 
     .hero h1 {
-      font-size: 24px;
+      font-size: 23px;
     }
 
     .hero p {
-      font-size: 10px;
+      font-size: 9px;
+      line-height: 1.7;
     }
 
-    .tools-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 9px;
-    }
-
-    .tool-card {
-      min-height: 108px;
-      padding: 12px 9px;
-      gap: 8px;
-      border-radius: 17px;
-    }
-
-    .icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 13px;
-    }
-
-    .icon svg {
-      width: 21px;
-      height: 21px;
-    }
-
-    .tool-name {
-      font-size: 10px;
-    }
-
-    .tool-desc {
+    .eyebrow {
       font-size: 8px;
     }
 
-    .arrow {
-      width: 22px;
-      height: 22px;
-      font-size: 10px;
+
+    .section-head {
+      margin-bottom: 15px;
     }
 
-    .number {
+    .section-head h2 {
+      font-size: 17px;
+    }
+
+    .section-label {
+      font-size: 8px;
+    }
+
+
+    .tools-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 11px;
+    }
+
+
+    .tool-card {
+      padding: 13px;
+    }
+
+
+    .tool-icon {
+      width: 48px;
+      height: 48px;
+    }
+
+    .tool-icon svg {
+      width: 23px;
+      height: 23px;
+    }
+
+
+    .tool-info {
+      margin-top: 8px;
+    }
+
+    .tool-info h3 {
+      font-size: 9px;
+    }
+
+    .tool-info p {
+      margin-top: 3px;
       font-size: 7px;
     }
 
-    .categories {
-      overflow-x: auto;
-      flex-wrap: nowrap;
-      padding-bottom: 4px;
-      scrollbar-width: none;
+
+    .tool-number {
+      top: 15%;
+      left: 19%;
+      font-size: 7px;
     }
 
-    .categories::-webkit-scrollbar {
-      display: none;
-    }
 
-    .categories button {
-      flex: none;
-    }
-
-    .info {
-      align-items: flex-start;
-      padding: 18px;
-    }
-  }
-
-  @media (max-width: 370px) {
-    .tool-desc,
-    .arrow {
-      display: none;
-    }
-
-    .tool-card {
-      justify-content: flex-start;
-    }
-
-    .tool-name {
+    .tool-arrow {
+      width: 22px;
+      height: 22px;
+      left: 18%;
+      bottom: 17%;
       font-size: 9px;
     }
+
+
+    .info-box {
+      align-items: flex-start;
+      gap: 13px;
+      margin-top: 32px;
+      padding: 18px;
+      border-radius: 20px;
+    }
+
+    .info-icon {
+      width: 45px;
+      height: 45px;
+    }
+
+    .info-icon svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .info h2 {
+      font-size: 13px;
+    }
+
+    .info p {
+      font-size: 9px;
+    }
+
   }
+
+
+  /* VERY SMALL PHONES */
+
+  @media (max-width: 380px) {
+
+    .tools-grid {
+      gap: 8px;
+    }
+
+    .tool-card {
+      padding: 10px;
+    }
+
+    .tool-icon {
+      width: 43px;
+      height: 43px;
+    }
+
+    .tool-icon svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .tool-info h3 {
+      font-size: 8px;
+    }
+
+    .tool-info p {
+      font-size: 6.5px;
+    }
+
+    .tool-arrow {
+      display: none;
+    }
+
+  }
+
+
+  /* ACCESSIBILITY */
 
   @media (prefers-reduced-motion: reduce) {
-    .hero-icon,
-    .tool-card {
-      animation: none;
-      opacity: 1;
+
+    :global(html) {
+      scroll-behavior: auto;
     }
 
+    .hero-icon,
     .tool-card,
-    .icon,
-    .arrow {
-      transition: none;
+    .tool-icon,
+    .tool-arrow,
+    .tool-number {
+      animation: none !important;
+      transition: none !important;
     }
+
   }
+
 </style>
