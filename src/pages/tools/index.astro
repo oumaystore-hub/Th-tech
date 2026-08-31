@@ -2,51 +2,56 @@
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
-const base = import.meta.env.BASE_URL;
-
-const pageTitle = "أدوات المطورين المجانية - Th.Tech";
+const pageTitle = "أدوات المطورين المجانية | Th.Tech";
 const pageDesc =
-  "مجموعة أدوات المطورين المجانية والسريعة: تنسيق JSON، التحقق من الصحة، تنسيق HTML وJavaScript، وعدّاد الكلمات.";
+  "مجموعة أدوات المطورين المجانية والسريعة من Th.Tech: تنسيق JSON، التحقق من JSON، تنسيق HTML وJavaScript، وعد الكلمات. تعمل مباشرة داخل المتصفح.";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const tools = [
   {
     name: "JSON Formatter",
     slug: "json-formatter",
-    icon: "fa-code",
+    icon: "fa-brackets-curly",
+    fallbackIcon: "fa-code",
     color: "#2563eb",
-    desc: "تنسيق وتجميل ملفات JSON وتحويل JSON غير مرتب إلى كود مقروء مع التحقق من الصحة.",
+    desc: "تنسيق وتجميل ملفات JSON وتحويلها إلى كود منظم وسهل القراءة مع إمكانية النسخ السريع.",
     tags: ["JSON", "Format", "Developer"]
   },
   {
     name: "JSON Validator",
     slug: "json-validator",
-    icon: "fa-check-circle",
+    icon: "fa-circle-check",
+    fallbackIcon: "fa-check-circle",
     color: "#10b981",
-    desc: "فحص أكواد JSON واكتشاف الأخطاء البرمجية.",
+    desc: "فحص JSON واكتشاف الأخطاء مع توضيح المشكلة لمساعدتك على تصحيح البيانات بسرعة.",
     tags: ["JSON", "Validate", "Debug"]
   },
   {
     name: "HTML Formatter",
     slug: "html-formatter",
-    icon: "fa-html5",
+    icon: "fa-code",
+    fallbackIcon: "fa-html5",
     color: "#f97316",
-    desc: "تنسيق كود HTML وجعله أكثر وضوحًا وتنظيمًا.",
+    desc: "تنسيق كود HTML وترتيبه بشكل واضح، مع أدوات Beautify وMinify.",
     tags: ["HTML", "Beautify", "Minify"]
   },
   {
     name: "JavaScript Formatter",
     slug: "javascript-formatter",
     icon: "fa-js",
+    fallbackIcon: "fa-js",
     color: "#eab308",
-    desc: "تجميل وتنسيق كود JavaScript وتحويل الكود المضغوط إلى كود واضح.",
-    tags: ["JS", "Code", "Format"]
+    desc: "تجميل وترتيب كود JavaScript وجعله أكثر وضوحًا وسهولة في القراءة.",
+    tags: ["JavaScript", "Code", "Format"]
   },
   {
     name: "Word Counter",
     slug: "word-counter",
     icon: "fa-font",
+    fallbackIcon: "fa-font",
     color: "#8b5cf6",
-    desc: "حساب الكلمات والأحرف والجمل والفقرات ووقت القراءة.",
+    desc: "حساب الكلمات والأحرف والجمل والفقرات ووقت القراءة التقديري للنص.",
     tags: ["Text", "Counter", "SEO"]
   }
 ];
@@ -55,16 +60,39 @@ const tools = [
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
   <title>{pageTitle}</title>
-  <meta name="description" content={pageDesc} />
 
-  <link rel="canonical" href={`https://th-tech.github.io${base}tools/`} />
+  <meta
+    name="description"
+    content={pageDesc}
+  />
+
+  <meta
+    name="robots"
+    content="index, follow"
+  />
+
+  <link
+    rel="canonical"
+    href={`https://oumaystore-hub.github.io${base}/tools/`}
+  />
+
+  <link
+    rel="icon"
+    type="image/png"
+    href={`${base}/logo1.png`}
+  />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
   <link
-    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap"
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
     rel="stylesheet"
   />
 
@@ -76,74 +104,133 @@ const tools = [
   <meta property="og:title" content={pageTitle} />
   <meta property="og:description" content={pageDesc} />
   <meta property="og:type" content="website" />
+  <meta
+    property="og:url"
+    content={`https://oumaystore-hub.github.io${base}/tools/`}
+  />
 </head>
 
 <body>
 
   <Header />
 
-  <main>
+  <main class="tools-page">
 
+    <!-- HERO -->
     <section class="hero">
       <div class="container">
-        <span class="hero-badge">
-          <i class="fas fa-toolbox"></i>
-          Th.Tech Tools
-        </span>
 
-        <h1>أدوات المطورين</h1>
+        <div class="hero-badge">
+          <i class="fas fa-wand-magic-sparkles"></i>
+          TH.TECH • DEVELOPER TOOLS
+        </div>
+
+        <h1>
+          أدوات المطورين
+          <span>المجانية</span>
+        </h1>
 
         <p>
-          أدوات مجانية وسريعة تساعدك على كتابة وفحص وتنسيق الأكواد
-          مباشرة من المتصفح.
+          أدوات سريعة، بسيطة وآمنة لمساعدتك في البرمجة والعمل اليومي.
+          تعمل مباشرة داخل المتصفح بدون الحاجة إلى تثبيت برامج.
         </p>
+
+        <div class="hero-stats">
+          <div>
+            <strong>{tools.length}+</strong>
+            <span>أدوات</span>
+          </div>
+
+          <div>
+            <strong>100%</strong>
+            <span>مجانية</span>
+          </div>
+
+          <div>
+            <strong>0</strong>
+            <span>تثبيت</span>
+          </div>
+        </div>
+
       </div>
     </section>
 
+
+    <!-- TOOLS -->
     <section class="tools-section">
+
       <div class="container">
+
+        <div class="section-heading">
+
+          <div>
+            <span class="section-label">DEVELOPER TOOLKIT</span>
+
+            <h2>
+              اختر الأداة التي تحتاجها
+            </h2>
+          </div>
+
+          <p>
+            مجموعة أدوات عملية للمطورين وصناع المحتوى والطلاب.
+          </p>
+
+        </div>
+
 
         <div class="tools-grid">
 
           {tools.map((tool) => (
 
             <a
-              href={`${base}tools/${tool.slug}/`}
+              href={`${base}/tools/${tool.slug}/`}
               class="tool-card"
               aria-label={`فتح ${tool.name}`}
             >
 
-              <div class="card-header">
+              <div class="card-top">
 
                 <div
                   class="icon-box"
-                  style={`background:${tool.color}18;color:${tool.color};`}
+                  style={`--tool-color:${tool.color};`}
                 >
                   <i class={`fas ${tool.icon}`}></i>
                 </div>
 
-                <div class="tags">
-                  {tool.tags.map((tag) => (
-                    <span class="tag">{tag}</span>
-                  ))}
-                </div>
+                <span class="open-icon">
+                  <i class="fas fa-arrow-up-right-from-square"></i>
+                </span>
 
               </div>
+
+
+              <div class="tags">
+
+                {tool.tags.map((tag) => (
+                  <span class="tag">{tag}</span>
+                ))}
+
+              </div>
+
 
               <div class="card-body">
 
                 <h2>{tool.name}</h2>
 
-                <p>{tool.desc}</p>
+                <p>
+                  {tool.desc}
+                </p>
 
               </div>
 
+
               <div class="card-footer">
 
-                <span class="action-text">
+                <span>
                   فتح الأداة
-                  <i class="fas fa-arrow-left"></i>
                 </span>
+
+                <i class="fas fa-arrow-left"></i>
 
               </div>
 
@@ -154,17 +241,36 @@ const tools = [
         </div>
 
       </div>
+
     </section>
 
-    <section class="info-section">
+
+    <!-- WHY -->
+    <section class="why-section">
 
       <div class="container">
 
-        <h2>لماذا Th.Tech Tools؟</h2>
+        <div class="section-heading centered">
+
+          <span class="section-label">
+            WHY TH.TECH
+          </span>
+
+          <h2>
+            لماذا أدوات Th.Tech؟
+          </h2>
+
+          <p>
+            أدوات مصممة لتكون سريعة ومريحة وتركز على ما تحتاجه فقط.
+          </p>
+
+        </div>
+
 
         <div class="features-grid">
 
           <div class="feature">
+
             <div class="feature-icon">
               <i class="fas fa-bolt"></i>
             </div>
@@ -172,33 +278,89 @@ const tools = [
             <h3>سريعة</h3>
 
             <p>
-              الأدوات تعمل مباشرة داخل المتصفح بدون انتظار الخادم.
+              تعمل مباشرة داخل المتصفح دون انتظار خوادم خارجية.
             </p>
+
           </div>
 
+
           <div class="feature">
+
             <div class="feature-icon">
-              <i class="fas fa-lock"></i>
+              <i class="fas fa-shield-halved"></i>
             </div>
 
             <h3>خصوصية</h3>
 
             <p>
-              البيانات التي تدخلها في الأدوات لا تحتاج إلى رفعها إلى خادم.
+              معظم العمليات تتم محليًا داخل المتصفح دون رفع بياناتك.
             </p>
+
           </div>
 
+
           <div class="feature">
+
             <div class="feature-icon">
-              <i class="fas fa-mobile-screen"></i>
+              <i class="fas fa-mobile-screen-button"></i>
             </div>
 
             <h3>متجاوبة</h3>
 
             <p>
-              مصممة للعمل على الهاتف والكمبيوتر والتابلت.
+              مصممة للعمل بكفاءة على الهاتف والكمبيوتر واللوحي.
             </p>
+
           </div>
+
+
+          <div class="feature">
+
+            <div class="feature-icon">
+              <i class="fas fa-code"></i>
+            </div>
+
+            <h3>للمطورين</h3>
+
+            <p>
+              أدوات عملية للاستخدام اليومي أثناء البرمجة والتطوير.
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- SEO CONTENT -->
+    <section class="seo-section">
+
+      <div class="container">
+
+        <div class="seo-box">
+
+          <span class="section-label">
+            TH.TECH TOOLS
+          </span>
+
+          <h2>
+            أدوات برمجية مجانية تعمل من المتصفح
+          </h2>
+
+          <p>
+            توفر Th.Tech مجموعة من الأدوات المجانية التي تساعد المطورين
+            في التعامل مع البيانات والكود والنصوص بسرعة. يمكنك استخدام
+            الأدوات مباشرة من المتصفح دون الحاجة إلى تثبيت برامج إضافية.
+          </p>
+
+          <p>
+            استخدم JSON Formatter لترتيب ملفات JSON، أو JSON Validator
+            للتحقق من صحة البيانات، أو أدوات تنسيق HTML وJavaScript
+            لتنظيم الكود وجعله أسهل في القراءة.
+          </p>
 
         </div>
 
@@ -213,29 +375,51 @@ const tools = [
 </body>
 </html>
 
+
 <style>
 
-:global(*) {
-  box-sizing: border-box;
+:root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --primary: #2563eb;
+  --border: #e2e8f0;
+  --soft: #f1f5f9;
+  --radius: 18px;
 }
 
-:global(body) {
+* {
+  box-sizing: border-box;
   margin: 0;
-  background: #f8fafc;
-  color: #0f172a;
-  font-family: 'Cairo', sans-serif;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Cairo", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  transition:
+    background .25s ease,
+    color .25s ease;
 }
 
 .container {
-  width: min(1200px, calc(100% - 32px));
+  width: min(1180px, calc(100% - 32px));
   margin: auto;
 }
+
 
 /* HERO */
 
 .hero {
+  padding: 70px 0 55px;
   text-align: center;
-  padding: 70px 0 45px;
 }
 
 .hero-badge {
@@ -243,29 +427,94 @@ const tools = [
   align-items: center;
   gap: 8px;
   padding: 7px 14px;
-  border-radius: 999px;
-  background: #eff6ff;
-  color: #2563eb;
-  font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 18px;
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  background: var(--card);
+  color: var(--primary);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .8px;
+  margin-bottom: 20px;
 }
 
 .hero h1 {
-  margin: 0 0 12px;
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(34px, 5vw, 56px);
   font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -.7px;
+}
+
+.hero h1 span {
+  color: var(--primary);
 }
 
 .hero p {
-  max-width: 650px;
-  margin: auto;
-  color: #64748b;
-  font-size: 17px;
-  line-height: 1.9;
+  max-width: 680px;
+  margin: 15px auto 0;
+  color: var(--muted);
+  font-size: 16px;
 }
 
-/* GRID */
+.hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 45px;
+  margin-top: 30px;
+}
+
+.hero-stats div {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-stats strong {
+  color: var(--primary);
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.hero-stats span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+
+/* SECTION */
+
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 25px;
+  margin-bottom: 25px;
+}
+
+.section-heading h2 {
+  font-size: 25px;
+  font-weight: 800;
+}
+
+.section-heading p {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.section-label {
+  display: block;
+  color: var(--primary);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  margin-bottom: 5px;
+}
+
+.centered {
+  display: block;
+  text-align: center;
+}
+
+
+/* TOOLS */
 
 .tools-section {
   padding-bottom: 70px;
@@ -274,190 +523,280 @@ const tools = [
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  gap: 18px;
 }
 
-/* CARD */
-
 .tool-card {
+  position: relative;
+  min-height: 275px;
   display: flex;
   flex-direction: column;
-  min-height: 270px;
-  padding: 24px;
-  border: 1px solid #e2e8f0;
-  border-radius: 18px;
-  background: #fff;
+  padding: 22px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
   color: inherit;
   text-decoration: none;
+  overflow: hidden;
   transition:
-    transform .2s ease,
-    box-shadow .2s ease,
-    border-color .2s ease;
+    transform .25s ease,
+    border-color .25s ease,
+    box-shadow .25s ease;
+}
+
+.tool-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      color-mix(
+        in srgb,
+        var(--tool-color) 10%,
+        transparent
+      ),
+      transparent 40%
+    );
+  pointer-events: none;
 }
 
 .tool-card:hover {
   transform: translateY(-5px);
-  border-color: #2563eb;
-  box-shadow: 0 15px 35px rgba(15,23,42,.10);
+  border-color: var(--primary);
+  box-shadow: 0 18px 45px rgba(15, 23, 42, .10);
 }
 
-.card-header {
+.card-top {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 12px;
 }
 
 .icon-box {
   width: 54px;
   height: 54px;
-  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 14px;
+  border-radius: 15px;
+  background: color-mix(
+    in srgb,
+    var(--tool-color) 12%,
+    transparent
+  );
+  color: var(--tool-color);
   font-size: 22px;
+}
+
+.open-icon {
+  color: var(--muted);
+  font-size: 12px;
+  transition: .2s;
+}
+
+.tool-card:hover .open-icon {
+  color: var(--primary);
+  transform: translate(-2px, -2px);
 }
 
 .tags {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 5px;
+  gap: 6px;
+  margin-top: 17px;
 }
 
 .tag {
   padding: 3px 8px;
-  border: 1px solid #e2e8f0;
-  border-radius: 999px;
-  color: #64748b;
-  background: #f8fafc;
-  font-size: 10px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--soft);
+  color: var(--muted);
+  font-size: 9px;
   font-weight: 700;
 }
 
 .card-body {
-  flex: 1;
-  padding-top: 25px;
+  margin-top: 14px;
 }
 
 .card-body h2 {
-  margin: 0 0 8px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 800;
+  margin-bottom: 5px;
 }
 
 .card-body p {
-  margin: 0;
-  color: #64748b;
-  font-size: 14px;
+  color: var(--muted);
+  font-size: 12px;
   line-height: 1.8;
 }
 
 .card-footer {
-  padding-top: 18px;
-  margin-top: 20px;
-  border-top: 1px solid #e2e8f0;
-}
-
-.action-text {
   display: flex;
   align-items: center;
-  gap: 8px;
-  color: #2563eb;
-  font-size: 14px;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
+  color: var(--primary);
+  font-size: 12px;
   font-weight: 800;
 }
 
-.tool-card:hover .action-text i {
-  transform: translateX(-5px);
-}
-
-.action-text i {
+.card-footer i {
   transition: transform .2s ease;
 }
 
-/* INFO */
-
-.info-section {
-  padding: 70px 0;
-  background: #fff;
-  border-top: 1px solid #e2e8f0;
+.tool-card:hover .card-footer i {
+  transform: translateX(-5px);
 }
 
-.info-section h2 {
-  margin: 0 0 40px;
-  text-align: center;
-  font-size: 28px;
-  font-weight: 800;
+
+/* WHY */
+
+.why-section {
+  padding: 70px 0;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
 }
 
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  text-align: center;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 35px;
 }
 
 .feature {
-  padding: 20px;
+  text-align: center;
+  padding: 25px 18px;
 }
 
 .feature-icon {
-  width: 60px;
-  height: 60px;
-  margin: 0 auto 15px;
+  width: 55px;
+  height: 55px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 16px;
-  background: #eff6ff;
-  color: #2563eb;
-  font-size: 22px;
+  margin: 0 auto 15px;
+  border-radius: 15px;
+  background: rgba(37, 99, 235, .08);
+  color: var(--primary);
+  font-size: 21px;
 }
 
 .feature h3 {
-  margin: 0 0 8px;
-  font-size: 18px;
+  font-size: 15px;
+  margin-bottom: 5px;
 }
 
 .feature p {
-  margin: 0;
-  color: #64748b;
-  font-size: 14px;
-  line-height: 1.8;
+  color: var(--muted);
+  font-size: 11px;
 }
 
-/* MOBILE */
 
-@media (max-width: 900px) {
+/* SEO */
+
+.seo-section {
+  padding: 60px 0;
+}
+
+.seo-box {
+  max-width: 850px;
+  margin: auto;
+  padding: 30px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.seo-box h2 {
+  font-size: 23px;
+  margin-bottom: 12px;
+}
+
+.seo-box p {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 10px;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 950px) {
 
   .tools-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
   .features-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
 }
 
-@media (max-width: 600px) {
+@media (max-width: 650px) {
+
+  .container {
+    width: min(100% - 20px, 1180px);
+  }
 
   .hero {
-    padding: 45px 0 30px;
+    padding: 45px 0 40px;
+  }
+
+  .hero h1 {
+    font-size: 34px;
+  }
+
+  .hero p {
+    font-size: 13px;
+  }
+
+  .hero-stats {
+    gap: 25px;
+  }
+
+  .section-heading {
+    display: block;
+  }
+
+  .section-heading p {
+    margin-top: 5px;
   }
 
   .tools-grid {
     grid-template-columns: 1fr;
   }
 
-  .tool-card {
-    min-height: 250px;
+  .features-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 5px;
   }
 
-  .tags {
-    justify-content: flex-start;
+  .feature {
+    padding: 18px 8px;
+  }
+
+  .seo-box {
+    padding: 22px;
+  }
+
+}
+
+@media (max-width: 420px) {
+
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-stats {
+    gap: 18px;
   }
 
 }
