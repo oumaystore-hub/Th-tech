@@ -2,803 +2,1673 @@
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
-const pageTitle = "أدوات المطورين المجانية | Th.Tech";
-const pageDesc =
-  "مجموعة أدوات المطورين المجانية والسريعة من Th.Tech: تنسيق JSON، التحقق من JSON، تنسيق HTML وJavaScript، وعد الكلمات. تعمل مباشرة داخل المتصفح.";
-
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
+export const title = 'أدوات المطورين';
+export const description =
+  'مجموعة متكاملة من الأدوات التقنية المجانية للمطورين والطلاب وصناع المحتوى.';
+
 const tools = [
+  // =========================
+  // JSON
+  // =========================
   {
-    name: "JSON Formatter",
-    slug: "json-formatter",
-    icon: "fa-brackets-curly",
-    fallbackIcon: "fa-code",
-    color: "#2563eb",
-    desc: "تنسيق وتجميل ملفات JSON وتحويلها إلى كود منظم وسهل القراءة مع إمكانية النسخ السريع.",
-    tags: ["JSON", "Format", "Developer"]
+    name: 'JSON Formatter',
+    slug: 'json-formatter',
+    category: 'JSON',
+    description: 'تنسيق وترتيب JSON بطريقة واضحة وسهلة القراءة.',
+    status: 'available',
+    icon: 'json-format',
   },
   {
-    name: "JSON Validator",
-    slug: "json-validator",
-    icon: "fa-circle-check",
-    fallbackIcon: "fa-check-circle",
-    color: "#10b981",
-    desc: "فحص JSON واكتشاف الأخطاء مع توضيح المشكلة لمساعدتك على تصحيح البيانات بسرعة.",
-    tags: ["JSON", "Validate", "Debug"]
+    name: 'JSON Validator',
+    slug: 'json-validator',
+    category: 'JSON',
+    description: 'التحقق من صحة JSON واكتشاف الأخطاء بسرعة.',
+    status: 'available',
+    icon: 'json-check',
   },
   {
-    name: "HTML Formatter",
-    slug: "html-formatter",
-    icon: "fa-code",
-    fallbackIcon: "fa-html5",
-    color: "#f97316",
-    desc: "تنسيق كود HTML وترتيبه بشكل واضح، مع أدوات Beautify وMinify.",
-    tags: ["HTML", "Beautify", "Minify"]
+    name: 'JSON Minifier',
+    slug: 'json-minifier',
+    category: 'JSON',
+    description: 'ضغط JSON وإزالة المسافات غير الضرورية.',
+    status: 'soon',
+    icon: 'json-minify',
   },
   {
-    name: "JavaScript Formatter",
-    slug: "javascript-formatter",
-    icon: "fa-js",
-    fallbackIcon: "fa-js",
-    color: "#eab308",
-    desc: "تجميل وترتيب كود JavaScript وجعله أكثر وضوحًا وسهولة في القراءة.",
-    tags: ["JavaScript", "Code", "Format"]
+    name: 'JSON to CSV',
+    slug: 'json-to-csv',
+    category: 'JSON',
+    description: 'تحويل بيانات JSON إلى CSV.',
+    status: 'soon',
+    icon: 'json-csv',
   },
   {
-    name: "Word Counter",
-    slug: "word-counter",
-    icon: "fa-font",
-    fallbackIcon: "fa-font",
-    color: "#8b5cf6",
-    desc: "حساب الكلمات والأحرف والجمل والفقرات ووقت القراءة التقديري للنص.",
-    tags: ["Text", "Counter", "SEO"]
-  }
+    name: 'JSON to XML',
+    slug: 'json-to-xml',
+    category: 'JSON',
+    description: 'تحويل بيانات JSON إلى XML.',
+    status: 'soon',
+    icon: 'json-xml',
+  },
+
+  // =========================
+  // HTML / CSS / JAVASCRIPT
+  // =========================
+  {
+    name: 'HTML Formatter',
+    slug: 'html-formatter',
+    category: 'Web',
+    description: 'تنسيق وترتيب كود HTML تلقائيًا.',
+    status: 'soon',
+    icon: 'html',
+  },
+  {
+    name: 'HTML Minifier',
+    slug: 'html-minifier',
+    category: 'Web',
+    description: 'ضغط HTML وتقليل حجم الكود.',
+    status: 'soon',
+    icon: 'html-minify',
+  },
+  {
+    name: 'CSS Formatter',
+    slug: 'css-formatter',
+    category: 'CSS',
+    description: 'تنسيق وترتيب أكواد CSS.',
+    status: 'soon',
+    icon: 'css',
+  },
+  {
+    name: 'CSS Minifier',
+    slug: 'css-minifier',
+    category: 'CSS',
+    description: 'ضغط CSS وإزالة المسافات غير الضرورية.',
+    status: 'soon',
+    icon: 'css-minify',
+  },
+  {
+    name: 'JavaScript Formatter',
+    slug: 'javascript-formatter',
+    category: 'JavaScript',
+    description: 'تنسيق وترتيب كود JavaScript.',
+    status: 'soon',
+    icon: 'javascript',
+  },
+  {
+    name: 'JavaScript Minifier',
+    slug: 'javascript-minifier',
+    category: 'JavaScript',
+    description: 'ضغط JavaScript وتقليل حجم الملفات.',
+    status: 'soon',
+    icon: 'javascript-minify',
+  },
+
+  // =========================
+  // TEXT
+  // =========================
+  {
+    name: 'Word Counter',
+    slug: 'word-counter',
+    category: 'Text',
+    description: 'حساب الكلمات والحروف والجمل والأسطر.',
+    status: 'soon',
+    icon: 'word',
+  },
+  {
+    name: 'Character Counter',
+    slug: 'character-counter',
+    category: 'Text',
+    description: 'حساب عدد الأحرف والمسافات والنصوص.',
+    status: 'soon',
+    icon: 'character',
+  },
+  {
+    name: 'Case Converter',
+    slug: 'case-converter',
+    category: 'Text',
+    description: 'تحويل النص بين الأحرف الكبيرة والصغيرة.',
+    status: 'soon',
+    icon: 'case',
+  },
+  {
+    name: 'Text Diff',
+    slug: 'text-diff',
+    category: 'Text',
+    description: 'مقارنة نصين واكتشاف الاختلافات بينهما.',
+    status: 'soon',
+    icon: 'diff',
+  },
+  {
+    name: 'Remove Duplicate Lines',
+    slug: 'remove-duplicate-lines',
+    category: 'Text',
+    description: 'إزالة الأسطر المتكررة من النص.',
+    status: 'soon',
+    icon: 'duplicate',
+  },
+  {
+    name: 'Lorem Ipsum Generator',
+    slug: 'lorem-ipsum',
+    category: 'Text',
+    description: 'إنشاء نصوص تجريبية للتصميم والتطوير.',
+    status: 'soon',
+    icon: 'lorem',
+  },
+
+  // =========================
+  // ENCODING
+  // =========================
+  {
+    name: 'Base64 Encoder / Decoder',
+    slug: 'base64',
+    category: 'Encoding',
+    description: 'ترميز وفك ترميز النصوص باستخدام Base64.',
+    status: 'soon',
+    icon: 'base64',
+  },
+  {
+    name: 'URL Encoder / Decoder',
+    slug: 'url-encoder',
+    category: 'Encoding',
+    description: 'ترميز وفك ترميز روابط URL.',
+    status: 'soon',
+    icon: 'url',
+  },
+  {
+    name: 'HTML Entity Encoder / Decoder',
+    slug: 'html-entities',
+    category: 'Encoding',
+    description: 'ترميز وفك ترميز HTML Entities.',
+    status: 'soon',
+    icon: 'entity',
+  },
+  {
+    name: 'Unicode Converter',
+    slug: 'unicode-converter',
+    category: 'Encoding',
+    description: 'تحويل النصوص بين صيغ Unicode المختلفة.',
+    status: 'soon',
+    icon: 'unicode',
+  },
+
+  // =========================
+  // DEVELOPER
+  // =========================
+  {
+    name: 'Regex Tester',
+    slug: 'regex-tester',
+    category: 'Developer',
+    description: 'اختبار تعبيرات Regex ومشاهدة النتائج مباشرة.',
+    status: 'soon',
+    icon: 'regex',
+  },
+  {
+    name: 'JWT Decoder',
+    slug: 'jwt-decoder',
+    category: 'Developer',
+    description: 'قراءة وتحليل محتوى JSON Web Token.',
+    status: 'soon',
+    icon: 'jwt',
+  },
+  {
+    name: 'UUID Generator',
+    slug: 'uuid-generator',
+    category: 'Developer',
+    description: 'إنشاء UUIDs عشوائية للمشاريع والتطبيقات.',
+    status: 'soon',
+    icon: 'uuid',
+  },
+  {
+    name: 'Timestamp Converter',
+    slug: 'timestamp',
+    category: 'Developer',
+    description: 'تحويل Unix Timestamp إلى تاريخ ووقت والعكس.',
+    status: 'soon',
+    icon: 'timestamp',
+  },
+  {
+    name: 'Cron Expression Generator',
+    slug: 'cron-generator',
+    category: 'Developer',
+    description: 'إنشاء وفهم Cron Expressions.',
+    status: 'soon',
+    icon: 'cron',
+  },
+  {
+    name: '.env Generator',
+    slug: 'env-generator',
+    category: 'Developer',
+    description: 'إنشاء وترتيب متغيرات ملفات البيئة.',
+    status: 'soon',
+    icon: 'env',
+  },
+
+  // =========================
+  // SECURITY
+  // =========================
+  {
+    name: 'Hash Generator',
+    slug: 'hash-generator',
+    category: 'Security',
+    description: 'إنشاء Hash للنصوص باستخدام خوارزميات مختلفة.',
+    status: 'soon',
+    icon: 'hash',
+  },
+  {
+    name: 'HMAC Generator',
+    slug: 'hmac-generator',
+    category: 'Security',
+    description: 'إنشاء HMAC باستخدام مفتاح سري.',
+    status: 'soon',
+    icon: 'hmac',
+  },
+  {
+    name: 'Password Generator',
+    slug: 'password-generator',
+    category: 'Security',
+    description: 'إنشاء كلمات مرور عشوائية وقوية.',
+    status: 'soon',
+    icon: 'password',
+  },
+
+  // =========================
+  // DATABASE
+  // =========================
+  {
+    name: 'SQL Formatter',
+    slug: 'sql-formatter',
+    category: 'Database',
+    description: 'تنسيق استعلامات SQL وجعلها أكثر وضوحًا.',
+    status: 'soon',
+    icon: 'sql',
+  },
+  {
+    name: 'SQL Minifier',
+    slug: 'sql-minifier',
+    category: 'Database',
+    description: 'ضغط استعلامات SQL وتقليل حجمها.',
+    status: 'soon',
+    icon: 'sql-minify',
+  },
+  {
+    name: 'CSV to JSON',
+    slug: 'csv-to-json',
+    category: 'Database',
+    description: 'تحويل CSV إلى JSON بسهولة.',
+    status: 'soon',
+    icon: 'csv-json',
+  },
+
+  // =========================
+  // DESIGN
+  // =========================
+  {
+    name: 'Color Converter',
+    slug: 'color-converter',
+    category: 'Design',
+    description: 'تحويل الألوان بين HEX وRGB وHSL.',
+    status: 'soon',
+    icon: 'color',
+  },
+  {
+    name: 'HEX to RGB',
+    slug: 'hex-to-rgb',
+    category: 'Design',
+    description: 'تحويل ألوان HEX إلى RGB.',
+    status: 'soon',
+    icon: 'hex',
+  },
+  {
+    name: 'RGB to HEX',
+    slug: 'rgb-to-hex',
+    category: 'Design',
+    description: 'تحويل ألوان RGB إلى HEX.',
+    status: 'soon',
+    icon: 'rgb',
+  },
+  {
+    name: 'HSL Converter',
+    slug: 'hsl-converter',
+    category: 'Design',
+    description: 'تحويل الألوان باستخدام HSL.',
+    status: 'soon',
+    icon: 'hsl',
+  },
+  {
+    name: 'Gradient Generator',
+    slug: 'gradient-generator',
+    category: 'Design',
+    description: 'إنشاء تدرجات لونية CSS بسهولة.',
+    status: 'soon',
+    icon: 'gradient',
+  },
+
+  // =========================
+  // GENERATORS
+  // =========================
+  {
+    name: 'QR Code Generator',
+    slug: 'qr-generator',
+    category: 'Generator',
+    description: 'إنشاء QR Code للنصوص والروابط.',
+    status: 'soon',
+    icon: 'qr',
+  },
+  {
+    name: 'Random Number Generator',
+    slug: 'random-number',
+    category: 'Generator',
+    description: 'إنشاء أرقام عشوائية ضمن نطاق تحدده.',
+    status: 'soon',
+    icon: 'random-number',
+  },
+  {
+    name: 'Random String Generator',
+    slug: 'random-string',
+    category: 'Generator',
+    description: 'إنشاء سلاسل نصية عشوائية.',
+    status: 'soon',
+    icon: 'random-string',
+  },
+
+  // =========================
+  // CONVERTERS
+  // =========================
+  {
+    name: 'Number Base Converter',
+    slug: 'number-base',
+    category: 'Converter',
+    description: 'تحويل الأرقام بين Binary وDecimal وHex.',
+    status: 'soon',
+    icon: 'number-base',
+  },
+  {
+    name: 'Binary Converter',
+    slug: 'binary-converter',
+    category: 'Converter',
+    description: 'تحويل الأرقام والنصوص إلى Binary والعكس.',
+    status: 'soon',
+    icon: 'binary',
+  },
+  {
+    name: 'Decimal / Hex Converter',
+    slug: 'decimal-hex',
+    category: 'Converter',
+    description: 'تحويل الأرقام بين Decimal وHex.',
+    status: 'soon',
+    icon: 'decimal-hex',
+  },
+  {
+    name: 'Unit Converter',
+    slug: 'unit-converter',
+    category: 'Converter',
+    description: 'تحويل وحدات القياس المختلفة.',
+    status: 'soon',
+    icon: 'unit',
+  },
+];
+
+const categories = [
+  'الكل',
+  'JSON',
+  'Web',
+  'CSS',
+  'JavaScript',
+  'Text',
+  'Encoding',
+  'Developer',
+  'Security',
+  'Database',
+  'Design',
+  'Generator',
+  'Converter',
 ];
 ---
 
 <html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
 
-  <title>{pageTitle}</title>
+    <title>{title} | Th.Tech</title>
 
-  <meta
-    name="description"
-    content={pageDesc}
-  />
+    <meta
+      name="description"
+      content={description}
+    />
 
-  <meta
-    name="robots"
-    content="index, follow"
-  />
+    <style>
+      :global(*) {
+        box-sizing: border-box;
+      }
 
-  <link
-    rel="canonical"
-    href={`https://oumaystore-hub.github.io${base}/tools/`}
-  />
+      :global(html) {
+        scroll-behavior: smooth;
+      }
 
-  <link
-    rel="icon"
-    type="image/png"
-    href={`${base}/logo1.png`}
-  />
+      :global(body) {
+        margin: 0;
+        font-family:
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        background: #f5f7fb;
+        color: #172033;
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-    rel="stylesheet"
-  />
+        transition:
+          background 0.3s ease,
+          color 0.3s ease;
+      }
 
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-  />
+      main {
+        min-height: calc(100vh - 160px);
+        padding: 42px 16px 70px;
+      }
 
-  <meta property="og:title" content={pageTitle} />
-  <meta property="og:description" content={pageDesc} />
-  <meta property="og:type" content="website" />
-  <meta
-    property="og:url"
-    content={`https://oumaystore-hub.github.io${base}/tools/`}
-  />
-</head>
+      .container {
+        width: min(1150px, 100%);
+        margin: auto;
+      }
 
-<body>
+      /* =========================
+         HERO
+      ========================= */
 
-  <Header />
+      .hero {
+        text-align: center;
+        margin-bottom: 30px;
+      }
 
-  <main class="tools-page">
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
 
-    <!-- HERO -->
-    <section class="hero">
+        padding: 7px 14px;
+
+        border-radius: 999px;
+
+        background: rgba(0, 143, 245, 0.1);
+
+        color: #0088ee;
+
+        font-size: 13px;
+        font-weight: 800;
+
+        margin-bottom: 14px;
+      }
+
+      .hero h1 {
+        margin: 0 0 12px;
+
+        font-size: clamp(30px, 5vw, 50px);
+
+        line-height: 1.15;
+      }
+
+      .hero p {
+        max-width: 720px;
+
+        margin: auto;
+
+        color: #667085;
+
+        font-size: 16px;
+
+        line-height: 1.8;
+      }
+
+      /* =========================
+         SEARCH
+      ========================= */
+
+      .search-box {
+        position: relative;
+
+        margin-bottom: 14px;
+      }
+
+      .search-box input {
+        width: 100%;
+
+        height: 50px;
+
+        padding: 0 18px 0 45px;
+
+        border: 1px solid #dce2eb;
+
+        border-radius: 13px;
+
+        background: white;
+
+        color: #172033;
+
+        outline: none;
+
+        font: inherit;
+      }
+
+      .search-box input:focus {
+        border-color: #008ff5;
+
+        box-shadow:
+          0 0 0 4px
+          rgba(0, 143, 245, 0.1);
+      }
+
+      .search-icon {
+        position: absolute;
+
+        left: 15px;
+
+        top: 50%;
+
+        transform: translateY(-50%);
+
+        color: #008ff5;
+
+        pointer-events: none;
+      }
+
+      /* =========================
+         CATEGORIES
+      ========================= */
+
+      .categories {
+        display: flex;
+
+        gap: 7px;
+
+        overflow-x: auto;
+
+        padding-bottom: 18px;
+
+        scrollbar-width: thin;
+      }
+
+      .category-btn {
+        flex-shrink: 0;
+
+        padding: 8px 13px;
+
+        border-radius: 9px;
+
+        border: 1px solid #dce2eb;
+
+        background: white;
+
+        color: #475467;
+
+        font: inherit;
+
+        font-size: 12px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+      }
+
+      .category-btn.active {
+        background: #008ff5;
+
+        border-color: #008ff5;
+
+        color: white;
+      }
+
+      /* =========================
+         GRID
+      ========================= */
+
+      .tools-grid {
+        display: grid;
+
+        grid-template-columns:
+          repeat(
+            3,
+            minmax(0, 1fr)
+          );
+
+        gap: 16px;
+      }
+
+      .tool-card {
+        display: flex;
+
+        flex-direction: column;
+
+        min-width: 0;
+
+        min-height: 215px;
+
+        padding: 19px;
+
+        border-radius: 18px;
+
+        background: white;
+
+        border: 1px solid #e5e9f2;
+
+        box-shadow:
+          0 7px 22px
+          rgba(20, 35, 60, 0.05);
+
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .tool-card:hover {
+        transform: translateY(-3px);
+
+        border-color:
+          rgba(0, 143, 245, 0.35);
+
+        box-shadow:
+          0 13px 30px
+          rgba(20, 35, 60, 0.09);
+      }
+
+      .tool-top {
+        display: flex;
+
+        align-items: flex-start;
+
+        justify-content: space-between;
+
+        gap: 8px;
+
+        margin-bottom: 15px;
+      }
+
+      /* =========================
+         SVG ICON
+      ========================= */
+
+      .tool-icon {
+        width: 48px;
+        height: 48px;
+
+        flex-shrink: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 13px;
+
+        background:
+          linear-gradient(
+            145deg,
+            rgba(0, 143, 245, 0.13),
+            rgba(0, 143, 245, 0.05)
+          );
+
+        color: #0088ee;
+      }
+
+      .tool-icon svg {
+        width: 27px;
+        height: 27px;
+
+        fill: none;
+
+        stroke: currentColor;
+
+        stroke-width: 1.8;
+
+        stroke-linecap: round;
+
+        stroke-linejoin: round;
+      }
+
+      .tool-icon svg .fill {
+        fill: currentColor;
+
+        stroke: none;
+      }
+
+      .status {
+        padding: 4px 8px;
+
+        border-radius: 999px;
+
+        font-size: 10px;
+
+        font-weight: 800;
+
+        white-space: nowrap;
+      }
+
+      .status.available {
+        background: #ecfdf3;
+
+        color: #067647;
+      }
+
+      .status.soon {
+        background: #f2f4f7;
+
+        color: #667085;
+      }
+
+      .tool-card h2 {
+        margin: 0 0 7px;
+
+        font-size: 17px;
+
+        line-height: 1.35;
+      }
+
+      .tool-card p {
+        margin: 0;
+
+        flex: 1;
+
+        color: #667085;
+
+        font-size: 13px;
+
+        line-height: 1.65;
+      }
+
+      .tool-footer {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: space-between;
+
+        gap: 7px;
+
+        margin-top: 15px;
+
+        padding-top: 12px;
+
+        border-top: 1px solid #edf0f5;
+      }
+
+      .tool-category {
+        color: #98a2b3;
+
+        font-size: 11px;
+
+        font-weight: 700;
+      }
+
+      .open-tool {
+        color: #0088ee;
+
+        text-decoration: none;
+
+        font-size: 12px;
+
+        font-weight: 800;
+      }
+
+      .open-tool:hover {
+        text-decoration: underline;
+      }
+
+      .disabled {
+        color: #98a2b3;
+
+        pointer-events: none;
+      }
+
+      /* =========================
+         EMPTY
+      ========================= */
+
+      .empty {
+        display: none;
+
+        text-align: center;
+
+        padding: 55px 20px;
+
+        color: #667085;
+      }
+
+      .empty-icon {
+        font-size: 38px;
+
+        margin-bottom: 8px;
+      }
+
+      /* =========================
+         MOBILE
+      ========================= */
+
+      @media (max-width: 600px) {
+        main {
+          padding:
+            28px 10px 50px;
+        }
+
+        .hero {
+          margin-bottom: 24px;
+        }
+
+        .hero h1 {
+          font-size: 30px;
+        }
+
+        .hero p {
+          font-size: 14px;
+        }
+
+        /* هاتف = عمودان */
+
+        .tools-grid {
+          grid-template-columns:
+            repeat(
+              2,
+              minmax(0, 1fr)
+            );
+
+          gap: 9px;
+        }
+
+        .tool-card {
+          min-height: 205px;
+
+          padding: 13px;
+
+          border-radius: 14px;
+        }
+
+        .tool-top {
+          margin-bottom: 11px;
+        }
+
+        .tool-icon {
+          width: 40px;
+          height: 40px;
+
+          border-radius: 11px;
+        }
+
+        .tool-icon svg {
+          width: 22px;
+          height: 22px;
+        }
+
+        .status {
+          font-size: 8px;
+
+          padding: 3px 6px;
+        }
+
+        .tool-card h2 {
+          font-size: 14px;
+
+          line-height: 1.3;
+        }
+
+        .tool-card p {
+          font-size: 11px;
+
+          line-height: 1.55;
+        }
+
+        .tool-footer {
+          margin-top: 10px;
+
+          padding-top: 9px;
+        }
+
+        .tool-category,
+        .open-tool {
+          font-size: 9px;
+        }
+      }
+
+      /* =========================
+         DARK MODE
+      ========================= */
+
+      :global(html.dark) body {
+        background: #0b1220;
+
+        color: #f2f4f7;
+      }
+
+      :global(html.dark) .hero p {
+        color: #98a2b3;
+      }
+
+      :global(html.dark) .search-box input {
+        background: #111a2b;
+
+        border-color: #263247;
+
+        color: #f2f4f7;
+      }
+
+      :global(html.dark) .category-btn {
+        background: #111a2b;
+
+        border-color: #263247;
+
+        color: #cbd5e1;
+      }
+
+      :global(html.dark) .tool-card {
+        background: #111a2b;
+
+        border-color: #263247;
+
+        box-shadow:
+          0 10px 30px
+          rgba(0, 0, 0, 0.2);
+      }
+
+      :global(html.dark) .tool-card p {
+        color: #98a2b3;
+      }
+
+      :global(html.dark) .tool-footer {
+        border-color: #263247;
+      }
+
+      :global(html.dark) .status.soon {
+        background: #263247;
+
+        color: #98a2b3;
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
       <div class="container">
 
-        <div class="hero-badge">
-          <i class="fas fa-wand-magic-sparkles"></i>
-          TH.TECH • DEVELOPER TOOLS
-        </div>
+        <section class="hero">
 
-        <h1>
-          أدوات المطورين
-          <span>المجانية</span>
-        </h1>
+          <div class="badge">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M12 2l2.1 6.4L20.5 10l-6.4 2.1L12 18.5l-2.1-6.4L3.5 10l6.4-1.6L12 2z" />
+              <path d="M19 16l.7 2.3L22 19l-2.3.7L19 22l-.7-2.3L16 19l2.3-.7L19 16z" />
+            </svg>
 
-        <p>
-          أدوات سريعة، بسيطة وآمنة لمساعدتك في البرمجة والعمل اليومي.
-          تعمل مباشرة داخل المتصفح بدون الحاجة إلى تثبيت برامج.
-        </p>
-
-        <div class="hero-stats">
-          <div>
-            <strong>{tools.length}+</strong>
-            <span>أدوات</span>
+            Th.Tech Tools
           </div>
 
-          <div>
-            <strong>100%</strong>
-            <span>مجانية</span>
-          </div>
-
-          <div>
-            <strong>0</strong>
-            <span>تثبيت</span>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-
-    <!-- TOOLS -->
-    <section class="tools-section">
-
-      <div class="container">
-
-        <div class="section-heading">
-
-          <div>
-            <span class="section-label">DEVELOPER TOOLKIT</span>
-
-            <h2>
-              اختر الأداة التي تحتاجها
-            </h2>
-          </div>
+          <h1>
+            أدوات تقنية للمطورين
+          </h1>
 
           <p>
-            مجموعة أدوات عملية للمطورين وصناع المحتوى والطلاب.
+            مجموعة متكاملة من الأدوات السريعة والمجانية
+            للبرمجة، النصوص، الترميز، التحويل والتطوير.
           </p>
+
+        </section>
+
+        <div class="search-box">
+
+          <input
+            id="searchInput"
+            type="search"
+            placeholder="ابحث عن أداة..."
+            autocomplete="off"
+          />
+
+          <span class="search-icon">
+            <svg
+              width="21"
+              height="21"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="11" cy="11" r="7" />
+              <path d="m20 20-4-4" />
+            </svg>
+          </span>
 
         </div>
 
+        <div
+          class="categories"
+          id="categories"
+        >
+          {categories.map((category) => (
+            <button
+              class:list={[
+                'category-btn',
+                category === 'الكل' &&
+                  'active',
+              ]}
+              data-category={category}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
 
-        <div class="tools-grid">
+        <section
+          class="tools-grid"
+          id="toolsGrid"
+        >
 
           {tools.map((tool) => (
-
-            <a
-              href={`${base}/tools/${tool.slug}/`}
+            <article
               class="tool-card"
-              aria-label={`فتح ${tool.name}`}
+              data-name={tool.name.toLowerCase()}
+              data-description={tool.description.toLowerCase()}
+              data-category={tool.category}
             >
 
-              <div class="card-top">
+              <div class="tool-top">
 
-                <div
-                  class="icon-box"
-                  style={`--tool-color:${tool.color};`}
-                >
-                  <i class={`fas ${tool.icon}`}></i>
+                <div class="tool-icon">
+
+                  <!-- JSON FORMATTER -->
+                  {tool.icon === 'json-format' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M8 4C6.8 4 6 4.8 6 6v3c0 1.3-.5 2-1.8 3C5.5 13.3 6 14 6 15v3c0 1.2.8 2 2 2" />
+                      <path d="M16 4c1.2 0 2 .8 2 2v3c0 1.3.5 2 1.8 3-1.3 1.3-1.8 2-1.8 3v3c0 1.2-.8 2-2 2" />
+                      <path d="M10 8h4M10 12h4M10 16h4" />
+                    </svg>
+                  )}
+
+                  <!-- JSON CHECK -->
+                  {tool.icon === 'json-check' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M6 3h9l4 4v14H6z" />
+                      <path d="M15 3v5h5" />
+                      <path d="m9 15 2 2 4-5" />
+                    </svg>
+                  )}
+
+                  <!-- JSON MINIFY -->
+                  {tool.icon === 'json-minify' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M8 4C6.8 4 6 4.8 6 6v3c0 1.3-.5 2-1.8 3C5.5 13.3 6 14 6 15v3c0 1.2.8 2 2 2" />
+                      <path d="M16 4c1.2 0 2 .8 2 2v3c0 1.3.5 2 1.8 3-1.3 1.3-1.8 2-1.8 3v3c0 1.2-.8 2-2 2" />
+                      <path d="M10 9h4M10 15h4" />
+                    </svg>
+                  )}
+
+                  <!-- JSON CSV -->
+                  {tool.icon === 'json-csv' && (
+                    <svg viewBox="0 0 24 24">
+                      <rect x="3" y="4" width="18" height="16" rx="2" />
+                      <path d="M3 9h18M9 9v11M15 9v11" />
+                      <path d="M6 6.5h.01M12 6.5h.01M18 6.5h.01" />
+                    </svg>
+                  )}
+
+                  <!-- JSON XML -->
+                  {tool.icon === 'json-xml' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="m8 7-5 5 5 5" />
+                      <path d="m16 7 5 5-5 5" />
+                      <path d="m14 4-4 16" />
+                    </svg>
+                  )}
+
+                  <!-- HTML -->
+                  {tool.icon === 'html' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="m8 5-6 7 6 7" />
+                      <path d="m16 5 6 7-6 7" />
+                      <path d="m14 3-4 18" />
+                    </svg>
+                  )}
+
+                  <!-- HTML MINIFY -->
+                  {tool.icon === 'html-minify' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="m7 6-5 6 5 6" />
+                      <path d="m17 6 5 6-5 6" />
+                      <path d="M14 3 10 21" />
+                      <path d="M9 12h6" />
+                    </svg>
+                  )}
+
+                  <!-- CSS -->
+                  {tool.icon === 'css' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M5 3h14l-2 17-5 2-5-2z" />
+                      <path d="M8 7h8M8.5 11h7M9 15h6" />
+                    </svg>
+                  )}
+
+                  <!-- CSS MINIFY -->
+                  {tool.icon === 'css-minify' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M5 3h14l-2 17-5 2-5-2z" />
+                      <path d="M8 8h8M9 13h6M10 17h4" />
+                    </svg>
+                  )}
+
+                  <!-- JAVASCRIPT -->
+                  {tool.icon === 'javascript' && (
+                    <svg viewBox="0 0 24 24">
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <path d="M8 17v-5M8 17c0 1.2.8 2 2 2s2-.8 2-2v-5" />
+                      <path d="M16 12h2M16 12c0-1 .7-2 2-2" />
+                      <path d="M16 12c0 1 .7 2 2 2" />
+                    </svg>
+                  )}
+
+                  <!-- JAVASCRIPT MINIFY -->
+                  {tool.icon === 'javascript-minify' && (
+                    <svg viewBox="0 0 24 24">
+                      <rect x="3" y="3" width="18" height="18" rx="2" />
+                      <path d="M8 10v7M8 17c0 1 .7 2 2 2s2-1 2-2v-3" />
+                      <path d="M16 10h3M16 10v9M16 19h3" />
+                    </svg>
+                  )}
+
+                  <!-- WORD -->
+                  {tool.icon === 'word' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M5 3h10l4 4v14H5z" />
+                      <path d="M15 3v5h5" />
+                      <path d="M8 12h8M8 16h6" />
+                    </svg>
+                  )}
+
+                  <!-- CHARACTER -->
+                  {tool.icon === 'character' && (
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M8 16c1-5 2-8 4-8s3 3 4 8" />
+                      <path d="M9 14h6" />
+                    </svg>
+                  )}
+
+                  <!-- CASE -->
+                  {tool.icon === 'case' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M6 19 11 5h2l5 14" />
+                      <path d="M8 14h8" />
+                      <path d="M5 19h3M16 19h3" />
+                    </svg>
+                  )}
+
+                  <!-- DIFF -->
+                  {tool.icon === 'diff' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4 5h16M4 9h9M4 13h16M4 17h11" />
+                      <path d="M17 8v8M13 12h8" />
+                    </svg>
+                  )}
+
+                  <!-- DUPLICATE -->
+                  {tool.icon === 'duplicate' && (
+                    <svg viewBox="0 0 24 24">
+                      <rect x="6" y="6" width="13" height="14" rx="2" />
+                      <path d="M6 17H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v2" />
+                      <path d="m10 13 2 2 4-4" />
+                    </svg>
+                  )}
+
+                  <!-- LOREM -->
+                  {tool.icon === 'lorem' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M5 4h14v16H5z" />
+                      <path d="M8 8h8M8 12h8M8 16h5" />
+                    </svg>
+                  )}
+
+                  <!-- BASE64 -->
+                  {tool.icon === 'base64' && (
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M8 9c0-1 1-2 2-2h1v10h-1c-1 0-2-1-2-2M16 9c0-1-1-2-2-2h-1v10h1c1 0 2-1 2-2" />
+                    </svg>
+                  )}
+
+                  <!-- URL -->
+                  {tool.icon === 'url' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.2 1.2" />
+                      <path d="M14 11a5 5 0 0 0-7.1-.1l-2 2a5 5 0 0 0 7.1 7.1l1.2-1.2" />
+                    </svg>
+                  )}
+
+                  <!-- ENTITY -->
+                  {tool.icon === 'entity' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="m8 7-5 5 5 5M16 7l5 5-5 5" />
+                      <path d="M14 4 10 20" />
+                    </svg>
+                  )}
+
+                  <!-- UNICODE -->
+                  {tool.icon === 'unicode' && (
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M7 8h10M12 8v9M9 17h6" />
+                    </svg>
+                  )}
+
+                  <!-- REGEX -->
+                  {tool.icon === 'regex' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4 7h16M4 12h9M4 17h16" />
+                      <path d="M17 10v6M14 13h6" />
+                    </svg>
+                  )}
+
+                  <!-- JWT -->
+                  {tool.icon === 'jwt' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M7 3h10l4 9-4 9H7l-4-9z" />
+                      <path d="M8 8h8M8 12h6M8 16h8" />
+                    </svg>
+                  )}
+
+                  <!-- UUID -->
+                  {tool.icon === 'uuid' && (
+                    <svg viewBox="0 0 24 24">
+                      <rect x="4" y="5" width="16" height="14" rx="2" />
+                      <path d="M8 9h8M8 12h5M8 15h8" />
+                    </svg>
+                  )}
+
+                  <!-- TIMESTAMP -->
+                  {tool.icon === 'timestamp' && (
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M12 7v5l3 2" />
+                    </svg>
+                  )}
+
+                  <!-- CRON -->
+                  {tool.icon === 'cron' && (
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M12 7v5l3 2" />
+                      <path d="M5 4 3 2M19 4l2-2" />
+                    </svg>
+                  )}
+
+                  <!-- ENV -->
+                  {tool.icon === 'env' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M5 4h14v16H5z" />
+                      <path d="M8 8h8M8 12h5M8 16h8" />
+                      <path d="M17 8h.01" />
+                    </svg>
+                  )}
+
+                  <!-- HASH -->
+                  {tool.icon === 'hash' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M9 3 7 21M17 3l-2 18M4 9h17M3 15h17" />
+                    </svg>
+                  )}
+
+                  <!-- HMAC -->
+                  {tool.icon === 'hmac' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M12 3 20 7v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z" />
+                      <path d="m9 12 2 2 4-4" />
+                    </svg>
+                  )}
+
+                  <!-- PASSWORD -->
+                  {tool.icon === 'password' && (
+                    <svg viewBox="0 0 24 24">
+                      <rect x="4" y="10" width="16" height="10" rx="2" />
+                      <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+                      <circle cx="12" cy="15" r="1" />
+                    </svg>
+                  )}
+
+                  <!-- SQL -->
+                  {tool.icon === 'sql' && (
+                    <svg viewBox="0 0 24 24">
+                      <ellipse cx="12" cy="6" rx="8" ry="3" />
+                      <path d="M4 6v6c0 2 3.6 3 8 3s8-1 8-3V6" />
+                      <path d="M4 12v6c0 2 3.6 3 8 3s8-1 8-3v-6" />
+                    </svg>
+                  )}
+
+                  <!-- SQL MINIFY -->
+                  {tool.icon === 'sql-minify' && (
+                    <svg viewBox="0 0 24 24">
+                      <ellipse cx="12" cy="6" rx="8" ry="3" />
+                      <path d="M4 6v6c0 2 3.6 3 8 3s8-1 8-3V6" />
+                      <path d="M9 12h6" />
+                    </svg>
+                  )}
+
+                  <!-- CSV JSON -->
+                  {tool.icon === 'csv-json' && (
+                    <svg viewBox="0 0 24 24">
+                      <rect x="3" y="4" width="18" height="16" rx="2" />
+                      <path d="M3 9h18M9 9v11M15 9v11" />
+                      <path d="m8 6 1 1 1-1M14 6l1 1 1-1" />
+                    </svg>
+                  )}
+
+                  <!-- COLOR -->
+                  {tool.icon === 'color' && (
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="9" />
+                      <circle cx="9" cy="9" r="1" />
+                      <circle cx="15" cy="8" r="1" />
+                      <circle cx="16" cy="14" r="1" />
+                      <path d="M8 15c2 3 6 4 8 1" />
+                    </svg>
+                  )}
+
+                  <!-- HEX -->
+                  {tool.icon === 'hex' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M7 4h10l5 8-5 8H7l-5-8z" />
+                      <path d="M8 12h8" />
+                    </svg>
+                  )}
+
+                  <!-- RGB -->
+                  {tool.icon === 'rgb' && (
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="9" cy="9" r="5" />
+                      <circle cx="15" cy="9" r="5" />
+                      <circle cx="12" cy="15" r="5" />
+                    </svg>
+                  )}
+
+                  <!-- HSL -->
+                  {tool.icon === 'hsl' && (
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="12" cy="12" r="9" />
+                      <path d="M12 3v18M3 12h18" />
+                    </svg>
+                  )}
+
+                  <!-- GRADIENT -->
+                  {tool.icon === 'gradient' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4 5h16v14H4z" />
+                      <path d="M4 19 20 5" />
+                      <path d="M7 16 10 13M14 10l3-3" />
+                    </svg>
+                  )}
+
+                  <!-- QR -->
+                  {tool.icon === 'qr' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z" />
+                      <path d="M14 14h3v3h-3zM18 18h2v2h-2zM14 19h2" />
+                    </svg>
+                  )}
+
+                  <!-- RANDOM NUMBER -->
+                  {tool.icon === 'random-number' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4 7h4l8 10h4" />
+                      <path d="M4 17h4L16 7h4" />
+                      <path d="M18 5l2 2-2 2M18 15l2 2-2 2" />
+                    </svg>
+                  )}
+
+                  <!-- RANDOM STRING -->
+                  {tool.icon === 'random-string' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M5 5h14v14H5z" />
+                      <path d="M8 9h8M8 13h5M8 17h8" />
+                    </svg>
+                  )}
+
+                  <!-- NUMBER BASE -->
+                  {tool.icon === 'number-base' && (
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="7" cy="12" r="4" />
+                      <circle cx="17" cy="12" r="4" />
+                      <path d="M11 12h2" />
+                    </svg>
+                  )}
+
+                  <!-- BINARY -->
+                  {tool.icon === 'binary' && (
+                    <svg viewBox="0 0 24 24">
+                      <circle cx="8" cy="12" r="5" />
+                      <circle cx="16" cy="12" r="5" />
+                      <path d="M8 9v6M6 12h4M14 9h4M14 15h4" />
+                    </svg>
+                  )}
+
+                  <!-- DECIMAL HEX -->
+                  {tool.icon === 'decimal-hex' && (
+                    <svg viewBox="0 0 24 24">
+                      <rect x="3" y="5" width="7" height="14" rx="2" />
+                      <rect x="14" y="5" width="7" height="14" rx="2" />
+                      <path d="M10 12h4M12 10l2 2-2 2" />
+                    </svg>
+                  )}
+
+                  <!-- UNIT -->
+                  {tool.icon === 'unit' && (
+                    <svg viewBox="0 0 24 24">
+                      <path d="M4 7h16M4 12h16M4 17h16" />
+                      <path d="M7 5v4M11 10v4M15 15v4M19 5v4" />
+                    </svg>
+                  )}
+
                 </div>
 
-                <span class="open-icon">
-                  <i class="fas fa-arrow-up-right-from-square"></i>
+                <span
+                  class:list={[
+                    'status',
+                    tool.status ===
+                    'available'
+                      ? 'available'
+                      : 'soon',
+                  ]}
+                >
+                  {
+                    tool.status ===
+                    'available'
+                      ? 'متاح'
+                      : 'قريبًا'
+                  }
                 </span>
 
               </div>
 
+              <h2>
+                {tool.name}
+              </h2>
 
-              <div class="tags">
+              <p>
+                {tool.description}
+              </p>
 
-                {tool.tags.map((tag) => (
-                  <span class="tag">{tag}</span>
-                ))}
+              <div class="tool-footer">
 
-              </div>
-
-
-              <div class="card-body">
-
-                <h2>{tool.name}</h2>
-
-                <p>
-                  {tool.desc}
-                </p>
-
-              </div>
-
-
-              <div class="card-footer">
-
-                <span>
-                  فتح الأداة
+                <span class="tool-category">
+                  {tool.category}
                 </span>
 
-                <i class="fas fa-arrow-left"></i>
+                {
+                  tool.status ===
+                  'available' ? (
+                    <a
+                      class="open-tool"
+                      href={`${base}/tools/${tool.slug}/`}
+                    >
+                      فتح →
+                    </a>
+                  ) : (
+                    <span class="open-tool disabled">
+                      قريبًا
+                    </span>
+                  )
+                }
 
               </div>
 
-            </a>
-
+            </article>
           ))}
 
+        </section>
+
+        <div
+          class="empty"
+          id="emptyState"
+        >
+          <div class="empty-icon">
+            🔎
+          </div>
+
+          <strong>
+            لم يتم العثور على أداة
+          </strong>
+
+          <p>
+            جرّب كلمة بحث أخرى أو اختر تصنيفًا مختلفًا.
+          </p>
         </div>
 
       </div>
+    </main>
 
-    </section>
+    <Footer />
 
+    <script>
+      const searchInput =
+        document.getElementById(
+          'searchInput'
+        ) as HTMLInputElement;
 
-    <!-- WHY -->
-    <section class="why-section">
+      const categoryButtons =
+        document.querySelectorAll(
+          '.category-btn'
+        );
 
-      <div class="container">
+      const toolCards =
+        document.querySelectorAll(
+          '.tool-card'
+        );
 
-        <div class="section-heading centered">
+      const emptyState =
+        document.getElementById(
+          'emptyState'
+        ) as HTMLDivElement;
 
-          <span class="section-label">
-            WHY TH.TECH
-          </span>
+      let selectedCategory =
+        'الكل';
 
-          <h2>
-            لماذا أدوات Th.Tech؟
-          </h2>
+      function filterTools() {
+        const search =
+          searchInput.value
+            .trim()
+            .toLowerCase();
 
-          <p>
-            أدوات مصممة لتكون سريعة ومريحة وتركز على ما تحتاجه فقط.
-          </p>
+        let visibleCount = 0;
 
-        </div>
+        toolCards.forEach((card) => {
+          const name =
+            card.getAttribute(
+              'data-name'
+            ) || '';
 
+          const description =
+            card.getAttribute(
+              'data-description'
+            ) || '';
 
-        <div class="features-grid">
+          const category =
+            card.getAttribute(
+              'data-category'
+            ) || '';
 
-          <div class="feature">
+          const matchesSearch =
+            !search ||
+            name.includes(search) ||
+            description.includes(search);
 
-            <div class="feature-icon">
-              <i class="fas fa-bolt"></i>
-            </div>
+          const matchesCategory =
+            selectedCategory ===
+              'الكل' ||
+            category ===
+              selectedCategory;
 
-            <h3>سريعة</h3>
+          const visible =
+            matchesSearch &&
+            matchesCategory;
 
-            <p>
-              تعمل مباشرة داخل المتصفح دون انتظار خوادم خارجية.
-            </p>
+          (
+            card as HTMLElement
+          ).style.display =
+            visible
+              ? 'flex'
+              : 'none';
 
-          </div>
+          if (visible) {
+            visibleCount++;
+          }
+        });
 
+        emptyState.style.display =
+          visibleCount === 0
+            ? 'block'
+            : 'none';
+      }
 
-          <div class="feature">
+      searchInput.addEventListener(
+        'input',
+        filterTools
+      );
 
-            <div class="feature-icon">
-              <i class="fas fa-shield-halved"></i>
-            </div>
+      categoryButtons.forEach(
+        (button) => {
+          button.addEventListener(
+            'click',
+            () => {
+              categoryButtons.forEach(
+                (btn) =>
+                  btn.classList.remove(
+                    'active'
+                  )
+              );
 
-            <h3>خصوصية</h3>
+              button.classList.add(
+                'active'
+              );
 
-            <p>
-              معظم العمليات تتم محليًا داخل المتصفح دون رفع بياناتك.
-            </p>
+              selectedCategory =
+                button.getAttribute(
+                  'data-category'
+                ) || 'الكل';
 
-          </div>
-
-
-          <div class="feature">
-
-            <div class="feature-icon">
-              <i class="fas fa-mobile-screen-button"></i>
-            </div>
-
-            <h3>متجاوبة</h3>
-
-            <p>
-              مصممة للعمل بكفاءة على الهاتف والكمبيوتر واللوحي.
-            </p>
-
-          </div>
-
-
-          <div class="feature">
-
-            <div class="feature-icon">
-              <i class="fas fa-code"></i>
-            </div>
-
-            <h3>للمطورين</h3>
-
-            <p>
-              أدوات عملية للاستخدام اليومي أثناء البرمجة والتطوير.
-            </p>
-
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- SEO CONTENT -->
-    <section class="seo-section">
-
-      <div class="container">
-
-        <div class="seo-box">
-
-          <span class="section-label">
-            TH.TECH TOOLS
-          </span>
-
-          <h2>
-            أدوات برمجية مجانية تعمل من المتصفح
-          </h2>
-
-          <p>
-            توفر Th.Tech مجموعة من الأدوات المجانية التي تساعد المطورين
-            في التعامل مع البيانات والكود والنصوص بسرعة. يمكنك استخدام
-            الأدوات مباشرة من المتصفح دون الحاجة إلى تثبيت برامج إضافية.
-          </p>
-
-          <p>
-            استخدم JSON Formatter لترتيب ملفات JSON، أو JSON Validator
-            للتحقق من صحة البيانات، أو أدوات تنسيق HTML وJavaScript
-            لتنظيم الكود وجعله أسهل في القراءة.
-          </p>
-
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-  <Footer />
-
-</body>
+              filterTools();
+            }
+          );
+        }
+      );
+    </script>
+  </body>
 </html>
-
-
-<style>
-
-:root {
-  --bg: #f8fafc;
-  --card: #ffffff;
-  --text: #0f172a;
-  --muted: #64748b;
-  --primary: #2563eb;
-  --border: #e2e8f0;
-  --soft: #f1f5f9;
-  --radius: 18px;
-}
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  font-family: "Cairo", sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.7;
-  transition:
-    background .25s ease,
-    color .25s ease;
-}
-
-.container {
-  width: min(1180px, calc(100% - 32px));
-  margin: auto;
-}
-
-
-/* HERO */
-
-.hero {
-  padding: 70px 0 55px;
-  text-align: center;
-}
-
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 7px 14px;
-  border: 1px solid var(--border);
-  border-radius: 50px;
-  background: var(--card);
-  color: var(--primary);
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .8px;
-  margin-bottom: 20px;
-}
-
-.hero h1 {
-  font-size: clamp(34px, 5vw, 56px);
-  font-weight: 800;
-  line-height: 1.25;
-  letter-spacing: -.7px;
-}
-
-.hero h1 span {
-  color: var(--primary);
-}
-
-.hero p {
-  max-width: 680px;
-  margin: 15px auto 0;
-  color: var(--muted);
-  font-size: 16px;
-}
-
-.hero-stats {
-  display: flex;
-  justify-content: center;
-  gap: 45px;
-  margin-top: 30px;
-}
-
-.hero-stats div {
-  display: flex;
-  flex-direction: column;
-}
-
-.hero-stats strong {
-  color: var(--primary);
-  font-size: 22px;
-  font-weight: 800;
-}
-
-.hero-stats span {
-  color: var(--muted);
-  font-size: 11px;
-}
-
-
-/* SECTION */
-
-.section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  gap: 25px;
-  margin-bottom: 25px;
-}
-
-.section-heading h2 {
-  font-size: 25px;
-  font-weight: 800;
-}
-
-.section-heading p {
-  color: var(--muted);
-  font-size: 13px;
-}
-
-.section-label {
-  display: block;
-  color: var(--primary);
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1.5px;
-  margin-bottom: 5px;
-}
-
-.centered {
-  display: block;
-  text-align: center;
-}
-
-
-/* TOOLS */
-
-.tools-section {
-  padding-bottom: 70px;
-}
-
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 18px;
-}
-
-.tool-card {
-  position: relative;
-  min-height: 275px;
-  display: flex;
-  flex-direction: column;
-  padding: 22px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: inherit;
-  text-decoration: none;
-  overflow: hidden;
-  transition:
-    transform .25s ease,
-    border-color .25s ease,
-    box-shadow .25s ease;
-}
-
-.tool-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(
-      circle at 100% 0%,
-      color-mix(
-        in srgb,
-        var(--tool-color) 10%,
-        transparent
-      ),
-      transparent 40%
-    );
-  pointer-events: none;
-}
-
-.tool-card:hover {
-  transform: translateY(-5px);
-  border-color: var(--primary);
-  box-shadow: 0 18px 45px rgba(15, 23, 42, .10);
-}
-
-.card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.icon-box {
-  width: 54px;
-  height: 54px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 15px;
-  background: color-mix(
-    in srgb,
-    var(--tool-color) 12%,
-    transparent
-  );
-  color: var(--tool-color);
-  font-size: 22px;
-}
-
-.open-icon {
-  color: var(--muted);
-  font-size: 12px;
-  transition: .2s;
-}
-
-.tool-card:hover .open-icon {
-  color: var(--primary);
-  transform: translate(-2px, -2px);
-}
-
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 17px;
-}
-
-.tag {
-  padding: 3px 8px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  background: var(--soft);
-  color: var(--muted);
-  font-size: 9px;
-  font-weight: 700;
-}
-
-.card-body {
-  margin-top: 14px;
-}
-
-.card-body h2 {
-  font-size: 18px;
-  font-weight: 800;
-  margin-bottom: 5px;
-}
-
-.card-body p {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.8;
-}
-
-.card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: auto;
-  padding-top: 18px;
-  border-top: 1px solid var(--border);
-  color: var(--primary);
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.card-footer i {
-  transition: transform .2s ease;
-}
-
-.tool-card:hover .card-footer i {
-  transform: translateX(-5px);
-}
-
-
-/* WHY */
-
-.why-section {
-  padding: 70px 0;
-  background: var(--card);
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-}
-
-.features-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
-  margin-top: 35px;
-}
-
-.feature {
-  text-align: center;
-  padding: 25px 18px;
-}
-
-.feature-icon {
-  width: 55px;
-  height: 55px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0 auto 15px;
-  border-radius: 15px;
-  background: rgba(37, 99, 235, .08);
-  color: var(--primary);
-  font-size: 21px;
-}
-
-.feature h3 {
-  font-size: 15px;
-  margin-bottom: 5px;
-}
-
-.feature p {
-  color: var(--muted);
-  font-size: 11px;
-}
-
-
-/* SEO */
-
-.seo-section {
-  padding: 60px 0;
-}
-
-.seo-box {
-  max-width: 850px;
-  margin: auto;
-  padding: 30px;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-
-.seo-box h2 {
-  font-size: 23px;
-  margin-bottom: 12px;
-}
-
-.seo-box p {
-  color: var(--muted);
-  font-size: 13px;
-  margin-top: 10px;
-}
-
-
-/* RESPONSIVE */
-
-@media (max-width: 950px) {
-
-  .tools-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .features-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-}
-
-@media (max-width: 650px) {
-
-  .container {
-    width: min(100% - 20px, 1180px);
-  }
-
-  .hero {
-    padding: 45px 0 40px;
-  }
-
-  .hero h1 {
-    font-size: 34px;
-  }
-
-  .hero p {
-    font-size: 13px;
-  }
-
-  .hero-stats {
-    gap: 25px;
-  }
-
-  .section-heading {
-    display: block;
-  }
-
-  .section-heading p {
-    margin-top: 5px;
-  }
-
-  .tools-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .features-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 5px;
-  }
-
-  .feature {
-    padding: 18px 8px;
-  }
-
-  .seo-box {
-    padding: 22px;
-  }
-
-}
-
-@media (max-width: 420px) {
-
-  .features-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-stats {
-    gap: 18px;
-  }
-
-}
-
-</style>
