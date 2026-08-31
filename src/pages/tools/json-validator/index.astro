@@ -1,0 +1,1067 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+export const title = 'JSON Validator - مدقق JSON';
+export const description =
+  'أداة مجانية للتحقق من صحة JSON واكتشاف الأخطاء بسرعة.';
+---
+
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | Th.Tech</title>
+    <meta name="description" content={description} />
+
+    <style>
+      :global(*) {
+        box-sizing: border-box;
+      }
+
+      :global(html) {
+        scroll-behavior: smooth;
+      }
+
+      :global(body) {
+        margin: 0;
+        font-family:
+          system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #f5f7fb;
+        color: #172033;
+        transition:
+          background 0.3s ease,
+          color 0.3s ease;
+      }
+
+      main {
+        min-height: calc(100vh - 160px);
+        padding: 42px 18px 70px;
+      }
+
+      .container {
+        width: min(1100px, 100%);
+        margin: auto;
+      }
+
+      .hero {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        background: rgba(0, 145, 255, 0.1);
+        color: #0088ee;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 14px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(30px, 5vw, 48px);
+        line-height: 1.15;
+      }
+
+      .hero p {
+        margin: auto;
+        max-width: 700px;
+        color: #667085;
+        font-size: 17px;
+        line-height: 1.8;
+      }
+
+      .tool-card {
+        background: #ffffff;
+        border: 1px solid #e5e9f2;
+        border-radius: 22px;
+        padding: 22px;
+        box-shadow: 0 12px 35px rgba(20, 35, 60, 0.07);
+      }
+
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+      }
+
+      .toolbar-title {
+        font-size: 17px;
+        font-weight: 800;
+      }
+
+      .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        border: 0;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          opacity 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+      }
+
+      .primary {
+        background: #008ff5;
+        color: white;
+      }
+
+      .secondary {
+        background: #eef2f7;
+        color: #344054;
+      }
+
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 360px;
+        resize: vertical;
+        border: 1px solid #d9dee8;
+        border-radius: 15px;
+        padding: 18px;
+        outline: none;
+        font-family:
+          "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 14px;
+        line-height: 1.7;
+        direction: ltr;
+        text-align: left;
+        background: #fbfcfe;
+        color: #172033;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      textarea:focus {
+        border-color: #008ff5;
+        box-shadow: 0 0 0 4px rgba(0, 143, 245, 0.1);
+      }
+
+      .result {
+        display: none;
+        margin-top: 16px;
+        padding: 16px;
+        border-radius: 14px;
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      .result.success {
+        display: block;
+        background: #ecfdf3;
+        border: 1px solid #abefc6;
+        color: #067647;
+      }
+
+      .result.error {
+        display: block;
+        background: #fef3f2;
+        border: 1px solid #fecdca;
+        color: #b42318;
+      }
+
+      .status-icon {
+        font-weight: 900;
+        margin-left: 5px;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-top: 18px;
+      }
+
+      .info-box {
+        padding: 18px;
+        border-radius: 15px;
+        background: #f8fafc;
+        border: 1px solid #e7ebf2;
+      }
+
+      .info-box strong {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 15px;
+      }
+
+      .info-box span {
+        color: #667085;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .back {
+        display: inline-flex;
+        margin-top: 24px;
+        color: #0088ee;
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .back:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 700px) {
+        main {
+          padding: 28px 12px 50px;
+        }
+
+        .tool-card {
+          padding: 15px;
+          border-radius: 17px;
+        }
+
+        textarea {
+          min-height: 300px;
+          font-size: 13px;
+        }
+
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .toolbar {
+          align-items: stretch;
+        }
+
+        .actions {
+          width: 100%;
+        }
+
+        .actions button {
+          flex: 1;
+        }
+      }
+
+      /* دعم الوضع الليلي من Header */
+      :global(html.dark) body {
+        background: #0b1220;
+        color: #f2f4f7;
+      }
+
+      :global(html.dark) .hero p {
+        color: #98a2b3;
+      }
+
+      :global(html.dark) .tool-card {
+        background: #111a2b;
+        border-color: #263247;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+      }
+
+      :global(html.dark) textarea {
+        background: #0b1220;
+        border-color: #344054;
+        color: #f2f4f7;
+      }
+
+      :global(html.dark) .secondary {
+        background: #263247;
+        color: #f2f4f7;
+      }
+
+      :global(html.dark) .info-box {
+        background: #0d1626;
+        border-color: #263247;
+      }
+
+      :global(html.dark) .info-box span {
+        color: #98a2b3;
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
+      <div class="container">
+        <section class="hero">
+          <div class="badge">🧩 أداة المطور</div>
+
+          <h1>JSON Validator</h1>
+
+          <p>
+            تحقق من صحة كود JSON الخاص بك واكتشف الأخطاء بسرعة، بدون رفع
+            ملفاتك أو إرسال بياناتك إلى أي خادم.
+          </p>
+        </section>
+
+        <section class="tool-card">
+          <div class="toolbar">
+            <div class="toolbar-title">أدخل JSON للتحقق منه</div>
+
+            <div class="actions">
+              <button class="primary" id="validateBtn">
+                تحقق من JSON
+              </button>
+
+              <button class="secondary" id="formatBtn">
+                تنسيق
+              </button>
+
+              <button class="secondary" id="clearBtn">
+                مسح
+              </button>
+            </div>
+          </div>
+
+          <textarea
+            id="jsonInput"
+            spellcheck="false"
+            placeholder={`مثال:
+{
+  "name": "Th.Tech",
+  "version": "1.0",
+  "tools": ["JSON", "HTML", "JavaScript"]
+}`}
+          ></textarea>
+
+          <div id="result" class="result"></div>
+
+          <div class="info-grid">
+            <div class="info-box">
+              <strong>⚡ سريع</strong>
+              <span>
+                يتم التحقق مباشرة داخل متصفحك دون انتظار خادم خارجي.
+              </span>
+            </div>
+
+            <div class="info-box">
+              <strong>🔒 خاص</strong>
+              <span>
+                البيانات التي تدخلها لا يتم إرسالها إلى أي خادم.
+              </span>
+            </div>
+
+            <div class="info-box">
+              <strong>🛠️ للمطورين</strong>
+              <span>
+                مناسب لفحص ملفات وإجابات API وبيانات JSON بسرعة.
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <a class="back" href={`${base}/tools/`}>
+          ← العودة إلى جميع الأدوات
+        </a>
+      </div>
+    </main>
+
+    <Footer />
+
+    <script>
+      const input = document.getElementById(
+        'jsonInput'
+      ) as HTMLTextAreaElement;
+
+      const result = document.getElementById(
+        'result'
+      ) as HTMLDivElement;
+
+      const validateBtn = document.getElementById(
+        'validateBtn'
+      ) as HTMLButtonElement;
+
+      const formatBtn = document.getElementById(
+        'formatBtn'
+      ) as HTMLButtonElement;
+
+      const clearBtn = document.getElementById(
+        'clearBtn'
+      ) as HTMLButtonElement;
+
+      function showResult(
+        type: 'success' | 'error',
+        message: string
+      ) {
+        result.className = `result ${type}`;
+        result.innerHTML = message;
+      }
+
+      function validateJSON() {
+        const value = input.value.trim();
+
+        if (!value) {
+          showResult(
+            'error',
+            '<span class="status-icon">✕</span> يرجى إدخال JSON أولاً.'
+          );
+          return;
+        }
+
+        try {
+          const parsed = JSON.parse(value);
+
+          let type = 'قيمة JSON';
+
+          if (Array.isArray(parsed)) {
+            type = 'مصفوفة Array';
+          } else if (
+            parsed !== null &&
+            typeof parsed === 'object'
+          ) {
+            type = 'كائن Object';
+          } else if (typeof parsed === 'string') {
+            type = 'نص String';
+          } else if (typeof parsed === 'number') {
+            type = 'رقم Number';
+          } else if (typeof parsed === 'boolean') {
+            type = 'قيمة Boolean';
+          } else if (parsed === null) {
+            type = 'Null';
+          }
+
+          showResult(
+            'success',
+            `<span class="status-icon">✓</span>
+             JSON صالح تمامًا.
+             <br>
+             <small>النوع: ${type}</small>`
+          );
+        } catch (error) {
+          const message =
+            error instanceof Error
+              ? error.message
+              : 'خطأ غير معروف';
+
+          showResult(
+            'error',
+            `<span class="status-icon">✕</span>
+             JSON غير صالح.
+             <br>
+             <small>${escapeHtml(message)}</small>`
+          );
+        }
+      }
+
+      function formatJSON() {
+        const value = input.value.trim();
+
+        if (!value) {
+          showResult(
+            'error',
+            '<span class="status-icon">✕</span> أدخل JSON أولاً.'
+          );
+          return;
+        }
+
+        try {
+          const parsed = JSON.parse(value);
+
+          input.value = JSON.stringify(parsed, null, 2);
+
+          showResult(
+            'success',
+            '<span class="status-icon">✓</span> تم تنسيق JSON بنجاح.'
+          );
+        } catch (error) {
+          const message =
+            error instanceof Error
+              ? error.message
+              : 'JSON غير صالح';
+
+          showResult(
+            'error',
+            `<span class="status-icon">✕</span>
+             لا يمكن التنسيق لأن JSON غير صالح.
+             <br>
+             <small>${escapeHtml(message)}</small>`
+          );
+        }
+      }
+
+      function escapeHtml(value: string) {
+        return value
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#039;');
+      }
+
+      validateBtn.addEventListener('click', validateJSON);
+      formatBtn.addEventListener('click', formatJSON);
+
+      clearBtn.addEventListener('click', () => {
+        input.value = '';
+        result.className = 'result';
+        result.innerHTML = '';
+        input.focus();
+      });
+
+      input.addEventListener('input', () => {
+        result.className = 'result';
+        result.innerHTML = '';
+      });
+
+      input.addEventListener('keydown', (event) => {
+        if (
+          (event.ctrlKey || event.metaKey) &&
+          event.key === 'Enter'
+        ) {
+          validateJSON();
+        }
+      });
+    </script>
+  </body>
+</html>---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+export const title = 'JSON Validator - مدقق JSON';
+export const description =
+  'أداة مجانية للتحقق من صحة JSON واكتشاف الأخطاء بسرعة.';
+---
+
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title} | Th.Tech</title>
+    <meta name="description" content={description} />
+
+    <style>
+      :global(*) {
+        box-sizing: border-box;
+      }
+
+      :global(html) {
+        scroll-behavior: smooth;
+      }
+
+      :global(body) {
+        margin: 0;
+        font-family:
+          system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: #f5f7fb;
+        color: #172033;
+        transition:
+          background 0.3s ease,
+          color 0.3s ease;
+      }
+
+      main {
+        min-height: calc(100vh - 160px);
+        padding: 42px 18px 70px;
+      }
+
+      .container {
+        width: min(1100px, 100%);
+        margin: auto;
+      }
+
+      .hero {
+        text-align: center;
+        margin-bottom: 32px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        background: rgba(0, 145, 255, 0.1);
+        color: #0088ee;
+        font-size: 14px;
+        font-weight: 700;
+        margin-bottom: 14px;
+      }
+
+      h1 {
+        margin: 0 0 12px;
+        font-size: clamp(30px, 5vw, 48px);
+        line-height: 1.15;
+      }
+
+      .hero p {
+        margin: auto;
+        max-width: 700px;
+        color: #667085;
+        font-size: 17px;
+        line-height: 1.8;
+      }
+
+      .tool-card {
+        background: #ffffff;
+        border: 1px solid #e5e9f2;
+        border-radius: 22px;
+        padding: 22px;
+        box-shadow: 0 12px 35px rgba(20, 35, 60, 0.07);
+      }
+
+      .toolbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
+      }
+
+      .toolbar-title {
+        font-size: 17px;
+        font-weight: 800;
+      }
+
+      .actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      button {
+        border: 0;
+        border-radius: 10px;
+        padding: 10px 16px;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        transition:
+          transform 0.15s ease,
+          opacity 0.2s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+      }
+
+      .primary {
+        background: #008ff5;
+        color: white;
+      }
+
+      .secondary {
+        background: #eef2f7;
+        color: #344054;
+      }
+
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 360px;
+        resize: vertical;
+        border: 1px solid #d9dee8;
+        border-radius: 15px;
+        padding: 18px;
+        outline: none;
+        font-family:
+          "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+        font-size: 14px;
+        line-height: 1.7;
+        direction: ltr;
+        text-align: left;
+        background: #fbfcfe;
+        color: #172033;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      textarea:focus {
+        border-color: #008ff5;
+        box-shadow: 0 0 0 4px rgba(0, 143, 245, 0.1);
+      }
+
+      .result {
+        display: none;
+        margin-top: 16px;
+        padding: 16px;
+        border-radius: 14px;
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      .result.success {
+        display: block;
+        background: #ecfdf3;
+        border: 1px solid #abefc6;
+        color: #067647;
+      }
+
+      .result.error {
+        display: block;
+        background: #fef3f2;
+        border: 1px solid #fecdca;
+        color: #b42318;
+      }
+
+      .status-icon {
+        font-weight: 900;
+        margin-left: 5px;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin-top: 18px;
+      }
+
+      .info-box {
+        padding: 18px;
+        border-radius: 15px;
+        background: #f8fafc;
+        border: 1px solid #e7ebf2;
+      }
+
+      .info-box strong {
+        display: block;
+        margin-bottom: 7px;
+        font-size: 15px;
+      }
+
+      .info-box span {
+        color: #667085;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .back {
+        display: inline-flex;
+        margin-top: 24px;
+        color: #0088ee;
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .back:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 700px) {
+        main {
+          padding: 28px 12px 50px;
+        }
+
+        .tool-card {
+          padding: 15px;
+          border-radius: 17px;
+        }
+
+        textarea {
+          min-height: 300px;
+          font-size: 13px;
+        }
+
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .toolbar {
+          align-items: stretch;
+        }
+
+        .actions {
+          width: 100%;
+        }
+
+        .actions button {
+          flex: 1;
+        }
+      }
+
+      /* دعم الوضع الليلي من Header */
+      :global(html.dark) body {
+        background: #0b1220;
+        color: #f2f4f7;
+      }
+
+      :global(html.dark) .hero p {
+        color: #98a2b3;
+      }
+
+      :global(html.dark) .tool-card {
+        background: #111a2b;
+        border-color: #263247;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+      }
+
+      :global(html.dark) textarea {
+        background: #0b1220;
+        border-color: #344054;
+        color: #f2f4f7;
+      }
+
+      :global(html.dark) .secondary {
+        background: #263247;
+        color: #f2f4f7;
+      }
+
+      :global(html.dark) .info-box {
+        background: #0d1626;
+        border-color: #263247;
+      }
+
+      :global(html.dark) .info-box span {
+        color: #98a2b3;
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
+      <div class="container">
+        <section class="hero">
+          <div class="badge">🧩 أداة المطور</div>
+
+          <h1>JSON Validator</h1>
+
+          <p>
+            تحقق من صحة كود JSON الخاص بك واكتشف الأخطاء بسرعة، بدون رفع
+            ملفاتك أو إرسال بياناتك إلى أي خادم.
+          </p>
+        </section>
+
+        <section class="tool-card">
+          <div class="toolbar">
+            <div class="toolbar-title">أدخل JSON للتحقق منه</div>
+
+            <div class="actions">
+              <button class="primary" id="validateBtn">
+                تحقق من JSON
+              </button>
+
+              <button class="secondary" id="formatBtn">
+                تنسيق
+              </button>
+
+              <button class="secondary" id="clearBtn">
+                مسح
+              </button>
+            </div>
+          </div>
+
+          <textarea
+            id="jsonInput"
+            spellcheck="false"
+            placeholder={`مثال:
+{
+  "name": "Th.Tech",
+  "version": "1.0",
+  "tools": ["JSON", "HTML", "JavaScript"]
+}`}
+          ></textarea>
+
+          <div id="result" class="result"></div>
+
+          <div class="info-grid">
+            <div class="info-box">
+              <strong>⚡ سريع</strong>
+              <span>
+                يتم التحقق مباشرة داخل متصفحك دون انتظار خادم خارجي.
+              </span>
+            </div>
+
+            <div class="info-box">
+              <strong>🔒 خاص</strong>
+              <span>
+                البيانات التي تدخلها لا يتم إرسالها إلى أي خادم.
+              </span>
+            </div>
+
+            <div class="info-box">
+              <strong>🛠️ للمطورين</strong>
+              <span>
+                مناسب لفحص ملفات وإجابات API وبيانات JSON بسرعة.
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <a class="back" href={`${base}/tools/`}>
+          ← العودة إلى جميع الأدوات
+        </a>
+      </div>
+    </main>
+
+    <Footer />
+
+    <script>
+      const input = document.getElementById(
+        'jsonInput'
+      ) as HTMLTextAreaElement;
+
+      const result = document.getElementById(
+        'result'
+      ) as HTMLDivElement;
+
+      const validateBtn = document.getElementById(
+        'validateBtn'
+      ) as HTMLButtonElement;
+
+      const formatBtn = document.getElementById(
+        'formatBtn'
+      ) as HTMLButtonElement;
+
+      const clearBtn = document.getElementById(
+        'clearBtn'
+      ) as HTMLButtonElement;
+
+      function showResult(
+        type: 'success' | 'error',
+        message: string
+      ) {
+        result.className = `result ${type}`;
+        result.innerHTML = message;
+      }
+
+      function validateJSON() {
+        const value = input.value.trim();
+
+        if (!value) {
+          showResult(
+            'error',
+            '<span class="status-icon">✕</span> يرجى إدخال JSON أولاً.'
+          );
+          return;
+        }
+
+        try {
+          const parsed = JSON.parse(value);
+
+          let type = 'قيمة JSON';
+
+          if (Array.isArray(parsed)) {
+            type = 'مصفوفة Array';
+          } else if (
+            parsed !== null &&
+            typeof parsed === 'object'
+          ) {
+            type = 'كائن Object';
+          } else if (typeof parsed === 'string') {
+            type = 'نص String';
+          } else if (typeof parsed === 'number') {
+            type = 'رقم Number';
+          } else if (typeof parsed === 'boolean') {
+            type = 'قيمة Boolean';
+          } else if (parsed === null) {
+            type = 'Null';
+          }
+
+          showResult(
+            'success',
+            `<span class="status-icon">✓</span>
+             JSON صالح تمامًا.
+             <br>
+             <small>النوع: ${type}</small>`
+          );
+        } catch (error) {
+          const message =
+            error instanceof Error
+              ? error.message
+              : 'خطأ غير معروف';
+
+          showResult(
+            'error',
+            `<span class="status-icon">✕</span>
+             JSON غير صالح.
+             <br>
+             <small>${escapeHtml(message)}</small>`
+          );
+        }
+      }
+
+      function formatJSON() {
+        const value = input.value.trim();
+
+        if (!value) {
+          showResult(
+            'error',
+            '<span class="status-icon">✕</span> أدخل JSON أولاً.'
+          );
+          return;
+        }
+
+        try {
+          const parsed = JSON.parse(value);
+
+          input.value = JSON.stringify(parsed, null, 2);
+
+          showResult(
+            'success',
+            '<span class="status-icon">✓</span> تم تنسيق JSON بنجاح.'
+          );
+        } catch (error) {
+          const message =
+            error instanceof Error
+              ? error.message
+              : 'JSON غير صالح';
+
+          showResult(
+            'error',
+            `<span class="status-icon">✕</span>
+             لا يمكن التنسيق لأن JSON غير صالح.
+             <br>
+             <small>${escapeHtml(message)}</small>`
+          );
+        }
+      }
+
+      function escapeHtml(value: string) {
+        return value
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;')
+          .replaceAll("'", '&#039;');
+      }
+
+      validateBtn.addEventListener('click', validateJSON);
+      formatBtn.addEventListener('click', formatJSON);
+
+      clearBtn.addEventListener('click', () => {
+        input.value = '';
+        result.className = 'result';
+        result.innerHTML = '';
+        input.focus();
+      });
+
+      input.addEventListener('input', () => {
+        result.className = 'result';
+        result.innerHTML = '';
+      });
+
+      input.addEventListener('keydown', (event) => {
+        if (
+          (event.ctrlKey || event.metaKey) &&
+          event.key === 'Enter'
+        ) {
+          validateJSON();
+        }
+      });
+    </script>
+  </body>
+</html>
