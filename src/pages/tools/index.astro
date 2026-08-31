@@ -1,16 +1,1008 @@
 ---
-const title = "Th.Tech Tools";
----
 
-<html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
-  </head>
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
 
-  <body>
-    <h1>Th.Tech Tools</h1>
-    <p>Build Test</p>
-  </body>
-</html>
+const base = import.meta.env.BASE_URL.replace(//$/, '');
+
+const tools = [
+{ name: 'JSON Formatter', ar: 'تنسيق JSON', slug: 'json-formatter', icon: 'json', color: 'blue' },
+{ name: 'JSON Validator', ar: 'التحقق من JSON', slug: 'json-validator', icon: 'check', color: 'green' },
+{ name: 'JSON Minifier', ar: 'تصغير JSON', slug: 'json-minifier', icon: 'compress', color: 'purple' },
+{ name: 'JSON Tree Viewer', ar: 'عرض JSON كشجرة', slug: 'json-tree-viewer', icon: 'tree', color: 'cyan' },
+{ name: 'JSON Diff', ar: 'مقارنة JSON', slug: 'json-diff', icon: 'diff', color: 'orange' },
+
+{ name: 'HTML Formatter', ar: 'تنسيق HTML', slug: 'html-formatter', icon: 'html', color: 'orange' },
+{ name: 'HTML Validator', ar: 'التحقق من HTML', slug: 'html-validator', icon: 'check', color: 'green' },
+{ name: 'HTML Minifier', ar: 'تصغير HTML', slug: 'html-minifier', icon: 'compress', color: 'red' },
+{ name: 'HTML Preview', ar: 'معاينة HTML', slug: 'html-preview', icon: 'preview', color: 'cyan' },
+{ name: 'HTML Entity Encoder', ar: 'ترميز HTML Entities', slug: 'html-entity-encoder', icon: 'html', color: 'blue' },
+
+{ name: 'CSS Formatter', ar: 'تنسيق CSS', slug: 'css-formatter', icon: 'css', color: 'cyan' },
+{ name: 'CSS Minifier', ar: 'تصغير CSS', slug: 'css-minifier', icon: 'compress', color: 'blue' },
+{ name: 'CSS Validator', ar: 'التحقق من CSS', slug: 'css-validator', icon: 'check', color: 'green' },
+{ name: 'Gradient Generator', ar: 'إنشاء تدرجات CSS', slug: 'gradient-generator', icon: 'gradient', color: 'violet' },
+{ name: 'Box Shadow Generator', ar: 'إنشاء Box Shadow', slug: 'box-shadow-generator', icon: 'shadow', color: 'purple' },
+{ name: 'Border Radius Generator', ar: 'إنشاء Border Radius', slug: 'border-radius-generator', icon: 'square', color: 'orange' },
+{ name: 'CSS Color Converter', ar: 'تحويل ألوان CSS', slug: 'css-color-converter', icon: 'color', color: 'pink' },
+{ name: 'CSS Units Converter', ar: 'تحويل وحدات CSS', slug: 'css-units-converter', icon: 'ruler', color: 'indigo' },
+
+{ name: 'JavaScript Formatter', ar: 'تنسيق JavaScript', slug: 'javascript-formatter', icon: 'js', color: 'yellow' },
+{ name: 'JavaScript Validator', ar: 'التحقق من JavaScript', slug: 'javascript-validator', icon: 'check', color: 'green' },
+{ name: 'JavaScript Minifier', ar: 'تصغير JavaScript', slug: 'javascript-minifier', icon: 'compress', color: 'yellow' },
+{ name: 'JavaScript Beautifier', ar: 'تجميل JavaScript', slug: 'javascript-beautifier', icon: 'js', color: 'orange' },
+{ name: 'Regex Tester', ar: 'اختبار Regular Expression', slug: 'regex-tester', icon: 'regex', color: 'red' },
+{ name: 'Regex Generator', ar: 'إنشاء Regex', slug: 'regex-generator', icon: 'regex', color: 'purple' },
+
+{ name: 'XML Formatter', ar: 'تنسيق XML', slug: 'xml-formatter', icon: 'xml', color: 'orange' },
+{ name: 'XML Validator', ar: 'التحقق من XML', slug: 'xml-validator', icon: 'check', color: 'green' },
+{ name: 'XML Minifier', ar: 'تصغير XML', slug: 'xml-minifier', icon: 'compress', color: 'purple' },
+{ name: 'YAML Formatter', ar: 'تنسيق YAML', slug: 'yaml-formatter', icon: 'yaml', color: 'blue' },
+{ name: 'YAML Validator', ar: 'التحقق من YAML', slug: 'yaml-validator', icon: 'check', color: 'green' },
+{ name: 'YAML to JSON', ar: 'تحويل YAML إلى JSON', slug: 'yaml-to-json', icon: 'convert', color: 'cyan' },
+
+{ name: 'SQL Formatter', ar: 'تنسيق SQL', slug: 'sql-formatter', icon: 'sql', color: 'indigo' },
+{ name: 'SQL Validator', ar: 'التحقق من SQL', slug: 'sql-validator', icon: 'check', color: 'green' },
+{ name: 'SQL Minifier', ar: 'تصغير SQL', slug: 'sql-minifier', icon: 'compress', color: 'purple' },
+{ name: 'SQL to JSON', ar: 'تحويل SQL إلى JSON', slug: 'sql-to-json', icon: 'convert', color: 'blue' },
+{ name: 'SQL Query Builder', ar: 'بناء استعلامات SQL', slug: 'sql-query-builder', icon: 'database', color: 'orange' },
+
+{ name: 'Word Counter', ar: 'حساب الكلمات', slug: 'word-counter', icon: 'words', color: 'purple' },
+{ name: 'Character Counter', ar: 'حساب الأحرف', slug: 'character-counter', icon: 'text', color: 'violet' },
+{ name: 'Line Counter', ar: 'حساب الأسطر', slug: 'line-counter', icon: 'lines', color: 'blue' },
+{ name: 'Text Case Converter', ar: 'تحويل حالة النص', slug: 'text-case-converter', icon: 'case', color: 'cyan' },
+{ name: 'Text Reverser', ar: 'عكس النص', slug: 'text-reverser', icon: 'reverse', color: 'violet' },
+{ name: 'Remove Duplicates', ar: 'إزالة النصوص المكررة', slug: 'remove-duplicates', icon: 'duplicates', color: 'green' },
+{ name: 'Sort Lines', ar: 'ترتيب الأسطر', slug: 'sort-lines', icon: 'sort', color: 'orange' },
+{ name: 'Text Diff', ar: 'مقارنة النصوص', slug: 'text-diff', icon: 'diff', color: 'red' },
+{ name: 'Lorem Ipsum Generator', ar: 'إنشاء نص تجريبي', slug: 'lorem-ipsum-generator', icon: 'text', color: 'blue' },
+{ name: 'Text Cleaner', ar: 'تنظيف النص', slug: 'text-cleaner', icon: 'clean', color: 'green' },
+
+{ name: 'Base64 Encoder', ar: 'ترميز Base64', slug: 'base64-encoder', icon: 'encode', color: 'indigo' },
+{ name: 'Base64 Decoder', ar: 'فك ترميز Base64', slug: 'base64-decoder', icon: 'decode', color: 'violet' },
+{ name: 'URL Encoder', ar: 'ترميز URL', slug: 'url-encoder', icon: 'encode', color: 'blue' },
+{ name: 'URL Decoder', ar: 'فك ترميز URL', slug: 'url-decoder', icon: 'decode', color: 'cyan' },
+{ name: 'HTML URL Encoder', ar: 'ترميز HTML URL', slug: 'html-url-encoder', icon: 'encode', color: 'orange' },
+{ name: 'Unicode Converter', ar: 'تحويل Unicode', slug: 'unicode-converter', icon: 'unicode', color: 'purple' },
+{ name: 'ASCII Converter', ar: 'تحويل ASCII', slug: 'ascii-converter', icon: 'ascii', color: 'blue' },
+{ name: 'Binary Converter', ar: 'تحويل Binary', slug: 'binary-converter', icon: 'binary', color: 'indigo' },
+{ name: 'Hex Converter', ar: 'تحويل Hexadecimal', slug: 'hex-converter', icon: 'hex', color: 'violet' },
+{ name: 'Decimal Converter', ar: 'تحويل Decimal', slug: 'decimal-converter', icon: 'number', color: 'green' },
+
+{ name: 'UUID Generator', ar: 'إنشاء UUID', slug: 'uuid-generator', icon: 'uuid', color: 'purple' },
+{ name: 'Password Generator', ar: 'إنشاء كلمة مرور', slug: 'password-generator', icon: 'password', color: 'red' },
+{ name: 'Random Number Generator', ar: 'أرقام عشوائية', slug: 'random-number-generator', icon: 'random', color: 'green' },
+{ name: 'Random String Generator', ar: 'نصوص عشوائية', slug: 'random-string-generator', icon: 'random', color: 'blue' },
+{ name: 'Hash Generator', ar: 'إنشاء Hash', slug: 'hash-generator', icon: 'hash', color: 'indigo' },
+{ name: 'MD5 Generator', ar: 'إنشاء MD5', slug: 'md5-generator', icon: 'hash', color: 'purple' },
+{ name: 'SHA Generator', ar: 'إنشاء SHA', slug: 'sha-generator', icon: 'hash', color: 'blue' },
+{ name: 'JWT Decoder', ar: 'قراءة JWT', slug: 'jwt-decoder', icon: 'jwt', color: 'violet' },
+{ name: 'JWT Generator', ar: 'إنشاء JWT', slug: 'jwt-generator', icon: 'jwt', color: 'orange' },
+{ name: 'Token Generator', ar: 'إنشاء Token', slug: 'token-generator', icon: 'token', color: 'red' },
+
+{ name: 'JSON to CSV', ar: 'تحويل JSON إلى CSV', slug: 'json-to-csv', icon: 'convert', color: 'green' },
+{ name: 'CSV to JSON', ar: 'تحويل CSV إلى JSON', slug: 'csv-to-json', icon: 'convert', color: 'purple' },
+{ name: 'JSON to XML', ar: 'تحويل JSON إلى XML', slug: 'json-to-xml', icon: 'convert', color: 'orange' },
+{ name: 'XML to JSON', ar: 'تحويل XML إلى JSON', slug: 'xml-to-json', icon: 'convert', color: 'blue' },
+{ name: 'JSON to YAML', ar: 'تحويل JSON إلى YAML', slug: 'json-to-yaml', icon: 'convert', color: 'cyan' },
+{ name: 'YAML to JSON', ar: 'تحويل YAML إلى JSON', slug: 'yaml-to-json', icon: 'convert', color: 'violet' },
+{ name: 'CSV Viewer', ar: 'عرض CSV', slug: 'csv-viewer', icon: 'table', color: 'green' },
+{ name: 'CSV Formatter', ar: 'تنسيق CSV', slug: 'csv-formatter', icon: 'table', color: 'blue' },
+{ name: 'CSV Validator', ar: 'التحقق من CSV', slug: 'csv-validator', icon: 'check', color: 'green' },
+{ name: 'Data Table Generator', ar: 'إنشاء جدول بيانات', slug: 'data-table-generator', icon: 'table', color: 'indigo' },
+
+{ name: 'Color Picker', ar: 'اختيار الألوان', slug: 'color-picker', icon: 'color', color: 'pink' },
+{ name: 'Color Converter', ar: 'تحويل الألوان', slug: 'color-converter', icon: 'color', color: 'violet' },
+{ name: 'HEX to RGB', ar: 'HEX إلى RGB', slug: 'hex-to-rgb', icon: 'color', color: 'blue' },
+{ name: 'RGB to HEX', ar: 'RGB إلى HEX', slug: 'rgb-to-hex', icon: 'color', color: 'cyan' },
+{ name: 'Gradient Generator', ar: 'إنشاء Gradient', slug: 'gradient-generator-2', icon: 'gradient', color: 'purple' },
+{ name: 'Palette Generator', ar: 'إنشاء لوحة ألوان', slug: 'palette-generator', icon: 'palette', color: 'pink' },
+{ name: 'Contrast Checker', ar: 'فحص تباين الألوان', slug: 'contrast-checker', icon: 'contrast', color: 'indigo' },
+{ name: 'CSS Color Generator', ar: 'إنشاء CSS Color', slug: 'css-color-generator', icon: 'color', color: 'orange' },
+
+{ name: 'Percentage Calculator', ar: 'حساب النسبة المئوية', slug: 'percentage-calculator', icon: 'percent', color: 'orange' },
+{ name: 'Age Calculator', ar: 'حساب العمر', slug: 'age-calculator', icon: 'calendar', color: 'purple' },
+{ name: 'Date Calculator', ar: 'حساب التاريخ', slug: 'date-calculator', icon: 'calendar', color: 'blue' },
+{ name: 'Time Calculator', ar: 'حساب الوقت', slug: 'time-calculator', icon: 'clock', color: 'cyan' },
+{ name: 'Timestamp Converter', ar: 'تحويل Timestamp', slug: 'timestamp-converter', icon: 'clock', color: 'indigo' },
+{ name: 'Unix Timestamp', ar: 'Unix Timestamp', slug: 'unix-timestamp', icon: 'clock', color: 'violet' },
+
+{ name: 'Meta Tag Generator', ar: 'إنشاء Meta Tags', slug: 'meta-tag-generator', icon: 'seo', color: 'orange' },
+{ name: 'Slug Generator', ar: 'إنشاء Slug', slug: 'slug-generator', icon: 'slug', color: 'blue' },
+{ name: 'Robots.txt Generator', ar: 'إنشاء Robots.txt', slug: 'robots-generator', icon: 'robots', color: 'green' },
+{ name: 'Sitemap Generator', ar: 'إنشاء Sitemap', slug: 'sitemap-generator', icon: 'sitemap', color: 'purple' },
+{ name: 'QR Code Generator', ar: 'إنشاء QR Code', slug: 'qr-code-generator', icon: 'qr', color: 'green' },
+{ name: 'Barcode Generator', ar: 'إنشاء Barcode', slug: 'barcode-generator', icon: 'barcode', color: 'red' },
+{ name: 'Open Graph Generator', ar: 'إنشاء Open Graph', slug: 'open-graph-generator', icon: 'seo', color: 'indigo' },
+{ name: 'Schema Generator', ar: 'إنشاء Schema Markup', slug: 'schema-generator', icon: 'schema', color: 'violet' },
+{ name: 'Favicon Generator', ar: 'إنشاء Favicon', slug: 'favicon-generator', icon: 'favicon', color: 'blue' },
+{ name: 'HTAccess Generator', ar: 'إنشاء .htaccess', slug: 'htaccess-generator', icon: 'server', color: 'orange' },
+
+{ name: 'Unix Permissions', ar: 'حساب صلاحيات Unix', slug: 'unix-permissions', icon: 'terminal', color: 'indigo' },
+{ name: 'Chmod Calculator', ar: 'حاسبة Chmod', slug: 'chmod-calculator', icon: 'terminal', color: 'purple' },
+{ name: 'Cron Expression', ar: 'مولد Cron', slug: 'cron-expression', icon: 'clock', color: 'blue' },
+{ name: 'IP Address Info', ar: 'معلومات IP', slug: 'ip-address-info', icon: 'network', color: 'cyan' },
+{ name: 'HTTP Status Codes', ar: 'رموز HTTP', slug: 'http-status-codes', icon: 'server', color: 'green' },
+{ name: 'MIME Type Lookup', ar: 'البحث عن MIME Type', slug: 'mime-type-lookup', icon: 'file', color: 'orange' },
+{ name: 'User Agent Parser', ar: 'تحليل User Agent', slug: 'user-agent-parser', icon: 'browser', color: 'violet' },
+{ name: 'Port Checker', ar: 'فحص المنافذ', slug: 'port-checker', icon: 'network', color: 'red' },
+{ name: 'DNS Lookup', ar: 'البحث عن DNS', slug: 'dns-lookup', icon: 'network', color: 'blue' },
+{ name: 'URL Parser', ar: 'تحليل URL', slug: 'url-parser', icon: 'link', color: 'purple' }
+];
+
+const iconSvg = (icon: string) => {
+const icons: Record<string, string> = {
+json: '<path d="M7 4H5a2 2 0 0 0-2 2v3a2 2 0 0 1-2 2 2 2 0 0 1 2 2v3a2 2 0 0 0 2 2h2M17 4h2a2 2 0 0 1 2 2v3a2 2 0 0 0 2 2 2 2 0 0 0-2 2v3a2 2 0 0 1-2 2h-2"/>',
+check: '<path d="m5 12 4 4L19 6"/>',
+compress: '<path d="M8 3H5v3M16 3h3v3M8 21H5v-3M16 21h3v-3"/><path d="m9 9 6 6M15 9l-6 6"/>',
+tree: '<circle cx="6" cy="5" r="2"/><circle cx="18" cy="12" r="2"/><circle cx="6" cy="19" r="2"/><path d="M8 5h4a4 4 0 0 1 4 4v1M8 19h4a4 4 0 0 0 4-4v-1"/>',
+diff: '<path d="M5 7h14M5 12h8M5 17h14"/><path d="m16 10 3 2-3 2"/>',
+html: '<path d="m8 9-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/>',
+preview: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h8M8 17h5"/>',
+css: '<path d="M6 4h12l-1 15-5 2-5-2L6 4Z"/><path d="M9 8h6M9 12h5M9 16h4"/>',
+gradient: '<defs><linearGradient id="g" x1="0" x2="1"><stop offset="0"/><stop offset="1"/></linearGradient></defs><rect x="3" y="5" width="18" height="14" rx="2" fill="url(#g)"/>',
+shadow: '<rect x="5" y="5" width="13" height="13" rx="2"/><path d="M8 21h11a2 2 0 0 0 2-2V8"/>',
+square: '<rect x="5" y="5" width="14" height="14" rx="5"/>',
+color: '<circle cx="12" cy="12" r="8"/><path d="M8 9h.01M12 7h.01M16 9h.01M9 15h.01M15 15h.01"/>',
+ruler: '<path d="m4 17 13-13 3 3L7 20H4v-3Z"/><path d="m9 8 3 3M13 4l3 3"/>',
+js: '<path d="M4 4h16v16H4z"/><path d="M13 16c1 1 3 1 3-1 0-2-3-2-3-4 0-2 2-2 3-1M9 10v5c0 2-3 2-3 0"/>',
+regex: '<path d="M4 12h16M12 4v16M6 6l12 12M18 6 6 18"/><circle cx="12" cy="12" r="8"/>',
+xml: '<path d="m8 7-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/>',
+yaml: '<path d="M6 5h12v4H6zM6 11h12v4H6zM6 17h7v2H6z"/>',
+convert: '<path d="M7 7h13l-3-3M17 17H4l3 3"/><path d="M20 7 17 4M4 17l3 3"/>',
+sql: '<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 2 16 2 16 0V6M4 12v6c0 2 16 2 16 0v-6"/>',
+database: '<ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v7c0 2 16 2 16 0V5M4 12v7c0 2 16 2 16 0v-7"/>',
+words: '<path d="M4 6h16M4 12h11M4 18h16"/>',
+text: '<path d="M5 4h14M12 4v16M8 20h8"/>',
+lines: '<path d="M5 6h14M5 12h14M5 18h9"/>',
+case: '<path d="M5 18 10 6l5 12M7 14h6M15 18l3-7 3 7M16 16h4"/>',
+reverse: '<path d="M5 7h14M5 12h10M5 17h14"/><path d="m17 10 3 2-3 2"/>',
+duplicates: '<path d="M7 7h10v10H7z"/><path d="M4 4h10v10"/>',
+sort: '<path d="M7 5v14M4 8l3-3 3 3M17 19V5M14 16l3 3 3-3"/>',
+encode: '<path d="M8 4 4 8l4 4M16 12l4-4-4-4M13 3l-2 18"/>',
+decode: '<path d="m8 4-4 4 4 4M16 12l4-4-4-4M11 3l2 18"/>',
+unicode: '<circle cx="12" cy="12" r="8"/><path d="M8 16h8M9 9h6M12 8v8"/>',
+ascii: '<path d="M5 5h14v14H5z"/><path d="M9 9h6M9 12h6M9 15h4"/>',
+binary: '<path d="M7 5v14M17 5v14M4 9h16M4 15h16"/>',
+hex: '<path d="M7 4h10l5 8-5 8H7l-5-8 5-8Z"/>',
+number: '<circle cx="12" cy="12" r="8"/><path d="M12 8v8M8 12h8"/>',
+uuid: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 8h8v8H8z"/>',
+password: '<rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/>',
+random: '<path d="M4 7h4l8 10h4M4 17h4l3-4M16 7h4l-3 4"/>',
+hash: '<path d="M9 4 7 20M17 4l-2 16M4 9h16M3 15h16"/>',
+jwt: '<path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m8 9 8 6M16 9l-8 6"/>',
+token: '<circle cx="12" cy="12" r="8"/><path d="M9 12h6M12 9v6"/>',
+table: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 9v11M15 9v11"/>',
+palette: '<path d="M12 3a9 9 0 1 0 0 18h2a2 2 0 0 0 0-4h-1a2 2 0 0 1 0-4h2a7 7 0 0 0-3-10Z"/><circle cx="8" cy="9" r="1"/><circle cx="12" cy="7" r="1"/>',
+contrast: '<path d="M12 3a9 9 0 1 0 0 18V3Z"/><circle cx="12" cy="12" r="9"/>',
+percent: '<circle cx="7" cy="7" r="2"/><circle cx="17" cy="17" r="2"/><path d="M18 6 6 18"/>',
+calendar: '<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 10h16"/>',
+clock: '<circle cx="12" cy="12" r="8"/><path d="M12 7v5l3 2"/>',
+seo: '<circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/>',
+slug: '<path d="M9 15 7 17a3 3 0 0 1-4-4l3-3a3 3 0 0 1 4 0M15 9l2-2a3 3 0 0 1 4 4l-3 3a3 3 0 0 1-4 0M8 12h8"/>',
+robots: '<rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 9h8M8 13h6M8 17h4"/>',
+sitemap: '<circle cx="12" cy="5" r="2"/><circle cx="6" cy="18" r="2"/><circle cx="18" cy="18" r="2"/><path d="M12 7v5M12 12H6v4M12 12h6v4"/>',
+qr: '<path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h3M20 17v3h-3M14 20h3"/>',
+barcode: '<path d="M5 5v14M8 5v14M11 5v14M14 5v14M17 5v14M20 5v14"/>',
+schema: '<path d="M5 5h14v14H5z"/><path d="M8 9h8M8 13h8M8 17h5"/>',
+favicon: '<circle cx="12" cy="12" r="8"/><path d="M9 9h6v6H9z"/>',
+server: '<rect x="4" y="4" width="16" height="6" rx="1"/><rect x="4" y="14" width="16" height="6" rx="1"/><path d="M8 7h.01M8 17h.01"/>',
+terminal: '<path d="m6 8 4 4-4 4M12 16h6"/>',
+network: '<circle cx="12" cy="5" r="2"/><circle cx="5" cy="18" r="2"/><circle cx="19" cy="18" r="2"/><path d="m11 7-5 9M13 7l5 9M7 18h10"/>',
+file: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v5h5"/>',
+browser: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M7 6h.01M10 6h.01"/>',
+link: '<path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/>',
+clean: '<path d="M5 6h14M8 6v14h8V6M10 3h4M10 10v6M14 10v6"/>'
+};
+
+return icons[icon] || icons.json;
+};
+
+<Header /><main class="tools-page">  <section class="hero"><div class="badge">
+  <span class="pulse"></span>
+  TH.TECH · DEVELOPER TOOLS
+</div>
+
+<h1>
+  أدوات المطورين
+  <strong>في مكان واحد</strong>
+</h1>
+
+<p>
+  مجموعة احترافية من الأدوات المجانية للمطورين والمبرمجين.
+  اضغط على أي بطاقة لفتح الأداة مباشرة.
+</p>
+
+<div class="stats">
+
+  <div class="stat">
+    <strong>100</strong>
+    <span>أداة</span>
+  </div>
+
+  <div class="stat">
+    <strong>100%</strong>
+    <span>مجانية</span>
+  </div>
+
+  <div class="stat">
+    <strong>0</strong>
+    <span>تسجيل مطلوب</span>
+  </div>
+
+</div>
+
+  </section>  <section class="tools-section"><div class="section-header">
+
+  <div>
+    <span class="section-label">
+      DEVELOPER TOOLBOX
+    </span>
+
+    <h2>
+      جميع الأدوات
+    </h2>
+  </div>
+
+  <span class="tool-count">
+    100 Tools
+  </span>
+
+</div>
+
+
+<div class="tools-grid">
+
+  {tools.map((tool) => (
+
+    <a
+      href={`${base}/tools/${tool.slug}/`}
+      class={`tool-card ${tool.color}`}
+      aria-label={tool.name}
+    >
+
+      <div class="tool-icon">
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+          set:html={iconSvg(tool.icon)}
+        />
+
+      </div>
+
+      <div class="tool-info">
+
+        <small>
+          DEVELOPER TOOL
+        </small>
+
+        <h3>
+          {tool.name}
+        </h3>
+
+        <p>
+          {tool.ar}
+        </p>
+
+      </div>
+
+      <span class="arrow">
+        ‹
+      </span>
+
+    </a>
+
+  ))}
+
+</div>
+
+  </section></main><Footer /><style>
+
+:global(*) {
+  box-sizing: border-box;
+}
+
+:global(html) {
+  scroll-behavior: smooth;
+}
+
+:global(body) {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(37, 99, 235, .12),
+      transparent 45%
+    ),
+    #f5f8fc;
+  color: #0f172a;
+  font-family:
+    Arial,
+    "Cairo",
+    sans-serif;
+}
+
+
+/* PAGE */
+
+.tools-page {
+  width:
+    min(
+      1180px,
+      calc(100% - 30px)
+    );
+
+  margin: auto;
+
+  padding:
+    30px 0 70px;
+}
+
+
+/* HERO */
+
+.hero {
+  text-align: center;
+
+  padding:
+    25px 10px 45px;
+}
+
+.badge {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  padding:
+    7px 13px;
+
+  border:
+    1px solid
+    rgba(37, 99, 235, .15);
+
+  border-radius: 999px;
+
+  background:
+    rgba(37, 99, 235, .06);
+
+  color:
+    #2563eb;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: .6px;
+}
+
+.pulse {
+  width: 7px;
+  height: 7px;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  animation:
+    pulse 2s infinite;
+}
+
+.hero h1 {
+  margin:
+    20px 0 8px;
+
+  font-size:
+    clamp(30px, 5vw, 46px);
+
+  line-height: 1.3;
+
+  font-weight: 800;
+}
+
+.hero h1 strong {
+  display: block;
+
+  background:
+    linear-gradient(
+      90deg,
+      #2563eb,
+      #7c3aed
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+}
+
+.hero p {
+  max-width: 650px;
+
+  margin:
+    10px auto;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  line-height: 1.9;
+}
+
+
+/* STATS */
+
+.stats {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 8px;
+
+  margin-top: 24px;
+}
+
+.stat {
+  min-width: 100px;
+
+  padding:
+    8px 13px;
+
+  border:
+    1px solid #e2e8f0;
+
+  border-radius: 13px;
+
+  background: #fff;
+
+  box-shadow:
+    0 5px 20px
+    rgba(15, 23, 42, .04);
+}
+
+.stat strong,
+.stat span {
+  display: block;
+}
+
+.stat strong {
+  color: #2563eb;
+
+  font-size: 17px;
+}
+
+.stat span {
+  color: #64748b;
+
+  font-size: 9px;
+}
+
+
+/* HEADER */
+
+.section-header {
+  display: flex;
+
+  align-items: end;
+
+  justify-content: space-between;
+
+  margin-bottom: 18px;
+}
+
+.section-label {
+  color: #2563eb;
+
+  font-family: monospace;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1px;
+}
+
+.section-header h2 {
+  margin:
+    2px 0 0;
+
+  font-size: 24px;
+
+  font-weight: 800;
+}
+
+.tool-count {
+  padding:
+    6px 11px;
+
+  border-radius: 8px;
+
+  background: #eef2ff;
+
+  color: #4f46e5;
+
+  font-size: 9px;
+
+  font-weight: 800;
+}
+
+
+/* GRID */
+
+.tools-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0, 1fr)
+    );
+
+  gap: 13px;
+}
+
+
+/* CARD */
+
+.tool-card {
+  position: relative;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 13px;
+
+  min-height: 106px;
+
+  padding: 14px;
+
+  overflow: hidden;
+
+  border:
+    1px solid #e2e8f0;
+
+  border-radius: 20px;
+
+  background:
+    rgba(255,255,255,.97);
+
+  color: #0f172a;
+
+  text-decoration: none;
+
+  box-shadow:
+    0 6px 20px
+    rgba(15,23,42,.04);
+
+  transition:
+    transform .25s ease,
+    box-shadow .25s ease,
+    border-color .25s ease;
+}
+
+.tool-card::before {
+  content: "";
+
+  position: absolute;
+
+  width: 130px;
+  height: 130px;
+
+  top: -70px;
+  left: -70px;
+
+  border-radius: 50%;
+
+  background: currentColor;
+
+  opacity: .06;
+
+  transition:
+    transform .45s ease;
+}
+
+.tool-card:hover {
+  transform:
+    translateY(-5px);
+
+  border-color:
+    currentColor;
+
+  box-shadow:
+    0 18px 42px
+    rgba(15,23,42,.12);
+}
+
+.tool-card:hover::before {
+  transform:
+    scale(3);
+}
+
+
+/* ICON */
+
+.tool-icon {
+  position: relative;
+
+  z-index: 1;
+
+  width: 56px;
+  height: 56px;
+
+  flex: none;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 17px;
+
+  background:
+    currentColor;
+
+  color: #fff;
+
+  box-shadow:
+    0 8px 18px
+    rgba(15,23,42,.14);
+
+  transition:
+    transform .3s ease;
+}
+
+.tool-icon svg {
+  width: 29px;
+  height: 29px;
+}
+
+.tool-card:hover .tool-icon {
+  transform:
+    rotate(-5deg)
+    scale(1.08);
+}
+
+
+/* INFO */
+
+.tool-info {
+  position: relative;
+
+  z-index: 1;
+
+  min-width: 0;
+
+  flex: 1;
+}
+
+.tool-info small {
+  display: block;
+
+  color: #94a3b8;
+
+  font-family: monospace;
+
+  font-size: 7px;
+
+  font-weight: 700;
+
+  letter-spacing: .4px;
+
+  white-space: nowrap;
+}
+
+.tool-info h3 {
+  margin:
+    2px 0 0;
+
+  color: #0f172a;
+
+  font-size: 13px;
+
+  font-weight: 800;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+.tool-info p {
+  margin:
+    2px 0 0;
+
+  color: #64748b;
+
+  font-size: 9px;
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+
+/* ARROW */
+
+.arrow {
+  position: relative;
+
+  z-index: 1;
+
+  width: 27px;
+  height: 27px;
+
+  flex: none;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    #f1f5f9;
+
+  color:
+    #64748b;
+
+  font-size: 23px;
+
+  line-height: 1;
+
+  transition:
+    .25s ease;
+}
+
+.tool-card:hover .arrow {
+  background:
+    currentColor;
+
+  color: #fff;
+
+  transform:
+    translateX(-4px);
+}
+
+
+/* COLORS */
+
+.blue {
+  color: #2563eb;
+}
+
+.green {
+  color: #16a34a;
+}
+
+.orange {
+  color: #ea580c;
+}
+
+.yellow {
+  color: #ca8a04;
+}
+
+.purple {
+  color: #9333ea;
+}
+
+.cyan {
+  color: #0891b2;
+}
+
+.indigo {
+  color: #4f46e5;
+}
+
+.violet {
+  color: #7c3aed;
+}
+
+.red {
+  color: #dc2626;
+}
+
+.pink {
+  color: #db2777;
+}
+
+
+/* PULSE */
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 4px
+      rgba(34,197,94,.10);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 8px
+      rgba(34,197,94,.02);
+  }
+
+}
+
+
+/* TABLET */
+
+@media (max-width: 900px) {
+
+  .tools-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+}
+
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .tools-page {
+    width:
+      calc(100% - 14px);
+
+    padding:
+      18px 0 55px;
+  }
+
+  .hero {
+    padding:
+      15px 5px 32px;
+  }
+
+  .hero h1 {
+    font-size: 29px;
+  }
+
+  .hero p {
+    font-size: 11px;
+  }
+
+  .stats {
+    gap: 5px;
+  }
+
+  .stat {
+    min-width: 0;
+
+    flex: 1;
+
+    padding:
+      8px 4px;
+  }
+
+  .stat strong {
+    font-size: 14px;
+  }
+
+  .stat span {
+    font-size: 8px;
+  }
+
+  .section-header h2 {
+    font-size: 20px;
+  }
+
+  .tool-count {
+    font-size: 8px;
+  }
+
+  .tools-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+
+    gap: 8px;
+  }
+
+  .tool-card {
+    min-height: 128px;
+
+    padding:
+      10px 6px;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    text-align: center;
+
+    gap: 7px;
+
+    border-radius: 18px;
+  }
+
+  .tool-icon {
+    width: 48px;
+    height: 48px;
+
+    border-radius: 15px;
+  }
+
+  .tool-icon svg {
+    width: 25px;
+    height: 25px;
+  }
+
+  .tool-info small {
+    font-size: 6px;
+  }
+
+  .tool-info h3 {
+    font-size: 11px;
+  }
+
+  .tool-info p {
+    display: none;
+  }
+
+  .arrow {
+    position: absolute;
+
+    top: 6px;
+    left: 6px;
+
+    width: 19px;
+    height: 19px;
+
+    font-size: 16px;
+  }
+
+}
+
+
+/* SMALL PHONES */
+
+@media (max-width: 360px) {
+
+  .tools-grid {
+    gap: 6px;
+  }
+
+  .tool-card {
+    min-height: 116px;
+  }
+
+  .tool-icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .tool-icon svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .tool-info h3 {
+    font-size: 10px;
+  }
+
+}
+
+</style>
