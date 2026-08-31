@@ -1,0 +1,645 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL;
+
+const title = "JSON Formatter Online - تنسيق JSON | Th.Tech";
+
+const description =
+  "أداة JSON Formatter مجانية لتنسيق وتجميل JSON والتحقق من صحة البيانات مباشرة من المتصفح.";
+---
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>{title}</title>
+
+  <meta
+    name="description"
+    content={description}
+  />
+
+  <link
+    rel="canonical"
+    href={`https://th-tech.github.io${base}tools/json-formatter/`}
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <meta
+    property="og:title"
+    content={title}
+  />
+
+  <meta
+    property="og:description"
+    content={description}
+  />
+
+</head>
+
+<body>
+
+  <Header />
+
+  <main class="page">
+
+    <section class="hero">
+
+      <div class="container">
+
+        <a
+          href={`${base}tools/`}
+          class="back"
+        >
+          <i class="fas fa-arrow-right"></i>
+          جميع الأدوات
+        </a>
+
+        <div class="title-icon">
+          <i class="fas fa-code"></i>
+        </div>
+
+        <h1>JSON Formatter</h1>
+
+        <p>
+          نسّق JSON، تحقّق من صحته، واضغط البيانات
+          مباشرة داخل متصفحك.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <section class="tool-area">
+
+      <div class="container">
+
+        <div class="editor-card">
+
+          <div class="editor-header">
+
+            <div>
+              <strong>JSON Input</strong>
+              <span>أدخل كود JSON هنا</span>
+            </div>
+
+            <button
+              id="sampleBtn"
+              type="button"
+              class="small-btn"
+            >
+              <i class="fas fa-wand-magic-sparkles"></i>
+              مثال
+            </button>
+
+          </div>
+
+
+          <textarea
+            id="jsonInput"
+            spellcheck="false"
+            placeholder='{"name":"Th.Tech","type":"Developer Tools"}'
+          ></textarea>
+
+
+          <div class="actions">
+
+            <button
+              id="formatBtn"
+              type="button"
+              class="primary-btn"
+            >
+              <i class="fas fa-align-left"></i>
+              تنسيق JSON
+            </button>
+
+            <button
+              id="minifyBtn"
+              type="button"
+              class="secondary-btn"
+            >
+              <i class="fas fa-compress"></i>
+              ضغط JSON
+            </button>
+
+            <button
+              id="clearBtn"
+              type="button"
+              class="danger-btn"
+            >
+              <i class="fas fa-trash"></i>
+              مسح
+            </button>
+
+          </div>
+
+          <div
+            id="status"
+            class="status"
+          ></div>
+
+        </div>
+
+
+        <div class="result-card">
+
+          <div class="result-header">
+
+            <div>
+              <strong>Result</strong>
+              <span>النتيجة</span>
+            </div>
+
+            <button
+              id="copyBtn"
+              type="button"
+              class="copy-btn"
+            >
+              <i class="fas fa-copy"></i>
+              نسخ
+            </button>
+
+          </div>
+
+
+          <pre id="output">النتيجة ستظهر هنا...</pre>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="seo-section">
+
+      <div class="container">
+
+        <h2>ما هو JSON Formatter؟</h2>
+
+        <p>
+          JSON Formatter هي أداة مجانية تساعد المطورين على
+          تنسيق بيانات JSON وجعلها أكثر وضوحًا وسهولة في القراءة.
+          يمكنك استخدامها لفحص البيانات وتحويل JSON المضغوط إلى
+          صيغة منظمة.
+        </p>
+
+        <h2>هل بيانات JSON آمنة؟</h2>
+
+        <p>
+          تتم معالجة البيانات داخل متصفحك مباشرة بواسطة JavaScript،
+          لذلك لا تحتاج إلى إرسال محتوى JSON إلى خادم خارجي.
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <Footer />
+
+</body>
+</html>
+
+
+<script>
+
+const input = document.getElementById('jsonInput');
+const output = document.getElementById('output');
+const status = document.getElementById('status');
+
+const formatBtn = document.getElementById('formatBtn');
+const minifyBtn = document.getElementById('minifyBtn');
+const clearBtn = document.getElementById('clearBtn');
+const copyBtn = document.getElementById('copyBtn');
+const sampleBtn = document.getElementById('sampleBtn');
+
+
+function parseJSON() {
+
+  try {
+
+    return JSON.parse(input.value);
+
+  } catch (error) {
+
+    throw error;
+
+  }
+
+}
+
+
+function showError(error) {
+
+  status.className = 'status error';
+
+  status.innerHTML = `
+    <i class="fas fa-circle-exclamation"></i>
+    JSON غير صالح: ${error.message}
+  `;
+
+}
+
+
+function showSuccess(message) {
+
+  status.className = 'status success';
+
+  status.innerHTML = `
+    <i class="fas fa-circle-check"></i>
+    ${message}
+  `;
+
+}
+
+
+formatBtn.addEventListener('click', () => {
+
+  if (!input.value.trim()) {
+
+    status.className = 'status error';
+
+    status.textContent = 'أدخل JSON أولاً.';
+
+    return;
+
+  }
+
+  try {
+
+    const data = parseJSON();
+
+    output.textContent =
+      JSON.stringify(data, null, 2);
+
+    showSuccess('تم تنسيق JSON بنجاح.');
+
+  } catch (error) {
+
+    showError(error);
+
+  }
+
+});
+
+
+minifyBtn.addEventListener('click', () => {
+
+  if (!input.value.trim()) {
+
+    status.className = 'status error';
+
+    status.textContent = 'أدخل JSON أولاً.';
+
+    return;
+
+  }
+
+  try {
+
+    const data = parseJSON();
+
+    output.textContent =
+      JSON.stringify(data);
+
+    showSuccess('تم ضغط JSON بنجاح.');
+
+  } catch (error) {
+
+    showError(error);
+
+  }
+
+});
+
+
+clearBtn.addEventListener('click', () => {
+
+  input.value = '';
+
+  output.textContent =
+    'النتيجة ستظهر هنا...';
+
+  status.className = 'status';
+
+  status.textContent = '';
+
+});
+
+
+sampleBtn.addEventListener('click', () => {
+
+  input.value = JSON.stringify({
+    name: "Th.Tech",
+    website: "Developer Tools",
+    language: "Arabic",
+    free: true,
+    tools: [
+      "JSON Formatter",
+      "JSON Validator",
+      "HTML Formatter"
+    ]
+  }, null, 2);
+
+});
+
+
+copyBtn.addEventListener('click', async () => {
+
+  const text = output.textContent;
+
+  if (
+    !text ||
+    text === 'النتيجة ستظهر هنا...'
+  ) {
+
+    return;
+
+  }
+
+  try {
+
+    await navigator.clipboard.writeText(text);
+
+    copyBtn.innerHTML =
+      '<i class="fas fa-check"></i> تم النسخ';
+
+    setTimeout(() => {
+
+      copyBtn.innerHTML =
+        '<i class="fas fa-copy"></i> نسخ';
+
+    }, 1500);
+
+  } catch {
+
+    alert('تعذر نسخ النص.');
+
+  }
+
+});
+
+</script>
+
+
+<style>
+
+:global(*) {
+  box-sizing: border-box;
+}
+
+:global(body) {
+  margin: 0;
+  background: #f8fafc;
+  color: #0f172a;
+  font-family: 'Cairo', sans-serif;
+}
+
+.container {
+  width: min(1000px, calc(100% - 32px));
+  margin: auto;
+}
+
+/* HERO */
+
+.hero {
+  padding: 45px 0 30px;
+  text-align: center;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #2563eb;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 25px;
+}
+
+.title-icon {
+  width: 70px;
+  height: 70px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 20px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 28px;
+}
+
+.hero h1 {
+  margin: 18px 0 8px;
+  font-size: clamp(2rem, 5vw, 2.8rem);
+  font-weight: 800;
+}
+
+.hero p {
+  margin: 0;
+  color: #64748b;
+}
+
+/* TOOL */
+
+.tool-area {
+  padding: 20px 0 70px;
+}
+
+.editor-card,
+.result-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.editor-header,
+.result-header {
+  padding: 18px 20px;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.editor-header div,
+.result-header div {
+  display: flex;
+  flex-direction: column;
+}
+
+.editor-header strong,
+.result-header strong {
+  font-size: 16px;
+}
+
+.editor-header span,
+.result-header span {
+  color: #64748b;
+  font-size: 12px;
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  min-height: 300px;
+  padding: 20px;
+  border: 0;
+  outline: none;
+  resize: vertical;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  direction: ltr;
+  text-align: left;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 16px;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 700;
+}
+
+.primary-btn,
+.secondary-btn,
+.danger-btn,
+.small-btn,
+.copy-btn {
+  padding: 10px 16px;
+  border-radius: 10px;
+}
+
+.primary-btn {
+  background: #2563eb;
+  color: #fff;
+}
+
+.secondary-btn {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.danger-btn {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.small-btn,
+.copy-btn {
+  background: #eff6ff;
+  color: #2563eb;
+}
+
+.status {
+  min-height: 10px;
+  padding: 0 18px 18px;
+  font-size: 13px;
+}
+
+.status.success {
+  color: #059669;
+}
+
+.status.error {
+  color: #dc2626;
+}
+
+.status i {
+  margin-left: 5px;
+}
+
+pre {
+  margin: 0;
+  min-height: 250px;
+  padding: 20px;
+  overflow: auto;
+  direction: ltr;
+  text-align: left;
+  background: #0f172a;
+  color: #e2e8f0;
+  font-family: monospace;
+  font-size: 14px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* SEO */
+
+.seo-section {
+  padding: 60px 0;
+  background: #fff;
+  border-top: 1px solid #e2e8f0;
+}
+
+.seo-section h2 {
+  margin: 0 0 12px;
+  font-size: 23px;
+}
+
+.seo-section p {
+  color: #64748b;
+  line-height: 2;
+  margin: 0 0 35px;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+
+  .actions {
+    flex-direction: column;
+  }
+
+  .actions button {
+    width: 100%;
+  }
+
+  textarea {
+    min-height: 250px;
+  }
+
+}
+
+</style>
