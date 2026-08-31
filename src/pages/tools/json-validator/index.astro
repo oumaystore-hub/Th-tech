@@ -6,830 +6,978 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 export const title = 'JSON Validator';
 export const description =
-  'تحقق من صحة JSON واكتشف الأخطاء في البنية والصياغة بسرعة وسهولة.';
+  'تحقق من صحة JSON واكتشف أخطاء الصياغة بسرعة وسهولة.';
 ---
 
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
 
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+<head>
+  <meta charset="UTF-8" />
 
-    <title>JSON Validator | Th.Tech</title>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
-    <meta
-      name="description"
-      content={description}
-    />
+  <title>JSON Validator | Th.Tech</title>
 
-    <style>
-      :global(*) {
-        box-sizing: border-box;
-      }
+  <meta
+    name="description"
+    content={description}
+  />
 
-      :global(html) {
-        scroll-behavior: smooth;
-      }
+  <style>
+    :global(*) {
+      box-sizing: border-box;
+    }
 
-      :global(body) {
-        margin: 0;
+    :global(html) {
+      scroll-behavior: smooth;
+    }
 
-        font-family:
-          system-ui,
-          -apple-system,
-          BlinkMacSystemFont,
-          "Segoe UI",
-          sans-serif;
+    :global(body) {
+      margin: 0;
 
-        background: #f5f7fb;
+      font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
 
-        color: #172033;
+      background: #f5f7fb;
+      color: #172033;
 
-        transition:
-          background 0.3s ease,
-          color 0.3s ease;
-      }
+      transition:
+        background 0.3s ease,
+        color 0.3s ease;
+    }
+
+    main {
+      min-height: calc(100vh - 160px);
+
+      padding:
+        32px 16px 60px;
+    }
+
+    .container {
+      width: min(1100px, 100%);
+
+      margin: 0 auto;
+    }
+
+    /* =========================
+       BACK
+    ========================= */
+
+    .back {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      margin-bottom: 18px;
+
+      color: #667085;
+
+      text-decoration: none;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      transition:
+        color 0.2s ease;
+    }
+
+    .back:hover {
+      color: #008ff5;
+    }
+
+    .back svg {
+      width: 17px;
+      height: 17px;
+    }
+
+    /* =========================
+       HERO
+    ========================= */
+
+    .hero {
+      text-align: center;
+
+      margin-bottom: 28px;
+    }
+
+    .tool-badge {
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      padding:
+        7px 13px;
+
+      border-radius: 999px;
+
+      background:
+        rgba(0, 143, 245, 0.1);
+
+      color: #008ff5;
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      margin-bottom: 12px;
+    }
+
+    .tool-badge svg {
+      width: 16px;
+      height: 16px;
+
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 1.8;
+
+      stroke-linecap: round;
+
+      stroke-linejoin: round;
+    }
+
+    .hero h1 {
+      margin:
+        0 0 10px;
+
+      font-size:
+        clamp(30px, 5vw, 44px);
+
+      line-height: 1.2;
+
+      letter-spacing: -0.5px;
+    }
+
+    .hero p {
+      max-width: 650px;
+
+      margin: 0 auto;
+
+      color: #667085;
+
+      font-size: 14px;
+
+      line-height: 1.8;
+    }
+
+    /* =========================
+       TOOL
+    ========================= */
+
+    .tool-box {
+      overflow: hidden;
+
+      border:
+        1px solid #e3e8f0;
+
+      border-radius: 20px;
+
+      background: #ffffff;
+
+      box-shadow:
+        0 12px 35px
+        rgba(20, 35, 60, 0.07);
+    }
+
+    /* =========================
+       TOOL HEADER
+    ========================= */
+
+    .tool-header {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      padding:
+        14px 18px;
+
+      border-bottom:
+        1px solid #edf0f5;
+
+      background:
+        linear-gradient(
+          180deg,
+          #ffffff,
+          #fbfcfe
+        );
+    }
+
+    .tool-title {
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+    }
+
+    .mini-icon {
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      width: 39px;
+      height: 39px;
+
+      border-radius: 11px;
+
+      background:
+        rgba(0, 143, 245, 0.1);
+
+      color: #008ff5;
+    }
+
+    .mini-icon svg {
+      width: 22px;
+      height: 22px;
+
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 1.8;
+
+      stroke-linecap: round;
+
+      stroke-linejoin: round;
+    }
+
+    .tool-title strong {
+      display: block;
+
+      font-size: 14px;
+    }
+
+    .tool-title span {
+      display: block;
+
+      margin-top: 2px;
+
+      color: #98a2b3;
+
+      font-size: 11px;
+    }
+
+    /* =========================
+       EDITOR AREA
+    ========================= */
+
+    .editor-area {
+      padding: 18px;
+    }
+
+    /* =========================
+       ACTIONS
+       فوق المحرر
+    ========================= */
+
+    .actions {
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin-bottom: 12px;
+    }
+
+    .action {
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 7px;
+
+      min-height: 40px;
+
+      padding:
+        0 14px;
+
+      border:
+        1px solid #dce3ec;
+
+      border-radius: 10px;
+
+      background: #ffffff;
+
+      color: #344054;
+
+      font-family: inherit;
+
+      font-size: 12px;
+
+      font-weight: 800;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.15s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .action:hover {
+      transform:
+        translateY(-1px);
+
+      border-color:
+        #b8c3d2;
+
+      background:
+        #f8fafc;
+    }
+
+    .action.primary {
+      background:
+        #008ff5;
+
+      border-color:
+        #008ff5;
+
+      color: #ffffff;
+    }
+
+    .action.primary:hover {
+      background:
+        #007bd4;
+
+      border-color:
+        #007bd4;
+    }
+
+    .action svg {
+      width: 16px;
+      height: 16px;
+
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 1.8;
+
+      stroke-linecap: round;
+
+      stroke-linejoin: round;
+    }
+
+    /* =========================
+       TEXTAREA
+    ========================= */
+
+    textarea {
+      display: block;
+
+      width: 100%;
+
+      min-height: 360px;
+
+      resize: vertical;
+
+      padding: 17px;
+
+      border:
+        1px solid #dce3ec;
+
+      border-radius: 14px;
+
+      outline: none;
+
+      background:
+        #f9fafc;
+
+      color: #172033;
+
+      font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+      font-size: 13px;
+
+      line-height: 1.7;
+
+      direction: ltr;
+
+      text-align: left;
+
+      tab-size: 2;
+
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+    }
+
+    textarea::placeholder {
+      color: #98a2b3;
+
+      opacity: 1;
+    }
+
+    textarea:focus {
+      border-color:
+        #008ff5;
+
+      box-shadow:
+        0 0 0 4px
+        rgba(0, 143, 245, 0.1);
+    }
+
+    textarea.valid {
+      border-color:
+        #12b76a;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(18, 183, 106, 0.08);
+    }
+
+    textarea.invalid {
+      border-color:
+        #f04438;
+
+      box-shadow:
+        0 0 0 3px
+        rgba(240, 68, 56, 0.08);
+    }
+
+    /* =========================
+       RESULT
+    ========================= */
+
+    .result {
+      display: none;
+
+      margin:
+        0 18px 18px;
+
+      padding: 15px;
+
+      border:
+        1px solid transparent;
+
+      border-radius: 13px;
+    }
+
+    .result.show {
+      display: block;
+    }
+
+    .result.valid {
+      border-color:
+        #abefc6;
+
+      background:
+        #ecfdf3;
+
+      color:
+        #067647;
+    }
+
+    .result.invalid {
+      border-color:
+        #fecdca;
+
+      background:
+        #fef3f2;
+
+      color:
+        #b42318;
+    }
+
+    .result-title {
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      font-size: 14px;
+
+      font-weight: 900;
+    }
+
+    .result-title svg {
+      width: 20px;
+      height: 20px;
+
+      fill: none;
+
+      stroke: currentColor;
+
+      stroke-width: 2;
+
+      stroke-linecap: round;
+
+      stroke-linejoin: round;
+    }
+
+    .result-message {
+      margin-top: 6px;
+
+      font-size: 12px;
+
+      line-height: 1.7;
+
+      direction: rtl;
+
+      text-align: right;
+
+      word-break: break-word;
+    }
+
+    /* =========================
+       INFO CARDS
+    ========================= */
+
+    .info-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 12px;
+
+      margin-top: 16px;
+    }
+
+    .info-card {
+      padding: 15px;
+
+      border:
+        1px solid #e5e9f0;
+
+      border-radius: 14px;
+
+      background: #ffffff;
+    }
+
+    .info-card strong {
+      display: block;
+
+      margin-bottom: 5px;
+
+      font-size: 13px;
+    }
+
+    .info-card span {
+      color: #667085;
+
+      font-size: 11px;
+
+      line-height: 1.7;
+    }
+
+    /* =========================
+       DARK MODE
+    ========================= */
+
+    :global(html.dark) body {
+      background: #0b1220;
+
+      color: #f2f4f7;
+    }
+
+    :global(html.dark) .back {
+      color: #98a2b3;
+    }
+
+    :global(html.dark) .hero p {
+      color: #98a2b3;
+    }
+
+    :global(html.dark) .tool-box {
+      background: #111a2b;
+
+      border-color:
+        #263247;
+
+      box-shadow:
+        0 15px 40px
+        rgba(0, 0, 0, 0.25);
+    }
+
+    :global(html.dark) .tool-header {
+      background:
+        linear-gradient(
+          180deg,
+          #111a2b,
+          #0f1727
+        );
+
+      border-color:
+        #263247;
+    }
+
+    :global(html.dark) .editor-area {
+      background: #111a2b;
+    }
+
+    :global(html.dark) textarea {
+      background:
+        #0b1220;
+
+      border-color:
+        #2b3950;
+
+      color: #e6edf5;
+    }
+
+    :global(html.dark) textarea::placeholder {
+      color: #667085;
+    }
+
+    :global(html.dark) .action {
+      background:
+        #172236;
+
+      border-color:
+        #2b3950;
+
+      color: #d0d5dd;
+    }
+
+    :global(html.dark) .action:hover {
+      background:
+        #1c2a41;
+
+      border-color:
+        #3a4b66;
+    }
+
+    :global(html.dark) .action.primary {
+      background:
+        #008ff5;
+
+      border-color:
+        #008ff5;
+
+      color: #ffffff;
+    }
+
+    :global(html.dark) .info-card {
+      background:
+        #111a2b;
+
+      border-color:
+        #263247;
+    }
+
+    :global(html.dark) .info-card span {
+      color: #98a2b3;
+    }
+
+    :global(html.dark) .result.valid {
+      background:
+        rgba(6, 118, 71, 0.12);
+
+      border-color:
+        rgba(18, 183, 106, 0.35);
+
+      color:
+        #75e0a7;
+    }
+
+    :global(html.dark) .result.invalid {
+      background:
+        rgba(180, 35, 24, 0.12);
+
+      border-color:
+        rgba(240, 68, 56, 0.35);
+
+      color:
+        #fda29b;
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 650px) {
 
       main {
-        min-height: calc(100vh - 160px);
-
         padding:
-          35px 16px 65px;
+          24px 10px 50px;
       }
-
-      .container {
-        width: min(1100px, 100%);
-
-        margin: auto;
-      }
-
-      /* =========================
-         BACK LINK
-      ========================= */
-
-      .back {
-        display: inline-flex;
-
-        align-items: center;
-
-        gap: 7px;
-
-        margin-bottom: 18px;
-
-        color: #667085;
-
-        text-decoration: none;
-
-        font-size: 13px;
-
-        font-weight: 700;
-
-        transition:
-          color 0.2s ease;
-      }
-
-      .back:hover {
-        color: #008ff5;
-      }
-
-      /* =========================
-         HERO
-      ========================= */
 
       .hero {
-        text-align: center;
-
-        margin-bottom: 28px;
-      }
-
-      .tool-badge {
-        display: inline-flex;
-
-        align-items: center;
-
-        gap: 8px;
-
-        padding:
-          7px 13px;
-
-        border-radius: 999px;
-
-        background:
-          rgba(0, 143, 245, 0.1);
-
-        color: #0088ee;
-
-        font-size: 12px;
-
-        font-weight: 800;
-
-        margin-bottom: 13px;
-      }
-
-      .tool-badge svg {
-        width: 16px;
-        height: 16px;
+        margin-bottom: 21px;
       }
 
       .hero h1 {
-        margin: 0 0 10px;
-
-        font-size:
-          clamp(29px, 5vw, 45px);
-
-        line-height: 1.2;
+        font-size: 30px;
       }
 
       .hero p {
-        max-width: 680px;
-
-        margin: auto;
-
-        color: #667085;
-
-        font-size: 15px;
-
-        line-height: 1.8;
+        font-size: 13px;
       }
-
-      /* =========================
-         TOOL CARD
-      ========================= */
 
       .tool-box {
-        overflow: hidden;
-
-        border:
-          1px solid #e3e8f0;
-
-        border-radius: 20px;
-
-        background: #ffffff;
-
-        box-shadow:
-          0 12px 35px
-          rgba(20, 35, 60, 0.07);
+        border-radius: 16px;
       }
-
-      /* =========================
-         TOOL HEADER
-      ========================= */
 
       .tool-header {
-        display: flex;
-
-        align-items: center;
-
-        justify-content: space-between;
-
-        gap: 12px;
-
         padding:
-          15px 18px;
-
-        border-bottom:
-          1px solid #edf0f5;
-
-        background:
-          linear-gradient(
-            180deg,
-            #ffffff,
-            #fbfcfe
-          );
+          12px 13px;
       }
-
-      .tool-title {
-        display: flex;
-
-        align-items: center;
-
-        gap: 10px;
-      }
-
-      .mini-icon {
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        width: 38px;
-        height: 38px;
-
-        border-radius: 11px;
-
-        background:
-          rgba(0, 143, 245, 0.1);
-
-        color: #0088ee;
-      }
-
-      .mini-icon svg {
-        width: 22px;
-        height: 22px;
-
-        fill: none;
-
-        stroke: currentColor;
-
-        stroke-width: 1.8;
-
-        stroke-linecap: round;
-
-        stroke-linejoin: round;
-      }
-
-      .tool-title strong {
-        display: block;
-
-        font-size: 14px;
-      }
-
-      .tool-title span {
-        display: block;
-
-        margin-top: 2px;
-
-        color: #98a2b3;
-
-        font-size: 11px;
-      }
-
-      /* =========================
-         EDITOR
-      ========================= */
 
       .editor-area {
-        position: relative;
-
-        padding: 18px;
+        padding: 11px;
       }
 
-      textarea {
-        display: block;
-
-        width: 100%;
-
-        min-height: 360px;
-
-        resize: vertical;
-
-        padding: 17px;
-
-        border:
-          1px solid #dce3ec;
-
-        border-radius: 14px;
-
-        outline: none;
-
-        background:
-          #f9fafc;
-
-        color: #172033;
-
-        font-family:
-          "SFMono-Regular",
-          Consolas,
-          "Liberation Mono",
-          monospace;
-
-        font-size: 13px;
-
-        line-height: 1.7;
-
-        direction: ltr;
-
-        text-align: left;
-
-        tab-size: 2;
-
-        transition:
-          border-color 0.2s ease,
-          box-shadow 0.2s ease;
-      }
-
-      textarea:focus {
-        border-color:
-          #008ff5;
-
-        box-shadow:
-          0 0 0 4px
-          rgba(0, 143, 245, 0.1);
-      }
-
-      textarea.valid {
-        border-color: #12b76a;
-
-        box-shadow:
-          0 0 0 3px
-          rgba(18, 183, 106, 0.08);
-      }
-
-      textarea.invalid {
-        border-color: #f04438;
-
-        box-shadow:
-          0 0 0 3px
-          rgba(240, 68, 56, 0.08);
-      }
-
-      /* =========================
-         ACTIONS
-      ========================= */
+      /*
+        الأزرار فوق المحرر
+        وعمودان على الهاتف
+      */
 
       .actions {
-        display: flex;
+        display: grid;
 
-        flex-wrap: wrap;
+        grid-template-columns:
+          repeat(2, 1fr);
 
-        gap: 8px;
+        gap: 7px;
 
-        margin-top: 12px;
-      }
-
-      button {
-        font-family: inherit;
+        margin-bottom: 10px;
       }
 
       .action {
-        display: inline-flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        gap: 7px;
+        width: 100%;
 
         min-height: 40px;
 
         padding:
-          0 14px;
+          0 8px;
 
-        border-radius: 10px;
+        font-size: 11px;
+      }
 
-        border:
-          1px solid #dce3ec;
+      textarea {
+        min-height: 310px;
 
-        background: #ffffff;
-
-        color: #344054;
+        padding: 13px;
 
         font-size: 12px;
-
-        font-weight: 800;
-
-        cursor: pointer;
-
-        transition:
-          transform 0.15s ease,
-          border-color 0.2s ease,
-          background 0.2s ease;
       }
-
-      .action:hover {
-        transform:
-          translateY(-1px);
-
-        border-color:
-          #b8c3d2;
-      }
-
-      .action.primary {
-        border-color:
-          #008ff5;
-
-        background:
-          #008ff5;
-
-        color: white;
-      }
-
-      .action.primary:hover {
-        background:
-          #007bd4;
-
-        border-color:
-          #007bd4;
-      }
-
-      .action svg {
-        width: 16px;
-        height: 16px;
-
-        fill: none;
-
-        stroke: currentColor;
-
-        stroke-width: 1.8;
-
-        stroke-linecap: round;
-
-        stroke-linejoin: round;
-      }
-
-      /* =========================
-         RESULT
-      ========================= */
 
       .result {
-        display: none;
-
         margin:
-          0 18px 18px;
+          0 11px 11px;
 
-        padding: 15px;
-
-        border-radius: 13px;
-
-        border: 1px solid;
+        padding: 13px;
       }
-
-      .result.show {
-        display: block;
-      }
-
-      .result.valid {
-        border-color:
-          #abefc6;
-
-        background:
-          #ecfdf3;
-
-        color:
-          #067647;
-      }
-
-      .result.invalid {
-        border-color:
-          #fecdca;
-
-        background:
-          #fef3f2;
-
-        color:
-          #b42318;
-      }
-
-      .result-title {
-        display: flex;
-
-        align-items: center;
-
-        gap: 8px;
-
-        font-size: 14px;
-
-        font-weight: 900;
-      }
-
-      .result-title svg {
-        width: 20px;
-        height: 20px;
-
-        fill: none;
-
-        stroke: currentColor;
-
-        stroke-width: 2;
-
-        stroke-linecap: round;
-
-        stroke-linejoin: round;
-      }
-
-      .result-message {
-        margin-top: 6px;
-
-        font-size: 12px;
-
-        line-height: 1.7;
-
-        word-break: break-word;
-      }
-
-      /* =========================
-         INFO
-      ========================= */
 
       .info-grid {
-        display: grid;
+        grid-template-columns: 1fr;
 
-        grid-template-columns:
-          repeat(3, 1fr);
-
-        gap: 12px;
-
-        margin-top: 16px;
+        gap: 8px;
       }
 
       .info-card {
-        padding: 15px;
-
-        border:
-          1px solid #e5e9f0;
-
-        border-radius: 14px;
-
-        background: white;
+        padding: 13px;
       }
+    }
+  </style>
+</head>
 
-      .info-card strong {
-        display: block;
+<body>
 
-        margin-bottom: 5px;
+  <Header />
 
-        font-size: 13px;
-      }
+  <main>
 
-      .info-card span {
-        color: #667085;
+    <div class="container">
 
-        font-size: 11px;
+      <!-- العودة إلى الأدوات -->
 
-        line-height: 1.6;
-      }
-
-      /* =========================
-         DARK MODE
-      ========================= */
-
-      :global(html.dark) body {
-        background: #0b1220;
-
-        color: #f2f4f7;
-      }
-
-      :global(html.dark) .back {
-        color: #98a2b3;
-      }
-
-      :global(html.dark) .hero p {
-        color: #98a2b3;
-      }
-
-      :global(html.dark) .tool-box {
-        background: #111a2b;
-
-        border-color:
-          #263247;
-
-        box-shadow:
-          0 15px 40px
-          rgba(0, 0, 0, 0.25);
-      }
-
-      :global(html.dark) .tool-header {
-        background:
-          linear-gradient(
-            180deg,
-            #111a2b,
-            #0f1727
-          );
-
-        border-color:
-          #263247;
-      }
-
-      :global(html.dark) textarea {
-        background:
-          #0b1220;
-
-        border-color:
-          #2b3950;
-
-        color: #e6edf5;
-      }
-
-      :global(html.dark) .action {
-        background: #172236;
-
-        border-color:
-          #2b3950;
-
-        color: #d0d5dd;
-      }
-
-      :global(html.dark) .action.primary {
-        background:
-          #008ff5;
-
-        border-color:
-          #008ff5;
-
-        color: white;
-      }
-
-      :global(html.dark) .info-card {
-        background: #111a2b;
-
-        border-color:
-          #263247;
-      }
-
-      :global(html.dark) .info-card span {
-        color: #98a2b3;
-      }
-
-      :global(html.dark) .result.valid {
-        background:
-          rgba(6, 118, 71, 0.12);
-
-        border-color:
-          rgba(18, 183, 106, 0.35);
-
-        color:
-          #75e0a7;
-      }
-
-      :global(html.dark) .result.invalid {
-        background:
-          rgba(180, 35, 24, 0.12);
-
-        border-color:
-          rgba(240, 68, 56, 0.35);
-
-        color:
-          #fda29b;
-      }
-
-      /* =========================
-         MOBILE
-      ========================= */
-
-      @media (max-width: 650px) {
-        main {
-          padding:
-            25px 10px 50px;
-        }
-
-        .hero {
-          margin-bottom: 22px;
-        }
-
-        .hero h1 {
-          font-size: 30px;
-        }
-
-        .hero p {
-          font-size: 13px;
-        }
-
-        .tool-box {
-          border-radius: 16px;
-        }
-
-        .tool-header {
-          padding:
-            12px 13px;
-        }
-
-        .editor-area {
-          padding: 11px;
-        }
-
-        textarea {
-          min-height: 310px;
-
-          padding: 13px;
-
-          font-size: 12px;
-        }
-
-        .actions {
-          display: grid;
-
-          grid-template-columns:
-            repeat(2, 1fr);
-
-          gap: 7px;
-        }
-
-        .action {
-          width: 100%;
-
-          padding:
-            0 8px;
-
-          font-size: 11px;
-        }
-
-        .result {
-          margin:
-            0 11px 11px;
-
-          padding: 13px;
-        }
-
-        .info-grid {
-          grid-template-columns:
-            1fr;
-
-          gap: 8px;
-        }
-
-        .info-card {
-          padding: 13px;
-        }
-      }
-    </style>
-  </head>
-
-  <body>
-    <Header />
-
-    <main>
-      <div class="container">
-
-        <a
-          class="back"
-          href={`${base}/tools/`}
+      <a
+        class="back"
+        href={`${base}/tools/`}
+      >
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
         >
-          <svg
-            width="17"
-            height="17"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path d="m15 18-6-6 6-6" />
+          <path d="m15 18-6-6 6-6" />
+        </svg>
+
+        العودة إلى الأدوات
+      </a>
+
+      <!-- HERO -->
+
+      <section class="hero">
+
+        <div class="tool-badge">
+
+          <svg viewBox="0 0 24 24">
+            <path d="M6 3h9l4 4v14H6z" />
+            <path d="M15 3v5h5" />
+            <path d="m9 15 2 2 4-5" />
           </svg>
 
-          العودة إلى الأدوات
-        </a>
+          JSON Tool
 
-        <section class="hero">
+        </div>
 
-          <div class="tool-badge">
+        <h1>
+          JSON Validator
+        </h1>
 
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M6 3h9l4 4v14H6z" />
-              <path d="M15 3v5h5" />
-              <path d="m9 15 2 2 4-5" />
-            </svg>
+        <p>
+          تحقق من صحة JSON بسرعة واكتشف أخطاء
+          الصياغة والبنية قبل استخدام البيانات في مشروعك.
+        </p>
 
-            JSON Tool
+      </section>
 
-          </div>
+      <!-- TOOL -->
 
-          <h1>
-            JSON Validator
-          </h1>
+      <section class="tool-box">
 
-          <p>
-            تحقق من صحة JSON بسرعة واكتشف أخطاء الصياغة
-            والبنية قبل استخدام البيانات في مشروعك.
-          </p>
+        <!-- TOOL HEADER -->
 
-        </section>
+        <header class="tool-header">
 
-        <section class="tool-box">
+          <div class="tool-title">
 
-          <header class="tool-header">
+            <div class="mini-icon">
 
-            <div class="tool-title">
-
-              <div class="mini-icon">
-                <svg viewBox="0 0 24 24">
-                  <path d="M6 3h9l4 4v14H6z" />
-                  <path d="M15 3v5h5" />
-                  <path d="m9 15 2 2 4-5" />
-                </svg>
-              </div>
-
-              <div>
-                <strong>
-                  JSON Validator
-                </strong>
-
-                <span>
-                  التحقق من صحة JSON
-                </span>
-              </div>
+              <svg viewBox="0 0 24 24">
+                <path d="M6 3h9l4 4v14H6z" />
+                <path d="M15 3v5h5" />
+                <path d="m9 15 2 2 4-5" />
+              </svg>
 
             </div>
 
-          </header>
+            <div>
 
-          <div class="editor-area">
+              <strong>
+                JSON Validator
+              </strong>
 
-            <textarea
-              id="jsonInput"
-              spellcheck="false"
-              placeholder={`{
+              <span>
+                التحقق من صحة JSON
+              </span>
+
+            </div>
+
+          </div>
+
+        </header>
+
+        <!-- EDITOR -->
+
+        <div class="editor-area">
+
+          <!-- الأزرار فوق المحرر -->
+
+          <div class="actions">
+
+            <button
+              class="action primary"
+              id="validateBtn"
+              type="button"
+            >
+
+              <svg viewBox="0 0 24 24">
+                <path d="m5 12 4 4L19 6" />
+              </svg>
+
+              تحقق من JSON
+
+            </button>
+
+            <button
+              class="action"
+              id="formatBtn"
+              type="button"
+            >
+
+              <svg viewBox="0 0 24 24">
+                <path d="M8 4h8" />
+                <path d="M8 8h8" />
+                <path d="M8 12h5" />
+                <path d="M8 16h8" />
+                <path d="M8 20h8" />
+              </svg>
+
+              تنسيق
+
+            </button>
+
+            <button
+              class="action"
+              id="copyBtn"
+              type="button"
+            >
+
+              <svg viewBox="0 0 24 24">
+                <rect
+                  x="8"
+                  y="8"
+                  width="12"
+                  height="12"
+                  rx="2"
+                />
+
+                <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+              </svg>
+
+              نسخ
+
+            </button>
+
+            <button
+              class="action"
+              id="clearBtn"
+              type="button"
+            >
+
+              <svg viewBox="0 0 24 24">
+                <path d="M4 7h16" />
+                <path d="M10 11v6" />
+                <path d="M14 11v6" />
+                <path d="M6 7l1 13h10l1-13" />
+                <path d="M9 7V4h6v3" />
+              </svg>
+
+              مسح
+
+            </button>
+
+          </div>
+
+          <!-- محرر JSON -->
+
+          <textarea
+            id="jsonInput"
+            spellcheck="false"
+            placeholder={`{
   "name": "Th.Tech",
   "version": "1.0",
   "tools": [
@@ -837,436 +985,457 @@ export const description =
     "JSON Validator"
   ]
 }`}
-            ></textarea>
+          ></textarea>
 
-            <div class="actions">
+        </div>
 
-              <button
-                class="action primary"
-                id="validateBtn"
-                type="button"
-              >
-                <svg viewBox="0 0 24 24">
-                  <path d="m5 12 4 4L19 6" />
-                </svg>
+        <!-- RESULT -->
 
-                تحقق من JSON
-              </button>
+        <div
+          class="result"
+          id="result"
+          aria-live="polite"
+        >
 
-              <button
-                class="action"
-                id="formatBtn"
-                type="button"
-              >
-                <svg viewBox="0 0 24 24">
-                  <path d="M8 4h8M8 8h8M8 12h5M8 16h8M8 20h8" />
-                </svg>
+          <div class="result-title">
 
-                تنسيق
-              </button>
+            <svg
+              id="resultIcon"
+              viewBox="0 0 24 24"
+            ></svg>
 
-              <button
-                class="action"
-                id="copyBtn"
-                type="button"
-              >
-                <svg viewBox="0 0 24 24">
-                  <rect
-                    x="8"
-                    y="8"
-                    width="12"
-                    height="12"
-                    rx="2"
-                  />
-
-                  <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
-                </svg>
-
-                نسخ
-              </button>
-
-              <button
-                class="action"
-                id="clearBtn"
-                type="button"
-              >
-                <svg viewBox="0 0 24 24">
-                  <path d="M4 7h16" />
-                  <path d="M10 11v6M14 11v6" />
-                  <path d="M6 7l1 13h10l1-13" />
-                  <path d="M9 7V4h6v3" />
-                </svg>
-
-                مسح
-              </button>
-
-            </div>
+            <span id="resultTitle">
+              النتيجة
+            </span>
 
           </div>
 
           <div
-            class="result"
-            id="result"
-            aria-live="polite"
-          >
+            class="result-message"
+            id="resultMessage"
+          ></div>
 
-            <div class="result-title">
-              <svg
-                id="resultIcon"
-                viewBox="0 0 24 24"
-              ></svg>
+        </div>
 
-              <span id="resultTitle">
-                النتيجة
-              </span>
-            </div>
+      </section>
 
-            <div
-              class="result-message"
-              id="resultMessage"
-            ></div>
+      <!-- INFO -->
 
-          </div>
+      <section class="info-grid">
 
-        </section>
+        <div class="info-card">
 
-        <section class="info-grid">
+          <strong>
+            ✓ تحقق فوري
+          </strong>
 
-          <div class="info-card">
+          <span>
+            يتم تحليل JSON مباشرة داخل المتصفح
+            دون إرسال البيانات إلى خادم خارجي.
+          </span>
 
-            <strong>
-              ✓ تحقق فوري
-            </strong>
+        </div>
 
-            <span>
-              يتم تحليل JSON مباشرة داخل المتصفح
-              دون إرسال البيانات إلى خادم خارجي.
-            </span>
+        <div class="info-card">
 
-          </div>
+          <strong>
+            ⚡ سريع وآمن
+          </strong>
 
-          <div class="info-card">
+          <span>
+            بياناتك تبقى على جهازك أثناء عملية
+            التحقق والتنسيق.
+          </span>
 
-            <strong>
-              ⚡ سريع وآمن
-            </strong>
+        </div>
 
-            <span>
-              بياناتك تبقى على جهازك أثناء عملية
-              التحقق والتنسيق.
-            </span>
+        <div class="info-card">
 
-          </div>
+          <strong>
+            {} JSON
+          </strong>
 
-          <div class="info-card">
+          <span>
+            يدعم الكائنات والمصفوفات والقيم النصية
+            والأرقام والقيم المنطقية.
+          </span>
 
-            <strong>
-              {} JSON
-            </strong>
+        </div>
 
-            <span>
-              يدعم الكائنات والمصفوفات والقيم النصية
-              والأرقام والقيم المنطقية.
-            </span>
+      </section>
 
-          </div>
+    </div>
 
-        </section>
+  </main>
 
-      </div>
-    </main>
+  <Footer />
 
-    <Footer />
+  <script>
 
-    <script>
-      const input =
-        document.getElementById(
-          'jsonInput'
-        ) as HTMLTextAreaElement;
+    const input =
+      document.getElementById(
+        'jsonInput'
+      ) as HTMLTextAreaElement;
 
-      const validateBtn =
-        document.getElementById(
-          'validateBtn'
-        ) as HTMLButtonElement;
+    const validateBtn =
+      document.getElementById(
+        'validateBtn'
+      ) as HTMLButtonElement;
 
-      const formatBtn =
-        document.getElementById(
-          'formatBtn'
-        ) as HTMLButtonElement;
+    const formatBtn =
+      document.getElementById(
+        'formatBtn'
+      ) as HTMLButtonElement;
 
-      const copyBtn =
-        document.getElementById(
-          'copyBtn'
-        ) as HTMLButtonElement;
+    const copyBtn =
+      document.getElementById(
+        'copyBtn'
+      ) as HTMLButtonElement;
 
-      const clearBtn =
-        document.getElementById(
-          'clearBtn'
-        ) as HTMLButtonElement;
+    const clearBtn =
+      document.getElementById(
+        'clearBtn'
+      ) as HTMLButtonElement;
 
-      const result =
-        document.getElementById(
-          'result'
-        ) as HTMLDivElement;
+    const result =
+      document.getElementById(
+        'result'
+      ) as HTMLDivElement;
 
-      const resultTitle =
-        document.getElementById(
-          'resultTitle'
-        ) as HTMLSpanElement;
+    const resultTitle =
+      document.getElementById(
+        'resultTitle'
+      ) as HTMLSpanElement;
 
-      const resultMessage =
-        document.getElementById(
-          'resultMessage'
-        ) as HTMLDivElement;
+    const resultMessage =
+      document.getElementById(
+        'resultMessage'
+      ) as HTMLDivElement;
 
-      const resultIcon =
-        document.getElementById(
-          'resultIcon'
-        ) as SVGElement;
+    const resultIcon =
+      document.getElementById(
+        'resultIcon'
+      ) as SVGElement;
 
-      function showResult(
-        valid: boolean,
-        message: string
-      ) {
-        result.className =
-          `result show ${
-            valid
-              ? 'valid'
-              : 'invalid'
-          }`;
 
-        resultTitle.textContent =
+    /* =========================
+       RESULT
+    ========================= */
+
+    function showResult(
+      valid: boolean,
+      message: string
+    ) {
+
+      result.className =
+        `result show ${
           valid
-            ? 'JSON صالح'
-            : 'JSON غير صالح';
+            ? 'valid'
+            : 'invalid'
+        }`;
 
-        resultMessage.textContent =
-          message;
+      resultTitle.textContent =
+        valid
+          ? 'JSON صالح'
+          : 'JSON غير صالح';
 
-        resultIcon.innerHTML =
-          valid
-            ? `
-              <path d="m5 12 4 4L19 6"></path>
-            `
-            : `
-              <circle cx="12" cy="12" r="9"></circle>
-              <path d="M12 8v5"></path>
-              <path d="M12 16h.01"></path>
-            `;
+      resultMessage.textContent =
+        message;
 
-        input.classList.toggle(
-          'valid',
-          valid
+      resultIcon.innerHTML =
+        valid
+          ? `
+            <path d="m5 12 4 4L19 6"></path>
+          `
+          : `
+            <circle
+              cx="12"
+              cy="12"
+              r="9"
+            ></circle>
+
+            <path d="M12 8v5"></path>
+
+            <path d="M12 16h.01"></path>
+          `;
+
+      input.classList.toggle(
+        'valid',
+        valid
+      );
+
+      input.classList.toggle(
+        'invalid',
+        !valid
+      );
+    }
+
+
+    /* =========================
+       VALIDATE
+    ========================= */
+
+    function validateJSON() {
+
+      const value =
+        input.value.trim();
+
+      if (!value) {
+
+        showResult(
+          false,
+          'يرجى إدخال JSON للتحقق منه.'
         );
 
-        input.classList.toggle(
-          'invalid',
-          !valid
-        );
+        return;
       }
 
-      function validateJSON() {
+      try {
+
+        const parsed =
+          JSON.parse(value);
+
+        let type =
+          Array.isArray(parsed)
+            ? 'مصفوفة Array'
+            : typeof parsed ===
+                'object' &&
+              parsed !== null
+            ? 'كائن Object'
+            : typeof parsed;
+
+        showResult(
+          true,
+          `تم التحقق بنجاح. نوع البيانات: ${type}.`
+        );
+
+      } catch (error) {
+
+        const message =
+          error instanceof Error
+            ? error.message
+            : 'خطأ غير معروف في JSON.';
+
+        showResult(
+          false,
+          `تفاصيل الخطأ: ${message}`
+        );
+      }
+    }
+
+
+    /* =========================
+       FORMAT
+    ========================= */
+
+    formatBtn.addEventListener(
+      'click',
+      () => {
+
         const value =
           input.value.trim();
 
         if (!value) {
+
           showResult(
             false,
-            'يرجى إدخال JSON للتحقق منه.'
+            'أدخل JSON أولًا حتى يتم تنسيقه.'
           );
 
           return;
         }
 
         try {
+
           const parsed =
             JSON.parse(value);
 
-          let type =
-            Array.isArray(parsed)
-              ? 'مصفوفة Array'
-              : typeof parsed ===
-                  'object' &&
-                parsed !== null
-              ? 'كائن Object'
-              : typeof parsed;
+          input.value =
+            JSON.stringify(
+              parsed,
+              null,
+              2
+            );
 
           showResult(
             true,
-            `تم التحقق بنجاح. نوع البيانات: ${type}.`
+            'JSON صالح وتم تنسيقه بنجاح.'
           );
+
         } catch (error) {
+
           const message =
             error instanceof Error
               ? error.message
-              : 'خطأ غير معروف في JSON.';
+              : 'JSON غير صالح.';
 
           showResult(
             false,
-            `تفاصيل الخطأ: ${message}`
+            `لا يمكن التنسيق لأن JSON غير صالح. ${message}`
           );
         }
       }
+    );
 
-      validateBtn.addEventListener(
-        'click',
-        validateJSON
-      );
 
-      formatBtn.addEventListener(
-        'click',
-        () => {
-          const value =
-            input.value.trim();
+    /* =========================
+       COPY
+    ========================= */
 
-          if (!value) {
-            showResult(
-              false,
-              'أدخل JSON أولًا حتى يتم تنسيقه.'
-            );
+    copyBtn.addEventListener(
+      'click',
+      async () => {
 
-            return;
-          }
+        if (!input.value) {
 
-          try {
-            const parsed =
-              JSON.parse(value);
-
-            input.value =
-              JSON.stringify(
-                parsed,
-                null,
-                2
-              );
-
-            showResult(
-              true,
-              'JSON صالح وتم تنسيقه بنجاح.'
-            );
-          } catch (error) {
-            const message =
-              error instanceof Error
-                ? error.message
-                : 'JSON غير صالح.';
-
-            showResult(
-              false,
-              `لا يمكن التنسيق لأن JSON غير صالح. ${message}`
-            );
-          }
-        }
-      );
-
-      copyBtn.addEventListener(
-        'click',
-        async () => {
-          if (!input.value) {
-            showResult(
-              false,
-              'لا يوجد محتوى لنسخه.'
-            );
-
-            return;
-          }
-
-          try {
-            await navigator.clipboard.writeText(
-              input.value
-            );
-
-            const original =
-              copyBtn.innerHTML;
-
-            copyBtn.innerHTML = `
-              <svg viewBox="0 0 24 24">
-                <path d="m5 12 4 4L19 6"></path>
-              </svg>
-              تم النسخ
-            `;
-
-            setTimeout(() => {
-              copyBtn.innerHTML =
-                original;
-            }, 1400);
-
-          } catch {
-            showResult(
-              false,
-              'تعذر نسخ النص. حاول النسخ يدويًا.'
-            );
-          }
-        }
-      );
-
-      clearBtn.addEventListener(
-        'click',
-        () => {
-          input.value = '';
-
-          result.className =
-            'result';
-
-          input.classList.remove(
-            'valid',
-            'invalid'
+          showResult(
+            false,
+            'لا يوجد محتوى لنسخه.'
           );
 
-          input.focus();
+          return;
         }
-      );
 
-      input.addEventListener(
-        'input',
-        () => {
-          result.className =
-            'result';
+        try {
 
-          input.classList.remove(
-            'valid',
-            'invalid'
+          await navigator.clipboard.writeText(
+            input.value
+          );
+
+          const original =
+            copyBtn.innerHTML;
+
+          copyBtn.innerHTML = `
+            <svg viewBox="0 0 24 24">
+              <path d="m5 12 4 4L19 6"></path>
+            </svg>
+            تم النسخ
+          `;
+
+          setTimeout(() => {
+
+            copyBtn.innerHTML =
+              original;
+
+          }, 1400);
+
+        } catch {
+
+          showResult(
+            false,
+            'تعذر نسخ النص. حاول النسخ يدويًا.'
           );
         }
-      );
+      }
+    );
 
-      input.addEventListener(
-        'keydown',
-        (event) => {
-          if (
-            event.ctrlKey &&
-            event.key === 'Enter'
-          ) {
-            event.preventDefault();
 
-            validateJSON();
-          }
+    /* =========================
+       CLEAR
+    ========================= */
 
-          if (
-            event.key === 'Tab'
-          ) {
-            event.preventDefault();
+    clearBtn.addEventListener(
+      'click',
+      () => {
 
-            const start =
-              input.selectionStart;
+        input.value = '';
 
-            const end =
-              input.selectionEnd;
+        result.className =
+          'result';
 
-            input.value =
-              input.value.substring(
-                0,
-                start
-              ) +
-              '  ' +
-              input.value.substring(
-                end
-              );
+        input.classList.remove(
+          'valid',
+          'invalid'
+        );
 
-            input.selectionStart =
-              input.selectionEnd =
-                start + 2;
-          }
+        input.focus();
+      }
+    );
+
+
+    /* =========================
+       VALIDATE BUTTON
+    ========================= */
+
+    validateBtn.addEventListener(
+      'click',
+      validateJSON
+    );
+
+
+    /* =========================
+       INPUT
+    ========================= */
+
+    input.addEventListener(
+      'input',
+      () => {
+
+        result.className =
+          'result';
+
+        input.classList.remove(
+          'valid',
+          'invalid'
+        );
+      }
+    );
+
+
+    /* =========================
+       KEYBOARD
+    ========================= */
+
+    input.addEventListener(
+      'keydown',
+      (event) => {
+
+        /* Ctrl + Enter */
+
+        if (
+          event.ctrlKey &&
+          event.key === 'Enter'
+        ) {
+
+          event.preventDefault();
+
+          validateJSON();
         }
-      );
-    </script>
-  </body>
+
+
+        /* Tab */
+
+        if (
+          event.key === 'Tab'
+        ) {
+
+          event.preventDefault();
+
+          const start =
+            input.selectionStart;
+
+          const end =
+            input.selectionEnd;
+
+          input.value =
+            input.value.substring(
+              0,
+              start
+            ) +
+            '  ' +
+            input.value.substring(
+              end
+            );
+
+          input.selectionStart =
+            input.selectionEnd =
+              start + 2;
+        }
+      }
+    );
+
+  </script>
+
+</body>
+
 </html>
