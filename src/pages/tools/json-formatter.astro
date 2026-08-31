@@ -1,355 +1,650 @@
 ---
-import ToolLayout from '../../layouts/ToolLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const title = "JSON Formatter - تنسيق وتجميل JSON أونلاين | Th.Tech";
+
+const description =
+  "أداة JSON Formatter مجانية لتنسيق وتجميل JSON والتحقق من صحة الأكواد وضغط JSON بسهولة. تعمل مباشرة في المتصفح بدون رفع البيانات.";
+
+const canonical =
+  "https://th-tech.github.io/Th-tech/tools/json-formatter/";
+
+const base = import.meta.env.BASE_URL;
 ---
 
-<ToolLayout 
-  title="JSON Formatter Online - تنسيق وتجميل JSON | Th.Tech"
-  description="أداة تنسيق JSON مجانية. قم بتنسيق، تجميل، تصغير والتحقق من صحة بيانات JSON مباشرة في المتصفح."
-  toolName="JSON Formatter"
-  canonical="/tools/json-formatter/"
->
-  <div class="tool-container">
-    <header class="tool-header">
-      <div class="icon-wrapper">
-        <i class="fas fa-code"></i>
-      </div>
-      <div class="titles">
-        <h1>JSON Formatter</h1>
-        <p>قم بتنسيق، تجميل والتحقق من كود JSON الخاص بك</p>
-      </div>
-    </header>
+<html lang="ar" dir="rtl">
 
-    <div class="toolbar">
-      <div class="actions">
-        <button onclick="formatJSON()" class="btn btn-primary">
-          <i class="fas fa-magic"></i> تنسيق
-        </button>
-        <button onclick="minifyJSON()" class="btn btn-secondary">
-          <i class="fas fa-compress-arrows-alt"></i> Minify
-        </button>
-        <button onclick="validateJSON()" class="btn btn-outline">
-          <i class="fas fa-check-circle"></i> تحقق
-        </button>
-      </div>
-      <div class="utilities">
-        <button onclick="copyToClipboard()" class="btn-icon" title="نسخ">
-          <i class="far fa-copy"></i>
-        </button>
-        <button onclick="downloadJSON()" class="btn-icon" title="تحميل">
-          <i class="fas fa-download"></i>
-        </button>
-        <button onclick="clearEditor()" class="btn-icon btn-danger" title="مسح">
-          <i class="fas fa-trash"></i>
-        </button>
-      </div>
-    </div>
+<head>
 
-    <div class="editor-wrapper">
-      <div class="editor-stats">
-        <span id="charCount">0 Char</span> | <span id="lineCount">0 Line</span>
-      </div>
-      <textarea 
-        id="jsonInput" 
-        placeholder='{"key": "value"}' 
-        dir="ltr"
-        spellcheck="false"
-      ></textarea>
-    </div>
+  <meta charset="UTF-8" />
 
-    <div id="errorBox" class="error-box hidden">
-      <i class="fas fa-exclamation-circle"></i>
-      <div>
-        <strong>خطأ في الصيغة:</strong>
-        <span id="errorMessage">JSON غير صحيح</span>
-      </div>
-    </div>
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>{title}</title>
+
+  <meta
+    name="description"
+    content={description}
+  />
+
+  <meta
+    name="robots"
+    content="index, follow, max-image-preview:large"
+  />
+
+  <link rel="canonical" href={canonical} />
+
+  <link
+    rel="icon"
+    type="image/png"
+    href={`${base}logo1.png`}
+  />
+
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:site_name" content="Th.Tech" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <script type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "JSON Formatter",
+    "url": canonical,
+    "description": description,
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "Any",
+    "browserRequirements": "Requires JavaScript",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    }
+  })} />
+
+</head>
+
+
+<body>
+
+<Header />
+
+
+<main>
+
+<section class="tool-hero">
+
+  <div class="container">
+
+    <a
+      class="back"
+      href={`${base}tools/`}
+    >
+      <i class="fa-solid fa-arrow-right"></i>
+      جميع الأدوات
+    </a>
+
+    <span class="badge">
+      <i class="fa-solid fa-code"></i>
+      Developer Tool
+    </span>
+
+    <h1>
+      JSON Formatter
+    </h1>
+
+    <p>
+      نسّق وجمّل JSON بسهولة، تحقق من صحة الكود،
+      واضغط البيانات مباشرة داخل المتصفح.
+    </p>
+
   </div>
 
-  <div id="toast" class="toast">تم النسخ بنجاح!</div>
+</section>
 
-</ToolLayout>
+
+<section class="formatter-section">
+
+<div class="container">
+
+<div class="tool-panel">
+
+  <div class="toolbar">
+
+    <div class="toolbar-title">
+      <i class="fa-solid fa-file-code"></i>
+      JSON Input
+    </div>
+
+    <div class="buttons">
+
+      <button id="sampleBtn">
+        مثال
+      </button>
+
+      <button id="formatBtn" class="primary">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        Format
+      </button>
+
+      <button id="minifyBtn">
+        Minify
+      </button>
+
+      <button id="clearBtn">
+        مسح
+      </button>
+
+    </div>
+
+  </div>
+
+
+  <textarea
+    id="jsonInput"
+    spellcheck="false"
+    placeholder='ضع JSON هنا...'
+    aria-label="JSON input"
+  ></textarea>
+
+
+  <div id="status" class="status">
+    جاهز
+  </div>
+
+</div>
+
+
+<div class="result-panel">
+
+  <div class="result-title">
+
+    <span>
+      <i class="fa-solid fa-check"></i>
+      النتيجة
+    </span>
+
+    <button id="copyBtn">
+      <i class="fa-regular fa-copy"></i>
+      نسخ
+    </button>
+
+  </div>
+
+  <pre id="output">ستظهر النتيجة هنا...</pre>
+
+</div>
+
+</div>
+
+</section>
+
+
+<section class="content-section">
+
+<div class="container content">
+
+<h2>
+  ما هو JSON Formatter؟
+</h2>
+
+<p>
+  JSON Formatter هي أداة مجانية تساعد المطورين على
+  تنسيق ملفات JSON وتحويل البيانات غير المنظمة إلى
+  بنية واضحة وسهلة القراءة.
+</p>
+
+<p>
+  يمكنك استخدام الأداة لتجميل JSON أو ضغطه قبل استخدامه
+  في API أو تطبيقات الويب والبرامج المختلفة.
+</p>
+
+
+<h2>
+  كيف تستخدم JSON Formatter؟
+</h2>
+
+<ol>
+  <li>ضع كود JSON في مربع الإدخال.</li>
+  <li>اضغط على Format لتنسيق الكود.</li>
+  <li>استخدم Minify للحصول على JSON مضغوط.</li>
+  <li>اضغط نسخ لاستخدام النتيجة في مشروعك.</li>
+</ol>
+
+
+<h2>
+  هل بيانات JSON آمنة؟
+</h2>
+
+<p>
+  تعمل عملية التنسيق داخل متصفحك باستخدام JavaScript،
+  ولا تحتاج الأداة إلى إرسال JSON إلى خادم لمعالجته.
+  لذلك لا تحتاج إلى رفع ملفاتك إلى الموقع.
+</p>
+
+
+<h2>
+  لماذا تستخدم JSON Formatter؟
+</h2>
+
+<ul>
+  <li>مجانية بالكامل.</li>
+  <li>لا تحتاج إلى تسجيل حساب.</li>
+  <li>تعمل على الهاتف والكمبيوتر.</li>
+  <li>تنسيق JSON بسرعة.</li>
+  <li>ضغط JSON باستخدام Minify.</li>
+  <li>التحقق من صحة JSON.</li>
+</ul>
+
+</div>
+
+</section>
+
+</main>
+
+
+<Footer />
+
+
+<script>
+
+const input = document.getElementById('jsonInput');
+const output = document.getElementById('output');
+const status = document.getElementById('status');
+
+const sample = {
+  name: "Th.Tech",
+  website: "https://th-tech.github.io/Th-tech/",
+  tools: [
+    "JSON Formatter",
+    "JSON Validator"
+  ],
+  free: true
+};
+
+
+function formatJSON() {
+
+  const value = input.value.trim();
+
+  if (!value) {
+
+    status.textContent = "أدخل JSON أولاً";
+    status.className = "status error";
+
+    return;
+  }
+
+  try {
+
+    const parsed = JSON.parse(value);
+
+    output.textContent =
+      JSON.stringify(parsed, null, 2);
+
+    status.textContent =
+      "✓ JSON صالح وتم تنسيقه بنجاح";
+
+    status.className = "status success";
+
+  } catch (error) {
+
+    output.textContent = "";
+
+    status.textContent =
+      "✕ JSON غير صالح: " + error.message;
+
+    status.className = "status error";
+  }
+}
+
+
+function minifyJSON() {
+
+  const value = input.value.trim();
+
+  if (!value) {
+
+    status.textContent = "أدخل JSON أولاً";
+    status.className = "status error";
+
+    return;
+  }
+
+  try {
+
+    const parsed = JSON.parse(value);
+
+    output.textContent =
+      JSON.stringify(parsed);
+
+    status.textContent =
+      "✓ تم ضغط JSON بنجاح";
+
+    status.className = "status success";
+
+  } catch (error) {
+
+    output.textContent = "";
+
+    status.textContent =
+      "✕ JSON غير صالح: " + error.message;
+
+    status.className = "status error";
+  }
+}
+
+
+document
+  .getElementById('formatBtn')
+  .addEventListener('click', formatJSON);
+
+
+document
+  .getElementById('minifyBtn')
+  .addEventListener('click', minifyJSON);
+
+
+document
+  .getElementById('clearBtn')
+  .addEventListener('click', () => {
+
+    input.value = "";
+    output.textContent = "ستظهر النتيجة هنا...";
+    status.textContent = "جاهز";
+    status.className = "status";
+
+  });
+
+
+document
+  .getElementById('sampleBtn')
+  .addEventListener('click', () => {
+
+    input.value =
+      JSON.stringify(sample, null, 2);
+
+    formatJSON();
+
+  });
+
+
+document
+  .getElementById('copyBtn')
+  .addEventListener('click', async () => {
+
+    const text = output.textContent;
+
+    if (!text || text === "ستظهر النتيجة هنا...") {
+      return;
+    }
+
+    try {
+
+      await navigator.clipboard.writeText(text);
+
+      status.textContent =
+        "✓ تم نسخ النتيجة";
+
+      status.className = "status success";
+
+    } catch {
+
+      status.textContent =
+        "تعذر النسخ تلقائياً";
+
+      status.className = "status error";
+    }
+
+  });
+
+</script>
+
+</body>
+
+</html>
+
 
 <style>
-  .tool-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding-bottom: 3rem;
+
+:root {
+  --bg: #f8fafc;
+  --card: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --primary: #2563eb;
+  --border: #e2e8f0;
+}
+
+html.dark-mode {
+  --bg: #080f1d;
+  --card: #111c2e;
+  --text: #f8fafc;
+  --muted: #94a3b8;
+  --primary: #60a5fa;
+  --border: #26364d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Cairo', sans-serif;
+}
+
+.container {
+  width: min(1050px, calc(100% - 30px));
+  margin: auto;
+}
+
+
+/* HERO */
+
+.tool-hero {
+  text-align: center;
+  padding: 45px 0 30px;
+}
+
+.back {
+  display: inline-flex;
+  gap: 8px;
+  color: var(--primary);
+  text-decoration: none;
+  font-size: .85rem;
+  margin-bottom: 20px;
+}
+
+.badge {
+  display: block;
+  width: fit-content;
+  margin: auto;
+  color: var(--primary);
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+.tool-hero h1 {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin: 10px 0;
+}
+
+.tool-hero p {
+  color: var(--muted);
+  max-width: 650px;
+  margin: auto;
+}
+
+
+/* TOOL */
+
+.formatter-section {
+  padding: 20px 0 55px;
+}
+
+.tool-panel,
+.result-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.toolbar,
+.result-title {
+  min-height: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 12px 18px;
+  border-bottom: 1px solid var(--border);
+}
+
+.toolbar-title,
+.result-title span {
+  font-weight: 700;
+}
+
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+button {
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  border-radius: 9px;
+  padding: 8px 13px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button.primary {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+textarea {
+  width: 100%;
+  min-height: 360px;
+  border: 0;
+  outline: none;
+  resize: vertical;
+  padding: 20px;
+  background: var(--card);
+  color: var(--text);
+  font-family: monospace;
+  font-size: 14px;
+  direction: ltr;
+  text-align: left;
+}
+
+.status {
+  padding: 10px 18px;
+  color: var(--muted);
+  font-size: .82rem;
+  border-top: 1px solid var(--border);
+}
+
+.status.success {
+  color: #059669;
+}
+
+.status.error {
+  color: #dc2626;
+}
+
+#output {
+  min-height: 200px;
+  margin: 0;
+  padding: 20px;
+  overflow: auto;
+  direction: ltr;
+  text-align: left;
+  font-family: monospace;
+  font-size: 14px;
+  white-space: pre-wrap;
+}
+
+
+/* CONTENT */
+
+.content-section {
+  padding: 50px 0 80px;
+}
+
+.content {
+  max-width: 850px;
+}
+
+.content h2 {
+  font-size: 1.45rem;
+  margin: 35px 0 12px;
+}
+
+.content h2:first-child {
+  margin-top: 0;
+}
+
+.content p,
+.content li {
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.content ol,
+.content ul {
+  padding-right: 25px;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+
+  .toolbar,
+  .result-title {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
-  .tool-header {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-  }
-
-  .icon-wrapper {
-    width: 60px;
-    height: 60px;
-    background: rgba(59, 130, 246, 0.1);
-    color: #3b82f6;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.8rem;
-    flex-shrink: 0;
-  }
-
-  .titles h1 {
-    font-size: 1.8rem;
-    margin-bottom: 0.3rem;
-  }
-
-  .titles p {
-    color: var(--text-sec);
-    font-size: 1rem;
-    margin: 0;
-  }
-
-  .toolbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--card);
-    padding: 1rem;
-    border-radius: 12px 12px 0 0;
-    border: 1px solid var(--border);
-    border-bottom: none;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-
-  .actions {
-    display: flex;
-    gap: 0.8rem;
-    flex-wrap: wrap;
-  }
-
-  .utilities {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .btn {
-    padding: 0.6rem 1.2rem;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.9rem;
-    transition: all 0.2s;
-    border: none;
-  }
-
-  .btn-primary {
-    background: #3b82f6;
-    color: white;
-  }
-
-  .btn-secondary {
-    background: #f1f5f9;
-    color: #0f172a;
-  }
-
-  .btn-outline {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-sec);
-  }
-
-  .btn-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    background: transparent;
-    color: var(--text-sec);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .btn-danger:hover {
-    color: #ef4444;
-    border-color: #ef4444;
-  }
-
-  .editor-wrapper {
-    position: relative;
-    border: 1px solid var(--border);
-    border-radius: 0 0 12px 12px;
-    background: var(--bg);
-    min-height: 400px;
-  }
-
-  .editor-stats {
-    padding: 0.5rem 1rem;
-    font-size: 0.8rem;
-    color: var(--text-sec);
-    border-bottom: 1px solid var(--border);
-    font-family: monospace;
-  }
-
-  #jsonInput {
+  .buttons {
     width: 100%;
-    height: 100%;
-    min-height: 350px;
-    padding: 1rem;
-    background: transparent;
-    border: none;
-    outline: none;
-    resize: none;
-    color: var(--text);
-    font-family: 'Fira Code', monospace;
-    font-size: 14px;
-    line-height: 1.6;
-    direction: ltr;
-    box-sizing: border-box;
   }
 
-  .error-box {
-    margin-top: 1rem;
-    padding: 1rem;
-    background: rgba(239, 68, 68, 0.1);
-    border: 1px solid rgba(239, 68, 68, 0.3);
-    color: #ef4444;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
+  button {
+    flex: 1;
   }
 
-  .error-box.hidden {
-    display: none;
+  textarea {
+    min-height: 300px;
   }
 
-  .toast {
-    position: fixed;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: #10b981;
-    color: white;
-    padding: 0.8rem 1.5rem;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s;
-    z-index: 100;
-  }
+}
 
-  .toast.show {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
-  }
-
-  @media (max-width: 768px) {
-    .toolbar {
-      flex-direction: column;
-      align-items: stretch;
-    }
-    .actions, .utilities {
-      justify-content: center;
-    }
-  }
 </style>
-
-<script is:inline>
-  const textarea = document.getElementById('jsonInput');
-  const errorBox = document.getElementById('errorBox');
-  const errorMessage = document.getElementById('errorMessage');
-  const charCount = document.getElementById('charCount');
-  const lineCount = document.getElementById('lineCount');
-  const toast = document.getElementById('toast');
-
-  textarea.addEventListener('input', updateStats);
-
-  function updateStats() {
-    const text = textarea.value;
-    charCount.innerText = `${text.length} Char`;
-    lineCount.innerText = `${text.split('\n').length} Line`;
-    hideError();
-  }
-
-  function formatJSON() {
-    try {
-      const text = textarea.value;
-      if (!text.trim()) return;
-      const parsed = JSON.parse(text);
-      textarea.value = JSON.stringify(parsed, null, 2);
-      updateStats();
-    } catch (e) {
-      showError(e.message);
-    }
-  }
-
-  function minifyJSON() {
-    try {
-      const text = textarea.value;
-      if (!text.trim()) return;
-      const parsed = JSON.parse(text);
-      textarea.value = JSON.stringify(parsed);
-      updateStats();
-    } catch (e) {
-      showError(e.message);
-    }
-  }
-
-  function validateJSON() {
-    const text = textarea.value;
-    if (!text.trim()) return;
-    try {
-      JSON.parse(text);
-      hideError();
-      showToast('✅ JSON صحيح وصالح!');
-    } catch (e) {
-      showError(e.message);
-    }
-  }
-
-  function showError(msg) {
-    errorMessage.innerText = msg;
-    errorBox.classList.remove('hidden');
-  }
-
-  function hideError() {
-    errorBox.classList.add('hidden');
-  }
-
-  function copyToClipboard() {
-    navigator.clipboard.writeText(textarea.value).then(() => {
-      showToast('تم نسخ الكود إلى الحافظة');
-    });
-  }
-
-  function clearEditor() {
-    textarea.value = '';
-    updateStats();
-  }
-
-  function downloadJSON() {
-    if (!textarea.value.trim()) return;
-    const blob = new Blob([textarea.value], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'data.json';
-    a.click();
-    URL.revokeObjectURL(url);
-    showToast('تم تحميل الملف');
-  }
-
-  function showToast(msg) {
-    toast.innerText = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2000);
-  }
-
-  updateStats();
-</script>
