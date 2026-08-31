@@ -5,148 +5,505 @@ import Footer from '../../components/Footer.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const tools = [
-  { name: 'JSON Formatter', slug: 'json-formatter', desc: 'تنسيق وتجميل JSON', color: 'blue' },
-  { name: 'JSON Validator', slug: 'json-validator', desc: 'التحقق من صحة JSON', color: 'green' },
-  { name: 'JSON Minifier', slug: 'json-minifier', desc: 'تصغير JSON', color: 'cyan' },
-  { name: 'JSON to CSV', slug: 'json-to-csv', desc: 'تحويل JSON إلى CSV', color: 'orange' },
-  { name: 'CSV to JSON', slug: 'csv-to-json', desc: 'تحويل CSV إلى JSON', color: 'purple' },
-  { name: 'JSON to XML', slug: 'json-to-xml', desc: 'تحويل JSON إلى XML', color: 'blue' },
-  { name: 'XML to JSON', slug: 'xml-to-json', desc: 'تحويل XML إلى JSON', color: 'green' },
-  { name: 'JSON Diff', slug: 'json-diff', desc: 'مقارنة ملفات JSON', color: 'orange' },
-  { name: 'JSON Path Tester', slug: 'json-path-tester', desc: 'اختبار JSONPath', color: 'purple' },
-  { name: 'JSON Escape', slug: 'json-escape', desc: 'تهريب نصوص JSON', color: 'cyan' },
+  { name: 'JSON Formatter', slug: 'json-formatter', desc: 'تنسيق وتجميل JSON', icon: 'json', color: 'blue' },
+  { name: 'JSON Validator', slug: 'json-validator', desc: 'التحقق من صحة JSON', icon: 'check', color: 'green' },
+  { name: 'JSON Minifier', slug: 'json-minifier', desc: 'تصغير ملفات JSON', icon: 'minify', color: 'cyan' },
+  { name: 'JSON to CSV', slug: 'json-to-csv', desc: 'تحويل JSON إلى CSV', icon: 'convert', color: 'orange' },
+  { name: 'CSV to JSON', slug: 'csv-to-json', desc: 'تحويل CSV إلى JSON', icon: 'table', color: 'purple' },
+  { name: 'JSON to XML', slug: 'json-to-xml', desc: 'تحويل JSON إلى XML', icon: 'xml', color: 'yellow' },
+  { name: 'XML to JSON', slug: 'xml-to-json', desc: 'تحويل XML إلى JSON', icon: 'xml', color: 'green' },
+  { name: 'JSON Diff', slug: 'json-diff', desc: 'مقارنة ملفي JSON', icon: 'diff', color: 'blue' },
+  { name: 'JSON Path Tester', slug: 'json-path-tester', desc: 'اختبار JSONPath', icon: 'path', color: 'purple' },
+  { name: 'JSON Escape', slug: 'json-escape', desc: 'تهريب نصوص JSON', icon: 'code', color: 'orange' },
 
-  { name: 'HTML Formatter', slug: 'html-formatter', desc: 'تنسيق HTML', color: 'orange' },
-  { name: 'HTML Minifier', slug: 'html-minifier', desc: 'تصغير HTML', color: 'blue' },
-  { name: 'HTML Validator', slug: 'html-validator', desc: 'التحقق من HTML', color: 'green' },
-  { name: 'HTML Preview', slug: 'html-preview', desc: 'معاينة HTML', color: 'purple' },
-  { name: 'HTML Entity Encoder', slug: 'html-entity-encoder', desc: 'ترميز HTML Entities', color: 'cyan' },
-  { name: 'HTML Entity Decoder', slug: 'html-entity-decoder', desc: 'فك ترميز HTML Entities', color: 'blue' },
-  { name: 'HTML to Markdown', slug: 'html-to-markdown', desc: 'تحويل HTML إلى Markdown', color: 'green' },
-  { name: 'Meta Tag Generator', slug: 'meta-tag-generator', desc: 'إنشاء Meta Tags', color: 'orange' },
-  { name: 'Open Graph Generator', slug: 'open-graph-generator', desc: 'إنشاء Open Graph', color: 'purple' },
-  { name: 'Favicon Generator', slug: 'favicon-generator', desc: 'إنشاء Favicon', color: 'cyan' },
+  { name: 'HTML Formatter', slug: 'html-formatter', desc: 'تنسيق HTML', icon: 'html', color: 'orange' },
+  { name: 'HTML Minifier', slug: 'html-minifier', desc: 'تصغير HTML', icon: 'minify', color: 'blue' },
+  { name: 'HTML Validator', slug: 'html-validator', desc: 'التحقق من HTML', icon: 'check', color: 'green' },
+  { name: 'HTML Preview', slug: 'html-preview', desc: 'معاينة HTML مباشرة', icon: 'browser', color: 'purple' },
+  { name: 'HTML to Markdown', slug: 'html-to-markdown', desc: 'تحويل HTML إلى Markdown', icon: 'convert', color: 'cyan' },
+  { name: 'HTML Entity Encoder', slug: 'html-entity-encoder', desc: 'ترميز HTML Entities', icon: 'html', color: 'yellow' },
+  { name: 'HTML Entity Decoder', slug: 'html-entity-decoder', desc: 'فك ترميز HTML Entities', icon: 'html', color: 'green' },
+  { name: 'Meta Tag Generator', slug: 'meta-tag-generator', desc: 'إنشاء Meta Tags', icon: 'tag', color: 'blue' },
+  { name: 'Open Graph Generator', slug: 'open-graph-generator', desc: 'إنشاء Open Graph', icon: 'share', color: 'purple' },
+  { name: 'Favicon Generator', slug: 'favicon-generator', desc: 'إنشاء Favicon', icon: 'star', color: 'orange' },
 
-  { name: 'CSS Formatter', slug: 'css-formatter', desc: 'تنسيق CSS', color: 'blue' },
-  { name: 'CSS Minifier', slug: 'css-minifier', desc: 'تصغير CSS', color: 'cyan' },
-  { name: 'CSS Gradient Generator', slug: 'css-gradient-generator', desc: 'إنشاء تدرجات CSS', color: 'purple' },
-  { name: 'CSS Shadow Generator', slug: 'css-shadow-generator', desc: 'إنشاء ظلال CSS', color: 'green' },
-  { name: 'CSS Border Radius', slug: 'css-border-radius', desc: 'إنشاء Border Radius', color: 'orange' },
-  { name: 'CSS Color Generator', slug: 'css-color-generator', desc: 'إنشاء ألوان CSS', color: 'blue' },
-  { name: 'CSS Flexbox Generator', slug: 'css-flexbox-generator', desc: 'مولد Flexbox', color: 'purple' },
-  { name: 'CSS Grid Generator', slug: 'css-grid-generator', desc: 'مولد CSS Grid', color: 'green' },
-  { name: 'CSS Clamp Generator', slug: 'css-clamp-generator', desc: 'إنشاء CSS Clamp', color: 'cyan' },
-  { name: 'CSS Selector Tester', slug: 'css-selector-tester', desc: 'اختبار CSS Selectors', color: 'orange' },
+  { name: 'CSS Formatter', slug: 'css-formatter', desc: 'تنسيق CSS', icon: 'css', color: 'blue' },
+  { name: 'CSS Minifier', slug: 'css-minifier', desc: 'تصغير CSS', icon: 'minify', color: 'cyan' },
+  { name: 'CSS Gradient Generator', slug: 'css-gradient-generator', desc: 'إنشاء تدرجات CSS', icon: 'gradient', color: 'purple' },
+  { name: 'CSS Shadow Generator', slug: 'css-shadow-generator', desc: 'إنشاء ظلال CSS', icon: 'shadow', color: 'orange' },
+  { name: 'CSS Border Radius', slug: 'css-border-radius', desc: 'إنشاء Border Radius', icon: 'shape', color: 'green' },
+  { name: 'CSS Color Generator', slug: 'css-color-generator', desc: 'إنشاء ألوان CSS', icon: 'palette', color: 'yellow' },
+  { name: 'CSS Flexbox Generator', slug: 'css-flexbox-generator', desc: 'إنشاء Flexbox', icon: 'layout', color: 'blue' },
+  { name: 'CSS Grid Generator', slug: 'css-grid-generator', desc: 'إنشاء CSS Grid', icon: 'grid', color: 'cyan' },
+  { name: 'CSS Clamp Generator', slug: 'css-clamp-generator', desc: 'إنشاء CSS Clamp', icon: 'resize', color: 'purple' },
+  { name: 'CSS Selector Tester', slug: 'css-selector-tester', desc: 'اختبار CSS Selectors', icon: 'cursor', color: 'orange' },
 
-  { name: 'JavaScript Formatter', slug: 'javascript-formatter', desc: 'تنسيق JavaScript', color: 'yellow' },
-  { name: 'JavaScript Minifier', slug: 'javascript-minifier', desc: 'تصغير JavaScript', color: 'orange' },
-  { name: 'JavaScript Validator', slug: 'javascript-validator', desc: 'التحقق من JavaScript', color: 'blue' },
-  { name: 'JavaScript Playground', slug: 'javascript-playground', desc: 'تجربة JavaScript', color: 'yellow' },
-  { name: 'TypeScript Formatter', slug: 'typescript-formatter', desc: 'تنسيق TypeScript', color: 'cyan' },
-  { name: 'TypeScript Validator', slug: 'typescript-validator', desc: 'التحقق من TypeScript', color: 'blue' },
-  { name: 'Code Formatter', slug: 'code-formatter', desc: 'تنسيق الأكواد', color: 'green' },
-  { name: 'Code Minifier', slug: 'code-minifier', desc: 'تصغير الأكواد', color: 'purple' },
-  { name: 'Code Diff', slug: 'code-diff', desc: 'مقارنة الأكواد', color: 'orange' },
-  { name: 'Source Code Counter', slug: 'source-code-counter', desc: 'إحصائيات الكود', color: 'cyan' },
+  { name: 'JavaScript Formatter', slug: 'javascript-formatter', desc: 'تنسيق JavaScript', icon: 'javascript', color: 'yellow' },
+  { name: 'JavaScript Minifier', slug: 'javascript-minifier', desc: 'تصغير JavaScript', icon: 'minify', color: 'orange' },
+  { name: 'JavaScript Validator', slug: 'javascript-validator', desc: 'التحقق من JavaScript', icon: 'check', color: 'blue' },
+  { name: 'JavaScript Playground', slug: 'javascript-playground', desc: 'تجربة JavaScript', icon: 'play', color: 'yellow' },
+  { name: 'TypeScript Formatter', slug: 'typescript-formatter', desc: 'تنسيق TypeScript', icon: 'typescript', color: 'blue' },
+  { name: 'TypeScript Playground', slug: 'typescript-playground', desc: 'تجربة TypeScript', icon: 'typescript', color: 'cyan' },
+  { name: 'Code Formatter', slug: 'code-formatter', desc: 'تنسيق الأكواد', icon: 'code', color: 'green' },
+  { name: 'Code Minifier', slug: 'code-minifier', desc: 'تصغير الأكواد', icon: 'minify', color: 'purple' },
+  { name: 'Code Diff', slug: 'code-diff', desc: 'مقارنة الأكواد', icon: 'diff', color: 'orange' },
+  { name: 'Source Code Counter', slug: 'source-code-counter', desc: 'إحصائيات الكود', icon: 'chart', color: 'blue' },
 
-  { name: 'SQL Formatter', slug: 'sql-formatter', desc: 'تنسيق SQL', color: 'purple' },
-  { name: 'SQL Minifier', slug: 'sql-minifier', desc: 'تصغير SQL', color: 'blue' },
-  { name: 'SQL Validator', slug: 'sql-validator', desc: 'التحقق من SQL', color: 'green' },
-  { name: 'SQL Query Builder', slug: 'sql-query-builder', desc: 'إنشاء استعلامات SQL', color: 'orange' },
-  { name: 'YAML Formatter', slug: 'yaml-formatter', desc: 'تنسيق YAML', color: 'cyan' },
-  { name: 'YAML Validator', slug: 'yaml-validator', desc: 'التحقق من YAML', color: 'blue' },
-  { name: 'XML Formatter', slug: 'xml-formatter', desc: 'تنسيق XML', color: 'orange' },
-  { name: 'XML Validator', slug: 'xml-validator', desc: 'التحقق من XML', color: 'green' },
-  { name: 'Markdown Formatter', slug: 'markdown-formatter', desc: 'تنسيق Markdown', color: 'purple' },
-  { name: 'Markdown Preview', slug: 'markdown-preview', desc: 'معاينة Markdown', color: 'cyan' },
+  { name: 'SQL Formatter', slug: 'sql-formatter', desc: 'تنسيق SQL', icon: 'database', color: 'purple' },
+  { name: 'SQL Minifier', slug: 'sql-minifier', desc: 'تصغير SQL', icon: 'minify', color: 'cyan' },
+  { name: 'SQL Query Builder', slug: 'sql-query-builder', desc: 'إنشاء استعلامات SQL', icon: 'database', color: 'blue' },
+  { name: 'SQL Validator', slug: 'sql-validator', desc: 'التحقق من SQL', icon: 'check', color: 'green' },
 
-  { name: 'Markdown to HTML', slug: 'markdown-to-html', desc: 'تحويل Markdown إلى HTML', color: 'blue' },
-  { name: 'Lorem Ipsum Generator', slug: 'lorem-ipsum-generator', desc: 'إنشاء نص تجريبي', color: 'purple' },
-  { name: 'Word Counter', slug: 'word-counter', desc: 'حساب الكلمات', color: 'green' },
-  { name: 'Character Counter', slug: 'character-counter', desc: 'حساب الأحرف', color: 'orange' },
-  { name: 'Line Counter', slug: 'line-counter', desc: 'حساب الأسطر', color: 'cyan' },
-  { name: 'Text Case Converter', slug: 'text-case-converter', desc: 'تغيير حالة النص', color: 'blue' },
-  { name: 'Text Cleaner', slug: 'text-cleaner', desc: 'تنظيف النصوص', color: 'green' },
-  { name: 'Text Reverser', slug: 'text-reverser', desc: 'عكس النص', color: 'purple' },
-  { name: 'Remove Duplicate Lines', slug: 'remove-duplicate-lines', desc: 'حذف الأسطر المتكررة', color: 'orange' },
-  { name: 'Sort Lines', slug: 'sort-lines', desc: 'ترتيب الأسطر', color: 'cyan' },
+  { name: 'YAML Formatter', slug: 'yaml-formatter', desc: 'تنسيق YAML', icon: 'yaml', color: 'cyan' },
+  { name: 'YAML Validator', slug: 'yaml-validator', desc: 'التحقق من YAML', icon: 'check', color: 'green' },
+  { name: 'XML Formatter', slug: 'xml-formatter', desc: 'تنسيق XML', icon: 'xml', color: 'orange' },
+  { name: 'XML Validator', slug: 'xml-validator', desc: 'التحقق من XML', icon: 'check', color: 'blue' },
 
-  { name: 'Base64 Encoder', slug: 'base64-encoder', desc: 'ترميز Base64', color: 'blue' },
-  { name: 'Base64 Decoder', slug: 'base64-decoder', desc: 'فك ترميز Base64', color: 'green' },
-  { name: 'URL Encoder', slug: 'url-encoder', desc: 'ترميز URL', color: 'orange' },
-  { name: 'URL Decoder', slug: 'url-decoder', desc: 'فك ترميز URL', color: 'purple' },
-  { name: 'URL Parser', slug: 'url-parser', desc: 'تحليل URL', color: 'cyan' },
-  { name: 'Query String Parser', slug: 'query-string-parser', desc: 'تحليل Query String', color: 'blue' },
-  { name: 'JWT Decoder', slug: 'jwt-decoder', desc: 'قراءة JWT', color: 'purple' },
-  { name: 'JWT Generator', slug: 'jwt-generator', desc: 'إنشاء JWT', color: 'green' },
-  { name: 'UUID Generator', slug: 'uuid-generator', desc: 'إنشاء UUID', color: 'orange' },
-  { name: 'Password Generator', slug: 'password-generator', desc: 'إنشاء كلمات مرور', color: 'cyan' },
+  { name: 'Base64 Encoder', slug: 'base64-encoder', desc: 'ترميز Base64', icon: 'lock', color: 'blue' },
+  { name: 'Base64 Decoder', slug: 'base64-decoder', desc: 'فك ترميز Base64', icon: 'unlock', color: 'green' },
+  { name: 'URL Encoder', slug: 'url-encoder', desc: 'ترميز URL', icon: 'link', color: 'orange' },
+  { name: 'URL Decoder', slug: 'url-decoder', desc: 'فك ترميز URL', icon: 'unlink', color: 'purple' },
+  { name: 'URL Validator', slug: 'url-validator', desc: 'التحقق من URL', icon: 'check', color: 'cyan' },
+  { name: 'URL Parser', slug: 'url-parser', desc: 'تحليل URL', icon: 'link', color: 'blue' },
 
-  { name: 'Hash Generator', slug: 'hash-generator', desc: 'إنشاء Hash', color: 'purple' },
-  { name: 'MD5 Generator', slug: 'md5-generator', desc: 'إنشاء MD5', color: 'blue' },
-  { name: 'SHA256 Generator', slug: 'sha256-generator', desc: 'إنشاء SHA-256', color: 'green' },
-  { name: 'SHA512 Generator', slug: 'sha512-generator', desc: 'إنشاء SHA-512', color: 'orange' },
-  { name: 'Timestamp Converter', slug: 'timestamp-converter', desc: 'تحويل Unix Timestamp', color: 'cyan' },
-  { name: 'Unix Timestamp', slug: 'unix-timestamp', desc: 'إنشاء Timestamp', color: 'blue' },
-  { name: 'Date Formatter', slug: 'date-formatter', desc: 'تنسيق التاريخ', color: 'purple' },
-  { name: 'Time Converter', slug: 'time-converter', desc: 'تحويل الوقت', color: 'green' },
-  { name: 'Timezone Converter', slug: 'timezone-converter', desc: 'تحويل المناطق الزمنية', color: 'orange' },
-  { name: 'Cron Generator', slug: 'cron-generator', desc: 'إنشاء Cron Expression', color: 'cyan' },
+  { name: 'JWT Decoder', slug: 'jwt-decoder', desc: 'قراءة وتحليل JWT', icon: 'jwt', color: 'purple' },
+  { name: 'JWT Generator', slug: 'jwt-generator', desc: 'إنشاء JWT', icon: 'key', color: 'green' },
+  { name: 'UUID Generator', slug: 'uuid-generator', desc: 'إنشاء UUID', icon: 'uuid', color: 'orange' },
+  { name: 'Password Generator', slug: 'password-generator', desc: 'إنشاء كلمات مرور', icon: 'key', color: 'cyan' },
+  { name: 'Hash Generator', slug: 'hash-generator', desc: 'إنشاء Hash', icon: 'hash', color: 'purple' },
+  { name: 'MD5 Generator', slug: 'md5-generator', desc: 'إنشاء MD5', icon: 'hash', color: 'blue' },
+  { name: 'SHA256 Generator', slug: 'sha256-generator', desc: 'إنشاء SHA-256', icon: 'hash', color: 'green' },
+  { name: 'SHA512 Generator', slug: 'sha512-generator', desc: 'إنشاء SHA-512', icon: 'hash', color: 'orange' },
 
-  { name: 'Color Converter', slug: 'color-converter', desc: 'تحويل الألوان', color: 'blue' },
-  { name: 'HEX to RGB', slug: 'hex-to-rgb', desc: 'تحويل HEX إلى RGB', color: 'purple' },
-  { name: 'RGB to HEX', slug: 'rgb-to-hex', desc: 'تحويل RGB إلى HEX', color: 'green' },
-  { name: 'HEX to HSL', slug: 'hex-to-hsl', desc: 'تحويل HEX إلى HSL', color: 'orange' },
-  { name: 'RGB to HSL', slug: 'rgb-to-hsl', desc: 'تحويل RGB إلى HSL', color: 'cyan' },
-  { name: 'Color Palette', slug: 'color-palette', desc: 'إنشاء لوحة ألوان', color: 'blue' },
-  { name: 'Contrast Checker', slug: 'contrast-checker', desc: 'فحص تباين الألوان', color: 'purple' },
-  { name: 'QR Code Generator', slug: 'qr-code-generator', desc: 'إنشاء QR Code', color: 'green' },
-  { name: 'Barcode Generator', slug: 'barcode-generator', desc: 'إنشاء Barcode', color: 'orange' },
-  { name: 'ASCII Table', slug: 'ascii-table', desc: 'جدول ASCII', color: 'cyan' },
+  { name: 'Timestamp Converter', slug: 'timestamp-converter', desc: 'تحويل Unix Timestamp', icon: 'clock', color: 'cyan' },
+  { name: 'Unix Timestamp', slug: 'unix-timestamp', desc: 'إنشاء Timestamp', icon: 'clock', color: 'blue' },
+  { name: 'Date Formatter', slug: 'date-formatter', desc: 'تنسيق التاريخ', icon: 'calendar', color: 'purple' },
+  { name: 'Time Converter', slug: 'time-converter', desc: 'تحويل الوقت', icon: 'clock', color: 'green' },
+  { name: 'Timezone Converter', slug: 'timezone-converter', desc: 'تحويل المناطق الزمنية', icon: 'globe', color: 'orange' },
 
-  { name: 'ASCII Converter', slug: 'ascii-converter', desc: 'تحويل ASCII', color: 'blue' },
-  { name: 'Unicode Converter', slug: 'unicode-converter', desc: 'تحويل Unicode', color: 'purple' },
-  { name: 'Text to Binary', slug: 'text-to-binary', desc: 'تحويل النص إلى Binary', color: 'green' },
-  { name: 'Binary to Text', slug: 'binary-to-text', desc: 'تحويل Binary إلى نص', color: 'orange' },
-  { name: 'Decimal to Binary', slug: 'decimal-to-binary', desc: 'Decimal إلى Binary', color: 'cyan' },
-  { name: 'Binary to Decimal', slug: 'binary-to-decimal', desc: 'Binary إلى Decimal', color: 'blue' },
-  { name: 'Hex to Decimal', slug: 'hex-to-decimal', desc: 'Hex إلى Decimal', color: 'purple' },
-  { name: 'Decimal to Hex', slug: 'decimal-to-hex', desc: 'Decimal إلى Hex', color: 'green' },
-  { name: 'Number Base Converter', slug: 'number-base-converter', desc: 'تحويل أنظمة الأعداد', color: 'orange' },
-  { name: 'Regex Tester', slug: 'regex-tester', desc: 'اختبار Regex', color: 'cyan' }
+  { name: 'Color Converter', slug: 'color-converter', desc: 'تحويل صيغ الألوان', icon: 'palette', color: 'cyan' },
+  { name: 'HEX to RGB', slug: 'hex-to-rgb', desc: 'تحويل HEX إلى RGB', icon: 'palette', color: 'blue' },
+  { name: 'RGB to HEX', slug: 'rgb-to-hex', desc: 'تحويل RGB إلى HEX', icon: 'palette', color: 'purple' },
+  { name: 'HEX to HSL', slug: 'hex-to-hsl', desc: 'تحويل HEX إلى HSL', icon: 'palette', color: 'green' },
+  { name: 'RGB to HSL', slug: 'rgb-to-hsl', desc: 'تحويل RGB إلى HSL', icon: 'palette', color: 'orange' },
+  { name: 'Color Palette', slug: 'color-palette', desc: 'إنشاء لوحة ألوان', icon: 'palette', color: 'yellow' },
+  { name: 'Contrast Checker', slug: 'contrast-checker', desc: 'فحص تباين الألوان', icon: 'contrast', color: 'blue' },
+
+  { name: 'Lorem Ipsum Generator', slug: 'lorem-ipsum-generator', desc: 'إنشاء نص تجريبي', icon: 'text', color: 'purple' },
+  { name: 'Text Case Converter', slug: 'text-case-converter', desc: 'تغيير حالة النص', icon: 'text', color: 'green' },
+  { name: 'Text Cleaner', slug: 'text-cleaner', desc: 'تنظيف النصوص', icon: 'clean', color: 'orange' },
+  { name: 'Remove Duplicate Lines', slug: 'remove-duplicate-lines', desc: 'حذف الأسطر المتكررة', icon: 'layers', color: 'cyan' },
+  { name: 'Sort Lines', slug: 'sort-lines', desc: 'ترتيب الأسطر', icon: 'sort', color: 'blue' },
+  { name: 'Line Counter', slug: 'line-counter', desc: 'حساب الأسطر', icon: 'chart', color: 'purple' },
+  { name: 'Character Counter', slug: 'character-counter', desc: 'حساب الأحرف', icon: 'text', color: 'green' },
+  { name: 'Text Reverser', slug: 'text-reverser', desc: 'عكس النص', icon: 'reverse', color: 'orange' },
+  { name: 'Slug Generator', slug: 'slug-generator', desc: 'إنشاء Slug', icon: 'link', color: 'cyan' },
+  { name: 'Word Counter', slug: 'word-counter', desc: 'حساب الكلمات والأحرف', icon: 'text', color: 'blue' },
+
+  { name: 'Markdown Preview', slug: 'markdown-preview', desc: 'معاينة Markdown', icon: 'markdown', color: 'blue' },
+  { name: 'Markdown Formatter', slug: 'markdown-formatter', desc: 'تنسيق Markdown', icon: 'markdown', color: 'purple' },
+  { name: 'Markdown to HTML', slug: 'markdown-to-html', desc: 'تحويل Markdown إلى HTML', icon: 'convert', color: 'green' },
+  { name: 'Text to Binary', slug: 'text-to-binary', desc: 'تحويل النص إلى Binary', icon: 'binary', color: 'orange' },
+  { name: 'Binary to Text', slug: 'binary-to-text', desc: 'تحويل Binary إلى نص', icon: 'binary', color: 'cyan' },
+  { name: 'Decimal to Binary', slug: 'decimal-to-binary', desc: 'تحويل Decimal إلى Binary', icon: 'binary', color: 'blue' },
+  { name: 'Binary to Decimal', slug: 'binary-to-decimal', desc: 'تحويل Binary إلى Decimal', icon: 'binary', color: 'purple' },
+  { name: 'Hex to Decimal', slug: 'hex-to-decimal', desc: 'تحويل Hex إلى Decimal', icon: 'binary', color: 'green' },
+  { name: 'Decimal to Hex', slug: 'decimal-to-hex', desc: 'تحويل Decimal إلى Hex', icon: 'binary', color: 'orange' },
+  { name: 'Number Base Converter', slug: 'number-base-converter', desc: 'تحويل أنظمة الأعداد', icon: 'calculator', color: 'cyan' },
+
+  { name: 'Regex Tester', slug: 'regex-tester', desc: 'اختبار Regex', icon: 'regex', color: 'purple' },
+  { name: 'Regex Generator', slug: 'regex-generator', desc: 'إنشاء Regex', icon: 'regex', color: 'green' },
+  { name: 'Email Validator', slug: 'email-validator', desc: 'التحقق من البريد الإلكتروني', icon: 'mail', color: 'orange' },
+  { name: 'IP Address Validator', slug: 'ip-validator', desc: 'التحقق من IP', icon: 'network', color: 'blue' },
+  { name: 'IPv4 Calculator', slug: 'ipv4-calculator', desc: 'حساب IPv4', icon: 'network', color: 'purple' },
+  { name: 'IPv6 Calculator', slug: 'ipv6-calculator', desc: 'حساب IPv6', icon: 'network', color: 'green' },
+  { name: 'CIDR Calculator', slug: 'cidr-calculator', desc: 'حساب CIDR', icon: 'network', color: 'orange' },
+  { name: 'Subnet Calculator', slug: 'subnet-calculator', desc: 'حساب الشبكات الفرعية', icon: 'network', color: 'cyan' },
+
+  { name: 'MAC Address Generator', slug: 'mac-address-generator', desc: 'إنشاء MAC Address', icon: 'network', color: 'blue' },
+  { name: 'QR Code Generator', slug: 'qr-code-generator', desc: 'إنشاء QR Code', icon: 'qr', color: 'purple' },
+  { name: 'Barcode Generator', slug: 'barcode-generator', desc: 'إنشاء Barcode', icon: 'barcode', color: 'green' },
+  { name: 'ASCII Table', slug: 'ascii-table', desc: 'جدول ASCII', icon: 'table', color: 'orange' },
+  { name: 'ASCII Converter', slug: 'ascii-converter', desc: 'تحويل ASCII', icon: 'code', color: 'cyan' },
+  { name: 'Unicode Converter', slug: 'unicode-converter', desc: 'تحويل Unicode', icon: 'unicode', color: 'blue' },
+
+  { name: 'Query String Parser', slug: 'query-string-parser', desc: 'تحليل Query String', icon: 'parser', color: 'green' },
+  { name: 'User Agent Parser', slug: 'user-agent-parser', desc: 'تحليل User Agent', icon: 'browser', color: 'purple' },
+  { name: 'HTTP Status Codes', slug: 'http-status-codes', desc: 'مرجع أكواد HTTP', icon: 'http', color: 'orange' },
+  { name: 'MIME Type Lookup', slug: 'mime-type-lookup', desc: 'البحث عن MIME Types', icon: 'file', color: 'cyan' },
+  { name: 'Cron Expression Generator', slug: 'cron-generator', desc: 'إنشاء Cron Expression', icon: 'terminal', color: 'blue' },
+  { name: 'Cron Expression Parser', slug: 'cron-parser', desc: 'تحليل Cron Expression', icon: 'terminal', color: 'purple' },
+  { name: 'Chmod Calculator', slug: 'chmod-calculator', desc: 'حساب صلاحيات Linux', icon: 'linux', color: 'green' },
+  { name: 'Chmod Converter', slug: 'chmod-converter', desc: 'تحويل صلاحيات chmod', icon: 'linux', color: 'orange' },
+  { name: 'Unix Permissions', slug: 'unix-permissions', desc: 'مرجع صلاحيات Unix', icon: 'linux', color: 'cyan' },
+  { name: 'API Request Builder', slug: 'api-request-builder', desc: 'إنشاء API Requests', icon: 'api', color: 'blue' }
 ];
 
-const toolCount = tools.length;
+const iconPaths: Record<string, string[]> = {
+  json: [
+    'M7 4h10v16H7z',
+    'M10 8h4',
+    'M10 12h4',
+    'M10 16h3'
+  ],
+  html: [
+    'M5 5h14v14H5z',
+    'M9 9l-3 3 3 3',
+    'M15 9l3 3-3 3'
+  ],
+  css: [
+    'M5 5h14l-1.5 14L12 21l-5.5-2z',
+    'M8 9h8',
+    'M8 13h6',
+    'M9 17h4'
+  ],
+  javascript: [
+    'M5 5h14v14H5z',
+    'M9 9v6c0 2 3 2 3 0V9',
+    'M15 9v8'
+  ],
+  typescript: [
+    'M5 5h14v14H5z',
+    'M8 9h8',
+    'M12 9v8',
+    'M9 17h6'
+  ],
+  sql: [
+    'M5 7c0-2 14-2 14 0v10c0 2-14 2-14 0z',
+    'M5 7c0 2 14 2 14 0',
+    'M5 12c0 2 14 2 14 0'
+  ],
+  yaml: [
+    'M5 6h14',
+    'M7 10h10',
+    'M9 14h8',
+    'M11 18h6'
+  ],
+  xml: [
+    'M8 7L4 12l4 5',
+    'M16 7l4 5-4 5',
+    'M14 5l-4 14'
+  ],
+  check: [
+    'M6 12l4 4 8-9',
+    'M12 3a9 9 0 1 0 9 9'
+  ],
+  minify: [
+    'M6 4h12',
+    'M8 9h8',
+    'M10 14h4',
+    'M12 19v-3'
+  ],
+  convert: [
+    'M7 7h10',
+    'M14 4l3 3-3 3',
+    'M17 17H7',
+    'M10 14l-3 3 3 3'
+  ],
+  table: [
+    'M4 5h16v14H4z',
+    'M4 10h16',
+    'M10 5v14',
+    'M16 5v14'
+  ],
+  diff: [
+    'M5 6h6',
+    'M5 12h4',
+    'M5 18h6',
+    'M13 8h6',
+    'M15 12h4',
+    'M13 16h6'
+  ],
+  path: [
+    'M5 6h14',
+    'M5 12h9',
+    'M5 18h14',
+    'M15 10l4 2-4 2'
+  ],
+  code: [
+    'M8 7l-4 5 4 5',
+    'M16 7l4 5-4 5',
+    'M14 4l-4 16'
+  ],
+  browser: [
+    'M4 5h16v14H4z',
+    'M4 9h16',
+    'M8 7h.01',
+    'M11 7h.01'
+  ],
+  tag: [
+    'M5 6h14v5H5z',
+    'M7 14h10v4H7z'
+  ],
+  share: [
+    'M18 8a3 3 0 1 0-2.8-4 3 3 0 0 0 2.8 4z',
+    'M6 15a3 3 0 1 0 0 6 3 3 0 0 0 0-6z',
+    'M18 16a3 3 0 1 0 0 6 3 3 0 0 0-0-6z',
+    'M8.5 16l7-8',
+    'M8.5 18l7 1'
+  ],
+  star: [
+    'M12 3l2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z'
+  ],
+  gradient: [
+    'M5 5h14v14H5z',
+    'M7 17l10-10',
+    'M7 13l6-6',
+    'M11 17l6-6'
+  ],
+  shadow: [
+    'M6 6h12v12H6z',
+    'M9 9h9v9'
+  ],
+  shape: [
+    'M6 5h12v6a6 6 0 0 1-12 0z',
+    'M6 5v6'
+  ],
+  palette: [
+    'M12 4a8 8 0 1 0 0 16h1.5a2 2 0 0 0 0-4H12',
+    'M8 9h.01',
+    'M11 7h.01',
+    'M15 8h.01',
+    'M17 12h.01'
+  ],
+  layout: [
+    'M4 5h7v6H4z',
+    'M13 5h7v6h-7z',
+    'M4 13h7v6H4z',
+    'M13 13h7v6h-7z'
+  ],
+  grid: [
+    'M5 5h6v6H5z',
+    'M13 5h6v6h-6z',
+    'M5 13h6v6H5z',
+    'M13 13h6v6h-6z'
+  ],
+  resize: [
+    'M5 8V5h3',
+    'M16 5h3v3',
+    'M19 16v3h-3',
+    'M8 19H5v-3'
+  ],
+  cursor: [
+    'M6 4l4 16 3-6 6-3z',
+    'M13 14l5 5'
+  ],
+  play: [
+    'M7 5l12 7-12 7z'
+  ],
+  database: [
+    'M5 6c0-2 14-2 14 0v12c0 2-14 2-14 0z',
+    'M5 6c0 2 14 2 14 0',
+    'M5 12c0 2 14 2 14 0'
+  ],
+  lock: [
+    'M7 10V8a5 5 0 0 1 10 0v2',
+    'M5 10h14v10H5z',
+    'M12 14v3'
+  ],
+  unlock: [
+    'M8 10V8a4 4 0 0 1 7.5-2',
+    'M5 10h14v10H5z',
+    'M12 14v3'
+  ],
+  link: [
+    'M10 13a4 4 0 0 0 6 0l2-2a4 4 0 0 0-6-6l-1 1',
+    'M14 11a4 4 0 0 0-6 0l-2 2a4 4 0 0 0 6 6l1-1'
+  ],
+  unlink: [
+    'M9 15l-2 2a4 4 0 0 1-6-6l2-2',
+    'M15 9l2-2a4 4 0 0 1 6 6l-2 2',
+    'M9 9l6 6'
+  ],
+  jwt: [
+    'M12 3l7 4v10l-7 4-7-4V7z',
+    'M8 9l4 2 4-2',
+    'M12 11v6'
+  ],
+  key: [
+    'M14 7a4 4 0 1 0-5 5l7 7',
+    'M16 17l2-2',
+    'M18 19l2-2'
+  ],
+  uuid: [
+    'M7 4h10v16H7z',
+    'M10 8h4',
+    'M10 12h4',
+    'M10 16h4'
+  ],
+  hash: [
+    'M9 4L7 20',
+    'M17 4l-2 16',
+    'M4 9h16',
+    'M3 15h16'
+  ],
+  clock: [
+    'M12 4a8 8 0 1 0 0 16 8 8 0 0 0 0-16z',
+    'M12 8v5l3 2'
+  ],
+  calendar: [
+    'M5 6h14v14H5z',
+    'M8 4v4',
+    'M16 4v4',
+    'M5 10h14'
+  ],
+  globe: [
+    'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z',
+    'M3 12h18',
+    'M12 3c3 3 3 15 0 18',
+    'M12 3c-3 3-3 15 0 18'
+  ],
+  contrast: [
+    'M12 3a9 9 0 1 0 0 18',
+    'M12 3v18'
+  ],
+  text: [
+    'M5 6h14',
+    'M12 6v13',
+    'M9 19h6'
+  ],
+  clean: [
+    'M6 6h12',
+    'M8 6v13h8V6',
+    'M10 10v6',
+    'M14 10v6'
+  ],
+  layers: [
+    'M4 8l8-4 8 4-8 4z',
+    'M4 12l8 4 8-4',
+    'M4 16l8 4 8-4'
+  ],
+  sort: [
+    'M6 6h12',
+    'M6 12h9',
+    'M6 18h6'
+  ],
+  reverse: [
+    'M7 6h10',
+    'M17 6l-3-3',
+    'M17 6l-3 3',
+    'M17 18H7',
+    'M7 18l3-3',
+    'M7 18l3 3'
+  ],
+  markdown: [
+    'M4 6h16v12H4z',
+    'M7 15v-5l3 3 3-3v5',
+    'M16 10v5',
+    'M14 13l2 2 2-2'
+  ],
+  binary: [
+    'M6 5h4v5H6z',
+    'M14 5h4v5h-4z',
+    'M6 14h4v5H6z',
+    'M14 14h4v5h-4z'
+  ],
+  calculator: [
+    'M5 3h14v18H5z',
+    'M8 6h8v4H8z',
+    'M8 14h2',
+    'M14 14h2',
+    'M8 18h2',
+    'M14 18h2'
+  ],
+  regex: [
+    'M5 8h4',
+    'M7 6v4',
+    'M12 8h7',
+    'M12 14h7',
+    'M12 18h5'
+  ],
+  mail: [
+    'M4 6h16v12H4z',
+    'M4 7l8 6 8-6'
+  ],
+  network: [
+    'M12 4v5',
+    'M6 18v-4h12v4',
+    'M6 14l6-5 6 5',
+    'M4 18h4',
+    'M16 18h4'
+  ],
+  qr: [
+    'M5 5h5v5H5z',
+    'M14 5h5v5h-5z',
+    'M5 14h5v5H5z',
+    'M14 14h2v2h-2z',
+    'M17 17h2v2h-2z'
+  ],
+  barcode: [
+    'M5 5v14',
+    'M8 5v14',
+    'M11 5v14',
+    'M14 5v14',
+    'M19 5v14'
+  ],
+  unicode: [
+    'M5 5h14v14H5z',
+    'M8 9h8',
+    'M8 13h6',
+    'M8 17h8'
+  ],
+  parser: [
+    'M5 6h14',
+    'M5 12h9',
+    'M5 18h14',
+    'M16 10l3 2-3 2'
+  ],
+  http: [
+    'M4 6h16v12H4z',
+    'M4 10h16',
+    'M8 14h2',
+    'M12 14h4'
+  ],
+  file: [
+    'M7 3h7l4 4v14H7z',
+    'M14 3v5h5',
+    'M10 12h5',
+    'M10 16h5'
+  ],
+  terminal: [
+    'M5 5h14v14H5z',
+    'M8 9l3 3-3 3',
+    'M13 15h3'
+  ],
+  linux: [
+    'M12 4a4 4 0 0 0-4 4v3l-2 3 3 2h6l3-2-2-3V8a4 4 0 0 0-4-4z',
+    'M8 18h8'
+  ],
+  api: [
+    'M5 6h14v12H5z',
+    'M8 10h3',
+    'M8 14h6',
+    'M16 10h.01'
+  ],
+  chart: [
+    'M5 19V9',
+    'M10 19V5',
+    'M15 19v-7',
+    'M20 19V3'
+  ]
+};
 ---
 
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>أدوات المطورين | Th.Tech</title>
-
     <meta
       name="description"
-      content="مجموعة كبيرة من أدوات المطورين المجانية والسريعة من Th.Tech."
+      content="مجموعة متكاملة من أدوات المطورين المجانية والسريعة من Th.Tech."
     />
-
     <meta name="robots" content="index, follow" />
-
     <link
       rel="canonical"
       href={`https://oumaystore-hub.github.io${base}/tools/`}
     />
-
-    <link
-      rel="icon"
-      type="image/png"
-      href={`${base}/logo1.png`}
-    />
+    <link rel="icon" type="image/png" href={`${base}/logo1.png`} />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
     <link
       href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -158,16 +515,16 @@ const toolCount = tools.length;
 
     <main class="page">
 
-      <!-- HERO -->
       <section class="hero">
-
         <div class="breadcrumb">
           <a href={`${base}/`}>الرئيسية</a>
           <span>›</span>
           <strong>أدوات المطورين</strong>
         </div>
 
-        <div class="hero-box">
+        <div class="hero-card">
+          <div class="hero-decoration hero-decoration-one"></div>
+          <div class="hero-decoration hero-decoration-two"></div>
 
           <div class="hero-icon">
             <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -180,140 +537,91 @@ const toolCount = tools.length;
 
           <div class="hero-text">
             <span class="eyebrow">TH.TECH TOOLBOX</span>
-
             <h1>أدوات المطورين</h1>
-
             <p>
-              أدوات تقنية سريعة ومجانية تساعدك على إنجاز مهامك اليومية
-              مباشرة من المتصفح.
+              مجموعة احترافية من الأدوات السريعة والمجانية لإنجاز المهام
+              التقنية اليومية.
             </p>
           </div>
-
         </div>
-
       </section>
 
-
-      <!-- SECTION HEADER -->
       <section class="tools-section">
 
         <div class="section-head">
-
           <div>
             <span class="section-label">DEVELOPER TOOLS</span>
             <h2>جميع الأدوات</h2>
           </div>
 
-          <div class="count">
-            <strong>{toolCount}</strong>
+          <div class="count-box">
+            <strong>{tools.length}</strong>
             <span>أداة</span>
           </div>
-
         </div>
 
-
-        <!-- TOOLS -->
         <div class="tools-grid">
+          {tools.map((tool, index) => (
+            <a
+              href={`${base}/tools/${tool.slug}/`}
+              class={`tool-card ${tool.color}`}
+              aria-label={`فتح ${tool.name}`}
+            >
+              <div class="card-glow"></div>
 
-          {
-            tools.map((tool, index) => (
-              <a
-                class={`tool-card ${tool.color}`}
-                href={`${base}/tools/${tool.slug}/`}
-                aria-label={tool.name}
-              >
+              <div class="tool-number">
+                {String(index + 1).padStart(2, '0')}
+              </div>
 
-                <div class="tool-number">
-                  {String(index + 1).padStart(2, '0')}
-                </div>
+              <div class="tool-icon">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  {iconPaths[tool.icon].map((path) => (
+                    <path d={path}></path>
+                  ))}
+                </svg>
+              </div>
 
-                <div class="tool-icon">
+              <div class="tool-info">
+                <h3>{tool.name}</h3>
+                <p>{tool.desc}</p>
+              </div>
 
-                  <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden="true"
-                  >
-                    <rect
-                      x="4"
-                      y="4"
-                      width="16"
-                      height="16"
-                      rx="4"
-                    ></rect>
-
-                    <path d="M8 9h8"></path>
-                    <path d="M8 13h5"></path>
-                    <path d="M8 16h3"></path>
-                  </svg>
-
-                </div>
-
-                <div class="tool-info">
-
-                  <h3>{tool.name}</h3>
-
-                  <p>{tool.desc}</p>
-
-                </div>
-
-                <div class="tool-arrow">
-                  ←
-                </div>
-
-              </a>
-            ))
-          }
-
+              <div class="tool-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 12h13"></path>
+                  <path d="M13 6l6 6-6 6"></path>
+                </svg>
+              </div>
+            </a>
+          ))}
         </div>
-
       </section>
 
-
-      <!-- INFO -->
-      <section class="info-box">
-
+      <section class="info-card">
         <div class="info-icon">
-
           <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle
-              cx="12"
-              cy="12"
-              r="9"
-            ></circle>
-
+            <circle cx="12" cy="12" r="9"></circle>
             <path d="M12 8v4"></path>
-            <circle
-              cx="12"
-              cy="16"
-              r=".5"
-            ></circle>
+            <path d="M12 16h.01"></path>
           </svg>
-
         </div>
 
         <div>
-
-          <h2>أدوات مجانية وسريعة</h2>
-
+          <span>TH.TECH</span>
+          <h2>أدوات تقنية في مكان واحد</h2>
           <p>
-            اختر أي أداة بالضغط على البطاقة مباشرة.
-            لا يوجد زر فتح منفصل، وكل بطاقة مرتبطة بصفحة الأداة الخاصة بها.
+            جميع الأدوات مصممة لتكون سريعة، بسيطة، ومتوافقة مع الهاتف والحاسوب.
           </p>
-
         </div>
-
       </section>
 
     </main>
 
     <Footer />
-
   </body>
 </html>
 
-
 <style>
-
   :global(*) {
     box-sizing: border-box;
   }
@@ -324,112 +632,117 @@ const toolCount = tools.length;
 
   :global(body) {
     margin: 0;
-    background:
-      radial-gradient(
-        circle at 10% 10%,
-        rgba(37, 99, 235, 0.06),
-        transparent 30%
-      ),
-      #f6f8fc;
-    color: #0f172a;
     font-family: "Cairo", sans-serif;
+    background:
+      radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.06), transparent 28%),
+      radial-gradient(circle at 90% 25%, rgba(6, 182, 212, 0.05), transparent 30%),
+      #f5f7fc;
+    color: #0f172a;
   }
 
-
-  /* PAGE */
+  :global(html.dark body),
+  :global(body.dark) {
+    background:
+      radial-gradient(circle at 10% 10%, rgba(37, 99, 235, 0.09), transparent 30%),
+      #080d17;
+    color: #f8fafc;
+  }
 
   .page {
-    width: min(1200px, calc(100% - 32px));
+    width: min(1180px, calc(100% - 32px));
     margin: 0 auto;
-    padding: 30px 0 80px;
+    padding: 28px 0 70px;
   }
 
-
-  /* HERO */
-
   .hero {
-    padding: 8px 0 35px;
+    margin-bottom: 36px;
   }
 
   .breadcrumb {
     display: flex;
     align-items: center;
     gap: 9px;
-    margin-bottom: 28px;
-    color: #64748b;
+    margin-bottom: 22px;
     font-size: 11px;
+    color: #64748b;
   }
 
   .breadcrumb a {
     color: #2563eb;
     text-decoration: none;
-    transition: color .2s ease;
-  }
-
-  .breadcrumb a:hover {
-    color: #06b6d4;
+    font-weight: 700;
   }
 
   .breadcrumb span {
     color: #94a3b8;
   }
 
-
-  .hero-box {
+  .hero-card {
     position: relative;
+    min-height: 190px;
     display: flex;
     align-items: center;
-    gap: 20px;
-    padding: 24px;
+    gap: 25px;
     overflow: hidden;
-    border: 1px solid rgba(226, 232, 240, .9);
-    border-radius: 30px;
+    padding: 35px 42px;
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    border-radius: 34px;
     background:
-      linear-gradient(
-        135deg,
-        rgba(255,255,255,.98),
-        rgba(248,250,252,.92)
-      );
+      linear-gradient(135deg, rgba(255,255,255,.98), rgba(241,246,255,.96));
     box-shadow:
-      0 15px 45px rgba(15, 23, 42, .07);
+      0 20px 55px rgba(15, 23, 42, .08),
+      inset 0 1px 0 rgba(255,255,255,.9);
   }
 
-  .hero-box::before {
-    content: "";
+  :global(html.dark) .hero-card,
+  :global(body.dark) .hero-card {
+    background: linear-gradient(135deg, #111a2a, #0d1523);
+    border-color: rgba(148,163,184,.12);
+  }
+
+  .hero-decoration {
     position: absolute;
-    width: 180px;
-    height: 180px;
-    left: -80px;
-    top: -90px;
-    border-radius: 50%;
-    background: rgba(37, 99, 235, .06);
+    border: 1px solid rgba(37,99,235,.08);
+    transform: rotate(25deg);
     pointer-events: none;
   }
 
+  .hero-decoration-one {
+    width: 210px;
+    height: 210px;
+    left: -80px;
+    top: -100px;
+    border-radius: 55px;
+  }
+
+  .hero-decoration-two {
+    width: 170px;
+    height: 170px;
+    right: -70px;
+    bottom: -90px;
+    border-radius: 45px;
+  }
 
   .hero-icon {
     position: relative;
-    width: 72px;
-    height: 72px;
-    flex: none;
+    z-index: 1;
+    width: 82px;
+    height: 82px;
+    flex: 0 0 82px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 24px;
-    background:
-      linear-gradient(
-        135deg,
-        #2563eb,
-        #06b6d4
-      );
+    border-radius: 26px;
+    background: linear-gradient(145deg, #2563eb, #06b6d4);
     box-shadow:
-      0 15px 35px rgba(37, 99, 235, .22);
+      0 18px 35px rgba(37,99,235,.25),
+      inset 0 1px 0 rgba(255,255,255,.35);
     animation: heroFloat 4s ease-in-out infinite;
   }
 
   .hero-icon svg {
-    width: 36px;
-    height: 36px;
+    width: 42px;
+    height: 42px;
     fill: none;
     stroke: white;
     stroke-width: 1.7;
@@ -437,67 +750,59 @@ const toolCount = tools.length;
     stroke-linejoin: round;
   }
 
-  @keyframes heroFloat {
-
-    0%,
-    100% {
-      transform: translateY(0);
-    }
-
-    50% {
-      transform: translateY(-5px);
-    }
-
-  }
-
-
   .hero-text {
     position: relative;
+    z-index: 1;
   }
 
   .eyebrow,
   .section-label {
+    display: block;
     color: #2563eb;
     font-size: 10px;
     font-weight: 800;
-    letter-spacing: 1.2px;
+    letter-spacing: 1.5px;
   }
 
   .hero h1 {
-    margin: 4px 0;
-    font-size: clamp(27px, 4vw, 40px);
-    line-height: 1.3;
+    margin: 4px 0 7px;
+    font-size: clamp(28px, 4vw, 42px);
+    line-height: 1.2;
     font-weight: 800;
   }
 
   .hero p {
+    max-width: 680px;
     margin: 0;
     color: #64748b;
     font-size: 13px;
-    line-height: 1.8;
+    line-height: 1.9;
   }
 
-
-  /* SECTION */
+  :global(html.dark) .hero p,
+  :global(body.dark) .hero p {
+    color: #94a3b8;
+  }
 
   .tools-section {
-    margin-top: 10px;
+    margin-top: 20px;
   }
 
   .section-head {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: space-between;
-    margin-bottom: 22px;
+    gap: 20px;
+    margin-bottom: 20px;
   }
 
   .section-head h2 {
-    margin: 3px 0 0;
-    font-size: 21px;
+    margin: 4px 0 0;
+    font-size: 23px;
     font-weight: 800;
   }
 
-  .count {
+  .count-box {
     display: flex;
     align-items: center;
     gap: 7px;
@@ -505,314 +810,294 @@ const toolCount = tools.length;
     font-size: 11px;
   }
 
-  .count strong {
-    display: flex;
+  .count-box strong {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 38px;
+    min-width: 36px;
     height: 30px;
     padding: 0 9px;
-    border-radius: 50px;
+    border-radius: 10px;
     background: #eaf1ff;
     color: #2563eb;
     font-size: 12px;
-    font-weight: 800;
   }
-
-
-  /* GRID */
 
   .tools-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 18px;
+    gap: 16px;
   }
-
-
-  /* CIRCULAR CARD */
 
   .tool-card {
+    --accent: #2563eb;
+    --soft: #eaf1ff;
+
     position: relative;
-    aspect-ratio: 1 / 1;
-    min-width: 0;
+    min-height: 150px;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
+    justify-content: space-between;
     overflow: hidden;
-
+    padding: 19px;
     border: 1px solid #e2e8f0;
-    border-radius: 50%;
-
-    background: rgba(255, 255, 255, .96);
+    border-radius: 26px;
+    background: rgba(255,255,255,.96);
     color: #0f172a;
     text-decoration: none;
-
     box-shadow:
-      0 10px 28px rgba(15, 23, 42, .07);
-
+      0 9px 28px rgba(15,23,42,.055),
+      inset 0 1px 0 rgba(255,255,255,.95);
+    isolation: isolate;
     transition:
-      transform .35s cubic-bezier(.2,.8,.2,1),
-      box-shadow .35s ease,
-      border-color .35s ease;
+      transform .28s cubic-bezier(.2,.8,.2,1),
+      box-shadow .28s ease,
+      border-color .28s ease;
   }
 
+  :global(html.dark) .tool-card,
+  :global(body.dark) .tool-card {
+    background: #101827;
+    border-color: rgba(148,163,184,.12);
+    color: #f8fafc;
+    box-shadow: 0 12px 35px rgba(0,0,0,.18);
+  }
 
   .tool-card::before {
     content: "";
     position: absolute;
-    width: 55%;
-    height: 55%;
-    top: -22%;
-    right: -15%;
-    border-radius: 50%;
-    background: currentColor;
-    opacity: .035;
-    transition:
-      transform .45s ease,
-      opacity .35s ease;
+    width: 115px;
+    height: 115px;
+    top: -60px;
+    left: -50px;
+    border-radius: 35px;
+    transform: rotate(25deg);
+    background: var(--soft);
+    opacity: .8;
+    z-index: -1;
   }
-
 
   .tool-card::after {
     content: "";
     position: absolute;
-    inset: 8px;
-    border-radius: 50%;
-    border: 1px solid rgba(148, 163, 184, .12);
-    pointer-events: none;
+    width: 75px;
+    height: 75px;
+    right: -30px;
+    bottom: -35px;
+    border-radius: 24px;
+    transform: rotate(25deg);
+    border: 1px solid var(--accent);
+    opacity: .07;
+    z-index: -1;
   }
-
 
   .tool-card:hover {
-    transform:
-      translateY(-8px)
-      scale(1.025);
-
-    border-color: rgba(37, 99, 235, .22);
-
+    transform: translateY(-7px);
+    border-color: color-mix(in srgb, var(--accent) 30%, #e2e8f0);
     box-shadow:
-      0 22px 50px rgba(15, 23, 42, .13);
-  }
-
-  .tool-card:hover::before {
-    transform: scale(1.6);
-    opacity: .07;
+      0 20px 45px rgba(15,23,42,.12),
+      0 0 0 1px color-mix(in srgb, var(--accent) 8%, transparent);
   }
 
   .tool-card:active {
-    transform:
-      translateY(-2px)
-      scale(.98);
+    transform: translateY(-2px) scale(.985);
   }
 
+  .card-glow {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: -45px;
+    right: -45px;
+    border-radius: 50%;
+    background: var(--accent);
+    opacity: .035;
+    transition: transform .35s ease, opacity .35s ease;
+  }
 
-  /* NUMBER */
+  .tool-card:hover .card-glow {
+    transform: scale(2.1);
+    opacity: .07;
+  }
 
   .tool-number {
     position: absolute;
-    top: 15%;
-    left: 20%;
-    z-index: 2;
-
+    top: 12px;
+    left: 15px;
     color: #cbd5e1;
     font-size: 9px;
-    font-weight: 700;
-
-    transition:
-      color .3s ease,
-      transform .3s ease;
+    font-weight: 800;
+    letter-spacing: .5px;
   }
 
-  .tool-card:hover .tool-number {
-    color: #94a3b8;
-    transform: scale(1.1);
+  :global(html.dark) .tool-number,
+  :global(body.dark) .tool-number {
+    color: #334155;
   }
-
-
-  /* ICON */
 
   .tool-icon {
     position: relative;
     z-index: 2;
-
-    width: 58px;
-    height: 58px;
-
+    width: 53px;
+    height: 53px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    border-radius: 50%;
-
+    margin-bottom: 13px;
+    border-radius: 18px;
+    background: var(--soft);
+    color: var(--accent);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,.75);
     transition:
-      transform .35s cubic-bezier(.2,.8,.2,1),
-      box-shadow .35s ease;
+      transform .3s ease,
+      border-radius .3s ease;
   }
 
   .tool-card:hover .tool-icon {
-    transform:
-      rotate(-8deg)
-      scale(1.12);
-
-    box-shadow:
-      0 8px 22px rgba(15, 23, 42, .08);
+    transform: rotate(-5deg) scale(1.08);
+    border-radius: 15px;
   }
 
   .tool-icon svg {
     width: 28px;
     height: 28px;
-
     fill: none;
     stroke: currentColor;
-    stroke-width: 1.6;
+    stroke-width: 1.65;
     stroke-linecap: round;
     stroke-linejoin: round;
   }
 
-
-  /* CONTENT */
-
   .tool-info {
     position: relative;
     z-index: 2;
-
-    width: 100%;
-    margin-top: 11px;
-
-    text-align: center;
+    min-width: 0;
+    padding-right: 2px;
   }
 
   .tool-info h3 {
     margin: 0;
-
     overflow: hidden;
-
-    color: #0f172a;
-    font-size: 12px;
-    line-height: 1.45;
+    font-size: 14px;
+    line-height: 1.5;
     font-weight: 800;
-
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .tool-info p {
-    margin: 5px 0 0;
-
-    color: #64748b;
-    font-size: 9px;
-    line-height: 1.5;
-
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-
+    margin: 4px 0 0;
     overflow: hidden;
+    color: #64748b;
+    font-size: 10px;
+    line-height: 1.7;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-
-  /* ARROW */
+  :global(html.dark) .tool-info p,
+  :global(body.dark) .tool-info p {
+    color: #94a3b8;
+  }
 
   .tool-arrow {
     position: absolute;
-    z-index: 3;
-
-    left: 19%;
-    bottom: 18%;
-
-    width: 27px;
-    height: 27px;
-
+    right: 16px;
+    bottom: 16px;
+    width: 29px;
+    height: 29px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    border-radius: 50%;
-
+    border-radius: 10px;
     background: #f1f5f9;
     color: #64748b;
-
-    font-size: 12px;
-
+    opacity: .75;
     transition:
-      background .3s ease,
-      color .3s ease,
-      transform .3s ease;
+      background .25s ease,
+      color .25s ease,
+      transform .25s ease;
+  }
+
+  :global(html.dark) .tool-arrow,
+  :global(body.dark) .tool-arrow {
+    background: #172235;
+    color: #94a3b8;
+  }
+
+  .tool-arrow svg {
+    width: 15px;
+    height: 15px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
   .tool-card:hover .tool-arrow {
-    background: #2563eb;
+    background: var(--accent);
     color: white;
+    opacity: 1;
     transform: translateX(-4px);
   }
 
-
-  /* COLORS */
-
-  .blue .tool-icon {
-    background: #eaf1ff;
-    color: #2563eb;
+  .blue {
+    --accent: #2563eb;
+    --soft: #eaf1ff;
   }
 
-  .green .tool-icon {
-    background: #e9f9ef;
-    color: #16a34a;
+  .green {
+    --accent: #16a34a;
+    --soft: #eaf9ef;
   }
 
-  .orange .tool-icon {
-    background: #fff1e8;
-    color: #ea580c;
+  .orange {
+    --accent: #ea580c;
+    --soft: #fff1e8;
   }
 
-  .yellow .tool-icon {
-    background: #fff8d8;
-    color: #ca8a04;
+  .yellow {
+    --accent: #ca8a04;
+    --soft: #fff8d8;
   }
 
-  .purple .tool-icon {
-    background: #f2eaff;
-    color: #7c3aed;
+  .purple {
+    --accent: #7c3aed;
+    --soft: #f1eaff;
   }
 
-  .cyan .tool-icon {
-    background: #e5f9fc;
-    color: #0891b2;
+  .cyan {
+    --accent: #0891b2;
+    --soft: #e5f9fc;
   }
 
-
-  /* INFO */
-
-  .info-box {
-    position: relative;
-
+  .info-card {
     display: flex;
     align-items: center;
     gap: 18px;
-
-    margin-top: 50px;
+    margin-top: 45px;
     padding: 25px;
-
     border: 1px solid #e2e8f0;
     border-radius: 25px;
+    background: rgba(255,255,255,.85);
+    box-shadow: 0 10px 30px rgba(15,23,42,.04);
+  }
 
-    background: white;
-
-    box-shadow:
-      0 10px 30px rgba(15, 23, 42, .04);
+  :global(html.dark) .info-card,
+  :global(body.dark) .info-card {
+    background: #101827;
+    border-color: rgba(148,163,184,.12);
   }
 
   .info-icon {
     width: 55px;
     height: 55px;
-    flex: none;
-
+    flex: 0 0 55px;
     display: flex;
     align-items: center;
     justify-content: center;
-
-    border-radius: 50%;
-
+    border-radius: 17px;
     background: #eaf1ff;
     color: #2563eb;
   }
@@ -820,7 +1105,6 @@ const toolCount = tools.length;
   .info-icon svg {
     width: 27px;
     height: 27px;
-
     fill: none;
     stroke: currentColor;
     stroke-width: 1.7;
@@ -828,160 +1112,179 @@ const toolCount = tools.length;
     stroke-linejoin: round;
   }
 
-  .info h2 {
-    margin: 0;
-    font-size: 16px;
+  .info-card span {
+    color: #2563eb;
+    font-size: 9px;
     font-weight: 800;
+    letter-spacing: 1px;
   }
 
-  .info p {
-    margin: 5px 0 0;
+  .info-card h2 {
+    margin: 2px 0 3px;
+    font-size: 16px;
+  }
+
+  .info-card p {
+    margin: 0;
     color: #64748b;
     font-size: 11px;
-    line-height: 1.7;
   }
 
+  :global(html.dark) .info-card p,
+  :global(body.dark) .info-card p {
+    color: #94a3b8;
+  }
 
-  /* TABLET */
+  @keyframes heroFloat {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-5px);
+    }
+  }
 
   @media (max-width: 1050px) {
-
     .tools-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 16px;
     }
-
   }
 
-
-  /* MOBILE */
-
-  @media (max-width: 700px) {
-
+  @media (max-width: 760px) {
     .page {
-      width: calc(100% - 18px);
-      padding-top: 20px;
-      padding-bottom: 55px;
+      width: calc(100% - 20px);
+      padding: 20px 0 55px;
     }
 
-
     .hero {
-      padding-bottom: 25px;
+      margin-bottom: 27px;
     }
 
     .breadcrumb {
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       font-size: 10px;
     }
 
-
-    .hero-box {
-      gap: 13px;
-      padding: 18px;
-      border-radius: 24px;
+    .hero-card {
+      min-height: 145px;
+      gap: 15px;
+      padding: 25px 20px;
+      border-radius: 27px;
     }
 
     .hero-icon {
-      width: 55px;
-      height: 55px;
+      width: 61px;
+      height: 61px;
+      flex-basis: 61px;
       border-radius: 19px;
     }
 
     .hero-icon svg {
-      width: 28px;
-      height: 28px;
-    }
-
-    .hero h1 {
-      font-size: 23px;
-    }
-
-    .hero p {
-      font-size: 9px;
-      line-height: 1.7;
+      width: 31px;
+      height: 31px;
     }
 
     .eyebrow {
       font-size: 8px;
     }
 
+    .hero h1 {
+      margin: 3px 0 5px;
+      font-size: 24px;
+    }
+
+    .hero p {
+      font-size: 9px;
+      line-height: 1.8;
+    }
 
     .section-head {
-      margin-bottom: 15px;
+      margin-bottom: 14px;
     }
 
     .section-head h2 {
-      font-size: 17px;
+      font-size: 18px;
     }
 
     .section-label {
       font-size: 8px;
     }
 
+    .count-box {
+      font-size: 9px;
+    }
+
+    .count-box strong {
+      min-width: 31px;
+      height: 27px;
+      font-size: 10px;
+    }
 
     .tools-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 11px;
     }
 
-
     .tool-card {
-      padding: 13px;
+      min-height: 155px;
+      padding: 14px;
+      border-radius: 22px;
     }
 
+    .tool-number {
+      top: 10px;
+      left: 11px;
+      font-size: 7px;
+    }
 
     .tool-icon {
       width: 48px;
       height: 48px;
+      margin-bottom: 11px;
+      border-radius: 16px;
     }
 
     .tool-icon svg {
-      width: 23px;
-      height: 23px;
-    }
-
-
-    .tool-info {
-      margin-top: 8px;
+      width: 25px;
+      height: 25px;
     }
 
     .tool-info h3 {
-      font-size: 9px;
+      font-size: 11px;
+      line-height: 1.5;
     }
 
     .tool-info p {
       margin-top: 3px;
-      font-size: 7px;
+      font-size: 8px;
+      line-height: 1.6;
     }
-
-
-    .tool-number {
-      top: 15%;
-      left: 19%;
-      font-size: 7px;
-    }
-
 
     .tool-arrow {
-      width: 22px;
-      height: 22px;
-      left: 18%;
-      bottom: 17%;
-      font-size: 9px;
+      right: 12px;
+      bottom: 12px;
+      width: 25px;
+      height: 25px;
+      border-radius: 8px;
     }
 
+    .tool-arrow svg {
+      width: 13px;
+      height: 13px;
+    }
 
-    .info-box {
-      align-items: flex-start;
-      gap: 13px;
+    .info-card {
       margin-top: 32px;
       padding: 18px;
+      gap: 13px;
       border-radius: 20px;
     }
 
     .info-icon {
       width: 45px;
       height: 45px;
+      flex-basis: 45px;
+      border-radius: 14px;
     }
 
     .info-icon svg {
@@ -989,58 +1292,56 @@ const toolCount = tools.length;
       height: 22px;
     }
 
-    .info h2 {
+    .info-card h2 {
       font-size: 13px;
     }
 
-    .info p {
+    .info-card p {
       font-size: 9px;
+      line-height: 1.7;
     }
-
   }
 
-
-  /* VERY SMALL PHONES */
-
-  @media (max-width: 380px) {
+  @media (max-width: 390px) {
+    .page {
+      width: calc(100% - 14px);
+    }
 
     .tools-grid {
       gap: 8px;
     }
 
     .tool-card {
-      padding: 10px;
+      min-height: 145px;
+      padding: 12px;
+      border-radius: 19px;
     }
 
     .tool-icon {
       width: 43px;
       height: 43px;
+      border-radius: 14px;
     }
 
     .tool-icon svg {
-      width: 20px;
-      height: 20px;
+      width: 22px;
+      height: 22px;
     }
 
     .tool-info h3 {
-      font-size: 8px;
+      font-size: 10px;
     }
 
     .tool-info p {
-      font-size: 6.5px;
+      font-size: 7px;
     }
 
     .tool-arrow {
       display: none;
     }
-
   }
 
-
-  /* ACCESSIBILITY */
-
   @media (prefers-reduced-motion: reduce) {
-
     :global(html) {
       scroll-behavior: auto;
     }
@@ -1048,12 +1349,9 @@ const toolCount = tools.length;
     .hero-icon,
     .tool-card,
     .tool-icon,
-    .tool-arrow,
-    .tool-number {
+    .tool-arrow {
       animation: none !important;
       transition: none !important;
     }
-
   }
-
 </style>
