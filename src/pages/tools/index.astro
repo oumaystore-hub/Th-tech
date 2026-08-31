@@ -1,676 +1,295 @@
 ---
-
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
-const base = import.meta.env.BASE_URL.replace(//$/, '');
+// ✅ تم إصلاح الـ Regex هنا
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const tools = [
-['JSON Formatter', 'json-formatter', 'تنسيق وتجميل JSON', 'blue'],
-['JSON Validator', 'json-validator', 'التحقق من صحة JSON', 'green'],
-['HTML Formatter', 'html-formatter', 'تنسيق HTML', 'orange'],
-['JavaScript Formatter', 'javascript-formatter', 'تنسيق JavaScript', 'yellow'],
-['Word Counter', 'word-counter', 'حساب الكلمات والأحرف', 'purple'],
+  ['JSON Formatter', 'json-formatter', 'تنسيق وتجميل JSON', 'blue'],
+  ['JSON Validator', 'json-validator', 'التحقق من صحة JSON', 'green'],
+  ['HTML Formatter', 'html-formatter', 'تنسيق HTML', 'orange'],
+  ['JavaScript Formatter', 'javascript-formatter', 'تنسيق JavaScript', 'yellow'],
+  ['Word Counter', 'word-counter', 'حساب الكلمات والأحرف', 'purple'],
 
-['CSS Formatter', 'css-formatter', 'تنسيق CSS', 'blue'],
-['CSS Minifier', 'css-minifier', 'تصغير CSS', 'cyan'],
-['JavaScript Minifier', 'javascript-minifier', 'تصغير JavaScript', 'yellow'],
-['HTML Minifier', 'html-minifier', 'تصغير HTML', 'orange'],
-['JSON Minifier', 'json-minifier', 'تصغير JSON', 'green'],
+  ['CSS Formatter', 'css-formatter', 'تنسيق CSS', 'blue'],
+  ['CSS Minifier', 'css-minifier', 'تصغير CSS', 'cyan'],
+  ['JavaScript Minifier', 'javascript-minifier', 'تصغير JavaScript', 'yellow'],
+  ['HTML Minifier', 'html-minifier', 'تصغير HTML', 'orange'],
+  ['JSON Minifier', 'json-minifier', 'تصغير JSON', 'green'],
 
-['JSON to CSV', 'json-to-csv', 'تحويل JSON إلى CSV', 'green'],
-['CSV to JSON', 'csv-to-json', 'تحويل CSV إلى JSON', 'blue'],
-['JSON to XML', 'json-to-xml', 'تحويل JSON إلى XML', 'orange'],
-['XML to JSON', 'xml-to-json', 'تحويل XML إلى JSON', 'purple'],
-['YAML Formatter', 'yaml-formatter', 'تنسيق YAML', 'cyan'],
+  ['JSON to CSV', 'json-to-csv', 'تحويل JSON إلى CSV', 'green'],
+  ['CSV to JSON', 'csv-to-json', 'تحويل CSV إلى JSON', 'blue'],
+  ['JSON to XML', 'json-to-xml', 'تحويل JSON إلى XML', 'orange'],
+  ['XML to JSON', 'xml-to-json', 'تحويل XML إلى JSON', 'purple'],
+  ['YAML Formatter', 'yaml-formatter', 'تنسيق YAML', 'cyan'],
 
-['YAML Validator', 'yaml-validator', 'التحقق من YAML', 'blue'],
-['XML Formatter', 'xml-formatter', 'تنسيق XML', 'orange'],
-['XML Validator', 'xml-validator', 'التحقق من XML', 'green'],
-['SQL Formatter', 'sql-formatter', 'تنسيق SQL', 'purple'],
-['SQL Minifier', 'sql-minifier', 'تصغير SQL', 'cyan'],
+  ['YAML Validator', 'yaml-validator', 'التحقق من YAML', 'blue'],
+  ['XML Formatter', 'xml-formatter', 'تنسيق XML', 'orange'],
+  ['XML Validator', 'xml-validator', 'التحقق من XML', 'green'],
+  ['SQL Formatter', 'sql-formatter', 'تنسيق SQL', 'purple'],
+  ['SQL Minifier', 'sql-minifier', 'تصغير SQL', 'cyan'],
 
-['Base64 Encoder', 'base64-encoder', 'ترميز Base64', 'blue'],
-['Base64 Decoder', 'base64-decoder', 'فك ترميز Base64', 'green'],
-['URL Encoder', 'url-encoder', 'ترميز URL', 'orange'],
-['URL Decoder', 'url-decoder', 'فك ترميز URL', 'purple'],
-['HTML Entity Encoder', 'html-entity-encoder', 'ترميز HTML Entities', 'cyan'],
+  ['Base64 Encoder', 'base64-encoder', 'ترميز Base64', 'blue'],
+  ['Base64 Decoder', 'base64-decoder', 'فك ترميز Base64', 'green'],
+  ['URL Encoder', 'url-encoder', 'ترميز URL', 'orange'],
+  ['URL Decoder', 'url-decoder', 'فك ترميز URL', 'purple'],
+  ['HTML Entity Encoder', 'html-entity-encoder', 'ترميز HTML Entities', 'cyan'],
 
-['HTML Entity Decoder', 'html-entity-decoder', 'فك ترميز HTML Entities', 'blue'],
-['JWT Decoder', 'jwt-decoder', 'قراءة JWT', 'purple'],
-['JWT Generator', 'jwt-generator', 'إنشاء JWT', 'green'],
-['UUID Generator', 'uuid-generator', 'إنشاء UUID', 'orange'],
-['Password Generator', 'password-generator', 'إنشاء كلمات مرور', 'cyan'],
+  ['HTML Entity Decoder', 'html-entity-decoder', 'فك ترميز HTML Entities', 'blue'],
+  ['JWT Decoder', 'jwt-decoder', 'قراءة JWT', 'purple'],
+  ['JWT Generator', 'jwt-generator', 'إنشاء JWT', 'green'],
+  ['UUID Generator', 'uuid-generator', 'إنشاء UUID', 'orange'],
+  ['Password Generator', 'password-generator', 'إنشاء كلمات مرور', 'cyan'],
 
-['Hash Generator', 'hash-generator', 'إنشاء Hash', 'purple'],
-['MD5 Generator', 'md5-generator', 'إنشاء MD5', 'blue'],
-['SHA256 Generator', 'sha256-generator', 'إنشاء SHA-256', 'green'],
-['SHA512 Generator', 'sha512-generator', 'إنشاء SHA-512', 'orange'],
-['Timestamp Converter', 'timestamp-converter', 'تحويل Unix Timestamp', 'cyan'],
+  ['Hash Generator', 'hash-generator', 'إنشاء Hash', 'purple'],
+  ['MD5 Generator', 'md5-generator', 'إنشاء MD5', 'blue'],
+  ['SHA256 Generator', 'sha256-generator', 'إنشاء SHA-256', 'green'],
+  ['SHA512 Generator', 'sha512-generator', 'إنشاء SHA-512', 'orange'],
+  ['Timestamp Converter', 'timestamp-converter', 'تحويل Unix Timestamp', 'cyan'],
 
-['Unix Timestamp', 'unix-timestamp', 'إنشاء Timestamp', 'blue'],
-['Date Formatter', 'date-formatter', 'تنسيق التاريخ', 'purple'],
-['Time Converter', 'time-converter', 'تحويل الوقت', 'green'],
-['Timezone Converter', 'timezone-converter', 'تحويل المناطق الزمنية', 'orange'],
-['Color Converter', 'color-converter', 'تحويل الألوان', 'cyan'],
+  ['Unix Timestamp', 'unix-timestamp', 'إنشاء Timestamp', 'blue'],
+  ['Date Formatter', 'date-formatter', 'تنسيق التاريخ', 'purple'],
+  ['Time Converter', 'time-converter', 'تحويل الوقت', 'green'],
+  ['Timezone Converter', 'timezone-converter', 'تحويل المناطق الزمنية', 'orange'],
+  ['Color Converter', 'color-converter', 'تحويل الألوان', 'cyan'],
 
-['HEX to RGB', 'hex-to-rgb', 'تحويل HEX إلى RGB', 'blue'],
-['RGB to HEX', 'rgb-to-hex', 'تحويل RGB إلى HEX', 'purple'],
-['HEX to HSL', 'hex-to-hsl', 'تحويل HEX إلى HSL', 'green'],
-['RGB to HSL', 'rgb-to-hsl', 'تحويل RGB إلى HSL', 'orange'],
-['Color Palette', 'color-palette', 'إنشاء لوحة ألوان', 'cyan'],
+  ['HEX to RGB', 'hex-to-rgb', 'تحويل HEX إلى RGB', 'blue'],
+  ['RGB to HEX', 'rgb-to-hex', 'تحويل RGB إلى HEX', 'purple'],
+  ['HEX to HSL', 'hex-to-hsl', 'تحويل HEX إلى HSL', 'green'],
+  ['RGB to HSL', 'rgb-to-hsl', 'تحويل RGB إلى HSL', 'orange'],
+  ['Color Palette', 'color-palette', 'إنشاء لوحة ألوان', 'cyan'],
 
-['Contrast Checker', 'contrast-checker', 'فحص تباين الألوان', 'blue'],
-['Lorem Ipsum Generator', 'lorem-ipsum-generator', 'إنشاء نص تجريبي', 'purple'],
-['Text Case Converter', 'text-case-converter', 'تغيير حالة النص', 'green'],
-['Text Cleaner', 'text-cleaner', 'تنظيف النصوص', 'orange'],
-['Remove Duplicate Lines', 'remove-duplicate-lines', 'حذف الأسطر المتكررة', 'cyan'],
+  ['Contrast Checker', 'contrast-checker', 'فحص تباين الألوان', 'blue'],
+  ['Lorem Ipsum Generator', 'lorem-ipsum-generator', 'إنشاء نص تجريبي', 'purple'],
+  ['Text Case Converter', 'text-case-converter', 'تغيير حالة النص', 'green'],
+  ['Text Cleaner', 'text-cleaner', 'تنظيف النصوص', 'orange'],
+  ['Remove Duplicate Lines', 'remove-duplicate-lines', 'حذف الأسطر المتكررة', 'cyan'],
 
-['Sort Lines', 'sort-lines', 'ترتيب الأسطر', 'blue'],
-['Line Counter', 'line-counter', 'حساب الأسطر', 'purple'],
-['Character Counter', 'character-counter', 'حساب الأحرف', 'green'],
-['Text Reverser', 'text-reverser', 'عكس النص', 'orange'],
-['Slug Generator', 'slug-generator', 'إنشاء Slug', 'cyan'],
+  ['Sort Lines', 'sort-lines', 'ترتيب الأسطر', 'blue'],
+  ['Line Counter', 'line-counter', 'حساب الأسطر', 'purple'],
+  ['Character Counter', 'character-counter', 'حساب الأحرف', 'green'],
+  ['Text Reverser', 'text-reverser', 'عكس النص', 'orange'],
+  ['Slug Generator', 'slug-generator', 'إنشاء Slug', 'cyan'],
 
-['Markdown Preview', 'markdown-preview', 'معاينة Markdown', 'blue'],
-['Markdown Formatter', 'markdown-formatter', 'تنسيق Markdown', 'purple'],
-['Markdown to HTML', 'markdown-to-html', 'تحويل Markdown إلى HTML', 'green'],
-['HTML to Markdown', 'html-to-markdown', 'تحويل HTML إلى Markdown', 'orange'],
-['Text to Binary', 'text-to-binary', 'تحويل النص إلى Binary', 'cyan'],
+  ['Markdown Preview', 'markdown-preview', 'معاينة Markdown', 'blue'],
+  ['Markdown Formatter', 'markdown-formatter', 'تنسيق Markdown', 'purple'],
+  ['Markdown to HTML', 'markdown-to-html', 'تحويل Markdown إلى HTML', 'green'],
+  ['HTML to Markdown', 'html-to-markdown', 'تحويل HTML إلى Markdown', 'orange'],
+  ['Text to Binary', 'text-to-binary', 'تحويل النص إلى Binary', 'cyan'],
 
-['Binary to Text', 'binary-to-text', 'تحويل Binary إلى نص', 'blue'],
-['Decimal to Binary', 'decimal-to-binary', 'تحويل Decimal إلى Binary', 'purple'],
-['Binary to Decimal', 'binary-to-decimal', 'تحويل Binary إلى Decimal', 'green'],
-['Hex to Decimal', 'hex-to-decimal', 'تحويل Hex إلى Decimal', 'orange'],
-['Decimal to Hex', 'decimal-to-hex', 'تحويل Decimal إلى Hex', 'cyan'],
+  ['Binary to Text', 'binary-to-text', 'تحويل Binary إلى نص', 'blue'],
+  ['Decimal to Binary', 'decimal-to-binary', 'تحويل Decimal إلى Binary', 'purple'],
+  ['Binary to Decimal', 'binary-to-decimal', 'تحويل Binary إلى Decimal', 'green'],
+  ['Hex to Decimal', 'hex-to-decimal', 'تحويل Hex إلى Decimal', 'orange'],
+  ['Decimal to Hex', 'decimal-to-hex', 'تحويل Decimal إلى Hex', 'cyan'],
 
-['Number Base Converter', 'number-base-converter', 'تحويل أنظمة الأعداد', 'blue'],
-['Regex Tester', 'regex-tester', 'اختبار Regex', 'purple'],
-['Regex Generator', 'regex-generator', 'إنشاء Regex', 'green'],
-['Email Validator', 'email-validator', 'التحقق من البريد الإلكتروني', 'orange'],
-['URL Validator', 'url-validator', 'التحقق من URL', 'cyan'],
+  ['Number Base Converter', 'number-base-converter', 'تحويل أنظمة الأعداد', 'blue'],
+  ['Regex Tester', 'regex-tester', 'اختبار Regex', 'purple'],
+  ['Regex Generator', 'regex-generator', 'إنشاء Regex', 'green'],
+  ['Email Validator', 'email-validator', 'التحقق من البريد الإلكتروني', 'orange'],
+  ['URL Validator', 'url-validator', 'التحقق من URL', 'cyan'],
 
-['IP Address Validator', 'ip-validator', 'التحقق من IP', 'blue'],
-['IPv4 Calculator', 'ipv4-calculator', 'حساب IPv4', 'purple'],
-['IPv6 Calculator', 'ipv6-calculator', 'حساب IPv6', 'green'],
-['CIDR Calculator', 'cidr-calculator', 'حساب CIDR', 'orange'],
-['Subnet Calculator', 'subnet-calculator', 'حساب الشبكات الفرعية', 'cyan'],
+  ['IP Address Validator', 'ip-validator', 'التحقق من IP', 'blue'],
+  ['IPv4 Calculator', 'ipv4-calculator', 'حساب IPv4', 'purple'],
+  ['IPv6 Calculator', 'ipv6-calculator', 'حساب IPv6', 'green'],
+  ['CIDR Calculator', 'cidr-calculator', 'حساب CIDR', 'orange'],
+  ['Subnet Calculator', 'subnet-calculator', 'حساب الشبكات الفرعية', 'cyan'],
 
-['MAC Address Generator', 'mac-address-generator', 'إنشاء MAC Address', 'blue'],
-['QR Code Generator', 'qr-code-generator', 'إنشاء QR Code', 'purple'],
-['Barcode Generator', 'barcode-generator', 'إنشاء Barcode', 'green'],
-['ASCII Table', 'ascii-table', 'جدول ASCII', 'orange'],
-['ASCII Converter', 'ascii-converter', 'تحويل ASCII', 'cyan'],
+  ['MAC Address Generator', 'mac-address-generator', 'إنشاء MAC Address', 'blue'],
+  ['QR Code Generator', 'qr-code-generator', 'إنشاء QR Code', 'purple'],
+  ['Barcode Generator', 'barcode-generator', 'إنشاء Barcode', 'green'],
+  ['ASCII Table', 'ascii-table', 'جدول ASCII', 'orange'],
+  ['ASCII Converter', 'ascii-converter', 'تحويل ASCII', 'cyan'],
 
-['Unicode Converter', 'unicode-converter', 'تحويل Unicode', 'blue'],
-['URL Parser', 'url-parser', 'تحليل URL', 'purple'],
-['Query String Parser', 'query-string-parser', 'تحليل Query String', 'green'],
-['User Agent Parser', 'user-agent-parser', 'تحليل User Agent', 'orange'],
-['HTTP Status Codes', 'http-status-codes', 'مرجع أكواد HTTP', 'cyan'],
+  ['Unicode Converter', 'unicode-converter', 'تحويل Unicode', 'blue'],
+  ['URL Parser', 'url-parser', 'تحليل URL', 'purple'],
+  ['Query String Parser', 'query-string-parser', 'تحليل Query String', 'green'],
+  ['User Agent Parser', 'user-agent-parser', 'تحليل User Agent', 'orange'],
+  ['HTTP Status Codes', 'http-status-codes', 'مرجع أكواد HTTP', 'cyan'],
 
-['MIME Type Lookup', 'mime-type-lookup', 'البحث عن MIME Types', 'blue'],
-['Cron Expression Generator', 'cron-generator', 'إنشاء Cron Expression', 'purple'],
-['Cron Expression Parser', 'cron-parser', 'تحليل Cron Expression', 'green'],
-['Chmod Calculator', 'chmod-calculator', 'حساب صلاحيات Linux', 'orange'],
-['Chmod Converter', 'chmod-converter', 'تحويل صلاحيات chmod', 'cyan'],
+  ['MIME Type Lookup', 'mime-type-lookup', 'البحث عن MIME Types', 'blue'],
+  ['Cron Expression Generator', 'cron-generator', 'إنشاء Cron Expression', 'purple'],
+  ['Cron Expression Parser', 'cron-parser', 'تحليل Cron Expression', 'green'],
+  ['Chmod Calculator', 'chmod-calculator', 'حساب صلاحيات Linux', 'orange'],
+  ['Chmod Converter', 'chmod-converter', 'تحويل صلاحيات chmod', 'cyan'],
 
-['Unix Permissions', 'unix-permissions', 'مرجع صلاحيات Unix', 'blue'],
-['API Request Builder', 'api-request-builder', 'إنشاء API Requests', 'purple'],
-['HTTP Header Parser', 'http-header-parser', 'تحليل HTTP Headers', 'green'],
-['JSON Path Tester', 'json-path-tester', 'اختبار JSONPath', 'orange'],
-['JSON Diff', 'json-diff', 'مقارنة JSON', 'cyan'],
+  ['Unix Permissions', 'unix-permissions', 'مرجع صلاحيات Unix', 'blue'],
+  ['API Request Builder', 'api-request-builder', 'إنشاء API Requests', 'purple'],
+  ['HTTP Header Parser', 'http-header-parser', 'تحليل HTTP Headers', 'green'],
+  ['JSON Path Tester', 'json-path-tester', 'اختبار JSONPath', 'orange'],
+  ['JSON Diff', 'json-diff', 'مقارنة JSON', 'cyan'],
 
-['Code Diff', 'code-diff', 'مقارنة الأكواد', 'blue'],
-['Text Diff', 'text-diff', 'مقارنة النصوص', 'purple'],
-['Code Formatter', 'code-formatter', 'تنسيق الأكواد', 'green'],
-['Code Minifier', 'code-minifier', 'تصغير الأكواد', 'orange'],
-['Source Code Counter', 'source-code-counter', 'إحصائيات الكود', 'cyan']
+  ['Code Diff', 'code-diff', 'مقارنة الأكواد', 'blue'],
+  ['Text Diff', 'text-diff', 'مقارنة النصوص', 'purple'],
+  ['Code Formatter', 'code-formatter', 'تنسيق الأكواد', 'green'],
+  ['Code Minifier', 'code-minifier', 'تصغير الأكواد', 'orange'],
+  ['Source Code Counter', 'source-code-counter', 'إحصائيات الكود', 'cyan']
 ];
+---  <!-- ✅ هذا السطر يغلق الـ Frontmatter ويصلح الخطأ -->
 
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>أدوات المطورين | Th.Tech</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>أدوات المطورين | Th.Tech</title>
+    <meta name="description" content="مجموعة متكاملة من أدوات المطورين المجانية والسريعة." />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={`https://oumaystore-hub.github.io${base}/tools/`} />
+    <link rel="icon" type="image/png" href={`${base}/logo1.png`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <Header />
+    
+    <main class="page">
+      <section class="hero">
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <span>›</span>
+          <strong>أدوات المطورين</strong>
+        </div>
 
-<meta
-  name="description"
-  content="مجموعة متكاملة من أدوات المطورين المجانية والسريعة."
-/>
+        <div class="hero-content">
+          <div class="hero-icon">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 5h16v14H4z M8 9h8 M8 13h5" />
+            </svg>
+          </div>
 
-<meta name="robots" content="index, follow" />
+          <div>
+            <span class="eyebrow">TH.TECH DEVELOPER TOOLS</span>
+            <h1>أدوات المطورين</h1>
+            <p>مجموعة متكاملة من الأدوات السريعة والمجانية للمطورين وصناع المحتوى والتقنيين.</p>
+          </div>
+        </div>
+      </section>
 
-<link
-  rel="canonical"
-  href={`https://oumaystore-hub.github.io${base}/tools/`}
-/>
+      <section class="tools-section">
+        <div class="section-head">
+          <div>
+            <span class="section-label">TOOLBOX</span>
+            <h2>جميع الأدوات</h2>
+          </div>
+          <div class="count">
+            <span>{tools.length}</span>
+            أداة
+          </div>
+        </div>
 
-<link
-  rel="icon"
-  type="image/png"
-  href={`${base}/logo1.png`}
-/>
+        <div class="tools-grid">
+          {
+            tools.map((tool, index) => (
+              <a
+                href={`${base}/tools/${tool[1]}/`}
+                class={`tool-card ${tool[3]}`}
+              >
+                <div class="number">
+                  {String(index + 1).padStart(2, '0')}
+                </div>
 
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" />
+                <div class="icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M4 5h16v14H4z" />
+                    <path d="M8 9h8" />
+                    <path d="M8 13h5" />
+                  </svg>
+                </div>
 
-<link
-  href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-  rel="stylesheet"
-/>
+                <div class="content">
+                  <h3>{tool[0]}</h3>
+                  <p>{tool[2]}</p>
+                </div>
 
-  </head>  <body>
-    <Header /><main class="page">
+                <div class="arrow">←</div>
+              </a>
+            ))
+          }
+        </div>
+      </section>
 
-  <section class="hero">
+      <section class="info">
+        <div class="info-icon">
+          <svg viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="9" />
+            <path d="M12 8v4l3 2" />
+          </svg>
+        </div>
+        <div>
+          <h2>أدوات مجانية وسريعة</h2>
+          <p>أدوات Th.Tech مصممة لتعمل مباشرة من المتصفح وتساعدك على إنجاز المهام التقنية اليومية بسرعة.</p>
+        </div>
+      </section>
+    </main>
 
-    <div class="breadcrumb">
-      <a href={`${base}/`}>الرئيسية</a>
-      <span>›</span>
-      <strong>أدوات المطورين</strong>
-    </div>
-
-    <div class="hero-content">
-
-      <div class="hero-icon">
-        <svg viewBox="0 0 24 24">
-          <path d="M4 5h16v14H4z M8 9h8 M8 13h5" />
-        </svg>
-      </div>
-
-      <div>
-        <span class="eyebrow">
-          TH.TECH DEVELOPER TOOLS
-        </span>
-
-        <h1>أدوات المطورين</h1>
-
-        <p>
-          مجموعة متكاملة من الأدوات السريعة والمجانية
-          للمطورين وصناع المحتوى والتقنيين.
-        </p>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <section class="tools-section">
-
-    <div class="section-head">
-
-      <div>
-        <span class="section-label">
-          TOOLBOX
-        </span>
-
-        <h2>
-          جميع الأدوات
-        </h2>
-      </div>
-
-      <div class="count">
-        <span>{tools.length}</span>
-        أداة
-      </div>
-
-    </div>
-
-
-    <div class="tools-grid">
-
-      {
-        tools.map((tool, index) => (
-          <a
-            href={`${base}/tools/${tool[1]}/`}
-            class={`tool-card ${tool[3]}`}
-          >
-
-            <div class="number">
-              {String(index + 1).padStart(2, '0')}
-            </div>
-
-            <div class="icon">
-
-              <svg viewBox="0 0 24 24">
-                <path d="M4 5h16v14H4z" />
-                <path d="M8 9h8" />
-                <path d="M8 13h5" />
-              </svg>
-
-            </div>
-
-            <div class="content">
-
-              <h3>
-                {tool[0]}
-              </h3>
-
-              <p>
-                {tool[2]}
-              </p>
-
-            </div>
-
-            <div class="arrow">
-              ←
-            </div>
-
-          </a>
-        ))
-      }
-
-    </div>
-
-  </section>
-
-
-  <section class="info">
-
-    <div class="info-icon">
-      <svg viewBox="0 0 24 24">
-        <circle cx="12" cy="12" r="9" />
-        <path d="M12 8v4l3 2" />
-      </svg>
-    </div>
-
-    <div>
-      <h2>
-        أدوات مجانية وسريعة
-      </h2>
-
-      <p>
-        أدوات Th.Tech مصممة لتعمل مباشرة من المتصفح
-        وتساعدك على إنجاز المهام التقنية اليومية بسرعة.
-      </p>
-    </div>
-
-  </section>
-
-</main>
-
-<Footer />
-
+    <Footer />
   </body>
-</html><style>
-:global(*) {
-  box-sizing: border-box;
-}
+</html>
 
-:global(body) {
-  margin: 0;
-  background: #f6f8fc;
-  color: #0f172a;
-  font-family: "Cairo", sans-serif;
-}
-
-.page {
-  width: min(1200px, calc(100% - 32px));
-  margin: auto;
-  padding: 32px 0 70px;
-}
-
-.hero {
-  padding: 10px 0 35px;
-}
-
-.breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  margin-bottom: 28px;
-  color: #64748b;
-  font-size: 11px;
-}
-
-.breadcrumb a {
-  color: #2563eb;
-  text-decoration: none;
-}
-
-.breadcrumb span {
-  color: #94a3b8;
-}
-
-.hero-content {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-}
-
-.hero-icon {
-  width: 68px;
-  height: 68px;
-  flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #2563eb, #06b6d4);
-  box-shadow: 0 15px 35px rgba(37, 99, 235, .2);
-}
-
-.hero-icon svg {
-  width: 34px;
-  height: 34px;
-  fill: none;
-  stroke: white;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.eyebrow,
-.section-label {
-  color: #2563eb;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.hero h1 {
-  margin: 3px 0;
-  font-size: clamp(27px, 4vw, 38px);
-  font-weight: 800;
-}
-
-.hero p {
-  margin: 0;
-  color: #64748b;
-  font-size: 13px;
-}
-
-.tools-section {
-  margin-top: 10px;
-}
-
-.section-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.section-head h2 {
-  margin: 3px 0 0;
-  font-size: 21px;
-}
-
-.count {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  color: #64748b;
-  font-size: 11px;
-}
-
-.count span {
-  padding: 5px 10px;
-  border-radius: 9px;
-  background: #eaf1ff;
-  color: #2563eb;
-  font-weight: 800;
-}
-
-.tools-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-}
-
-.tool-card {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 13px;
-  min-height: 116px;
-  padding: 16px;
-  overflow: hidden;
-  border: 1px solid #e2e8f0;
-  border-radius: 22px;
-  background: white;
-  color: #0f172a;
-  text-decoration: none;
-  box-shadow: 0 7px 25px rgba(15, 23, 42, .05);
-  transition: transform .25s ease, box-shadow .25s ease;
-}
-
-.tool-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 18px 40px rgba(15, 23, 42, .11);
-}
-
-.icon {
-  width: 52px;
-  height: 52px;
-  flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 17px;
-  transition: transform .3s ease;
-}
-
-.tool-card:hover .icon {
-  transform: rotate(-6deg) scale(1.08);
-}
-
-.icon svg {
-  width: 27px;
-  height: 27px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-}
-
-.content {
-  min-width: 0;
-  flex: 1;
-}
-
-.content h3 {
-  margin: 0;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.content p {
-  margin: 4px 0 0;
-  color: #64748b;
-  font-size: 10px;
-}
-
-.number {
-  position: absolute;
-  top: 8px;
-  left: 10px;
-  color: #cbd5e1;
-  font-size: 8px;
-}
-
-.arrow {
-  width: 27px;
-  height: 27px;
-  flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background: #f1f5f9;
-  color: #64748b;
-  transition: .25s;
-}
-
-.tool-card:hover .arrow {
-  background: #2563eb;
-  color: white;
-  transform: translateX(-3px);
-}
-
-.blue .icon {
-  background: #eaf1ff;
-  color: #2563eb;
-}
-
-.green .icon {
-  background: #e9f9ef;
-  color: #16a34a;
-}
-
-.orange .icon {
-  background: #fff1e8;
-  color: #ea580c;
-}
-
-.yellow .icon {
-  background: #fff8d8;
-  color: #ca8a04;
-}
-
-.purple .icon {
-  background: #f2eaff;
-  color: #7c3aed;
-}
-
-.cyan .icon {
-  background: #e5f9fc;
-  color: #0891b2;
-}
-
-.info {
-  display: flex;
-  align-items: center;
-  gap: 18px;
-  margin-top: 45px;
-  padding: 25px;
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
-  background: white;
-}
-
-.info-icon {
-  width: 52px;
-  height: 52px;
-  flex: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 16px;
-  background: #eaf1ff;
-  color: #2563eb;
-}
-
-.info-icon svg {
-  width: 25px;
-  height: 25px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.7;
-}
-
-.info h2 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.info p {
-  margin: 4px 0 0;
-  color: #64748b;
-  font-size: 11px;
-}
-
-@media (max-width: 950px) {
-  .tools-grid {
-    grid-template-columns: repeat(2, 1fr);
+<style>
+  :global(*) { box-sizing: border-box; }
+  :global(body) { margin: 0; background: #f6f8fc; color: #0f172a; font-family: "Cairo", sans-serif; }
+  .page { width: min(1200px, calc(100% - 32px)); margin: auto; padding: 32px 0 70px; }
+  .hero { padding: 10px 0 35px; }
+  .breadcrumb { display: flex; align-items: center; gap: 9px; margin-bottom: 28px; color: #64748b; font-size: 11px; }
+  .breadcrumb a { color: #2563eb; text-decoration: none; }
+  .breadcrumb span { color: #94a3b8; }
+  .hero-content { display: flex; align-items: center; gap: 18px; }
+  .hero-icon { width: 68px; height: 68px; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 20px; background: linear-gradient(135deg, #2563eb, #06b6d4); box-shadow: 0 15px 35px rgba(37, 99, 235, .2); }
+  .hero-icon svg { width: 34px; height: 34px; fill: none; stroke: white; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .eyebrow, .section-label { color: #2563eb; font-size: 10px; font-weight: 800; letter-spacing: 1px; }
+  .hero h1 { margin: 3px 0; font-size: clamp(27px, 4vw, 38px); font-weight: 800; }
+  .hero p { margin: 0; color: #64748b; font-size: 13px; }
+  .tools-section { margin-top: 10px; }
+  .section-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+  .section-head h2 { margin: 3px 0 0; font-size: 21px; }
+  .count { display: flex; align-items: center; gap: 6px; color: #64748b; font-size: 11px; }
+  .count span { padding: 5px 10px; border-radius: 9px; background: #eaf1ff; color: #2563eb; font-weight: 800; }
+  .tools-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+  .tool-card { position: relative; display: flex; align-items: center; gap: 13px; min-height: 116px; padding: 16px; overflow: hidden; border: 1px solid #e2e8f0; border-radius: 22px; background: white; color: #0f172a; text-decoration: none; box-shadow: 0 7px 25px rgba(15, 23, 42, .05); transition: transform .25s ease, box-shadow .25s ease; }
+  .tool-card:hover { transform: translateY(-5px); box-shadow: 0 18px 40px rgba(15, 23, 42, .11); }
+  .icon { width: 52px; height: 52px; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 17px; transition: transform .3s ease; }
+  .tool-card:hover .icon { transform: rotate(-6deg) scale(1.08); }
+  .icon svg { width: 27px; height: 27px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .content { min-width: 0; flex: 1; }
+  .content h3 { margin: 0; font-size: 13px; font-weight: 800; }
+  .content p { margin: 4px 0 0; color: #64748b; font-size: 10px; }
+  .number { position: absolute; top: 8px; left: 10px; color: #cbd5e1; font-size: 8px; }
+  .arrow { width: 27px; height: 27px; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #f1f5f9; color: #64748b; transition: .25s; }
+  .tool-card:hover .arrow { background: #2563eb; color: white; transform: translateX(-3px); }
+  .blue .icon { background: #eaf1ff; color: #2563eb; }
+  .green .icon { background: #e9f9ef; color: #16a34a; }
+  .orange .icon { background: #fff1e8; color: #ea580c; }
+  .yellow .icon { background: #fff8d8; color: #ca8a04; }
+  .purple .icon { background: #f2eaff; color: #7c3aed; }
+  .cyan .icon { background: #e5f9fc; color: #0891b2; }
+  .info { display: flex; align-items: center; gap: 18px; margin-top: 45px; padding: 25px; border: 1px solid #e2e8f0; border-radius: 20px; background: white; }
+  .info-icon { width: 52px; height: 52px; flex: none; display: flex; align-items: center; justify-content: center; border-radius: 16px; background: #eaf1ff; color: #2563eb; }
+  .info-icon svg { width: 25px; height: 25px; fill: none; stroke: currentColor; stroke-width: 1.7; }
+  .info h2 { margin: 0; font-size: 16px; }
+  .info p { margin: 4px 0 0; color: #64748b; font-size: 11px; }
+  @media (max-width: 950px) { .tools-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 600px) {
+    .page { width: calc(100% - 16px); padding-top: 20px; }
+    .hero-content { gap: 12px; }
+    .hero-icon { width: 55px; height: 55px; border-radius: 16px; }
+    .hero-icon svg { width: 27px; height: 27px; }
+    .hero h1 { font-size: 24px; }
+    .hero p { font-size: 10px; }
+    .tools-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+    .tool-card { min-height: 108px; padding: 12px 9px; gap: 8px; border-radius: 17px; }
+    .icon { width: 42px; height: 42px; border-radius: 13px; }
+    .icon svg { width: 21px; height: 21px; }
+    .content h3 { font-size: 10px; }
+    .content p { font-size: 8px; }
+    .arrow { width: 22px; height: 22px; font-size: 10px; }
+    .number { font-size: 7px; }
+    .info { align-items: flex-start; padding: 18px; }
   }
-}
-
-@media (max-width: 600px) {
-  .page {
-    width: calc(100% - 16px);
-    padding-top: 20px;
+  @media (max-width: 370px) {
+    .content p, .arrow { display: none; }
+    .tool-card { justify-content: flex-start; }
   }
-
-  .hero-content {
-    gap: 12px;
-  }
-
-  .hero-icon {
-    width: 55px;
-    height: 55px;
-    border-radius: 16px;
-  }
-
-  .hero-icon svg {
-    width: 27px;
-    height: 27px;
-  }
-
-  .hero h1 {
-    font-size: 24px;
-  }
-
-  .hero p {
-    font-size: 10px;
-  }
-
-  .tools-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 9px;
-  }
-
-  .tool-card {
-    min-height: 108px;
-    padding: 12px 9px;
-    gap: 8px;
-    border-radius: 17px;
-  }
-
-  .icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 13px;
-  }
-
-  .icon svg {
-    width: 21px;
-    height: 21px;
-  }
-
-  .content h3 {
-    font-size: 10px;
-  }
-
-  .content p {
-    font-size: 8px;
-  }
-
-  .arrow {
-    width: 22px;
-    height: 22px;
-    font-size: 10px;
-  }
-
-  .number {
-    font-size: 7px;
-  }
-
-  .info {
-    align-items: flex-start;
-    padding: 18px;
-  }
-}
-
-@media (max-width: 370px) {
-  .content p,
-  .arrow {
-    display: none;
-  }
-
-  .tool-card {
-    justify-content: flex-start;
-  }
-}
 </style>
