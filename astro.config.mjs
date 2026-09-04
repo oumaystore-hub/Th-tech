@@ -8,8 +8,6 @@ export default defineConfig({
   output: 'static',
 
   integrations: [
-    sitemap({
-      filter: (page) => page.startsWith('https://oumaystore-hub.github.io/Th-tech/'),
-    }),
+    sitemap(),
   ],
 });
