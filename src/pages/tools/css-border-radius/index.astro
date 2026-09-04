@@ -1,0 +1,875 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "CSS Border Radius Generator - إنشاء زوايا CSS أونلاين | Th.Tech";
+const description =
+  "مولد CSS Border Radius مجاني لإنشاء زوايا مستديرة احترافية ومعاينة النتيجة مباشرة ونسخ كود CSS بسهولة.";
+
+const canonical = `${base}/tools/css-border-radius/`;
+---
+
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical} />
+
+    <style>
+      :global(*) {
+        box-sizing: border-box;
+      }
+
+      :global(html) {
+        scroll-behavior: smooth;
+      }
+
+      :global(body) {
+        margin: 0;
+        font-family:
+          Inter,
+          "Segoe UI",
+          Tahoma,
+          Arial,
+          sans-serif;
+        background: var(--page-bg);
+        color: var(--text);
+        transition:
+          background 0.3s ease,
+          color 0.3s ease;
+      }
+
+      :root {
+        --page-bg: #f4f7fb;
+        --card-bg: rgba(255, 255, 255, 0.94);
+        --border: #dbe4ef;
+        --text: #142033;
+        --muted: #697789;
+        --primary: #16a085;
+        --primary-dark: #10866f;
+        --soft: #e8f7f3;
+        --input-bg: #ffffff;
+        --code-bg: #101827;
+        --code-text: #d7e4f5;
+        --preview-bg: #eef3f8;
+        --shadow: 0 12px 35px rgba(20, 32, 51, 0.08);
+      }
+
+      html.dark,
+      body.dark {
+        --page-bg: #09111f;
+        --card-bg: rgba(17, 29, 48, 0.96);
+        --border: #263b57;
+        --text: #edf4ff;
+        --muted: #91a0b5;
+        --primary: #20b889;
+        --primary-dark: #159b72;
+        --soft: rgba(32, 184, 137, 0.12);
+        --input-bg: #111e31;
+        --code-bg: #07101d;
+        --code-text: #dbeafe;
+        --preview-bg: #0d1929;
+        --shadow: 0 18px 45px rgba(0, 0, 0, 0.28);
+      }
+
+      .tool-page {
+        width: min(1180px, calc(100% - 28px));
+        margin: 0 auto;
+        padding: 45px 0 70px;
+      }
+
+      .hero {
+        text-align: center;
+        margin-bottom: 34px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 15px;
+        border-radius: 999px;
+        background: var(--soft);
+        color: var(--primary);
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 15px;
+      }
+
+      .badge span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: currentColor;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(28px, 5vw, 46px);
+        font-weight: 850;
+        letter-spacing: -1px;
+      }
+
+      .hero p {
+        max-width: 720px;
+        margin: 14px auto 0;
+        color: var(--muted);
+        line-height: 1.9;
+        font-size: 16px;
+      }
+
+      .generator {
+        display: grid;
+        grid-template-columns: 0.9fr 1.1fr;
+        gap: 22px;
+        align-items: stretch;
+      }
+
+      .panel {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .panel-header {
+        padding: 20px 22px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .panel-header h2 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .panel-header p {
+        margin: 6px 0 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .controls {
+        padding: 22px;
+      }
+
+      .control-group {
+        margin-bottom: 20px;
+      }
+
+      .control-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 9px;
+      }
+
+      .control-title label {
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .value {
+        min-width: 58px;
+        text-align: center;
+        padding: 5px 8px;
+        border-radius: 8px;
+        background: var(--soft);
+        color: var(--primary);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        height: 6px;
+        appearance: none;
+        border-radius: 10px;
+        background: var(--border);
+        outline: none;
+        direction: ltr;
+        cursor: pointer;
+      }
+
+      input[type="range"]::-webkit-slider-thumb {
+        appearance: none;
+        width: 19px;
+        height: 19px;
+        border-radius: 50%;
+        background: var(--primary);
+        border: 3px solid var(--card-bg);
+        box-shadow: 0 0 0 2px var(--primary);
+        cursor: pointer;
+      }
+
+      input[type="range"]::-moz-range-thumb {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: var(--primary);
+        border: 3px solid var(--card-bg);
+        cursor: pointer;
+      }
+
+      .color-row {
+        display: grid;
+        grid-template-columns: 58px 1fr;
+        gap: 10px;
+      }
+
+      input[type="color"] {
+        width: 58px;
+        height: 44px;
+        padding: 4px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--input-bg);
+        cursor: pointer;
+      }
+
+      .color-text {
+        width: 100%;
+        height: 44px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--input-bg);
+        color: var(--text);
+        padding: 0 13px;
+        font-size: 14px;
+        direction: ltr;
+        outline: none;
+      }
+
+      .color-text:focus {
+        border-color: var(--primary);
+      }
+
+      .presets {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+
+      .preset {
+        border: 1px solid var(--border);
+        background: var(--input-bg);
+        color: var(--text);
+        padding: 9px 5px;
+        border-radius: 9px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 700;
+        transition: 0.2s ease;
+      }
+
+      .preset:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+        transform: translateY(-1px);
+      }
+
+      .check-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 13px 14px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--input-bg);
+      }
+
+      .check-row label {
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .check-row input {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--primary);
+        cursor: pointer;
+      }
+
+      .preview-panel {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .preview-area {
+        min-height: 410px;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px;
+        background:
+          linear-gradient(
+            45deg,
+            rgba(127, 145, 165, 0.08) 25%,
+            transparent 25%,
+            transparent 75%,
+            rgba(127, 145, 165, 0.08) 75%
+          ),
+          linear-gradient(
+            45deg,
+            rgba(127, 145, 165, 0.08) 25%,
+            transparent 25%,
+            transparent 75%,
+            rgba(127, 145, 165, 0.08) 75%
+          ),
+          var(--preview-bg);
+        background-position:
+          0 0,
+          14px 14px;
+        background-size: 28px 28px;
+      }
+
+      .preview-box {
+        width: min(290px, 75%);
+        aspect-ratio: 1 / 1;
+        background: #20b889;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 18px;
+        font-weight: 800;
+        text-align: center;
+        padding: 25px;
+        box-shadow: 0 18px 35px rgba(0, 0, 0, 0.15);
+        transition:
+          border-radius 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .code-area {
+        padding: 18px;
+        border-top: 1px solid var(--border);
+        background: var(--card-bg);
+      }
+
+      .code-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .code-head strong {
+        font-size: 14px;
+      }
+
+      .copy-btn,
+      .reset-btn {
+        border: 0;
+        border-radius: 9px;
+        padding: 9px 14px;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .copy-btn {
+        background: var(--primary);
+        color: white;
+      }
+
+      .reset-btn {
+        background: var(--soft);
+        color: var(--primary);
+      }
+
+      .code {
+        margin: 0;
+        padding: 16px;
+        border-radius: 13px;
+        background: var(--code-bg);
+        color: var(--code-text);
+        font-family:
+          "SFMono-Regular",
+          Consolas,
+          "Liberation Mono",
+          monospace;
+        font-size: 13px;
+        line-height: 1.8;
+        overflow-x: auto;
+        direction: ltr;
+        text-align: left;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .info {
+        margin-top: 22px;
+        padding: 23px;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        background: var(--card-bg);
+        box-shadow: var(--shadow);
+      }
+
+      .info h2 {
+        margin: 0 0 10px;
+        font-size: 20px;
+      }
+
+      .info p {
+        color: var(--muted);
+        line-height: 1.9;
+        margin: 0;
+      }
+
+      .tips {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .tip {
+        padding: 15px;
+        border-radius: 14px;
+        background: var(--soft);
+      }
+
+      .tip strong {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--primary);
+        font-size: 14px;
+      }
+
+      .tip span {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.7;
+      }
+
+      @media (max-width: 820px) {
+        .tool-page {
+          padding-top: 30px;
+        }
+
+        .generator {
+          grid-template-columns: 1fr;
+        }
+
+        .preview-area {
+          min-height: 340px;
+        }
+
+        .tips {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .tool-page {
+          width: min(100% - 18px, 1180px);
+        }
+
+        .panel,
+        .info {
+          border-radius: 18px;
+        }
+
+        .controls,
+        .panel-header {
+          padding: 17px;
+        }
+
+        .preview-area {
+          min-height: 300px;
+          padding: 20px;
+        }
+
+        .preview-box {
+          width: 220px;
+        }
+
+        .presets {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .code-head {
+          align-items: stretch;
+          flex-direction: column;
+        }
+
+        .copy-btn,
+        .reset-btn {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="tool-page">
+      <section class="hero">
+        <div class="badge">
+          <span></span>
+          CSS Tool
+        </div>
+
+        <h1>CSS Border Radius Generator</h1>
+
+        <p>
+          أنشئ زوايا مستديرة احترافية لعناصر CSS، شاهد المعاينة مباشرة
+          وانسخ الكود الجاهز بضغطة واحدة.
+        </p>
+      </section>
+
+      <section class="generator">
+        <div class="panel">
+          <div class="panel-header">
+            <h2>إعدادات Border Radius</h2>
+            <p>تحكم في كل زاوية بشكل مستقل</p>
+          </div>
+
+          <div class="controls">
+            <div class="control-group">
+              <div class="control-title">
+                <label for="top-left">الزاوية العلوية اليسرى</label>
+                <span class="value" id="top-left-value">24px</span>
+              </div>
+
+              <input
+                id="top-left"
+                type="range"
+                min="0"
+                max="150"
+                value="24"
+              />
+            </div>
+
+            <div class="control-group">
+              <div class="control-title">
+                <label for="top-right">الزاوية العلوية اليمنى</label>
+                <span class="value" id="top-right-value">24px</span>
+              </div>
+
+              <input
+                id="top-right"
+                type="range"
+                min="0"
+                max="150"
+                value="24"
+              />
+            </div>
+
+            <div class="control-group">
+              <div class="control-title">
+                <label for="bottom-right">الزاوية السفلية اليمنى</label>
+                <span class="value" id="bottom-right-value">24px</span>
+              </div>
+
+              <input
+                id="bottom-right"
+                type="range"
+                min="0"
+                max="150"
+                value="24"
+              />
+            </div>
+
+            <div class="control-group">
+              <div class="control-title">
+                <label for="bottom-left">الزاوية السفلية اليسرى</label>
+                <span class="value" id="bottom-left-value">24px</span>
+              </div>
+
+              <input
+                id="bottom-left"
+                type="range"
+                min="0"
+                max="150"
+                value="24"
+              />
+            </div>
+
+            <div class="control-group">
+              <div class="control-title">
+                <label>لون العنصر</label>
+              </div>
+
+              <div class="color-row">
+                <input id="color-picker" type="color" value="#20b889" />
+
+                <input
+                  id="color-text"
+                  class="color-text"
+                  type="text"
+                  value="#20b889"
+                  maxlength="7"
+                />
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="control-title">
+                <label>أشكال جاهزة</label>
+              </div>
+
+              <div class="presets">
+                <button class="preset" data-radius="0">مربع</button>
+                <button class="preset" data-radius="12">خفيف</button>
+                <button class="preset" data-radius="24">متوسط</button>
+                <button class="preset" data-radius="50">دائري</button>
+              </div>
+            </div>
+
+            <div class="control-group">
+              <div class="check-row">
+                <label for="linked">
+                  ربط جميع الزوايا
+                </label>
+
+                <input id="linked" type="checkbox" checked />
+              </div>
+            </div>
+
+            <button class="reset-btn" id="reset" style="width: 100%;">
+              إعادة الإعدادات الافتراضية
+            </button>
+          </div>
+        </div>
+
+        <div class="panel preview-panel">
+          <div class="panel-header">
+            <h2>المعاينة المباشرة</h2>
+            <p>شاهد تأثير Border Radius فوراً</p>
+          </div>
+
+          <div class="preview-area">
+            <div class="preview-box" id="preview-box">
+              Border Radius
+            </div>
+          </div>
+
+          <div class="code-area">
+            <div class="code-head">
+              <strong>كود CSS</strong>
+
+              <button class="copy-btn" id="copy">
+                نسخ الكود
+              </button>
+            </div>
+
+            <pre class="code" id="code-output">border-radius: 24px;</pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="info">
+        <h2>ما هو CSS Border Radius؟</h2>
+
+        <p>
+          خاصية <b>border-radius</b> في CSS تسمح لك بتدوير زوايا العناصر
+          وإنشاء بطاقات وأزرار وصور ذات مظهر عصري. استخدم هذه الأداة
+          للحصول على القيمة المناسبة ونسخ كود CSS مباشرة.
+        </p>
+
+        <div class="tips">
+          <div class="tip">
+            <strong>0px</strong>
+            <span>زوايا حادة بدون تدوير.</span>
+          </div>
+
+          <div class="tip">
+            <strong>24px</strong>
+            <span>مناسبة للبطاقات والواجهات الحديثة.</span>
+          </div>
+
+          <div class="tip">
+            <strong>50%</strong>
+            <span>يمكن استخدامها لإنشاء دوائر عند تساوي العرض والارتفاع.</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+
+    <script>
+      const preview = document.getElementById("preview-box");
+      const codeOutput = document.getElementById("code-output");
+
+      const linked = document.getElementById("linked");
+      const colorPicker = document.getElementById("color-picker");
+      const colorText = document.getElementById("color-text");
+
+      const fields = {
+        topLeft: {
+          input: document.getElementById("top-left"),
+          value: document.getElementById("top-left-value"),
+        },
+        topRight: {
+          input: document.getElementById("top-right"),
+          value: document.getElementById("top-right-value"),
+        },
+        bottomRight: {
+          input: document.getElementById("bottom-right"),
+          value: document.getElementById("bottom-right-value"),
+        },
+        bottomLeft: {
+          input: document.getElementById("bottom-left"),
+          value: document.getElementById("bottom-left-value"),
+        },
+      };
+
+      function getValues() {
+        return {
+          topLeft: Number(fields.topLeft.input.value),
+          topRight: Number(fields.topRight.input.value),
+          bottomRight: Number(fields.bottomRight.input.value),
+          bottomLeft: Number(fields.bottomLeft.input.value),
+        };
+      }
+
+      function update() {
+        const values = getValues();
+
+        const radius =
+          `${values.topLeft}px ` +
+          `${values.topRight}px ` +
+          `${values.bottomRight}px ` +
+          `${values.bottomLeft}px`;
+
+        preview.style.borderRadius = radius;
+
+        fields.topLeft.value.textContent = `${values.topLeft}px`;
+        fields.topRight.value.textContent = `${values.topRight}px`;
+        fields.bottomRight.value.textContent = `${values.bottomRight}px`;
+        fields.bottomLeft.value.textContent = `${values.bottomLeft}px`;
+
+        const color = colorText.value.trim();
+
+        if (/^#[0-9a-fA-F]{6}$/.test(color)) {
+          preview.style.background = color;
+        }
+
+        let code = "";
+
+        if (
+          values.topLeft === values.topRight &&
+          values.topRight === values.bottomRight &&
+          values.bottomRight === values.bottomLeft
+        ) {
+          code = `border-radius: ${values.topLeft}px;`;
+        } else {
+          code = `border-radius: ${radius};`;
+        }
+
+        codeOutput.textContent = code;
+      }
+
+      Object.values(fields).forEach((field) => {
+        field.input.addEventListener("input", () => {
+          if (linked.checked) {
+            const value = field.input.value;
+
+            Object.values(fields).forEach((item) => {
+              item.input.value = value;
+            });
+          }
+
+          update();
+        });
+      });
+
+      linked.addEventListener("change", () => {
+        if (linked.checked) {
+          const value = fields.topLeft.input.value;
+
+          Object.values(fields).forEach((item) => {
+            item.input.value = value;
+          });
+
+          update();
+        }
+      });
+
+      colorPicker.addEventListener("input", () => {
+        colorText.value = colorPicker.value;
+        update();
+      });
+
+      colorText.addEventListener("input", () => {
+        const value = colorText.value.trim();
+
+        if (/^#[0-9a-fA-F]{6}$/.test(value)) {
+          colorPicker.value = value;
+        }
+
+        update();
+      });
+
+      document.querySelectorAll(".preset").forEach((button) => {
+        button.addEventListener("click", () => {
+          const radius = Number(button.dataset.radius);
+
+          Object.values(fields).forEach((field) => {
+            field.input.value = radius;
+          });
+
+          linked.checked = true;
+          update();
+        });
+      });
+
+      document.getElementById("reset").addEventListener("click", () => {
+        Object.values(fields).forEach((field) => {
+          field.input.value = 24;
+        });
+
+        colorPicker.value = "#20b889";
+        colorText.value = "#20b889";
+        linked.checked = true;
+
+        update();
+      });
+
+      document.getElementById("copy").addEventListener("click", async () => {
+        const button = document.getElementById("copy");
+        const code = codeOutput.textContent;
+
+        try {
+          await navigator.clipboard.writeText(code);
+
+          button.textContent = "تم النسخ ✓";
+
+          setTimeout(() => {
+            button.textContent = "نسخ الكود";
+          }, 1600);
+        } catch {
+          const textarea = document.createElement("textarea");
+
+          textarea.value = code;
+          document.body.appendChild(textarea);
+          textarea.select();
+
+          document.execCommand("copy");
+          textarea.remove();
+
+          button.textContent = "تم النسخ ✓";
+
+          setTimeout(() => {
+            button.textContent = "نسخ الكود";
+          }, 1600);
+        }
+      });
+
+      update();
+    </script>
+  </body>
+</html>
