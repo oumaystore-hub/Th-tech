@@ -1,0 +1,1877 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "CSS Gradient Generator - مولد تدرجات CSS | Th.Tech";
+const description =
+  "مولد تدرجات CSS مجاني لإنشاء Linear Gradient و Radial Gradient بسهولة ونسخ كود CSS جاهز للاستخدام.";
+---
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+
+  <link rel="icon" type="image/png" href={`${base}/logo1.png`} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <script is:inline>
+    (() => {
+      try {
+        const theme = localStorage.getItem("theme");
+        if (theme === "dark") {
+          document.documentElement.classList.add("dark-mode");
+        }
+      } catch {}
+    })();
+  </script>
+</head>
+
+<body>
+
+  <Header />
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-glow glow-one"></div>
+      <div class="hero-glow glow-two"></div>
+
+      <div class="container">
+
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <span>›</span>
+          <a href={`${base}/tools/`}>الأدوات</a>
+          <span>›</span>
+          <strong>CSS Gradient Generator</strong>
+        </div>
+
+        <div class="hero-content">
+
+          <div class="tool-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+              <rect x="4" y="4" width="16" height="16" rx="2" stroke-width="2"/>
+              <path d="M7 17L17 7" stroke-width="2"/>
+              <path d="M9 19L19 9" stroke-width="2"/>
+            </svg>
+          </div>
+
+          <div>
+            <span class="eyebrow">
+              <span></span>
+              CSS TOOLS
+            </span>
+
+            <h1>
+              CSS Gradient
+              <em>Generator</em>
+            </h1>
+
+            <p>
+              أنشئ تدرجات CSS احترافية بسهولة، واختر الألوان
+              والاتجاه ونوع التدرج ثم انسخ الكود مباشرة.
+            </p>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- TOOL -->
+    <section class="tool-section">
+
+      <div class="container">
+
+        <div class="generator-card">
+
+          <!-- Preview -->
+          <div class="preview-section">
+
+            <div class="section-title">
+              <div>
+                <span class="mini-label">LIVE PREVIEW</span>
+                <h2>معاينة التدرج</h2>
+              </div>
+
+              <button
+                id="randomBtn"
+                class="small-btn"
+                type="button"
+              >
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"
+                  />
+                </svg>
+                عشوائي
+              </button>
+            </div>
+
+            <div id="preview" class="gradient-preview"></div>
+
+            <div class="css-output">
+
+              <div class="output-header">
+                <span>
+                  <svg viewBox="0 0 24 24">
+                    <path d="M8 9l-4 3 4 3M16 9l4 3-4 3M14 5l-4 14"/>
+                  </svg>
+                  CSS Code
+                </span>
+
+                <button id="copyBtn" type="button">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="9" y="9" width="11" height="11" rx="2"/>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                  </svg>
+                  نسخ
+                </button>
+              </div>
+
+              <code id="cssCode"></code>
+
+            </div>
+
+          </div>
+
+
+          <!-- Controls -->
+          <div class="controls-section">
+
+            <div class="section-heading">
+              <span class="mini-label">CUSTOMIZE</span>
+              <h2>تخصيص التدرج</h2>
+            </div>
+
+
+            <!-- Gradient type -->
+
+            <div class="control-group">
+
+              <label>نوع التدرج</label>
+
+              <div class="type-buttons">
+
+                <button
+                  class="type-btn active"
+                  data-type="linear"
+                  type="button"
+                >
+                  <span class="type-icon linear-icon"></span>
+                  Linear
+                </button>
+
+                <button
+                  class="type-btn"
+                  data-type="radial"
+                  type="button"
+                >
+                  <span class="type-icon radial-icon"></span>
+                  Radial
+                </button>
+
+              </div>
+
+            </div>
+
+
+            <!-- Direction -->
+
+            <div id="directionGroup" class="control-group">
+
+              <label for="direction">
+                الاتجاه
+              </label>
+
+              <div class="select-wrapper">
+
+                <select id="direction">
+
+                  <option value="to right">يمين ← يسار</option>
+                  <option value="to left">يسار ← يمين</option>
+                  <option value="to bottom">أسفل</option>
+                  <option value="to top">أعلى</option>
+                  <option value="to bottom right">أسفل يمين</option>
+                  <option value="to bottom left">أسفل يسار</option>
+                  <option value="to top right">أعلى يمين</option>
+                  <option value="to top left">أعلى يسار</option>
+
+                </select>
+
+                <span>⌄</span>
+
+              </div>
+
+            </div>
+
+
+            <!-- Angle -->
+
+            <div
+              id="angleGroup"
+              class="control-group hidden"
+            >
+
+              <div class="range-head">
+
+                <label for="angle">
+                  الزاوية
+                </label>
+
+                <output id="angleValue">90°</output>
+
+              </div>
+
+              <input
+                id="angle"
+                type="range"
+                min="0"
+                max="360"
+                value="90"
+              />
+
+            </div>
+
+
+            <!-- Color 1 -->
+
+            <div class="control-group">
+
+              <div class="range-head">
+
+                <label>
+                  اللون الأول
+                </label>
+
+                <span
+                  id="color1Value"
+                  class="hex-value"
+                >
+                  #2563EB
+                </span>
+
+              </div>
+
+              <div class="color-row">
+
+                <input
+                  id="color1"
+                  type="color"
+                  value="#2563EB"
+                />
+
+                <input
+                  id="color1Text"
+                  class="hex-input"
+                  type="text"
+                  value="#2563EB"
+                  maxlength="7"
+                />
+
+                <input
+                  id="stop1"
+                  class="stop-input"
+                  type="number"
+                  min="0"
+                  max="100"
+                  value="0"
+                />
+
+                <span>%</span>
+
+              </div>
+
+            </div>
+
+
+            <!-- Color 2 -->
+
+            <div class="control-group">
+
+              <div class="range-head">
+
+                <label>
+                  اللون الثاني
+                </label>
+
+                <span
+                  id="color2Value"
+                  class="hex-value"
+                >
+                  #7C3AED
+                </span>
+
+              </div>
+
+              <div class="color-row">
+
+                <input
+                  id="color2"
+                  type="color"
+                  value="#7C3AED"
+                />
+
+                <input
+                  id="color2Text"
+                  class="hex-input"
+                  type="text"
+                  value="#7C3AED"
+                  maxlength="7"
+                />
+
+                <input
+                  id="stop2"
+                  class="stop-input"
+                  type="number"
+                  min="0"
+                  max="100"
+                  value="100"
+                />
+
+                <span>%</span>
+
+              </div>
+
+            </div>
+
+
+            <!-- Presets -->
+
+            <div class="control-group">
+
+              <label>
+                تدرجات جاهزة
+              </label>
+
+              <div class="presets">
+
+                <button
+                  type="button"
+                  class="preset"
+                  data-c1="#2563EB"
+                  data-c2="#7C3AED"
+                  style="background:linear-gradient(135deg,#2563EB,#7C3AED)"
+                ></button>
+
+                <button
+                  type="button"
+                  class="preset"
+                  data-c1="#06B6D4"
+                  data-c2="#3B82F6"
+                  style="background:linear-gradient(135deg,#06B6D4,#3B82F6)"
+                ></button>
+
+                <button
+                  type="button"
+                  class="preset"
+                  data-c1="#10B981"
+                  data-c2="#06B6D4"
+                  style="background:linear-gradient(135deg,#10B981,#06B6D4)"
+                ></button>
+
+                <button
+                  type="button"
+                  class="preset"
+                  data-c1="#F97316"
+                  data-c2="#EC4899"
+                  style="background:linear-gradient(135deg,#F97316,#EC4899)"
+                ></button>
+
+                <button
+                  type="button"
+                  class="preset"
+                  data-c1="#8B5CF6"
+                  data-c2="#EC4899"
+                  style="background:linear-gradient(135deg,#8B5CF6,#EC4899)"
+                ></button>
+
+                <button
+                  type="button"
+                  class="preset"
+                  data-c1="#F59E0B"
+                  data-c2="#EF4444"
+                  style="background:linear-gradient(135deg,#F59E0B,#EF4444)"
+                ></button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Info cards -->
+
+        <div class="info-grid">
+
+          <div class="info-card">
+
+            <div class="info-icon blue">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 19L20 5M4 12h7M13 12h7"/>
+              </svg>
+            </div>
+
+            <div>
+              <h3>تدرجات خطية</h3>
+              <p>
+                أنشئ Linear Gradients مع التحكم الكامل
+                في الاتجاه والألوان.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="info-card">
+
+            <div class="info-icon purple">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="8"/>
+                <circle cx="12" cy="12" r="3"/>
+              </svg>
+            </div>
+
+            <div>
+              <h3>تدرجات دائرية</h3>
+              <p>
+                أنشئ Radial Gradients لتصميم خلفيات
+                وتأثيرات بصرية مميزة.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="info-card">
+
+            <div class="info-icon green">
+              <svg viewBox="0 0 24 24">
+                <path d="M5 12l4 4L19 6"/>
+              </svg>
+            </div>
+
+            <div>
+              <h3>جاهز للاستخدام</h3>
+              <p>
+                انسخ كود CSS الناتج وأضفه مباشرة
+                إلى مشروعك.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- How to -->
+
+        <section class="content-section">
+
+          <div class="section-title-center">
+
+            <span class="mini-label">
+              HOW IT WORKS
+            </span>
+
+            <h2>
+              كيفية إنشاء تدرج CSS؟
+            </h2>
+
+            <p>
+              أنشئ التدرج الخاص بك في ثلاث خطوات بسيطة.
+            </p>
+
+          </div>
+
+
+          <div class="steps">
+
+            <div class="step">
+
+              <div class="step-number">01</div>
+
+              <div class="step-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M4 6h16M4 12h16M4 18h16"/>
+                  <circle cx="9" cy="6" r="2"/>
+                  <circle cx="15" cy="12" r="2"/>
+                  <circle cx="11" cy="18" r="2"/>
+                </svg>
+              </div>
+
+              <h3>اختر النوع</h3>
+
+              <p>
+                اختر بين التدرج الخطي أو الدائري.
+              </p>
+
+            </div>
+
+
+            <div class="step">
+
+              <div class="step-number">02</div>
+
+              <div class="step-icon">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 3v18M3 12h18"/>
+                  <circle cx="12" cy="12" r="8"/>
+                </svg>
+              </div>
+
+              <h3>حدد الألوان</h3>
+
+              <p>
+                اختر اللونين وحدد موضع كل لون.
+              </p>
+
+            </div>
+
+
+            <div class="step">
+
+              <div class="step-number">03</div>
+
+              <div class="step-icon">
+                <svg viewBox="0 0 24 24">
+                  <rect x="5" y="5" width="14" height="14" rx="2"/>
+                  <path d="M9 12l2 2 4-5"/>
+                </svg>
+              </div>
+
+              <h3>انسخ CSS</h3>
+
+              <p>
+                انسخ الكود واستخدمه مباشرة في مشروعك.
+              </p>
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- FAQ -->
+
+        <section class="faq-section">
+
+          <div class="section-title-center">
+
+            <span class="mini-label">
+              FAQ
+            </span>
+
+            <h2>
+              الأسئلة الشائعة
+            </h2>
+
+          </div>
+
+
+          <div class="faq-list">
+
+            <details open>
+              <summary>
+                ما هو CSS Gradient؟
+                <span>+</span>
+              </summary>
+
+              <p>
+                هو تأثير يسمح بإنشاء انتقال تدريجي بين لونين
+                أو أكثر باستخدام CSS دون الحاجة إلى صور.
+              </p>
+            </details>
+
+
+            <details>
+              <summary>
+                ما الفرق بين Linear و Radial Gradient؟
+                <span>+</span>
+              </summary>
+
+              <p>
+                التدرج الخطي ينتقل بين الألوان في اتجاه محدد،
+                بينما ينتشر التدرج الدائري من نقطة مركزية
+                إلى الخارج.
+              </p>
+            </details>
+
+
+            <details>
+              <summary>
+                هل يمكنني استخدام الكود الناتج مباشرة؟
+                <span>+</span>
+              </summary>
+
+              <p>
+                نعم. الكود الناتج هو CSS صالح ويمكن استخدامه
+                مع خاصية background أو background-image.
+              </p>
+            </details>
+
+
+            <details>
+              <summary>
+                هل يتم إرسال الألوان أو البيانات إلى الخادم؟
+                <span>+</span>
+              </summary>
+
+              <p>
+                لا. عملية إنشاء التدرج تتم مباشرة داخل
+                المتصفح ولا تحتاج إلى إرسال البيانات إلى خادم.
+              </p>
+            </details>
+
+          </div>
+
+        </section>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <Footer />
+
+
+  <script>
+    const preview = document.getElementById("preview") as HTMLElement;
+    const cssCode = document.getElementById("cssCode") as HTMLElement;
+
+    const color1 = document.getElementById("color1") as HTMLInputElement;
+    const color2 = document.getElementById("color2") as HTMLInputElement;
+
+    const color1Text =
+      document.getElementById("color1Text") as HTMLInputElement;
+
+    const color2Text =
+      document.getElementById("color2Text") as HTMLInputElement;
+
+    const color1Value =
+      document.getElementById("color1Value") as HTMLElement;
+
+    const color2Value =
+      document.getElementById("color2Value") as HTMLElement;
+
+    const stop1 =
+      document.getElementById("stop1") as HTMLInputElement;
+
+    const stop2 =
+      document.getElementById("stop2") as HTMLInputElement;
+
+    const direction =
+      document.getElementById("direction") as HTMLSelectElement;
+
+    const angle =
+      document.getElementById("angle") as HTMLInputElement;
+
+    const angleValue =
+      document.getElementById("angleValue") as HTMLOutputElement;
+
+    const directionGroup =
+      document.getElementById("directionGroup") as HTMLElement;
+
+    const angleGroup =
+      document.getElementById("angleGroup") as HTMLElement;
+
+    const copyBtn =
+      document.getElementById("copyBtn") as HTMLButtonElement;
+
+    const randomBtn =
+      document.getElementById("randomBtn") as HTMLButtonElement;
+
+
+    let gradientType = "linear";
+
+
+    function normalizeHex(value: string) {
+
+      let v = value.trim().toUpperCase();
+
+      if (!v.startsWith("#")) {
+        v = "#" + v;
+      }
+
+      if (/^#[0-9A-F]{6}$/.test(v)) {
+        return v;
+      }
+
+      return null;
+    }
+
+
+    function update() {
+
+      const c1 = color1.value.toUpperCase();
+      const c2 = color2.value.toUpperCase();
+
+      color1Value.textContent = c1;
+      color2Value.textContent = c2;
+
+      color1Text.value = c1;
+      color2Text.value = c2;
+
+      const s1 = Math.max(
+        0,
+        Math.min(100, Number(stop1.value) || 0)
+      );
+
+      const s2 = Math.max(
+        0,
+        Math.min(100, Number(stop2.value) || 100)
+      );
+
+      stop1.value = String(s1);
+      stop2.value = String(s2);
+
+
+      let gradient = "";
+
+      if (gradientType === "linear") {
+
+        gradient =
+          `linear-gradient(${direction.value}, ${c1} ${s1}%, ${c2} ${s2}%)`;
+
+      } else {
+
+        gradient =
+          `radial-gradient(circle, ${c1} ${s1}%, ${c2} ${s2}%)`;
+
+      }
+
+
+      preview.style.background = gradient;
+
+      cssCode.textContent =
+        `background: ${gradient};`;
+    }
+
+
+    function setColor(
+      colorInput: HTMLInputElement,
+      textInput: HTMLInputElement,
+      value: string
+    ) {
+
+      const valid = normalizeHex(value);
+
+      if (!valid) return;
+
+      colorInput.value = valid;
+      textInput.value = valid;
+
+      update();
+    }
+
+
+    color1.addEventListener("input", update);
+    color2.addEventListener("input", update);
+
+    stop1.addEventListener("input", update);
+    stop2.addEventListener("input", update);
+
+    direction.addEventListener("change", update);
+
+    angle.addEventListener("input", () => {
+      angleValue.textContent = `${angle.value}°`;
+
+      if (gradientType === "linear") {
+        update();
+      }
+    });
+
+
+    color1Text.addEventListener("change", () => {
+
+      const value = normalizeHex(color1Text.value);
+
+      if (value) {
+        color1.value = value;
+        color1Text.value = value;
+        update();
+      } else {
+        color1Text.value = color1.value.toUpperCase();
+      }
+
+    });
+
+
+    color2Text.addEventListener("change", () => {
+
+      const value = normalizeHex(color2Text.value);
+
+      if (value) {
+        color2.value = value;
+        color2Text.value = value;
+        update();
+      } else {
+        color2Text.value = color2.value.toUpperCase();
+      }
+
+    });
+
+
+    document.querySelectorAll(".type-btn").forEach((button) => {
+
+      button.addEventListener("click", () => {
+
+        document
+          .querySelectorAll(".type-btn")
+          .forEach((item) => item.classList.remove("active"));
+
+        button.classList.add("active");
+
+        gradientType =
+          (button as HTMLElement).dataset.type || "linear";
+
+        if (gradientType === "radial") {
+
+          directionGroup.classList.add("hidden");
+          angleGroup.classList.add("hidden");
+
+        } else {
+
+          directionGroup.classList.remove("hidden");
+          angleGroup.classList.add("hidden");
+
+        }
+
+        update();
+
+      });
+
+    });
+
+
+    document.querySelectorAll(".preset").forEach((preset) => {
+
+      preset.addEventListener("click", () => {
+
+        const c1 =
+          (preset as HTMLElement).dataset.c1 || "#2563EB";
+
+        const c2 =
+          (preset as HTMLElement).dataset.c2 || "#7C3AED";
+
+        color1.value = c1;
+        color2.value = c2;
+
+        color1Text.value = c1;
+        color2Text.value = c2;
+
+        stop1.value = "0";
+        stop2.value = "100";
+
+        update();
+
+      });
+
+    });
+
+
+    function randomHex() {
+
+      const chars = "0123456789ABCDEF";
+
+      let result = "#";
+
+      for (let i = 0; i < 6; i++) {
+        result += chars[Math.floor(Math.random() * 16)];
+      }
+
+      return result;
+    }
+
+
+    randomBtn.addEventListener("click", () => {
+
+      color1.value = randomHex();
+      color2.value = randomHex();
+
+      color1Text.value = color1.value;
+      color2Text.value = color2.value;
+
+      stop1.value = "0";
+      stop2.value = "100";
+
+      update();
+
+    });
+
+
+    copyBtn.addEventListener("click", async () => {
+
+      const text = cssCode.textContent || "";
+
+      try {
+
+        await navigator.clipboard.writeText(text);
+
+        const original = copyBtn.innerHTML;
+
+        copyBtn.innerHTML = `
+          <svg viewBox="0 0 24 24">
+            <path d="M5 12l4 4L19 6"/>
+          </svg>
+          تم النسخ
+        `;
+
+        setTimeout(() => {
+          copyBtn.innerHTML = original;
+        }, 1500);
+
+      } catch {
+
+        const range = document.createRange();
+        range.selectNodeContents(cssCode);
+
+        const selection = window.getSelection();
+
+        selection?.removeAllRanges();
+        selection?.addRange(range);
+
+      }
+
+    });
+
+
+    update();
+  </script>
+
+
+  <style>
+
+    :root {
+      --bg: #f4f8fc;
+      --surface: #ffffff;
+      --surface-soft: #f8fafc;
+      --text: #172033;
+      --muted: #718096;
+      --border: #e2e8f0;
+      --primary: #7c3aed;
+      --primary-soft: rgba(124, 58, 237, .10);
+      --blue: #2563eb;
+      --green: #16a34a;
+      --shadow: 0 20px 60px rgba(30, 41, 59, .08);
+    }
+
+
+    html.dark-mode {
+      --bg: #091323;
+      --surface: #111d31;
+      --surface-soft: #0d1729;
+      --text: #f8fafc;
+      --muted: #8997ab;
+      --border: rgba(148, 163, 184, .14);
+      --primary: #8b5cf6;
+      --primary-soft: rgba(139, 92, 246, .13);
+      --blue: #3b82f6;
+      --green: #22c55e;
+      --shadow: 0 20px 60px rgba(0, 0, 0, .25);
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Cairo", sans-serif;
+      transition: background .25s ease, color .25s ease;
+    }
+
+
+    button,
+    input,
+    select {
+      font-family: inherit;
+    }
+
+
+    button {
+      cursor: pointer;
+    }
+
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin-inline: auto;
+    }
+
+
+    /* HERO */
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 48px 0 58px;
+      background: var(--surface-soft);
+      border-bottom: 1px solid var(--border);
+    }
+
+
+    .hero-glow {
+      position: absolute;
+      width: 360px;
+      height: 360px;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: .18;
+      pointer-events: none;
+    }
+
+
+    .glow-one {
+      background: #7c3aed;
+      top: -180px;
+      right: -100px;
+    }
+
+
+    .glow-two {
+      background: #2563eb;
+      bottom: -220px;
+      left: -100px;
+    }
+
+
+    .breadcrumb {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 32px;
+    }
+
+
+    .breadcrumb a:hover {
+      color: var(--primary);
+    }
+
+
+    .breadcrumb strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+
+    .hero-content {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+
+    .tool-icon {
+      width: 82px;
+      height: 82px;
+      flex: 0 0 82px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      color: #7c3aed;
+      background: rgba(124, 58, 237, .11);
+      border: 1px solid rgba(124, 58, 237, .18);
+      box-shadow: 0 15px 35px rgba(124, 58, 237, .08);
+    }
+
+
+    .tool-icon svg {
+      width: 42px;
+      height: 42px;
+    }
+
+
+    .eyebrow,
+    .mini-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.2px;
+    }
+
+
+    .eyebrow span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+
+    h1 {
+      margin: 7px 0 8px;
+      font-size: clamp(30px, 5vw, 48px);
+      line-height: 1.15;
+      font-weight: 800;
+      letter-spacing: -.8px;
+    }
+
+
+    h1 em {
+      color: var(--primary);
+      font-style: normal;
+    }
+
+
+    .hero p {
+      max-width: 720px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+    }
+
+
+    /* TOOL */
+
+    .tool-section {
+      padding: 42px 0 80px;
+    }
+
+
+    .generator-card {
+      display: grid;
+      grid-template-columns: 1.35fr .9fr;
+      gap: 0;
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+
+    .preview-section,
+    .controls-section {
+      padding: 30px;
+    }
+
+
+    .preview-section {
+      border-left: 1px solid var(--border);
+    }
+
+
+    .section-title,
+    .range-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+    }
+
+
+    .section-title h2,
+    .section-heading h2 {
+      margin: 4px 0 0;
+      font-size: 21px;
+    }
+
+
+    .small-btn {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 12px;
+      color: var(--text);
+      background: var(--surface-soft);
+      font-size: 12px;
+      transition: .2s;
+    }
+
+
+    .small-btn:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+
+    .small-btn svg {
+      width: 15px;
+      height: 15px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+    }
+
+
+    .gradient-preview {
+      height: 350px;
+      margin-top: 22px;
+      border-radius: 18px;
+      background: linear-gradient(
+        to right,
+        #2563eb 0%,
+        #7c3aed 100%
+      );
+      border: 1px solid rgba(255,255,255,.15);
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.05);
+      transition: background .2s ease;
+    }
+
+
+    .css-output {
+      margin-top: 20px;
+      overflow: hidden;
+      border-radius: 14px;
+      background: #0b1220;
+      color: #dbeafe;
+    }
+
+
+    .output-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 11px 14px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      font-size: 12px;
+    }
+
+
+    .output-header span {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+
+    .output-header svg {
+      width: 17px;
+      height: 17px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.7;
+    }
+
+
+    .output-header button {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 9px;
+      border: 0;
+      border-radius: 7px;
+      color: #fff;
+      background: rgba(255,255,255,.09);
+      font-size: 11px;
+    }
+
+
+    .output-header button:hover {
+      background: rgba(255,255,255,.16);
+    }
+
+
+    .output-header button svg {
+      width: 14px;
+      height: 14px;
+    }
+
+
+    #cssCode {
+      display: block;
+      padding: 18px;
+      overflow-x: auto;
+      direction: ltr;
+      text-align: left;
+      color: #c4b5fd;
+      font-family: monospace;
+      font-size: 13px;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+
+    /* CONTROLS */
+
+    .section-heading {
+      margin-bottom: 25px;
+    }
+
+
+    .control-group {
+      margin-bottom: 23px;
+    }
+
+
+    .control-group > label {
+      display: block;
+      margin-bottom: 9px;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+
+    .type-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+
+    .type-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+      background: var(--surface-soft);
+      font-size: 12px;
+      font-weight: 700;
+      transition: .2s;
+    }
+
+
+    .type-btn.active {
+      color: var(--primary);
+      border-color: var(--primary);
+      background: var(--primary-soft);
+    }
+
+
+    .type-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      display: block;
+    }
+
+
+    .linear-icon {
+      background: linear-gradient(135deg,#2563eb,#7c3aed);
+    }
+
+
+    .radial-icon {
+      background: radial-gradient(circle,#2563eb,#7c3aed);
+    }
+
+
+    .select-wrapper {
+      position: relative;
+    }
+
+
+    .select-wrapper select {
+      width: 100%;
+      height: 46px;
+      padding: 0 14px;
+      padding-left: 35px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      outline: none;
+      appearance: none;
+      color: var(--text);
+      background: var(--surface-soft);
+      font-size: 12px;
+    }
+
+
+    .select-wrapper > span {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+    }
+
+
+    .range-head label {
+      margin: 0;
+    }
+
+
+    .range-head output,
+    .hex-value {
+      direction: ltr;
+      color: var(--primary);
+      font-family: monospace;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+
+    input[type="range"] {
+      width: 100%;
+      height: 5px;
+      margin-top: 14px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+
+    .color-row {
+      display: grid;
+      grid-template-columns: 45px 1fr 58px 15px;
+      gap: 8px;
+      align-items: center;
+    }
+
+
+    input[type="color"] {
+      width: 45px;
+      height: 42px;
+      padding: 3px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-soft);
+      cursor: pointer;
+    }
+
+
+    .hex-input,
+    .stop-input {
+      width: 100%;
+      height: 42px;
+      padding: 0 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: none;
+      direction: ltr;
+      color: var(--text);
+      background: var(--surface-soft);
+      font-family: monospace;
+      font-size: 12px;
+    }
+
+
+    .hex-input:focus,
+    .stop-input:focus,
+    .select-wrapper select:focus {
+      border-color: var(--primary);
+    }
+
+
+    .color-row > span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+
+    .presets {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+    }
+
+
+    .preset {
+      width: 43px;
+      height: 43px;
+      border: 2px solid transparent;
+      border-radius: 11px;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,.08);
+      transition: .2s;
+    }
+
+
+    .preset:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+
+    .hidden {
+      display: none !important;
+    }
+
+
+    /* INFO */
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 18px;
+    }
+
+
+    .info-card {
+      display: flex;
+      gap: 15px;
+      padding: 21px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--surface);
+    }
+
+
+    .info-icon {
+      width: 43px;
+      height: 43px;
+      flex: 0 0 43px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+    }
+
+
+    .info-icon svg {
+      width: 23px;
+      height: 23px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+    }
+
+
+    .info-icon.blue {
+      color: #2563eb;
+      background: rgba(37,99,235,.1);
+    }
+
+
+    .info-icon.purple {
+      color: #7c3aed;
+      background: rgba(124,58,237,.1);
+    }
+
+
+    .info-icon.green {
+      color: #16a34a;
+      background: rgba(22,163,74,.1);
+    }
+
+
+    .info-card h3 {
+      margin: 0 0 4px;
+      font-size: 14px;
+    }
+
+
+    .info-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.8;
+    }
+
+
+    /* CONTENT */
+
+    .content-section,
+    .faq-section {
+      margin-top: 75px;
+    }
+
+
+    .section-title-center {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+
+    .section-title-center h2 {
+      margin: 6px 0;
+      font-size: 26px;
+    }
+
+
+    .section-title-center p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+
+    .step {
+      position: relative;
+      padding: 28px;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface);
+    }
+
+
+    .step-number {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      color: var(--primary);
+      font-family: monospace;
+      font-size: 11px;
+      font-weight: 800;
+      opacity: .7;
+    }
+
+
+    .step-icon {
+      width: 55px;
+      height: 55px;
+      margin: 0 auto 15px;
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+      border-radius: 15px;
+      background: var(--primary-soft);
+    }
+
+
+    .step-icon svg {
+      width: 27px;
+      height: 27px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+    }
+
+
+    .step h3 {
+      margin: 0 0 7px;
+      font-size: 15px;
+    }
+
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+
+    /* FAQ */
+
+    .faq-list {
+      max-width: 850px;
+      margin: auto;
+    }
+
+
+    .faq-list details {
+      margin-bottom: 10px;
+      padding: 0 20px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface);
+    }
+
+
+    .faq-list summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 18px 0;
+      cursor: pointer;
+      list-style: none;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+
+    .faq-list summary::-webkit-details-marker {
+      display: none;
+    }
+
+
+    .faq-list summary span {
+      color: var(--primary);
+      font-size: 20px;
+      transition: transform .2s;
+    }
+
+
+    .faq-list details[open] summary span {
+      transform: rotate(45deg);
+    }
+
+
+    .faq-list p {
+      margin: 0;
+      padding: 0 0 18px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 2;
+    }
+
+
+    /* MOBILE */
+
+    @media (max-width: 850px) {
+
+      .generator-card {
+        grid-template-columns: 1fr;
+      }
+
+
+      .preview-section {
+        border-left: 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+
+      .gradient-preview {
+        height: 280px;
+      }
+
+
+      .info-grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+      .container {
+        width: min(100% - 22px, 1180px);
+      }
+
+
+      .hero {
+        padding: 30px 0 40px;
+      }
+
+
+      .breadcrumb {
+        margin-bottom: 24px;
+        font-size: 11px;
+      }
+
+
+      .hero-content {
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+
+      .tool-icon {
+        width: 62px;
+        height: 62px;
+        flex-basis: 62px;
+        border-radius: 17px;
+      }
+
+
+      .tool-icon svg {
+        width: 32px;
+        height: 32px;
+      }
+
+
+      h1 {
+        font-size: 27px;
+      }
+
+
+      .hero p {
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+
+      .tool-section {
+        padding-top: 25px;
+      }
+
+
+      .preview-section,
+      .controls-section {
+        padding: 20px 16px;
+      }
+
+
+      .section-title h2,
+      .section-heading h2 {
+        font-size: 18px;
+      }
+
+
+      .gradient-preview {
+        height: 220px;
+        border-radius: 14px;
+      }
+
+
+      .css-output {
+        border-radius: 12px;
+      }
+
+
+      .color-row {
+        grid-template-columns: 42px 1fr 54px 12px;
+      }
+
+
+      input[type="color"] {
+        width: 42px;
+        height: 40px;
+      }
+
+
+      .hex-input,
+      .stop-input {
+        height: 40px;
+        font-size: 11px;
+      }
+
+
+      .info-card {
+        padding: 17px;
+      }
+
+
+      .content-section,
+      .faq-section {
+        margin-top: 55px;
+      }
+
+
+      .section-title-center h2 {
+        font-size: 22px;
+      }
+
+    }
+
+  </style>
+
+</body>
+</html>
