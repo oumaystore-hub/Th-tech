@@ -1,0 +1,682 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "CSS Shadow Generator - إنشاء ظلال CSS أونلاين | Th.Tech";
+const description =
+  "أداة مجانية لإنشاء ظلال CSS Box Shadow بسهولة مع معاينة مباشرة ونسخ الكود الجاهز.";
+
+const canonical = `${base}/tools/css-shadow-generator/`;
+---
+
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+
+    <link rel="icon" href={`${base}/favicon.svg`} />
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="page">
+
+      <!-- Breadcrumb -->
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href={`${base}/`}>الرئيسية</a>
+        <span>›</span>
+        <a href={`${base}/tools/`}>الأدوات</a>
+        <span>›</span>
+        <strong>CSS Shadow Generator</strong>
+      </nav>
+
+      <!-- Hero -->
+      <section class="hero">
+        <div class="hero-icon">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <rect x="5" y="5" width="14" height="14" rx="2"
+              stroke="currentColor" stroke-width="2"/>
+            <path d="M8 8h8v8H8z"
+              stroke="currentColor" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <div>
+          <h1>CSS Shadow Generator</h1>
+          <p>إنشاء ظلال CSS احترافية بسهولة ومعاينة مباشرة</p>
+        </div>
+      </section>
+
+      <!-- Tool -->
+      <section class="tool-card">
+
+        <div class="controls">
+
+          <div class="control-group">
+            <label for="x">
+              الإزاحة الأفقية
+              <span id="xValue">10px</span>
+            </label>
+
+            <input
+              id="x"
+              type="range"
+              min="-50"
+              max="50"
+              value="10"
+            />
+          </div>
+
+          <div class="control-group">
+            <label for="y">
+              الإزاحة الرأسية
+              <span id="yValue">10px</span>
+            </label>
+
+            <input
+              id="y"
+              type="range"
+              min="-50"
+              max="50"
+              value="10"
+            />
+          </div>
+
+          <div class="control-group">
+            <label for="blur">
+              Blur
+              <span id="blurValue">20px</span>
+            </label>
+
+            <input
+              id="blur"
+              type="range"
+              min="0"
+              max="100"
+              value="20"
+            />
+          </div>
+
+          <div class="control-group">
+            <label for="spread">
+              Spread
+              <span id="spreadValue">0px</span>
+            </label>
+
+            <input
+              id="spread"
+              type="range"
+              min="-50"
+              max="50"
+              value="0"
+            />
+          </div>
+
+          <div class="control-group">
+            <label for="opacity">
+              الشفافية
+              <span id="opacityValue">25%</span>
+            </label>
+
+            <input
+              id="opacity"
+              type="range"
+              min="0"
+              max="100"
+              value="25"
+            />
+          </div>
+
+          <div class="control-group">
+            <label for="color">لون الظل</label>
+
+            <div class="color-row">
+              <input id="color" type="color" value="#000000" />
+              <span id="colorHex">#000000</span>
+            </div>
+          </div>
+
+          <div class="control-group checkbox-group">
+            <label>
+              <input id="inset" type="checkbox" />
+              <span>ظل داخلي (Inset)</span>
+            </label>
+          </div>
+
+        </div>
+
+        <!-- Preview -->
+        <div class="preview-section">
+          <div class="preview-title">المعاينة</div>
+
+          <div class="preview-area">
+            <div id="previewBox" class="preview-box">
+              Th.Tech
+            </div>
+          </div>
+        </div>
+
+        <!-- Code -->
+        <div class="code-section">
+          <div class="code-header">
+            <span>CSS Code</span>
+
+            <button id="copyBtn" type="button">
+              <svg viewBox="0 0 24 24" fill="none">
+                <rect x="8" y="8" width="11" height="11" rx="2"
+                  stroke="currentColor" stroke-width="2"/>
+                <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"
+                  stroke="currentColor" stroke-width="2"/>
+              </svg>
+              نسخ
+            </button>
+          </div>
+
+          <pre id="codeOutput">box-shadow: 10px 10px 20px 0px rgba(0, 0, 0, 0.25);</pre>
+        </div>
+
+      </section>
+
+      <!-- Info -->
+      <section class="info-card">
+        <h2>ما هو CSS Shadow Generator؟</h2>
+
+        <p>
+          أداة CSS Shadow Generator تساعدك على إنشاء خاصية
+          <code>box-shadow</code> بصرياً دون الحاجة إلى كتابة القيم يدوياً.
+          يمكنك التحكم في اتجاه الظل، درجة التمويه، الانتشار والشفافية
+          ومعاينة النتيجة مباشرة.
+        </p>
+
+        <h3>خصائص الظل</h3>
+
+        <ul>
+          <li><strong>X Offset:</strong> تحديد الإزاحة الأفقية.</li>
+          <li><strong>Y Offset:</strong> تحديد الإزاحة الرأسية.</li>
+          <li><strong>Blur:</strong> تحديد درجة نعومة الظل.</li>
+          <li><strong>Spread:</strong> تحديد انتشار الظل.</li>
+          <li><strong>Opacity:</strong> التحكم في شفافية الظل.</li>
+          <li><strong>Inset:</strong> تحويل الظل إلى ظل داخلي.</li>
+        </ul>
+
+        <h3>مثال</h3>
+
+        <pre class="example-code">box-shadow: 10px 10px 20px 0 rgba(0, 0, 0, .25);</pre>
+      </section>
+
+    </main>
+
+    <Footer />
+
+    <script>
+      const x = document.getElementById("x") as HTMLInputElement;
+      const y = document.getElementById("y") as HTMLInputElement;
+      const blur = document.getElementById("blur") as HTMLInputElement;
+      const spread = document.getElementById("spread") as HTMLInputElement;
+      const opacity = document.getElementById("opacity") as HTMLInputElement;
+      const color = document.getElementById("color") as HTMLInputElement;
+      const inset = document.getElementById("inset") as HTMLInputElement;
+
+      const xValue = document.getElementById("xValue")!;
+      const yValue = document.getElementById("yValue")!;
+      const blurValue = document.getElementById("blurValue")!;
+      const spreadValue = document.getElementById("spreadValue")!;
+      const opacityValue = document.getElementById("opacityValue")!;
+      const colorHex = document.getElementById("colorHex")!;
+
+      const previewBox = document.getElementById("previewBox")!;
+      const codeOutput = document.getElementById("codeOutput")!;
+      const copyBtn = document.getElementById("copyBtn")!;
+
+      function hexToRgba(hex: string, alpha: number) {
+        const clean = hex.replace("#", "");
+
+        const r = parseInt(clean.substring(0, 2), 16);
+        const g = parseInt(clean.substring(2, 4), 16);
+        const b = parseInt(clean.substring(4, 6), 16);
+
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+      }
+
+      function updateShadow() {
+        const xv = `${x.value}px`;
+        const yv = `${y.value}px`;
+        const bv = `${blur.value}px`;
+        const sv = `${spread.value}px`;
+
+        const alpha = Number(opacity.value) / 100;
+        const rgba = hexToRgba(color.value, alpha);
+
+        const shadow = `${inset.checked ? "inset " : ""}${xv} ${yv} ${bv} ${sv} ${rgba}`;
+
+        previewBox.style.boxShadow = shadow;
+        codeOutput.textContent = `box-shadow: ${shadow};`;
+
+        xValue.textContent = xv;
+        yValue.textContent = yv;
+        blurValue.textContent = bv;
+        spreadValue.textContent = sv;
+        opacityValue.textContent = `${opacity.value}%`;
+        colorHex.textContent = color.value.toUpperCase();
+      }
+
+      [
+        x,
+        y,
+        blur,
+        spread,
+        opacity,
+        color,
+        inset
+      ].forEach((element) => {
+        element.addEventListener("input", updateShadow);
+        element.addEventListener("change", updateShadow);
+      });
+
+      copyBtn.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(codeOutput.textContent || "");
+
+        const oldText = copyBtn.innerHTML;
+
+        copyBtn.innerHTML = "✓ تم النسخ";
+
+        setTimeout(() => {
+          copyBtn.innerHTML = oldText;
+        }, 1500);
+      });
+
+      updateShadow();
+    </script>
+
+    <style>
+      :global(*) {
+        box-sizing: border-box;
+      }
+
+      :global(body) {
+        margin: 0;
+        font-family:
+          Inter,
+          "Segoe UI",
+          Tahoma,
+          Arial,
+          sans-serif;
+        background: var(--page-bg, #f4f7fb);
+        color: var(--text, #172033);
+      }
+
+      .page {
+        width: min(1180px, calc(100% - 28px));
+        margin: 0 auto;
+        padding: 28px 0 60px;
+      }
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 24px;
+        color: #7a8596;
+        font-size: 14px;
+      }
+
+      .breadcrumb a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .breadcrumb a:hover {
+        color: #2563eb;
+      }
+
+      .breadcrumb strong {
+        color: #263247;
+      }
+
+      .hero {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 26px;
+        padding: 24px;
+        border-radius: 24px;
+        background: linear-gradient(
+          135deg,
+          rgba(37, 99, 235, .10),
+          rgba(124, 58, 237, .07)
+        );
+        border: 1px solid rgba(37, 99, 235, .14);
+      }
+
+      .hero-icon {
+        width: 70px;
+        height: 70px;
+        flex: 0 0 70px;
+        display: grid;
+        place-items: center;
+        border-radius: 20px;
+        background: rgba(37, 99, 235, .10);
+        color: #2563eb;
+      }
+
+      .hero-icon svg {
+        width: 38px;
+        height: 38px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(25px, 4vw, 36px);
+        font-weight: 800;
+        letter-spacing: -.5px;
+      }
+
+      .hero p {
+        margin: 0;
+        color: #6d7787;
+        font-size: 16px;
+      }
+
+      .tool-card,
+      .info-card {
+        background: #fff;
+        border: 1px solid #e4e9f0;
+        border-radius: 26px;
+        box-shadow: 0 12px 35px rgba(15, 23, 42, .06);
+      }
+
+      .tool-card {
+        padding: 24px;
+      }
+
+      .controls {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+      }
+
+      .control-group {
+        padding: 17px;
+        border-radius: 18px;
+        background: #f7f9fc;
+        border: 1px solid #e8edf3;
+      }
+
+      .control-group label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 13px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #273247;
+      }
+
+      .control-group label span {
+        color: #2563eb;
+        font-weight: 700;
+        direction: ltr;
+      }
+
+      input[type="range"] {
+        width: 100%;
+        accent-color: #2563eb;
+        cursor: pointer;
+      }
+
+      .color-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        direction: ltr;
+      }
+
+      .color-row input {
+        width: 48px;
+        height: 38px;
+        padding: 2px;
+        border: 1px solid #d9e0e9;
+        border-radius: 10px;
+        cursor: pointer;
+        background: #fff;
+      }
+
+      #colorHex {
+        direction: ltr;
+        font-family: monospace;
+        color: #475569;
+      }
+
+      .checkbox-group {
+        display: flex;
+        align-items: center;
+      }
+
+      .checkbox-group label {
+        justify-content: flex-start;
+        margin: 0;
+        cursor: pointer;
+      }
+
+      .checkbox-group input {
+        width: 18px;
+        height: 18px;
+        accent-color: #2563eb;
+      }
+
+      .preview-section {
+        margin-top: 24px;
+      }
+
+      .preview-title {
+        margin-bottom: 13px;
+        font-weight: 800;
+        color: #273247;
+      }
+
+      .preview-area {
+        min-height: 300px;
+        display: grid;
+        place-items: center;
+        padding: 45px;
+        overflow: hidden;
+        border-radius: 20px;
+        background:
+          linear-gradient(45deg, #eef2f7 25%, transparent 25%),
+          linear-gradient(-45deg, #eef2f7 25%, transparent 25%),
+          linear-gradient(45deg, transparent 75%, #eef2f7 75%),
+          linear-gradient(-45deg, transparent 75%, #eef2f7 75%);
+        background-size: 28px 28px;
+        background-position:
+          0 0,
+          0 14px,
+          14px -14px,
+          -14px 0;
+        border: 1px solid #e2e8f0;
+      }
+
+      .preview-box {
+        width: min(310px, 75%);
+        min-height: 145px;
+        display: grid;
+        place-items: center;
+        border-radius: 20px;
+        background: #fff;
+        color: #172033;
+        font-size: 27px;
+        font-weight: 800;
+        box-shadow: 10px 10px 20px 0 rgba(0, 0, 0, .25);
+        transition: box-shadow .15s ease;
+      }
+
+      .code-section {
+        margin-top: 24px;
+        overflow: hidden;
+        border-radius: 18px;
+        background: #111827;
+      }
+
+      .code-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 15px;
+        color: #dbe4f0;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .code-header button {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        border: 0;
+        border-radius: 9px;
+        padding: 8px 12px;
+        background: #2563eb;
+        color: #fff;
+        cursor: pointer;
+        font-weight: 700;
+      }
+
+      .code-header button:hover {
+        background: #1d4ed8;
+      }
+
+      .code-header svg {
+        width: 17px;
+        height: 17px;
+      }
+
+      #codeOutput {
+        margin: 0;
+        padding: 22px;
+        overflow-x: auto;
+        direction: ltr;
+        text-align: left;
+        color: #dbeafe;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.8;
+      }
+
+      .info-card {
+        margin-top: 26px;
+        padding: 28px;
+      }
+
+      .info-card h2,
+      .info-card h3 {
+        margin-top: 0;
+        color: #172033;
+      }
+
+      .info-card h3 {
+        margin-top: 25px;
+      }
+
+      .info-card p,
+      .info-card li {
+        color: #687487;
+        line-height: 1.9;
+      }
+
+      .info-card ul {
+        padding-right: 22px;
+      }
+
+      code {
+        direction: ltr;
+        display: inline-block;
+        padding: 2px 7px;
+        border-radius: 6px;
+        background: #eef2ff;
+        color: #4338ca;
+        font-family: monospace;
+      }
+
+      .example-code {
+        margin: 0;
+        padding: 18px;
+        overflow-x: auto;
+        direction: ltr;
+        text-align: left;
+        border-radius: 14px;
+        background: #111827;
+        color: #dbeafe;
+        font-family: monospace;
+      }
+
+      @media (max-width: 700px) {
+        .page {
+          width: min(100% - 18px, 1180px);
+          padding-top: 18px;
+        }
+
+        .hero {
+          padding: 18px;
+          gap: 14px;
+          border-radius: 20px;
+        }
+
+        .hero-icon {
+          width: 58px;
+          height: 58px;
+          flex-basis: 58px;
+          border-radius: 17px;
+        }
+
+        .hero-icon svg {
+          width: 31px;
+          height: 31px;
+        }
+
+        .hero p {
+          font-size: 14px;
+        }
+
+        .controls {
+          grid-template-columns: 1fr;
+        }
+
+        .tool-card {
+          padding: 14px;
+          border-radius: 21px;
+        }
+
+        .preview-area {
+          min-height: 250px;
+          padding: 30px 15px;
+        }
+
+        .preview-box {
+          width: 80%;
+          min-height: 125px;
+          font-size: 23px;
+        }
+
+        .info-card {
+          padding: 21px;
+          border-radius: 21px;
+        }
+
+        .breadcrumb {
+          font-size: 12px;
+        }
+      }
+    </style>
+  </body>
+</html>
