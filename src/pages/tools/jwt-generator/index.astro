@@ -7,24 +7,24 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const title = "JWT Generator - إنشاء JWT أونلاين مجاناً | Th.Tech";
 
 const description =
-  "أداة JWT Generator مجانية لإنشاء JSON Web Token من Header وPayload مباشرة داخل المتصفح.";
+  "أداة JWT Generator مجانية لإنشاء JSON Web Token واختبار Header وPayload وSecret مباشرة من المتصفح.";
 
 const faqs = [
   {
     q: "ما هو JWT Generator؟",
-    a: "JWT Generator هي أداة تساعد المطورين على إنشاء JSON Web Token من Header وPayload مباشرة داخل المتصفح."
+    a: "هو أداة تساعد المطورين على إنشاء JSON Web Token باستخدام Header وPayload وSecret Key."
   },
   {
-    q: "هل يتم إرسال البيانات إلى الخادم؟",
-    a: "لا. يتم إنشاء JWT داخل المتصفح باستخدام JavaScript ولا يتم إرسال البيانات إلى خادم خارجي."
+    q: "هل يتم إرسال Secret Key إلى الخادم؟",
+    a: "لا. عملية إنشاء JWT تتم محلياً داخل المتصفح باستخدام Web Crypto API."
   },
   {
-    q: "هل يقوم JWT Generator بتوقيع التوكن؟",
-    a: "هذا الإصدار ينشئ Header وPayload ويولد Signature تجريبية محلية. لا تعتمد على التوقيع الناتج للمصادقة الحقيقية."
+    q: "هل يمكن استخدام JWT Generator في المشاريع الحقيقية؟",
+    a: "يمكن استخدام الأداة للاختبار والتطوير. في الأنظمة الحقيقية يجب حماية Secret Key وعدم وضعه في الواجهة الأمامية."
   },
   {
-    q: "ما هي أجزاء JWT؟",
-    a: "يتكون JWT عادةً من ثلاثة أجزاء: Header وPayload وSignature، ويتم فصل الأجزاء الثلاثة بنقاط."
+    q: "ما هي الخوارزمية المستخدمة؟",
+    a: "هذه النسخة تستخدم HS256، وهي خوارزمية HMAC مع SHA-256."
   }
 ];
 ---
@@ -69,7 +69,6 @@ const faqs = [
 
   <main>
 
-    <!-- HERO -->
     <section class="hero">
       <div class="container">
 
@@ -84,7 +83,7 @@ const faqs = [
         <div class="hero-content">
 
           <div class="hero-icon">
-            <i class="fa-solid fa-cube"></i>
+            <i class="fa-solid fa-key"></i>
             <span>JWT</span>
           </div>
 
@@ -98,14 +97,14 @@ const faqs = [
             <h1>JWT Generator</h1>
 
             <p>
-              أنشئ JSON Web Token من Header وPayload
-              بسهولة مباشرة من المتصفح.
+              أنشئ JSON Web Token بسرعة باستخدام Header وPayload
+              وSecret Key مباشرة من المتصفح.
             </p>
 
             <div class="tags">
               <span>JWT</span>
-              <span>Base64URL</span>
-              <span>JSON</span>
+              <span>HS256</span>
+              <span>HMAC</span>
               <span>Local</span>
             </div>
 
@@ -117,13 +116,11 @@ const faqs = [
     </section>
 
 
-    <!-- TOOL -->
     <section class="tool-section">
       <div class="container">
 
         <div class="generator-card">
 
-          <!-- TOP BAR -->
           <div class="card-topbar">
 
             <div class="window-dots">
@@ -133,7 +130,7 @@ const faqs = [
             </div>
 
             <div class="tool-name">
-              <i class="fa-solid fa-cube"></i>
+              <i class="fa-solid fa-key"></i>
               JWT Generator
             </div>
 
@@ -145,7 +142,6 @@ const faqs = [
           </div>
 
 
-          <!-- ACTION BAR -->
           <div class="actionbar">
 
             <button id="exampleBtn" class="btn btn-secondary">
@@ -171,273 +167,223 @@ const faqs = [
           </div>
 
 
-          <!-- EDITORS -->
-          <div class="editors-grid">
+          <div class="workspace">
 
-            <!-- HEADER -->
-            <div class="editor-card">
+            <div class="editor-panel">
 
-              <div class="editor-header">
-
-                <div class="editor-title">
-                  <div class="editor-icon">
-                    <i class="fa-solid fa-code"></i>
-                  </div>
-
-                  <div>
-                    <strong>Header</strong>
-                    <span>بيانات الرأس</span>
-                  </div>
+              <div class="editor-title">
+                <div>
+                  <i class="fa-solid fa-code"></i>
+                  Header
                 </div>
 
-                <span class="part-badge">PART 1</span>
-
+                <span>PART 1</span>
               </div>
 
-              <textarea
-                id="headerInput"
-                spellcheck="false"
-                dir="ltr"
-              >{
+              <div class="code-box">
+                <textarea
+                  id="headerInput"
+                  spellcheck="false"
+                >{
   "alg": "HS256",
   "typ": "JWT"
 }</textarea>
+              </div>
 
             </div>
 
 
-            <!-- PAYLOAD -->
-            <div class="editor-card">
+            <div class="editor-panel">
 
-              <div class="editor-header">
-
-                <div class="editor-title">
-                  <div class="editor-icon payload-icon">
-                    <i class="fa-solid fa-database"></i>
-                  </div>
-
-                  <div>
-                    <strong>Payload</strong>
-                    <span>بيانات التوكن</span>
-                  </div>
+              <div class="editor-title">
+                <div>
+                  <i class="fa-solid fa-database"></i>
+                  Payload
                 </div>
 
-                <span class="part-badge">PART 2</span>
-
+                <span>PART 2</span>
               </div>
 
-              <textarea
-                id="payloadInput"
-                spellcheck="false"
-                dir="ltr"
-              >{
+              <div class="code-box">
+                <textarea
+                  id="payloadInput"
+                  spellcheck="false"
+                >{
   "sub": "thtech",
   "name": "Th.Tech",
   "role": "developer"
 }</textarea>
+              </div>
 
             </div>
 
-          </div>
 
+            <div class="secret-panel">
 
-          <!-- RESULT -->
-          <div class="result-box" id="resultBox">
+              <div class="editor-title">
+                <div>
+                  <i class="fa-solid fa-lock"></i>
+                  Secret Key
+                </div>
 
-            <div class="result-icon" id="resultIcon">
-              <i class="fa-solid fa-circle-question"></i>
-            </div>
+                <span>HS256</span>
+              </div>
 
-            <div class="result-content">
+              <input
+                id="secretInput"
+                type="text"
+                value="th-tech-secret-key"
+                spellcheck="false"
+                autocomplete="off"
+              />
 
-              <strong id="resultTitle">
-                جاهز لإنشاء JWT
-              </strong>
-
-              <p id="resultMessage">
-                أدخل Header وPayload ثم اضغط على إنشاء JWT.
+              <p class="secret-note">
+                <i class="fa-solid fa-circle-info"></i>
+                استخدم مفتاحاً قوياً وسرياً في المشاريع الحقيقية.
               </p>
 
             </div>
 
-          </div>
+
+            <div class="result-box" id="resultBox">
+
+              <div class="result-icon" id="resultIcon">
+                <i class="fa-solid fa-circle-question"></i>
+              </div>
+
+              <div class="result-content">
+
+                <strong id="resultTitle">
+                  جاهز لإنشاء JWT
+                </strong>
+
+                <p id="resultMessage">
+                  أدخل البيانات ثم اضغط على إنشاء JWT.
+                </p>
+
+              </div>
+
+            </div>
 
 
-          <!-- JWT OUTPUT -->
-          <div class="output-card">
+            <div class="output-panel">
 
-            <div class="output-header">
+              <div class="output-header">
 
-              <div class="output-title">
+                <div>
+                  <i class="fa-solid fa-token"></i>
+                  Generated JWT
+                </div>
 
-                <div class="output-icon">
-                  <i class="fa-solid fa-key"></i>
+                <span id="outputCount">0 حرف</span>
+
+              </div>
+
+              <textarea
+                id="jwtOutput"
+                readonly
+                spellcheck="false"
+                placeholder="سيظهر JWT هنا..."
+              ></textarea>
+
+            </div>
+
+
+            <div class="parts-preview">
+
+              <div class="preview-card">
+
+                <div class="preview-title">
+                  <i class="fa-solid fa-code"></i>
+                  Header
+                </div>
+
+                <pre id="headerOutput">—</pre>
+
+              </div>
+
+
+              <div class="preview-card">
+
+                <div class="preview-title">
+                  <i class="fa-solid fa-database"></i>
+                  Payload
+                </div>
+
+                <pre id="payloadOutput">—</pre>
+
+              </div>
+
+
+              <div class="preview-card">
+
+                <div class="preview-title">
+                  <i class="fa-solid fa-fingerprint"></i>
+                  Signature
+                </div>
+
+                <pre id="signatureOutput">—</pre>
+
+              </div>
+
+            </div>
+
+
+            <div class="stats-grid">
+
+              <div class="stat">
+
+                <div class="stat-icon">
+                  <i class="fa-solid fa-text-width"></i>
                 </div>
 
                 <div>
-                  <strong>Generated JWT</strong>
-                  <span>JSON Web Token</span>
+                  <span>طول JWT</span>
+                  <strong id="statLength">0</strong>
                 </div>
 
               </div>
 
-              <span class="part-badge">OUTPUT</span>
 
-            </div>
+              <div class="stat">
 
-            <textarea
-              id="jwtOutput"
-              readonly
-              spellcheck="false"
-              dir="ltr"
-              placeholder="سيظهر JWT هنا بعد الإنشاء..."
-            ></textarea>
-
-          </div>
-
-
-          <!-- PARTS -->
-          <div class="parts-grid">
-
-            <div class="jwt-panel">
-
-              <div class="panel-header">
-
-                <div class="panel-title">
-
-                  <div class="panel-icon">
-                    <i class="fa-solid fa-code"></i>
-                  </div>
-
-                  <div>
-                    <strong>Header</strong>
-                    <span>Base64URL</span>
-                  </div>
-
+                <div class="stat-icon">
+                  <i class="fa-solid fa-layer-group"></i>
                 </div>
 
-                <span class="part-badge">PART 1</span>
-
-              </div>
-
-              <pre id="headerOutput" class="code-output">—</pre>
-
-            </div>
-
-
-            <div class="jwt-panel">
-
-              <div class="panel-header">
-
-                <div class="panel-title">
-
-                  <div class="panel-icon payload-icon">
-                    <i class="fa-solid fa-database"></i>
-                  </div>
-
-                  <div>
-                    <strong>Payload</strong>
-                    <span>Base64URL</span>
-                  </div>
-
+                <div>
+                  <span>الأجزاء</span>
+                  <strong id="statParts">0 / 3</strong>
                 </div>
 
-                <span class="part-badge">PART 2</span>
-
               </div>
 
-              <pre id="payloadOutput" class="code-output">—</pre>
 
-            </div>
+              <div class="stat">
 
-
-            <div class="jwt-panel signature-panel">
-
-              <div class="panel-header">
-
-                <div class="panel-title">
-
-                  <div class="panel-icon signature-icon">
-                    <i class="fa-solid fa-fingerprint"></i>
-                  </div>
-
-                  <div>
-                    <strong>Signature</strong>
-                    <span>Local Demo Signature</span>
-                  </div>
-
+                <div class="stat-icon">
+                  <i class="fa-solid fa-shield-halved"></i>
                 </div>
 
-                <span class="part-badge">PART 3</span>
+                <div>
+                  <span>Algorithm</span>
+                  <strong id="statAlgorithm">HS256</strong>
+                </div>
 
               </div>
 
-              <pre id="signatureOutput" class="code-output signature-output">—</pre>
 
-              <div class="signature-note">
-                <i class="fa-solid fa-circle-info"></i>
-                التوقيع الناتج هنا تجريبي ولا يُستخدم للمصادقة الحقيقية.
-              </div>
+              <div class="stat">
 
-            </div>
+                <div class="stat-icon">
+                  <i class="fa-solid fa-bolt"></i>
+                </div>
 
-          </div>
+                <div>
+                  <span>الحالة</span>
+                  <strong id="statStatus">جاهز</strong>
+                </div>
 
-
-          <!-- STATS -->
-          <div class="stats-grid">
-
-            <div class="stat">
-
-              <div class="stat-icon">
-                <i class="fa-solid fa-text-width"></i>
-              </div>
-
-              <div>
-                <span>طول JWT</span>
-                <strong id="statLength">0</strong>
-              </div>
-
-            </div>
-
-
-            <div class="stat">
-
-              <div class="stat-icon">
-                <i class="fa-solid fa-layer-group"></i>
-              </div>
-
-              <div>
-                <span>الأجزاء</span>
-                <strong id="statParts">0 / 3</strong>
-              </div>
-
-            </div>
-
-
-            <div class="stat">
-
-              <div class="stat-icon">
-                <i class="fa-solid fa-code"></i>
-              </div>
-
-              <div>
-                <span>Algorithm</span>
-                <strong id="statAlgorithm">—</strong>
-              </div>
-
-            </div>
-
-
-            <div class="stat">
-
-              <div class="stat-icon">
-                <i class="fa-solid fa-bolt"></i>
-              </div>
-
-              <div>
-                <span>الحالة</span>
-                <strong id="statStatus">جاهز</strong>
               </div>
 
             </div>
@@ -450,7 +396,6 @@ const faqs = [
     </section>
 
 
-    <!-- INFO -->
     <section class="info-section">
       <div class="container">
 
@@ -459,12 +404,12 @@ const faqs = [
           <span>JWT GENERATOR</span>
 
           <h2>
-            ما هو JWT Generator؟
+            إنشاء JWT بطريقة سهلة
           </h2>
 
           <p>
-            أداة للمطورين لإنشاء JSON Web Token
-            وفهم الأجزاء الأساسية التي يتكون منها.
+            قم بتحديد Header وPayload وSecret Key،
+            ثم أنشئ التوكن مباشرة داخل المتصفح.
           </p>
 
         </div>
@@ -481,8 +426,8 @@ const faqs = [
             <h3>Header</h3>
 
             <p>
-              يحتوي عادةً على نوع التوكن والخوارزمية
-              المستخدمة لإنشاء التوقيع.
+              يحدد نوع التوكن والخوارزمية المستخدمة
+              لإنشاء التوقيع.
             </p>
 
           </article>
@@ -497,7 +442,7 @@ const faqs = [
             <h3>Payload</h3>
 
             <p>
-              يحتوي على Claims والمعلومات التي تريد
+              يحتوي على Claims والبيانات التي تريد
               تضمينها داخل JWT.
             </p>
 
@@ -507,14 +452,14 @@ const faqs = [
           <article class="info-card">
 
             <div class="info-icon">
-              <i class="fa-solid fa-fingerprint"></i>
+              <i class="fa-solid fa-key"></i>
             </div>
 
-            <h3>Signature</h3>
+            <h3>Secret Key</h3>
 
             <p>
-              الجزء الثالث من JWT ويستخدم في الأنظمة
-              الحقيقية للتحقق من سلامة التوكن.
+              يستخدم مع HS256 لإنشاء Signature
+              الخاصة بالتوكن.
             </p>
 
           </article>
@@ -525,7 +470,6 @@ const faqs = [
     </section>
 
 
-    <!-- HOW TO -->
     <section class="how-section">
       <div class="container">
 
@@ -549,10 +493,12 @@ const faqs = [
             </div>
 
             <div>
-              <h3>أدخل Header</h3>
+              <h3>
+                أدخل Header
+              </h3>
 
               <p>
-                اكتب بيانات Header بصيغة JSON صحيحة.
+                حدد الخوارزمية ونوع JWT.
               </p>
             </div>
 
@@ -566,10 +512,12 @@ const faqs = [
             </div>
 
             <div>
-              <h3>أدخل Payload</h3>
+              <h3>
+                أضف Payload
+              </h3>
 
               <p>
-                أضف Claims والبيانات التي تريد تضمينها.
+                أدخل Claims والبيانات المطلوبة.
               </p>
             </div>
 
@@ -583,7 +531,9 @@ const faqs = [
             </div>
 
             <div>
-              <h3>أنشئ JWT</h3>
+              <h3>
+                أنشئ JWT
+              </h3>
 
               <p>
                 اضغط على إنشاء JWT للحصول على التوكن.
@@ -598,7 +548,6 @@ const faqs = [
     </section>
 
 
-    <!-- FAQ -->
     <section class="faq-section">
       <div class="container">
 
@@ -619,11 +568,8 @@ const faqs = [
             <details>
 
               <summary>
-
                 <span>{faq.q}</span>
-
                 <i class="fa-solid fa-chevron-down"></i>
-
               </summary>
 
               <p>{faq.a}</p>
@@ -642,12 +588,12 @@ const faqs = [
   <Footer />
 
 
-  <!-- JAVASCRIPT -->
   <script is:inline>
     (() => {
 
       const headerInput = document.getElementById("headerInput");
       const payloadInput = document.getElementById("payloadInput");
+      const secretInput = document.getElementById("secretInput");
 
       const jwtOutput = document.getElementById("jwtOutput");
 
@@ -665,13 +611,15 @@ const faqs = [
       const resultTitle = document.getElementById("resultTitle");
       const resultMessage = document.getElementById("resultMessage");
 
+      const outputCount = document.getElementById("outputCount");
+
       const statLength = document.getElementById("statLength");
       const statParts = document.getElementById("statParts");
       const statAlgorithm = document.getElementById("statAlgorithm");
       const statStatus = document.getElementById("statStatus");
 
 
-      function showReady() {
+      function setReady() {
 
         resultBox.classList.remove("success");
         resultBox.classList.remove("error");
@@ -683,14 +631,14 @@ const faqs = [
           "جاهز لإنشاء JWT";
 
         resultMessage.textContent =
-          "أدخل Header وPayload ثم اضغط على إنشاء JWT.";
+          "أدخل البيانات ثم اضغط على إنشاء JWT.";
 
         statStatus.textContent =
           "جاهز";
       }
 
 
-      function showSuccess(message) {
+      function setSuccess(message) {
 
         resultBox.classList.remove("error");
         resultBox.classList.add("success");
@@ -709,7 +657,7 @@ const faqs = [
       }
 
 
-      function showError(message) {
+      function setError(message) {
 
         resultBox.classList.remove("success");
         resultBox.classList.add("error");
@@ -746,192 +694,227 @@ const faqs = [
       }
 
 
-      async function createDemoSignature(data) {
+      function arrayBufferToBase64Url(buffer) {
 
         const bytes =
-          new TextEncoder().encode(data);
-
-        const digest =
-          await crypto.subtle.digest("SHA-256", bytes);
-
-        const array =
-          new Uint8Array(digest);
+          new Uint8Array(buffer);
 
         let binary = "";
 
-        for (let i = 0; i < array.length; i++) {
-          binary += String.fromCharCode(array[i]);
+        for (let i = 0; i < bytes.length; i++) {
+          binary += String.fromCharCode(bytes[i]);
         }
 
         return btoa(binary)
           .replace(/\+/g, "-")
           .replace(/\//g, "_")
-          .replace(/=+$/g, "")
-          .substring(0, 43);
+          .replace(/=+$/g, "");
       }
 
 
-      function prettyJSON(value) {
+      async function createSignature(data, secret) {
 
-        return JSON.stringify(
-          value,
-          null,
-          2
-        );
+        const algorithm =
+          JSON.parse('{"name":"HMAC","hash":"SHA-256"}');
+
+        const keyData =
+          new TextEncoder().encode(secret);
+
+        const dataBytes =
+          new TextEncoder().encode(data);
+
+        const key =
+          await crypto.subtle.importKey(
+            "raw",
+            keyData,
+            algorithm,
+            false,
+            ["sign"]
+          );
+
+        const signature =
+          await crypto.subtle.sign(
+            algorithm.name,
+            key,
+            dataBytes
+          );
+
+        return arrayBufferToBase64Url(signature);
+      }
+
+
+      function readJSON(text, name) {
+
+        const value =
+          text.trim();
+
+        if (!value) {
+          throw new Error(name + " فارغ.");
+        }
+
+        let parsed;
+
+        try {
+          parsed = JSON.parse(value);
+        } catch {
+          throw new Error(name + " يحتوي على JSON غير صالح.");
+        }
+
+        if (
+          parsed === null ||
+          typeof parsed !== "object" ||
+          Array.isArray(parsed)
+        ) {
+          throw new Error(name + " يجب أن يكون JSON Object.");
+        }
+
+        return parsed;
       }
 
 
       async function generateJWT() {
 
-        const headerText =
-          headerInput.value.trim();
-
-        const payloadText =
-          payloadInput.value.trim();
-
-
-        if (!headerText) {
-
-          showError("أدخل Header أولاً.");
-
-          return;
-        }
-
-
-        if (!payloadText) {
-
-          showError("أدخل Payload أولاً.");
-
-          return;
-        }
-
-
-        let header;
-        let payload;
-
+        const started =
+          performance.now();
 
         try {
 
-          header =
-            JSON.parse(headerText);
-
-        } catch {
-
-          showError(
-            "Header غير صالح. تأكد من أن JSON صحيح."
-          );
-
-          return;
-        }
-
-
-        try {
-
-          payload =
-            JSON.parse(payloadText);
-
-        } catch {
-
-          showError(
-            "Payload غير صالح. تأكد من أن JSON صحيح."
-          );
-
-          return;
-        }
-
-
-        if (
-          typeof header !== "object" ||
-          header === null ||
-          Array.isArray(header)
-        ) {
-
-          showError(
-            "Header يجب أن يكون JSON Object."
-          );
-
-          return;
-        }
-
-
-        if (
-          typeof payload !== "object" ||
-          payload === null ||
-          Array.isArray(payload)
-        ) {
-
-          showError(
-            "Payload يجب أن يكون JSON Object."
-          );
-
-          return;
-        }
-
-
-        try {
-
-          const headerEncoded =
-            base64UrlEncode(
-              prettyJSON(header)
+          const header =
+            readJSON(
+              headerInput.value,
+              "Header"
             );
 
-          const payloadEncoded =
-            base64UrlEncode(
-              prettyJSON(payload)
+          const payload =
+            readJSON(
+              payloadInput.value,
+              "Payload"
             );
 
+          const secret =
+            secretInput.value;
 
-          const signingData =
-            headerEncoded +
+          if (!secret.trim()) {
+            throw new Error(
+              "أدخل Secret Key أولاً."
+            );
+          }
+
+
+          const algorithm =
+            header.alg;
+
+          if (algorithm !== "HS256") {
+            throw new Error(
+              "هذه النسخة تدعم HS256 فقط."
+            );
+          }
+
+
+          const headerJSON =
+            JSON.stringify(header);
+
+          const payloadJSON =
+            JSON.stringify(payload);
+
+
+          const encodedHeader =
+            base64UrlEncode(headerJSON);
+
+          const encodedPayload =
+            base64UrlEncode(payloadJSON);
+
+
+          const unsignedToken =
+            encodedHeader +
             "." +
-            payloadEncoded;
+            encodedPayload;
 
 
           const signature =
-            await createDemoSignature(
-              signingData
+            await createSignature(
+              unsignedToken,
+              secret
             );
 
 
-          const jwt =
-            signingData +
+          const token =
+            unsignedToken +
             "." +
             signature;
 
 
           jwtOutput.value =
-            jwt;
+            token;
 
 
           headerOutput.textContent =
-            prettyJSON(header);
+            JSON.stringify(
+              header,
+              null,
+              2
+            );
+
 
           payloadOutput.textContent =
-            prettyJSON(payload);
+            JSON.stringify(
+              payload,
+              null,
+              2
+            );
+
 
           signatureOutput.textContent =
             signature;
 
 
+          const length =
+            token.length;
+
+
+          outputCount.textContent =
+            length.toLocaleString() +
+            " حرف";
+
+
           statLength.textContent =
-            jwt.length.toLocaleString();
+            length.toLocaleString();
+
 
           statParts.textContent =
             "3 / 3";
 
+
           statAlgorithm.textContent =
-            header.alg || "—";
+            algorithm;
 
 
-          showSuccess(
-            "تم إنشاء JWT محلياً. التوقيع الحالي تجريبي ولا يمثل توقيعاً أمنياً حقيقياً."
+          const elapsed =
+            (performance.now() - started).toFixed(1);
+
+
+          setSuccess(
+            "تم إنشاء JWT محلياً خلال " +
+            elapsed +
+            " ms."
           );
 
-        } catch {
+        } catch (error) {
 
-          showError(
-            "حدث خطأ أثناء إنشاء JWT."
-          );
+          jwtOutput.value = "";
+
+          headerOutput.textContent = "—";
+          payloadOutput.textContent = "—";
+          signatureOutput.textContent = "—";
+
+          statLength.textContent = "0";
+          statParts.textContent = "0 / 3";
+
+          if (error && error.message) {
+            setError(error.message);
+          } else {
+            setError("حدث خطأ أثناء إنشاء JWT.");
+          }
         }
       }
 
@@ -948,9 +931,11 @@ const faqs = [
 `{
   "sub": "thtech",
   "name": "Th.Tech",
-  "role": "developer",
-  "iat": 1720000000
+  "role": "developer"
 }`;
+
+        secretInput.value =
+          "th-tech-secret-key";
 
         generateJWT();
       }
@@ -958,27 +943,42 @@ const faqs = [
 
       function clearAll() {
 
-        headerInput.value = "";
+        headerInput.value =
+`{
+  "alg": "HS256",
+  "typ": "JWT"
+}`;
 
-        payloadInput.value = "";
+        payloadInput.value =
+`{
+  "sub": "thtech",
+  "name": "Th.Tech",
+  "role": "developer"
+}`;
+
+        secretInput.value = "";
 
         jwtOutput.value = "";
 
         headerOutput.textContent = "—";
-
         payloadOutput.textContent = "—";
-
         signatureOutput.textContent = "—";
 
-        statLength.textContent = "0";
+        outputCount.textContent =
+          "0 حرف";
 
-        statParts.textContent = "0 / 3";
+        statLength.textContent =
+          "0";
 
-        statAlgorithm.textContent = "—";
+        statParts.textContent =
+          "0 / 3";
 
-        showReady();
+        statAlgorithm.textContent =
+          "HS256";
 
-        headerInput.focus();
+        setReady();
+
+        secretInput.focus();
       }
 
 
@@ -987,16 +987,10 @@ const faqs = [
         const value =
           jwtOutput.value.trim();
 
-
         if (!value) {
-
-          showError(
-            "أنشئ JWT أولاً قبل النسخ."
-          );
-
+          setError("لا يوجد JWT لنسخه.");
           return;
         }
-
 
         try {
 
@@ -1009,59 +1003,56 @@ const faqs = [
             '<i class="fa-solid fa-check"></i> تم النسخ';
 
           setTimeout(() => {
-
-            copyBtn.innerHTML =
-              original;
-
+            copyBtn.innerHTML = original;
           }, 1500);
 
         } catch {
 
+          jwtOutput.focus();
           jwtOutput.select();
 
-          document.execCommand("copy");
+          try {
+            document.execCommand("copy");
+          } catch {}
 
           copyBtn.innerHTML =
             '<i class="fa-solid fa-check"></i> تم النسخ';
 
           setTimeout(() => {
-
             copyBtn.innerHTML =
               '<i class="fa-regular fa-copy"></i> نسخ JWT';
-
           }, 1500);
         }
       }
 
 
-      function addTabSupport(element) {
+      function tabSupport(event) {
 
-        element.addEventListener(
-          "keydown",
-          (event) => {
+        if (event.key !== "Tab") {
+          return;
+        }
 
-            if (event.key !== "Tab") {
-              return;
-            }
+        event.preventDefault();
 
-            event.preventDefault();
+        const textarea =
+          event.target;
 
-            const start =
-              element.selectionStart;
+        const start =
+          textarea.selectionStart;
 
-            const end =
-              element.selectionEnd;
+        const end =
+          textarea.selectionEnd;
 
-            element.value =
-              element.value.substring(0, start) +
-              "  " +
-              element.value.substring(end);
+        textarea.value =
+          textarea.value.substring(0, start) +
+          "  " +
+          textarea.value.substring(end);
 
-            element.selectionStart =
-              element.selectionEnd =
-                start + 2;
-          }
-        );
+        textarea.selectionStart =
+          start + 2;
+
+        textarea.selectionEnd =
+          start + 2;
       }
 
 
@@ -1091,17 +1082,28 @@ const faqs = [
 
       headerInput.addEventListener(
         "keydown",
+        tabSupport
+      );
+
+
+      payloadInput.addEventListener(
+        "keydown",
+        tabSupport
+      );
+
+
+      headerInput.addEventListener(
+        "keydown",
         (event) => {
 
           if (
             event.ctrlKey &&
             event.key === "Enter"
           ) {
-
             event.preventDefault();
-
             generateJWT();
           }
+
         }
       );
 
@@ -1114,19 +1116,30 @@ const faqs = [
             event.ctrlKey &&
             event.key === "Enter"
           ) {
-
             event.preventDefault();
-
             generateJWT();
           }
+
         }
       );
 
 
-      addTabSupport(headerInput);
-      addTabSupport(payloadInput);
+      secretInput.addEventListener(
+        "keydown",
+        (event) => {
 
-      showReady();
+          if (
+            event.key === "Enter"
+          ) {
+            event.preventDefault();
+            generateJWT();
+          }
+
+        }
+      );
+
+
+      setReady();
 
     })();
   </script>
@@ -1135,49 +1148,32 @@ const faqs = [
   <style>
 
     :root {
-
       --bg: #f7fafc;
       --surface: #ffffff;
       --surface-2: #f8fafc;
-
       --text: #172033;
       --muted: #718096;
-
-      --border:
-        rgba(15, 23, 42, 0.09);
-
+      --border: rgba(15, 23, 42, 0.09);
       --primary: #7c3aed;
       --primary-dark: #6d28d9;
       --secondary: #a855f7;
-
       --success: #16a34a;
       --danger: #dc2626;
-
-      --shadow:
-        0 25px 70px
-        rgba(15, 23, 42, 0.10);
+      --shadow: 0 25px 70px rgba(15, 23, 42, 0.10);
     }
 
 
     html.dark-mode {
-
       --bg: #08070d;
       --surface: #100d18;
       --surface-2: #161221;
-
       --text: #f8fafc;
       --muted: #94a3b8;
-
-      --border:
-        rgba(148, 163, 184, 0.13);
-
+      --border: rgba(148, 163, 184, 0.13);
       --primary: #a78bfa;
       --primary-dark: #8b5cf6;
       --secondary: #c4b5fd;
-
-      --shadow:
-        0 30px 80px
-        rgba(0, 0, 0, 0.45);
+      --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
     }
 
 
@@ -1187,41 +1183,21 @@ const faqs = [
 
 
     body {
-
       margin: 0;
-
-      background:
-        var(--bg);
-
-      color:
-        var(--text);
-
-      font-family:
-        "Cairo",
-        sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Cairo", sans-serif;
     }
 
 
     .container {
-
-      width:
-        min(
-          1180px,
-          calc(100% - 32px)
-        );
-
-      margin:
-        auto;
+      width: min(1180px, calc(100% - 32px));
+      margin: auto;
     }
 
 
-    /* HERO */
-
     .hero {
-
-      padding:
-        38px 0 55px;
-
+      padding: 38px 0 55px;
       background:
         radial-gradient(
           circle at 10% 20%,
@@ -1233,94 +1209,49 @@ const faqs = [
 
 
     .breadcrumb {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        10px;
-
-      flex-wrap:
-        wrap;
-
-      color:
-        var(--muted);
-
-      font-size:
-        13px;
-
-      margin-bottom:
-        38px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 38px;
     }
 
 
     .breadcrumb a {
-
-      color:
-        var(--muted);
-
-      text-decoration:
-        none;
+      color: var(--muted);
+      text-decoration: none;
     }
 
 
     .breadcrumb i {
-
-      font-size:
-        9px;
+      font-size: 9px;
     }
 
 
     .hero-content {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        28px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
     }
 
 
     .hero-icon {
-
-      width:
-        112px;
-
-      height:
-        112px;
-
-      flex:
-        0 0 112px;
-
-      border-radius:
-        30px;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      flex-direction:
-        column;
-
-      gap:
-        4px;
-
-      background:
-        rgba(124, 58, 237, 0.12);
-
-      color:
-        var(--primary);
+      width: 112px;
+      height: 112px;
+      flex: 0 0 112px;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 4px;
+      background: rgba(124, 58, 237, 0.12);
+      color: var(--primary);
+      box-shadow:
+        inset 0 0 0 1px
+        rgba(124, 58, 237, 0.10);
     }
 
 
@@ -1330,7 +1261,6 @@ const faqs = [
 
 
     .hero-icon span {
-
       font:
         700 13px
         "JetBrains Mono",
@@ -1339,102 +1269,48 @@ const faqs = [
 
 
     .badge {
-
-      display:
-        inline-flex;
-
-      align-items:
-        center;
-
-      gap:
-        8px;
-
-      padding:
-        7px 13px;
-
-      border-radius:
-        999px;
-
-      background:
-        rgba(124, 58, 237, 0.10);
-
-      color:
-        var(--primary);
-
-      font-size:
-        12px;
-
-      font-weight:
-        700;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 13px;
+      border-radius: 999px;
+      background: rgba(124, 58, 237, 0.10);
+      color: var(--primary);
+      font-size: 12px;
+      font-weight: 700;
     }
 
 
     h1 {
-
-      margin:
-        12px 0 8px;
-
-      font-size:
-        clamp(32px, 5vw, 52px);
-
-      line-height:
-        1.1;
+      margin: 12px 0 8px;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1.1;
     }
 
 
     .hero-text p {
-
-      margin:
-        0;
-
-      max-width:
-        700px;
-
-      color:
-        var(--muted);
-
-      font-size:
-        16px;
-
-      line-height:
-        1.9;
+      margin: 0;
+      max-width: 700px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.9;
     }
 
 
     .tags {
-
-      display:
-        flex;
-
-      flex-wrap:
-        wrap;
-
-      gap:
-        8px;
-
-      margin-top:
-        17px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 17px;
     }
 
 
     .tags span {
-
-      padding:
-        5px 10px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        8px;
-
-      color:
-        var(--muted);
-
-      background:
-        var(--surface);
-
+      padding: 5px 10px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--muted);
+      background: var(--surface);
       font:
         500 11px
         "JetBrains Mono",
@@ -1442,96 +1318,50 @@ const faqs = [
     }
 
 
-    /* TOOL */
-
     .tool-section {
       padding-bottom: 70px;
     }
 
 
     .generator-card {
-
-      overflow:
-        hidden;
-
-      background:
-        var(--surface);
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        22px;
-
-      box-shadow:
-        var(--shadow);
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
     }
 
 
     .card-topbar {
-
-      min-height:
-        55px;
-
-      padding:
-        0 20px;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        space-between;
-
-      border-bottom:
-        1px solid
-        var(--border);
-
-      background:
-        var(--surface-2);
+      min-height: 55px;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface-2);
     }
 
 
     .window-dots {
-
-      display:
-        flex;
-
-      gap:
-        6px;
+      display: flex;
+      gap: 6px;
     }
 
 
     .window-dots span {
-
-      width:
-        9px;
-
-      height:
-        9px;
-
-      border-radius:
-        50%;
-
-      background:
-        var(--border);
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--border);
     }
 
 
     .tool-name {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        8px;
-
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
       font:
         600 13px
         "JetBrains Mono",
@@ -1545,76 +1375,33 @@ const faqs = [
 
 
     .secure {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        6px;
-
-      color:
-        var(--success);
-
-      font-size:
-        11px;
-
-      font-weight:
-        700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--success);
+      font-size: 11px;
+      font-weight: 700;
     }
 
 
-    /* ACTIONBAR */
-
     .actionbar {
-
-      display:
-        flex;
-
-      flex-wrap:
-        wrap;
-
-      gap:
-        9px;
-
-      padding:
-        15px 18px;
-
-      border-bottom:
-        1px solid
-        var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      padding: 15px 18px;
+      border-bottom: 1px solid var(--border);
     }
 
 
     .btn {
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        10px;
-
-      padding:
-        10px 15px;
-
-      font-family:
-        "Cairo",
-        sans-serif;
-
-      font-size:
-        12px;
-
-      font-weight:
-        700;
-
-      cursor:
-        pointer;
-
-      transition:
-        0.2s;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 15px;
+      font-family: "Cairo", sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
     }
 
 
@@ -1629,25 +1416,15 @@ const faqs = [
 
 
     .btn-secondary {
-
-      color:
-        var(--text);
-
-      background:
-        var(--surface-2);
+      color: var(--text);
+      background: var(--surface-2);
     }
 
 
     .btn-primary {
-
-      color:
-        white;
-
-      background:
-        var(--primary);
-
-      border-color:
-        var(--primary);
+      color: white;
+      background: var(--primary);
+      border-color: var(--primary);
     }
 
 
@@ -1656,260 +1433,70 @@ const faqs = [
     }
 
 
-    /* EDITORS */
-
-    .editors-grid {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        repeat(2, 1fr);
-
-      gap:
-        15px;
-
-      margin:
-        20px;
+    .workspace {
+      padding: 20px;
     }
 
 
-    .editor-card,
-    .output-card {
-
-      overflow:
-        hidden;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        15px;
-
-      background:
-        var(--surface-2);
+    .editor-panel {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface-2);
+      margin-bottom: 15px;
     }
 
 
-    .editor-header,
-    .output-header {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        space-between;
-
-      gap:
-        10px;
-
-      padding:
-        13px 15px;
-
-      border-bottom:
-        1px solid
-        var(--border);
+    .editor-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 700;
     }
 
 
-    .editor-title,
-    .output-title {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        10px;
+    .editor-title div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
 
-    .editor-icon,
-    .output-icon {
-
-      width:
-        38px;
-
-      height:
-        38px;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      border-radius:
-        10px;
-
-      color:
-        var(--primary);
-
-      background:
-        rgba(124, 58, 237, 0.10);
+    .editor-title i {
+      color: var(--primary);
     }
 
 
-    .payload-icon {
-
-      color:
-        #0891b2;
-
-      background:
-        rgba(8, 145, 178, 0.10);
-    }
-
-
-    .editor-title strong,
-    .output-title strong {
-
-      display:
-        block;
-
+    .editor-title span {
+      color: var(--muted);
       font:
-        600 12px
+        500 9px
         "JetBrains Mono",
         monospace;
     }
 
 
-    .editor-title span,
-    .output-title span {
-
-      display:
-        block;
-
-      margin-top:
-        2px;
-
-      color:
-        var(--muted);
-
-      font-size:
-        9px;
+    .code-box {
+      min-height: 190px;
     }
 
 
-    .part-badge {
-
-      padding:
-        4px 7px;
-
-      border-radius:
-        6px;
-
-      color:
-        var(--muted);
-
-      background:
-        var(--surface);
-
-      font:
-        500 8px
-        "JetBrains Mono",
-        monospace;
-    }
-
-
-    .editor-card textarea {
-
-      width:
-        100%;
-
-      min-height:
-        230px;
-
-      display:
-        block;
-
-      resize:
-        vertical;
-
-      padding:
-        17px;
-
-      border:
-        0;
-
-      outline:
-        0;
-
-      background:
-        transparent;
-
-      color:
-        var(--text);
-
-      font:
-        12px/1.8
-        "JetBrains Mono",
-        monospace;
-
-      text-align:
-        left;
-    }
-
-
-    /* OUTPUT */
-
-    .output-card {
-
-      margin:
-        0 20px 15px;
-    }
-
-
-    .output-icon {
-
-      color:
-        var(--primary);
-    }
-
-
-    #jwtOutput {
-
-      width:
-        100%;
-
-      min-height:
-        120px;
-
-      display:
-        block;
-
-      resize:
-        vertical;
-
-      padding:
-        17px;
-
-      border:
-        0;
-
-      outline:
-        0;
-
-      background:
-        transparent;
-
-      color:
-        var(--primary);
-
-      text-align:
-        left;
-
-      direction:
-        ltr;
-
+    .code-box textarea {
+      width: 100%;
+      min-height: 190px;
+      display: block;
+      resize: vertical;
+      border: 0;
+      outline: 0;
+      padding: 17px;
+      background: transparent;
+      color: var(--text);
+      direction: ltr;
+      text-align: left;
       font:
         12px/1.8
         "JetBrains Mono",
@@ -1917,458 +1504,270 @@ const faqs = [
     }
 
 
-    /* RESULT */
+    .secret-panel {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface-2);
+      margin-bottom: 15px;
+    }
+
+
+    #secretInput {
+      width: calc(100% - 30px);
+      margin: 15px;
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: 0;
+      background: var(--surface);
+      color: var(--text);
+      direction: ltr;
+      text-align: left;
+      font:
+        12px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    #secretInput:focus {
+      border-color: var(--primary);
+    }
+
+
+    .secret-note {
+      margin: -4px 15px 15px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+
+    .secret-note i {
+      color: var(--primary);
+      margin-left: 5px;
+    }
+
 
     .result-box {
-
-      margin:
-        0 20px 15px;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        14px;
-
-      padding:
-        15px 17px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        14px;
-
-      background:
-        var(--surface-2);
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 15px 17px;
+      margin-bottom: 15px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-2);
     }
 
 
     .result-icon {
-
-      width:
-        42px;
-
-      height:
-        42px;
-
-      flex:
-        0 0 42px;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      border-radius:
-        11px;
-
-      color:
-        var(--primary);
-
-      background:
-        rgba(124, 58, 237, 0.10);
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 11px;
+      background: rgba(124, 58, 237, 0.10);
+      color: var(--primary);
+      font-size: 17px;
     }
 
 
     .result-box strong {
-
-      display:
-        block;
-
-      font-size:
-        13px;
+      display: block;
+      font-size: 13px;
     }
 
 
     .result-box p {
-
-      margin:
-        3px 0 0;
-
-      color:
-        var(--muted);
-
-      font-size:
-        11px;
-
-      line-height:
-        1.7;
+      margin: 3px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
     }
 
 
     .result-box.success {
-      border-color:
-        rgba(22, 163, 74, 0.25);
+      border-color: rgba(22, 163, 74, 0.25);
     }
 
 
     .result-box.success .result-icon {
-
-      color:
-        var(--success);
-
-      background:
-        rgba(22, 163, 74, 0.10);
+      color: var(--success);
+      background: rgba(22, 163, 74, 0.10);
     }
 
 
     .result-box.error {
-      border-color:
-        rgba(220, 38, 38, 0.25);
+      border-color: rgba(220, 38, 38, 0.25);
     }
 
 
     .result-box.error .result-icon {
-
-      color:
-        var(--danger);
-
-      background:
-        rgba(220, 38, 38, 0.10);
+      color: var(--danger);
+      background: rgba(220, 38, 38, 0.10);
     }
 
 
-    /* PARTS */
-
-    .parts-grid {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        repeat(2, 1fr);
-
-      gap:
-        15px;
-
-      margin:
-        0 20px 15px;
+    .output-panel {
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface-2);
+      margin-bottom: 15px;
     }
 
 
-    .jwt-panel {
-
-      min-width:
-        0;
-
-      overflow:
-        hidden;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        15px;
-
-      background:
-        var(--surface-2);
+    .output-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 15px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 700;
     }
 
 
-    .signature-panel {
-
-      grid-column:
-        1 / -1;
+    .output-header div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
 
-    .panel-header {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        space-between;
-
-      gap:
-        10px;
-
-      padding:
-        13px 15px;
-
-      border-bottom:
-        1px solid
-        var(--border);
+    .output-header i {
+      color: var(--primary);
     }
 
 
-    .panel-title {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        10px;
-    }
-
-
-    .panel-icon {
-
-      width:
-        38px;
-
-      height:
-        38px;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      border-radius:
-        10px;
-
-      color:
-        var(--primary);
-
-      background:
-        rgba(124, 58, 237, 0.10);
-    }
-
-
-    .signature-icon {
-
-      color:
-        #16a34a;
-
-      background:
-        rgba(22, 163, 74, 0.10);
-    }
-
-
-    .panel-title strong {
-
-      display:
-        block;
-
+    .output-header span {
+      color: var(--muted);
       font:
-        600 12px
+        500 9px
         "JetBrains Mono",
         monospace;
     }
 
 
-    .panel-title span {
-
-      display:
-        block;
-
-      margin-top:
-        2px;
-
-      color:
-        var(--muted);
-
-      font-size:
-        9px;
-    }
-
-
-    .code-output {
-
-      min-height:
-        115px;
-
-      max-height:
-        260px;
-
-      overflow:
-        auto;
-
-      margin:
-        0;
-
-      padding:
-        17px;
-
-      white-space:
-        pre-wrap;
-
-      word-break:
-        break-word;
-
-      color:
-        var(--text);
-
-      direction:
-        ltr;
-
-      text-align:
-        left;
-
+    #jwtOutput {
+      width: 100%;
+      min-height: 130px;
+      display: block;
+      resize: vertical;
+      border: 0;
+      outline: 0;
+      padding: 18px;
+      background: transparent;
+      color: var(--primary);
+      direction: ltr;
+      text-align: left;
+      word-break: break-all;
       font:
-        12px/1.8
+        12px/1.9
         "JetBrains Mono",
         monospace;
     }
 
 
-    .signature-output {
-
-      min-height:
-        80px;
-
-      color:
-        var(--primary);
+    .parts-preview {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-bottom: 15px;
     }
 
 
-    .signature-note {
-
-      padding:
-        0 15px 15px;
-
-      color:
-        var(--muted);
-
-      font-size:
-        10px;
+    .preview-card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-2);
     }
 
 
-    .signature-note i {
-      color:
-        var(--primary);
-
-      margin-left:
-        5px;
+    .preview-title {
+      padding: 11px 13px;
+      border-bottom: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 700;
     }
 
 
-    /* STATS */
+    .preview-title i {
+      color: var(--primary);
+      margin-left: 6px;
+    }
+
+
+    .preview-card pre {
+      min-height: 125px;
+      max-height: 250px;
+      overflow: auto;
+      margin: 0;
+      padding: 14px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: var(--text);
+      direction: ltr;
+      text-align: left;
+      font:
+        10px/1.8
+        "JetBrains Mono",
+        monospace;
+    }
+
 
     .stats-grid {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        repeat(4, 1fr);
-
-      gap:
-        12px;
-
-      padding:
-        0 20px 20px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
     }
 
 
     .stat {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        11px;
-
-      min-width:
-        0;
-
-      padding:
-        14px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        13px;
-
-      background:
-        var(--surface-2);
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface-2);
     }
 
 
     .stat-icon {
-
-      width:
-        36px;
-
-      height:
-        36px;
-
-      flex:
-        0 0 36px;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      border-radius:
-        9px;
-
-      color:
-        var(--primary);
-
-      background:
-        rgba(124, 58, 237, 0.10);
+      width: 36px;
+      height: 36px;
+      flex: 0 0 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9px;
+      color: var(--primary);
+      background: rgba(124, 58, 237, 0.10);
     }
 
 
     .stat span {
-
-      display:
-        block;
-
-      color:
-        var(--muted);
-
-      font-size:
-        9px;
+      display: block;
+      color: var(--muted);
+      font-size: 9px;
     }
 
 
     .stat strong {
-
-      display:
-        block;
-
-      max-width:
-        150px;
-
-      overflow:
-        hidden;
-
-      margin-top:
-        2px;
-
-      color:
-        var(--text);
-
-      text-overflow:
-        ellipsis;
-
-      white-space:
-        nowrap;
-
+      display: block;
+      max-width: 150px;
+      overflow: hidden;
+      margin-top: 2px;
+      color: var(--text);
+      text-overflow: ellipsis;
+      white-space: nowrap;
       font:
         600 11px
         "JetBrains Mono",
@@ -2376,405 +1775,203 @@ const faqs = [
     }
 
 
-    /* SECTIONS */
-
     .info-section,
     .how-section,
     .faq-section {
-
-      padding:
-        70px 0;
+      padding: 70px 0;
     }
 
 
     .info-section {
-
-      background:
-        var(--surface-2);
-
-      border-top:
-        1px solid
-        var(--border);
-
-      border-bottom:
-        1px solid
-        var(--border);
+      background: var(--surface-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
 
 
     .section-heading {
-
-      max-width:
-        700px;
-
-      margin:
-        0 auto 35px;
-
-      text-align:
-        center;
+      max-width: 700px;
+      margin: 0 auto 35px;
+      text-align: center;
     }
 
 
     .section-heading > span {
-
-      color:
-        var(--primary);
-
+      color: var(--primary);
       font:
         700 11px
         "JetBrains Mono",
         monospace;
-
-      letter-spacing:
-        1px;
+      letter-spacing: 1px;
     }
 
 
     .section-heading h2 {
-
-      margin:
-        8px 0;
-
-      font-size:
-        clamp(25px, 4vw, 34px);
+      margin: 8px 0;
+      font-size: clamp(25px, 4vw, 34px);
     }
 
 
     .section-heading p {
-
-      margin:
-        0;
-
-      color:
-        var(--muted);
-
-      line-height:
-        1.9;
-
-      font-size:
-        14px;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.9;
+      font-size: 14px;
     }
 
 
     .info-grid {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        repeat(3, 1fr);
-
-      gap:
-        18px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
     }
 
 
     .info-card {
-
-      padding:
-        25px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        17px;
-
-      background:
-        var(--surface);
+      padding: 25px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--surface);
     }
 
 
     .info-icon {
-
-      width:
-        48px;
-
-      height:
-        48px;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      margin-bottom:
-        17px;
-
-      border-radius:
-        13px;
-
-      color:
-        var(--primary);
-
-      background:
-        rgba(124, 58, 237, 0.10);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 17px;
+      border-radius: 13px;
+      color: var(--primary);
+      background: rgba(124, 58, 237, 0.10);
     }
 
 
     .info-card h3 {
-
-      margin:
-        0 0 7px;
-
-      font-size:
-        16px;
+      margin: 0 0 7px;
+      font-size: 16px;
     }
 
 
     .info-card p {
-
-      margin:
-        0;
-
-      color:
-        var(--muted);
-
-      font-size:
-        13px;
-
-      line-height:
-        1.9;
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.9;
     }
 
 
-    /* STEPS */
-
     .steps {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        repeat(3, 1fr);
-
-      gap:
-        18px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
     }
 
 
     .step {
-
-      display:
-        flex;
-
-      gap:
-        15px;
-
-      padding:
-        22px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        16px;
-
-      background:
-        var(--surface);
+      display: flex;
+      gap: 15px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface);
     }
 
 
     .step-number {
-
-      width:
-        38px;
-
-      height:
-        38px;
-
-      flex:
-        0 0 38px;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      border-radius:
-        10px;
-
-      color:
-        white;
-
-      background:
-        var(--primary);
-
-      font-weight:
-        800;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 10px;
+      color: white;
+      background: var(--primary);
+      font-weight: 800;
     }
 
 
     .step h3 {
-
-      margin:
-        0 0 5px;
-
-      font-size:
-        14px;
+      margin: 0 0 5px;
+      font-size: 14px;
     }
 
 
     .step p {
-
-      margin:
-        0;
-
-      color:
-        var(--muted);
-
-      font-size:
-        12px;
-
-      line-height:
-        1.8;
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
     }
 
 
-    /* FAQ */
-
     .faq-list {
-
-      max-width:
-        850px;
-
-      margin:
-        auto;
+      max-width: 850px;
+      margin: auto;
     }
 
 
     details {
-
-      margin-bottom:
-        10px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        13px;
-
-      background:
-        var(--surface);
-
-      overflow:
-        hidden;
+      margin-bottom: 10px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface);
+      overflow: hidden;
     }
 
 
     summary {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        space-between;
-
-      padding:
-        17px 19px;
-
-      cursor:
-        pointer;
-
-      font-size:
-        13px;
-
-      font-weight:
-        700;
-
-      list-style:
-        none;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 17px 19px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      list-style: none;
     }
 
 
     summary::-webkit-details-marker {
-      display:
-        none;
+      display: none;
     }
 
 
     summary i {
-
-      color:
-        var(--primary);
-
-      transition:
-        transform 0.2s;
+      color: var(--primary);
+      transition: transform 0.2s;
     }
 
 
     details[open] summary i {
-
-      transform:
-        rotate(180deg);
+      transform: rotate(180deg);
     }
 
 
     details p {
-
-      margin:
-        0;
-
-      padding:
-        0 19px 18px;
-
-      color:
-        var(--muted);
-
-      font-size:
-        12px;
-
-      line-height:
-        1.9;
+      margin: 0;
+      padding: 0 19px 18px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.9;
     }
 
 
-    /* RESPONSIVE */
-
     @media (max-width: 850px) {
 
-      .editors-grid {
-        grid-template-columns:
-          1fr;
+      .parts-preview {
+        grid-template-columns: 1fr;
       }
-
-
-      .parts-grid {
-        grid-template-columns:
-          1fr;
-      }
-
-
-      .signature-panel {
-        grid-column:
-          auto;
-      }
-
 
       .stats-grid {
-        grid-template-columns:
-          repeat(2, 1fr);
+        grid-template-columns: repeat(2, 1fr);
       }
-
 
       .info-grid,
       .steps {
-        grid-template-columns:
-          1fr;
+        grid-template-columns: 1fr;
       }
     }
 
@@ -2782,209 +1979,86 @@ const faqs = [
     @media (max-width: 600px) {
 
       .container {
-
-        width:
-          min(
-            100% - 22px,
-            1180px
-          );
+        width: min(100% - 22px, 1180px);
       }
-
 
       .hero {
-        padding-top:
-          25px;
+        padding-top: 25px;
       }
-
 
       .hero-content {
-
-        align-items:
-          flex-start;
-
-        flex-direction:
-          column;
+        align-items: flex-start;
+        flex-direction: column;
       }
-
 
       .hero-icon {
-
-        width:
-          88px;
-
-        height:
-          88px;
-
-        flex-basis:
-          88px;
-
-        border-radius:
-          23px;
+        width: 88px;
+        height: 88px;
+        flex-basis: 88px;
+        border-radius: 23px;
       }
-
 
       .hero-icon i {
-        font-size:
-          31px;
+        font-size: 31px;
       }
-
 
       .card-topbar {
-        padding:
-          0 13px;
+        padding: 0 13px;
       }
-
 
       .actionbar {
-        padding:
-          12px;
+        padding: 12px;
       }
-
 
       .btn {
-
-        flex:
-          1 1
-          calc(50% - 8px);
-
-        padding:
-          9px 8px;
+        flex: 1 1 calc(50% - 8px);
+        padding: 9px 8px;
       }
 
-
-      .editors-grid {
-        margin:
-          12px;
+      .workspace {
+        padding: 12px;
       }
 
-
-      .editor-card textarea {
-
-        min-height:
-          210px;
-
-        padding:
-          14px;
-
-        font-size:
-          10px;
+      .code-box textarea {
+        min-height: 175px;
+        padding: 14px;
+        font-size: 10px;
       }
-
-
-      .result-box {
-
-        margin:
-          0 12px 12px;
-      }
-
-
-      .output-card {
-
-        margin:
-          0 12px 12px;
-      }
-
 
       #jwtOutput {
-
-        min-height:
-          135px;
-
-        padding:
-          14px;
-
-        font-size:
-          10px;
+        min-height: 145px;
+        padding: 14px;
+        font-size: 10px;
       }
-
-
-      .parts-grid {
-
-        margin:
-          0 12px 12px;
-
-        gap:
-          10px;
-      }
-
-
-      .jwt-panel {
-        border-radius:
-          13px;
-      }
-
-
-      .panel-header {
-        padding:
-          11px;
-      }
-
-
-      .code-output {
-
-        min-height:
-          115px;
-
-        padding:
-          13px;
-
-        font-size:
-          10px;
-      }
-
 
       .stats-grid {
-
-        padding:
-          0 12px 12px;
-
-        gap:
-          8px;
+        gap: 8px;
       }
-
 
       .stat {
-        padding:
-          11px 9px;
+        padding: 11px 9px;
       }
-
 
       .stat-icon {
-
-        width:
-          31px;
-
-        height:
-          31px;
-
-        flex-basis:
-          31px;
+        width: 31px;
+        height: 31px;
+        flex-basis: 31px;
       }
-
 
       .stat span {
-        font-size:
-          8px;
+        font-size: 8px;
       }
-
 
       .stat strong {
-
-        max-width:
-          100px;
-
-        font-size:
-          9px;
+        max-width: 100px;
+        font-size: 9px;
       }
-
 
       .info-section,
       .how-section,
       .faq-section {
-        padding:
-          50px 0;
+        padding: 50px 0;
       }
-
     }
 
   </style>
