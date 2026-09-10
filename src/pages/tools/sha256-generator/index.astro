@@ -3,1690 +3,2894 @@ import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "SHA-256 Generator - إنشاء SHA-256 Hash أونلاين مجاناً | Th.Tech";
+
+const description =
+  "أداة SHA-256 Generator مجانية لإنشاء SHA-256 Hash من أي نص مباشرة داخل المتصفح، مع إمكانية النسخ والمسح واستخدام أمثلة جاهزة.";
+
+const faqs = [
+  {
+    q: "ما هو SHA-256؟",
+    a: "SHA-256 هي خوارزمية Hash تشفيرية تنتج قيمة بطول 256 بت، وتظهر عادةً كسلسلة hexadecimal مكونة من 64 حرفاً."
+  },
+  {
+    q: "هل SHA-256 تشفير؟",
+    a: "لا. SHA-256 هي دالة Hash أحادية الاتجاه وليست تشفيراً. تستخدم للتحقق من سلامة البيانات وإنشاء بصمات رقمية."
+  },
+  {
+    q: "هل يتم إرسال النص إلى الخادم؟",
+    a: "لا. يتم إنشاء SHA-256 بالكامل داخل المتصفح باستخدام Web Crypto API، ولا يتم إرسال النص إلى خادم خارجي."
+  },
+  {
+    q: "هل SHA-256 مناسبة لكلمات المرور؟",
+    a: "SHA-256 أقوى بكثير من MD5، لكنها ليست الخيار المناسب وحدها لتخزين كلمات المرور. يفضل استخدام خوارزميات مخصصة لكلمات المرور مثل Argon2 أو bcrypt أو scrypt."
+  }
+];
 ---
 
-<!doctype html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>SHA-256 Generator - إنشاء SHA-256 أونلاين | Th.Tech</title>
+  <title>{title}</title>
+  <meta name="description" content={description} />
 
-    <meta
-      name="description"
-      content="أداة مجانية لإنشاء Hash SHA-256 للنصوص مباشرة أونلاين. سريعة وآمنة وتعمل بالكامل داخل المتصفح."
-    />
+  <link
+    rel="canonical"
+    href={`https://oumaystore-hub.github.io${base}/tools/sha256-generator/`}
+  />
 
-    <meta
-      name="keywords"
-      content="SHA-256, SHA256 Generator, Hash Generator, تشفير, هاش, أمان, أدوات تقنية"
-    />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <link
-      rel="canonical"
-      href={`https://oumaystore-hub.github.io${base}/tools/sha256-generator/`}
-    />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
 
-    <meta name="theme-color" content="#0f172a" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <script is:inline>
+    (() => {
+      try {
+        const saved = localStorage.getItem("theme");
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-
-    <!-- تهيئة الثيم قبل ظهور الصفحة -->
-    <script is:inline>
-      (() => {
-        try {
-          const theme = localStorage.getItem('theme');
-
-          if (theme === 'light') {
-            document.documentElement.setAttribute('data-theme', 'light');
-          } else {
-            document.documentElement.removeAttribute('data-theme');
-          }
-        } catch (error) {
-          document.documentElement.removeAttribute('data-theme');
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark-mode");
         }
-      })();
-    </script>
-  </head>
+      } catch {}
+    })();
+  </script>
+</head>
 
-  <body>
-    <Header />
+<body>
 
-    <main class="page-wrapper">
+  <Header />
 
-      <!-- Hero -->
-      <section class="hero">
-        <div class="hero-badge">
-          <i class="fa-solid fa-shield-halved"></i>
-          أداة أمنية مجانية
-        </div>
+  <main>
 
-        <h1>
-          مولّد
-          <span>SHA-256</span>
-        </h1>
-
-        <p>
-          أنشئ قيمة SHA-256 لأي نص بسرعة وسهولة، مباشرة داخل متصفحك
-          وبدون إرسال بياناتك إلى أي خادم.
-        </p>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
 
         <div class="breadcrumb">
-          <a href={`${base}/`}>
-            <i class="fa-solid fa-house"></i>
-            الرئيسية
-          </a>
-
+          <a href={`${base}/`}>الرئيسية</a>
           <i class="fa-solid fa-chevron-left"></i>
-
-          <a href={`${base}/tools/`}>
-            الأدوات
-          </a>
-
+          <a href={`${base}/tools/`}>الأدوات</a>
           <i class="fa-solid fa-chevron-left"></i>
-
           <span>SHA-256 Generator</span>
         </div>
-      </section>
 
-      <!-- Tool -->
-      <section class="tool-section">
+        <div class="hero-content">
 
-        <div class="tool-card">
+          <div class="hero-icon">
+            <i class="fa-solid fa-fingerprint"></i>
+            <span>SHA-256</span>
+          </div>
 
-          <div class="tool-header">
-            <div class="tool-icon">
-              <i class="fa-solid fa-fingerprint"></i>
+          <div class="hero-text">
+
+            <div class="badge">
+              <i class="fa-solid fa-code"></i>
+              Developer Tools
             </div>
 
-            <div class="tool-title">
-              <h2>SHA-256 Generator</h2>
+            <h1>SHA-256 Generator</h1>
+
+            <p>
+              أنشئ SHA-256 Hash من أي نص بسرعة وسهولة
+              مباشرة من المتصفح.
+            </p>
+
+            <div class="tags">
+              <span>SHA-256</span>
+              <span>Hash</span>
+              <span>256-bit</span>
+              <span>Local</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- TOOL -->
+    <section class="tool-section">
+      <div class="container">
+
+        <div class="generator-card">
+
+          <!-- TOP BAR -->
+          <div class="card-topbar">
+
+            <div class="window-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <div class="tool-name">
+              <i class="fa-solid fa-fingerprint"></i>
+              SHA-256 Generator
+            </div>
+
+            <div class="secure">
+              <i class="fa-solid fa-shield-halved"></i>
+              Local
+            </div>
+
+          </div>
+
+
+          <!-- ACTION BAR -->
+          <div class="actionbar">
+
+            <button id="exampleBtn" class="btn btn-secondary" type="button">
+              <i class="fa-solid fa-flask"></i>
+              مثال
+            </button>
+
+            <button id="clearBtn" class="btn btn-secondary" type="button">
+              <i class="fa-solid fa-eraser"></i>
+              مسح
+            </button>
+
+            <button id="copyBtn" class="btn btn-secondary" type="button">
+              <i class="fa-regular fa-copy"></i>
+              نسخ Hash
+            </button>
+
+            <button id="generateBtn" class="btn btn-primary" type="button">
+              <i class="fa-solid fa-fingerprint"></i>
+              إنشاء SHA-256
+            </button>
+
+          </div>
+
+
+          <!-- INPUT -->
+          <div class="editor-section">
+
+            <div class="editor-header">
+
+              <div>
+                <i class="fa-solid fa-pen"></i>
+                Input
+              </div>
+
+              <span id="inputCount">0 حرف</span>
+
+            </div>
+
+            <textarea
+              id="textInput"
+              spellcheck="false"
+              placeholder="اكتب النص الذي تريد إنشاء SHA-256 Hash له..."
+            ></textarea>
+
+          </div>
+
+
+          <!-- RESULT -->
+          <div class="result-box" id="resultBox">
+
+            <div class="result-icon" id="resultIcon">
+              <i class="fa-solid fa-circle-question"></i>
+            </div>
+
+            <div class="result-content">
+
+              <strong id="resultTitle">
+                جاهز لإنشاء Hash
+              </strong>
+
+              <p id="resultMessage">
+                أدخل نصاً ثم اضغط على إنشاء SHA-256.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- OUTPUT -->
+          <div class="output-section">
+
+            <div class="editor-header">
+
+              <div>
+                <i class="fa-solid fa-hashtag"></i>
+                SHA-256 Hash
+              </div>
+
+              <span>64 HEX</span>
+
+            </div>
+
+            <div class="hash-output" id="hashOutput">
+              —
+            </div>
+
+            <button id="outputCopyBtn" class="copy-output" type="button">
+              <i class="fa-regular fa-copy"></i>
+              نسخ Hash
+            </button>
+
+          </div>
+
+
+          <!-- STATS -->
+          <div class="stats-grid">
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-text-width"></i>
+              </div>
+
+              <div>
+                <span>الأحرف</span>
+                <strong id="statChars">0</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-database"></i>
+              </div>
+
+              <div>
+                <span>Bytes</span>
+                <strong id="statBytes">0</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-fingerprint"></i>
+              </div>
+
+              <div>
+                <span>Hash Length</span>
+                <strong id="statHashLength">0</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+
+              <div>
+                <span>الحالة</span>
+                <strong id="statStatus">جاهز</strong>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- SECURITY NOTE -->
+          <div class="security-note">
+
+            <div class="security-icon">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div>
+              <strong>ملاحظة أمنية</strong>
+
               <p>
-                إنشاء Hash SHA-256 للنصوص
+                SHA-256 خوارزمية Hash قوية ومستخدمة على نطاق واسع
+                للتحقق من سلامة البيانات وإنشاء البصمات الرقمية.
+                لتخزين كلمات المرور استخدم خوارزميات مخصصة مثل
+                Argon2 أو bcrypt أو scrypt.
               </p>
             </div>
 
-            <div class="security-badge">
-              <i class="fa-solid fa-lock"></i>
-              محلي 100%
-            </div>
           </div>
 
-          <div class="tool-content">
-
-            <!-- Input -->
-            <div class="field-group">
-              <div class="field-label">
-                <label for="inputText">
-                  النص المراد تشفيره
-                </label>
-
-                <span id="charCount">0 حرف</span>
-              </div>
-
-              <textarea
-                id="inputText"
-                placeholder="اكتب أو الصق النص هنا..."
-                spellcheck="false"
-                autocomplete="off"
-              ></textarea>
-            </div>
-
-            <!-- Buttons -->
-            <div class="actions">
-
-              <button
-                id="generateBtn"
-                class="btn btn-primary"
-                type="button"
-              >
-                <i class="fa-solid fa-bolt"></i>
-                إنشاء SHA-256
-              </button>
-
-              <button
-                id="exampleBtn"
-                class="btn btn-secondary"
-                type="button"
-              >
-                <i class="fa-solid fa-flask"></i>
-                مثال
-              </button>
-
-              <button
-                id="clearBtn"
-                class="btn btn-danger"
-                type="button"
-              >
-                <i class="fa-solid fa-trash"></i>
-                مسح
-              </button>
-
-            </div>
-
-            <!-- Result -->
-            <div class="result-section">
-
-              <div class="result-header">
-                <div>
-                  <i class="fa-solid fa-hashtag"></i>
-                  النتيجة
-                </div>
-
-                <button
-                  id="copyBtn"
-                  class="copy-btn"
-                  type="button"
-                  disabled
-                >
-                  <i class="fa-regular fa-copy"></i>
-                  نسخ
-                </button>
-              </div>
-
-              <div
-                id="resultBox"
-                class="result-box empty"
-              >
-                <span id="resultText">
-                  ستظهر قيمة SHA-256 هنا...
-                </span>
-              </div>
-
-              <div
-                id="status"
-                class="status"
-              ></div>
-
-            </div>
-
-            <!-- Stats -->
-            <div class="stats">
-
-              <div class="stat">
-                <div class="stat-icon">
-                  <i class="fa-solid fa-ruler-horizontal"></i>
-                </div>
-
-                <div>
-                  <strong>64</strong>
-                  <span>حرف Hex</span>
-                </div>
-              </div>
-
-              <div class="stat">
-                <div class="stat-icon">
-                  <i class="fa-solid fa-database"></i>
-                </div>
-
-                <div>
-                  <strong>256</strong>
-                  <span>بت</span>
-                </div>
-              </div>
-
-              <div class="stat">
-                <div class="stat-icon">
-                  <i class="fa-solid fa-shield"></i>
-                </div>
-
-                <div>
-                  <strong>SHA-256</strong>
-                  <span>خوارزمية</span>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
         </div>
 
-      </section>
+      </div>
+    </section>
 
-      <!-- Information -->
-      <section class="info-grid">
 
-        <article class="info-card">
-          <div class="info-card-icon blue">
-            <i class="fa-solid fa-circle-info"></i>
-          </div>
-
-          <h3>ما هو SHA-256؟</h3>
-
-          <p>
-            SHA-256 هي خوارزمية تجزئة تشفيرية تنتج قيمة ثابتة بطول
-            256 بت، وتستخدم على نطاق واسع في الأمن السيبراني،
-            التحقق من البيانات، وتخزين بصمات الملفات.
-          </p>
-        </article>
-
-        <article class="info-card">
-          <div class="info-card-icon green">
-            <i class="fa-solid fa-user-shield"></i>
-          </div>
-
-          <h3>هل بياناتي آمنة؟</h3>
-
-          <p>
-            نعم. تتم عملية إنشاء SHA-256 بالكامل داخل متصفحك
-            باستخدام Web Crypto API. لا يتم إرسال النص الذي تدخله
-            إلى خادم خارجي.
-          </p>
-        </article>
-
-        <article class="info-card">
-          <div class="info-card-icon purple">
-            <i class="fa-solid fa-code"></i>
-          </div>
-
-          <h3>أين يستخدم SHA-256؟</h3>
-
-          <p>
-            يستخدم في التحقق من الملفات، أنظمة الأمان، Git،
-            التوقيعات الرقمية، Blockchain والعديد من تطبيقات
-            البرمجيات الحديثة.
-          </p>
-        </article>
-
-      </section>
-
-      <!-- How to -->
-      <section class="guide-section">
+    <!-- INFO -->
+    <section class="info-section">
+      <div class="container">
 
         <div class="section-heading">
-          <span class="section-number">01</span>
 
-          <div>
-            <h2>كيفية استخدام الأداة</h2>
-            <p>إنشاء SHA-256 في ثلاث خطوات بسيطة</p>
-          </div>
+          <span>SHA-256 GENERATOR</span>
+
+          <h2>
+            ما هو SHA-256 Generator؟
+          </h2>
+
+          <p>
+            أداة تساعد المطورين على إنشاء SHA-256 Hash
+            من النصوص مباشرة داخل المتصفح.
+          </p>
+
         </div>
+
+
+        <div class="info-grid">
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-fingerprint"></i>
+            </div>
+
+            <h3>
+              Hash بطول 256-bit
+            </h3>
+
+            <p>
+              ينتج SHA-256 قيمة Hash بطول 256 بت تظهر عادةً
+              على شكل 64 حرفاً بنظام hexadecimal.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-laptop-code"></i>
+            </div>
+
+            <h3>
+              يعمل محلياً
+            </h3>
+
+            <p>
+              تتم عملية إنشاء Hash داخل المتصفح باستخدام
+              Web Crypto API ولا يحتاج النص إلى الإرسال للخادم.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-bolt"></i>
+            </div>
+
+            <h3>
+              سريع وسهل
+            </h3>
+
+            <p>
+              أدخل النص واضغط على إنشاء SHA-256 للحصول
+              على النتيجة فوراً.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- HOW TO -->
+    <section class="how-section">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>HOW IT WORKS</span>
+
+          <h2>
+            كيفية استخدام SHA-256 Generator
+          </h2>
+
+        </div>
+
 
         <div class="steps">
 
           <div class="step">
-            <span class="step-number">1</span>
+
+            <div class="step-number">
+              1
+            </div>
 
             <div>
-              <h3>أدخل النص</h3>
+              <h3>
+                أدخل النص
+              </h3>
+
               <p>
-                اكتب النص أو الصق المحتوى الذي تريد إنشاء بصمته.
+                اكتب أو الصق النص الذي تريد تحويله
+                إلى SHA-256 Hash.
               </p>
             </div>
+
           </div>
 
+
           <div class="step">
-            <span class="step-number">2</span>
+
+            <div class="step-number">
+              2
+            </div>
 
             <div>
-              <h3>اضغط إنشاء</h3>
+              <h3>
+                أنشئ Hash
+              </h3>
+
               <p>
-                اضغط على زر "إنشاء SHA-256" لمعالجة النص فورًا.
+                اضغط على زر إنشاء SHA-256 لمعالجة النص
+                مباشرة داخل المتصفح.
               </p>
             </div>
+
           </div>
 
+
           <div class="step">
-            <span class="step-number">3</span>
+
+            <div class="step-number">
+              3
+            </div>
 
             <div>
-              <h3>انسخ النتيجة</h3>
+              <h3>
+                انسخ النتيجة
+              </h3>
+
               <p>
-                ستظهر قيمة SHA-256 المكونة من 64 حرفًا ويمكنك نسخها
-                بضغطة واحدة.
+                انسخ SHA-256 Hash الناتج واستخدمه
+                في مشروعك.
               </p>
             </div>
+
           </div>
 
         </div>
 
-      </section>
+      </div>
+    </section>
 
-      <!-- FAQ -->
-      <section class="faq-section">
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <div class="container">
 
         <div class="section-heading">
-          <span class="section-number">02</span>
 
-          <div>
-            <h2>الأسئلة الشائعة</h2>
-            <p>أهم المعلومات حول SHA-256</p>
-          </div>
+          <span>FAQ</span>
+
+          <h2>
+            الأسئلة الشائعة
+          </h2>
+
         </div>
+
 
         <div class="faq-list">
 
-          <details>
-            <summary>
-              <span>
-                هل SHA-256 تشفير قابل لفكّه؟
-              </span>
+          {faqs.map((faq) => (
+            <details>
 
-              <i class="fa-solid fa-chevron-down"></i>
-            </summary>
+              <summary>
 
-            <p>
-              لا. SHA-256 هي خوارزمية Hash أحادية الاتجاه وليست
-              تشفيرًا تقليديًا. لا توجد عملية عكسية مباشرة لاستعادة
-              النص الأصلي من قيمة الـ Hash.
-            </p>
-          </details>
+                <span>
+                  {faq.q}
+                </span>
 
-          <details>
-            <summary>
-              <span>
-                كم يبلغ طول SHA-256؟
-              </span>
+                <i class="fa-solid fa-chevron-down"></i>
 
-              <i class="fa-solid fa-chevron-down"></i>
-            </summary>
+              </summary>
 
-            <p>
-              تنتج SHA-256 قيمة بطول 256 بت، وعند تمثيلها بالنظام
-              الست عشري Hexadecimal تكون النتيجة 64 حرفًا.
-            </p>
-          </details>
+              <p>
+                {faq.a}
+              </p>
 
-          <details>
-            <summary>
-              <span>
-                هل يمكن استخدام الأداة للتحقق من الملفات؟
-              </span>
-
-              <i class="fa-solid fa-chevron-down"></i>
-            </summary>
-
-            <p>
-              هذه النسخة مخصصة للنصوص. يمكن استخدام SHA-256 أيضًا
-              للتحقق من سلامة الملفات من خلال مقارنة قيمة Hash
-              للملف مع القيمة الأصلية.
-            </p>
-          </details>
-
-          <details>
-            <summary>
-              <span>
-                هل يتم تخزين النص الذي أدخله؟
-              </span>
-
-              <i class="fa-solid fa-chevron-down"></i>
-            </summary>
-
-            <p>
-              لا. عملية إنشاء Hash تتم محليًا داخل المتصفح باستخدام
-              Web Crypto API ولا يتم إرسال النص إلى الخادم.
-            </p>
-          </details>
+            </details>
+          ))}
 
         </div>
 
-      </section>
+      </div>
+    </section>
 
-    </main>
+  </main>
 
-    <Footer />
 
-    <!-- =========================================================
-         SHA-256 + THEME SYNC
-         ========================================================= -->
+  <Footer />
 
-    <script is:inline>
-      (() => {
-        const root = document.documentElement;
 
-        /*
-         * مزامنة الثيم مع Header
-         * تعمل مباشرة بدون الحاجة إلى Refresh
-         */
-        function syncTheme() {
-          try {
-            const theme = localStorage.getItem('theme');
+  <!-- SHA-256 + THEME -->
+  <script is:inline>
+    (() => {
 
-            if (theme === 'light') {
-              root.setAttribute('data-theme', 'light');
-            } else {
-              root.removeAttribute('data-theme');
-            }
-          } catch (error) {
-            // تجاهل أخطاء localStorage
-          }
-        }
+      /*
+       * Theme synchronization
+       *
+       * يحافظ على توافق الصفحة مع Header
+       * ويجعل التغيير فورياً بدون Refresh.
+       */
 
-        // أول تحميل
-        syncTheme();
+      const root =
+        document.documentElement;
 
-        /*
-         * إذا كان Header يرسل هذا الحدث
-         */
-        window.addEventListener('themeChange', syncTheme);
 
-        /*
-         * مراقبة تغيير data-theme مباشرة
-         */
-        const observer = new MutationObserver(() => {
-          try {
-            const theme = localStorage.getItem('theme');
+      function syncTheme() {
 
-            if (theme === 'light') {
-              if (root.getAttribute('data-theme') !== 'light') {
-                root.setAttribute('data-theme', 'light');
-              }
-            } else {
-              if (root.hasAttribute('data-theme')) {
-                root.removeAttribute('data-theme');
-              }
-            }
-          } catch (error) {}
-        });
+        try {
 
-        observer.observe(root, {
-          attributes: true,
-          attributeFilter: ['data-theme']
-        });
+          const saved =
+            localStorage.getItem("theme");
 
-        /*
-         * التقاط زر الثيم الموجود في Header
-         */
-        document.addEventListener('click', (event) => {
-          const target = event.target;
 
-          if (!(target instanceof Element)) return;
+          if (saved === "dark") {
 
-          const themeButton = target.closest('#theme-btn');
-
-          if (themeButton) {
-            setTimeout(() => {
-              syncTheme();
-            }, 0);
-          }
-        });
-      })();
-    </script>
-
-    <!-- =========================================================
-         SHA-256 TOOL
-         ========================================================= -->
-
-    <script is:inline>
-      (() => {
-        const input = document.getElementById('inputText');
-        const resultBox = document.getElementById('resultBox');
-        const resultText = document.getElementById('resultText');
-        const generateBtn = document.getElementById('generateBtn');
-        const copyBtn = document.getElementById('copyBtn');
-        const clearBtn = document.getElementById('clearBtn');
-        const exampleBtn = document.getElementById('exampleBtn');
-        const status = document.getElementById('status');
-        const charCount = document.getElementById('charCount');
-
-        if (
-          !input ||
-          !resultBox ||
-          !resultText ||
-          !generateBtn ||
-          !copyBtn ||
-          !clearBtn ||
-          !exampleBtn ||
-          !status ||
-          !charCount
-        ) {
-          return;
-        }
-
-        let currentHash = '';
-
-        /* تحديث عدد الأحرف */
-        function updateCharCount() {
-          const length = input.value.length;
-
-          charCount.textContent =
-            `${length.toLocaleString('ar-MA')} حرف`;
-        }
-
-        /* عرض الحالة */
-        function showStatus(message, type = '') {
-          status.textContent = message;
-          status.className = 'status';
-
-          if (type) {
-            status.classList.add(type);
-          }
-        }
-
-        /* إنشاء SHA-256 */
-        async function generateSHA256(text) {
-          const encoder = new TextEncoder();
-          const data = encoder.encode(text);
-
-          const hashBuffer = await crypto.subtle.digest(
-            'SHA-256',
-            data
-          );
-
-          const hashArray = Array.from(
-            new Uint8Array(hashBuffer)
-          );
-
-          return hashArray
-            .map((byte) =>
-              byte.toString(16).padStart(2, '0')
-            )
-            .join('');
-        }
-
-        /* إنشاء Hash */
-        async function handleGenerate() {
-          const text = input.value;
-
-          if (!text) {
-            resultBox.classList.add('error-result');
-
-            resultText.textContent =
-              'يرجى إدخال نص أولاً...';
-
-            copyBtn.disabled = true;
-            currentHash = '';
-
-            showStatus(
-              'الرجاء إدخال النص الذي تريد إنشاء SHA-256 له.',
-              'error'
+            root.classList.add(
+              "dark-mode"
             );
 
-            input.focus();
+          } else {
 
-            setTimeout(() => {
-              resultBox.classList.remove('error-result');
-            }, 1800);
+            root.classList.remove(
+              "dark-mode"
+            );
+          }
 
+        } catch {}
+      }
+
+
+      syncTheme();
+
+
+      window.addEventListener(
+        "themeChange",
+        syncTheme
+      );
+
+
+      document.addEventListener(
+        "click",
+        (event) => {
+
+          const target =
+            event.target;
+
+          if (
+            !(target instanceof Element)
+          ) {
             return;
           }
 
-          generateBtn.disabled = true;
-          generateBtn.classList.add('loading');
 
-          generateBtn.innerHTML = `
-            <i class="fa-solid fa-spinner fa-spin"></i>
-            جارٍ الإنشاء...
-          `;
-
-          showStatus('');
-
-          try {
-            const hash = await generateSHA256(text);
-
-            currentHash = hash;
-
-            resultBox.classList.remove(
-              'empty',
-              'error-result'
+          const button =
+            target.closest(
+              "#theme-btn"
             );
 
-            resultBox.classList.add('success-result');
 
-            resultText.textContent = hash;
+          if (button) {
 
-            copyBtn.disabled = false;
-
-            showStatus(
-              'تم إنشاء SHA-256 بنجاح.',
-              'success'
+            setTimeout(
+              syncTheme,
+              0
             );
-
-          } catch (error) {
-            console.error(error);
-
-            resultBox.classList.remove('success-result');
-            resultBox.classList.add('error-result');
-
-            resultText.textContent =
-              'حدث خطأ أثناء إنشاء SHA-256.';
-
-            copyBtn.disabled = true;
-
-            showStatus(
-              'تعذر إنشاء Hash.',
-              'error'
-            );
-
-          } finally {
-            generateBtn.disabled = false;
-            generateBtn.classList.remove('loading');
-
-            generateBtn.innerHTML = `
-              <i class="fa-solid fa-bolt"></i>
-              إنشاء SHA-256
-            `;
           }
-        }
 
-        /* نسخ النتيجة */
-        async function handleCopy() {
-          if (!currentHash) return;
+        }
+      );
+
+
+      const observer =
+        new MutationObserver(() => {
 
           try {
-            await navigator.clipboard.writeText(currentHash);
 
-            copyBtn.innerHTML = `
-              <i class="fa-solid fa-check"></i>
-              تم النسخ
-            `;
-
-            copyBtn.classList.add('copied');
-
-            showStatus(
-              'تم نسخ SHA-256 إلى الحافظة.',
-              'success'
-            );
-
-            setTimeout(() => {
-              copyBtn.innerHTML = `
-                <i class="fa-regular fa-copy"></i>
-                نسخ
-              `;
-
-              copyBtn.classList.remove('copied');
-            }, 1800);
-
-          } catch (error) {
-            /*
-             * Fallback للمتصفحات التي لا تدعم clipboard
-             */
-            const textarea =
-              document.createElement('textarea');
-
-            textarea.value = currentHash;
-
-            textarea.style.position = 'fixed';
-            textarea.style.opacity = '0';
-
-            document.body.appendChild(textarea);
-
-            textarea.select();
-
-            try {
-              document.execCommand('copy');
-
-              showStatus(
-                'تم نسخ SHA-256.',
-                'success'
+            const saved =
+              localStorage.getItem(
+                "theme"
               );
-            } catch (copyError) {
-              showStatus(
-                'تعذر النسخ تلقائيًا.',
-                'error'
-              );
+
+
+            if (saved === "dark") {
+
+              if (
+                !root.classList.contains(
+                  "dark-mode"
+                )
+              ) {
+
+                root.classList.add(
+                  "dark-mode"
+                );
+              }
+
+            } else {
+
+              if (
+                root.classList.contains(
+                  "dark-mode"
+                )
+              ) {
+
+                root.classList.remove(
+                  "dark-mode"
+                );
+              }
+
             }
 
-            textarea.remove();
-          }
+          } catch {}
+
+        });
+
+
+      observer.observe(
+        root,
+        {
+          attributes: true,
+          attributeFilter: ["class"]
         }
+      );
 
-        /* مسح */
-        function handleClear() {
-          input.value = '';
+    })();
+  </script>
 
-          currentHash = '';
 
-          resultText.textContent =
-            'ستظهر قيمة SHA-256 هنا...';
+  <!-- TOOL SCRIPT -->
+  <script is:inline>
+    (() => {
 
-          resultBox.classList.remove(
-            'success-result',
-            'error-result'
+      const input =
+        document.getElementById(
+          "textInput"
+        );
+
+      const generateBtn =
+        document.getElementById(
+          "generateBtn"
+        );
+
+      const exampleBtn =
+        document.getElementById(
+          "exampleBtn"
+        );
+
+      const clearBtn =
+        document.getElementById(
+          "clearBtn"
+        );
+
+      const copyBtn =
+        document.getElementById(
+          "copyBtn"
+        );
+
+      const outputCopyBtn =
+        document.getElementById(
+          "outputCopyBtn"
+        );
+
+      const inputCount =
+        document.getElementById(
+          "inputCount"
+        );
+
+      const hashOutput =
+        document.getElementById(
+          "hashOutput"
+        );
+
+      const resultBox =
+        document.getElementById(
+          "resultBox"
+        );
+
+      const resultIcon =
+        document.getElementById(
+          "resultIcon"
+        );
+
+      const resultTitle =
+        document.getElementById(
+          "resultTitle"
+        );
+
+      const resultMessage =
+        document.getElementById(
+          "resultMessage"
+        );
+
+      const statChars =
+        document.getElementById(
+          "statChars"
+        );
+
+      const statBytes =
+        document.getElementById(
+          "statBytes"
+        );
+
+      const statHashLength =
+        document.getElementById(
+          "statHashLength"
+        );
+
+      const statStatus =
+        document.getElementById(
+          "statStatus"
+        );
+
+
+      if (
+        !input ||
+        !generateBtn ||
+        !exampleBtn ||
+        !clearBtn ||
+        !copyBtn ||
+        !outputCopyBtn
+      ) {
+        return;
+      }
+
+
+      let currentHash = "";
+
+
+      function updateStats() {
+
+        const text =
+          input.value;
+
+
+        const chars =
+          text.length;
+
+
+        const bytes =
+          new TextEncoder()
+            .encode(text)
+            .length;
+
+
+        inputCount.textContent =
+          `${chars.toLocaleString()} حرف`;
+
+
+        statChars.textContent =
+          chars.toLocaleString();
+
+
+        statBytes.textContent =
+          bytes.toLocaleString();
+      }
+
+
+      function showReady() {
+
+        resultBox.classList.remove(
+          "success",
+          "error"
+        );
+
+
+        resultIcon.innerHTML =
+          '<i class="fa-solid fa-circle-question"></i>';
+
+
+        resultTitle.textContent =
+          "جاهز لإنشاء Hash";
+
+
+        resultMessage.textContent =
+          "أدخل نصاً ثم اضغط على إنشاء SHA-256.";
+
+
+        statStatus.textContent =
+          "جاهز";
+      }
+
+
+      function showSuccess(message) {
+
+        resultBox.classList.remove(
+          "error"
+        );
+
+
+        resultBox.classList.add(
+          "success"
+        );
+
+
+        resultIcon.innerHTML =
+          '<i class="fa-solid fa-circle-check"></i>';
+
+
+        resultTitle.textContent =
+          "تم إنشاء SHA-256 بنجاح";
+
+
+        resultMessage.textContent =
+          message;
+
+
+        statStatus.textContent =
+          "تم الإنشاء";
+      }
+
+
+      function showError(message) {
+
+        resultBox.classList.remove(
+          "success"
+        );
+
+
+        resultBox.classList.add(
+          "error"
+        );
+
+
+        resultIcon.innerHTML =
+          '<i class="fa-solid fa-circle-xmark"></i>';
+
+
+        resultTitle.textContent =
+          "تعذر إنشاء Hash";
+
+
+        resultMessage.textContent =
+          message;
+
+
+        statStatus.textContent =
+          "خطأ";
+      }
+
+
+      function resetOutput() {
+
+        currentHash = "";
+
+
+        hashOutput.textContent =
+          "—";
+
+
+        statHashLength.textContent =
+          "0";
+      }
+
+
+      async function sha256(text) {
+
+        const encoder =
+          new TextEncoder();
+
+
+        const data =
+          encoder.encode(text);
+
+
+        const hashBuffer =
+          await crypto.subtle.digest(
+            "SHA-256",
+            data
           );
 
-          resultBox.classList.add('empty');
 
-          copyBtn.disabled = true;
+        const hashArray =
+          Array.from(
+            new Uint8Array(
+              hashBuffer
+            )
+          );
 
-          showStatus('');
 
-          updateCharCount();
+        return hashArray
+          .map(
+            byte =>
+              byte
+                .toString(16)
+                .padStart(2, "0")
+          )
+          .join("");
+      }
 
-          input.focus();
+
+      async function generateHash() {
+
+        const text =
+          input.value;
+
+
+        updateStats();
+
+
+        if (!text) {
+
+          resetOutput();
+
+
+          showError(
+            "أدخل نصاً أولاً لإنشاء SHA-256 Hash."
+          );
+
+
+          return;
         }
 
-        /* مثال */
-        function handleExample() {
-          input.value =
-            'Hello, World!';
 
-          updateCharCount();
+        generateBtn.disabled =
+          true;
 
-          handleGenerate();
+
+        const originalButton =
+          generateBtn.innerHTML;
+
+
+        generateBtn.innerHTML =
+          '<i class="fa-solid fa-spinner fa-spin"></i> إنشاء...';
+
+
+        try {
+
+          currentHash =
+            await sha256(text);
+
+
+          hashOutput.textContent =
+            currentHash;
+
+
+          statHashLength.textContent =
+            currentHash.length;
+
+
+          showSuccess(
+            "تم إنشاء SHA-256 Hash داخل المتصفح بنجاح."
+          );
+
+        } catch (error) {
+
+          console.error(error);
+
+
+          resetOutput();
+
+
+          showError(
+            "حدث خطأ أثناء إنشاء SHA-256 Hash."
+          );
+
+        } finally {
+
+          generateBtn.disabled =
+            false;
+
+
+          generateBtn.innerHTML =
+            originalButton;
+        }
+      }
+
+
+      function loadExample() {
+
+        input.value =
+          "Hello, World!";
+
+
+        updateStats();
+
+
+        generateHash();
+      }
+
+
+      function clearAll() {
+
+        input.value =
+          "";
+
+
+        updateStats();
+
+
+        resetOutput();
+
+
+        showReady();
+
+
+        input.focus();
+      }
+
+
+      async function copyHash(button) {
+
+        if (!currentHash) {
+
+          showError(
+            "لا توجد نتيجة SHA-256 لنسخها."
+          );
+
+
+          return;
         }
 
-        input.addEventListener(
-          'input',
-          updateCharCount
-        );
 
-        generateBtn.addEventListener(
-          'click',
-          handleGenerate
-        );
+        try {
 
-        copyBtn.addEventListener(
-          'click',
-          handleCopy
-        );
+          await navigator.clipboard.writeText(
+            currentHash
+          );
 
-        clearBtn.addEventListener(
-          'click',
-          handleClear
-        );
 
-        exampleBtn.addEventListener(
-          'click',
-          handleExample
-        );
+          const original =
+            button.innerHTML;
 
-        input.addEventListener(
-          'keydown',
-          (event) => {
-            if (
-              (event.ctrlKey || event.metaKey) &&
-              event.key === 'Enter'
-            ) {
-              event.preventDefault();
-              handleGenerate();
-            }
+
+          button.innerHTML =
+            '<i class="fa-solid fa-check"></i> تم النسخ';
+
+
+          setTimeout(() => {
+
+            button.innerHTML =
+              original;
+
+          }, 1500);
+
+        } catch {
+
+          const temp =
+            document.createElement(
+              "textarea"
+            );
+
+
+          temp.value =
+            currentHash;
+
+
+          document.body.appendChild(
+            temp
+          );
+
+
+          temp.select();
+
+
+          document.execCommand(
+            "copy"
+          );
+
+
+          temp.remove();
+
+
+          const original =
+            button.innerHTML;
+
+
+          button.innerHTML =
+            '<i class="fa-solid fa-check"></i> تم النسخ';
+
+
+          setTimeout(() => {
+
+            button.innerHTML =
+              original;
+
+          }, 1500);
+        }
+      }
+
+
+      input.addEventListener(
+        "input",
+        updateStats
+      );
+
+
+      input.addEventListener(
+        "keydown",
+        (event) => {
+
+          if (
+            event.ctrlKey &&
+            event.key === "Enter"
+          ) {
+
+            event.preventDefault();
+
+            generateHash();
           }
+
+        }
+      );
+
+
+      generateBtn.addEventListener(
+        "click",
+        generateHash
+      );
+
+
+      exampleBtn.addEventListener(
+        "click",
+        loadExample
+      );
+
+
+      clearBtn.addEventListener(
+        "click",
+        clearAll
+      );
+
+
+      copyBtn.addEventListener(
+        "click",
+        () => {
+          copyHash(copyBtn);
+        }
+      );
+
+
+      outputCopyBtn.addEventListener(
+        "click",
+        () => {
+          copyHash(outputCopyBtn);
+        }
+      );
+
+
+      updateStats();
+
+
+      resetOutput();
+
+    })();
+  </script>
+
+
+  <style>
+
+    :root {
+
+      --bg: #f7fafc;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+
+      --text: #172033;
+      --muted: #718096;
+
+      --border:
+        rgba(15, 23, 42, 0.09);
+
+      --primary: #7c3aed;
+      --primary-dark: #6d28d9;
+      --secondary: #a855f7;
+
+      --success: #16a34a;
+      --danger: #dc2626;
+      --warning: #d97706;
+
+      --shadow:
+        0 25px 70px
+        rgba(15, 23, 42, 0.10);
+    }
+
+
+    html.dark-mode {
+
+      --bg: #08070d;
+      --surface: #100d18;
+      --surface-2: #161221;
+
+      --text: #f8fafc;
+      --muted: #94a3b8;
+
+      --border:
+        rgba(148, 163, 184, 0.13);
+
+      --primary: #a78bfa;
+      --primary-dark: #8b5cf6;
+      --secondary: #c4b5fd;
+
+      --shadow:
+        0 30px 80px
+        rgba(0, 0, 0, 0.45);
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    body {
+
+      margin: 0;
+
+      background:
+        var(--bg);
+
+      color:
+        var(--text);
+
+      font-family:
+        "Cairo",
+        sans-serif;
+    }
+
+
+    .container {
+
+      width:
+        min(
+          1180px,
+          calc(100% - 32px)
         );
 
-        updateCharCount();
-      })();
-    </script>
+      margin:
+        auto;
+    }
 
-    <style>
-      :global(*) {
-        box-sizing: border-box;
+
+    /* HERO */
+
+    .hero {
+
+      padding:
+        38px 0 55px;
+
+      background:
+        radial-gradient(
+          circle at 10% 20%,
+          rgba(124, 58, 237, 0.13),
+          transparent 35%
+        ),
+        var(--bg);
+    }
+
+
+    .breadcrumb {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        10px;
+
+      flex-wrap:
+        wrap;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+      margin-bottom:
+        38px;
+    }
+
+
+    .breadcrumb a {
+
+      color:
+        var(--muted);
+
+      text-decoration:
+        none;
+    }
+
+
+    .breadcrumb i {
+
+      font-size:
+        9px;
+    }
+
+
+    .hero-content {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        28px;
+    }
+
+
+    .hero-icon {
+
+      width:
+        112px;
+
+      height:
+        112px;
+
+      flex:
+        0 0 112px;
+
+      border-radius:
+        30px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      flex-direction:
+        column;
+
+      gap:
+        4px;
+
+      background:
+        rgba(124, 58, 237, 0.12);
+
+      color:
+        var(--primary);
+
+      box-shadow:
+        inset 0 0 0 1px
+        rgba(124, 58, 237, 0.10);
+    }
+
+
+    .hero-icon i {
+
+      font-size:
+        40px;
+    }
+
+
+    .hero-icon span {
+
+      font:
+        700 13px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .badge {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      padding:
+        7px 13px;
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(124, 58, 237, 0.10);
+
+      color:
+        var(--primary);
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+    }
+
+
+    h1 {
+
+      margin:
+        12px 0 8px;
+
+      font-size:
+        clamp(
+          32px,
+          5vw,
+          52px
+        );
+
+      line-height:
+        1.1;
+    }
+
+
+    .hero-text p {
+
+      margin:
+        0;
+
+      max-width:
+        700px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        16px;
+
+      line-height:
+        1.9;
+    }
+
+
+    .tags {
+
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        8px;
+
+      margin-top:
+        17px;
+    }
+
+
+    .tags span {
+
+      padding:
+        5px 10px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        8px;
+
+      color:
+        var(--muted);
+
+      background:
+        var(--surface);
+
+      font:
+        500 11px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    /* TOOL */
+
+    .tool-section {
+
+      padding-bottom:
+        70px;
+    }
+
+
+    .generator-card {
+
+      overflow:
+        hidden;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        22px;
+
+      box-shadow:
+        var(--shadow);
+    }
+
+
+    .card-topbar {
+
+      min-height:
+        55px;
+
+      padding:
+        0 20px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .window-dots {
+
+      display:
+        flex;
+
+      gap:
+        6px;
+    }
+
+
+    .window-dots span {
+
+      width:
+        9px;
+
+      height:
+        9px;
+
+      border-radius:
+        50%;
+
+      background:
+        var(--border);
+    }
+
+
+    .tool-name {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      color:
+        var(--text);
+
+      font:
+        600 13px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .tool-name i {
+
+      color:
+        var(--primary);
+    }
+
+
+    .secure {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        6px;
+
+      color:
+        var(--success);
+
+      font-size:
+        11px;
+
+      font-weight:
+        700;
+    }
+
+
+    /* ACTIONBAR */
+
+    .actionbar {
+
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        9px;
+
+      padding:
+        15px 18px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+    }
+
+
+    .btn {
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        10px;
+
+      padding:
+        10px 15px;
+
+      font-family:
+        "Cairo",
+        sans-serif;
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+
+      cursor:
+        pointer;
+
+      transition:
+        0.2s;
+    }
+
+
+    .btn:hover {
+
+      transform:
+        translateY(-1px);
+    }
+
+
+    .btn i {
+
+      margin-left:
+        6px;
+    }
+
+
+    .btn-secondary {
+
+      color:
+        var(--text);
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .btn-primary {
+
+      color:
+        white;
+
+      background:
+        var(--primary);
+
+      border-color:
+        var(--primary);
+    }
+
+
+    .btn-primary:hover {
+
+      background:
+        var(--primary-dark);
+    }
+
+
+    .btn:disabled {
+
+      opacity:
+        0.65;
+
+      cursor:
+        wait;
+    }
+
+
+    /* EDITOR */
+
+    .editor-section,
+    .output-section {
+
+      margin:
+        20px;
+
+      overflow:
+        hidden;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        15px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .editor-header {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      padding:
+        11px 14px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+    }
+
+
+    .editor-header div {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      color:
+        var(--text);
+    }
+
+
+    .editor-header i {
+
+      color:
+        var(--primary);
+    }
+
+
+    .editor-header span {
+
+      font:
+        10px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    #textInput {
+
+      width:
+        100%;
+
+      min-height:
+        150px;
+
+      display:
+        block;
+
+      resize:
+        vertical;
+
+      padding:
+        18px;
+
+      border:
+        0;
+
+      outline:
+        0;
+
+      background:
+        transparent;
+
+      color:
+        var(--text);
+
+      direction:
+        rtl;
+
+      text-align:
+        right;
+
+      font:
+        13px/1.9
+        "Cairo",
+        sans-serif;
+    }
+
+
+    #textInput::placeholder {
+
+      color:
+        var(--muted);
+
+      opacity:
+        0.65;
+    }
+
+
+    /* RESULT */
+
+    .result-box {
+
+      margin:
+        0 20px 15px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        14px;
+
+      padding:
+        15px 17px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        14px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .result-icon {
+
+      width:
+        42px;
+
+      height:
+        42px;
+
+      flex:
+        0 0 42px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        11px;
+
+      background:
+        rgba(124, 58, 237, 0.10);
+
+      color:
+        var(--primary);
+
+      font-size:
+        17px;
+    }
+
+
+    .result-box strong {
+
+      display:
+        block;
+
+      font-size:
+        13px;
+    }
+
+
+    .result-box p {
+
+      margin:
+        3px 0 0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+
+      line-height:
+        1.7;
+    }
+
+
+    .result-box.success {
+
+      border-color:
+        rgba(22, 163, 74, 0.25);
+    }
+
+
+    .result-box.success .result-icon {
+
+      color:
+        var(--success);
+
+      background:
+        rgba(22, 163, 74, 0.10);
+    }
+
+
+    .result-box.error {
+
+      border-color:
+        rgba(220, 38, 38, 0.25);
+    }
+
+
+    .result-box.error .result-icon {
+
+      color:
+        var(--danger);
+
+      background:
+        rgba(220, 38, 38, 0.10);
+    }
+
+
+    /* OUTPUT */
+
+    .hash-output {
+
+      min-height:
+        110px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      padding:
+        20px;
+
+      overflow:
+        auto;
+
+      direction:
+        ltr;
+
+      text-align:
+        center;
+
+      word-break:
+        break-all;
+
+      color:
+        var(--primary);
+
+      font:
+        600 20px/1.7
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .copy-output {
+
+      margin:
+        0 14px 14px;
+
+      padding:
+        8px 12px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        8px;
+
+      background:
+        var(--surface);
+
+      color:
+        var(--muted);
+
+      font:
+        10px
+        "Cairo",
+        sans-serif;
+
+      cursor:
+        pointer;
+    }
+
+
+    .copy-output:hover {
+
+      color:
+        var(--primary);
+    }
+
+
+    .copy-output i {
+
+      margin-left:
+        5px;
+    }
+
+
+    /* STATS */
+
+    .stats-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap:
+        12px;
+
+      padding:
+        0 20px 20px;
+    }
+
+
+    .stat {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        11px;
+
+      min-width:
+        0;
+
+      padding:
+        14px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        13px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .stat-icon {
+
+      width:
+        36px;
+
+      height:
+        36px;
+
+      flex:
+        0 0 36px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        9px;
+
+      color:
+        var(--primary);
+
+      background:
+        rgba(124, 58, 237, 0.10);
+    }
+
+
+    .stat span {
+
+      display:
+        block;
+
+      color:
+        var(--muted);
+
+      font-size:
+        9px;
+    }
+
+
+    .stat strong {
+
+      display:
+        block;
+
+      max-width:
+        150px;
+
+      overflow:
+        hidden;
+
+      margin-top:
+        2px;
+
+      color:
+        var(--text);
+
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
+
+      font:
+        600 11px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    /* SECURITY */
+
+    .security-note {
+
+      display:
+        flex;
+
+      align-items:
+        flex-start;
+
+      gap:
+        12px;
+
+      margin:
+        0 20px 20px;
+
+      padding:
+        15px;
+
+      border:
+        1px solid
+        rgba(22, 163, 74, 0.20);
+
+      border-radius:
+        13px;
+
+      background:
+        rgba(22, 163, 74, 0.06);
+    }
+
+
+    .security-icon {
+
+      width:
+        38px;
+
+      height:
+        38px;
+
+      flex:
+        0 0 38px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        10px;
+
+      color:
+        var(--success);
+
+      background:
+        rgba(22, 163, 74, 0.10);
+    }
+
+
+    .security-note strong {
+
+      display:
+        block;
+
+      font-size:
+        12px;
+    }
+
+
+    .security-note p {
+
+      margin:
+        4px 0 0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+
+      line-height:
+        1.8;
+    }
+
+
+    /* SECTIONS */
+
+    .info-section,
+    .how-section,
+    .faq-section {
+
+      padding:
+        70px 0;
+    }
+
+
+    .info-section {
+
+      background:
+        var(--surface-2);
+
+      border-top:
+        1px solid
+        var(--border);
+
+      border-bottom:
+        1px solid
+        var(--border);
+    }
+
+
+    .section-heading {
+
+      max-width:
+        700px;
+
+      margin:
+        0 auto 35px;
+
+      text-align:
+        center;
+    }
+
+
+    .section-heading > span {
+
+      color:
+        var(--primary);
+
+      font:
+        700 11px
+        "JetBrains Mono",
+        monospace;
+
+      letter-spacing:
+        1px;
+    }
+
+
+    .section-heading h2 {
+
+      margin:
+        8px 0;
+
+      font-size:
+        clamp(
+          25px,
+          4vw,
+          34px
+        );
+    }
+
+
+    .section-heading p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      line-height:
+        1.9;
+
+      font-size:
+        14px;
+    }
+
+
+    .info-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap:
+        18px;
+    }
+
+
+    .info-card {
+
+      padding:
+        25px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        17px;
+
+      background:
+        var(--surface);
+    }
+
+
+    .info-icon {
+
+      width:
+        48px;
+
+      height:
+        48px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      margin-bottom:
+        17px;
+
+      border-radius:
+        13px;
+
+      color:
+        var(--primary);
+
+      background:
+        rgba(124, 58, 237, 0.10);
+    }
+
+
+    .info-card h3 {
+
+      margin:
+        0 0 7px;
+
+      font-size:
+        16px;
+    }
+
+
+    .info-card p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+      line-height:
+        1.9;
+    }
+
+
+    /* STEPS */
+
+    .steps {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap:
+        18px;
+    }
+
+
+    .step {
+
+      display:
+        flex;
+
+      gap:
+        15px;
+
+      padding:
+        22px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        16px;
+
+      background:
+        var(--surface);
+    }
+
+
+    .step-number {
+
+      width:
+        38px;
+
+      height:
+        38px;
+
+      flex:
+        0 0 38px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        10px;
+
+      color:
+        white;
+
+      background:
+        var(--primary);
+
+      font-weight:
+        800;
+    }
+
+
+    .step h3 {
+
+      margin:
+        0 0 5px;
+
+      font-size:
+        14px;
+    }
+
+
+    .step p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.8;
+    }
+
+
+    /* FAQ */
+
+    .faq-list {
+
+      max-width:
+        850px;
+
+      margin:
+        auto;
+    }
+
+
+    details {
+
+      margin-bottom:
+        10px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        13px;
+
+      background:
+        var(--surface);
+
+      overflow:
+        hidden;
+    }
+
+
+    summary {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      padding:
+        17px 19px;
+
+      cursor:
+        pointer;
+
+      font-size:
+        13px;
+
+      font-weight:
+        700;
+
+      list-style:
+        none;
+    }
+
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+
+    summary i {
+
+      color:
+        var(--primary);
+
+      transition:
+        transform 0.2s;
+    }
+
+
+    details[open] summary i {
+
+      transform:
+        rotate(180deg);
+    }
+
+
+    details p {
+
+      margin:
+        0;
+
+      padding:
+        0 19px 18px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.9;
+    }
+
+
+    /* RESPONSIVE */
+
+    @media (max-width: 850px) {
+
+      .stats-grid {
+
+        grid-template-columns:
+          repeat(2, 1fr);
       }
 
-      :global(html) {
-        scroll-behavior: smooth;
+
+      .info-grid,
+      .steps {
+
+        grid-template-columns:
+          1fr;
+      }
+    }
+
+
+    @media (max-width: 600px) {
+
+      .container {
+
+        width:
+          min(
+            100% - 22px,
+            1180px
+          );
       }
 
-      :global(body) {
-        margin: 0;
-        font-family: 'Cairo', sans-serif;
-      }
-
-      /* =========================================================
-         DARK THEME
-         ========================================================= */
-
-      :global(body) {
-        background: #070d18;
-        color: #e5edf7;
-        transition:
-          background-color 0.25s ease,
-          color 0.25s ease;
-      }
-
-      /* =========================================================
-         LIGHT THEME
-         ========================================================= */
-
-      :global(html[data-theme='light'] body) {
-        background: #f4f8fc;
-        color: #172033;
-      }
-
-      .page-wrapper {
-        min-height: 100vh;
-        padding-bottom: 70px;
-      }
-
-      /* =========================================================
-         HERO
-         ========================================================= */
 
       .hero {
-        position: relative;
-        text-align: center;
-        padding: 75px 20px 45px;
-        overflow: hidden;
+
+        padding-top:
+          25px;
       }
 
-      .hero::before {
-        content: '';
-        position: absolute;
-        width: 500px;
-        height: 500px;
-        border-radius: 50%;
-        background: rgba(37, 99, 235, 0.08);
-        filter: blur(80px);
-        top: -280px;
-        left: 50%;
-        transform: translateX(-50%);
-        pointer-events: none;
+
+      .hero-content {
+
+        align-items:
+          flex-start;
+
+        flex-direction:
+          column;
       }
 
-      .hero-badge {
-        position: relative;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 15px;
-        border: 1px solid rgba(59, 130, 246, 0.3);
-        border-radius: 999px;
-        color: #60a5fa;
-        background: rgba(37, 99, 235, 0.08);
-        font-size: 13px;
-        font-weight: 700;
-        margin-bottom: 18px;
+
+      .hero-icon {
+
+        width:
+          88px;
+
+        height:
+          88px;
+
+        flex-basis:
+          88px;
+
+        border-radius:
+          23px;
       }
 
-      .hero h1 {
-        position: relative;
-        margin: 0;
-        font-size: clamp(34px, 6vw, 58px);
-        line-height: 1.2;
-        font-weight: 800;
-        letter-spacing: -1px;
+
+      .hero-icon i {
+
+        font-size:
+          31px;
       }
 
-      .hero h1 span {
-        color: #3b82f6;
+
+      .card-topbar {
+
+        padding:
+          0 13px;
       }
 
-      .hero p {
-        position: relative;
-        max-width: 700px;
-        margin: 18px auto 25px;
-        color: #94a3b8;
-        font-size: 16px;
-        line-height: 2;
+
+      .actionbar {
+
+        padding:
+          12px;
       }
 
-      :global(html[data-theme='light']) .hero p {
-        color: #64748b;
-      }
-
-      .breadcrumb {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-        color: #64748b;
-        font-size: 13px;
-      }
-
-      .breadcrumb a {
-        color: #60a5fa;
-        text-decoration: none;
-        transition: color 0.2s ease;
-      }
-
-      .breadcrumb a:hover {
-        color: #93c5fd;
-      }
-
-      .breadcrumb i {
-        font-size: 9px;
-        color: #475569;
-      }
-
-      /* =========================================================
-         TOOL SECTION
-         ========================================================= */
-
-      .tool-section {
-        width: min(950px, calc(100% - 30px));
-        margin: 0 auto 50px;
-      }
-
-      .tool-card {
-        border: 1px solid rgba(148, 163, 184, 0.15);
-        border-radius: 24px;
-        overflow: hidden;
-        background: rgba(15, 23, 42, 0.88);
-        box-shadow:
-          0 20px 70px rgba(0, 0, 0, 0.25),
-          0 0 0 1px rgba(59, 130, 246, 0.03);
-        backdrop-filter: blur(15px);
-      }
-
-      :global(html[data-theme='light']) .tool-card {
-        background: #ffffff;
-        border-color: #e2e8f0;
-        box-shadow:
-          0 20px 60px rgba(15, 23, 42, 0.08);
-      }
-
-      .tool-header {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        padding: 22px 25px;
-        border-bottom: 1px solid rgba(148, 163, 184, 0.12);
-        background: rgba(30, 41, 59, 0.35);
-      }
-
-      :global(html[data-theme='light']) .tool-header {
-        background: #f8fafc;
-        border-color: #e2e8f0;
-      }
-
-      .tool-icon {
-        width: 52px;
-        height: 52px;
-        flex: 0 0 52px;
-        display: grid;
-        place-items: center;
-        border-radius: 16px;
-        color: #60a5fa;
-        background: rgba(37, 99, 235, 0.12);
-        border: 1px solid rgba(59, 130, 246, 0.2);
-        font-size: 22px;
-      }
-
-      .tool-title {
-        flex: 1;
-      }
-
-      .tool-title h2 {
-        margin: 0 0 3px;
-        font-size: 19px;
-        font-weight: 800;
-      }
-
-      .tool-title p {
-        margin: 0;
-        color: #64748b;
-        font-size: 12px;
-      }
-
-      .security-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        padding: 8px 12px;
-        border-radius: 999px;
-        color: #4ade80;
-        background: rgba(34, 197, 94, 0.08);
-        border: 1px solid rgba(34, 197, 94, 0.15);
-        font-size: 11px;
-        font-weight: 700;
-        white-space: nowrap;
-      }
-
-      .tool-content {
-        padding: 28px;
-      }
-
-      /* =========================================================
-         INPUT
-         ========================================================= */
-
-      .field-group {
-        margin-bottom: 18px;
-      }
-
-      .field-label {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 10px;
-        margin-bottom: 10px;
-      }
-
-      .field-label label {
-        font-size: 14px;
-        font-weight: 700;
-      }
-
-      .field-label span {
-        color: #64748b;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 11px;
-      }
-
-      textarea {
-        width: 100%;
-        min-height: 180px;
-        resize: vertical;
-        display: block;
-        padding: 17px;
-        border: 1px solid #334155;
-        border-radius: 14px;
-        outline: none;
-        background: #0b1220;
-        color: #e2e8f0;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 14px;
-        line-height: 1.8;
-        direction: auto;
-        transition:
-          border-color 0.2s ease,
-          box-shadow 0.2s ease,
-          background 0.2s ease;
-      }
-
-      textarea::placeholder {
-        color: #475569;
-      }
-
-      textarea:focus {
-        border-color: #3b82f6;
-        box-shadow:
-          0 0 0 3px rgba(59, 130, 246, 0.12);
-      }
-
-      :global(html[data-theme='light']) textarea {
-        background: #f8fafc;
-        border-color: #cbd5e1;
-        color: #172033;
-      }
-
-      :global(html[data-theme='light']) textarea::placeholder {
-        color: #94a3b8;
-      }
-
-      /* =========================================================
-         BUTTONS
-         ========================================================= */
-
-      .actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 25px;
-      }
 
       .btn {
-        min-height: 46px;
-        border-radius: 12px;
-        padding: 0 18px;
-        border: 1px solid transparent;
-        display: inline-flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-        cursor: pointer;
-        font-family: 'Cairo', sans-serif;
-        font-size: 13px;
-        font-weight: 700;
-        transition:
-          transform 0.2s ease,
-          box-shadow 0.2s ease,
-          opacity 0.2s ease;
+
+        flex:
+          1 1
+          calc(50% - 8px);
+
+        padding:
+          9px 8px;
       }
 
-      .btn:hover:not(:disabled) {
-        transform: translateY(-2px);
+
+      .editor-section,
+      .output-section {
+
+        margin:
+          12px;
       }
 
-      .btn:disabled {
-        cursor: not-allowed;
-        opacity: 0.55;
+
+      #textInput {
+
+        min-height:
+          140px;
+
+        padding:
+          14px;
+
+        font-size:
+          12px;
       }
 
-      .btn-primary {
-        flex: 1;
-        background: #2563eb;
-        color: white;
-        box-shadow:
-          0 8px 25px rgba(37, 99, 235, 0.25);
-      }
-
-      .btn-primary:hover:not(:disabled) {
-        background: #1d4ed8;
-        box-shadow:
-          0 10px 30px rgba(37, 99, 235, 0.35);
-      }
-
-      .btn-secondary {
-        color: #cbd5e1;
-        background: #1e293b;
-        border-color: #334155;
-      }
-
-      :global(html[data-theme='light']) .btn-secondary {
-        color: #334155;
-        background: #f1f5f9;
-        border-color: #cbd5e1;
-      }
-
-      .btn-danger {
-        color: #fca5a5;
-        background: rgba(239, 68, 68, 0.08);
-        border-color: rgba(239, 68, 68, 0.2);
-      }
-
-      :global(html[data-theme='light']) .btn-danger {
-        color: #dc2626;
-        background: #fef2f2;
-        border-color: #fecaca;
-      }
-
-      /* =========================================================
-         RESULT
-         ========================================================= */
-
-      .result-section {
-        margin-top: 5px;
-      }
-
-      .result-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 10px;
-        font-size: 14px;
-        font-weight: 700;
-      }
-
-      .result-header > div {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .result-header > div i {
-        color: #60a5fa;
-      }
-
-      .copy-btn {
-        border: 1px solid #334155;
-        background: #1e293b;
-        color: #cbd5e1;
-        border-radius: 9px;
-        padding: 7px 12px;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        cursor: pointer;
-        font-family: 'Cairo', sans-serif;
-        font-size: 11px;
-        font-weight: 700;
-        transition: all 0.2s ease;
-      }
-
-      .copy-btn:hover:not(:disabled) {
-        border-color: #3b82f6;
-        color: #60a5fa;
-      }
-
-      .copy-btn:disabled {
-        cursor: not-allowed;
-        opacity: 0.45;
-      }
-
-      .copy-btn.copied {
-        color: #4ade80;
-        border-color: rgba(34, 197, 94, 0.3);
-      }
-
-      :global(html[data-theme='light']) .copy-btn {
-        background: #f8fafc;
-        color: #475569;
-        border-color: #cbd5e1;
-      }
 
       .result-box {
-        min-height: 85px;
-        display: flex;
-        align-items: center;
-        padding: 18px;
-        border-radius: 14px;
-        border: 1px solid #334155;
-        background: #080f1d;
-        overflow-x: auto;
+
+        margin:
+          0 12px 12px;
       }
 
-      :global(html[data-theme='light']) .result-box {
-        background: #f8fafc;
-        border-color: #cbd5e1;
+
+      .hash-output {
+
+        min-height:
+          100px;
+
+        padding:
+          15px;
+
+        font-size:
+          14px;
       }
 
-      .result-box span {
-        width: 100%;
-        word-break: break-all;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 13px;
-        line-height: 1.8;
-        direction: ltr;
-        text-align: left;
+
+      .stats-grid {
+
+        padding:
+          0 12px 12px;
+
+        gap:
+          8px;
       }
 
-      .result-box.empty span {
-        color: #475569;
-        text-align: center;
-      }
-
-      .result-box.success-result {
-        border-color: rgba(34, 197, 94, 0.35);
-        background: rgba(34, 197, 94, 0.035);
-      }
-
-      .result-box.success-result span {
-        color: #4ade80;
-      }
-
-      :global(html[data-theme='light'])
-        .result-box.success-result span {
-        color: #15803d;
-      }
-
-      .result-box.error-result {
-        border-color: rgba(239, 68, 68, 0.4);
-        background: rgba(239, 68, 68, 0.05);
-      }
-
-      .result-box.error-result span {
-        color: #f87171;
-        text-align: center;
-        font-family: 'Cairo', sans-serif;
-      }
-
-      .status {
-        min-height: 22px;
-        margin-top: 8px;
-        font-size: 12px;
-      }
-
-      .status.success {
-        color: #4ade80;
-      }
-
-      .status.error {
-        color: #f87171;
-      }
-
-      /* =========================================================
-         STATS
-         ========================================================= */
-
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-        margin-top: 24px;
-      }
 
       .stat {
-        display: flex;
-        align-items: center;
-        gap: 11px;
-        padding: 14px;
-        border: 1px solid rgba(148, 163, 184, 0.12);
-        border-radius: 13px;
-        background: rgba(30, 41, 59, 0.3);
+
+        padding:
+          11px 9px;
       }
 
-      :global(html[data-theme='light']) .stat {
-        background: #f8fafc;
-        border-color: #e2e8f0;
-      }
 
       .stat-icon {
-        width: 37px;
-        height: 37px;
-        display: grid;
-        place-items: center;
-        flex: 0 0 37px;
-        border-radius: 10px;
-        color: #60a5fa;
-        background: rgba(37, 99, 235, 0.1);
+
+        width:
+          31px;
+
+        height:
+          31px;
+
+        flex-basis:
+          31px;
       }
 
-      .stat strong {
-        display: block;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 13px;
-        color: #e2e8f0;
-      }
-
-      :global(html[data-theme='light']) .stat strong {
-        color: #1e293b;
-      }
 
       .stat span {
-        display: block;
-        margin-top: 2px;
-        color: #64748b;
-        font-size: 10px;
+
+        font-size:
+          8px;
       }
 
-      /* =========================================================
-         INFO
-         ========================================================= */
 
-      .info-grid {
-        width: min(1100px, calc(100% - 30px));
-        margin: 0 auto 70px;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 18px;
+      .stat strong {
+
+        max-width:
+          100px;
+
+        font-size:
+          9px;
       }
 
-      .info-card {
-        padding: 24px;
-        border: 1px solid rgba(148, 163, 184, 0.13);
-        border-radius: 18px;
-        background: rgba(15, 23, 42, 0.55);
+
+      .security-note {
+
+        margin:
+          0 12px 12px;
+
+        padding:
+          12px;
       }
 
-      :global(html[data-theme='light']) .info-card {
-        background: white;
-        border-color: #e2e8f0;
-        box-shadow: 0 8px 30px rgba(15, 23, 42, 0.04);
-      }
 
-      .info-card-icon {
-        width: 45px;
-        height: 45px;
-        display: grid;
-        place-items: center;
-        border-radius: 13px;
-        margin-bottom: 16px;
-        font-size: 18px;
-      }
-
-      .info-card-icon.blue {
-        color: #60a5fa;
-        background: rgba(37, 99, 235, 0.1);
-      }
-
-      .info-card-icon.green {
-        color: #4ade80;
-        background: rgba(34, 197, 94, 0.1);
-      }
-
-      .info-card-icon.purple {
-        color: #c084fc;
-        background: rgba(168, 85, 247, 0.1);
-      }
-
-      .info-card h3 {
-        margin: 0 0 9px;
-        font-size: 16px;
-      }
-
-      .info-card p {
-        margin: 0;
-        color: #94a3b8;
-        font-size: 12px;
-        line-height: 2;
-      }
-
-      :global(html[data-theme='light']) .info-card p {
-        color: #64748b;
-      }
-
-      /* =========================================================
-         GUIDE
-         ========================================================= */
-
-      .guide-section,
+      .info-section,
+      .how-section,
       .faq-section {
-        width: min(950px, calc(100% - 30px));
-        margin: 0 auto 70px;
+
+        padding:
+          50px 0;
       }
 
-      .section-heading {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        margin-bottom: 25px;
-      }
+    }
 
-      .section-number {
-        width: 43px;
-        height: 43px;
-        display: grid;
-        place-items: center;
-        border-radius: 13px;
-        color: #60a5fa;
-        background: rgba(37, 99, 235, 0.1);
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 12px;
-        font-weight: 700;
-      }
+  </style>
 
-      .section-heading h2 {
-        margin: 0 0 3px;
-        font-size: 22px;
-      }
-
-      .section-heading p {
-        margin: 0;
-        color: #64748b;
-        font-size: 12px;
-      }
-
-      .steps {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
-      }
-
-      .step {
-        display: flex;
-        gap: 13px;
-        padding: 20px;
-        border: 1px solid rgba(148, 163, 184, 0.12);
-        border-radius: 16px;
-        background: rgba(15, 23, 42, 0.5);
-      }
-
-      :global(html[data-theme='light']) .step {
-        background: white;
-        border-color: #e2e8f0;
-      }
-
-      .step-number {
-        width: 32px;
-        height: 32px;
-        display: grid;
-        place-items: center;
-        flex: 0 0 32px;
-        border-radius: 9px;
-        color: white;
-        background: #2563eb;
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      .step h3 {
-        margin: 0 0 5px;
-        font-size: 13px;
-      }
-
-      .step p {
-        margin: 0;
-        color: #64748b;
-        font-size: 11px;
-        line-height: 1.8;
-      }
-
-      /* =========================================================
-         FAQ
-         ========================================================= */
-
-      .faq-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-      }
-
-      .faq-list details {
-        border: 1px solid rgba(148, 163, 184, 0.13);
-        border-radius: 14px;
-        background: rgba(15, 23, 42, 0.5);
-        overflow: hidden;
-      }
-
-      :global(html[data-theme='light']) .faq-list details {
-        background: white;
-        border-color: #e2e8f0;
-      }
-
-      .faq-list summary {
-        min-height: 58px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 15px;
-        padding: 0 18px;
-        cursor: pointer;
-        list-style: none;
-        font-size: 13px;
-        font-weight: 700;
-      }
-
-      .faq-list summary::-webkit-details-marker {
-        display: none;
-      }
-
-      .faq-list summary i {
-        color: #64748b;
-        font-size: 11px;
-        transition: transform 0.2s ease;
-      }
-
-      .faq-list details[open] summary i {
-        transform: rotate(180deg);
-      }
-
-      .faq-list details p {
-        margin: 0;
-        padding: 0 18px 18px;
-        color: #94a3b8;
-        font-size: 12px;
-        line-height: 2;
-      }
-
-      :global(html[data-theme='light']) .faq-list details p {
-        color: #64748b;
-      }
-
-      /* =========================================================
-         RESPONSIVE
-         ========================================================= */
-
-      @media (max-width: 800px) {
-        .info-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .steps {
-          grid-template-columns: 1fr;
-        }
-
-        .tool-header {
-          flex-wrap: wrap;
-        }
-
-        .security-badge {
-          margin-right: auto;
-        }
-      }
-
-      @media (max-width: 600px) {
-        .hero {
-          padding-top: 50px;
-          padding-bottom: 35px;
-        }
-
-        .hero h1 {
-          font-size: 36px;
-        }
-
-        .hero p {
-          font-size: 13px;
-          line-height: 1.9;
-        }
-
-        .tool-section,
-        .info-grid,
-        .guide-section,
-        .faq-section {
-          width: min(100% - 20px, 950px);
-        }
-
-        .tool-card {
-          border-radius: 18px;
-        }
-
-        .tool-header {
-          padding: 18px;
-        }
-
-        .tool-content {
-          padding: 18px;
-        }
-
-        .tool-icon {
-          width: 45px;
-          height: 45px;
-          flex-basis: 45px;
-        }
-
-        .tool-title h2 {
-          font-size: 16px;
-        }
-
-        .security-badge {
-          width: 100%;
-          justify-content: center;
-          margin-top: 2px;
-        }
-
-        textarea {
-          min-height: 150px;
-          font-size: 12px;
-        }
-
-        .actions {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-        }
-
-        .btn-primary {
-          grid-column: 1 / -1;
-        }
-
-        .stats {
-          grid-template-columns: 1fr;
-        }
-
-        .stat {
-          justify-content: flex-start;
-        }
-
-        .section-heading h2 {
-          font-size: 19px;
-        }
-      }
-
-      @media (prefers-reduced-motion: reduce) {
-        *,
-        *::before,
-        *::after {
-          scroll-behavior: auto !important;
-          transition: none !important;
-          animation: none !important;
-        }
-      }
-    </style>
-  </body>
+</body>
 </html>
