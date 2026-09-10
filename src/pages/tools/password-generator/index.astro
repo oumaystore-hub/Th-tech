@@ -1,0 +1,1623 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Password Generator - مولد كلمات المرور | Th.Tech";
+
+const description =
+  "مولد كلمات مرور قوي وآمن ومجاني لإنشاء كلمات مرور عشوائية باستخدام الأحرف والأرقام والرموز مباشرة من المتصفح.";
+
+const faqs = [
+  {
+    q: "هل كلمات المرور يتم إرسالها إلى الخادم؟",
+    a: "لا. يتم إنشاء كلمات المرور بالكامل داخل المتصفح ولا يتم إرسالها إلى أي خادم."
+  },
+  {
+    q: "ما الطول المناسب لكلمة المرور؟",
+    a: "يفضل استخدام كلمة مرور لا تقل عن 12 حرفًا، وكلما زاد الطول زادت صعوبة تخمينها."
+  },
+  {
+    q: "هل يمكن استخدام الرموز؟",
+    a: "نعم. يمكنك تفعيل الرموز والأرقام والأحرف الكبيرة والصغيرة حسب احتياجاتك."
+  },
+  {
+    q: "هل الأداة مناسبة لإنشاء كلمات مرور قوية؟",
+    a: "نعم. تستخدم الأداة مولد أرقام عشوائية آمنًا من المتصفح عند توفره لإنشاء كلمات مرور عشوائية."
+  }
+];
+---
+
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <link rel="canonical" href={`https://oumaystore-hub.github.io${base}/tools/password-generator/`} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+
+          if (saved === "dark") {
+            document.documentElement.classList.add("dark-mode");
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="page">
+      <div class="container">
+
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <a href={`${base}/tools/`}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <span>Password Generator</span>
+        </div>
+
+        <section class="hero">
+          <div class="hero-badge">
+            <i class="fa-solid fa-key"></i>
+            Security Tools
+          </div>
+
+          <div class="hero-icon">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+
+          <h1>مولد كلمات المرور</h1>
+
+          <p>
+            أنشئ كلمات مرور قوية وعشوائية وآمنة مباشرة من متصفحك
+          </p>
+
+          <div class="hero-tags">
+            <span><i class="fa-solid fa-shield-halved"></i> آمن</span>
+            <span><i class="fa-solid fa-bolt"></i> سريع</span>
+            <span><i class="fa-solid fa-wifi"></i> بدون خادم</span>
+          </div>
+        </section>
+
+        <section class="generator-card">
+
+          <div class="card-topbar">
+            <div class="topbar-title">
+              <i class="fa-solid fa-key"></i>
+              <span>Password Generator</span>
+            </div>
+
+            <div class="secure-badge">
+              <i class="fa-solid fa-shield-halved"></i>
+              Local
+            </div>
+          </div>
+
+          <div class="actionbar">
+            <button id="generateBtn" class="btn primary">
+              <i class="fa-solid fa-rotate"></i>
+              توليد كلمة مرور
+            </button>
+
+            <button id="copyBtn" class="btn secondary">
+              <i class="fa-regular fa-copy"></i>
+              نسخ
+            </button>
+
+            <button id="clearBtn" class="btn ghost">
+              <i class="fa-solid fa-trash"></i>
+              مسح
+            </button>
+          </div>
+
+          <div class="workspace">
+
+            <div class="settings-panel">
+              <div class="section-title">
+                <i class="fa-solid fa-sliders"></i>
+                إعدادات كلمة المرور
+              </div>
+
+              <div class="length-box">
+                <div class="length-head">
+                  <label for="length">طول كلمة المرور</label>
+                  <strong id="lengthValue">16</strong>
+                </div>
+
+                <input
+                  id="length"
+                  type="range"
+                  min="4"
+                  max="64"
+                  value="16"
+                />
+
+                <div class="range-labels">
+                  <span>4</span>
+                  <span>64</span>
+                </div>
+              </div>
+
+              <div class="options">
+
+                <label class="option">
+                  <input id="lowercase" type="checkbox" checked />
+                  <span class="checkmark"></span>
+
+                  <span class="option-icon">
+                    <i class="fa-solid fa-font"></i>
+                  </span>
+
+                  <span class="option-text">
+                    <strong>أحرف صغيرة</strong>
+                    <small>a-z</small>
+                  </span>
+                </label>
+
+                <label class="option">
+                  <input id="uppercase" type="checkbox" checked />
+                  <span class="checkmark"></span>
+
+                  <span class="option-icon">
+                    <i class="fa-solid fa-font"></i>
+                  </span>
+
+                  <span class="option-text">
+                    <strong>أحرف كبيرة</strong>
+                    <small>A-Z</small>
+                  </span>
+                </label>
+
+                <label class="option">
+                  <input id="numbers" type="checkbox" checked />
+                  <span class="checkmark"></span>
+
+                  <span class="option-icon">
+                    <i class="fa-solid fa-hashtag"></i>
+                  </span>
+
+                  <span class="option-text">
+                    <strong>أرقام</strong>
+                    <small>0-9</small>
+                  </span>
+                </label>
+
+                <label class="option">
+                  <input id="symbols" type="checkbox" checked />
+                  <span class="checkmark"></span>
+
+                  <span class="option-icon">
+                    <i class="fa-solid fa-at"></i>
+                  </span>
+
+                  <span class="option-text">
+                    <strong>رموز</strong>
+                    <small>!@#$%</small>
+                  </span>
+                </label>
+
+              </div>
+
+              <div class="advanced-options">
+                <label class="toggle-option">
+                  <input id="excludeSimilar" type="checkbox" />
+                  <span class="toggle"></span>
+                  <span>استبعاد الأحرف المتشابهة</span>
+                </label>
+
+                <label class="toggle-option">
+                  <input id="excludeAmbiguous" type="checkbox" />
+                  <span class="toggle"></span>
+                  <span>استبعاد الرموز المربكة</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="password-panel">
+
+              <div class="section-title">
+                <i class="fa-solid fa-shield-halved"></i>
+                كلمة المرور الناتجة
+              </div>
+
+              <div class="password-display">
+                <input
+                  id="passwordOutput"
+                  type="text"
+                  value=""
+                  readonly
+                  spellcheck="false"
+                  autocomplete="off"
+                />
+
+                <button id="copyIconBtn" class="copy-icon" title="نسخ">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+
+              <div class="strength-area">
+                <div class="strength-head">
+                  <span>قوة كلمة المرور</span>
+                  <strong id="strengthText">قوية</strong>
+                </div>
+
+                <div class="strength-bar">
+                  <span id="strengthFill"></span>
+                </div>
+              </div>
+
+              <div class="password-meta">
+                <div>
+                  <span>الطول</span>
+                  <strong id="metaLength">16</strong>
+                </div>
+
+                <div>
+                  <span>التنوع</span>
+                  <strong id="metaTypes">4 أنواع</strong>
+                </div>
+
+                <div>
+                  <span>الحالة</span>
+                  <strong id="metaStatus">آمنة</strong>
+                </div>
+              </div>
+
+              <div id="status" class="status">
+                <i class="fa-solid fa-circle-check"></i>
+                تم إنشاء كلمة مرور قوية
+              </div>
+
+            </div>
+          </div>
+
+          <div class="quick-actions">
+            <span>طول سريع:</span>
+
+            <button data-length="8">8</button>
+            <button data-length="12">12</button>
+            <button data-length="16">16</button>
+            <button data-length="20">20</button>
+            <button data-length="32">32</button>
+          </div>
+
+        </section>
+
+        <section class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fa-solid fa-ruler-horizontal"></i>
+            </div>
+            <div>
+              <span>الطول</span>
+              <strong id="statLength">16</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <div>
+              <span>أنواع الأحرف</span>
+              <strong id="statTypes">4</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div>
+              <span>القوة</span>
+              <strong id="statStrength">قوية</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fa-solid fa-server"></i>
+            </div>
+            <div>
+              <span>المعالجة</span>
+              <strong>محلية</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="info-section">
+          <div class="section-heading">
+            <span class="mini-badge">
+              <i class="fa-solid fa-circle-info"></i>
+              معلومات
+            </span>
+
+            <h2>مولد كلمات مرور آمن وسهل الاستخدام</h2>
+
+            <p>
+              أنشئ كلمات مرور عشوائية وقوية لحساباتك وخدماتك المختلفة
+              دون إرسال أي بيانات إلى الإنترنت.
+            </p>
+          </div>
+
+          <div class="info-grid">
+
+            <article class="info-card">
+              <div class="info-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+
+              <h3>خصوصية كاملة</h3>
+
+              <p>
+                تتم عملية إنشاء كلمة المرور داخل المتصفح مباشرة، ولا يتم
+                حفظ أو إرسال كلمات المرور إلى الخادم.
+              </p>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon">
+                <i class="fa-solid fa-sliders"></i>
+              </div>
+
+              <h3>تحكم كامل</h3>
+
+              <p>
+                اختر طول كلمة المرور ونوع الأحرف والأرقام والرموز التي تريد استخدامها.
+              </p>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+
+              <h3>توليد سريع</h3>
+
+              <p>
+                أنشئ كلمات مرور جديدة فورًا بضغطة واحدة، مع تقييم تلقائي لقوة كلمة المرور.
+              </p>
+            </article>
+
+          </div>
+        </section>
+
+        <section class="how-section">
+          <div class="section-heading">
+            <span class="mini-badge">
+              <i class="fa-solid fa-list-check"></i>
+              طريقة الاستخدام
+            </span>
+
+            <h2>كيف تستخدم مولد كلمات المرور؟</h2>
+          </div>
+
+          <div class="steps">
+
+            <div class="step">
+              <div class="step-number">1</div>
+
+              <div>
+                <h3>حدد الطول</h3>
+                <p>
+                  اختر طول كلمة المرور المناسب من شريط التحكم.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">2</div>
+
+              <div>
+                <h3>اختر المكونات</h3>
+                <p>
+                  فعّل الأحرف الكبيرة والصغيرة والأرقام والرموز.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">3</div>
+
+              <div>
+                <h3>ولّد وانسخ</h3>
+                <p>
+                  اضغط على توليد ثم انسخ كلمة المرور لاستخدامها.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+        <section class="faq-section">
+          <div class="section-heading">
+            <span class="mini-badge">
+              <i class="fa-solid fa-circle-question"></i>
+              الأسئلة الشائعة
+            </span>
+
+            <h2>أسئلة حول مولد كلمات المرور</h2>
+          </div>
+
+          <div class="faq-list">
+            {faqs.map((faq) => (
+              <details class="faq-item">
+                <summary>
+                  <span>{faq.q}</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+
+                <p>{faq.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <Footer />
+
+    <script is:inline>
+      (() => {
+        const lengthInput = document.getElementById("length");
+        const lengthValue = document.getElementById("lengthValue");
+
+        const lowercase = document.getElementById("lowercase");
+        const uppercase = document.getElementById("uppercase");
+        const numbers = document.getElementById("numbers");
+        const symbols = document.getElementById("symbols");
+
+        const excludeSimilar = document.getElementById("excludeSimilar");
+        const excludeAmbiguous = document.getElementById("excludeAmbiguous");
+
+        const passwordOutput = document.getElementById("passwordOutput");
+
+        const generateBtn = document.getElementById("generateBtn");
+        const copyBtn = document.getElementById("copyBtn");
+        const copyIconBtn = document.getElementById("copyIconBtn");
+        const clearBtn = document.getElementById("clearBtn");
+
+        const strengthText = document.getElementById("strengthText");
+        const strengthFill = document.getElementById("strengthFill");
+
+        const metaLength = document.getElementById("metaLength");
+        const metaTypes = document.getElementById("metaTypes");
+        const metaStatus = document.getElementById("metaStatus");
+
+        const statLength = document.getElementById("statLength");
+        const statTypes = document.getElementById("statTypes");
+        const statStrength = document.getElementById("statStrength");
+
+        const status = document.getElementById("status");
+
+        const lowercaseChars = "abcdefghijklmnopqrstuvwxyz";
+        const uppercaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const numberChars = "0123456789";
+        const symbolChars = "!@#$%^&*()_+-=[]{}|;:,.<>?";
+
+        const similarChars = "Il1O0o";
+        const ambiguousChars = "{}[]()/\\'\"`~,;:.<>";
+
+        function secureRandom(max) {
+          if (window.crypto && window.crypto.getRandomValues) {
+            const array = new Uint32Array(1);
+            window.crypto.getRandomValues(array);
+            return array[0] % max;
+          }
+
+          return Math.floor(Math.random() * max);
+        }
+
+        function randomChar(chars) {
+          return chars.charAt(secureRandom(chars.length));
+        }
+
+        function cleanChars(chars) {
+          let result = chars;
+
+          if (excludeSimilar.checked) {
+            for (let i = 0; i < similarChars.length; i++) {
+              result = result.split(similarChars.charAt(i)).join("");
+            }
+          }
+
+          if (excludeAmbiguous.checked) {
+            for (let i = 0; i < ambiguousChars.length; i++) {
+              result = result.split(ambiguousChars.charAt(i)).join("");
+            }
+          }
+
+          return result;
+        }
+
+        function getCharacterSets() {
+          const sets = [];
+
+          if (lowercase.checked) {
+            sets.push(cleanChars(lowercaseChars));
+          }
+
+          if (uppercase.checked) {
+            sets.push(cleanChars(uppercaseChars));
+          }
+
+          if (numbers.checked) {
+            sets.push(cleanChars(numberChars));
+          }
+
+          if (symbols.checked) {
+            sets.push(cleanChars(symbolChars));
+          }
+
+          return sets;
+        }
+
+        function shuffle(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = secureRandom(i + 1);
+            const temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+          }
+
+          return array;
+        }
+
+        function generatePassword() {
+          const length = Number(lengthInput.value);
+          const sets = getCharacterSets();
+
+          if (sets.length === 0) {
+            passwordOutput.value = "";
+            strengthText.textContent = "اختر نوعًا";
+            strengthFill.style.width = "0%";
+            status.innerHTML =
+              '<i class="fa-solid fa-triangle-exclamation"></i> اختر نوعًا واحدًا على الأقل من الأحرف.';
+            return;
+          }
+
+          let allChars = "";
+
+          for (let i = 0; i < sets.length; i++) {
+            allChars += sets[i];
+          }
+
+          if (!allChars.length) {
+            return;
+          }
+
+          const password = [];
+
+          for (let i = 0; i < sets.length && i < length; i++) {
+            password.push(randomChar(sets[i]));
+          }
+
+          while (password.length < length) {
+            password.push(randomChar(allChars));
+          }
+
+          shuffle(password);
+
+          passwordOutput.value = password.join("");
+
+          updateStrength();
+          updateStats();
+
+          status.innerHTML =
+            '<i class="fa-solid fa-circle-check"></i> تم إنشاء كلمة مرور جديدة بأمان داخل المتصفح.';
+        }
+
+        function updateLength() {
+          const value = lengthInput.value;
+
+          lengthValue.textContent = value;
+          metaLength.textContent = value;
+          statLength.textContent = value;
+
+          updateStrength();
+        }
+
+        function getSelectedTypes() {
+          let count = 0;
+
+          if (lowercase.checked) count++;
+          if (uppercase.checked) count++;
+          if (numbers.checked) count++;
+          if (symbols.checked) count++;
+
+          return count;
+        }
+
+        function getStrength() {
+          const length = Number(lengthInput.value);
+          const types = getSelectedTypes();
+
+          let score = 0;
+
+          if (length >= 8) score++;
+          if (length >= 12) score++;
+          if (length >= 16) score++;
+          if (length >= 24) score++;
+
+          if (types >= 2) score++;
+          if (types >= 3) score++;
+          if (types >= 4) score++;
+
+          if (score <= 2) {
+            return {
+              text: "ضعيفة",
+              width: "30%"
+            };
+          }
+
+          if (score <= 4) {
+            return {
+              text: "متوسطة",
+              width: "55%"
+            };
+          }
+
+          if (score <= 5) {
+            return {
+              text: "جيدة",
+              width: "75%"
+            };
+          }
+
+          return {
+            text: "قوية",
+            width: "100%"
+          };
+        }
+
+        function updateStrength() {
+          const strength = getStrength();
+
+          strengthText.textContent = strength.text;
+          strengthFill.style.width = strength.width;
+          statStrength.textContent = strength.text;
+          metaStatus.textContent = strength.text;
+        }
+
+        function updateStats() {
+          const types = getSelectedTypes();
+
+          metaTypes.textContent = types + " أنواع";
+          statTypes.textContent = types;
+        }
+
+        async function copyPassword() {
+          const value = passwordOutput.value;
+
+          if (!value) {
+            return;
+          }
+
+          try {
+            await navigator.clipboard.writeText(value);
+
+            status.innerHTML =
+              '<i class="fa-solid fa-check"></i> تم نسخ كلمة المرور إلى الحافظة.';
+
+            copyBtn.innerHTML =
+              '<i class="fa-solid fa-check"></i> تم النسخ';
+
+            setTimeout(() => {
+              copyBtn.innerHTML =
+                '<i class="fa-regular fa-copy"></i> نسخ';
+            }, 1500);
+          } catch {
+            passwordOutput.select();
+            document.execCommand("copy");
+
+            status.innerHTML =
+              '<i class="fa-solid fa-check"></i> تم نسخ كلمة المرور.';
+          }
+        }
+
+        function clearPassword() {
+          passwordOutput.value = "";
+
+          strengthText.textContent = "—";
+          strengthFill.style.width = "0%";
+
+          metaLength.textContent = "—";
+          metaTypes.textContent = "—";
+          metaStatus.textContent = "—";
+
+          status.innerHTML =
+            '<i class="fa-solid fa-circle-info"></i> تم مسح كلمة المرور.';
+        }
+
+        generateBtn.addEventListener("click", generatePassword);
+        copyBtn.addEventListener("click", copyPassword);
+        copyIconBtn.addEventListener("click", copyPassword);
+        clearBtn.addEventListener("click", clearPassword);
+
+        lengthInput.addEventListener("input", () => {
+          updateLength();
+          updateStats();
+        });
+
+        lowercase.addEventListener("change", updateStats);
+        uppercase.addEventListener("change", updateStats);
+        numbers.addEventListener("change", updateStats);
+        symbols.addEventListener("change", updateStats);
+
+        lowercase.addEventListener("change", generatePassword);
+        uppercase.addEventListener("change", generatePassword);
+        numbers.addEventListener("change", generatePassword);
+        symbols.addEventListener("change", generatePassword);
+
+        excludeSimilar.addEventListener("change", generatePassword);
+        excludeAmbiguous.addEventListener("change", generatePassword);
+
+        const quickButtons = document.querySelectorAll("[data-length]");
+
+        quickButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            lengthInput.value = button.dataset.length;
+            updateLength();
+            updateStats();
+            generatePassword();
+          });
+        });
+
+        updateLength();
+        updateStats();
+        generatePassword();
+      })();
+    </script>
+
+    <style>
+      :root {
+        --bg: #f7f8fc;
+        --surface: #ffffff;
+        --surface-2: #f1f5f9;
+        --text: #0f172a;
+        --muted: #64748b;
+        --border: rgba(15, 23, 42, 0.09);
+
+        --primary: #10b981;
+        --primary-dark: #059669;
+        --secondary: #34d399;
+
+        --shadow: 0 25px 70px rgba(15, 23, 42, 0.08);
+      }
+
+      html.dark-mode {
+        --bg: #070b0a;
+        --surface: #0d1512;
+        --surface-2: #111c18;
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --border: rgba(148, 163, 184, 0.13);
+
+        --primary: #34d399;
+        --primary-dark: #10b981;
+        --secondary: #6ee7b7;
+
+        --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at 10% 10%, rgba(16, 185, 129, 0.07), transparent 28%),
+          var(--bg);
+        color: var(--text);
+        font-family: "Cairo", sans-serif;
+      }
+
+      button,
+      input {
+        font-family: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .page {
+        min-height: 100vh;
+        padding: 35px 16px 80px;
+      }
+
+      .container {
+        width: min(1100px, 100%);
+        margin: auto;
+      }
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        flex-wrap: wrap;
+        margin-bottom: 30px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .breadcrumb a {
+        color: var(--primary-dark);
+        text-decoration: none;
+      }
+
+      .breadcrumb i {
+        font-size: 9px;
+        opacity: 0.6;
+      }
+
+      .hero {
+        text-align: center;
+        margin-bottom: 38px;
+      }
+
+      .hero-badge,
+      .mini-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 13px;
+        border-radius: 999px;
+        background: rgba(16, 185, 129, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.18);
+        color: var(--primary-dark);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .hero-icon {
+        width: 76px;
+        height: 76px;
+        margin: 18px auto;
+        display: grid;
+        place-items: center;
+        border-radius: 24px;
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        color: white;
+        font-size: 30px;
+        box-shadow: 0 18px 45px rgba(16, 185, 129, 0.25);
+      }
+
+      .hero h1 {
+        margin: 0 0 10px;
+        font-size: clamp(28px, 5vw, 46px);
+        font-weight: 800;
+        letter-spacing: -1px;
+      }
+
+      .hero p {
+        max-width: 650px;
+        margin: auto;
+        color: var(--muted);
+        line-height: 1.9;
+        font-size: 15px;
+      }
+
+      .hero-tags {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 18px;
+      }
+
+      .hero-tags span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 12px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .hero-tags i {
+        color: var(--primary);
+      }
+
+      .generator-card {
+        overflow: hidden;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      .card-topbar {
+        min-height: 62px;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface-2);
+      }
+
+      .topbar-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .topbar-title i {
+        color: var(--primary);
+      }
+
+      .secure-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--primary-dark);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .actionbar {
+        display: flex;
+        gap: 9px;
+        flex-wrap: wrap;
+        padding: 15px 18px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .btn {
+        border: 0;
+        border-radius: 10px;
+        padding: 10px 15px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 700;
+        transition: 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn.primary {
+        background: var(--primary);
+        color: white;
+      }
+
+      .btn.secondary {
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--primary-dark);
+      }
+
+      .btn.ghost {
+        background: var(--surface-2);
+        color: var(--muted);
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        padding: 20px;
+      }
+
+      .settings-panel,
+      .password-panel {
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface-2);
+        padding: 18px;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 18px;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .section-title i {
+        color: var(--primary);
+      }
+
+      .length-box {
+        padding: 16px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        border-radius: 14px;
+      }
+
+      .length-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 14px;
+      }
+
+      .length-head label {
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .length-head strong {
+        min-width: 40px;
+        padding: 4px 9px;
+        border-radius: 8px;
+        text-align: center;
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--primary-dark);
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      #length {
+        width: 100%;
+        accent-color: var(--primary);
+      }
+
+      .range-labels {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .options {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 14px;
+      }
+
+      .option {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 12px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .option:hover {
+        border-color: rgba(16, 185, 129, 0.4);
+        transform: translateY(-1px);
+      }
+
+      .option input {
+        position: absolute;
+        opacity: 0;
+      }
+
+      .checkmark {
+        width: 17px;
+        height: 17px;
+        flex: 0 0 17px;
+        border: 2px solid var(--muted);
+        border-radius: 5px;
+      }
+
+      .option input:checked + .checkmark {
+        border-color: var(--primary);
+        background: var(--primary);
+        box-shadow: inset 0 0 0 3px var(--surface);
+      }
+
+      .option-icon {
+        width: 30px;
+        height: 30px;
+        display: grid;
+        place-items: center;
+        border-radius: 8px;
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--primary);
+        font-size: 12px;
+      }
+
+      .option-text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .option-text strong {
+        font-size: 11px;
+      }
+
+      .option-text small {
+        color: var(--muted);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 9px;
+        margin-top: 2px;
+      }
+
+      .advanced-options {
+        display: grid;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .toggle-option {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        color: var(--muted);
+        font-size: 11px;
+        cursor: pointer;
+      }
+
+      .toggle-option input {
+        display: none;
+      }
+
+      .toggle {
+        position: relative;
+        width: 34px;
+        height: 19px;
+        border-radius: 999px;
+        background: #cbd5e1;
+        transition: 0.2s;
+      }
+
+      .toggle::after {
+        content: "";
+        position: absolute;
+        width: 13px;
+        height: 13px;
+        top: 3px;
+        right: 18px;
+        border-radius: 50%;
+        background: white;
+        transition: 0.2s;
+      }
+
+      .toggle-option input:checked + .toggle {
+        background: var(--primary);
+      }
+
+      .toggle-option input:checked + .toggle::after {
+        right: 3px;
+      }
+
+      .password-display {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+
+      .password-display input {
+        width: 100%;
+        min-width: 0;
+        height: 70px;
+        padding: 12px 55px 12px 16px;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--text);
+        direction: ltr;
+        text-align: left;
+        font-family: "JetBrains Mono", monospace;
+        font-size: clamp(14px, 2vw, 18px);
+        font-weight: 600;
+      }
+
+      .copy-icon {
+        position: absolute;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        border: 0;
+        border-radius: 10px;
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--primary);
+      }
+
+      .strength-area {
+        margin-top: 18px;
+      }
+
+      .strength-head {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 8px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .strength-head strong {
+        color: var(--primary);
+      }
+
+      .strength-bar {
+        width: 100%;
+        height: 8px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: rgba(148, 163, 184, 0.18);
+      }
+
+      .strength-bar span {
+        display: block;
+        width: 0;
+        height: 100%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, var(--primary-dark), var(--secondary));
+        transition: width 0.3s ease;
+      }
+
+      .password-meta {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-top: 18px;
+      }
+
+      .password-meta div {
+        padding: 11px 8px;
+        border-radius: 11px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        text-align: center;
+      }
+
+      .password-meta span {
+        display: block;
+        color: var(--muted);
+        font-size: 9px;
+        margin-bottom: 4px;
+      }
+
+      .password-meta strong {
+        display: block;
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+      }
+
+      .status {
+        margin-top: 15px;
+        padding: 11px 13px;
+        border-radius: 10px;
+        background: rgba(16, 185, 129, 0.08);
+        color: var(--primary-dark);
+        font-size: 10px;
+        line-height: 1.7;
+      }
+
+      .status i {
+        margin-left: 5px;
+      }
+
+      .quick-actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 7px;
+        padding: 15px 18px;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .quick-actions button {
+        min-width: 40px;
+        padding: 6px 9px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: var(--surface);
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+      }
+
+      .quick-actions button:hover {
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 14px;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: var(--surface);
+      }
+
+      .stat-icon {
+        width: 39px;
+        height: 39px;
+        flex: 0 0 39px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--primary);
+      }
+
+      .stat-card span {
+        display: block;
+        color: var(--muted);
+        font-size: 9px;
+      }
+
+      .stat-card strong {
+        display: block;
+        margin-top: 2px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+      }
+
+      .info-section,
+      .how-section,
+      .faq-section {
+        margin-top: 65px;
+      }
+
+      .section-heading {
+        text-align: center;
+        margin-bottom: 28px;
+      }
+
+      .section-heading h2 {
+        margin: 13px 0 8px;
+        font-size: clamp(22px, 4vw, 30px);
+      }
+
+      .section-heading p {
+        max-width: 650px;
+        margin: auto;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.9;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .info-card {
+        padding: 23px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+      }
+
+      .info-icon {
+        width: 45px;
+        height: 45px;
+        display: grid;
+        place-items: center;
+        border-radius: 13px;
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--primary);
+      }
+
+      .info-card h3 {
+        margin: 17px 0 8px;
+        font-size: 15px;
+      }
+
+      .info-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.9;
+        font-size: 12px;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .step {
+        display: flex;
+        gap: 14px;
+        padding: 20px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+      }
+
+      .step-number {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: var(--primary);
+        color: white;
+        font-weight: 800;
+      }
+
+      .step h3 {
+        margin: 0 0 6px;
+        font-size: 14px;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+        font-size: 11px;
+      }
+
+      .faq-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .faq-item {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: var(--surface);
+      }
+
+      .faq-item summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 17px 19px;
+        cursor: pointer;
+        list-style: none;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq-item summary i {
+        color: var(--primary);
+        transition: 0.2s;
+      }
+
+      .faq-item[open] summary i {
+        transform: rotate(180deg);
+      }
+
+      .faq-item p {
+        margin: 0;
+        padding: 0 19px 18px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      @media (max-width: 800px) {
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .info-grid,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .page {
+          padding: 25px 10px 60px;
+        }
+
+        .card-topbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .actionbar {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .actionbar .primary {
+          grid-column: 1 / -1;
+        }
+
+        .workspace {
+          padding: 12px;
+        }
+
+        .options {
+          grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .stat-card {
+          padding: 11px;
+        }
+
+        .stat-icon {
+          width: 34px;
+          height: 34px;
+          flex-basis: 34px;
+        }
+
+        .password-meta {
+          gap: 5px;
+        }
+
+        .password-display input {
+          font-size: 13px;
+        }
+
+        .hero h1 {
+          font-size: 28px;
+        }
+      }
+    </style>
+  </body>
+</html>
