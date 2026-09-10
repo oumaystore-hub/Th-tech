@@ -9,6 +9,21 @@ const title = "JWT Generator - إنشاء JWT أونلاين مجاناً | Th.T
 const description =
   "أداة JWT Generator مجانية لإنشاء JSON Web Token من Header وPayload مباشرة داخل المتصفح.";
 
+const faq1q = "ما هو JWT؟";
+const faq1a =
+  "JWT أو JSON Web Token هو تنسيق شائع لنقل المعلومات بين الأطراف ويتكون عادةً من Header وPayload وSignature.";
+
+const faq2q = "هل يتم إرسال البيانات إلى الخادم؟";
+const faq2a =
+  "لا. يتم إنشاء JWT بالكامل داخل المتصفح باستخدام JavaScript.";
+
+const faq3q = "هل Signature حقيقية؟";
+const faq3a =
+  "نعم، عند استخدام HMAC SHA-256 يتم إنشاء توقيع باستخدام Secret Key الذي تدخله، لكن يجب عدم استخدام الأسرار الحقيقية في أدوات عامة أو مواقع غير موثوقة.";
+
+const faq4q = "هل الأداة مناسبة للإنتاج؟";
+const faq4a =
+  "الأداة مناسبة للاختبار والتعلم والتجارب. في التطبيقات الحقيقية يجب إدارة المفاتيح السرية بطريقة آمنة.";
 ---
 
 <html lang="ar" dir="rtl">
@@ -51,7 +66,6 @@ const description =
 
   <main>
 
-    <!-- HERO -->
     <section class="hero">
       <div class="container">
 
@@ -81,12 +95,12 @@ const description =
 
             <p>
               أنشئ JSON Web Token بسهولة من Header وPayload
-              مباشرة داخل المتصفح.
+              مع إنشاء Signature داخل المتصفح.
             </p>
 
             <div class="tags">
               <span>JWT</span>
-              <span>JSON</span>
+              <span>HS256</span>
               <span>Base64URL</span>
               <span>Local</span>
             </div>
@@ -99,13 +113,11 @@ const description =
     </section>
 
 
-    <!-- TOOL -->
     <section class="tool-section">
       <div class="container">
 
         <div class="generator-card">
 
-          <!-- TOP BAR -->
           <div class="card-topbar">
 
             <div class="window-dots">
@@ -127,7 +139,6 @@ const description =
           </div>
 
 
-          <!-- ACTION BAR -->
           <div class="actionbar">
 
             <button id="exampleBtn" class="btn btn-secondary">
@@ -153,11 +164,9 @@ const description =
           </div>
 
 
-          <!-- EDITORS -->
           <div class="editors-grid">
 
-            <!-- HEADER -->
-            <div class="editor-card">
+            <div class="editor-panel">
 
               <div class="editor-header">
 
@@ -166,7 +175,7 @@ const description =
                   Header
                 </div>
 
-                <span>PART 1</span>
+                <span>JSON</span>
 
               </div>
 
@@ -181,8 +190,7 @@ const description =
             </div>
 
 
-            <!-- PAYLOAD -->
-            <div class="editor-card">
+            <div class="editor-panel">
 
               <div class="editor-header">
 
@@ -191,7 +199,7 @@ const description =
                   Payload
                 </div>
 
-                <span>PART 2</span>
+                <span>JSON</span>
 
               </div>
 
@@ -201,7 +209,8 @@ const description =
               >{
   "sub": "thtech",
   "name": "Th.Tech",
-  "role": "developer"
+  "role": "developer",
+  "iat": 1720000000
 }</textarea>
 
             </div>
@@ -209,41 +218,37 @@ const description =
           </div>
 
 
-          <!-- SECRET -->
-          <div class="secret-section">
+          <div class="secret-panel">
 
-            <div class="secret-header">
+            <div class="editor-header">
 
               <div>
                 <i class="fa-solid fa-lock"></i>
                 Secret Key
               </div>
 
-              <span>
-                للتجربة فقط
-              </span>
+              <span>HS256</span>
 
             </div>
 
-            <input
-              id="secretInput"
-              type="text"
-              value="th-tech-secret"
-              autocomplete="off"
-              spellcheck="false"
-              placeholder="أدخل Secret Key"
-            />
+            <div class="secret-input-wrap">
 
-            <div class="secret-note">
-              <i class="fa-solid fa-circle-info"></i>
-              يتم استخدام المفتاح محلياً داخل المتصفح. هذه الأداة
-              تنشئ توقيعاً تعليمياً ولا تستبدل نظام المصادقة في الإنتاج.
+              <input
+                id="secretInput"
+                type="text"
+                value="thtech-secret-key"
+                spellcheck="false"
+              />
+
+              <button id="toggleSecret" type="button">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+
             </div>
 
           </div>
 
 
-          <!-- RESULT -->
           <div class="result-box" id="resultBox">
 
             <div class="result-icon" id="resultIcon">
@@ -257,7 +262,7 @@ const description =
               </strong>
 
               <p id="resultMessage">
-                أدخل Header وPayload ثم اضغط على إنشاء JWT.
+                أدخل Header وPayload وSecret Key ثم اضغط على إنشاء JWT.
               </p>
 
             </div>
@@ -265,19 +270,22 @@ const description =
           </div>
 
 
-          <!-- OUTPUT -->
-          <div class="output-section">
+          <div class="output-panel">
 
             <div class="output-header">
 
-              <div>
-                <i class="fa-solid fa-terminal"></i>
-                Generated JWT
+              <div class="output-title">
+                <div class="output-icon">
+                  <i class="fa-solid fa-key"></i>
+                </div>
+
+                <div>
+                  <strong>Generated JWT</strong>
+                  <span>JSON Web Token</span>
+                </div>
               </div>
 
-              <span id="outputCount">
-                0 حرف
-              </span>
+              <span id="outputLength">0 حرف</span>
 
             </div>
 
@@ -285,54 +293,64 @@ const description =
               id="jwtOutput"
               readonly
               spellcheck="false"
-              placeholder="سيظهر JWT هنا..."
+              placeholder="سيظهر JWT هنا بعد الإنشاء..."
             ></textarea>
 
           </div>
 
 
-          <!-- PARTS -->
           <div class="parts-grid">
 
-            <div class="part">
+            <div class="jwt-part">
 
-              <div class="part-title">
-                <span class="part-dot part-header"></span>
-                Header
+              <div class="part-header">
+                <span class="part-number">01</span>
+
+                <div>
+                  <strong>Header</strong>
+                  <small>Base64URL</small>
+                </div>
               </div>
 
-              <pre id="headerOutput">—</pre>
+              <pre id="headerEncoded">—</pre>
 
             </div>
 
 
-            <div class="part">
+            <div class="jwt-part payload-part">
 
-              <div class="part-title">
-                <span class="part-dot part-payload"></span>
-                Payload
+              <div class="part-header">
+                <span class="part-number">02</span>
+
+                <div>
+                  <strong>Payload</strong>
+                  <small>Base64URL</small>
+                </div>
               </div>
 
-              <pre id="payloadOutput">—</pre>
+              <pre id="payloadEncoded">—</pre>
 
             </div>
 
 
-            <div class="part">
+            <div class="jwt-part signature-part">
 
-              <div class="part-title">
-                <span class="part-dot part-signature"></span>
-                Signature
+              <div class="part-header">
+                <span class="part-number">03</span>
+
+                <div>
+                  <strong>Signature</strong>
+                  <small>HMAC SHA-256</small>
+                </div>
               </div>
 
-              <pre id="signatureOutput">—</pre>
+              <pre id="signatureEncoded">—</pre>
 
             </div>
 
           </div>
 
 
-          <!-- STATS -->
           <div class="stats-grid">
 
             <div class="stat">
@@ -357,7 +375,7 @@ const description =
 
               <div>
                 <span>Algorithm</span>
-                <strong id="statAlgorithm">—</strong>
+                <strong id="statAlgorithm">HS256</strong>
               </div>
 
             </div>
@@ -398,21 +416,19 @@ const description =
     </section>
 
 
-    <!-- INFO -->
     <section class="info-section">
+
       <div class="container">
 
         <div class="section-heading">
 
           <span>JWT GENERATOR</span>
 
-          <h2>
-            ما هو JWT Generator؟
-          </h2>
+          <h2>ما هو JWT Generator؟</h2>
 
           <p>
-            أداة تساعد المطورين على إنشاء JSON Web Token
-            وفهم مكوناته الأساسية.
+            أداة للمطورين لإنشاء JSON Web Token من Header وPayload
+            وتوقيعه باستخدام HMAC SHA-256.
           </p>
 
         </div>
@@ -429,8 +445,7 @@ const description =
             <h3>Header</h3>
 
             <p>
-              يحتوي عادةً على نوع التوكن والخوارزمية
-              المستخدمة في إنشاء التوقيع.
+              يحتوي على نوع التوكن والخوارزمية المستخدمة لإنشاء التوقيع.
             </p>
 
           </article>
@@ -445,8 +460,7 @@ const description =
             <h3>Payload</h3>
 
             <p>
-              يحتوي على Claims والمعلومات التي تريد
-              تضمينها داخل التوكن.
+              يحتوي على Claims والبيانات التي تريد وضعها داخل JWT.
             </p>
 
           </article>
@@ -461,8 +475,7 @@ const description =
             <h3>Signature</h3>
 
             <p>
-              يستخدم للتحقق من سلامة JWT عند استخدام
-              الخوارزمية والمفتاح المناسبين.
+              يتم إنشاء التوقيع باستخدام Secret Key وخوارزمية HS256.
             </p>
 
           </article>
@@ -470,20 +483,19 @@ const description =
         </div>
 
       </div>
+
     </section>
 
 
-    <!-- HOW -->
     <section class="how-section">
+
       <div class="container">
 
         <div class="section-heading">
 
           <span>HOW IT WORKS</span>
 
-          <h2>
-            كيفية استخدام JWT Generator
-          </h2>
+          <h2>كيفية استخدام JWT Generator</h2>
 
         </div>
 
@@ -492,15 +504,13 @@ const description =
 
           <div class="step">
 
-            <div class="step-number">
-              1
-            </div>
+            <div class="step-number">1</div>
 
             <div>
               <h3>أدخل Header</h3>
 
               <p>
-                حدد الخوارزمية ونوع JWT.
+                اكتب بيانات Header بصيغة JSON صحيحة.
               </p>
             </div>
 
@@ -509,15 +519,13 @@ const description =
 
           <div class="step">
 
-            <div class="step-number">
-              2
-            </div>
+            <div class="step-number">2</div>
 
             <div>
               <h3>أدخل Payload</h3>
 
               <p>
-                أضف البيانات وClaims التي تحتاج إليها.
+                أضف البيانات والـ Claims التي تريد استخدامها.
               </p>
             </div>
 
@@ -526,15 +534,13 @@ const description =
 
           <div class="step">
 
-            <div class="step-number">
-              3
-            </div>
+            <div class="step-number">3</div>
 
             <div>
               <h3>أنشئ JWT</h3>
 
               <p>
-                اضغط على إنشاء JWT لعرض التوكن الناتج.
+                اضغط على إنشاء JWT للحصول على التوكن النهائي.
               </p>
             </div>
 
@@ -543,20 +549,19 @@ const description =
         </div>
 
       </div>
+
     </section>
 
 
-    <!-- FAQ -->
     <section class="faq-section">
+
       <div class="container">
 
         <div class="section-heading">
 
           <span>FAQ</span>
 
-          <h2>
-            الأسئلة الشائعة
-          </h2>
+          <h2>الأسئلة الشائعة</h2>
 
         </div>
 
@@ -565,57 +570,47 @@ const description =
 
           <details>
             <summary>
-              <span>ما هو JWT؟</span>
+              <span>{faq1q}</span>
               <i class="fa-solid fa-chevron-down"></i>
             </summary>
 
-            <p>
-              JWT أو JSON Web Token هو تنسيق شائع لنقل المعلومات
-              بين الأطراف ويتكون عادةً من Header وPayload وSignature.
-            </p>
+            <p>{faq1a}</p>
           </details>
 
 
           <details>
             <summary>
-              <span>هل يتم إرسال البيانات إلى الخادم؟</span>
+              <span>{faq2q}</span>
               <i class="fa-solid fa-chevron-down"></i>
             </summary>
 
-            <p>
-              لا. تتم عملية إنشاء JWT داخل المتصفح باستخدام JavaScript.
-            </p>
+            <p>{faq2a}</p>
           </details>
 
 
           <details>
             <summary>
-              <span>هل يمكن استخدام الأداة مع HS256؟</span>
+              <span>{faq3q}</span>
               <i class="fa-solid fa-chevron-down"></i>
             </summary>
 
-            <p>
-              نعم. هذه النسخة تدعم إنشاء توقيع HMAC باستخدام HS256
-              عندما يكون Web Crypto API متاحاً في المتصفح.
-            </p>
+            <p>{faq3a}</p>
           </details>
 
 
           <details>
             <summary>
-              <span>هل Secret Key مهم؟</span>
+              <span>{faq4q}</span>
               <i class="fa-solid fa-chevron-down"></i>
             </summary>
 
-            <p>
-              نعم. في JWT الموقع باستخدام HS256 يجب حماية المفتاح السري
-              وعدم وضع المفاتيح الحقيقية الخاصة بالإنتاج داخل أدوات عامة.
-            </p>
+            <p>{faq4a}</p>
           </details>
 
         </div>
 
       </div>
+
     </section>
 
   </main>
@@ -624,41 +619,77 @@ const description =
   <Footer />
 
 
-  <!-- JAVASCRIPT -->
   <script is:inline>
     (() => {
 
-      const headerInput = document.getElementById("headerInput");
-      const payloadInput = document.getElementById("payloadInput");
-      const secretInput = document.getElementById("secretInput");
+      const headerInput =
+        document.getElementById("headerInput");
 
-      const jwtOutput = document.getElementById("jwtOutput");
+      const payloadInput =
+        document.getElementById("payloadInput");
 
-      const headerOutput = document.getElementById("headerOutput");
-      const payloadOutput = document.getElementById("payloadOutput");
-      const signatureOutput = document.getElementById("signatureOutput");
+      const secretInput =
+        document.getElementById("secretInput");
 
-      const exampleBtn = document.getElementById("exampleBtn");
-      const clearBtn = document.getElementById("clearBtn");
-      const copyBtn = document.getElementById("copyBtn");
-      const generateBtn = document.getElementById("generateBtn");
+      const jwtOutput =
+        document.getElementById("jwtOutput");
 
-      const resultBox = document.getElementById("resultBox");
-      const resultIcon = document.getElementById("resultIcon");
-      const resultTitle = document.getElementById("resultTitle");
-      const resultMessage = document.getElementById("resultMessage");
+      const generateBtn =
+        document.getElementById("generateBtn");
 
-      const outputCount = document.getElementById("outputCount");
+      const exampleBtn =
+        document.getElementById("exampleBtn");
 
-      const statLength = document.getElementById("statLength");
-      const statAlgorithm = document.getElementById("statAlgorithm");
-      const statParts = document.getElementById("statParts");
-      const statStatus = document.getElementById("statStatus");
+      const clearBtn =
+        document.getElementById("clearBtn");
+
+      const copyBtn =
+        document.getElementById("copyBtn");
+
+      const toggleSecret =
+        document.getElementById("toggleSecret");
+
+      const resultBox =
+        document.getElementById("resultBox");
+
+      const resultIcon =
+        document.getElementById("resultIcon");
+
+      const resultTitle =
+        document.getElementById("resultTitle");
+
+      const resultMessage =
+        document.getElementById("resultMessage");
+
+      const outputLength =
+        document.getElementById("outputLength");
+
+      const headerEncoded =
+        document.getElementById("headerEncoded");
+
+      const payloadEncoded =
+        document.getElementById("payloadEncoded");
+
+      const signatureEncoded =
+        document.getElementById("signatureEncoded");
+
+      const statLength =
+        document.getElementById("statLength");
+
+      const statAlgorithm =
+        document.getElementById("statAlgorithm");
+
+      const statParts =
+        document.getElementById("statParts");
+
+      const statStatus =
+        document.getElementById("statStatus");
 
 
-      function base64UrlEncode(text) {
+      function base64UrlEncode(value) {
 
-        const bytes = new TextEncoder().encode(text);
+        const bytes =
+          new TextEncoder().encode(value);
 
         let binary = "";
 
@@ -675,7 +706,8 @@ const description =
 
       function arrayBufferToBase64Url(buffer) {
 
-        const bytes = new Uint8Array(buffer);
+        const bytes =
+          new Uint8Array(buffer);
 
         let binary = "";
 
@@ -692,39 +724,43 @@ const description =
 
       async function createSignature(data, secret) {
 
-        if (!window.crypto || !window.crypto.subtle) {
-          throw new Error("Web Crypto API غير متاحة.");
-        }
+        const encoder =
+          new TextEncoder();
 
-        const encoder = new TextEncoder();
+        const keyData =
+          encoder.encode(secret);
 
-        const keyData = encoder.encode(secret);
+        const messageData =
+          encoder.encode(data);
 
-        const key = await crypto.subtle.importKey(
-          "raw",
-          keyData,
-          {
-            name: "HMAC",
-            hash: "SHA-256"
-          },
-          false,
-          ["sign"]
+        const cryptoKey =
+          await crypto.subtle.importKey(
+            "raw",
+            keyData,
+            {
+              name: "HMAC",
+              hash: "SHA-256"
+            },
+            false,
+            ["sign"]
+          );
+
+        const signature =
+          await crypto.subtle.sign(
+            "HMAC",
+            cryptoKey,
+            messageData
+          );
+
+        return arrayBufferToBase64Url(
+          signature
         );
-
-        const signature = await crypto.subtle.sign(
-          "HMAC",
-          key,
-          encoder.encode(data)
-        );
-
-        return arrayBufferToBase64Url(signature);
       }
 
 
       function showSuccess(message) {
 
         resultBox.classList.remove("error");
-
         resultBox.classList.add("success");
 
         resultIcon.innerHTML =
@@ -744,7 +780,6 @@ const description =
       function showError(message) {
 
         resultBox.classList.remove("success");
-
         resultBox.classList.add("error");
 
         resultIcon.innerHTML =
@@ -763,8 +798,10 @@ const description =
 
       function showReady() {
 
-        resultBox.classList.remove("success");
-        resultBox.classList.remove("error");
+        resultBox.classList.remove(
+          "success",
+          "error"
+        );
 
         resultIcon.innerHTML =
           '<i class="fa-solid fa-circle-question"></i>';
@@ -773,26 +810,29 @@ const description =
           "جاهز لإنشاء JWT";
 
         resultMessage.textContent =
-          "أدخل Header وPayload ثم اضغط على إنشاء JWT.";
+          "أدخل Header وPayload وSecret Key ثم اضغط على إنشاء JWT.";
 
         statStatus.textContent =
           "جاهز";
       }
 
 
-      function resetOutput() {
+      function updateStats(value) {
 
-        jwtOutput.value = "";
+        const length =
+          value.length;
 
-        headerOutput.textContent = "—";
-        payloadOutput.textContent = "—";
-        signatureOutput.textContent = "—";
+        statLength.textContent =
+          length.toLocaleString();
 
-        outputCount.textContent = "0 حرف";
+        outputLength.textContent =
+          length.toLocaleString() + " حرف";
 
-        statLength.textContent = "0";
-        statAlgorithm.textContent = "—";
-        statParts.textContent = "0 / 3";
+        if (length > 0) {
+          statParts.textContent = "3 / 3";
+        } else {
+          statParts.textContent = "0 / 3";
+        }
       }
 
 
@@ -811,8 +851,6 @@ const description =
 
           showError("أدخل Header أولاً.");
 
-          headerInput.focus();
-
           return;
         }
 
@@ -820,8 +858,6 @@ const description =
         if (!payloadText) {
 
           showError("أدخل Payload أولاً.");
-
-          payloadInput.focus();
 
           return;
         }
@@ -831,8 +867,6 @@ const description =
 
           showError("أدخل Secret Key أولاً.");
 
-          secretInput.focus();
-
           return;
         }
 
@@ -840,10 +874,10 @@ const description =
         let header;
         let payload;
 
-
         try {
 
-          header = JSON.parse(headerText);
+          header =
+            JSON.parse(headerText);
 
         } catch {
 
@@ -851,15 +885,14 @@ const description =
             "Header غير صالح. تأكد من صحة JSON."
           );
 
-          headerInput.focus();
-
           return;
         }
 
 
         try {
 
-          payload = JSON.parse(payloadText);
+          payload =
+            JSON.parse(payloadText);
 
         } catch {
 
@@ -867,48 +900,27 @@ const description =
             "Payload غير صالح. تأكد من صحة JSON."
           );
 
-          payloadInput.focus();
-
           return;
         }
 
 
         if (
-          typeof header !== "object" ||
-          header === null ||
-          Array.isArray(header)
+          !header.alg ||
+          !header.typ
         ) {
 
           showError(
-            "Header يجب أن يكون JSON Object."
+            "يجب أن يحتوي Header على alg و typ."
           );
 
           return;
         }
 
 
-        if (
-          typeof payload !== "object" ||
-          payload === null ||
-          Array.isArray(payload)
-        ) {
+        if (header.alg !== "HS256") {
 
           showError(
-            "Payload يجب أن يكون JSON Object."
-          );
-
-          return;
-        }
-
-
-        const algorithm =
-          String(header.alg || "HS256").toUpperCase();
-
-
-        if (algorithm !== "HS256") {
-
-          showError(
-            "هذه النسخة تستخدم HS256 لإنشاء التوقيع."
+            "هذه النسخة تدعم HS256 فقط."
           );
 
           return;
@@ -917,83 +929,60 @@ const description =
 
         try {
 
-          const cleanHeader =
+          const headerJSON =
             JSON.stringify(header);
 
-          const cleanPayload =
+          const payloadJSON =
             JSON.stringify(payload);
 
-
           const encodedHeader =
-            base64UrlEncode(cleanHeader);
+            base64UrlEncode(headerJSON);
 
           const encodedPayload =
-            base64UrlEncode(cleanPayload);
+            base64UrlEncode(payloadJSON);
 
-
-          const signingInput =
-            encodedHeader + "." + encodedPayload;
-
+          const unsignedToken =
+            encodedHeader +
+            "." +
+            encodedPayload;
 
           const signature =
             await createSignature(
-              signingInput,
+              unsignedToken,
               secret
             );
 
-
           const token =
-            signingInput + "." + signature;
+            unsignedToken +
+            "." +
+            signature;
 
 
           jwtOutput.value =
             token;
 
+          headerEncoded.textContent =
+            encodedHeader;
 
-          headerOutput.textContent =
-            JSON.stringify(
-              header,
-              null,
-              2
-            );
+          payloadEncoded.textContent =
+            encodedPayload;
 
-
-          payloadOutput.textContent =
-            JSON.stringify(
-              payload,
-              null,
-              2
-            );
-
-
-          signatureOutput.textContent =
+          signatureEncoded.textContent =
             signature;
 
-
-          outputCount.textContent =
-            token.length.toLocaleString() + " حرف";
-
-
-          statLength.textContent =
-            token.length.toLocaleString();
-
-
           statAlgorithm.textContent =
-            algorithm;
+            header.alg;
 
-
-          statParts.textContent =
-            "3 / 3";
-
+          updateStats(token);
 
           showSuccess(
-            "تم إنشاء Header وPayload والتوقيع محلياً داخل المتصفح."
+            "تم إنشاء Header وPayload وSignature محلياً داخل المتصفح."
           );
 
-        } catch (error) {
+        } catch {
 
           showError(
-            "حدث خطأ أثناء إنشاء التوقيع. حاول مرة أخرى."
+            "حدث خطأ أثناء إنشاء التوقيع."
           );
 
         }
@@ -1009,7 +998,6 @@ const description =
   "typ": "JWT"
 }`;
 
-
         payloadInput.value =
 `{
   "sub": "thtech",
@@ -1018,10 +1006,8 @@ const description =
   "iat": 1720000000
 }`;
 
-
         secretInput.value =
-          "th-tech-secret";
-
+          "thtech-secret-key";
 
         generateJWT();
       }
@@ -1030,10 +1016,26 @@ const description =
       function clearAll() {
 
         headerInput.value = "";
+
         payloadInput.value = "";
+
         secretInput.value = "";
 
-        resetOutput();
+        jwtOutput.value = "";
+
+        headerEncoded.textContent = "—";
+
+        payloadEncoded.textContent = "—";
+
+        signatureEncoded.textContent = "—";
+
+        statLength.textContent = "0";
+
+        outputLength.textContent = "0 حرف";
+
+        statParts.textContent = "0 / 3";
+
+        statAlgorithm.textContent = "HS256";
 
         showReady();
 
@@ -1046,11 +1048,10 @@ const description =
         const value =
           jwtOutput.value.trim();
 
-
         if (!value) {
 
           showError(
-            "لا يوجد JWT لنسخه. أنشئ JWT أولاً."
+            "أنشئ JWT أولاً قبل النسخ."
           );
 
           return;
@@ -1059,14 +1060,15 @@ const description =
 
         try {
 
-          await navigator.clipboard.writeText(value);
+          await navigator.clipboard.writeText(
+            value
+          );
 
           const oldText =
             copyBtn.innerHTML;
 
           copyBtn.innerHTML =
             '<i class="fa-solid fa-check"></i> تم النسخ';
-
 
           setTimeout(() => {
 
@@ -1077,25 +1079,39 @@ const description =
 
         } catch {
 
-          jwtOutput.focus();
-
           jwtOutput.select();
 
           document.execCommand("copy");
 
-          copyBtn.innerHTML =
-            '<i class="fa-solid fa-check"></i> تم النسخ';
-
-
-          setTimeout(() => {
-
-            copyBtn.innerHTML =
-              '<i class="fa-regular fa-copy"></i> نسخ JWT';
-
-          }, 1500);
         }
 
       }
+
+
+      toggleSecret.addEventListener(
+        "click",
+        () => {
+
+          if (
+            secretInput.type === "password"
+          ) {
+
+            secretInput.type = "text";
+
+            toggleSecret.innerHTML =
+              '<i class="fa-solid fa-eye-slash"></i>';
+
+          } else {
+
+            secretInput.type = "password";
+
+            toggleSecret.innerHTML =
+              '<i class="fa-solid fa-eye"></i>';
+
+          }
+
+        }
+      );
 
 
       generateBtn.addEventListener(
@@ -1137,13 +1153,11 @@ const description =
                 event.preventDefault();
 
                 generateJWT();
+
               }
 
 
-              if (
-                event.key === "Tab" &&
-                element.tagName === "TEXTAREA"
-              ) {
+              if (event.key === "Tab") {
 
                 event.preventDefault();
 
@@ -1153,16 +1167,15 @@ const description =
                 const end =
                   element.selectionEnd;
 
-
                 element.value =
                   element.value.substring(0, start) +
                   "  " +
                   element.value.substring(end);
 
-
                 element.selectionStart =
                   element.selectionEnd =
                     start + 2;
+
               }
 
             }
@@ -1172,7 +1185,7 @@ const description =
       );
 
 
-      resetOutput();
+      showReady();
 
     })();
   </script>
@@ -1189,7 +1202,8 @@ const description =
       --text: #172033;
       --muted: #718096;
 
-      --border: rgba(15, 23, 42, 0.09);
+      --border:
+        rgba(15, 23, 42, 0.09);
 
       --primary: #7c3aed;
       --primary-dark: #6d28d9;
@@ -1199,7 +1213,8 @@ const description =
       --danger: #dc2626;
 
       --shadow:
-        0 25px 70px rgba(15, 23, 42, 0.10);
+        0 25px 70px
+        rgba(15, 23, 42, 0.10);
     }
 
 
@@ -1220,7 +1235,8 @@ const description =
       --secondary: #c4b5fd;
 
       --shadow:
-        0 30px 80px rgba(0, 0, 0, 0.45);
+        0 30px 80px
+        rgba(0, 0, 0, 0.45);
     }
 
 
@@ -1233,9 +1249,11 @@ const description =
 
       margin: 0;
 
-      background: var(--bg);
+      background:
+        var(--bg);
 
-      color: var(--text);
+      color:
+        var(--text);
 
       font-family:
         "Cairo",
@@ -1246,16 +1264,12 @@ const description =
     .container {
 
       width:
-        min(
-          1180px,
-          calc(100% - 32px)
-        );
+        min(1180px, calc(100% - 32px));
 
-      margin: auto;
+      margin:
+        auto;
     }
 
-
-    /* HERO */
 
     .hero {
 
@@ -1280,7 +1294,8 @@ const description =
       align-items:
         center;
 
-      gap: 10px;
+      gap:
+        10px;
 
       flex-wrap:
         wrap;
@@ -1364,9 +1379,7 @@ const description =
 
 
     .hero-icon i {
-
-      font-size:
-        40px;
+      font-size: 40px;
     }
 
 
@@ -1482,12 +1495,8 @@ const description =
     }
 
 
-    /* TOOL */
-
     .tool-section {
-
-      padding-bottom:
-        70px;
+      padding-bottom: 70px;
     }
 
 
@@ -1580,9 +1589,7 @@ const description =
 
 
     .tool-name i {
-
-      color:
-        var(--primary);
+      color: var(--primary);
     }
 
 
@@ -1607,8 +1614,6 @@ const description =
         700;
     }
 
-
-    /* ACTIONBAR */
 
     .actionbar {
 
@@ -1659,16 +1664,12 @@ const description =
 
 
     .btn:hover {
-
-      transform:
-        translateY(-1px);
+      transform: translateY(-1px);
     }
 
 
     .btn i {
-
-      margin-left:
-        6px;
+      margin-left: 6px;
     }
 
 
@@ -1696,13 +1697,9 @@ const description =
 
 
     .btn-primary:hover {
-
-      background:
-        var(--primary-dark);
+      background: var(--primary-dark);
     }
 
-
-    /* EDITORS */
 
     .editors-grid {
 
@@ -1720,7 +1717,7 @@ const description =
     }
 
 
-    .editor-card {
+    .editor-panel {
 
       overflow:
         hidden;
@@ -1748,15 +1745,19 @@ const description =
         space-between;
 
       padding:
-        12px 15px;
+        11px 14px;
 
       border-bottom:
         1px solid var(--border);
 
-      font:
-        600 12px
-        "JetBrains Mono",
-        monospace;
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
     }
 
 
@@ -1770,27 +1771,36 @@ const description =
 
       gap:
         8px;
+
+      color:
+        var(--text);
     }
 
 
     .editor-header i {
-
-      color:
-        var(--primary);
+      color: var(--primary);
     }
 
 
     .editor-header span {
 
-      color:
-        var(--muted);
-
-      font-size:
-        9px;
+      font:
+        10px
+        "JetBrains Mono",
+        monospace;
     }
 
 
-    .editor-card textarea {
+    textarea {
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    #headerInput,
+    #payloadInput {
 
       width:
         100%;
@@ -1804,14 +1814,14 @@ const description =
       resize:
         vertical;
 
+      padding:
+        17px;
+
       border:
         0;
 
       outline:
         0;
-
-      padding:
-        17px;
 
       background:
         transparent;
@@ -1832,15 +1842,13 @@ const description =
     }
 
 
-    /* SECRET */
-
-    .secret-section {
+    .secret-panel {
 
       margin:
         0 20px 15px;
 
-      padding:
-        17px;
+      overflow:
+        hidden;
 
       border:
         1px solid var(--border);
@@ -1853,85 +1861,41 @@ const description =
     }
 
 
-    .secret-header {
-
-      display:
-        flex;
-
-      justify-content:
-        space-between;
-
-      align-items:
-        center;
-
-      margin-bottom:
-        10px;
-
-      font:
-        600 12px
-        "JetBrains Mono",
-        monospace;
-    }
-
-
-    .secret-header div {
+    .secret-input-wrap {
 
       display:
         flex;
 
       align-items:
         center;
-
-      gap:
-        8px;
-    }
-
-
-    .secret-header i {
-
-      color:
-        var(--primary);
-    }
-
-
-    .secret-header span {
-
-      color:
-        var(--muted);
-
-      font-size:
-        10px;
     }
 
 
     #secretInput {
 
-      width:
-        100%;
+      flex:
+        1;
+
+      min-width:
+        0;
 
       padding:
-        13px 15px;
+        16px;
 
       border:
-        1px solid var(--border);
-
-      border-radius:
-        10px;
+        0;
 
       outline:
         0;
 
       background:
-        var(--surface);
+        transparent;
 
       color:
         var(--text);
 
       direction:
         ltr;
-
-      text-align:
-        left;
 
       font:
         12px
@@ -1940,40 +1904,33 @@ const description =
     }
 
 
-    #secretInput:focus {
+    #toggleSecret {
 
-      border-color:
-        var(--primary);
-    }
+      margin:
+        0 10px;
 
+      width:
+        38px;
 
-    .secret-note {
+      height:
+        38px;
 
-      margin-top:
-        10px;
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        9px;
+
+      background:
+        var(--surface);
 
       color:
         var(--muted);
 
-      font-size:
-        10px;
-
-      line-height:
-        1.8;
+      cursor:
+        pointer;
     }
 
-
-    .secret-note i {
-
-      color:
-        var(--primary);
-
-      margin-left:
-        5px;
-    }
-
-
-    /* RESULT */
 
     .result-box {
 
@@ -2061,9 +2018,7 @@ const description =
 
 
     .result-box.success {
-
-      border-color:
-        rgba(22, 163, 74, 0.25);
+      border-color: rgba(22, 163, 74, 0.25);
     }
 
 
@@ -2078,9 +2033,7 @@ const description =
 
 
     .result-box.error {
-
-      border-color:
-        rgba(220, 38, 38, 0.25);
+      border-color: rgba(220, 38, 38, 0.25);
     }
 
 
@@ -2094,9 +2047,7 @@ const description =
     }
 
 
-    /* OUTPUT */
-
-    .output-section {
+    .output-panel {
 
       margin:
         0 20px 15px;
@@ -2131,15 +2082,10 @@ const description =
 
       border-bottom:
         1px solid var(--border);
-
-      font:
-        600 12px
-        "JetBrains Mono",
-        monospace;
     }
 
 
-    .output-header div {
+    .output-title {
 
       display:
         flex;
@@ -2148,24 +2094,75 @@ const description =
         center;
 
       gap:
-        8px;
+        10px;
     }
 
 
-    .output-header i {
+    .output-icon {
+
+      width:
+        38px;
+
+      height:
+        38px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        10px;
 
       color:
         var(--primary);
+
+      background:
+        rgba(124, 58, 237, 0.10);
     }
 
 
-    .output-header span {
+    .output-title strong {
+
+      display:
+        block;
+
+      font:
+        600 12px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .output-title span {
+
+      display:
+        block;
+
+      margin-top:
+        2px;
 
       color:
         var(--muted);
 
       font-size:
         9px;
+    }
+
+
+    #outputLength {
+
+      color:
+        var(--muted);
+
+      font:
+        10px
+        "JetBrains Mono",
+        monospace;
     }
 
 
@@ -2205,13 +2202,11 @@ const description =
         left;
 
       font:
-        12px/1.9
+        12px/1.8
         "JetBrains Mono",
         monospace;
     }
 
-
-    /* PARTS */
 
     .parts-grid {
 
@@ -2219,7 +2214,7 @@ const description =
         grid;
 
       grid-template-columns:
-        repeat(3, 1fr);
+        repeat(2, 1fr);
 
       gap:
         15px;
@@ -2229,7 +2224,7 @@ const description =
     }
 
 
-    .part {
+    .jwt-part {
 
       overflow:
         hidden;
@@ -2245,7 +2240,12 @@ const description =
     }
 
 
-    .part-title {
+    .signature-part {
+      grid-column: 1 / -1;
+    }
+
+
+    .part-header {
 
       display:
         flex;
@@ -2254,62 +2254,79 @@ const description =
         center;
 
       gap:
-        8px;
+        10px;
 
       padding:
-        12px 15px;
+        12px 14px;
 
       border-bottom:
         1px solid var(--border);
+    }
+
+
+    .part-number {
+
+      width:
+        34px;
+
+      height:
+        34px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        9px;
+
+      background:
+        rgba(124, 58, 237, 0.10);
+
+      color:
+        var(--primary);
 
       font:
-        600 11px
+        700 10px
         "JetBrains Mono",
         monospace;
     }
 
 
-    .part-dot {
+    .part-header strong {
 
-      width:
+      display:
+        block;
+
+      font-size:
+        12px;
+    }
+
+
+    .part-header small {
+
+      display:
+        block;
+
+      color:
+        var(--muted);
+
+      font-size:
         9px;
-
-      height:
-        9px;
-
-      border-radius:
-        50%;
     }
 
 
-    .part-header {
-
-      background:
-        var(--primary);
-    }
-
-
-    .part-payload {
-
-      background:
-        #0891b2;
-    }
-
-
-    .part-signature {
-
-      background:
-        #16a34a;
-    }
-
-
-    .part pre {
+    .jwt-part pre {
 
       min-height:
-        130px;
+        95px;
 
       max-height:
-        250px;
+        220px;
 
       overflow:
         auto;
@@ -2336,13 +2353,36 @@ const description =
         left;
 
       font:
-        11px/1.8
+        10px/1.8
         "JetBrains Mono",
         monospace;
     }
 
 
-    /* STATS */
+    .payload-part .part-number {
+
+      color:
+        #0891b2;
+
+      background:
+        rgba(8, 145, 178, 0.10);
+    }
+
+
+    .signature-part .part-number {
+
+      color:
+        var(--success);
+
+      background:
+        rgba(22, 163, 74, 0.10);
+    }
+
+
+    .signature-part pre {
+      color: var(--primary);
+    }
+
 
     .stats-grid {
 
@@ -2458,8 +2498,6 @@ const description =
         monospace;
     }
 
-
-    /* SECTIONS */
 
     .info-section,
     .how-section,
@@ -2623,8 +2661,6 @@ const description =
     }
 
 
-    /* STEPS */
-
     .steps {
 
       display:
@@ -2720,8 +2756,6 @@ const description =
     }
 
 
-    /* FAQ */
-
     .faq-list {
 
       max-width:
@@ -2780,8 +2814,7 @@ const description =
 
 
     summary::-webkit-details-marker {
-      display:
-        none;
+      display: none;
     }
 
 
@@ -2821,21 +2854,20 @@ const description =
     }
 
 
-    /* RESPONSIVE */
+    @media (max-width: 850px) {
 
-    @media (max-width: 900px) {
-
-      .editors-grid {
+      .editors-grid,
+      .parts-grid {
 
         grid-template-columns:
           1fr;
       }
 
 
-      .parts-grid {
+      .signature-part {
 
-        grid-template-columns:
-          1fr;
+        grid-column:
+          auto;
       }
 
 
@@ -2861,14 +2893,14 @@ const description =
       .container {
 
         width:
-          calc(100% - 22px);
+          min(100% - 22px, 1180px);
       }
 
 
       .hero {
 
-        padding:
-          25px 0 40px;
+        padding-top:
+          25px;
       }
 
 
@@ -2899,31 +2931,24 @@ const description =
 
 
       .hero-icon i {
-
-        font-size:
-          31px;
+        font-size: 31px;
       }
 
 
       .card-topbar {
-
-        padding:
-          0 13px;
+        padding: 0 13px;
       }
 
 
       .actionbar {
-
-        padding:
-          12px;
+        padding: 12px;
       }
 
 
       .btn {
 
         flex:
-          1 1
-          calc(50% - 8px);
+          1 1 calc(50% - 8px);
 
         padding:
           9px 8px;
@@ -2931,16 +2956,15 @@ const description =
 
 
       .editors-grid {
-
-        margin:
-          12px;
+        margin: 12px;
       }
 
 
-      .editor-card textarea {
+      #headerInput,
+      #payloadInput {
 
         min-height:
-          190px;
+          200px;
 
         padding:
           14px;
@@ -2950,40 +2974,15 @@ const description =
       }
 
 
-      .secret-section {
-
-        margin:
-          0 12px 12px;
-
-        padding:
-          13px;
-      }
-
-
+      .secret-panel,
+      .output-panel,
       .result-box {
 
-        margin:
-          0 12px 12px;
-      }
+        margin-left:
+          12px;
 
-
-      .output-section {
-
-        margin:
-          0 12px 12px;
-      }
-
-
-      #jwtOutput {
-
-        min-height:
-          115px;
-
-        padding:
-          14px;
-
-        font-size:
-          10px;
+        margin-right:
+          12px;
       }
 
 
@@ -2991,18 +2990,8 @@ const description =
 
         margin:
           0 12px 12px;
-      }
 
-
-      .part pre {
-
-        min-height:
-          115px;
-
-        padding:
-          13px;
-
-        font-size:
+        gap:
           10px;
       }
 
@@ -3034,13 +3023,6 @@ const description =
 
         flex-basis:
           31px;
-      }
-
-
-      .stat span {
-
-        font-size:
-          8px;
       }
 
 
