@@ -1,0 +1,1312 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Hash Generator - مولد Hash أونلاين مجاناً | Th.Tech";
+
+const description =
+  "مولد Hash مجاني لإنشاء بصمات MD5 وSHA-1 وSHA-256 وSHA-384 وSHA-512 للنصوص مباشرة من المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هو Hash؟",
+    a: "الـ Hash هو قيمة ناتجة عن تمرير البيانات عبر خوارزمية تجزئة، وتستخدم لمقارنة البيانات والتحقق من سلامتها."
+  },
+  {
+    q: "هل يتم إرسال النص إلى الخادم؟",
+    a: "لا. تتم عملية إنشاء SHA Hash بالكامل داخل المتصفح، ولا يتم إرسال النص إلى أي خادم."
+  },
+  {
+    q: "ما الفرق بين SHA-256 وSHA-512؟",
+    a: "كلاهما من عائلة SHA-2، لكن SHA-256 ينتج 256 بت بينما SHA-512 ينتج 512 بت، وبالتالي يكون ناتجه أطول."
+  },
+  {
+    q: "هل يمكن استخدام Hash ككلمة مرور؟",
+    a: "لا ينصح باستخدام Hash عام مثل MD5 أو SHA-256 لتخزين كلمات المرور. كلمات المرور تحتاج خوارزميات مخصصة مثل Argon2 أو bcrypt أو scrypt."
+  }
+];
+---
+
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <link
+      rel="canonical"
+      href={`https://oumaystore-hub.github.io${base}/tools/hash-generator/`}
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+
+          if (saved === "dark") {
+            document.documentElement.classList.add("dark-mode");
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="page">
+      <div class="container">
+
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <a href={`${base}/tools/`}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <span>Hash Generator</span>
+        </div>
+
+        <section class="hero">
+          <div class="hero-badge">
+            <i class="fa-solid fa-fingerprint"></i>
+            Security Tools
+          </div>
+
+          <div class="hero-icon">
+            <i class="fa-solid fa-hashtag"></i>
+          </div>
+
+          <h1>Hash Generator</h1>
+
+          <p>
+            أنشئ Hash للنصوص باستخدام خوارزميات SHA-1 وSHA-256 وSHA-384 وSHA-512
+            مباشرة من متصفحك.
+          </p>
+
+          <div class="hero-tags">
+            <span>
+              <i class="fa-solid fa-shield-halved"></i>
+              محلي
+            </span>
+
+            <span>
+              <i class="fa-solid fa-bolt"></i>
+              سريع
+            </span>
+
+            <span>
+              <i class="fa-solid fa-lock"></i>
+              بدون رفع البيانات
+            </span>
+          </div>
+        </section>
+
+        <section class="hash-card">
+
+          <div class="card-topbar">
+            <div class="topbar-title">
+              <i class="fa-solid fa-fingerprint"></i>
+              <span>Hash Generator</span>
+            </div>
+
+            <div class="secure-badge">
+              <i class="fa-solid fa-shield-halved"></i>
+              Local Processing
+            </div>
+          </div>
+
+          <div class="actionbar">
+
+            <button id="exampleBtn" class="btn secondary">
+              <i class="fa-solid fa-flask"></i>
+              مثال
+            </button>
+
+            <button id="generateBtn" class="btn primary">
+              <i class="fa-solid fa-bolt"></i>
+              Generate Hash
+            </button>
+
+            <button id="copyBtn" class="btn secondary">
+              <i class="fa-regular fa-copy"></i>
+              نسخ
+            </button>
+
+            <button id="clearBtn" class="btn ghost">
+              <i class="fa-solid fa-trash"></i>
+              مسح
+            </button>
+
+          </div>
+
+          <div class="algorithm-bar">
+            <span class="algorithm-label">
+              <i class="fa-solid fa-code-branch"></i>
+              الخوارزمية
+            </span>
+
+            <div class="algorithm-buttons">
+              <button data-algorithm="SHA-1">SHA-1</button>
+              <button data-algorithm="SHA-256" class="active">SHA-256</button>
+              <button data-algorithm="SHA-384">SHA-384</button>
+              <button data-algorithm="SHA-512">SHA-512</button>
+            </div>
+          </div>
+
+          <div class="workspace">
+
+            <div class="editor-panel">
+
+              <div class="panel-header">
+                <div>
+                  <i class="fa-solid fa-file-lines"></i>
+                  <span>Input</span>
+                </div>
+
+                <span class="language-label">TEXT</span>
+              </div>
+
+              <textarea
+                id="inputText"
+                spellcheck="false"
+                placeholder="اكتب النص الذي تريد إنشاء Hash له..."
+              ></textarea>
+
+              <div class="editor-footer">
+                <span>
+                  <i class="fa-solid fa-font"></i>
+                  <span id="charCount">0</span> حرف
+                </span>
+
+                <span>
+                  UTF-8
+                </span>
+              </div>
+
+            </div>
+
+            <div class="editor-panel result-panel">
+
+              <div class="panel-header">
+                <div>
+                  <i class="fa-solid fa-fingerprint"></i>
+                  <span>Hash Result</span>
+                </div>
+
+                <span id="algorithmLabel" class="language-label">
+                  SHA-256
+                </span>
+              </div>
+
+              <textarea
+                id="hashOutput"
+                readonly
+                spellcheck="false"
+                placeholder="ستظهر نتيجة Hash هنا..."
+              ></textarea>
+
+              <div class="editor-footer">
+                <span>
+                  <i class="fa-solid fa-ruler-horizontal"></i>
+                  <span id="hashLength">0</span> حرف
+                </span>
+
+                <span id="hashBits">
+                  256 bits
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+          <div id="status" class="status">
+            <i class="fa-solid fa-circle-info"></i>
+            أدخل نصًا ثم اختر الخوارزمية واضغط Generate Hash.
+          </div>
+
+        </section>
+
+        <section class="stats-grid">
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fa-solid fa-code-branch"></i>
+            </div>
+
+            <div>
+              <span>الخوارزمية</span>
+              <strong id="statAlgorithm">SHA-256</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fa-solid fa-font"></i>
+            </div>
+
+            <div>
+              <span>حجم الإدخال</span>
+              <strong id="statInput">0</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fa-solid fa-fingerprint"></i>
+            </div>
+
+            <div>
+              <span>طول Hash</span>
+              <strong id="statHash">0</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fa-solid fa-server"></i>
+            </div>
+
+            <div>
+              <span>المعالجة</span>
+              <strong>محلية</strong>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="info-section">
+
+          <div class="section-heading">
+
+            <span class="mini-badge">
+              <i class="fa-solid fa-circle-info"></i>
+              معلومات
+            </span>
+
+            <h2>مولد Hash للنصوص</h2>
+
+            <p>
+              استخدم الأداة لإنشاء بصمة رقمية للنص باستخدام خوارزميات التجزئة
+              المتوفرة في Web Crypto API.
+            </p>
+
+          </div>
+
+          <div class="info-grid">
+
+            <article class="info-card">
+              <div class="info-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+
+              <h3>خصوصية أفضل</h3>
+
+              <p>
+                تتم معالجة النص داخل متصفحك ولا يتم رفع المحتوى إلى خادم خارجي.
+              </p>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon">
+                <i class="fa-solid fa-fingerprint"></i>
+              </div>
+
+              <h3>بصمة رقمية</h3>
+
+              <p>
+                يمكن استخدام Hash لمقارنة البيانات والتحقق من سلامتها وعدم تغيرها.
+              </p>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+
+              <h3>نتيجة فورية</h3>
+
+              <p>
+                احصل على النتيجة مباشرة بعد الضغط على زر إنشاء Hash.
+              </p>
+            </article>
+
+          </div>
+        </section>
+
+        <section class="how-section">
+
+          <div class="section-heading">
+
+            <span class="mini-badge">
+              <i class="fa-solid fa-list-check"></i>
+              طريقة الاستخدام
+            </span>
+
+            <h2>كيف تستخدم Hash Generator؟</h2>
+
+          </div>
+
+          <div class="steps">
+
+            <div class="step">
+              <div class="step-number">1</div>
+
+              <div>
+                <h3>أدخل النص</h3>
+
+                <p>
+                  اكتب أو الصق النص الذي تريد إنشاء Hash له.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">2</div>
+
+              <div>
+                <h3>اختر الخوارزمية</h3>
+
+                <p>
+                  اختر SHA-1 أو SHA-256 أو SHA-384 أو SHA-512.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">3</div>
+
+              <div>
+                <h3>أنشئ وانسخ النتيجة</h3>
+
+                <p>
+                  اضغط Generate Hash ثم انسخ البصمة الناتجة.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <section class="faq-section">
+
+          <div class="section-heading">
+
+            <span class="mini-badge">
+              <i class="fa-solid fa-circle-question"></i>
+              الأسئلة الشائعة
+            </span>
+
+            <h2>أسئلة شائعة حول Hash</h2>
+
+          </div>
+
+          <div class="faq-list">
+
+            {faqs.map((faq) => (
+              <details class="faq-item">
+
+                <summary>
+                  <span>{faq.q}</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+
+                <p>{faq.a}</p>
+
+              </details>
+            ))}
+
+          </div>
+
+        </section>
+
+      </div>
+    </main>
+
+    <Footer />
+
+    <script is:inline>
+      (() => {
+        const inputText = document.getElementById("inputText");
+        const hashOutput = document.getElementById("hashOutput");
+
+        const generateBtn = document.getElementById("generateBtn");
+        const exampleBtn = document.getElementById("exampleBtn");
+        const copyBtn = document.getElementById("copyBtn");
+        const clearBtn = document.getElementById("clearBtn");
+
+        const charCount = document.getElementById("charCount");
+        const hashLength = document.getElementById("hashLength");
+
+        const algorithmLabel = document.getElementById("algorithmLabel");
+        const statAlgorithm = document.getElementById("statAlgorithm");
+        const statInput = document.getElementById("statInput");
+        const statHash = document.getElementById("statHash");
+
+        const hashBits = document.getElementById("hashBits");
+        const status = document.getElementById("status");
+
+        const algorithmButtons =
+          document.querySelectorAll("[data-algorithm]");
+
+        let selectedAlgorithm = "SHA-256";
+
+        const examples = {
+          "SHA-1": "Hello from Th.Tech!",
+          "SHA-256": "Hello from Th.Tech!",
+          "SHA-384": "Hello from Th.Tech!",
+          "SHA-512": "Hello from Th.Tech!"
+        };
+
+        function updateInputStats() {
+          const length = inputText.value.length;
+
+          charCount.textContent = length;
+          statInput.textContent = length;
+        }
+
+        function updateAlgorithmUI() {
+          algorithmLabel.textContent = selectedAlgorithm;
+          statAlgorithm.textContent = selectedAlgorithm;
+
+          if (selectedAlgorithm === "SHA-1") {
+            hashBits.textContent = "160 bits";
+          } else if (selectedAlgorithm === "SHA-256") {
+            hashBits.textContent = "256 bits";
+          } else if (selectedAlgorithm === "SHA-384") {
+            hashBits.textContent = "384 bits";
+          } else {
+            hashBits.textContent = "512 bits";
+          }
+
+          algorithmButtons.forEach((button) => {
+            if (button.dataset.algorithm === selectedAlgorithm) {
+              button.classList.add("active");
+            } else {
+              button.classList.remove("active");
+            }
+          });
+        }
+
+        function bytesToHex(buffer) {
+          const bytes = new Uint8Array(buffer);
+          let result = "";
+
+          for (let i = 0; i < bytes.length; i++) {
+            result += bytes[i].toString(16).padStart(2, "0");
+          }
+
+          return result;
+        }
+
+        async function generateHash() {
+          const text = inputText.value;
+
+          if (!text) {
+            hashOutput.value = "";
+            hashLength.textContent = "0";
+            statHash.textContent = "0";
+
+            status.innerHTML =
+              '<i class="fa-solid fa-triangle-exclamation"></i> أدخل نصًا أولاً لإنشاء Hash.';
+
+            return;
+          }
+
+          if (!window.crypto || !window.crypto.subtle) {
+            status.innerHTML =
+              '<i class="fa-solid fa-triangle-exclamation"></i> Web Crypto API غير متاحة في هذا المتصفح.';
+
+            return;
+          }
+
+          try {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(text);
+
+            const result = await window.crypto.subtle.digest(
+              selectedAlgorithm,
+              data
+            );
+
+            const hex = bytesToHex(result);
+
+            hashOutput.value = hex;
+            hashLength.textContent = hex.length;
+            statHash.textContent = hex.length;
+
+            status.innerHTML =
+              '<i class="fa-solid fa-circle-check"></i> تم إنشاء ' +
+              selectedAlgorithm +
+              " Hash بنجاح.";
+          } catch {
+            hashOutput.value = "";
+
+            status.innerHTML =
+              '<i class="fa-solid fa-triangle-exclamation"></i> حدث خطأ أثناء إنشاء Hash.';
+          }
+        }
+
+        function setExample() {
+          inputText.value = examples[selectedAlgorithm];
+
+          updateInputStats();
+          generateHash();
+        }
+
+        async function copyHash() {
+          const value = hashOutput.value;
+
+          if (!value) {
+            status.innerHTML =
+              '<i class="fa-solid fa-circle-info"></i> لا توجد نتيجة لنسخها.';
+            return;
+          }
+
+          try {
+            await navigator.clipboard.writeText(value);
+
+            copyBtn.innerHTML =
+              '<i class="fa-solid fa-check"></i> تم النسخ';
+
+            status.innerHTML =
+              '<i class="fa-solid fa-circle-check"></i> تم نسخ Hash إلى الحافظة.';
+
+            setTimeout(() => {
+              copyBtn.innerHTML =
+                '<i class="fa-regular fa-copy"></i> نسخ';
+            }, 1500);
+          } catch {
+            hashOutput.select();
+            document.execCommand("copy");
+
+            status.innerHTML =
+              '<i class="fa-solid fa-circle-check"></i> تم نسخ Hash.';
+          }
+        }
+
+        function clearAll() {
+          inputText.value = "";
+          hashOutput.value = "";
+
+          charCount.textContent = "0";
+          hashLength.textContent = "0";
+
+          statInput.textContent = "0";
+          statHash.textContent = "0";
+
+          status.innerHTML =
+            '<i class="fa-solid fa-circle-info"></i> تم مسح البيانات.';
+        }
+
+        algorithmButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            selectedAlgorithm = button.dataset.algorithm;
+
+            updateAlgorithmUI();
+
+            if (inputText.value) {
+              generateHash();
+            }
+          });
+        });
+
+        inputText.addEventListener("input", updateInputStats);
+
+        generateBtn.addEventListener("click", generateHash);
+        exampleBtn.addEventListener("click", setExample);
+        copyBtn.addEventListener("click", copyHash);
+        clearBtn.addEventListener("click", clearAll);
+
+        updateAlgorithmUI();
+        updateInputStats();
+      })();
+    </script>
+
+    <style>
+      :root {
+        --bg: #f7f9fc;
+        --surface: #ffffff;
+        --surface-2: #f1f5f9;
+        --text: #0f172a;
+        --muted: #64748b;
+        --border: rgba(15, 23, 42, 0.09);
+
+        --primary: #0ea5e9;
+        --primary-dark: #0284c7;
+        --secondary: #38bdf8;
+
+        --shadow: 0 25px 70px rgba(15, 23, 42, 0.08);
+      }
+
+      html.dark-mode {
+        --bg: #070b12;
+        --surface: #0d1420;
+        --surface-2: #111a28;
+        --text: #f8fafc;
+        --muted: #94a3b8;
+        --border: rgba(148, 163, 184, 0.13);
+
+        --primary: #38bdf8;
+        --primary-dark: #0ea5e9;
+        --secondary: #7dd3fc;
+
+        --shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(
+            circle at 10% 10%,
+            rgba(14, 165, 233, 0.07),
+            transparent 28%
+          ),
+          var(--bg);
+        color: var(--text);
+        font-family: "Cairo", sans-serif;
+      }
+
+      button,
+      textarea {
+        font-family: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .page {
+        min-height: 100vh;
+        padding: 35px 16px 80px;
+      }
+
+      .container {
+        width: min(1100px, 100%);
+        margin: auto;
+      }
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-bottom: 30px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .breadcrumb a {
+        color: var(--primary-dark);
+        text-decoration: none;
+      }
+
+      .breadcrumb i {
+        font-size: 9px;
+        opacity: 0.6;
+      }
+
+      .hero {
+        text-align: center;
+        margin-bottom: 38px;
+      }
+
+      .hero-badge,
+      .mini-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 13px;
+        border: 1px solid rgba(14, 165, 233, 0.18);
+        border-radius: 999px;
+        background: rgba(14, 165, 233, 0.1);
+        color: var(--primary-dark);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .hero-icon {
+        width: 76px;
+        height: 76px;
+        display: grid;
+        place-items: center;
+        margin: 18px auto;
+        border-radius: 24px;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--secondary)
+        );
+        color: white;
+        font-size: 30px;
+        box-shadow: 0 18px 45px rgba(14, 165, 233, 0.25);
+      }
+
+      .hero h1 {
+        margin: 0 0 10px;
+        font-size: clamp(28px, 5vw, 46px);
+        font-weight: 800;
+        letter-spacing: -1px;
+      }
+
+      .hero p {
+        max-width: 680px;
+        margin: auto;
+        color: var(--muted);
+        line-height: 1.9;
+        font-size: 15px;
+      }
+
+      .hero-tags {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 18px;
+      }
+
+      .hero-tags span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 12px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .hero-tags i {
+        color: var(--primary);
+      }
+
+      .hash-card {
+        overflow: hidden;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      .card-topbar {
+        min-height: 62px;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface-2);
+      }
+
+      .topbar-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .topbar-title i {
+        color: var(--primary);
+      }
+
+      .secure-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 10px;
+        border-radius: 8px;
+        background: rgba(14, 165, 233, 0.1);
+        color: var(--primary-dark);
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+      .actionbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        padding: 15px 18px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 10px 15px;
+        border: 0;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 700;
+        transition: 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn.primary {
+        background: var(--primary);
+        color: white;
+      }
+
+      .btn.secondary {
+        background: rgba(14, 165, 233, 0.1);
+        color: var(--primary-dark);
+      }
+
+      .btn.ghost {
+        background: var(--surface-2);
+        color: var(--muted);
+      }
+
+      .algorithm-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 14px 18px;
+        border-bottom: 1px solid var(--border);
+        background: rgba(14, 165, 233, 0.025);
+      }
+
+      .algorithm-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .algorithm-label i {
+        color: var(--primary);
+      }
+
+      .algorithm-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+
+      .algorithm-buttons button {
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        background: var(--surface);
+        color: var(--muted);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        font-weight: 600;
+        transition: 0.2s;
+      }
+
+      .algorithm-buttons button:hover,
+      .algorithm-buttons button.active {
+        border-color: var(--primary);
+        background: rgba(14, 165, 233, 0.1);
+        color: var(--primary-dark);
+      }
+
+      .workspace {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        padding: 20px;
+      }
+
+      .editor-panel {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: var(--surface-2);
+      }
+
+      .panel-header {
+        min-height: 48px;
+        padding: 10px 13px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .panel-header > div {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .panel-header i {
+        color: var(--primary);
+      }
+
+      .language-label {
+        padding: 4px 7px;
+        border-radius: 6px;
+        background: rgba(14, 165, 233, 0.09);
+        color: var(--primary-dark);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 8px;
+        font-weight: 700;
+      }
+
+      textarea {
+        display: block;
+        width: 100%;
+        height: 230px;
+        padding: 17px;
+        resize: vertical;
+        outline: none;
+        border: 0;
+        background: var(--surface);
+        color: var(--text);
+        direction: ltr;
+        text-align: left;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        line-height: 1.8;
+      }
+
+      textarea::placeholder {
+        color: var(--muted);
+        opacity: 0.7;
+      }
+
+      #hashOutput {
+        word-break: break-all;
+      }
+
+      .editor-footer {
+        min-height: 40px;
+        padding: 8px 13px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 9px;
+      }
+
+      .editor-footer span:first-child {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .editor-footer i {
+        color: var(--primary);
+      }
+
+      .status {
+        margin: 0 20px 20px;
+        padding: 12px 14px;
+        border-radius: 11px;
+        background: rgba(14, 165, 233, 0.08);
+        color: var(--primary-dark);
+        font-size: 11px;
+        line-height: 1.7;
+      }
+
+      .status i {
+        margin-left: 5px;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 14px;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: var(--surface);
+      }
+
+      .stat-icon {
+        width: 39px;
+        height: 39px;
+        flex: 0 0 39px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        background: rgba(14, 165, 233, 0.1);
+        color: var(--primary);
+      }
+
+      .stat-card span {
+        display: block;
+        color: var(--muted);
+        font-size: 9px;
+      }
+
+      .stat-card strong {
+        display: block;
+        margin-top: 2px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+      }
+
+      .info-section,
+      .how-section,
+      .faq-section {
+        margin-top: 65px;
+      }
+
+      .section-heading {
+        margin-bottom: 28px;
+        text-align: center;
+      }
+
+      .section-heading h2 {
+        margin: 13px 0 8px;
+        font-size: clamp(22px, 4vw, 30px);
+      }
+
+      .section-heading p {
+        max-width: 650px;
+        margin: auto;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.9;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .info-card {
+        padding: 23px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+      }
+
+      .info-icon {
+        width: 45px;
+        height: 45px;
+        display: grid;
+        place-items: center;
+        border-radius: 13px;
+        background: rgba(14, 165, 233, 0.1);
+        color: var(--primary);
+      }
+
+      .info-card h3 {
+        margin: 17px 0 8px;
+        font-size: 15px;
+      }
+
+      .info-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.9;
+        font-size: 12px;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .step {
+        display: flex;
+        gap: 14px;
+        padding: 20px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+      }
+
+      .step-number {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: var(--primary);
+        color: white;
+        font-weight: 800;
+      }
+
+      .step h3 {
+        margin: 0 0 6px;
+        font-size: 14px;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.8;
+        font-size: 11px;
+      }
+
+      .faq-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .faq-item {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: var(--surface);
+      }
+
+      .faq-item summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 17px 19px;
+        cursor: pointer;
+        list-style: none;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq-item summary i {
+        color: var(--primary);
+        transition: 0.2s;
+      }
+
+      .faq-item[open] summary i {
+        transform: rotate(180deg);
+      }
+
+      .faq-item p {
+        margin: 0;
+        padding: 0 19px 18px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      @media (max-width: 800px) {
+        .workspace {
+          grid-template-columns: 1fr;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .info-grid,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 520px) {
+        .page {
+          padding: 25px 10px 60px;
+        }
+
+        .card-topbar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .actionbar {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .actionbar .primary {
+          grid-column: 1 / -1;
+        }
+
+        .algorithm-bar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .algorithm-buttons {
+          width: 100%;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .algorithm-buttons button {
+          width: 100%;
+        }
+
+        .workspace {
+          padding: 12px;
+        }
+
+        textarea {
+          height: 210px;
+          font-size: 11px;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .stat-card {
+          padding: 11px;
+        }
+
+        .stat-icon {
+          width: 34px;
+          height: 34px;
+          flex-basis: 34px;
+        }
+
+        .hero h1 {
+          font-size: 28px;
+        }
+      }
+    </style>
+  </body>
+</html>
