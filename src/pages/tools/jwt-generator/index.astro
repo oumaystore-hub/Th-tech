@@ -7,56 +7,38 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const title = "JWT Generator - إنشاء JWT أونلاين مجاناً | Th.Tech";
 
 const description =
-  "أداة JWT Generator مجانية لإنشاء JSON Web Token باستخدام HS256 وHS384 وHS512 مباشرة من المتصفح.";
+  "أداة JWT Generator مجانية لإنشاء JSON Web Token من Header وPayload مباشرة داخل المتصفح.";
 
 const faqs = [
   {
-    q: "ما هو JWT؟",
-    a: "JWT هو JSON Web Token يستخدم لنقل معلومات بين الأطراف بطريقة موقعة."
-  },
-  {
-    q: "ما الخوارزميات المدعومة؟",
-    a: "تدعم الأداة HS256 وHS384 وHS512."
+    q: "ما هو JWT Generator؟",
+    a: "هي أداة تساعد المطورين على إنشاء JSON Web Token من Header وPayload وإضافة Signature تجريبية للاستخدام في الاختبارات والتطوير."
   },
   {
     q: "هل يتم إرسال البيانات إلى الخادم؟",
-    a: "لا، تتم عملية إنشاء JWT داخل المتصفح."
+    a: "لا. تتم عملية إنشاء JWT داخل المتصفح باستخدام JavaScript ولا يتم إرسال البيانات إلى خادم خارجي."
   },
   {
-    q: "هل Secret Key آمن؟",
-    a: "المفتاح لا يتم إرساله إلى خادم Th.Tech، لكن تجنب استخدام مفاتيح حقيقية حساسة على أجهزة أو مواقع غير موثوقة."
+    q: "هل التوقيع الناتج صالح للمصادقة الحقيقية؟",
+    a: "يمكن للأداة إنشاء توقيع HMAC باستخدام Secret Key، لكن يجب استخدام مفتاح سري قوي وحماية المفاتيح وعدم وضع أسرار الإنتاج داخل أدوات عامة."
+  },
+  {
+    q: "هل يمكن تعديل Header وPayload؟",
+    a: "نعم. يمكنك تعديل JSON في Header وPayload ثم إنشاء JWT جديد مباشرة."
   }
 ];
 ---
 
 <html lang="ar" dir="rtl">
-
 <head>
-
   <meta charset="UTF-8" />
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <title>{title}</title>
+  <meta name="description" content={description} />
 
-  <meta
-    name="description"
-    content={description}
-  />
-
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
-  />
-
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
   <link
     href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
@@ -79,84 +61,52 @@ const faqs = [
       } catch {}
     })();
   </script>
-
 </head>
-
 
 <body>
 
   <Header />
 
-
   <main>
 
+    <!-- HERO -->
     <section class="hero">
-
       <div class="container">
 
         <div class="breadcrumb">
-
-          <a href={`${base}/`}>
-            الرئيسية
-          </a>
-
+          <a href={`${base}/`}>الرئيسية</a>
           <i class="fa-solid fa-chevron-left"></i>
-
-          <a href={`${base}/tools/`}>
-            الأدوات
-          </a>
-
+          <a href={`${base}/tools/`}>الأدوات</a>
           <i class="fa-solid fa-chevron-left"></i>
-
-          <span>
-            JWT Generator
-          </span>
-
+          <span>JWT Generator</span>
         </div>
-
 
         <div class="hero-content">
 
           <div class="hero-icon">
-
             <i class="fa-solid fa-key"></i>
-
-            <strong>
-              JWT
-            </strong>
-
+            <span>JWT</span>
           </div>
-
 
           <div class="hero-text">
 
             <div class="badge">
-
               <i class="fa-solid fa-code"></i>
-
               Developer Tools
-
             </div>
 
-
-            <h1>
-              JWT Generator
-            </h1>
-
+            <h1>JWT Generator</h1>
 
             <p>
-              إنشاء JSON Web Token بسهولة باستخدام Header وPayload وSecret Key.
+              أنشئ JSON Web Token من Header وPayload
+              وSecret Key بسهولة مباشرة من المتصفح.
             </p>
 
-
             <div class="tags">
-
               <span>JWT</span>
               <span>HS256</span>
-              <span>HS384</span>
-              <span>HS512</span>
+              <span>JSON</span>
               <span>Local</span>
-
             </div>
 
           </div>
@@ -164,204 +114,82 @@ const faqs = [
         </div>
 
       </div>
-
     </section>
 
 
-
+    <!-- TOOL -->
     <section class="tool-section">
-
       <div class="container">
 
         <div class="generator-card">
 
-
+          <!-- TOP BAR -->
           <div class="card-topbar">
 
             <div class="window-dots">
-
               <span></span>
               <span></span>
               <span></span>
-
             </div>
-
 
             <div class="tool-name">
-
               <i class="fa-solid fa-key"></i>
-
               JWT Generator
-
             </div>
-
 
             <div class="secure">
-
               <i class="fa-solid fa-shield-halved"></i>
-
               Local
-
             </div>
 
           </div>
 
 
-
+          <!-- ACTION BAR -->
           <div class="actionbar">
 
-            <button
-              id="exampleBtn"
-              class="btn secondary"
-              type="button"
-            >
-
+            <button id="exampleBtn" class="btn btn-secondary">
               <i class="fa-solid fa-flask"></i>
-
               مثال
-
             </button>
 
-
-            <button
-              id="clearBtn"
-              class="btn secondary"
-              type="button"
-            >
-
+            <button id="clearBtn" class="btn btn-secondary">
               <i class="fa-solid fa-eraser"></i>
-
               مسح
-
             </button>
 
-
-            <button
-              id="copyBtn"
-              class="btn secondary"
-              type="button"
-            >
-
+            <button id="copyBtn" class="btn btn-secondary">
               <i class="fa-regular fa-copy"></i>
-
               نسخ
-
             </button>
 
-
-            <button
-              id="generateBtn"
-              class="btn primary"
-              type="button"
-            >
-
+            <button id="generateBtn" class="btn btn-primary">
               <i class="fa-solid fa-wand-magic-sparkles"></i>
-
               إنشاء JWT
-
             </button>
 
           </div>
 
 
+          <!-- EDITORS -->
+          <div class="editors-grid">
 
-          <div class="settings">
+            <!-- HEADER -->
+            <div class="editor-panel">
 
-            <div class="field">
+              <div class="editor-header">
 
-              <label for="algorithm">
-
-                <i class="fa-solid fa-code-branch"></i>
-
-                الخوارزمية
-
-              </label>
-
-
-              <select id="algorithm">
-
-                <option value="HS256">
-                  HS256
-                </option>
-
-                <option value="HS384">
-                  HS384
-                </option>
-
-                <option value="HS512">
-                  HS512
-                </option>
-
-              </select>
-
-            </div>
-
-
-
-            <div class="field">
-
-              <label for="secret">
-
-                <i class="fa-solid fa-lock"></i>
-
-                Secret Key
-
-              </label>
-
-
-              <div class="secret-box">
-
-                <input
-                  id="secret"
-                  type="password"
-                  placeholder="أدخل Secret Key..."
-                  autocomplete="off"
-                  dir="ltr"
-                />
-
-
-                <button
-                  id="toggleSecret"
-                  type="button"
-                >
-
-                  <i class="fa-solid fa-eye"></i>
-
-                </button>
-
-              </div>
-
-            </div>
-
-          </div>
-
-
-
-          <div class="editors">
-
-
-            <div class="editor">
-
-              <div class="editor-head">
-
-                <span>
-
+                <div>
                   <i class="fa-solid fa-code"></i>
-
                   Header
+                </div>
 
-                </span>
-
-                <small>
-                  JSON
-                </small>
+                <span>PART 1</span>
 
               </div>
-
 
               <textarea
                 id="headerInput"
-                dir="ltr"
                 spellcheck="false"
               >{
   "alg": "HS256",
@@ -371,34 +199,28 @@ const faqs = [
             </div>
 
 
+            <!-- PAYLOAD -->
+            <div class="editor-panel">
 
-            <div class="editor">
+              <div class="editor-header">
 
-              <div class="editor-head">
-
-                <span>
-
+                <div>
                   <i class="fa-solid fa-database"></i>
-
                   Payload
+                </div>
 
-                </span>
-
-                <small>
-                  JSON
-                </small>
+                <span>PART 2</span>
 
               </div>
 
-
               <textarea
                 id="payloadInput"
-                dir="ltr"
                 spellcheck="false"
               >{
   "sub": "thtech",
   "name": "Th.Tech",
-  "role": "developer"
+  "role": "developer",
+  "iat": 1720000000
 }</textarea>
 
             </div>
@@ -406,57 +228,50 @@ const faqs = [
           </div>
 
 
+          <!-- SECRET -->
+          <div class="secret-section">
 
-          <div class="output">
+            <div class="editor-header">
 
-            <div class="output-head">
+              <div>
+                <i class="fa-solid fa-lock"></i>
+                Secret Key
+              </div>
 
-              <span>
-
-                <i class="fa-solid fa-terminal"></i>
-
-                Generated JWT
-
-              </span>
-
-              <small id="outputLength">
-                0 حرف
-              </small>
+              <span>HMAC SECRET</span>
 
             </div>
 
+            <div class="secret-input-wrap">
 
-            <textarea
-              id="jwtOutput"
-              readonly
-              dir="ltr"
-              spellcheck="false"
-              placeholder="سيظهر JWT هنا..."
-            ></textarea>
+              <input
+                id="secretInput"
+                type="text"
+                value="thtech-secret-key"
+                autocomplete="off"
+                spellcheck="false"
+              />
+
+              <button id="toggleSecret" type="button">
+                <i class="fa-solid fa-eye"></i>
+              </button>
+
+            </div>
 
           </div>
 
 
+          <!-- RESULT -->
+          <div class="result-box" id="resultBox">
 
-          <div
-            id="resultBox"
-            class="result"
-          >
-
-            <div
-              id="resultIcon"
-              class="result-icon"
-            >
-
-              <i class="fa-solid fa-circle-info"></i>
-
+            <div class="result-icon" id="resultIcon">
+              <i class="fa-solid fa-circle-question"></i>
             </div>
 
-
-            <div>
+            <div class="result-content">
 
               <strong id="resultTitle">
-                جاهز
+                جاهز لإنشاء JWT
               </strong>
 
               <p id="resultMessage">
@@ -468,23 +283,42 @@ const faqs = [
           </div>
 
 
+          <!-- OUTPUT -->
+          <div class="output-section">
 
-          <div class="stats">
+            <div class="output-header">
+
+              <div>
+                <i class="fa-solid fa-file-code"></i>
+                Generated JWT
+              </div>
+
+              <span id="outputCount">0 حرف</span>
+
+            </div>
+
+            <textarea
+              id="jwtOutput"
+              readonly
+              spellcheck="false"
+              placeholder="سيظهر JWT هنا..."
+            ></textarea>
+
+          </div>
+
+
+          <!-- STATS -->
+          <div class="stats-grid">
 
             <div class="stat">
 
-              <i class="fa-solid fa-text-width"></i>
+              <div class="stat-icon">
+                <i class="fa-solid fa-text-width"></i>
+              </div>
 
               <div>
-
-                <span>
-                  JWT Length
-                </span>
-
-                <strong id="statLength">
-                  0
-                </strong>
-
+                <span>طول JWT</span>
+                <strong id="statLength">0</strong>
               </div>
 
             </div>
@@ -492,18 +326,13 @@ const faqs = [
 
             <div class="stat">
 
-              <i class="fa-solid fa-code-branch"></i>
+              <div class="stat-icon">
+                <i class="fa-solid fa-code"></i>
+              </div>
 
               <div>
-
-                <span>
-                  Algorithm
-                </span>
-
-                <strong id="statAlgorithm">
-                  HS256
-                </strong>
-
+                <span>Algorithm</span>
+                <strong id="statAlgorithm">HS256</strong>
               </div>
 
             </div>
@@ -511,18 +340,13 @@ const faqs = [
 
             <div class="stat">
 
-              <i class="fa-solid fa-database"></i>
+              <div class="stat-icon">
+                <i class="fa-solid fa-layer-group"></i>
+              </div>
 
               <div>
-
-                <span>
-                  Payload
-                </span>
-
-                <strong id="statPayload">
-                  0
-                </strong>
-
+                <span>الأجزاء</span>
+                <strong id="statParts">0 / 3</strong>
               </div>
 
             </div>
@@ -530,18 +354,13 @@ const faqs = [
 
             <div class="stat">
 
-              <i class="fa-solid fa-circle-check"></i>
+              <div class="stat-icon">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
 
               <div>
-
-                <span>
-                  الحالة
-                </span>
-
-                <strong id="statStatus">
-                  جاهز
-                </strong>
-
+                <span>الحالة</span>
+                <strong id="statStatus">جاهز</strong>
               </div>
 
             </div>
@@ -551,27 +370,24 @@ const faqs = [
         </div>
 
       </div>
-
     </section>
 
 
-
+    <!-- INFO -->
     <section class="info-section">
-
       <div class="container">
 
-        <div class="section-title">
+        <div class="section-heading">
 
-          <span>
-            JWT GENERATOR
-          </span>
+          <span>JWT GENERATOR</span>
 
           <h2>
-            إنشاء JWT بسهولة
+            ما هو JWT Generator؟
           </h2>
 
           <p>
-            أنشئ JSON Web Token مباشرة من المتصفح بدون إرسال بياناتك إلى الخادم.
+            أداة للمطورين تساعد على إنشاء JSON Web Token
+            باستخدام Header وPayload وSecret Key.
           </p>
 
         </div>
@@ -579,21 +395,17 @@ const faqs = [
 
         <div class="info-grid">
 
-
           <article class="info-card">
 
             <div class="info-icon">
-
               <i class="fa-solid fa-code"></i>
-
             </div>
 
-            <h3>
-              Header
-            </h3>
+            <h3>Header</h3>
 
             <p>
-              يحتوي على نوع التوكن والخوارزمية المستخدمة.
+              يحتوي عادةً على نوع التوكن والخوارزمية
+              المستخدمة لإنشاء التوقيع.
             </p>
 
           </article>
@@ -602,17 +414,14 @@ const faqs = [
           <article class="info-card">
 
             <div class="info-icon">
-
               <i class="fa-solid fa-database"></i>
-
             </div>
 
-            <h3>
-              Payload
-            </h3>
+            <h3>Payload</h3>
 
             <p>
-              يحتوي على البيانات والـClaims التي تريد تضمينها.
+              يحتوي على Claims والبيانات التي تريد
+              تضمينها داخل JWT.
             </p>
 
           </article>
@@ -621,42 +430,34 @@ const faqs = [
           <article class="info-card">
 
             <div class="info-icon">
-
-              <i class="fa-solid fa-fingerprint"></i>
-
+              <i class="fa-solid fa-key"></i>
             </div>
 
-            <h3>
-              Signature
-            </h3>
+            <h3>Secret Key</h3>
 
             <p>
-              يتم إنشاء التوقيع باستخدام Secret Key والخوارزمية المختارة.
+              يستخدم لإنشاء توقيع HMAC عند اختيار
+              خوارزمية HS256.
             </p>
 
           </article>
-
 
         </div>
 
       </div>
-
     </section>
 
 
-
+    <!-- HOW TO -->
     <section class="how-section">
-
       <div class="container">
 
-        <div class="section-title">
+        <div class="section-heading">
 
-          <span>
-            HOW IT WORKS
-          </span>
+          <span>HOW IT WORKS</span>
 
           <h2>
-            كيفية إنشاء JWT
+            كيفية استخدام JWT Generator
           </h2>
 
         </div>
@@ -664,23 +465,16 @@ const faqs = [
 
         <div class="steps">
 
-
           <div class="step">
 
-            <div class="number">
-              1
-            </div>
+            <div class="step-number">1</div>
 
             <div>
-
-              <h3>
-                اختر الخوارزمية
-              </h3>
+              <h3>عدّل Header</h3>
 
               <p>
-                اختر HS256 أو HS384 أو HS512.
+                أدخل نوع التوكن والخوارزمية المناسبة.
               </p>
-
             </div>
 
           </div>
@@ -688,20 +482,14 @@ const faqs = [
 
           <div class="step">
 
-            <div class="number">
-              2
-            </div>
+            <div class="step-number">2</div>
 
             <div>
-
-              <h3>
-                أدخل البيانات
-              </h3>
+              <h3>أدخل Payload</h3>
 
               <p>
-                أضف Header وPayload وSecret Key.
+                أضف Claims والبيانات التي تريدها.
               </p>
-
             </div>
 
           </div>
@@ -709,42 +497,31 @@ const faqs = [
 
           <div class="step">
 
-            <div class="number">
-              3
-            </div>
+            <div class="step-number">3</div>
 
             <div>
-
-              <h3>
-                إنشاء JWT
-              </h3>
+              <h3>أنشئ JWT</h3>
 
               <p>
-                اضغط على إنشاء JWT ثم انسخ النتيجة.
+                اضغط على إنشاء JWT للحصول على التوكن.
               </p>
-
             </div>
 
           </div>
-
 
         </div>
 
       </div>
-
     </section>
 
 
-
+    <!-- FAQ -->
     <section class="faq-section">
-
       <div class="container">
 
-        <div class="section-title">
+        <div class="section-heading">
 
-          <span>
-            FAQ
-          </span>
+          <span>FAQ</span>
 
           <h2>
             الأسئلة الشائعة
@@ -756,7 +533,6 @@ const faqs = [
         <div class="faq-list">
 
           {faqs.map((faq) => (
-
             <details>
 
               <summary>
@@ -774,13 +550,11 @@ const faqs = [
               </p>
 
             </details>
-
           ))}
 
         </div>
 
       </div>
-
     </section>
 
   </main>
@@ -789,18 +563,18 @@ const faqs = [
   <Footer />
 
 
-
+  <!-- JAVASCRIPT -->
   <script is:inline>
     (() => {
-
-      const algorithm = document.getElementById("algorithm");
-      const secret = document.getElementById("secret");
 
       const headerInput =
         document.getElementById("headerInput");
 
       const payloadInput =
         document.getElementById("payloadInput");
+
+      const secretInput =
+        document.getElementById("secretInput");
 
       const jwtOutput =
         document.getElementById("jwtOutput");
@@ -820,6 +594,9 @@ const faqs = [
       const toggleSecret =
         document.getElementById("toggleSecret");
 
+      const outputCount =
+        document.getElementById("outputCount");
+
       const resultBox =
         document.getElementById("resultBox");
 
@@ -832,113 +609,17 @@ const faqs = [
       const resultMessage =
         document.getElementById("resultMessage");
 
-      const outputLength =
-        document.getElementById("outputLength");
-
       const statLength =
         document.getElementById("statLength");
 
       const statAlgorithm =
         document.getElementById("statAlgorithm");
 
-      const statPayload =
-        document.getElementById("statPayload");
+      const statParts =
+        document.getElementById("statParts");
 
       const statStatus =
         document.getElementById("statStatus");
-
-
-      let currentJWT = "";
-
-
-      function encodeBase64Url(text) {
-
-        const bytes =
-          new TextEncoder().encode(text);
-
-        let binary = "";
-
-        for (let i = 0; i < bytes.length; i++) {
-
-          binary += String.fromCharCode(
-            bytes[i]
-          );
-
-        }
-
-        return btoa(binary)
-          .replace(/\+/g, "-")
-          .replace(/\//g, "_")
-          .replace(/=+$/g, "");
-
-      }
-
-
-      function hashName(name) {
-
-        if (name === "HS384") {
-          return "SHA-384";
-        }
-
-        if (name === "HS512") {
-          return "SHA-512";
-        }
-
-        return "SHA-256";
-
-      }
-
-
-      async function makeSignature(
-        text,
-        key,
-        algorithmName
-      ) {
-
-        const keyData =
-          new TextEncoder().encode(key);
-
-        const cryptoKey =
-          await crypto.subtle.importKey(
-            "raw",
-            keyData,
-            {
-              name: "HMAC",
-              hash: hashName(algorithmName)
-            },
-            false,
-            ["sign"]
-          );
-
-
-        const signature =
-          await crypto.subtle.sign(
-            "HMAC",
-            cryptoKey,
-            new TextEncoder().encode(text)
-          );
-
-
-        const bytes =
-          new Uint8Array(signature);
-
-        let binary = "";
-
-        for (let i = 0; i < bytes.length; i++) {
-
-          binary += String.fromCharCode(
-            bytes[i]
-          );
-
-        }
-
-
-        return btoa(binary)
-          .replace(/\+/g, "-")
-          .replace(/\//g, "_")
-          .replace(/=+$/g, "");
-
-      }
 
 
       function showSuccess(message) {
@@ -951,14 +632,13 @@ const faqs = [
           '<i class="fa-solid fa-circle-check"></i>';
 
         resultTitle.textContent =
-          "تم إنشاء JWT";
+          "تم إنشاء JWT بنجاح";
 
         resultMessage.textContent =
           message;
 
         statStatus.textContent =
-          "نجاح";
-
+          "تم الإنشاء";
       }
 
 
@@ -972,151 +652,228 @@ const faqs = [
           '<i class="fa-solid fa-circle-xmark"></i>';
 
         resultTitle.textContent =
-          "خطأ";
+          "تعذر إنشاء JWT";
 
         resultMessage.textContent =
           message;
 
         statStatus.textContent =
           "خطأ";
-
       }
 
 
-      function resetStatus() {
+      function showReady() {
 
-        resultBox.classList.remove("success");
-        resultBox.classList.remove("error");
+        resultBox.classList.remove(
+          "success",
+          "error"
+        );
 
         resultIcon.innerHTML =
-          '<i class="fa-solid fa-circle-info"></i>';
+          '<i class="fa-solid fa-circle-question"></i>';
 
         resultTitle.textContent =
-          "جاهز";
+          "جاهز لإنشاء JWT";
 
         resultMessage.textContent =
           "أدخل البيانات ثم اضغط على إنشاء JWT.";
 
         statStatus.textContent =
           "جاهز";
+      }
 
+
+      function base64UrlEncode(value) {
+
+        const bytes =
+          new TextEncoder().encode(value);
+
+        let binary = "";
+
+        for (
+          let i = 0;
+          i < bytes.length;
+          i++
+        ) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+
+        return btoa(binary)
+          .replace(/\+/g, "-")
+          .replace(/\//g, "_")
+          .replace(/=+$/g, "");
+      }
+
+
+      function jsonObject(text, name) {
+
+        let parsed;
+
+        try {
+
+          parsed =
+            JSON.parse(text);
+
+        } catch {
+
+          throw new Error(
+            name + " يجب أن يحتوي على JSON صالح."
+          );
+        }
+
+        if (
+          parsed === null ||
+          typeof parsed !== "object" ||
+          Array.isArray(parsed)
+        ) {
+
+          throw new Error(
+            name + " يجب أن يكون JSON Object."
+          );
+        }
+
+        return parsed;
+      }
+
+
+      async function createSignature(
+        data,
+        secret
+      ) {
+
+        const encoder =
+          new TextEncoder();
+
+        const keyData =
+          encoder.encode(secret);
+
+        const messageData =
+          encoder.encode(data);
+
+        const key =
+          await crypto.subtle.importKey(
+            "raw",
+            keyData,
+            {
+              name: "HMAC",
+              hash: "SHA-256"
+            },
+            false,
+            ["sign"]
+          );
+
+        const signature =
+          await crypto.subtle.sign(
+            "HMAC",
+            key,
+            messageData
+          );
+
+        const bytes =
+          new Uint8Array(signature);
+
+        let binary = "";
+
+        for (
+          let i = 0;
+          i < bytes.length;
+          i++
+        ) {
+          binary += String.fromCharCode(
+            bytes[i]
+          );
+        }
+
+        return btoa(binary)
+          .replace(/\+/g, "-")
+          .replace(/\//g, "_")
+          .replace(/=+$/g, "");
       }
 
 
       async function generateJWT() {
 
-        const key =
-          secret.value.trim();
-
-
-        if (!key) {
-
-          showError(
-            "يرجى إدخال Secret Key."
-          );
-
-          secret.focus();
-
-          return;
-
-        }
-
-
-        let header;
-        let payload;
-
-
         try {
 
-          header =
-            JSON.parse(
-              headerInput.value
+          const header =
+            jsonObject(
+              headerInput.value.trim(),
+              "Header"
             );
 
-        } catch {
-
-          showError(
-            "Header غير صالح. أدخل JSON صحيح."
-          );
-
-          return;
-
-        }
-
-
-        try {
-
-          payload =
-            JSON.parse(
-              payloadInput.value
+          const payload =
+            jsonObject(
+              payloadInput.value.trim(),
+              "Payload"
             );
 
-        } catch {
+          const secret =
+            secretInput.value;
 
-          showError(
-            "Payload غير صالح. أدخل JSON صحيح."
-          );
+          if (!secret) {
 
-          return;
-
-        }
-
-
-        const selectedAlgorithm =
-          algorithm.value;
+            throw new Error(
+              "أدخل Secret Key أولاً."
+            );
+          }
 
 
-        header.alg =
-          selectedAlgorithm;
+          const algorithm =
+            header.alg || "HS256";
 
 
-        header.typ =
-          "JWT";
+          if (algorithm !== "HS256") {
+
+            throw new Error(
+              "الإصدار الحالي يدعم خوارزمية HS256 فقط."
+            );
+          }
 
 
-        const encodedHeader =
-          encodeBase64Url(
-            JSON.stringify(header)
-          );
+          header.alg =
+            "HS256";
 
 
-        const encodedPayload =
-          encodeBase64Url(
-            JSON.stringify(payload)
-          );
+          const encodedHeader =
+            base64UrlEncode(
+              JSON.stringify(header)
+            );
 
 
-        const content =
-          encodedHeader +
-          "." +
-          encodedPayload;
+          const encodedPayload =
+            base64UrlEncode(
+              JSON.stringify(payload)
+            );
 
 
-        try {
+          const unsignedToken =
+            encodedHeader +
+            "." +
+            encodedPayload;
+
 
           const signature =
-            await makeSignature(
-              content,
-              key,
-              selectedAlgorithm
+            await createSignature(
+              unsignedToken,
+              secret
             );
 
 
-          currentJWT =
-            content +
+          const token =
+            unsignedToken +
             "." +
             signature;
 
 
           jwtOutput.value =
-            currentJWT;
+            token;
 
 
           const length =
-            currentJWT.length;
+            token.length;
 
 
-          outputLength.textContent =
+          outputCount.textContent =
             length.toLocaleString() +
             " حرف";
 
@@ -1126,37 +883,39 @@ const faqs = [
 
 
           statAlgorithm.textContent =
-            selectedAlgorithm;
+            "HS256";
 
 
-          statPayload.textContent =
-            payloadInput.value.length.toLocaleString();
+          statParts.textContent =
+            "3 / 3";
 
 
           showSuccess(
-            "تم إنشاء JWT محلياً داخل المتصفح."
+            "تم إنشاء JWT باستخدام HS256 وتوقيعه محلياً داخل المتصفح."
           );
 
-        } catch {
+        } catch (error) {
+
+          jwtOutput.value = "";
+
+          outputCount.textContent =
+            "0 حرف";
+
+          statLength.textContent =
+            "0";
+
+          statParts.textContent =
+            "0 / 3";
 
           showError(
-            "تعذر إنشاء التوقيع. تأكد من أن المتصفح يدعم Web Crypto API."
+            error.message ||
+            "حدث خطأ أثناء إنشاء JWT."
           );
-
         }
-
       }
 
 
       function loadExample() {
-
-        algorithm.value =
-          "HS256";
-
-
-        secret.value =
-          "thtech-demo-secret";
-
 
         headerInput.value =
 `{
@@ -1164,101 +923,101 @@ const faqs = [
   "typ": "JWT"
 }`;
 
-
         payloadInput.value =
 `{
   "sub": "thtech",
   "name": "Th.Tech",
-  "role": "developer"
+  "role": "developer",
+  "iat": 1720000000
 }`;
 
-
-        resetStatus();
+        secretInput.value =
+          "thtech-secret-key";
 
         generateJWT();
-
       }
 
 
       function clearAll() {
 
-        secret.value =
-          "";
+        headerInput.value = "";
 
+        payloadInput.value = "";
 
-        jwtOutput.value =
-          "";
+        secretInput.value = "";
 
+        jwtOutput.value = "";
 
-        currentJWT =
-          "";
-
-
-        outputLength.textContent =
+        outputCount.textContent =
           "0 حرف";
-
 
         statLength.textContent =
           "0";
 
+        statAlgorithm.textContent =
+          "—";
 
-        statPayload.textContent =
-          "0";
+        statParts.textContent =
+          "0 / 3";
 
+        showReady();
 
-        resetStatus();
-
-
-        secret.focus();
-
+        headerInput.focus();
       }
 
 
       async function copyJWT() {
 
-        if (!currentJWT) {
+        const value =
+          jwtOutput.value.trim();
+
+        if (!value) {
 
           showError(
-            "أنشئ JWT أولاً قبل النسخ."
+            "لا يوجد JWT لنسخه."
           );
 
           return;
-
         }
 
 
         try {
 
           await navigator.clipboard.writeText(
-            currentJWT
+            value
           );
+
+          const original =
+            copyBtn.innerHTML;
+
+          copyBtn.innerHTML =
+            '<i class="fa-solid fa-check"></i> تم النسخ';
+
+          setTimeout(() => {
+
+            copyBtn.innerHTML =
+              original;
+
+          }, 1500);
 
         } catch {
 
-          jwtOutput.focus();
-
           jwtOutput.select();
 
-          document.execCommand("copy");
-
-        }
-
-
-        const oldHTML =
-          copyBtn.innerHTML;
-
-
-        copyBtn.innerHTML =
-          '<i class="fa-solid fa-check"></i> تم النسخ';
-
-
-        setTimeout(() => {
+          document.execCommand(
+            "copy"
+          );
 
           copyBtn.innerHTML =
-            oldHTML;
+            '<i class="fa-solid fa-check"></i> تم النسخ';
 
-        }, 1500);
+          setTimeout(() => {
 
+            copyBtn.innerHTML =
+              '<i class="fa-regular fa-copy"></i> نسخ';
+
+          }, 1500);
+        }
       }
 
 
@@ -1267,38 +1026,21 @@ const faqs = [
         () => {
 
           if (
-            secret.type ===
-            "password"
+            secretInput.type === "password"
           ) {
 
-            secret.type =
-              "text";
-
+            secretInput.type = "text";
 
             toggleSecret.innerHTML =
               '<i class="fa-solid fa-eye-slash"></i>';
 
           } else {
 
-            secret.type =
-              "password";
-
+            secretInput.type = "password";
 
             toggleSecret.innerHTML =
               '<i class="fa-solid fa-eye"></i>';
-
           }
-
-        }
-      );
-
-
-      algorithm.addEventListener(
-        "change",
-        () => {
-
-          statAlgorithm.textContent =
-            algorithm.value;
 
         }
       );
@@ -1328,84 +1070,70 @@ const faqs = [
       );
 
 
-      document.addEventListener(
-        "keydown",
-        (event) => {
+      [headerInput, payloadInput, secretInput]
+        .forEach((element) => {
 
-          if (
-            event.ctrlKey &&
-            event.key === "Enter"
-          ) {
+          element.addEventListener(
+            "keydown",
+            (event) => {
 
-            event.preventDefault();
+              if (
+                event.ctrlKey &&
+                event.key === "Enter"
+              ) {
 
-            generateJWT();
+                event.preventDefault();
 
-          }
+                generateJWT();
+              }
 
+
+              if (
+                event.key === "Tab" &&
+                element.tagName === "TEXTAREA"
+              ) {
+
+                event.preventDefault();
+
+                const start =
+                  element.selectionStart;
+
+                const end =
+                  element.selectionEnd;
+
+                element.value =
+                  element.value.substring(
+                    0,
+                    start
+                  ) +
+                  "  " +
+                  element.value.substring(
+                    end
+                  );
+
+                element.selectionStart =
+                  element.selectionEnd =
+                    start + 2;
+              }
+
+            }
+          );
+
+        });
+
+
+      jwtOutput.addEventListener(
+        "click",
+        () => {
+          jwtOutput.select();
         }
       );
 
 
-      headerInput.addEventListener(
-        "keydown",
-        (event) => {
-
-          if (event.key === "Tab") {
-
-            event.preventDefault();
-
-            const start =
-              headerInput.selectionStart;
-
-            const end =
-              headerInput.selectionEnd;
-
-
-            headerInput.setRangeText(
-              "  ",
-              start,
-              end,
-              "end"
-            );
-
-          }
-
-        }
-      );
-
-
-      payloadInput.addEventListener(
-        "keydown",
-        (event) => {
-
-          if (event.key === "Tab") {
-
-            event.preventDefault();
-
-            const start =
-              payloadInput.selectionStart;
-
-            const end =
-              payloadInput.selectionEnd;
-
-
-            payloadInput.setRangeText(
-              "  ",
-              start,
-              end,
-              "end"
-            );
-
-          }
-
-        }
-      );
-
+      showReady();
 
     })();
   </script>
-
 
 
   <style>
@@ -1419,41 +1147,41 @@ const faqs = [
       --text: #172033;
       --muted: #718096;
 
-      --border: rgba(15, 23, 42, .09);
+      --border:
+        rgba(15, 23, 42, 0.09);
 
       --primary: #16a34a;
       --primary-dark: #15803d;
+      --secondary: #22c55e;
 
       --success: #16a34a;
       --danger: #dc2626;
 
       --shadow:
-        0 25px 70px rgba(15, 23, 42, .10);
-
+        0 25px 70px
+        rgba(15, 23, 42, 0.10);
     }
 
 
     html.dark-mode {
 
-      --bg: #070d09;
-      --surface: #0d1510;
-      --surface-2: #121c15;
+      --bg: #080d0a;
+      --surface: #0d1710;
+      --surface-2: #121e16;
 
       --text: #f8fafc;
       --muted: #94a3b8;
 
       --border:
-        rgba(148, 163, 184, .13);
+        rgba(148, 163, 184, 0.13);
 
       --primary: #4ade80;
       --primary-dark: #22c55e;
-
-      --success: #4ade80;
-      --danger: #f87171;
+      --secondary: #86efac;
 
       --shadow:
-        0 30px 80px rgba(0, 0, 0, .45);
-
+        0 30px 80px
+        rgba(0, 0, 0, 0.45);
     }
 
 
@@ -1475,31 +1203,23 @@ const faqs = [
       font-family:
         "Cairo",
         sans-serif;
-
-    }
-
-
-    button,
-    input,
-    select,
-    textarea {
-
-      font-family:
-        inherit;
-
     }
 
 
     .container {
 
       width:
-        min(1180px, calc(100% - 32px));
+        min(
+          1180px,
+          calc(100% - 32px)
+        );
 
       margin:
         auto;
-
     }
 
+
+    /* HERO */
 
     .hero {
 
@@ -1509,11 +1229,10 @@ const faqs = [
       background:
         radial-gradient(
           circle at 10% 20%,
-          rgba(22, 163, 74, .13),
+          rgba(22, 163, 74, 0.13),
           transparent 35%
         ),
         var(--bg);
-
     }
 
 
@@ -1531,15 +1250,14 @@ const faqs = [
       flex-wrap:
         wrap;
 
-      margin-bottom:
-        38px;
-
       color:
         var(--muted);
 
       font-size:
         13px;
 
+      margin-bottom:
+        38px;
     }
 
 
@@ -1550,15 +1268,6 @@ const faqs = [
 
       text-decoration:
         none;
-
-    }
-
-
-    .breadcrumb a:hover {
-
-      color:
-        var(--primary);
-
     }
 
 
@@ -1566,7 +1275,6 @@ const faqs = [
 
       font-size:
         9px;
-
     }
 
 
@@ -1580,7 +1288,6 @@ const faqs = [
 
       gap:
         28px;
-
     }
 
 
@@ -1595,6 +1302,9 @@ const faqs = [
       flex:
         0 0 112px;
 
+      border-radius:
+        30px;
+
       display:
         flex;
 
@@ -1608,17 +1318,17 @@ const faqs = [
         column;
 
       gap:
-        5px;
-
-      border-radius:
-        30px;
+        4px;
 
       background:
-        rgba(22, 163, 74, .12);
+        rgba(22, 163, 74, 0.12);
 
       color:
         var(--primary);
 
+      box-shadow:
+        inset 0 0 0 1px
+        rgba(22, 163, 74, 0.10);
     }
 
 
@@ -1626,17 +1336,15 @@ const faqs = [
 
       font-size:
         40px;
-
     }
 
 
-    .hero-icon strong {
+    .hero-icon span {
 
       font:
         700 13px
         "JetBrains Mono",
         monospace;
-
     }
 
 
@@ -1658,7 +1366,7 @@ const faqs = [
         999px;
 
       background:
-        rgba(22, 163, 74, .10);
+        rgba(22, 163, 74, 0.10);
 
       color:
         var(--primary);
@@ -1668,7 +1376,6 @@ const faqs = [
 
       font-weight:
         700;
-
     }
 
 
@@ -1678,11 +1385,14 @@ const faqs = [
         12px 0 8px;
 
       font-size:
-        clamp(32px, 5vw, 52px);
+        clamp(
+          32px,
+          5vw,
+          52px
+        );
 
       line-height:
         1.1;
-
     }
 
 
@@ -1697,12 +1407,11 @@ const faqs = [
       color:
         var(--muted);
 
-      line-height:
-        1.9;
-
       font-size:
         16px;
 
+      line-height:
+        1.9;
     }
 
 
@@ -1719,7 +1428,6 @@ const faqs = [
 
       margin-top:
         17px;
-
     }
 
 
@@ -1729,30 +1437,31 @@ const faqs = [
         5px 10px;
 
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
       border-radius:
         8px;
 
-      background:
-        var(--surface);
-
       color:
         var(--muted);
+
+      background:
+        var(--surface);
 
       font:
         500 11px
         "JetBrains Mono",
         monospace;
-
     }
 
+
+    /* TOOL */
 
     .tool-section {
 
       padding-bottom:
         70px;
-
     }
 
 
@@ -1765,14 +1474,14 @@ const faqs = [
         var(--surface);
 
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
       border-radius:
         22px;
 
       box-shadow:
         var(--shadow);
-
     }
 
 
@@ -1794,11 +1503,11 @@ const faqs = [
         space-between;
 
       border-bottom:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
       background:
         var(--surface-2);
-
     }
 
 
@@ -1809,7 +1518,6 @@ const faqs = [
 
       gap:
         6px;
-
     }
 
 
@@ -1826,7 +1534,6 @@ const faqs = [
 
       background:
         var(--border);
-
     }
 
 
@@ -1841,11 +1548,13 @@ const faqs = [
       gap:
         8px;
 
+      color:
+        var(--text);
+
       font:
         600 13px
         "JetBrains Mono",
         monospace;
-
     }
 
 
@@ -1853,7 +1562,6 @@ const faqs = [
 
       color:
         var(--primary);
-
     }
 
 
@@ -1876,9 +1584,10 @@ const faqs = [
 
       font-weight:
         700;
-
     }
 
+
+    /* ACTION BAR */
 
     .actionbar {
 
@@ -1895,15 +1604,16 @@ const faqs = [
         15px 18px;
 
       border-bottom:
-        1px solid var(--border);
-
+        1px solid
+        var(--border);
     }
 
 
     .btn {
 
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
       border-radius:
         10px;
@@ -1911,8 +1621,9 @@ const faqs = [
       padding:
         10px 15px;
 
-      cursor:
-        pointer;
+      font-family:
+        "Cairo",
+        sans-serif;
 
       font-size:
         12px;
@@ -1920,9 +1631,11 @@ const faqs = [
       font-weight:
         700;
 
-      transition:
-        .2s;
+      cursor:
+        pointer;
 
+      transition:
+        0.2s;
     }
 
 
@@ -1930,7 +1643,6 @@ const faqs = [
 
       transform:
         translateY(-1px);
-
     }
 
 
@@ -1938,201 +1650,42 @@ const faqs = [
 
       margin-left:
         6px;
-
     }
 
 
-    .btn.secondary {
+    .btn-secondary {
 
       color:
         var(--text);
 
       background:
         var(--surface-2);
-
     }
 
 
-    .btn.primary {
+    .btn-primary {
 
       color:
-        #fff;
+        white;
 
       background:
         var(--primary);
 
       border-color:
         var(--primary);
-
     }
 
 
-    .btn.primary:hover {
+    .btn-primary:hover {
 
       background:
         var(--primary-dark);
-
     }
 
 
-    .settings {
+    /* EDITORS */
 
-      display:
-        grid;
-
-      grid-template-columns:
-        .7fr 1.3fr;
-
-      gap:
-        15px;
-
-      margin:
-        20px;
-
-    }
-
-
-    .field label {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        7px;
-
-      margin-bottom:
-        8px;
-
-      font-size:
-        12px;
-
-      font-weight:
-        700;
-
-    }
-
-
-    .field label i {
-
-      color:
-        var(--primary);
-
-    }
-
-
-    select,
-    .secret-box {
-
-      width:
-        100%;
-
-      min-height:
-        47px;
-
-      border:
-        1px solid var(--border);
-
-      border-radius:
-        11px;
-
-      background:
-        var(--surface-2);
-
-      color:
-        var(--text);
-
-    }
-
-
-    select {
-
-      padding:
-        0 13px;
-
-      outline:
-        none;
-
-      cursor:
-        pointer;
-
-    }
-
-
-    .secret-box {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      overflow:
-        hidden;
-
-    }
-
-
-    .secret-box input {
-
-      width:
-        100%;
-
-      height:
-        47px;
-
-      padding:
-        0 13px;
-
-      border:
-        0;
-
-      outline:
-        0;
-
-      background:
-        transparent;
-
-      color:
-        var(--text);
-
-      font:
-        12px
-        "JetBrains Mono",
-        monospace;
-
-    }
-
-
-    .secret-box button {
-
-      width:
-        45px;
-
-      height:
-        45px;
-
-      border:
-        0;
-
-      border-right:
-        1px solid var(--border);
-
-      background:
-        transparent;
-
-      color:
-        var(--muted);
-
-      cursor:
-        pointer;
-
-    }
-
-
-    .editors {
+    .editors-grid {
 
       display:
         grid;
@@ -2144,31 +1697,31 @@ const faqs = [
         15px;
 
       margin:
-        0 20px 15px;
-
+        20px;
     }
 
 
-    .editor,
-    .output {
+    .editor-panel {
+
+      min-width:
+        0;
 
       overflow:
         hidden;
 
       border:
-        1px solid rgba(255,255,255,.08);
+        1px solid
+        var(--border);
 
       border-radius:
         15px;
 
       background:
-        #0d1117;
-
+        var(--surface-2);
     }
 
 
-    .editor-head,
-    .output-head {
+    .editor-header {
 
       display:
         flex;
@@ -2180,25 +1733,24 @@ const faqs = [
         space-between;
 
       padding:
-        12px 14px;
-
-      color:
-        #f8fafc;
+        11px 14px;
 
       border-bottom:
-        1px solid rgba(255,255,255,.08);
+        1px solid
+        var(--border);
+
+      color:
+        var(--muted);
 
       font-size:
         12px;
 
       font-weight:
         700;
-
     }
 
 
-    .editor-head span,
-    .output-head span {
+    .editor-header div {
 
       display:
         flex;
@@ -2209,43 +1761,40 @@ const faqs = [
       gap:
         8px;
 
+      color:
+        var(--text);
     }
 
 
-    .editor-head i,
-    .output-head i {
+    .editor-header i {
 
       color:
-        #4ade80;
-
+        var(--primary);
     }
 
 
-    .editor-head small,
-    .output-head small {
-
-      color:
-        #64748b;
+    .editor-header span {
 
       font:
         9px
         "JetBrains Mono",
         monospace;
-
     }
 
 
-    .editor textarea,
-    .output textarea {
-
-      display:
-        block;
+    .editor-panel textarea {
 
       width:
         100%;
 
       min-height:
-        250px;
+        255px;
+
+      display:
+        block;
+
+      resize:
+        vertical;
 
       padding:
         17px;
@@ -2256,46 +1805,142 @@ const faqs = [
       outline:
         0;
 
-      resize:
-        vertical;
-
       background:
         transparent;
 
       color:
-        #e2e8f0;
+        var(--text);
+
+      direction:
+        ltr;
+
+      text-align:
+        left;
 
       font:
         12px/1.8
         "JetBrains Mono",
         monospace;
-
     }
 
 
-    .output {
+    /* SECRET */
+
+    .secret-section {
 
       margin:
         0 20px 15px;
 
+      overflow:
+        hidden;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        15px;
+
+      background:
+        var(--surface-2);
     }
 
 
-    .output textarea {
+    .secret-input-wrap {
 
-      min-height:
-        125px;
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      padding:
+        10px;
+    }
+
+
+    #secretInput {
+
+      flex:
+        1;
+
+      min-width:
+        0;
+
+      padding:
+        13px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        10px;
+
+      outline:
+        0;
+
+      background:
+        var(--surface);
 
       color:
-        #86efac;
+        var(--text);
 
-      word-break:
-        break-all;
+      direction:
+        ltr;
 
+      text-align:
+        left;
+
+      font:
+        12px
+        "JetBrains Mono",
+        monospace;
     }
 
 
-    .result {
+    #toggleSecret {
+
+      width:
+        43px;
+
+      height:
+        43px;
+
+      margin-right:
+        8px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        10px;
+
+      background:
+        var(--surface);
+
+      color:
+        var(--muted);
+
+      cursor:
+        pointer;
+    }
+
+
+    #toggleSecret:hover {
+
+      color:
+        var(--primary);
+    }
+
+
+    /* RESULT */
+
+    .result-box {
+
+      margin:
+        0 20px 15px;
 
       display:
         flex;
@@ -2306,21 +1951,18 @@ const faqs = [
       gap:
         14px;
 
-      margin:
-        0 20px 15px;
-
       padding:
         15px 17px;
 
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
       border-radius:
         14px;
 
       background:
         var(--surface-2);
-
     }
 
 
@@ -2347,27 +1989,28 @@ const faqs = [
       border-radius:
         11px;
 
+      background:
+        rgba(22, 163, 74, 0.10);
+
       color:
         var(--primary);
 
-      background:
-        rgba(22,163,74,.10);
-
+      font-size:
+        17px;
     }
 
 
-    .result strong {
+    .result-box strong {
 
       display:
         block;
 
       font-size:
         13px;
-
     }
 
 
-    .result p {
+    .result-box p {
 
       margin:
         3px 0 0;
@@ -2380,38 +2023,171 @@ const faqs = [
 
       line-height:
         1.7;
-
     }
 
 
-    .result.success {
+    .result-box.success {
 
       border-color:
-        rgba(22,163,74,.30);
-
+        rgba(22, 163, 74, 0.25);
     }
 
 
-    .result.error {
+    .result-box.success .result-icon {
+
+      color:
+        var(--success);
+
+      background:
+        rgba(22, 163, 74, 0.10);
+    }
+
+
+    .result-box.error {
 
       border-color:
-        rgba(220,38,38,.30);
-
+        rgba(220, 38, 38, 0.25);
     }
 
 
-    .result.error .result-icon {
+    .result-box.error .result-icon {
 
       color:
         var(--danger);
 
       background:
-        rgba(220,38,38,.10);
-
+        rgba(220, 38, 38, 0.10);
     }
 
 
-    .stats {
+    /* OUTPUT */
+
+    .output-section {
+
+      margin:
+        0 20px 15px;
+
+      overflow:
+        hidden;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        15px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .output-header {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      padding:
+        11px 14px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+    }
+
+
+    .output-header div {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      color:
+        var(--text);
+    }
+
+
+    .output-header i {
+
+      color:
+        var(--primary);
+    }
+
+
+    .output-header span {
+
+      font:
+        9px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    #jwtOutput {
+
+      width:
+        100%;
+
+      min-height:
+        145px;
+
+      display:
+        block;
+
+      resize:
+        vertical;
+
+      padding:
+        17px;
+
+      border:
+        0;
+
+      outline:
+        0;
+
+      background:
+        transparent;
+
+      color:
+        var(--primary);
+
+      direction:
+        ltr;
+
+      text-align:
+        left;
+
+      font:
+        12px/1.9
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    /* STATS */
+
+    .stats-grid {
 
       display:
         grid;
@@ -2424,7 +2200,6 @@ const faqs = [
 
       padding:
         0 20px 20px;
-
     }
 
 
@@ -2439,22 +2214,25 @@ const faqs = [
       gap:
         11px;
 
+      min-width:
+        0;
+
       padding:
         14px;
 
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
       border-radius:
         13px;
 
       background:
         var(--surface-2);
-
     }
 
 
-    .stat > i {
+    .stat-icon {
 
       width:
         36px;
@@ -2481,8 +2259,7 @@ const faqs = [
         var(--primary);
 
       background:
-        rgba(22,163,74,.10);
-
+        rgba(22, 163, 74, 0.10);
     }
 
 
@@ -2496,7 +2273,6 @@ const faqs = [
 
       font-size:
         9px;
-
     }
 
 
@@ -2505,44 +2281,58 @@ const faqs = [
       display:
         block;
 
+      max-width:
+        150px;
+
+      overflow:
+        hidden;
+
       margin-top:
         2px;
+
+      color:
+        var(--text);
+
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
 
       font:
         600 11px
         "JetBrains Mono",
         monospace;
-
     }
 
 
-    .info-section {
+    /* SECTIONS */
 
-      padding:
-        70px 0;
-
-      background:
-        var(--surface-2);
-
-      border-top:
-        1px solid var(--border);
-
-      border-bottom:
-        1px solid var(--border);
-
-    }
-
-
+    .info-section,
     .how-section,
     .faq-section {
 
       padding:
         70px 0;
-
     }
 
 
-    .section-title {
+    .info-section {
+
+      background:
+        var(--surface-2);
+
+      border-top:
+        1px solid
+        var(--border);
+
+      border-bottom:
+        1px solid
+        var(--border);
+    }
+
+
+    .section-heading {
 
       max-width:
         700px;
@@ -2552,11 +2342,10 @@ const faqs = [
 
       text-align:
         center;
-
     }
 
 
-    .section-title > span {
+    .section-heading > span {
 
       color:
         var(--primary);
@@ -2566,21 +2355,26 @@ const faqs = [
         "JetBrains Mono",
         monospace;
 
+      letter-spacing:
+        1px;
     }
 
 
-    .section-title h2 {
+    .section-heading h2 {
 
       margin:
         8px 0;
 
       font-size:
-        clamp(25px,4vw,34px);
-
+        clamp(
+          25px,
+          4vw,
+          34px
+        );
     }
 
 
-    .section-title p {
+    .section-heading p {
 
       margin:
         0;
@@ -2588,12 +2382,11 @@ const faqs = [
       color:
         var(--muted);
 
-      font-size:
-        14px;
-
       line-height:
         1.9;
 
+      font-size:
+        14px;
     }
 
 
@@ -2607,7 +2400,6 @@ const faqs = [
 
       gap:
         18px;
-
     }
 
 
@@ -2617,14 +2409,14 @@ const faqs = [
         25px;
 
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
       border-radius:
         17px;
 
       background:
         var(--surface);
-
     }
 
 
@@ -2655,8 +2447,7 @@ const faqs = [
         var(--primary);
 
       background:
-        rgba(22,163,74,.10);
-
+        rgba(22, 163, 74, 0.10);
     }
 
 
@@ -2667,7 +2458,6 @@ const faqs = [
 
       font-size:
         16px;
-
     }
 
 
@@ -2684,9 +2474,10 @@ const faqs = [
 
       line-height:
         1.9;
-
     }
 
+
+    /* STEPS */
 
     .steps {
 
@@ -2698,7 +2489,6 @@ const faqs = [
 
       gap:
         18px;
-
     }
 
 
@@ -2714,18 +2504,18 @@ const faqs = [
         22px;
 
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
       border-radius:
         16px;
 
       background:
         var(--surface);
-
     }
 
 
-    .number {
+    .step-number {
 
       width:
         38px;
@@ -2749,14 +2539,13 @@ const faqs = [
         10px;
 
       color:
-        #fff;
+        white;
 
       background:
         var(--primary);
 
       font-weight:
         800;
-
     }
 
 
@@ -2767,7 +2556,6 @@ const faqs = [
 
       font-size:
         14px;
-
     }
 
 
@@ -2784,9 +2572,10 @@ const faqs = [
 
       line-height:
         1.8;
-
     }
 
+
+    /* FAQ */
 
     .faq-list {
 
@@ -2795,7 +2584,6 @@ const faqs = [
 
       margin:
         auto;
-
     }
 
 
@@ -2804,11 +2592,9 @@ const faqs = [
       margin-bottom:
         10px;
 
-      overflow:
-        hidden;
-
       border:
-        1px solid var(--border);
+        1px solid
+        var(--border);
 
       border-radius:
         13px;
@@ -2816,6 +2602,8 @@ const faqs = [
       background:
         var(--surface);
 
+      overflow:
+        hidden;
     }
 
 
@@ -2836,23 +2624,19 @@ const faqs = [
       cursor:
         pointer;
 
-      list-style:
-        none;
-
       font-size:
         13px;
 
       font-weight:
         700;
 
+      list-style:
+        none;
     }
 
 
     summary::-webkit-details-marker {
-
-      display:
-        none;
-
+      display: none;
     }
 
 
@@ -2861,6 +2645,15 @@ const faqs = [
       color:
         var(--primary);
 
+      transition:
+        transform 0.2s;
+    }
+
+
+    details[open] summary i {
+
+      transform:
+        rotate(180deg);
     }
 
 
@@ -2880,26 +2673,24 @@ const faqs = [
 
       line-height:
         1.9;
-
     }
 
 
+    /* RESPONSIVE */
+
     @media (max-width: 850px) {
 
-      .settings,
-      .editors {
+      .editors-grid {
 
         grid-template-columns:
           1fr;
-
       }
 
 
-      .stats {
+      .stats-grid {
 
         grid-template-columns:
           repeat(2, 1fr);
-
       }
 
 
@@ -2908,9 +2699,7 @@ const faqs = [
 
         grid-template-columns:
           1fr;
-
       }
-
     }
 
 
@@ -2919,16 +2708,17 @@ const faqs = [
       .container {
 
         width:
-          calc(100% - 22px);
-
+          min(
+            100% - 22px,
+            1180px
+          );
       }
 
 
       .hero {
 
-        padding:
-          25px 0 40px;
-
+        padding-top:
+          25px;
       }
 
 
@@ -2939,7 +2729,6 @@ const faqs = [
 
         flex-direction:
           column;
-
       }
 
 
@@ -2956,7 +2745,6 @@ const faqs = [
 
         border-radius:
           23px;
-
       }
 
 
@@ -2964,7 +2752,6 @@ const faqs = [
 
         font-size:
           31px;
-
       }
 
 
@@ -2972,7 +2759,6 @@ const faqs = [
 
         padding:
           0 13px;
-
       }
 
 
@@ -2980,38 +2766,28 @@ const faqs = [
 
         padding:
           12px;
-
       }
 
 
       .btn {
 
         flex:
-          1 1 calc(50% - 8px);
+          1 1
+          calc(50% - 8px);
 
         padding:
           9px 8px;
-
       }
 
 
-      .settings {
+      .editors-grid {
 
         margin:
           12px;
-
       }
 
 
-      .editors {
-
-        margin:
-          0 12px 12px;
-
-      }
-
-
-      .editor textarea {
+      .editor-panel textarea {
 
         min-height:
           220px;
@@ -3021,57 +2797,61 @@ const faqs = [
 
         font-size:
           10px;
-
       }
 
 
-      .output {
+      .secret-section {
 
         margin:
           0 12px 12px;
-
       }
 
 
-      .output textarea {
+      .result-box {
+
+        margin:
+          0 12px 12px;
+      }
+
+
+      .output-section {
+
+        margin:
+          0 12px 12px;
+      }
+
+
+      #jwtOutput {
 
         min-height:
-          120px;
+          135px;
+
+        padding:
+          14px;
 
         font-size:
           10px;
-
       }
 
 
-      .result {
-
-        margin:
-          0 12px 12px;
-
-      }
-
-
-      .stats {
+      .stats-grid {
 
         padding:
           0 12px 12px;
 
         gap:
           8px;
-
       }
 
 
       .stat {
 
         padding:
-          10px 8px;
-
+          11px 9px;
       }
 
 
-      .stat > i {
+      .stat-icon {
 
         width:
           31px;
@@ -3081,15 +2861,23 @@ const faqs = [
 
         flex-basis:
           31px;
+      }
 
+
+      .stat span {
+
+        font-size:
+          8px;
       }
 
 
       .stat strong {
 
+        max-width:
+          100px;
+
         font-size:
           9px;
-
       }
 
 
@@ -3099,7 +2887,6 @@ const faqs = [
 
         padding:
           50px 0;
-
       }
 
     }
