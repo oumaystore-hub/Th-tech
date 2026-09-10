@@ -1,0 +1,2928 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "UUID Generator - إنشاء UUID أونلاين مجاناً | Th.Tech";
+
+const description =
+  "أداة UUID Generator مجانية لإنشاء UUID عشوائية وفريدة مباشرة من المتصفح، مع دعم UUID v4 والنسخ والتوليد المتعدد.";
+
+const faqs = [
+  {
+    q: "ما هو UUID؟",
+    a: "UUID هو معرّف فريد عالميًا يستخدم لتمييز العناصر والبيانات والموارد بشكل شبه فريد دون الحاجة إلى رقم تسلسلي مركزي."
+  },
+  {
+    q: "ما هو UUID v4؟",
+    a: "UUID v4 هو إصدار يعتمد على أرقام عشوائية لإنشاء معرّفات فريدة، وهو من أكثر أنواع UUID استخداماً في التطبيقات الحديثة."
+  },
+  {
+    q: "هل يتم إرسال UUID إلى الخادم؟",
+    a: "لا. يتم إنشاء UUID مباشرة داخل المتصفح باستخدام JavaScript ولا يتم إرسال البيانات إلى خادم خارجي."
+  },
+  {
+    q: "هل UUID فريد بنسبة 100%؟",
+    a: "لا توجد ضمانات رياضية مطلقة للفردية، لكن مساحة UUID كبيرة جدًا بحيث يكون احتمال التصادم في UUID v4 منخفضًا للغاية عند الاستخدام الطبيعي."
+  }
+];
+---
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <script is:inline>
+    (() => {
+      try {
+        const saved = localStorage.getItem("theme");
+
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark-mode");
+        }
+      } catch {}
+    })();
+  </script>
+</head>
+
+<body>
+
+  <Header />
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <a href={`${base}/tools/`}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <span>UUID Generator</span>
+        </div>
+
+        <div class="hero-content">
+
+          <div class="hero-icon">
+            <i class="fa-solid fa-fingerprint"></i>
+            <span>UUID</span>
+          </div>
+
+          <div class="hero-text">
+
+            <div class="badge">
+              <i class="fa-solid fa-code"></i>
+              Developer Tools
+            </div>
+
+            <h1>UUID Generator</h1>
+
+            <p>
+              أنشئ UUID v4 عشوائية وفريدة بسرعة مباشرة من المتصفح،
+              مع إمكانية توليد عدة UUIDs ونسخها بسهولة.
+            </p>
+
+            <div class="tags">
+              <span>UUID v4</span>
+              <span>Random</span>
+              <span>Crypto</span>
+              <span>Local</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- TOOL -->
+    <section class="tool-section">
+      <div class="container">
+
+        <div class="generator-card">
+
+          <!-- TOP BAR -->
+          <div class="card-topbar">
+
+            <div class="window-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <div class="tool-name">
+              <i class="fa-solid fa-fingerprint"></i>
+              UUID Generator
+            </div>
+
+            <div class="secure">
+              <i class="fa-solid fa-shield-halved"></i>
+              Local
+            </div>
+
+          </div>
+
+
+          <!-- ACTION BAR -->
+          <div class="actionbar">
+
+            <button id="generateBtn" class="btn btn-primary">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              إنشاء UUID
+            </button>
+
+            <button id="generateManyBtn" class="btn btn-secondary">
+              <i class="fa-solid fa-layer-group"></i>
+              توليد 5
+            </button>
+
+            <button id="copyBtn" class="btn btn-secondary">
+              <i class="fa-regular fa-copy"></i>
+              نسخ
+            </button>
+
+            <button id="clearBtn" class="btn btn-secondary">
+              <i class="fa-solid fa-eraser"></i>
+              مسح
+            </button>
+
+          </div>
+
+
+          <!-- OPTIONS -->
+          <div class="options-bar">
+
+            <div class="option-group">
+
+              <label for="versionSelect">
+                <i class="fa-solid fa-code-branch"></i>
+                الإصدار
+              </label>
+
+              <select id="versionSelect">
+                <option value="v4">UUID v4 — Random</option>
+              </select>
+
+            </div>
+
+            <div class="option-group">
+
+              <label for="countSelect">
+                <i class="fa-solid fa-list-ol"></i>
+                العدد
+              </label>
+
+              <select id="countSelect">
+                <option value="1">1 UUID</option>
+                <option value="5">5 UUIDs</option>
+                <option value="10">10 UUIDs</option>
+                <option value="25">25 UUIDs</option>
+                <option value="50">50 UUIDs</option>
+              </select>
+
+            </div>
+
+          </div>
+
+
+          <!-- OUTPUT -->
+          <div class="output-section">
+
+            <div class="editor-header">
+
+              <div>
+                <i class="fa-solid fa-fingerprint"></i>
+                UUID Output
+              </div>
+
+              <span id="outputCount">0 UUID</span>
+
+            </div>
+
+            <div id="uuidOutput" class="uuid-output">
+
+              <div class="empty-output">
+                <div class="empty-icon">
+                  <i class="fa-solid fa-fingerprint"></i>
+                </div>
+
+                <strong>
+                  جاهز لإنشاء UUID
+                </strong>
+
+                <span>
+                  اضغط على إنشاء UUID للبدء.
+                </span>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- RESULT -->
+          <div class="result-box" id="resultBox">
+
+            <div class="result-icon" id="resultIcon">
+              <i class="fa-solid fa-circle-question"></i>
+            </div>
+
+            <div class="result-content">
+
+              <strong id="resultTitle">
+                جاهز للتوليد
+              </strong>
+
+              <p id="resultMessage">
+                سيتم إنشاء UUID v4 محلياً داخل المتصفح.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- STATS -->
+          <div class="stats-grid">
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-fingerprint"></i>
+              </div>
+
+              <div>
+                <span>UUIDs</span>
+                <strong id="statCount">0</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-code-branch"></i>
+              </div>
+
+              <div>
+                <span>Version</span>
+                <strong>v4</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-ruler-horizontal"></i>
+              </div>
+
+              <div>
+                <span>الطول</span>
+                <strong>36</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+
+              <div>
+                <span>الحالة</span>
+                <strong id="statStatus">جاهز</strong>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- INFO -->
+    <section class="info-section">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>UUID GENERATOR</span>
+
+          <h2>
+            ما هو UUID Generator؟
+          </h2>
+
+          <p>
+            أداة للمطورين لإنشاء معرّفات UUID عشوائية
+            يمكن استخدامها في التطبيقات وقواعد البيانات والـ APIs.
+          </p>
+
+        </div>
+
+
+        <div class="info-grid">
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-fingerprint"></i>
+            </div>
+
+            <h3>
+              UUID v4
+            </h3>
+
+            <p>
+              يعتمد UUID v4 على القيم العشوائية
+              لإنشاء معرّفات مناسبة لمجموعة واسعة من الاستخدامات.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-database"></i>
+            </div>
+
+            <h3>
+              قواعد البيانات
+            </h3>
+
+            <p>
+              يمكن استخدام UUID كمعرّف للسجلات والعناصر
+              بدلاً من الاعتماد على أرقام متسلسلة فقط.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-server"></i>
+            </div>
+
+            <h3>
+              APIs والتطبيقات
+            </h3>
+
+            <p>
+              UUID مفيد لتوليد معرّفات للموارد والطلبات
+              والعناصر المختلفة داخل التطبيقات.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- HOW TO -->
+    <section class="how-section">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>HOW IT WORKS</span>
+
+          <h2>
+            كيفية استخدام UUID Generator
+          </h2>
+
+        </div>
+
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">
+              1
+            </div>
+
+            <div>
+              <h3>
+                اختر العدد
+              </h3>
+
+              <p>
+                حدد عدد UUIDs التي تريد إنشاءها.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              2
+            </div>
+
+            <div>
+              <h3>
+                أنشئ UUID
+              </h3>
+
+              <p>
+                اضغط على زر إنشاء UUID لتوليد المعرفات.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              3
+            </div>
+
+            <div>
+              <h3>
+                انسخ النتيجة
+              </h3>
+
+              <p>
+                استخدم زر النسخ للحصول على UUIDs بسرعة.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>FAQ</span>
+
+          <h2>
+            الأسئلة الشائعة
+          </h2>
+
+        </div>
+
+
+        <div class="faq-list">
+
+          {faqs.map((faq) => (
+            <details>
+
+              <summary>
+
+                <span>
+                  {faq.q}
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+              </summary>
+
+              <p>
+                {faq.a}
+              </p>
+
+            </details>
+          ))}
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+
+  <Footer />
+
+
+  <!-- JAVASCRIPT -->
+  <script is:inline>
+    (() => {
+
+      const generateBtn =
+        document.getElementById("generateBtn");
+
+      const generateManyBtn =
+        document.getElementById("generateManyBtn");
+
+      const copyBtn =
+        document.getElementById("copyBtn");
+
+      const clearBtn =
+        document.getElementById("clearBtn");
+
+      const versionSelect =
+        document.getElementById("versionSelect");
+
+      const countSelect =
+        document.getElementById("countSelect");
+
+      const uuidOutput =
+        document.getElementById("uuidOutput");
+
+      const outputCount =
+        document.getElementById("outputCount");
+
+      const resultBox =
+        document.getElementById("resultBox");
+
+      const resultIcon =
+        document.getElementById("resultIcon");
+
+      const resultTitle =
+        document.getElementById("resultTitle");
+
+      const resultMessage =
+        document.getElementById("resultMessage");
+
+      const statCount =
+        document.getElementById("statCount");
+
+      const statStatus =
+        document.getElementById("statStatus");
+
+
+      let generatedUUIDs = [];
+
+
+      function fallbackUUID() {
+
+        const bytes =
+          new Uint8Array(16);
+
+        if (
+          window.crypto &&
+          window.crypto.getRandomValues
+        ) {
+
+          window.crypto.getRandomValues(bytes);
+
+        } else {
+
+          for (
+            let i = 0;
+            i < 16;
+            i++
+          ) {
+
+            bytes[i] =
+              Math.floor(
+                Math.random() * 256
+              );
+
+          }
+        }
+
+
+        bytes[6] =
+          (bytes[6] & 15) | 64;
+
+        bytes[8] =
+          (bytes[8] & 63) | 128;
+
+
+        const hex = [];
+
+        for (
+          let i = 0;
+          i < bytes.length;
+          i++
+        ) {
+
+          hex.push(
+            bytes[i]
+              .toString(16)
+              .padStart(2, "0")
+          );
+
+        }
+
+
+        return (
+          hex.slice(0, 4).join("") +
+          "-" +
+          hex.slice(4, 6).join("") +
+          "-" +
+          hex.slice(6, 8).join("") +
+          "-" +
+          hex.slice(8, 10).join("") +
+          "-" +
+          hex.slice(10, 16).join("")
+        );
+      }
+
+
+      function generateUUID() {
+
+        if (
+          window.crypto &&
+          typeof window.crypto.randomUUID === "function"
+        ) {
+
+          return window.crypto.randomUUID();
+
+        }
+
+        return fallbackUUID();
+      }
+
+
+      function showReady() {
+
+        resultBox.classList.remove(
+          "success",
+          "error"
+        );
+
+        resultIcon.innerHTML =
+          '<i class="fa-solid fa-circle-question"></i>';
+
+        resultTitle.textContent =
+          "جاهز للتوليد";
+
+        resultMessage.textContent =
+          "سيتم إنشاء UUID v4 محلياً داخل المتصفح.";
+
+        statStatus.textContent =
+          "جاهز";
+      }
+
+
+      function showSuccess(count) {
+
+        resultBox.classList.remove(
+          "error"
+        );
+
+        resultBox.classList.add(
+          "success"
+        );
+
+        resultIcon.innerHTML =
+          '<i class="fa-solid fa-circle-check"></i>';
+
+        resultTitle.textContent =
+          "تم إنشاء UUID بنجاح";
+
+        resultMessage.textContent =
+          `تم إنشاء ${count} UUID من نوع v4 محلياً داخل المتصفح.`;
+
+        statStatus.textContent =
+          "تم التوليد";
+      }
+
+
+      function showError(message) {
+
+        resultBox.classList.remove(
+          "success"
+        );
+
+        resultBox.classList.add(
+          "error"
+        );
+
+        resultIcon.innerHTML =
+          '<i class="fa-solid fa-circle-xmark"></i>';
+
+        resultTitle.textContent =
+          "حدث خطأ";
+
+        resultMessage.textContent =
+          message;
+
+        statStatus.textContent =
+          "خطأ";
+      }
+
+
+      function renderUUIDs() {
+
+        uuidOutput.innerHTML = "";
+
+        if (
+          !generatedUUIDs.length
+        ) {
+
+          uuidOutput.innerHTML =
+            `
+              <div class="empty-output">
+                <div class="empty-icon">
+                  <i class="fa-solid fa-fingerprint"></i>
+                </div>
+
+                <strong>
+                  جاهز لإنشاء UUID
+                </strong>
+
+                <span>
+                  اضغط على إنشاء UUID للبدء.
+                </span>
+              </div>
+            `;
+
+          outputCount.textContent =
+            "0 UUID";
+
+          statCount.textContent =
+            "0";
+
+          return;
+        }
+
+
+        generatedUUIDs.forEach(
+          (uuid, index) => {
+
+            const row =
+              document.createElement("div");
+
+            row.className =
+              "uuid-row";
+
+
+            const number =
+              document.createElement("span");
+
+            number.className =
+              "uuid-number";
+
+            number.textContent =
+              String(index + 1).padStart(2, "0");
+
+
+            const value =
+              document.createElement("code");
+
+            value.className =
+              "uuid-value";
+
+            value.textContent =
+              uuid;
+
+
+            const copy =
+              document.createElement("button");
+
+            copy.className =
+              "copy-single";
+
+            copy.type =
+              "button";
+
+            copy.innerHTML =
+              '<i class="fa-regular fa-copy"></i>';
+
+
+            copy.addEventListener(
+              "click",
+              async () => {
+
+                await copyText(
+                  uuid,
+                  copy
+                );
+
+              }
+            );
+
+
+            row.appendChild(
+              number
+            );
+
+            row.appendChild(
+              value
+            );
+
+            row.appendChild(
+              copy
+            );
+
+
+            uuidOutput.appendChild(
+              row
+            );
+
+          }
+        );
+
+
+        outputCount.textContent =
+          generatedUUIDs.length === 1
+            ? "1 UUID"
+            : `${generatedUUIDs.length} UUIDs`;
+
+        statCount.textContent =
+          generatedUUIDs.length.toLocaleString();
+      }
+
+
+      function generate(count) {
+
+        const total =
+          Number(count) || 1;
+
+
+        generatedUUIDs = [];
+
+
+        for (
+          let i = 0;
+          i < total;
+          i++
+        ) {
+
+          generatedUUIDs.push(
+            generateUUID()
+          );
+
+        }
+
+
+        renderUUIDs();
+
+        showSuccess(
+          total
+        );
+      }
+
+
+      async function copyText(
+        text,
+        button
+      ) {
+
+        if (!text) {
+          return;
+        }
+
+
+        try {
+
+          await navigator.clipboard.writeText(
+            text
+          );
+
+        } catch {
+
+          const temp =
+            document.createElement(
+              "textarea"
+            );
+
+          temp.value =
+            text;
+
+          document.body.appendChild(
+            temp
+          );
+
+          temp.select();
+
+          document.execCommand(
+            "copy"
+          );
+
+          temp.remove();
+        }
+
+
+        if (button) {
+
+          const original =
+            button.innerHTML;
+
+          button.innerHTML =
+            '<i class="fa-solid fa-check"></i>';
+
+          button.classList.add(
+            "copied"
+          );
+
+
+          setTimeout(() => {
+
+            button.innerHTML =
+              original;
+
+            button.classList.remove(
+              "copied"
+            );
+
+          }, 1200);
+        }
+      }
+
+
+      async function copyAll() {
+
+        if (
+          !generatedUUIDs.length
+        ) {
+
+          showError(
+            "لا توجد UUIDs لنسخها."
+          );
+
+          return;
+        }
+
+
+        const text =
+          generatedUUIDs.join("\n");
+
+
+        await copyText(
+          text,
+          copyBtn
+        );
+
+
+        const original =
+          copyBtn.innerHTML;
+
+
+        copyBtn.innerHTML =
+          '<i class="fa-solid fa-check"></i> تم النسخ';
+
+
+        setTimeout(() => {
+
+          copyBtn.innerHTML =
+            original;
+
+        }, 1500);
+      }
+
+
+      function clearAll() {
+
+        generatedUUIDs = [];
+
+        renderUUIDs();
+
+        showReady();
+      }
+
+
+      generateBtn.addEventListener(
+        "click",
+        () => {
+
+          generate(
+            Number(countSelect.value) || 1
+          );
+
+        }
+      );
+
+
+      generateManyBtn.addEventListener(
+        "click",
+        () => {
+
+          countSelect.value =
+            "5";
+
+          generate(5);
+
+        }
+      );
+
+
+      copyBtn.addEventListener(
+        "click",
+        copyAll
+      );
+
+
+      clearBtn.addEventListener(
+        "click",
+        clearAll
+      );
+
+
+      countSelect.addEventListener(
+        "change",
+        () => {
+
+          if (
+            generatedUUIDs.length
+          ) {
+
+            generate(
+              Number(countSelect.value) || 1
+            );
+
+          }
+
+        }
+      );
+
+
+      versionSelect.addEventListener(
+        "change",
+        () => {
+
+          if (
+            versionSelect.value !== "v4"
+          ) {
+
+            versionSelect.value =
+              "v4";
+
+          }
+
+        }
+      );
+
+
+      renderUUIDs();
+
+      showReady();
+
+    })();
+  </script>
+
+
+  <style>
+
+    :root {
+
+      --bg: #f7fafc;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+
+      --text: #172033;
+      --muted: #718096;
+
+      --border:
+        rgba(15, 23, 42, 0.09);
+
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #06b6d4;
+
+      --success: #16a34a;
+      --danger: #dc2626;
+
+      --shadow:
+        0 25px 70px
+        rgba(15, 23, 42, 0.10);
+    }
+
+
+    html.dark-mode {
+
+      --bg: #07090f;
+      --surface: #0d111c;
+      --surface-2: #121827;
+
+      --text: #f8fafc;
+      --muted: #94a3b8;
+
+      --border:
+        rgba(148, 163, 184, 0.13);
+
+      --primary: #60a5fa;
+      --primary-dark: #3b82f6;
+      --secondary: #22d3ee;
+
+      --shadow:
+        0 30px 80px
+        rgba(0, 0, 0, 0.45);
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    body {
+
+      margin: 0;
+
+      background:
+        var(--bg);
+
+      color:
+        var(--text);
+
+      font-family:
+        "Cairo",
+        sans-serif;
+    }
+
+
+    .container {
+
+      width:
+        min(
+          1180px,
+          calc(100% - 32px)
+        );
+
+      margin:
+        auto;
+    }
+
+
+    /* HERO */
+
+    .hero {
+
+      padding:
+        38px 0 55px;
+
+      background:
+        radial-gradient(
+          circle at 10% 20%,
+          rgba(37, 99, 235, 0.13),
+          transparent 35%
+        ),
+        var(--bg);
+    }
+
+
+    .breadcrumb {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        10px;
+
+      flex-wrap:
+        wrap;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+      margin-bottom:
+        38px;
+    }
+
+
+    .breadcrumb a {
+
+      color:
+        var(--muted);
+
+      text-decoration:
+        none;
+
+      transition:
+        0.2s;
+    }
+
+
+    .breadcrumb a:hover {
+
+      color:
+        var(--primary);
+    }
+
+
+    .breadcrumb i {
+
+      font-size:
+        9px;
+    }
+
+
+    .hero-content {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        28px;
+    }
+
+
+    .hero-icon {
+
+      width:
+        112px;
+
+      height:
+        112px;
+
+      flex:
+        0 0 112px;
+
+      border-radius:
+        30px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      flex-direction:
+        column;
+
+      gap:
+        5px;
+
+      background:
+        rgba(37, 99, 235, 0.12);
+
+      color:
+        var(--primary);
+
+      box-shadow:
+        inset 0 0 0 1px
+        rgba(37, 99, 235, 0.10);
+    }
+
+
+    .hero-icon i {
+
+      font-size:
+        40px;
+    }
+
+
+    .hero-icon span {
+
+      font:
+        700 12px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .badge {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      padding:
+        7px 13px;
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(37, 99, 235, 0.10);
+
+      color:
+        var(--primary);
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+    }
+
+
+    h1 {
+
+      margin:
+        12px 0 8px;
+
+      font-size:
+        clamp(
+          32px,
+          5vw,
+          52px
+        );
+
+      line-height:
+        1.1;
+    }
+
+
+    .hero-text p {
+
+      margin:
+        0;
+
+      max-width:
+        720px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        16px;
+
+      line-height:
+        1.9;
+    }
+
+
+    .tags {
+
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        8px;
+
+      margin-top:
+        17px;
+    }
+
+
+    .tags span {
+
+      padding:
+        5px 10px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        8px;
+
+      color:
+        var(--muted);
+
+      background:
+        var(--surface);
+
+      font:
+        500 11px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    /* TOOL */
+
+    .tool-section {
+
+      padding-bottom:
+        70px;
+    }
+
+
+    .generator-card {
+
+      overflow:
+        hidden;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        22px;
+
+      box-shadow:
+        var(--shadow);
+    }
+
+
+    .card-topbar {
+
+      min-height:
+        55px;
+
+      padding:
+        0 20px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .window-dots {
+
+      display:
+        flex;
+
+      gap:
+        6px;
+    }
+
+
+    .window-dots span {
+
+      width:
+        9px;
+
+      height:
+        9px;
+
+      border-radius:
+        50%;
+
+      background:
+        var(--border);
+    }
+
+
+    .tool-name {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      color:
+        var(--text);
+
+      font:
+        600 13px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .tool-name i {
+
+      color:
+        var(--primary);
+    }
+
+
+    .secure {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        6px;
+
+      color:
+        var(--success);
+
+      font-size:
+        11px;
+
+      font-weight:
+        700;
+    }
+
+
+    /* ACTION BAR */
+
+    .actionbar {
+
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        9px;
+
+      padding:
+        15px 18px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+    }
+
+
+    .btn {
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        10px;
+
+      padding:
+        10px 15px;
+
+      font-family:
+        "Cairo",
+        sans-serif;
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+
+      cursor:
+        pointer;
+
+      transition:
+        0.2s;
+    }
+
+
+    .btn:hover {
+
+      transform:
+        translateY(-1px);
+    }
+
+
+    .btn i {
+
+      margin-left:
+        6px;
+    }
+
+
+    .btn-secondary {
+
+      color:
+        var(--text);
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .btn-primary {
+
+      color:
+        white;
+
+      background:
+        var(--primary);
+
+      border-color:
+        var(--primary);
+    }
+
+
+    .btn-primary:hover {
+
+      background:
+        var(--primary-dark);
+    }
+
+
+    /* OPTIONS */
+
+    .options-bar {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        18px;
+
+      padding:
+        15px 20px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      background:
+        var(--surface);
+    }
+
+
+    .option-group {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        9px;
+    }
+
+
+    .option-group label {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        6px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+
+      font-weight:
+        700;
+    }
+
+
+    .option-group label i {
+
+      color:
+        var(--primary);
+    }
+
+
+    .option-group select {
+
+      min-width:
+        150px;
+
+      padding:
+        8px 10px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        9px;
+
+      outline:
+        none;
+
+      background:
+        var(--surface-2);
+
+      color:
+        var(--text);
+
+      font:
+        11px
+        "Cairo",
+        sans-serif;
+
+      cursor:
+        pointer;
+    }
+
+
+    /* OUTPUT */
+
+    .output-section {
+
+      margin:
+        20px;
+
+      overflow:
+        hidden;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        15px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .editor-header {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      padding:
+        11px 14px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+    }
+
+
+    .editor-header div {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      color:
+        var(--text);
+    }
+
+
+    .editor-header i {
+
+      color:
+        var(--primary);
+    }
+
+
+    .editor-header span {
+
+      font:
+        10px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .uuid-output {
+
+      min-height:
+        245px;
+
+      max-height:
+        470px;
+
+      overflow:
+        auto;
+
+      padding:
+        13px;
+    }
+
+
+    .uuid-row {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        40px 1fr 38px;
+
+      align-items:
+        center;
+
+      gap:
+        10px;
+
+      min-width:
+        0;
+
+      margin-bottom:
+        8px;
+
+      padding:
+        9px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        10px;
+
+      background:
+        var(--surface);
+
+      transition:
+        0.2s;
+    }
+
+
+    .uuid-row:hover {
+
+      border-color:
+        rgba(37, 99, 235, 0.30);
+
+      transform:
+        translateX(-2px);
+    }
+
+
+    .uuid-number {
+
+      color:
+        var(--muted);
+
+      text-align:
+        center;
+
+      font:
+        500 10px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .uuid-value {
+
+      min-width:
+        0;
+
+      overflow:
+        auto;
+
+      color:
+        var(--text);
+
+      direction:
+        ltr;
+
+      text-align:
+        left;
+
+      font:
+        500 13px
+        "JetBrains Mono",
+        monospace;
+
+      white-space:
+        nowrap;
+    }
+
+
+    .copy-single {
+
+      width:
+        34px;
+
+      height:
+        34px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        8px;
+
+      background:
+        var(--surface-2);
+
+      color:
+        var(--muted);
+
+      cursor:
+        pointer;
+
+      transition:
+        0.2s;
+    }
+
+
+    .copy-single:hover,
+    .copy-single.copied {
+
+      color:
+        var(--primary);
+
+      border-color:
+        var(--primary);
+    }
+
+
+    .empty-output {
+
+      min-height:
+        215px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      flex-direction:
+        column;
+
+      gap:
+        7px;
+
+      color:
+        var(--muted);
+
+      text-align:
+        center;
+    }
+
+
+    .empty-output strong {
+
+      color:
+        var(--text);
+
+      font-size:
+        13px;
+    }
+
+
+    .empty-output span {
+
+      font-size:
+        11px;
+    }
+
+
+    .empty-icon {
+
+      width:
+        58px;
+
+      height:
+        58px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      margin-bottom:
+        5px;
+
+      border-radius:
+        16px;
+
+      color:
+        var(--primary);
+
+      background:
+        rgba(37, 99, 235, 0.10);
+
+      font-size:
+        23px;
+    }
+
+
+    /* RESULT */
+
+    .result-box {
+
+      margin:
+        0 20px 15px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        14px;
+
+      padding:
+        15px 17px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        14px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .result-icon {
+
+      width:
+        42px;
+
+      height:
+        42px;
+
+      flex:
+        0 0 42px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        11px;
+
+      background:
+        rgba(37, 99, 235, 0.10);
+
+      color:
+        var(--primary);
+
+      font-size:
+        17px;
+    }
+
+
+    .result-box strong {
+
+      display:
+        block;
+
+      font-size:
+        13px;
+    }
+
+
+    .result-box p {
+
+      margin:
+        3px 0 0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+
+      line-height:
+        1.7;
+    }
+
+
+    .result-box.success {
+
+      border-color:
+        rgba(22, 163, 74, 0.25);
+    }
+
+
+    .result-box.success .result-icon {
+
+      color:
+        var(--success);
+
+      background:
+        rgba(22, 163, 74, 0.10);
+    }
+
+
+    .result-box.error {
+
+      border-color:
+        rgba(220, 38, 38, 0.25);
+    }
+
+
+    .result-box.error .result-icon {
+
+      color:
+        var(--danger);
+
+      background:
+        rgba(220, 38, 38, 0.10);
+    }
+
+
+    /* STATS */
+
+    .stats-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap:
+        12px;
+
+      padding:
+        0 20px 20px;
+    }
+
+
+    .stat {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        11px;
+
+      min-width:
+        0;
+
+      padding:
+        14px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        13px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .stat-icon {
+
+      width:
+        36px;
+
+      height:
+        36px;
+
+      flex:
+        0 0 36px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        9px;
+
+      color:
+        var(--primary);
+
+      background:
+        rgba(37, 99, 235, 0.10);
+    }
+
+
+    .stat span {
+
+      display:
+        block;
+
+      color:
+        var(--muted);
+
+      font-size:
+        9px;
+    }
+
+
+    .stat strong {
+
+      display:
+        block;
+
+      max-width:
+        150px;
+
+      overflow:
+        hidden;
+
+      margin-top:
+        2px;
+
+      color:
+        var(--text);
+
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
+
+      font:
+        600 11px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    /* SECTIONS */
+
+    .info-section,
+    .how-section,
+    .faq-section {
+
+      padding:
+        70px 0;
+    }
+
+
+    .info-section {
+
+      background:
+        var(--surface-2);
+
+      border-top:
+        1px solid
+        var(--border);
+
+      border-bottom:
+        1px solid
+        var(--border);
+    }
+
+
+    .section-heading {
+
+      max-width:
+        700px;
+
+      margin:
+        0 auto 35px;
+
+      text-align:
+        center;
+    }
+
+
+    .section-heading > span {
+
+      color:
+        var(--primary);
+
+      font:
+        700 11px
+        "JetBrains Mono",
+        monospace;
+
+      letter-spacing:
+        1px;
+    }
+
+
+    .section-heading h2 {
+
+      margin:
+        8px 0;
+
+      font-size:
+        clamp(
+          25px,
+          4vw,
+          34px
+        );
+    }
+
+
+    .section-heading p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      line-height:
+        1.9;
+
+      font-size:
+        14px;
+    }
+
+
+    .info-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap:
+        18px;
+    }
+
+
+    .info-card {
+
+      padding:
+        25px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        17px;
+
+      background:
+        var(--surface);
+    }
+
+
+    .info-icon {
+
+      width:
+        48px;
+
+      height:
+        48px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      margin-bottom:
+        17px;
+
+      border-radius:
+        13px;
+
+      color:
+        var(--primary);
+
+      background:
+        rgba(37, 99, 235, 0.10);
+    }
+
+
+    .info-card h3 {
+
+      margin:
+        0 0 7px;
+
+      font-size:
+        16px;
+    }
+
+
+    .info-card p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+      line-height:
+        1.9;
+    }
+
+
+    /* STEPS */
+
+    .steps {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap:
+        18px;
+    }
+
+
+    .step {
+
+      display:
+        flex;
+
+      gap:
+        15px;
+
+      padding:
+        22px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        16px;
+
+      background:
+        var(--surface);
+    }
+
+
+    .step-number {
+
+      width:
+        38px;
+
+      height:
+        38px;
+
+      flex:
+        0 0 38px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        10px;
+
+      color:
+        white;
+
+      background:
+        var(--primary);
+
+      font-weight:
+        800;
+    }
+
+
+    .step h3 {
+
+      margin:
+        0 0 5px;
+
+      font-size:
+        14px;
+    }
+
+
+    .step p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.8;
+    }
+
+
+    /* FAQ */
+
+    .faq-list {
+
+      max-width:
+        850px;
+
+      margin:
+        auto;
+    }
+
+
+    details {
+
+      margin-bottom:
+        10px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        13px;
+
+      background:
+        var(--surface);
+
+      overflow:
+        hidden;
+    }
+
+
+    summary {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      padding:
+        17px 19px;
+
+      cursor:
+        pointer;
+
+      font-size:
+        13px;
+
+      font-weight:
+        700;
+
+      list-style:
+        none;
+    }
+
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+
+    summary i {
+
+      color:
+        var(--primary);
+
+      transition:
+        transform 0.2s;
+    }
+
+
+    details[open] summary i {
+
+      transform:
+        rotate(180deg);
+    }
+
+
+    details p {
+
+      margin:
+        0;
+
+      padding:
+        0 19px 18px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.9;
+    }
+
+
+    /* RESPONSIVE */
+
+    @media (max-width: 850px) {
+
+      .stats-grid {
+
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+
+      .info-grid,
+      .steps {
+
+        grid-template-columns:
+          1fr;
+      }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+      .container {
+
+        width:
+          min(
+            100% - 22px,
+            1180px
+          );
+      }
+
+
+      .hero {
+
+        padding-top:
+          25px;
+      }
+
+
+      .hero-content {
+
+        align-items:
+          flex-start;
+
+        flex-direction:
+          column;
+      }
+
+
+      .hero-icon {
+
+        width:
+          88px;
+
+        height:
+          88px;
+
+        flex-basis:
+          88px;
+
+        border-radius:
+          23px;
+      }
+
+
+      .hero-icon i {
+
+        font-size:
+          31px;
+      }
+
+
+      .card-topbar {
+
+        padding:
+          0 13px;
+      }
+
+
+      .actionbar {
+
+        padding:
+          12px;
+      }
+
+
+      .btn {
+
+        flex:
+          1 1
+          calc(50% - 8px);
+
+        padding:
+          9px 8px;
+      }
+
+
+      .options-bar {
+
+        padding:
+          12px;
+
+        gap:
+          10px;
+      }
+
+
+      .option-group {
+
+        width:
+          100%;
+
+        justify-content:
+          space-between;
+      }
+
+
+      .option-group select {
+
+        flex:
+          1;
+
+        max-width:
+          210px;
+      }
+
+
+      .output-section {
+
+        margin:
+          12px;
+      }
+
+
+      .uuid-output {
+
+        min-height:
+          220px;
+
+        padding:
+          9px;
+      }
+
+
+      .uuid-row {
+
+        grid-template-columns:
+          28px 1fr 34px;
+
+        gap:
+          6px;
+
+        padding:
+          7px;
+      }
+
+
+      .uuid-value {
+
+        font-size:
+          10px;
+      }
+
+
+      .copy-single {
+
+        width:
+          30px;
+
+        height:
+          30px;
+      }
+
+
+      .result-box {
+
+        margin:
+          0 12px 12px;
+      }
+
+
+      .stats-grid {
+
+        padding:
+          0 12px 12px;
+
+        gap:
+          8px;
+      }
+
+
+      .stat {
+
+        padding:
+          11px 9px;
+      }
+
+
+      .stat-icon {
+
+        width:
+          31px;
+
+        height:
+          31px;
+
+        flex-basis:
+          31px;
+      }
+
+
+      .stat span {
+
+        font-size:
+          8px;
+      }
+
+
+      .stat strong {
+
+        max-width:
+          100px;
+
+        font-size:
+          9px;
+      }
+
+
+      .info-section,
+      .how-section,
+      .faq-section {
+
+        padding:
+          50px 0;
+      }
+
+    }
+
+  </style>
+
+</body>
+</html>
