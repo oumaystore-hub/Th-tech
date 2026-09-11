@@ -1,0 +1,4497 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title =
+  "Unix Timestamp Converter - تحويل Unix Timestamp أونلاين مجاناً | Th.Tech";
+
+const description =
+  "أداة Unix Timestamp مجانية لتحويل الوقت والتاريخ إلى Unix Timestamp والعكس، مع دعم الثواني والميلي ثانية والعمل مباشرة داخل المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هو Unix Timestamp؟",
+    a: "Unix Timestamp هو رقم يمثل عدد الثواني المنقضية منذ 1 يناير 1970 عند الساعة 00:00:00 UTC، ويستخدم على نطاق واسع في البرمجة وقواعد البيانات وواجهات API."
+  },
+  {
+    q: "ما الفرق بين Unix Timestamp بالثواني والميلي ثانية؟",
+    a: "Timestamp بالثواني يستخدم رقماً مكوناً عادةً من 10 أرقام، بينما Timestamp بالميلي ثانية يستخدم عادةً 13 رقماً ويمثل الوقت بدقة أعلى."
+  },
+  {
+    q: "هل يتم إرسال التاريخ أو الوقت إلى الخادم؟",
+    a: "لا. جميع عمليات التحويل والحساب تتم مباشرة داخل المتصفح باستخدام JavaScript."
+  },
+  {
+    q: "ما هو الوقت الحالي بصيغة Unix Timestamp؟",
+    a: "يمكنك استخدام زر الوقت الحالي في الأداة للحصول على Unix Timestamp الحالي مباشرة من ساعة جهازك."
+  }
+];
+---
+
+<html lang="ar" dir="rtl">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
+  <title>{title}</title>
+
+  <meta
+    name="description"
+    content={description}
+  />
+
+  <meta
+    name="robots"
+    content="index, follow"
+  />
+
+  <link
+    rel="canonical"
+    href={`https://oumaystore-hub.github.io${base}/tools/unix-timestamp/`}
+  />
+
+  <meta
+    name="theme-color"
+    content="#08070d"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  />
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <script is:inline>
+    (() => {
+      try {
+        const saved = localStorage.getItem("theme");
+
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark-mode");
+        } else {
+          document.documentElement.classList.remove("dark-mode");
+        }
+      } catch {}
+    })();
+  </script>
+
+</head>
+
+<body>
+
+  <Header />
+
+  <main>
+
+    <!-- =========================================
+         HERO
+    ========================================== -->
+
+    <section class="hero">
+
+      <div class="hero-glow glow-one"></div>
+      <div class="hero-glow glow-two"></div>
+
+      <div class="container">
+
+        <div class="breadcrumb">
+
+          <a href={`${base}/`}>
+            الرئيسية
+          </a>
+
+          <i class="fa-solid fa-chevron-left"></i>
+
+          <a href={`${base}/tools/`}>
+            الأدوات
+          </a>
+
+          <i class="fa-solid fa-chevron-left"></i>
+
+          <span>
+            Unix Timestamp
+          </span>
+
+        </div>
+
+
+        <div class="hero-content">
+
+          <div class="hero-icon">
+
+            <div class="hero-icon-inner">
+              <i class="fa-solid fa-clock"></i>
+            </div>
+
+            <span>TIMESTAMP</span>
+
+          </div>
+
+
+          <div class="hero-text">
+
+            <div class="badge">
+
+              <i class="fa-solid fa-code"></i>
+
+              Developer Tools
+
+            </div>
+
+
+            <h1>
+              Unix Timestamp
+            </h1>
+
+
+            <p>
+              حوّل التاريخ والوقت إلى Unix Timestamp
+              والعكس بسرعة وسهولة مباشرة داخل المتصفح.
+            </p>
+
+
+            <div class="tags">
+
+              <span>UNIX</span>
+              <span>Timestamp</span>
+              <span>UTC</span>
+              <span>Local</span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         TOOL
+    ========================================== -->
+
+    <section class="tool-section">
+
+      <div class="container">
+
+        <div class="generator-card">
+
+
+          <!-- TOP BAR -->
+
+          <div class="card-topbar">
+
+            <div class="window-dots">
+
+              <span></span>
+              <span></span>
+              <span></span>
+
+            </div>
+
+
+            <div class="tool-name">
+
+              <i class="fa-solid fa-clock"></i>
+
+              Unix Timestamp
+
+            </div>
+
+
+            <div class="secure">
+
+              <i class="fa-solid fa-laptop"></i>
+
+              Local
+
+            </div>
+
+          </div>
+
+
+
+          <!-- CURRENT TIMESTAMP -->
+
+          <div class="current-time">
+
+            <div class="current-icon">
+
+              <i class="fa-solid fa-bolt"></i>
+
+            </div>
+
+            <div class="current-content">
+
+              <span>
+                Unix Timestamp الحالي
+              </span>
+
+              <strong id="currentTimestamp">
+                —
+              </strong>
+
+            </div>
+
+
+            <button
+              id="currentBtn"
+              class="current-copy"
+              type="button"
+            >
+
+              <i class="fa-regular fa-copy"></i>
+
+              نسخ
+
+            </button>
+
+          </div>
+
+
+
+          <!-- ACTION BAR -->
+
+          <div class="actionbar">
+
+            <div class="action-group main-actions">
+
+              <button
+                id="dateToTimestampBtn"
+                class="btn btn-primary"
+                type="button"
+              >
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+                <span>
+                  تاريخ ← Timestamp
+                </span>
+
+              </button>
+
+
+              <button
+                id="timestampToDateBtn"
+                class="btn btn-secondary"
+                type="button"
+              >
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+                <span>
+                  Timestamp ← تاريخ
+                </span>
+
+              </button>
+
+            </div>
+
+
+            <div class="action-group utility-actions">
+
+              <button
+                id="nowBtn"
+                class="btn btn-secondary"
+                type="button"
+              >
+
+                <i class="fa-solid fa-clock"></i>
+
+                <span>
+                  الآن
+                </span>
+
+              </button>
+
+
+              <button
+                id="clearBtn"
+                class="btn btn-danger"
+                type="button"
+              >
+
+                <i class="fa-solid fa-eraser"></i>
+
+                <span>
+                  مسح
+                </span>
+
+              </button>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- INPUT -->
+
+          <div class="editor-section">
+
+            <div class="editor-header">
+
+              <div>
+
+                <i class="fa-solid fa-pen"></i>
+
+                <span>
+                  Input
+                </span>
+
+              </div>
+
+              <span id="inputMode">
+                Date & Time
+
+              </span>
+
+            </div>
+
+
+            <div class="input-grid">
+
+
+              <div class="field">
+
+                <label for="dateInput">
+
+                  <i class="fa-regular fa-calendar"></i>
+
+                  التاريخ
+
+                </label>
+
+                <input
+                  id="dateInput"
+                  type="date"
+                />
+
+              </div>
+
+
+              <div class="field">
+
+                <label for="timeInput">
+
+                  <i class="fa-regular fa-clock"></i>
+
+                  الوقت
+
+                </label>
+
+                <input
+                  id="timeInput"
+                  type="time"
+                  step="1"
+                />
+
+              </div>
+
+
+              <div class="field">
+
+                <label for="timestampInput">
+
+                  <i class="fa-solid fa-hashtag"></i>
+
+                  Unix Timestamp
+
+                </label>
+
+                <input
+                  id="timestampInput"
+                  type="text"
+                  inputmode="numeric"
+                  placeholder="مثال: 1757000000"
+                />
+
+              </div>
+
+
+              <div class="field">
+
+                <label for="unitSelect">
+
+                  <i class="fa-solid fa-ruler-horizontal"></i>
+
+                  الوحدة
+
+                </label>
+
+                <select id="unitSelect">
+
+                  <option value="seconds">
+                    Seconds
+                  </option>
+
+                  <option value="milliseconds">
+                    Milliseconds
+                  </option>
+
+                </select>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- RESULT -->
+
+          <div
+            class="result-box"
+            id="resultBox"
+          >
+
+            <div
+              class="result-icon"
+              id="resultIcon"
+            >
+
+              <i class="fa-solid fa-circle-question"></i>
+
+            </div>
+
+
+            <div class="result-content">
+
+              <strong id="resultTitle">
+                جاهز للتحويل
+              </strong>
+
+              <p id="resultMessage">
+                اختر العملية التي تريد تنفيذها ثم اضغط على الزر المناسب.
+              </p>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- OUTPUT -->
+
+          <div class="output-section">
+
+            <div class="editor-header">
+
+              <div>
+
+                <i class="fa-solid fa-terminal"></i>
+
+                <span>
+                  Result
+                </span>
+
+              </div>
+
+              <span>
+                UTC
+              </span>
+
+            </div>
+
+
+            <div class="result-grid">
+
+
+              <div class="result-card">
+
+                <div class="result-card-title">
+
+                  <span>
+                    Unix Timestamp
+                  </span>
+
+                  <button
+                    id="copyTimestampBtn"
+                    type="button"
+                    class="mini-copy"
+                  >
+
+                    <i class="fa-regular fa-copy"></i>
+
+                  </button>
+
+                </div>
+
+
+                <div
+                  class="result-value mono"
+                  id="timestampOutput"
+                >
+                  —
+                </div>
+
+              </div>
+
+
+
+              <div class="result-card">
+
+                <div class="result-card-title">
+
+                  <span>
+                    UTC Date
+                  </span>
+
+                  <button
+                    id="copyDateBtn"
+                    type="button"
+                    class="mini-copy"
+                  >
+
+                    <i class="fa-regular fa-copy"></i>
+
+                  </button>
+
+                </div>
+
+
+                <div
+                  class="result-value"
+                  id="dateOutput"
+                >
+                  —
+                </div>
+
+              </div>
+
+
+
+              <div class="result-card">
+
+                <div class="result-card-title">
+
+                  <span>
+                    ISO 8601
+                  </span>
+
+                  <button
+                    id="copyIsoBtn"
+                    type="button"
+                    class="mini-copy"
+                  >
+
+                    <i class="fa-regular fa-copy"></i>
+
+                  </button>
+
+                </div>
+
+
+                <div
+                  class="result-value mono"
+                  id="isoOutput"
+                >
+                  —
+                </div>
+
+              </div>
+
+
+
+              <div class="result-card">
+
+                <div class="result-card-title">
+
+                  <span>
+                    Local Date
+                  </span>
+
+                  <button
+                    id="copyLocalBtn"
+                    type="button"
+                    class="mini-copy"
+                  >
+
+                    <i class="fa-regular fa-copy"></i>
+
+                  </button>
+
+                </div>
+
+
+                <div
+                  class="result-value"
+                  id="localOutput"
+                >
+                  —
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- STATS -->
+
+          <div class="stats-grid">
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+
+                <i class="fa-solid fa-hashtag"></i>
+
+              </div>
+
+              <div>
+
+                <span>
+                  Timestamp
+                </span>
+
+                <strong id="statTimestamp">
+                  —
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+
+                <i class="fa-solid fa-calendar-days"></i>
+
+              </div>
+
+              <div>
+
+                <span>
+                  التاريخ
+                </span>
+
+                <strong id="statDate">
+                  —
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+
+                <i class="fa-solid fa-earth-americas"></i>
+
+              </div>
+
+              <div>
+
+                <span>
+                  المنطقة
+                </span>
+
+                <strong>
+                  UTC
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+
+                <i class="fa-solid fa-circle-check"></i>
+
+              </div>
+
+              <div>
+
+                <span>
+                  الحالة
+                </span>
+
+                <strong id="statStatus">
+                  جاهز
+                </strong>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+
+          <!-- NOTE -->
+
+          <div class="security-note">
+
+            <div class="security-icon">
+
+              <i class="fa-solid fa-circle-info"></i>
+
+            </div>
+
+
+            <div>
+
+              <strong>
+                معالجة محلية
+              </strong>
+
+              <p>
+                تتم جميع عمليات التحويل داخل المتصفح باستخدام
+                JavaScript. لا يتم إرسال التاريخ أو الوقت إلى أي خادم خارجي.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         INFO
+    ========================================== -->
+
+    <section class="info-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>
+            UNIX TIMESTAMP
+          </span>
+
+          <h2>
+            ما هو Unix Timestamp؟
+          </h2>
+
+          <p>
+            طريقة شائعة لتمثيل الوقت باستخدام عدد الثواني
+            أو الميلي ثانية منذ بداية Unix Epoch.
+          </p>
+
+        </div>
+
+
+        <div class="info-grid">
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+
+              <i class="fa-solid fa-clock"></i>
+
+            </div>
+
+            <h3>
+              Unix Epoch
+            </h3>
+
+            <p>
+              يبدأ Unix Timestamp من
+              1 يناير 1970 عند الساعة 00:00:00 UTC.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+
+              <i class="fa-solid fa-code"></i>
+
+            </div>
+
+            <h3>
+              مناسب للمطورين
+            </h3>
+
+            <p>
+              يستخدم بكثرة في البرمجة وقواعد البيانات
+              وواجهات API وأنظمة تسجيل الأحداث.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+
+              <i class="fa-solid fa-stopwatch"></i>
+
+            </div>
+
+            <h3>
+              Seconds & Milliseconds
+            </h3>
+
+            <p>
+              يمكنك التحويل بين Timestamp بالثواني
+              والميلي ثانية بسهولة حسب احتياجات مشروعك.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         HOW TO
+    ========================================== -->
+
+    <section class="how-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>
+            HOW IT WORKS
+          </span>
+
+          <h2>
+            كيفية استخدام الأداة
+          </h2>
+
+        </div>
+
+
+        <div class="steps">
+
+
+          <div class="step">
+
+            <div class="step-number">
+              1
+            </div>
+
+            <div>
+
+              <h3>
+                اختر نوع التحويل
+              </h3>
+
+              <p>
+                استخدم تاريخ ← Timestamp لتحويل التاريخ
+                أو Timestamp ← تاريخ لتحويل الرقم إلى تاريخ.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              2
+            </div>
+
+            <div>
+
+              <h3>
+                أدخل البيانات
+              </h3>
+
+              <p>
+                أدخل التاريخ والوقت أو Unix Timestamp
+                واختر الوحدة المناسبة.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              3
+            </div>
+
+            <div>
+
+              <h3>
+                احصل على النتيجة
+              </h3>
+
+              <p>
+                ستظهر النتيجة بصيغ متعددة تشمل UTC
+                وISO 8601 والتاريخ المحلي.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+
+    <!-- =========================================
+         FAQ
+    ========================================== -->
+
+    <section class="faq-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>
+            FAQ
+          </span>
+
+          <h2>
+            الأسئلة الشائعة
+          </h2>
+
+        </div>
+
+
+        <div class="faq-list">
+
+          {faqs.map((faq) => (
+
+            <details>
+
+              <summary>
+
+                <span>
+                  {faq.q}
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+              </summary>
+
+              <p>
+                {faq.a}
+              </p>
+
+            </details>
+
+          ))}
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <Footer />
+
+
+
+  <!-- =========================================
+       JAVASCRIPT
+  ========================================== -->
+
+  <script is:inline>
+    (() => {
+
+      const dateInput =
+        document.getElementById("dateInput");
+
+      const timeInput =
+        document.getElementById("timeInput");
+
+      const timestampInput =
+        document.getElementById("timestampInput");
+
+      const unitSelect =
+        document.getElementById("unitSelect");
+
+      const dateToTimestampBtn =
+        document.getElementById("dateToTimestampBtn");
+
+      const timestampToDateBtn =
+        document.getElementById("timestampToDateBtn");
+
+      const nowBtn =
+        document.getElementById("nowBtn");
+
+      const currentBtn =
+        document.getElementById("currentBtn");
+
+      const clearBtn =
+        document.getElementById("clearBtn");
+
+      const currentTimestamp =
+        document.getElementById("currentTimestamp");
+
+      const timestampOutput =
+        document.getElementById("timestampOutput");
+
+      const dateOutput =
+        document.getElementById("dateOutput");
+
+      const isoOutput =
+        document.getElementById("isoOutput");
+
+      const localOutput =
+        document.getElementById("localOutput");
+
+      const resultBox =
+        document.getElementById("resultBox");
+
+      const resultIcon =
+        document.getElementById("resultIcon");
+
+      const resultTitle =
+        document.getElementById("resultTitle");
+
+      const resultMessage =
+        document.getElementById("resultMessage");
+
+      const statTimestamp =
+        document.getElementById("statTimestamp");
+
+      const statDate =
+        document.getElementById("statDate");
+
+      const statStatus =
+        document.getElementById("statStatus");
+
+      const inputMode =
+        document.getElementById("inputMode");
+
+
+      let lastTimestamp = "";
+
+      let currentMode = "date";
+
+
+      function pad(number) {
+        return String(number).padStart(2, "0");
+      }
+
+
+      function updateCurrentTimestamp() {
+
+        const now =
+          Date.now();
+
+        const timestamp =
+          Math.floor(now / 1000);
+
+        currentTimestamp.textContent =
+          timestamp.toLocaleString("en-US");
+
+      }
+
+
+      function setResult(
+        type,
+        title,
+        message
+      ) {
+
+        resultBox.classList.remove(
+          "success",
+          "error"
+        );
+
+
+        if (type === "success") {
+
+          resultBox.classList.add(
+            "success"
+          );
+
+          resultIcon.innerHTML =
+            '<i class="fa-solid fa-circle-check"></i>';
+
+        } else if (type === "error") {
+
+          resultBox.classList.add(
+            "error"
+          );
+
+          resultIcon.innerHTML =
+            '<i class="fa-solid fa-circle-exclamation"></i>';
+
+        } else {
+
+          resultIcon.innerHTML =
+            '<i class="fa-solid fa-circle-question"></i>';
+
+        }
+
+
+        resultTitle.textContent =
+          title;
+
+        resultMessage.textContent =
+          message;
+      }
+
+
+      function formatUTC(date) {
+
+        return (
+          `${date.getUTCFullYear()}-` +
+          `${pad(date.getUTCMonth() + 1)}-` +
+          `${pad(date.getUTCDate())} ` +
+          `${pad(date.getUTCHours())}:` +
+          `${pad(date.getUTCMinutes())}:` +
+          `${pad(date.getUTCSeconds())} UTC`
+        );
+
+      }
+
+
+      function formatLocal(date) {
+
+        return date.toLocaleString(
+          "ar-MA",
+          {
+            dateStyle: "medium",
+            timeStyle: "medium"
+          }
+        );
+
+      }
+
+
+      function updateOutputs(date, timestamp) {
+
+        const iso =
+          date.toISOString();
+
+        const utc =
+          formatUTC(date);
+
+        const local =
+          formatLocal(date);
+
+
+        timestampOutput.textContent =
+          String(timestamp);
+
+        dateOutput.textContent =
+          utc;
+
+        isoOutput.textContent =
+          iso;
+
+        localOutput.textContent =
+          local;
+
+
+        statTimestamp.textContent =
+          String(timestamp);
+
+        statDate.textContent =
+          `${date.getUTCFullYear()}-${pad(
+            date.getUTCMonth() + 1
+          )}-${pad(
+            date.getUTCDate()
+          )}`;
+
+        statStatus.textContent =
+          "تم";
+
+
+        lastTimestamp =
+          String(timestamp);
+
+      }
+
+
+      function dateToTimestamp() {
+
+        const dateValue =
+          dateInput.value;
+
+        const timeValue =
+          timeInput.value || "00:00:00";
+
+
+        if (!dateValue) {
+
+          setResult(
+            "error",
+            "التاريخ غير موجود",
+            "اختر تاريخاً أولاً ثم حاول مرة أخرى."
+          );
+
+          return;
+
+        }
+
+
+        const date =
+          new Date(
+            `${dateValue}T${timeValue}`
+          );
+
+
+        if (Number.isNaN(date.getTime())) {
+
+          setResult(
+            "error",
+            "تاريخ غير صالح",
+            "تحقق من التاريخ والوقت المدخلين."
+          );
+
+          return;
+
+        }
+
+
+        const milliseconds =
+          date.getTime();
+
+        const timestamp =
+          unitSelect.value === "milliseconds"
+            ? milliseconds
+            : Math.floor(
+                milliseconds / 1000
+              );
+
+
+        updateOutputs(
+          date,
+          timestamp
+        );
+
+
+        timestampInput.value =
+          String(timestamp);
+
+
+        currentMode =
+          "date";
+
+        inputMode.textContent =
+          "Date & Time";
+
+
+        setResult(
+          "success",
+          "تم التحويل بنجاح",
+          "تم تحويل التاريخ والوقت إلى Unix Timestamp."
+        );
+
+      }
+
+
+      function timestampToDate() {
+
+        const raw =
+          timestampInput.value.trim();
+
+
+        if (!raw) {
+
+          setResult(
+            "error",
+            "Timestamp غير موجود",
+            "أدخل Unix Timestamp أولاً."
+          );
+
+          timestampInput.focus();
+
+          return;
+
+        }
+
+
+        if (!/^-?\d+$/.test(raw)) {
+
+          setResult(
+            "error",
+            "قيمة غير صالحة",
+            "استخدم أرقام Unix Timestamp فقط."
+          );
+
+          return;
+
+        }
+
+
+        const value =
+          Number(raw);
+
+
+        if (!Number.isFinite(value)) {
+
+          setResult(
+            "error",
+            "قيمة غير صالحة",
+            "تعذر معالجة قيمة Timestamp."
+          );
+
+          return;
+
+        }
+
+
+        const milliseconds =
+          unitSelect.value === "milliseconds"
+            ? value
+            : value * 1000;
+
+
+        const date =
+          new Date(milliseconds);
+
+
+        if (
+          Number.isNaN(
+            date.getTime()
+          )
+        ) {
+
+          setResult(
+            "error",
+            "تاريخ غير صالح",
+            "قيمة Timestamp خارج النطاق المدعوم."
+          );
+
+          return;
+
+        }
+
+
+        updateOutputs(
+          date,
+          value
+        );
+
+
+        const year =
+          date.getFullYear();
+
+        const month =
+          pad(date.getMonth() + 1);
+
+        const day =
+          pad(date.getDate());
+
+        const hours =
+          pad(date.getHours());
+
+        const minutes =
+          pad(date.getMinutes());
+
+        const seconds =
+          pad(date.getSeconds());
+
+
+        dateInput.value =
+          `${year}-${month}-${day}`;
+
+        timeInput.value =
+          `${hours}:${minutes}:${seconds}`;
+
+
+        currentMode =
+          "timestamp";
+
+        inputMode.textContent =
+          "Unix Timestamp";
+
+
+        setResult(
+          "success",
+          "تم التحويل بنجاح",
+          "تم تحويل Unix Timestamp إلى التاريخ والوقت."
+        );
+
+      }
+
+
+      function setNow() {
+
+        const now =
+          new Date();
+
+
+        const year =
+          now.getFullYear();
+
+        const month =
+          pad(now.getMonth() + 1);
+
+        const day =
+          pad(now.getDate());
+
+        const hours =
+          pad(now.getHours());
+
+        const minutes =
+          pad(now.getMinutes());
+
+        const seconds =
+          pad(now.getSeconds());
+
+
+        dateInput.value =
+          `${year}-${month}-${day}`;
+
+        timeInput.value =
+          `${hours}:${minutes}:${seconds}`;
+
+
+        timestampInput.value =
+          String(
+            Math.floor(
+              now.getTime() / 1000
+            )
+          );
+
+
+        dateToTimestamp();
+
+
+        setResult(
+          "success",
+          "تم اختيار الوقت الحالي",
+          "تم تحميل التاريخ والوقت الحاليين."
+        );
+
+      }
+
+
+      async function copyText(
+        value,
+        successMessage
+      ) {
+
+        if (
+          !value ||
+          value === "—"
+        ) {
+
+          setResult(
+            "error",
+            "لا توجد نتيجة",
+            "قم بإجراء التحويل أولاً."
+          );
+
+          return;
+
+        }
+
+
+        try {
+
+          await navigator.clipboard.writeText(
+            String(value)
+          );
+
+
+          setResult(
+            "success",
+            "تم النسخ",
+            successMessage
+          );
+
+        } catch {
+
+          const textarea =
+            document.createElement(
+              "textarea"
+            );
+
+
+          textarea.value =
+            String(value);
+
+          textarea.style.position =
+            "fixed";
+
+          textarea.style.opacity =
+            "0";
+
+          document.body.appendChild(
+            textarea
+          );
+
+          textarea.select();
+
+
+          try {
+
+            document.execCommand(
+              "copy"
+            );
+
+
+            setResult(
+              "success",
+              "تم النسخ",
+              successMessage
+            );
+
+          } catch {
+
+            setResult(
+              "error",
+              "تعذر النسخ",
+              "تعذر نسخ النتيجة تلقائياً."
+            );
+
+          }
+
+
+          textarea.remove();
+
+        }
+
+      }
+
+
+      function clearAll() {
+
+        dateInput.value =
+          "";
+
+        timeInput.value =
+          "";
+
+        timestampInput.value =
+          "";
+
+
+        timestampOutput.textContent =
+          "—";
+
+        dateOutput.textContent =
+          "—";
+
+        isoOutput.textContent =
+          "—";
+
+        localOutput.textContent =
+          "—";
+
+
+        statTimestamp.textContent =
+          "—";
+
+        statDate.textContent =
+          "—";
+
+        statStatus.textContent =
+          "جاهز";
+
+
+        lastTimestamp =
+          "";
+
+
+        setResult(
+          "default",
+          "جاهز للتحويل",
+          "اختر العملية التي تريد تنفيذها ثم اضغط على الزر المناسب."
+        );
+
+      }
+
+
+      function syncInputMode() {
+
+        if (
+          currentMode === "timestamp"
+        ) {
+
+          inputMode.textContent =
+            "Unix Timestamp";
+
+        } else {
+
+          inputMode.textContent =
+            "Date & Time";
+
+        }
+
+      }
+
+
+      dateToTimestampBtn.addEventListener(
+        "click",
+        dateToTimestamp
+      );
+
+
+      timestampToDateBtn.addEventListener(
+        "click",
+        timestampToDate
+      );
+
+
+      nowBtn.addEventListener(
+        "click",
+        setNow
+      );
+
+
+      currentBtn.addEventListener(
+        "click",
+        () => {
+
+          copyText(
+            currentTimestamp.textContent,
+            "تم نسخ Unix Timestamp الحالي."
+          );
+
+        }
+      );
+
+
+      clearBtn.addEventListener(
+        "click",
+        clearAll
+      );
+
+
+      document
+        .getElementById("copyTimestampBtn")
+        .addEventListener(
+          "click",
+          () => {
+
+            copyText(
+              timestampOutput.textContent,
+              "تم نسخ Unix Timestamp."
+            );
+
+          }
+        );
+
+
+      document
+        .getElementById("copyDateBtn")
+        .addEventListener(
+          "click",
+          () => {
+
+            copyText(
+              dateOutput.textContent,
+              "تم نسخ تاريخ UTC."
+            );
+
+          }
+        );
+
+
+      document
+        .getElementById("copyIsoBtn")
+        .addEventListener(
+          "click",
+          () => {
+
+            copyText(
+              isoOutput.textContent,
+              "تم نسخ تاريخ ISO 8601."
+            );
+
+          }
+        );
+
+
+      document
+        .getElementById("copyLocalBtn")
+        .addEventListener(
+          "click",
+          () => {
+
+            copyText(
+              localOutput.textContent,
+              "تم نسخ التاريخ المحلي."
+            );
+
+          }
+        );
+
+
+      timestampInput.addEventListener(
+        "keydown",
+        (event) => {
+
+          if (
+            event.key === "Enter"
+          ) {
+
+            event.preventDefault();
+
+            timestampToDate();
+
+          }
+
+        }
+      );
+
+
+      unitSelect.addEventListener(
+        "change",
+        () => {
+
+          if (
+            currentMode === "timestamp" &&
+            timestampInput.value.trim()
+          ) {
+
+            timestampToDate();
+
+          }
+
+        }
+      );
+
+
+      dateInput.addEventListener(
+        "change",
+        syncInputMode
+      );
+
+
+      timeInput.addEventListener(
+        "change",
+        syncInputMode
+      );
+
+
+      updateCurrentTimestamp();
+
+      setInterval(
+        updateCurrentTimestamp,
+        1000
+      );
+
+      syncInputMode();
+
+    })();
+  </script>
+
+
+
+  <!-- =========================================
+       THEME SYNC
+  ========================================== -->
+
+  <script is:inline>
+    (() => {
+
+      function syncTheme() {
+
+        try {
+
+          const saved =
+            localStorage.getItem("theme");
+
+
+          if (saved === "dark") {
+
+            document.documentElement.classList.add(
+              "dark-mode"
+            );
+
+          } else {
+
+            document.documentElement.classList.remove(
+              "dark-mode"
+            );
+
+          }
+
+        } catch {}
+
+      }
+
+
+      syncTheme();
+
+
+      window.addEventListener(
+        "themeChange",
+        syncTheme
+      );
+
+
+      document.addEventListener(
+        "click",
+        (event) => {
+
+          const button =
+            event.target.closest(
+              "#theme-btn"
+            );
+
+
+          if (button) {
+
+            setTimeout(
+              syncTheme,
+              0
+            );
+
+          }
+
+        }
+      );
+
+    })();
+  </script>
+
+
+
+  <!-- =========================================
+       CSS
+  ========================================== -->
+
+  <style>
+
+    :root {
+
+      --bg: #f6f8fc;
+
+      --surface: #ffffff;
+
+      --surface-2: #f1f5f9;
+
+      --surface-3: #e8eef7;
+
+      --border: #dfe6ef;
+
+      --text: #0f172a;
+
+      --muted: #64748b;
+
+      --primary: #2563eb;
+
+      --primary-2: #06b6d4;
+
+      --primary-soft:
+        rgba(37,99,235,.09);
+
+      --success: #16a34a;
+
+      --success-soft:
+        rgba(22,163,74,.09);
+
+      --danger: #dc2626;
+
+      --danger-soft:
+        rgba(220,38,38,.08);
+
+      --shadow:
+        0 25px 70px
+        rgba(15,23,42,.08);
+
+    }
+
+
+    html.dark-mode {
+
+      --bg: #07070b;
+
+      --surface: #0f1017;
+
+      --surface-2: #151620;
+
+      --surface-3: #1c1e2b;
+
+      --border: #292c3b;
+
+      --text: #f8fafc;
+
+      --muted: #969baa;
+
+      --primary: #3b82f6;
+
+      --primary-2: #22d3ee;
+
+      --primary-soft:
+        rgba(59,130,246,.12);
+
+      --success: #22c55e;
+
+      --success-soft:
+        rgba(34,197,94,.11);
+
+      --danger: #ef4444;
+
+      --danger-soft:
+        rgba(239,68,68,.11);
+
+      --shadow:
+        0 30px 90px
+        rgba(0,0,0,.42);
+
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    body {
+
+      margin: 0;
+
+      background:
+        var(--bg);
+
+      color:
+        var(--text);
+
+      font-family:
+        "Cairo",
+        sans-serif;
+
+      transition:
+        background .25s ease,
+        color .25s ease;
+
+    }
+
+
+    button,
+    input,
+    select {
+
+      font-family:
+        inherit;
+
+    }
+
+
+    button {
+
+      -webkit-tap-highlight-color:
+        transparent;
+
+    }
+
+
+    .container {
+
+      width:
+        min(
+          1120px,
+          calc(100% - 32px)
+        );
+
+      margin:
+        0 auto;
+
+    }
+
+
+
+    /* HERO */
+
+    .hero {
+
+      position:
+        relative;
+
+      overflow:
+        hidden;
+
+      padding:
+        48px 0 65px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      background:
+
+        radial-gradient(
+          circle at 5% 15%,
+          rgba(37,99,235,.14),
+          transparent 30%
+        ),
+
+        radial-gradient(
+          circle at 95% 80%,
+          rgba(6,182,212,.12),
+          transparent 30%
+        );
+
+    }
+
+
+    .hero-glow {
+
+      position:
+        absolute;
+
+      border-radius:
+        50%;
+
+      pointer-events:
+        none;
+
+      filter:
+        blur(5px);
+
+    }
+
+
+    .glow-one {
+
+      width:
+        260px;
+
+      height:
+        260px;
+
+      top:
+        -160px;
+
+      right:
+        12%;
+
+      background:
+        rgba(37,99,235,.06);
+
+    }
+
+
+    .glow-two {
+
+      width:
+        220px;
+
+      height:
+        220px;
+
+      bottom:
+        -150px;
+
+      left:
+        15%;
+
+      background:
+        rgba(6,182,212,.06);
+
+    }
+
+
+    .breadcrumb {
+
+      position:
+        relative;
+
+      z-index:
+        1;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        10px;
+
+      margin-bottom:
+        40px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+    }
+
+
+    .breadcrumb a {
+
+      color:
+        var(--primary);
+
+      text-decoration:
+        none;
+
+      font-weight:
+        700;
+
+    }
+
+
+    .breadcrumb i {
+
+      font-size:
+        9px;
+
+      opacity:
+        .55;
+
+    }
+
+
+    .hero-content {
+
+      position:
+        relative;
+
+      z-index:
+        1;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        28px;
+
+    }
+
+
+    .hero-icon {
+
+      position:
+        relative;
+
+      width:
+        125px;
+
+      height:
+        125px;
+
+      flex:
+        0 0 125px;
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      gap:
+        8px;
+
+      overflow:
+        hidden;
+
+      border-radius:
+        31px;
+
+      color:
+        #fff;
+
+      background:
+        linear-gradient(
+          145deg,
+          #2563eb,
+          #0891b2
+        );
+
+      border:
+        1px solid
+        rgba(255,255,255,.18);
+
+      box-shadow:
+        0 22px 50px
+        rgba(37,99,235,.27);
+
+    }
+
+
+    .hero-icon::before {
+
+      content:
+        "";
+
+      position:
+        absolute;
+
+      width:
+        170px;
+
+      height:
+        170px;
+
+      top:
+        -100px;
+
+      right:
+        -70px;
+
+      border-radius:
+        50%;
+
+      background:
+        rgba(255,255,255,.08);
+
+    }
+
+
+    .hero-icon-inner {
+
+      position:
+        relative;
+
+      width:
+        56px;
+
+      height:
+        56px;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border-radius:
+        17px;
+
+      background:
+        rgba(255,255,255,.10);
+
+      border:
+        1px solid
+        rgba(255,255,255,.16);
+
+    }
+
+
+    .hero-icon i {
+      font-size:
+        28px;
+    }
+
+
+    .hero-icon > span {
+
+      position:
+        relative;
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size:
+        8px;
+
+      font-weight:
+        700;
+
+      letter-spacing:
+        .5px;
+
+    }
+
+
+    .hero-text {
+      min-width:
+        0;
+    }
+
+
+    .badge {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      padding:
+        7px 12px;
+
+      margin-bottom:
+        12px;
+
+      border:
+        1px solid
+        rgba(37,99,235,.14);
+
+      border-radius:
+        999px;
+
+      background:
+        var(--primary-soft);
+
+      color:
+        var(--primary);
+
+      font-size:
+        10px;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .hero h1 {
+
+      margin:
+        0 0 10px;
+
+      font-size:
+        clamp(
+          30px,
+          5vw,
+          48px
+        );
+
+      line-height:
+        1.2;
+
+      font-weight:
+        800;
+
+      letter-spacing:
+        -1px;
+
+    }
+
+
+    .hero-text p {
+
+      max-width:
+        720px;
+
+      margin:
+        0 0 17px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        15px;
+
+      line-height:
+        1.9;
+
+    }
+
+
+    .tags {
+
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        8px;
+
+    }
+
+
+    .tags span {
+
+      padding:
+        5px 11px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        8px;
+
+      background:
+        var(--surface);
+
+      color:
+        var(--muted);
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size:
+        10px;
+
+    }
+
+
+
+    /* TOOL */
+
+    .tool-section {
+
+      padding:
+        60px 0;
+
+    }
+
+
+    .generator-card {
+
+      overflow:
+        hidden;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        25px;
+
+      box-shadow:
+        var(--shadow);
+
+    }
+
+
+
+    /* TOP BAR */
+
+    .card-topbar {
+
+      min-height:
+        61px;
+
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr auto 1fr;
+
+      align-items:
+        center;
+
+      gap:
+        15px;
+
+      padding:
+        0 22px;
+
+      background:
+        linear-gradient(
+          180deg,
+          var(--surface-2),
+          var(--surface)
+        );
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+    }
+
+
+    .window-dots {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        7px;
+
+      direction:
+        ltr;
+
+    }
+
+
+    .window-dots span {
+
+      width:
+        9px;
+
+      height:
+        9px;
+
+      border-radius:
+        50%;
+
+    }
+
+
+    .window-dots span:nth-child(1) {
+      background: #ef4444;
+    }
+
+
+    .window-dots span:nth-child(2) {
+      background: #f59e0b;
+    }
+
+
+    .window-dots span:nth-child(3) {
+      background: #22c55e;
+    }
+
+
+    .tool-name {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      gap:
+        9px;
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size:
+        12px;
+
+      font-weight:
+        600;
+
+    }
+
+
+    .tool-name i {
+      color:
+        var(--primary);
+    }
+
+
+    .secure {
+
+      justify-self:
+        end;
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        7px;
+
+      padding:
+        6px 10px;
+
+      border-radius:
+        8px;
+
+      background:
+        var(--success-soft);
+
+      color:
+        var(--success);
+
+      font-size:
+        9px;
+
+      font-weight:
+        800;
+
+    }
+
+
+
+    /* CURRENT */
+
+    .current-time {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        13px;
+
+      margin:
+        20px 22px 0;
+
+      padding:
+        15px 16px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        15px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--primary-soft),
+          var(--surface-2)
+        );
+
+    }
+
+
+    .current-icon {
+
+      width:
+        42px;
+
+      height:
+        42px;
+
+      flex:
+        0 0 42px;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border-radius:
+        12px;
+
+      background:
+        var(--primary);
+
+      color:
+        #fff;
+
+      box-shadow:
+        0 8px 20px
+        rgba(37,99,235,.2);
+
+    }
+
+
+    .current-content {
+      min-width:
+        0;
+
+      flex:
+        1;
+    }
+
+
+    .current-content span {
+
+      display:
+        block;
+
+      margin-bottom:
+        2px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        9px;
+
+    }
+
+
+    .current-content strong {
+
+      display:
+        block;
+
+      color:
+        var(--primary);
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size:
+        16px;
+
+    }
+
+
+    .current-copy {
+
+      min-height:
+        36px;
+
+      padding:
+        0 12px;
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        6px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        9px;
+
+      background:
+        var(--surface);
+
+      color:
+        var(--text);
+
+      cursor:
+        pointer;
+
+      font-size:
+        9px;
+
+      font-weight:
+        700;
+
+    }
+
+
+    .current-copy:hover {
+      color:
+        var(--primary);
+
+      border-color:
+        var(--primary);
+    }
+
+
+
+    /* ACTIONS */
+
+    .actionbar {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      gap:
+        16px;
+
+      padding:
+        18px 22px;
+
+    }
+
+
+    .action-group {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        10px;
+
+    }
+
+
+    .utility-actions {
+      justify-content:
+        flex-end;
+    }
+
+
+    .btn {
+
+      min-height:
+        44px;
+
+      padding:
+        0 16px;
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      gap:
+        9px;
+
+      border:
+        1px solid
+        transparent;
+
+      border-radius:
+        12px;
+
+      cursor:
+        pointer;
+
+      font-size:
+        11px;
+
+      font-weight:
+        700;
+
+      white-space:
+        nowrap;
+
+      transition:
+        .2s ease;
+
+    }
+
+
+    .btn:hover {
+      transform:
+        translateY(-2px);
+    }
+
+
+    .btn-primary {
+
+      color:
+        #fff;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #0891b2
+        );
+
+      box-shadow:
+        0 9px 24px
+        rgba(37,99,235,.22);
+
+    }
+
+
+    .btn-secondary {
+
+      color:
+        var(--text);
+
+      background:
+        var(--surface-2);
+
+      border-color:
+        var(--border);
+
+    }
+
+
+    .btn-secondary:hover {
+
+      color:
+        var(--primary);
+
+      background:
+        var(--primary-soft);
+
+      border-color:
+        rgba(37,99,235,.35);
+
+    }
+
+
+    .btn-danger {
+
+      color:
+        var(--danger);
+
+      background:
+        var(--danger-soft);
+
+    }
+
+
+    .btn-danger:hover {
+
+      color:
+        #fff;
+
+      background:
+        var(--danger);
+
+    }
+
+
+
+    /* INPUT */
+
+    .editor-section {
+
+      padding:
+        25px 22px;
+
+      border-top:
+        1px solid
+        var(--border);
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+    }
+
+
+    .editor-header {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      margin-bottom:
+        13px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        10px;
+
+      font-weight:
+        700;
+
+    }
+
+
+    .editor-header > div {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      color:
+        var(--text);
+
+    }
+
+
+    .editor-header i {
+      color:
+        var(--primary);
+    }
+
+
+    .input-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap:
+        12px;
+
+    }
+
+
+    .field {
+
+      min-width:
+        0;
+
+    }
+
+
+    .field label {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        7px;
+
+      margin-bottom:
+        8px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        10px;
+
+      font-weight:
+        700;
+
+    }
+
+
+    .field label i {
+      color:
+        var(--primary);
+    }
+
+
+    .field input,
+    .field select {
+
+      width:
+        100%;
+
+      height:
+        46px;
+
+      padding:
+        0 12px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        12px;
+
+      outline:
+        none;
+
+      background:
+        var(--surface-2);
+
+      color:
+        var(--text);
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size:
+        11px;
+
+      transition:
+        .2s ease;
+
+    }
+
+
+    .field input:focus,
+    .field select:focus {
+
+      border-color:
+        var(--primary);
+
+      box-shadow:
+        0 0 0 4px
+        var(--primary-soft);
+
+      background:
+        var(--surface);
+
+    }
+
+
+    .field input::placeholder {
+      color:
+        var(--muted);
+    }
+
+
+
+    /* RESULT STATUS */
+
+    .result-box {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        14px;
+
+      margin:
+        20px 22px;
+
+      padding:
+        15px 17px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        15px;
+
+      background:
+        var(--surface-2);
+
+    }
+
+
+    .result-box.success {
+
+      border-color:
+        rgba(34,197,94,.28);
+
+      background:
+        var(--success-soft);
+
+    }
+
+
+    .result-box.error {
+
+      border-color:
+        rgba(239,68,68,.28);
+
+      background:
+        var(--danger-soft);
+
+    }
+
+
+    .result-icon {
+
+      width:
+        42px;
+
+      height:
+        42px;
+
+      flex:
+        0 0 42px;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border-radius:
+        12px;
+
+      background:
+        var(--primary-soft);
+
+      color:
+        var(--primary);
+
+    }
+
+
+    .result-box.success
+    .result-icon {
+
+      color:
+        var(--success);
+
+      background:
+        var(--success-soft);
+
+    }
+
+
+    .result-box.error
+    .result-icon {
+
+      color:
+        var(--danger);
+
+      background:
+        var(--danger-soft);
+
+    }
+
+
+    .result-content strong {
+
+      display:
+        block;
+
+      margin-bottom:
+        3px;
+
+      font-size:
+        12px;
+
+    }
+
+
+    .result-content p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        10px;
+
+      line-height:
+        1.8;
+
+    }
+
+
+
+    /* OUTPUT */
+
+    .output-section {
+
+      padding:
+        0 22px 24px;
+
+    }
+
+
+    .result-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(2, 1fr);
+
+      gap:
+        12px;
+
+    }
+
+
+    .result-card {
+
+      min-width:
+        0;
+
+      padding:
+        15px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        14px;
+
+      background:
+        var(--surface-2);
+
+    }
+
+
+    .result-card-title {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      gap:
+        10px;
+
+      margin-bottom:
+        10px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        9px;
+
+      font-weight:
+        700;
+
+    }
+
+
+    .mini-copy {
+
+      width:
+        29px;
+
+      height:
+        29px;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        8px;
+
+      background:
+        var(--surface);
+
+      color:
+        var(--muted);
+
+      cursor:
+        pointer;
+
+    }
+
+
+    .mini-copy:hover {
+
+      color:
+        var(--primary);
+
+      border-color:
+        var(--primary);
+
+    }
+
+
+    .result-value {
+
+      min-height:
+        42px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      color:
+        var(--text);
+
+      font-size:
+        11px;
+
+      line-height:
+        1.7;
+
+      word-break:
+        break-word;
+
+    }
+
+
+    .result-value.mono {
+
+      color:
+        var(--primary);
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      direction:
+        ltr;
+
+      text-align:
+        left;
+
+      word-break:
+        break-all;
+
+    }
+
+
+
+    /* STATS */
+
+    .stats-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap:
+        12px;
+
+      padding:
+        0 22px 24px;
+
+    }
+
+
+    .stat {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        11px;
+
+      padding:
+        15px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        14px;
+
+      background:
+        var(--surface-2);
+
+    }
+
+
+    .stat-icon {
+
+      width:
+        38px;
+
+      height:
+        38px;
+
+      flex:
+        0 0 38px;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border-radius:
+        11px;
+
+      background:
+        var(--primary-soft);
+
+      color:
+        var(--primary);
+
+    }
+
+
+    .stat span {
+
+      display:
+        block;
+
+      margin-bottom:
+        2px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        9px;
+
+    }
+
+
+    .stat strong {
+
+      display:
+        block;
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size:
+        10px;
+
+    }
+
+
+
+    /* NOTE */
+
+    .security-note {
+
+      display:
+        flex;
+
+      align-items:
+        flex-start;
+
+      gap:
+        13px;
+
+      margin:
+        0 22px 22px;
+
+      padding:
+        17px;
+
+      border:
+        1px solid
+        rgba(37,99,235,.12);
+
+      border-radius:
+        15px;
+
+      background:
+        var(--primary-soft);
+
+    }
+
+
+    .security-icon {
+
+      width:
+        40px;
+
+      height:
+        40px;
+
+      flex:
+        0 0 40px;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border-radius:
+        11px;
+
+      background:
+        var(--primary-soft);
+
+      color:
+        var(--primary);
+
+    }
+
+
+    .security-note strong {
+
+      display:
+        block;
+
+      margin-bottom:
+        4px;
+
+      font-size:
+        12px;
+
+    }
+
+
+    .security-note p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        10px;
+
+      line-height:
+        1.9;
+
+    }
+
+
+
+    /* SECTIONS */
+
+    .info-section,
+    .how-section,
+    .faq-section {
+
+      padding:
+        72px 0;
+
+    }
+
+
+    .info-section,
+    .faq-section {
+
+      background:
+        var(--surface-2);
+
+      border-top:
+        1px solid
+        var(--border);
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+    }
+
+
+    .section-heading {
+
+      max-width:
+        720px;
+
+      margin:
+        0 auto 36px;
+
+      text-align:
+        center;
+
+    }
+
+
+    .section-heading > span {
+
+      display:
+        block;
+
+      margin-bottom:
+        8px;
+
+      color:
+        var(--primary);
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size:
+        10px;
+
+      font-weight:
+        700;
+
+      letter-spacing:
+        1px;
+
+    }
+
+
+    .section-heading h2 {
+
+      margin:
+        0 0 10px;
+
+      font-size:
+        clamp(
+          25px,
+          4vw,
+          34px
+        );
+
+      font-weight:
+        800;
+
+    }
+
+
+    .section-heading p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+      line-height:
+        1.9;
+
+    }
+
+
+
+    /* INFO CARDS */
+
+    .info-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap:
+        18px;
+
+    }
+
+
+    .info-card {
+
+      padding:
+        27px;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        19px;
+
+      transition:
+        .25s ease;
+
+    }
+
+
+    .info-card:hover {
+
+      transform:
+        translateY(-5px);
+
+      border-color:
+        rgba(37,99,235,.35);
+
+      box-shadow:
+        0 18px 45px
+        rgba(15,23,42,.07);
+
+    }
+
+
+    .info-icon {
+
+      width:
+        50px;
+
+      height:
+        50px;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      margin-bottom:
+        18px;
+
+      border-radius:
+        14px;
+
+      background:
+        var(--primary-soft);
+
+      color:
+        var(--primary);
+
+      font-size:
+        18px;
+
+    }
+
+
+    .info-card h3 {
+
+      margin:
+        0 0 8px;
+
+      font-size:
+        16px;
+
+    }
+
+
+    .info-card p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.9;
+
+    }
+
+
+
+    /* STEPS */
+
+    .steps {
+
+      max-width:
+        820px;
+
+      margin:
+        0 auto;
+
+      display:
+        grid;
+
+      gap:
+        14px;
+
+    }
+
+
+    .step {
+
+      display:
+        flex;
+
+      align-items:
+        flex-start;
+
+      gap:
+        17px;
+
+      padding:
+        20px;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        16px;
+
+      transition:
+        .2s ease;
+
+    }
+
+
+    .step:hover {
+
+      transform:
+        translateX(-3px);
+
+      border-color:
+        rgba(37,99,235,.3);
+
+    }
+
+
+    .step-number {
+
+      width:
+        42px;
+
+      height:
+        42px;
+
+      flex:
+        0 0 42px;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border-radius:
+        12px;
+
+      color:
+        #fff;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-2)
+        );
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-weight:
+        700;
+
+    }
+
+
+    .step h3 {
+
+      margin:
+        0 0 4px;
+
+      font-size:
+        14px;
+
+    }
+
+
+    .step p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.8;
+
+    }
+
+
+
+    /* FAQ */
+
+    .faq-list {
+
+      max-width:
+        820px;
+
+      margin:
+        0 auto;
+
+      display:
+        grid;
+
+      gap:
+        10px;
+
+    }
+
+
+    details {
+
+      overflow:
+        hidden;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        15px;
+
+    }
+
+
+    summary {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      gap:
+        15px;
+
+      padding:
+        18px 20px;
+
+      cursor:
+        pointer;
+
+      list-style:
+        none;
+
+      font-size:
+        13px;
+
+      font-weight:
+        700;
+
+    }
+
+
+    summary::-webkit-details-marker {
+      display:
+        none;
+    }
+
+
+    summary i {
+
+      color:
+        var(--primary);
+
+      font-size:
+        10px;
+
+      transition:
+        .2s ease;
+
+    }
+
+
+    details[open]
+    summary i {
+
+      transform:
+        rotate(180deg);
+
+    }
+
+
+    details p {
+
+      margin:
+        0;
+
+      padding:
+        0 20px 20px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.9;
+
+    }
+
+
+
+    /* TABLET */
+
+    @media (max-width: 900px) {
+
+      .input-grid {
+
+        grid-template-columns:
+          repeat(2, 1fr);
+
+      }
+
+
+      .stats-grid {
+
+        grid-template-columns:
+          repeat(2, 1fr);
+
+      }
+
+
+      .info-grid {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+    }
+
+
+
+    /* MOBILE */
+
+    @media (max-width: 650px) {
+
+      .container {
+
+        width:
+          calc(100% - 22px);
+
+      }
+
+
+      .hero {
+
+        padding:
+          32px 0 48px;
+
+      }
+
+
+      .hero-content {
+
+        flex-direction:
+          column;
+
+        align-items:
+          flex-start;
+
+        gap:
+          20px;
+
+      }
+
+
+      .hero-icon {
+
+        width:
+          88px;
+
+        height:
+          88px;
+
+        flex-basis:
+          88px;
+
+        border-radius:
+          23px;
+
+      }
+
+
+      .hero-icon-inner {
+
+        width:
+          43px;
+
+        height:
+          43px;
+
+        border-radius:
+          13px;
+
+      }
+
+
+      .hero-icon i {
+        font-size:
+          21px;
+      }
+
+
+      .hero h1 {
+        font-size:
+          29px;
+      }
+
+
+      .hero-text p {
+        font-size:
+          13px;
+      }
+
+
+      .tool-section {
+
+        padding:
+          40px 0;
+
+      }
+
+
+      .card-topbar {
+
+        grid-template-columns:
+          auto 1fr auto;
+
+        padding:
+          0 13px;
+
+      }
+
+
+      .tool-name {
+        font-size:
+          9px;
+      }
+
+
+      .secure {
+
+        padding:
+          5px 7px;
+
+        font-size:
+          8px;
+
+      }
+
+
+      .current-time {
+
+        margin:
+          15px 15px 0;
+
+      }
+
+
+      .current-content strong {
+        font-size:
+          12px;
+      }
+
+
+      .current-copy {
+
+        padding:
+          0 9px;
+
+      }
+
+
+      .actionbar {
+
+        flex-direction:
+          column;
+
+        align-items:
+          stretch;
+
+        padding:
+          15px;
+
+      }
+
+
+      .action-group {
+
+        width:
+          100%;
+
+      }
+
+
+      .main-actions,
+      .utility-actions {
+
+        display:
+          grid;
+
+        grid-template-columns:
+          1fr 1fr;
+
+      }
+
+
+      .btn {
+
+        width:
+          100%;
+
+        min-width:
+          0;
+
+        padding:
+          0 7px;
+
+        font-size:
+          9px;
+
+      }
+
+
+      .editor-section {
+
+        padding:
+          20px 15px;
+
+      }
+
+
+      .input-grid {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .result-box {
+
+        margin:
+          18px 15px;
+
+      }
+
+
+      .output-section {
+
+        padding:
+          0 15px 20px;
+
+      }
+
+
+      .result-grid {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .stats-grid {
+
+        grid-template-columns:
+          1fr 1fr;
+
+        padding:
+          0 15px 20px;
+
+      }
+
+
+      .security-note {
+
+        margin:
+          0 15px 15px;
+
+      }
+
+
+      .info-section,
+      .how-section,
+      .faq-section {
+
+        padding:
+          50px 0;
+
+      }
+
+    }
+
+
+
+    /* SMALL */
+
+    @media (max-width: 420px) {
+
+      .main-actions,
+      .utility-actions {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .current-time {
+
+        align-items:
+          flex-start;
+
+      }
+
+
+      .current-copy {
+
+        margin-top:
+          3px;
+
+      }
+
+
+      .hero h1 {
+
+        font-size:
+          26px;
+
+      }
+
+    }
+
+  </style>
+
+</body>
+</html>
