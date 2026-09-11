@@ -4,1763 +4,3295 @@ import Footer from '../../../components/Footer.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-const title = "Timezone Converter - تحويل المناطق الزمنية أونلاين | Th.Tech";
+const title = "Timezone Converter - محول المناطق الزمنية أونلاين | Th.Tech";
 
 const description =
-  "أداة Timezone Converter مجانية لتحويل التاريخ والوقت بين المناطق الزمنية المختلفة، مع عرض الوقت المحلي وUTC والفرق الزمني.";
+  "أداة Timezone Converter مجانية لتحويل الوقت والتاريخ بين جميع المناطق الزمنية في العالم مباشرة من المتصفح.";
 
 const faqs = [
   {
-    q: "ما هي أداة Timezone Converter؟",
-    a: "هي أداة تساعدك على تحويل التاريخ والوقت من منطقة زمنية إلى منطقة أخرى مع مراعاة فرق التوقيت."
+    q: "ما هو Timezone Converter؟",
+    a: "هو أداة تساعدك على تحويل التاريخ والوقت من منطقة زمنية إلى منطقة زمنية أخرى بسهولة، مع دعم المناطق الزمنية العالمية."
   },
   {
-    q: "هل يتم إرسال البيانات إلى الخادم؟",
-    a: "لا. تتم جميع عمليات التحويل داخل المتصفح باستخدام JavaScript ولا يتم إرسال البيانات إلى خادم خارجي."
+    q: "هل الأداة تدعم جميع المناطق الزمنية؟",
+    a: "نعم. تستخدم الأداة قاعدة المناطق الزمنية المتوفرة في المتصفح عبر Intl.supportedValuesOf، وتعرض المناطق الزمنية المعروفة مثل Africa وAmerica وAsia وEurope وAustralia وPacific وUTC وغيرها."
   },
   {
-    q: "ما الفرق بين UTC والمنطقة الزمنية المحلية؟",
-    a: "UTC هو التوقيت العالمي المنسق، بينما التوقيت المحلي يعتمد على المنطقة الزمنية التي تختارها وقد يتغير حسب التوقيت الصيفي."
+    q: "هل يتم إرسال الوقت أو البيانات إلى الخادم؟",
+    a: "لا. عملية التحويل تتم بالكامل داخل المتصفح باستخدام JavaScript وواجهة Intl، ولا تحتاج إلى إرسال البيانات إلى خادم خارجي."
   },
   {
-    q: "هل الأداة مناسبة للمطورين؟",
-    a: "نعم. يمكن استخدامها عند تطوير APIs والتطبيقات العالمية وجدولة المهام والتعامل مع المستخدمين الموجودين في مناطق زمنية مختلفة."
+    q: "هل يمكنني استخدام الأداة لتحويل وقت اجتماع دولي؟",
+    a: "نعم. اختر وقت الاجتماع والمنطقة الزمنية الأصلية ثم اختر المنطقة الزمنية التي تريد التحويل إليها للحصول على الوقت المقابل."
   }
 ];
 ---
 
+<!doctype html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <meta charset="UTF-8" />
 
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <meta name="robots" content="index, follow" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
 
-    <link
-      rel="canonical"
-      href={`https://oumaystore-hub.github.io${base}/tools/timezone-converter/`}
-    />
+  <title>{title}</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin
-    />
+  <meta
+    name="description"
+    content={description}
+  />
 
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
+  <meta
+    name="robots"
+    content="index, follow"
+  />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-    />
+  <link
+    rel="canonical"
+    href={`https://oumaystore-hub.github.io${base}/tools/timezone-converter/`}
+  />
 
-    <script is:inline>
-      (() => {
-        try {
-          function syncTheme() {
-            const saved = localStorage.getItem("theme");
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-            if (saved === "dark") {
-              document.documentElement.classList.add("dark-mode");
-            } else {
-              document.documentElement.classList.remove("dark-mode");
-            }
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+
+  <!-- Theme -->
+  <script is:inline>
+    (() => {
+      try {
+        const saved = localStorage.getItem("theme");
+
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark-mode");
+        } else {
+          document.documentElement.classList.remove("dark-mode");
+        }
+      } catch {}
+    })();
+  </script>
+</head>
+
+<body>
+
+  <Header />
+
+  <main>
+
+    <!-- =========================
+         HERO
+    ========================== -->
+
+    <section class="hero">
+      <div class="container">
+
+        <div class="breadcrumb">
+          <a href={`${base}/`}>
+            <i class="fa-solid fa-house"></i>
+            الرئيسية
+          </a>
+
+          <i class="fa-solid fa-chevron-left separator"></i>
+
+          <a href={`${base}/tools/`}>
+            الأدوات
+          </a>
+
+          <i class="fa-solid fa-chevron-left separator"></i>
+
+          <span>Timezone Converter</span>
+        </div>
+
+        <div class="hero-content">
+
+          <div class="hero-icon">
+            <i class="fa-solid fa-earth-americas"></i>
+          </div>
+
+          <div class="hero-text">
+
+            <div class="badge">
+              <i class="fa-solid fa-clock"></i>
+              Time &amp; Date
+            </div>
+
+            <h1>Timezone Converter</h1>
+
+            <p>
+              حوّل الوقت والتاريخ بين المناطق الزمنية في العالم
+              بسرعة ودقة مباشرة من المتصفح.
+            </p>
+
+            <div class="tags">
+              <span>Timezone</span>
+              <span>UTC</span>
+              <span>Global</span>
+              <span>Local</span>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =========================
+         TOOL
+    ========================== -->
+
+    <section class="tool-section">
+      <div class="container">
+
+        <div class="converter-card">
+
+          <!-- Top Bar -->
+          <div class="card-topbar">
+
+            <div class="window-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <div class="tool-name">
+              <i class="fa-solid fa-earth-americas"></i>
+              Timezone Converter
+            </div>
+
+            <div class="secure">
+              <i class="fa-solid fa-shield-halved"></i>
+              Local
+            </div>
+
+          </div>
+
+
+          <!-- Action Bar -->
+          <div class="actionbar">
+
+            <div class="action-group">
+
+              <button
+                id="nowBtn"
+                class="btn btn-primary"
+                type="button"
+              >
+                <i class="fa-solid fa-clock"></i>
+                الآن
+              </button>
+
+              <button
+                id="convertBtn"
+                class="btn btn-primary"
+                type="button"
+              >
+                <i class="fa-solid fa-right-left"></i>
+                تحويل
+              </button>
+
+            </div>
+
+            <div class="action-group">
+
+              <button
+                id="clearBtn"
+                class="btn btn-secondary"
+                type="button"
+              >
+                <i class="fa-solid fa-eraser"></i>
+                مسح
+              </button>
+
+              <button
+                id="copyBtn"
+                class="btn btn-secondary"
+                type="button"
+              >
+                <i class="fa-regular fa-copy"></i>
+                نسخ
+              </button>
+
+            </div>
+
+          </div>
+
+
+          <!-- Converter Form -->
+          <div class="converter-body">
+
+            <!-- Date -->
+            <div class="field-block">
+
+              <label for="dateInput">
+                <span>
+                  <i class="fa-regular fa-calendar"></i>
+                  التاريخ والوقت
+                </span>
+
+                <small id="inputStatus">
+                  اختر التاريخ والوقت
+                </small>
+              </label>
+
+              <input
+                id="dateInput"
+                type="datetime-local"
+              />
+
+            </div>
+
+
+            <!-- Timezones -->
+            <div class="timezone-grid">
+
+              <!-- From -->
+              <div class="field-block">
+
+                <label for="fromZone">
+                  <span>
+                    <i class="fa-solid fa-location-dot"></i>
+                    المنطقة الأصلية
+                  </span>
+
+                  <small>From</small>
+                </label>
+
+                <div class="select-wrapper">
+
+                  <select id="fromZone"></select>
+
+                  <i class="fa-solid fa-chevron-down"></i>
+
+                </div>
+
+              </div>
+
+
+              <!-- Swap -->
+              <div class="swap-wrapper">
+
+                <button
+                  id="swapBtn"
+                  type="button"
+                  aria-label="تبديل المناطق الزمنية"
+                  title="تبديل المناطق الزمنية"
+                >
+                  <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                </button>
+
+              </div>
+
+
+              <!-- To -->
+              <div class="field-block">
+
+                <label for="toZone">
+                  <span>
+                    <i class="fa-solid fa-location-crosshairs"></i>
+                    المنطقة المستهدفة
+                  </span>
+
+                  <small>To</small>
+                </label>
+
+                <div class="select-wrapper">
+
+                  <select id="toZone"></select>
+
+                  <i class="fa-solid fa-chevron-down"></i>
+
+                </div>
+
+              </div>
+
+            </div>
+
+
+            <!-- Result -->
+            <div
+              class="result-box"
+              id="resultBox"
+            >
+
+              <div class="result-icon">
+                <i class="fa-solid fa-earth-americas"></i>
+              </div>
+
+              <div class="result-content">
+
+                <span class="result-label">
+                  الوقت المحوّل
+                </span>
+
+                <strong id="resultTime">
+                  —
+                </strong>
+
+                <p id="resultDate">
+                  اختر الوقت والمناطق الزمنية ثم اضغط تحويل.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <!-- Technical Results -->
+            <div class="technical-grid">
+
+              <div class="technical-item">
+
+                <span>
+                  <i class="fa-solid fa-clock"></i>
+                  UTC
+                </span>
+
+                <strong id="utcResult">—</strong>
+
+              </div>
+
+
+              <div class="technical-item">
+
+                <span>
+                  <i class="fa-solid fa-code"></i>
+                  ISO 8601
+                </span>
+
+                <strong id="isoResult">—</strong>
+
+              </div>
+
+
+              <div class="technical-item">
+
+                <span>
+                  <i class="fa-solid fa-globe"></i>
+                  المنطقة
+                </span>
+
+                <strong id="zoneResult">—</strong>
+
+              </div>
+
+            </div>
+
+
+            <!-- Status -->
+            <div
+              class="status-line"
+              id="statusLine"
+            >
+              <i class="fa-solid fa-circle-check"></i>
+              <span>الأداة جاهزة للاستخدام</span>
+            </div>
+
+          </div>
+
+
+          <!-- Stats -->
+          <div class="stats-grid">
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-earth-americas"></i>
+              </div>
+
+              <div>
+                <span>المناطق</span>
+                <strong id="zoneCount">0</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-clock"></i>
+              </div>
+
+              <div>
+                <span>UTC Offset</span>
+                <strong id="offsetResult">—</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-calendar-day"></i>
+              </div>
+
+              <div>
+                <span>التاريخ</span>
+                <strong id="statDate">—</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+
+              <div>
+                <span>الحالة</span>
+                <strong id="statStatus">جاهز</strong>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Security Note -->
+          <div class="security-note">
+
+            <div class="security-icon">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div>
+
+              <strong>
+                معالجة محلية وآمنة
+              </strong>
+
+              <p>
+                تتم عملية تحويل الوقت بالكامل داخل المتصفح
+                باستخدام JavaScript وواجهة Intl، ولا يتم إرسال
+                البيانات إلى خادم خارجي.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- =========================
+         INFO
+    ========================== -->
+
+    <section class="info-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>TIMEZONE CONVERTER</span>
+
+          <h2>
+            ما هو محول المناطق الزمنية؟
+          </h2>
+
+          <p>
+            أداة عملية لتحويل الوقت بين مختلف المناطق الزمنية
+            حول العالم دون الحاجة إلى حساب فروق التوقيت يدوياً.
+          </p>
+
+        </div>
+
+
+        <div class="info-grid">
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-earth-americas"></i>
+            </div>
+
+            <h3>
+              جميع المناطق الزمنية
+            </h3>
+
+            <p>
+              تعرض الأداة المناطق الزمنية العالمية المتوفرة
+              في بيئة المتصفح، بما في ذلك مناطق أفريقيا وأمريكا
+              وآسيا وأوروبا وأستراليا والمحيط الهادئ.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-arrows-rotate"></i>
+            </div>
+
+            <h3>
+              تحويل سريع
+            </h3>
+
+            <p>
+              اختر المنطقة الأصلية والمستهدفة واحصل على الوقت
+              المقابل فوراً مع مراعاة قواعد التوقيت الصيفي.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-laptop-code"></i>
+            </div>
+
+            <h3>
+              يعمل داخل المتصفح
+            </h3>
+
+            <p>
+              لا تحتاج إلى إرسال بياناتك إلى خادم خارجي.
+              يتم إجراء الحسابات محلياً باستخدام JavaScript.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         HOW TO USE
+    ========================== -->
+
+    <section class="how-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>HOW IT WORKS</span>
+
+          <h2>
+            كيفية استخدام Timezone Converter
+          </h2>
+
+        </div>
+
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">
+              1
+            </div>
+
+            <div>
+
+              <h3>
+                اختر التاريخ والوقت
+              </h3>
+
+              <p>
+                حدد التاريخ والوقت الذي تريد تحويله.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              2
+            </div>
+
+            <div>
+
+              <h3>
+                اختر المنطقة الأصلية
+              </h3>
+
+              <p>
+                حدد المنطقة الزمنية التي ينتمي إليها الوقت
+                الذي أدخلته.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              3
+            </div>
+
+            <div>
+
+              <h3>
+                اختر المنطقة المستهدفة
+              </h3>
+
+              <p>
+                اختر المنطقة التي تريد معرفة الوقت المقابل فيها.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              4
+            </div>
+
+            <div>
+
+              <h3>
+                احصل على النتيجة
+              </h3>
+
+              <p>
+                اضغط على تحويل لعرض الوقت الجديد مع UTC
+                وISO 8601 وفارق التوقيت.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         FAQ
+    ========================== -->
+
+    <section class="faq-section">
+
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>FAQ</span>
+
+          <h2>
+            الأسئلة الشائعة
+          </h2>
+
+        </div>
+
+
+        <div class="faq-list">
+
+          {
+            faqs.map((faq) => (
+              <details>
+
+                <summary>
+
+                  <span>
+                    {faq.q}
+                  </span>
+
+                  <i class="fa-solid fa-chevron-down"></i>
+
+                </summary>
+
+                <p>
+                  {faq.a}
+                </p>
+
+              </details>
+            ))
           }
 
-          syncTheme();
+        </div>
 
-          window.addEventListener("themeChange", syncTheme);
+      </div>
 
-          document.addEventListener("click", (event) => {
-            const button = event.target.closest("#theme-btn");
+    </section>
 
-            if (button) {
-              setTimeout(syncTheme, 0);
+  </main>
+
+
+  <Footer />
+
+
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
+
+  <script is:inline>
+    (() => {
+
+      const dateInput = document.getElementById("dateInput");
+      const fromZone = document.getElementById("fromZone");
+      const toZone = document.getElementById("toZone");
+
+      const nowBtn = document.getElementById("nowBtn");
+      const convertBtn = document.getElementById("convertBtn");
+      const clearBtn = document.getElementById("clearBtn");
+      const copyBtn = document.getElementById("copyBtn");
+      const swapBtn = document.getElementById("swapBtn");
+
+      const resultTime = document.getElementById("resultTime");
+      const resultDate = document.getElementById("resultDate");
+
+      const utcResult = document.getElementById("utcResult");
+      const isoResult = document.getElementById("isoResult");
+      const zoneResult = document.getElementById("zoneResult");
+
+      const zoneCount = document.getElementById("zoneCount");
+      const offsetResult = document.getElementById("offsetResult");
+      const statDate = document.getElementById("statDate");
+      const statStatus = document.getElementById("statStatus");
+
+      const statusLine = document.getElementById("statusLine");
+      const inputStatus = document.getElementById("inputStatus");
+
+      /*
+       * ==========================================
+       * TIMEZONE DATABASE
+       * ==========================================
+       *
+       * Intl.supportedValuesOf('timeZone')
+       * يوفر المناطق الزمنية المدعومة في المتصفح.
+       */
+
+      function getTimeZones() {
+
+        try {
+
+          if (
+            typeof Intl !== "undefined" &&
+            typeof Intl.supportedValuesOf === "function"
+          ) {
+
+            const zones = Intl.supportedValuesOf("timeZone");
+
+            if (Array.isArray(zones) && zones.length > 0) {
+              return zones;
+            }
+
+          }
+
+        } catch {}
+
+        /*
+         * Fallback للمتصفحات القديمة
+         */
+        return [
+          "UTC",
+
+          "Africa/Casablanca",
+          "Africa/Cairo",
+          "Africa/Johannesburg",
+          "Africa/Lagos",
+          "Africa/Nairobi",
+          "Africa/Tunis",
+          "Africa/Algiers",
+
+          "America/New_York",
+          "America/Chicago",
+          "America/Denver",
+          "America/Los_Angeles",
+          "America/Toronto",
+          "America/Vancouver",
+          "America/Mexico_City",
+          "America/Sao_Paulo",
+          "America/Argentina/Buenos_Aires",
+          "America/Bogota",
+          "America/Lima",
+          "America/Santiago",
+
+          "Asia/Dubai",
+          "Asia/Riyadh",
+          "Asia/Qatar",
+          "Asia/Kuwait",
+          "Asia/Bahrain",
+          "Asia/Baghdad",
+          "Asia/Tehran",
+          "Asia/Jerusalem",
+          "Asia/Beirut",
+          "Asia/Amman",
+          "Asia/Damascus",
+          "Asia/Karachi",
+          "Asia/Kolkata",
+          "Asia/Dhaka",
+          "Asia/Bangkok",
+          "Asia/Singapore",
+          "Asia/Kuala_Lumpur",
+          "Asia/Shanghai",
+          "Asia/Hong_Kong",
+          "Asia/Tokyo",
+          "Asia/Seoul",
+
+          "Europe/London",
+          "Europe/Paris",
+          "Europe/Madrid",
+          "Europe/Rome",
+          "Europe/Berlin",
+          "Europe/Amsterdam",
+          "Europe/Brussels",
+          "Europe/Zurich",
+          "Europe/Vienna",
+          "Europe/Prague",
+          "Europe/Warsaw",
+          "Europe/Athens",
+          "Europe/Istanbul",
+          "Europe/Moscow",
+
+          "Australia/Sydney",
+          "Australia/Melbourne",
+          "Australia/Brisbane",
+          "Australia/Perth",
+
+          "Pacific/Auckland",
+          "Pacific/Fiji",
+          "Pacific/Honolulu",
+          "Pacific/Guam",
+
+          "Indian/Maldives",
+          "Indian/Mauritius",
+
+          "Atlantic/Reykjavik",
+          "Atlantic/Azores",
+
+          "Etc/GMT",
+          "Etc/GMT+1",
+          "Etc/GMT+2",
+          "Etc/GMT+3",
+          "Etc/GMT-1",
+          "Etc/GMT-2",
+          "Etc/GMT-3"
+        ];
+
+      }
+
+
+      /*
+       * ==========================================
+       * TIMEZONE LABEL
+       * ==========================================
+       */
+
+      function getZoneLabel(zone) {
+
+        const parts = zone.split("/");
+
+        if (parts.length === 1) {
+          return zone;
+        }
+
+        const region = parts[0];
+        const city = parts
+          .slice(1)
+          .join(" / ")
+          .replace(/_/g, " ");
+
+        return `${city} — ${region}`;
+      }
+
+
+      /*
+       * ==========================================
+       * POPULATE TIMEZONES
+       * ==========================================
+       */
+
+      function populateTimeZones() {
+
+        const zones = getTimeZones();
+
+        fromZone.innerHTML = "";
+        toZone.innerHTML = "";
+
+        const fragmentFrom = document.createDocumentFragment();
+        const fragmentTo = document.createDocumentFragment();
+
+        zones.forEach((zone) => {
+
+          const option1 = document.createElement("option");
+
+          option1.value = zone;
+          option1.textContent = getZoneLabel(zone);
+
+          const option2 = document.createElement("option");
+
+          option2.value = zone;
+          option2.textContent = getZoneLabel(zone);
+
+          fragmentFrom.appendChild(option1);
+          fragmentTo.appendChild(option2);
+
+        });
+
+        fromZone.appendChild(fragmentFrom);
+        toZone.appendChild(fragmentTo);
+
+        /*
+         * المغرب كمنطقة افتراضية
+         */
+        const defaultZone = "Africa/Casablanca";
+
+        if (zones.includes(defaultZone)) {
+          fromZone.value = defaultZone;
+        } else {
+          fromZone.value = zones.includes("UTC")
+            ? "UTC"
+            : zones[0];
+        }
+
+        /*
+         * لندن كمنطقة مستهدفة افتراضية
+         */
+        const targetZone = "Europe/London";
+
+        if (zones.includes(targetZone)) {
+          toZone.value = targetZone;
+        } else {
+          toZone.value = zones.includes("UTC")
+            ? "UTC"
+            : zones[0];
+        }
+
+        zoneCount.textContent = zones.length.toLocaleString("en-US");
+      }
+
+
+      /*
+       * ==========================================
+       * FORMAT DATETIME LOCAL
+       * ==========================================
+       */
+
+      function formatDateInput(date) {
+
+        const year = date.getFullYear();
+
+        const month = String(
+          date.getMonth() + 1
+        ).padStart(2, "0");
+
+        const day = String(
+          date.getDate()
+        ).padStart(2, "0");
+
+        const hours = String(
+          date.getHours()
+        ).padStart(2, "0");
+
+        const minutes = String(
+          date.getMinutes()
+        ).padStart(2, "0");
+
+        return `${year}-${month}-${day}T${hours}:${minutes}`;
+      }
+
+
+      /*
+       * ==========================================
+       * CURRENT TIME
+       * ==========================================
+       */
+
+      function setNow() {
+
+        const now = new Date();
+
+        dateInput.value = formatDateInput(now);
+
+        inputStatus.textContent = "الوقت الحالي";
+
+        convertTime();
+
+      }
+
+
+      /*
+       * ==========================================
+       * PARSE INPUT IN SOURCE TIMEZONE
+       * ==========================================
+       */
+
+      function parseInputAsZone(value, timeZone) {
+
+        const match = value.match(
+          /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/
+        );
+
+        if (!match) {
+          return null;
+        }
+
+        const year = Number(match[1]);
+        const month = Number(match[2]);
+        const day = Number(match[3]);
+        const hour = Number(match[4]);
+        const minute = Number(match[5]);
+
+        /*
+         * تقدير أولي للوقت
+         */
+        let timestamp =
+          Date.UTC(
+            year,
+            month - 1,
+            day,
+            hour,
+            minute
+          );
+
+        /*
+         * حساب offset للمنطقة الزمنية
+         */
+        for (let i = 0; i < 3; i++) {
+
+          const date = new Date(timestamp);
+
+          const formatter = new Intl.DateTimeFormat(
+            "en-US",
+            {
+              timeZone,
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              hour: "2-digit",
+              minute: "2-digit",
+              hourCycle: "h23"
+            }
+          );
+
+          const parts = formatter.formatToParts(date);
+
+          const values = {};
+
+          parts.forEach((part) => {
+            if (part.type !== "literal") {
+              values[part.type] = Number(part.value);
             }
           });
-        } catch {}
-      })();
-    </script>
 
-    <style>
-      :root {
-        --bg: #f4f7fb;
-        --surface: #ffffff;
-        --surface-2: #f8fafc;
-        --border: #e2e8f0;
+          const asUTC =
+            Date.UTC(
+              values.year,
+              values.month - 1,
+              values.day,
+              values.hour,
+              values.minute
+            );
 
-        --text: #172033;
-        --muted: #6b7280;
+          const desiredUTC =
+            Date.UTC(
+              year,
+              month - 1,
+              day,
+              hour,
+              minute
+            );
 
-        --primary: #2563eb;
-        --primary-2: #06b6d4;
-        --primary-soft: rgba(37, 99, 235, 0.1);
+          const difference =
+            desiredUTC - asUTC;
 
-        --success: #16a34a;
-        --success-soft: rgba(22, 163, 74, 0.1);
+          timestamp += difference;
+        }
 
-        --warning: #d97706;
-        --warning-soft: rgba(217, 119, 6, 0.1);
-
-        --shadow: 0 20px 55px rgba(15, 23, 42, 0.08);
+        return new Date(timestamp);
       }
 
-      html.dark-mode {
-        --bg: #070b12;
-        --surface: #101722;
-        --surface-2: #151d29;
-        --border: #263244;
 
-        --text: #edf3fb;
-        --muted: #8e9aac;
+      /*
+       * ==========================================
+       * FORMAT TIME IN TARGET ZONE
+       * ==========================================
+       */
 
-        --primary: #60a5fa;
-        --primary-2: #22d3ee;
-        --primary-soft: rgba(96, 165, 250, 0.12);
+      function formatInZone(date, timeZone) {
 
-        --success: #22c55e;
-        --success-soft: rgba(34, 197, 94, 0.1);
+        return new Intl.DateTimeFormat(
+          "ar-MA",
+          {
+            timeZone,
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hourCycle: "h23"
+          }
+        ).format(date);
 
-        --warning: #f59e0b;
-        --warning-soft: rgba(245, 158, 11, 0.1);
-
-        --shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
       }
 
-      * {
-        box-sizing: border-box;
+
+      /*
+       * ==========================================
+       * GET OFFSET
+       * ==========================================
+       */
+
+      function getOffset(date, timeZone) {
+
+        const parts = new Intl.DateTimeFormat(
+          "en-US",
+          {
+            timeZone,
+            timeZoneName: "longOffset",
+            hour: "2-digit"
+          }
+        ).formatToParts(date);
+
+        const offsetPart = parts.find(
+          part => part.type === "timeZoneName"
+        );
+
+        if (!offsetPart) {
+          return "UTC";
+        }
+
+        return offsetPart.value
+          .replace("GMT", "UTC");
       }
 
-      html {
-        scroll-behavior: smooth;
-      }
 
-      body {
-        margin: 0;
-        background:
-          radial-gradient(
-            circle at 80% 0%,
-            var(--primary-soft),
-            transparent 28%
-          ),
-          var(--bg);
-        color: var(--text);
-        font-family: "Cairo", sans-serif;
-        transition:
-          background 0.25s ease,
-          color 0.25s ease;
-      }
+      /*
+       * ==========================================
+       * CONVERT
+       * ==========================================
+       */
 
-      button,
-      input,
-      select {
-        font: inherit;
-      }
+      function convertTime() {
 
-      .container {
-        width: min(1120px, calc(100% - 32px));
-        margin: auto;
-      }
+        if (!dateInput.value) {
 
-      /* HERO */
-
-      .hero {
-        position: relative;
-        overflow: hidden;
-        padding: 52px 0 46px;
-        border-bottom: 1px solid var(--border);
-      }
-
-      .hero::before {
-        content: "";
-        position: absolute;
-        width: 330px;
-        height: 330px;
-        left: -160px;
-        top: -180px;
-        border-radius: 50%;
-        background: var(--primary-soft);
-      }
-
-      .breadcrumb {
-        display: flex;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-bottom: 32px;
-        color: var(--muted);
-        font-size: 12px;
-      }
-
-      .breadcrumb a {
-        color: var(--muted);
-        text-decoration: none;
-        transition: 0.2s;
-      }
-
-      .breadcrumb a:hover {
-        color: var(--primary);
-      }
-
-      .breadcrumb i {
-        font-size: 9px;
-      }
-
-      .hero-content {
-        display: flex;
-        align-items: center;
-        gap: 28px;
-      }
-
-      .hero-icon {
-        width: 112px;
-        height: 112px;
-        flex: 0 0 112px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 6px;
-        border-radius: 32px;
-        color: #fff;
-        background:
-          linear-gradient(
-            145deg,
-            var(--primary),
-            var(--primary-2)
+          showStatus(
+            "يرجى اختيار التاريخ والوقت أولاً.",
+            "warning"
           );
-        box-shadow:
-          0 20px 40px rgba(37, 99, 235, 0.25),
-          inset 0 1px 0 rgba(255, 255, 255, 0.25);
+
+          return;
+        }
+
+        const date = parseInputAsZone(
+          dateInput.value,
+          fromZone.value
+        );
+
+        if (!date || Number.isNaN(date.getTime())) {
+
+          showStatus(
+            "تعذر قراءة التاريخ والوقت.",
+            "error"
+          );
+
+          return;
+        }
+
+        const formatted =
+          formatInZone(
+            date,
+            toZone.value
+          );
+
+        const utc =
+          date.toISOString();
+
+        const offset =
+          getOffset(
+            date,
+            toZone.value
+          );
+
+        resultTime.textContent =
+          formatted;
+
+        resultDate.textContent =
+          `${getZoneLabel(fromZone.value)} → ${getZoneLabel(toZone.value)}`;
+
+        utcResult.textContent =
+          utc;
+
+        isoResult.textContent =
+          utc;
+
+        zoneResult.textContent =
+          toZone.value;
+
+        offsetResult.textContent =
+          offset;
+
+        statDate.textContent =
+          new Intl.DateTimeFormat(
+            "en-US",
+            {
+              timeZone: toZone.value,
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit"
+            }
+          ).format(date);
+
+        statStatus.textContent =
+          "تم التحويل";
+
+        inputStatus.textContent =
+          "تم التحويل بنجاح";
+
+        showStatus(
+          "تم تحويل الوقت بنجاح.",
+          "success"
+        );
+
       }
 
-      .hero-icon i {
-        font-size: 37px;
+
+      /*
+       * ==========================================
+       * STATUS
+       * ==========================================
+       */
+
+      function showStatus(message, type = "success") {
+
+        const icon =
+          type === "error"
+            ? "fa-circle-xmark"
+            : type === "warning"
+              ? "fa-triangle-exclamation"
+              : "fa-circle-check";
+
+        statusLine.innerHTML = `
+          <i class="fa-solid ${icon}"></i>
+          <span>${message}</span>
+        `;
+
       }
 
-      .hero-icon span {
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10px;
-        opacity: 0.9;
+
+      /*
+       * ==========================================
+       * CLEAR
+       * ==========================================
+       */
+
+      function clearAll() {
+
+        dateInput.value = "";
+
+        resultTime.textContent = "—";
+
+        resultDate.textContent =
+          "اختر الوقت والمناطق الزمنية ثم اضغط تحويل.";
+
+        utcResult.textContent = "—";
+        isoResult.textContent = "—";
+        zoneResult.textContent = "—";
+        offsetResult.textContent = "—";
+        statDate.textContent = "—";
+
+        statStatus.textContent = "جاهز";
+
+        inputStatus.textContent =
+          "اختر التاريخ والوقت";
+
+        showStatus(
+          "تم مسح البيانات.",
+          "success"
+        );
+
       }
 
-      .hero-text {
-        min-width: 0;
+
+      /*
+       * ==========================================
+       * SWAP TIMEZONES
+       * ==========================================
+       */
+
+      function swapZones() {
+
+        const currentFrom =
+          fromZone.value;
+
+        fromZone.value =
+          toZone.value;
+
+        toZone.value =
+          currentFrom;
+
+        if (dateInput.value) {
+          convertTime();
+        }
+
       }
 
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-        padding: 7px 12px;
-        border-radius: 999px;
-        background: var(--primary-soft);
-        color: var(--primary);
-        font-size: 11px;
-        font-weight: 700;
-        margin-bottom: 12px;
+
+      /*
+       * ==========================================
+       * COPY RESULT
+       * ==========================================
+       */
+
+      async function copyResult() {
+
+        if (
+          !resultTime.textContent ||
+          resultTime.textContent === "—"
+        ) {
+
+          showStatus(
+            "لا توجد نتيجة لنسخها.",
+            "warning"
+          );
+
+          return;
+        }
+
+        const text = [
+          `الوقت: ${resultTime.textContent}`,
+          `المنطقة: ${toZone.value}`,
+          `UTC: ${utcResult.textContent}`,
+          `ISO 8601: ${isoResult.textContent}`
+        ].join("\n");
+
+        try {
+
+          await navigator.clipboard.writeText(text);
+
+          showStatus(
+            "تم نسخ النتيجة بنجاح.",
+            "success"
+          );
+
+        } catch {
+
+          const textarea =
+            document.createElement("textarea");
+
+          textarea.value = text;
+
+          document.body.appendChild(textarea);
+
+          textarea.select();
+
+          document.execCommand("copy");
+
+          textarea.remove();
+
+          showStatus(
+            "تم نسخ النتيجة.",
+            "success"
+          );
+
+        }
+
       }
 
-      h1 {
-        margin: 0 0 9px;
-        font-size: clamp(30px, 5vw, 45px);
-        line-height: 1.15;
-        font-weight: 800;
-        letter-spacing: -1px;
+
+      /*
+       * ==========================================
+       * EVENTS
+       * ==========================================
+       */
+
+      nowBtn.addEventListener(
+        "click",
+        setNow
+      );
+
+      convertBtn.addEventListener(
+        "click",
+        convertTime
+      );
+
+      clearBtn.addEventListener(
+        "click",
+        clearAll
+      );
+
+      swapBtn.addEventListener(
+        "click",
+        swapZones
+      );
+
+      copyBtn.addEventListener(
+        "click",
+        copyResult
+      );
+
+      dateInput.addEventListener(
+        "change",
+        () => {
+          inputStatus.textContent =
+            "تم تغيير الوقت";
+        }
+      );
+
+
+      fromZone.addEventListener(
+        "change",
+        () => {
+
+          if (dateInput.value) {
+            convertTime();
+          }
+
+        }
+      );
+
+
+      toZone.addEventListener(
+        "change",
+        () => {
+
+          if (dateInput.value) {
+            convertTime();
+          }
+
+        }
+      );
+
+
+      dateInput.addEventListener(
+        "keydown",
+        (event) => {
+
+          if (
+            event.key === "Enter" &&
+            (event.ctrlKey || event.metaKey)
+          ) {
+
+            convertTime();
+
+          }
+
+        }
+      );
+
+
+      /*
+       * ==========================================
+       * THEME SYNC
+       * ==========================================
+       */
+
+      function syncTheme() {
+
+        try {
+
+          const saved =
+            localStorage.getItem("theme");
+
+          if (saved === "dark") {
+
+            document.documentElement
+              .classList.add("dark-mode");
+
+          } else {
+
+            document.documentElement
+              .classList.remove("dark-mode");
+
+          }
+
+        } catch {}
+
       }
 
-      .hero-text > p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 15px;
-        line-height: 1.9;
-      }
+      syncTheme();
 
-      .tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 17px;
-      }
+      window.addEventListener(
+        "themeChange",
+        syncTheme
+      );
 
-      .tags span {
-        padding: 6px 10px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        background: var(--surface);
-        color: var(--muted);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10px;
-      }
+      document.addEventListener(
+        "click",
+        (event) => {
 
-      /* TOOL */
+          const button =
+            event.target.closest("#theme-btn");
 
-      .tool-section {
-        padding: 45px 0 25px;
-      }
+          if (button) {
 
-      .converter-card {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 28px;
-        overflow: hidden;
-        box-shadow: var(--shadow);
-      }
+            setTimeout(
+              syncTheme,
+              0
+            );
 
-      .tool-top {
-        min-height: 65px;
-        padding: 0 23px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        background: var(--surface-2);
-        border-bottom: 1px solid var(--border);
-      }
+          }
 
-      .tool-name {
-        display: flex;
-        align-items: center;
-        gap: 9px;
-        font-size: 14px;
-        font-weight: 700;
-      }
+        }
+      );
 
-      .tool-name i {
-        color: var(--primary);
-      }
 
-      .local-badge {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        color: var(--success);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10px;
-      }
+      /*
+       * ==========================================
+       * INITIALIZE
+       * ==========================================
+       */
 
-      .workspace {
-        padding: 25px;
-      }
+      populateTimeZones();
 
-      .time-input {
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        overflow: hidden;
-        background: var(--surface-2);
-      }
+      setNow();
 
-      .field-head {
-        min-height: 48px;
-        padding: 0 16px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 1px solid var(--border);
-        font-size: 12px;
-        font-weight: 700;
-      }
+    })();
+  </script>
 
-      .field-head div {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
 
-      .field-head i {
-        color: var(--primary);
-      }
+  <!-- =========================
+       STYLES
+  ========================== -->
 
-      .field-head span {
-        color: var(--muted);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 9px;
-      }
+  <style>
 
-      .input-body {
-        padding: 18px;
-      }
+    :root {
+      --bg: #f5f8fc;
+      --surface: #ffffff;
+      --surface-2: #f8fbff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
 
-      .datetime-input {
-        width: 100%;
-        height: 58px;
-        padding: 0 14px;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        outline: none;
-        background: var(--surface);
-        color: var(--text);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 16px;
-        direction: ltr;
-        text-align: left;
-      }
+      --primary: #2563eb;
+      --primary-2: #06b6d4;
 
-      .datetime-input:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 0 3px var(--primary-soft);
-      }
+      --primary-soft: #eff6ff;
 
-      .zones {
-        display: grid;
-        grid-template-columns: 1fr 60px 1fr;
-        align-items: end;
-        gap: 15px;
-        margin-top: 18px;
-      }
+      --success: #16a34a;
+      --warning: #d97706;
+      --danger: #dc2626;
 
-      .zone-field label {
-        display: block;
-        margin-bottom: 8px;
-        color: var(--muted);
-        font-size: 11px;
-        font-weight: 700;
-      }
+      --shadow:
+        0 20px 50px rgba(15, 23, 42, 0.08);
 
-      .zone-field select {
-        width: 100%;
-        height: 47px;
-        padding: 0 12px;
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        outline: none;
-        background: var(--surface);
-        color: var(--text);
-        cursor: pointer;
-      }
+      --radius: 22px;
+    }
 
-      .zone-field select:focus {
-        border-color: var(--primary);
-      }
 
-      .zone-arrow {
-        height: 47px;
-        display: grid;
-        place-items: center;
-        color: var(--primary);
-        font-size: 19px;
-      }
+    html.dark-mode {
 
-      .zone-arrow i {
-        transition: 0.25s;
-      }
+      --bg: #070b14;
+      --surface: #0d1422;
+      --surface-2: #111b2d;
+      --border: #243247;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
 
-      .zone-arrow:hover i {
-        transform: translateX(-5px);
-      }
+      --primary: #3b82f6;
+      --primary-2: #22d3ee;
 
-      /* RESULTS */
+      --primary-soft: #10213d;
 
-      .result-area {
-        margin-top: 20px;
-        display: grid;
-        grid-template-columns: 1.2fr 1fr 1fr;
-        gap: 12px;
-      }
+      --shadow:
+        0 25px 60px rgba(0, 0, 0, 0.35);
+    }
 
-      .result-card {
-        padding: 17px;
-        border: 1px solid var(--border);
-        border-radius: 17px;
-        background: var(--surface-2);
-      }
 
-      .result-card.main {
-        border-color: rgba(37, 99, 235, 0.3);
-        background: var(--primary-soft);
-      }
+    * {
+      box-sizing: border-box;
+    }
 
-      .result-label {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 8px;
-        margin-bottom: 10px;
-        color: var(--muted);
-        font-size: 10px;
-      }
 
-      .result-label div {
-        display: flex;
-        align-items: center;
-        gap: 7px;
-      }
+    html {
+      scroll-behavior: smooth;
+    }
 
-      .result-label i {
-        color: var(--primary);
-      }
 
-      .copy-btn {
-        border: 0;
-        background: transparent;
-        color: var(--muted);
-        cursor: pointer;
-        font-size: 10px;
-      }
+    body {
 
-      .copy-btn:hover {
-        color: var(--primary);
-      }
+      margin: 0;
 
-      .result-value {
-        direction: ltr;
-        text-align: left;
-        word-break: break-word;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 14px;
-        line-height: 1.8;
-      }
+      background:
+        radial-gradient(
+          circle at 10% 0%,
+          rgba(37, 99, 235, 0.06),
+          transparent 35%
+        ),
+        var(--bg);
 
-      .main .result-value {
-        color: var(--primary);
-        font-size: 17px;
-        font-weight: 600;
-      }
+      color: var(--text);
 
-      .result-zone {
-        margin-top: 5px;
-        color: var(--muted);
-        font-size: 10px;
-      }
+      font-family:
+        "Cairo",
+        sans-serif;
 
-      /* ACTIONS */
+      transition:
+        background 0.25s ease,
+        color 0.25s ease;
 
-      .actions {
-        margin-top: 20px;
-        padding-top: 20px;
-        border-top: 1px solid var(--border);
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 12px;
-      }
+    }
 
-      .action-group {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 9px;
-      }
 
-      .btn {
-        min-height: 43px;
-        padding: 0 16px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        border-radius: 11px;
-        cursor: pointer;
-        font-size: 12px;
-        font-weight: 700;
-        transition: 0.2s;
-      }
+    button,
+    input,
+    select {
+      font-family: inherit;
+    }
 
-      .btn:hover {
-        transform: translateY(-2px);
-      }
 
-      .btn-primary {
-        border: 0;
-        color: #fff;
-        background: linear-gradient(
+    .container {
+
+      width: min(
+        1180px,
+        calc(100% - 32px)
+      );
+
+      margin-inline: auto;
+
+    }
+
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero {
+
+      position: relative;
+
+      padding:
+        45px 0 70px;
+
+      overflow: hidden;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(37, 99, 235, 0.08),
+          rgba(6, 182, 212, 0.04)
+        );
+
+      border-bottom:
+        1px solid var(--border);
+
+    }
+
+
+    .hero::before {
+
+      content: "";
+
+      position: absolute;
+
+      width: 400px;
+      height: 400px;
+
+      border-radius: 50%;
+
+      background:
+        rgba(37, 99, 235, 0.07);
+
+      filter: blur(70px);
+
+      top: -200px;
+      left: -100px;
+
+    }
+
+
+    .breadcrumb {
+
+      display: flex;
+
+      align-items: center;
+
+      flex-wrap: wrap;
+
+      gap: 10px;
+
+      margin-bottom: 35px;
+
+      color: var(--muted);
+
+      font-size: 14px;
+
+    }
+
+
+    .breadcrumb a {
+
+      color: var(--muted);
+
+      text-decoration: none;
+
+      transition: 0.2s;
+
+    }
+
+
+    .breadcrumb a:hover {
+      color: var(--primary);
+    }
+
+
+    .breadcrumb i {
+      font-size: 10px;
+    }
+
+
+    .breadcrumb .separator {
+      opacity: 0.5;
+    }
+
+
+    .hero-content {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 28px;
+
+    }
+
+
+    .hero-icon {
+
+      width: 100px;
+      height: 100px;
+
+      flex: 0 0 100px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 28px;
+
+      color: white;
+
+      font-size: 42px;
+
+      background:
+        linear-gradient(
+          135deg,
+          #2563eb,
+          #06b6d4
+        );
+
+      box-shadow:
+        0 18px 45px
+        rgba(37, 99, 235, 0.28);
+
+    }
+
+
+    .hero-text {
+      min-width: 0;
+    }
+
+
+    .badge {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      padding:
+        7px 13px;
+
+      border-radius: 999px;
+
+      color: var(--primary);
+
+      background: var(--primary-soft);
+
+      border:
+        1px solid
+        rgba(37, 99, 235, 0.12);
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      margin-bottom: 10px;
+
+    }
+
+
+    .hero h1 {
+
+      margin:
+        0 0 8px;
+
+      font-size:
+        clamp(30px, 5vw, 48px);
+
+      line-height: 1.2;
+
+      letter-spacing: -1px;
+
+    }
+
+
+    .hero p {
+
+      margin: 0;
+
+      max-width: 720px;
+
+      color: var(--muted);
+
+      font-size: 17px;
+
+      line-height: 1.9;
+
+    }
+
+
+    .tags {
+
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+      margin-top: 18px;
+
+    }
+
+
+    .tags span {
+
+      padding:
+        6px 11px;
+
+      border-radius: 8px;
+
+      background: var(--surface);
+
+      border:
+        1px solid var(--border);
+
+      color: var(--muted);
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size: 11px;
+
+    }
+
+
+    /* =========================
+       TOOL
+    ========================== */
+
+    .tool-section {
+      padding: 60px 0;
+    }
+
+
+    .converter-card {
+
+      background: var(--surface);
+
+      border:
+        1px solid var(--border);
+
+      border-radius:
+        var(--radius);
+
+      overflow: hidden;
+
+      box-shadow: var(--shadow);
+
+    }
+
+
+    .card-topbar {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 15px;
+
+      min-height: 64px;
+
+      padding:
+        0 22px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      background: var(--surface-2);
+
+    }
+
+
+    .window-dots {
+
+      display: flex;
+
+      gap: 6px;
+
+    }
+
+
+    .window-dots span {
+
+      width: 10px;
+      height: 10px;
+
+      border-radius: 50%;
+
+      background: var(--border);
+
+    }
+
+
+    .tool-name {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 9px;
+
+      font-weight: 700;
+
+    }
+
+
+    .tool-name i {
+      color: var(--primary);
+    }
+
+
+    .secure {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      color: var(--success);
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+    }
+
+
+    /* ACTION BAR */
+
+    .actionbar {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 18px;
+
+      border-bottom:
+        1px solid var(--border);
+
+      background: var(--surface);
+
+    }
+
+
+    .action-group {
+
+      display: flex;
+
+      gap: 9px;
+
+      flex-wrap: wrap;
+
+    }
+
+
+    .btn {
+
+      border: 0;
+
+      border-radius: 11px;
+
+      padding:
+        10px 16px;
+
+      display: inline-flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 8px;
+
+      cursor: pointer;
+
+      font-weight: 700;
+
+      font-size: 13px;
+
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+
+    }
+
+
+    .btn:hover {
+
+      transform:
+        translateY(-2px);
+
+    }
+
+
+    .btn-primary {
+
+      color: white;
+
+      background:
+        linear-gradient(
           135deg,
           var(--primary),
           var(--primary-2)
         );
-        box-shadow: 0 8px 22px rgba(37, 99, 235, 0.2);
+
+      box-shadow:
+        0 8px 20px
+        rgba(37, 99, 235, 0.2);
+
+    }
+
+
+    .btn-secondary {
+
+      color: var(--text);
+
+      background: var(--surface-2);
+
+      border:
+        1px solid var(--border);
+
+    }
+
+
+    /* BODY */
+
+    .converter-body {
+
+      padding: 25px;
+
+    }
+
+
+    .field-block {
+      width: 100%;
+    }
+
+
+    .field-block label {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 10px;
+
+      margin-bottom: 9px;
+
+      color: var(--text);
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+    }
+
+
+    .field-block label span {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+    }
+
+
+    .field-block label i {
+      color: var(--primary);
+    }
+
+
+    .field-block label small {
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+      font-weight: 500;
+
+    }
+
+
+    input[type="datetime-local"],
+    select {
+
+      width: 100%;
+
+      height: 50px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 12px;
+
+      padding:
+        0 14px;
+
+      background: var(--surface-2);
+
+      color: var(--text);
+
+      outline: none;
+
+      font-size: 13px;
+
+      transition:
+        border-color 0.2s,
+        box-shadow 0.2s;
+
+    }
+
+
+    input[type="datetime-local"]:focus,
+    select:focus {
+
+      border-color: var(--primary);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(37, 99, 235, 0.1);
+
+    }
+
+
+    input[type="datetime-local"] {
+
+      direction: ltr;
+
+      text-align: left;
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+    }
+
+
+    .select-wrapper {
+
+      position: relative;
+
+    }
+
+
+    .select-wrapper select {
+
+      appearance: none;
+
+      padding-left: 40px;
+
+    }
+
+
+    .select-wrapper > i {
+
+      position: absolute;
+
+      left: 15px;
+
+      top: 50%;
+
+      transform:
+        translateY(-50%);
+
+      pointer-events: none;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+    }
+
+
+    .timezone-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        1fr
+        auto
+        1fr;
+
+      align-items: end;
+
+      gap: 15px;
+
+      margin-top: 25px;
+
+    }
+
+
+    .swap-wrapper {
+
+      padding-bottom: 4px;
+
+    }
+
+
+    #swapBtn {
+
+      width: 48px;
+      height: 48px;
+
+      border-radius: 50%;
+
+      border:
+        1px solid var(--border);
+
+      background: var(--surface-2);
+
+      color: var(--primary);
+
+      cursor: pointer;
+
+      transition:
+        transform 0.25s ease,
+        background 0.25s ease;
+
+    }
+
+
+    #swapBtn:hover {
+
+      transform:
+        rotate(180deg);
+
+      background:
+        var(--primary-soft);
+
+    }
+
+
+    /* RESULT */
+
+    .result-box {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 18px;
+
+      margin-top: 25px;
+
+      padding: 22px;
+
+      border:
+        1px solid
+        rgba(37, 99, 235, 0.18);
+
+      border-radius: 17px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--primary-soft),
+          var(--surface-2)
+        );
+
+    }
+
+
+    .result-icon {
+
+      width: 58px;
+      height: 58px;
+
+      flex: 0 0 58px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 16px;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-2)
+        );
+
+      font-size: 24px;
+
+    }
+
+
+    .result-content {
+      min-width: 0;
+    }
+
+
+    .result-label {
+
+      display: block;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      margin-bottom: 4px;
+
+    }
+
+
+    .result-content strong {
+
+      display: block;
+
+      font-size:
+        clamp(18px, 3vw, 26px);
+
+      line-height: 1.6;
+
+      word-break: break-word;
+
+    }
+
+
+    .result-content p {
+
+      margin: 5px 0 0;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+    }
+
+
+    /* TECHNICAL */
+
+    .technical-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 12px;
+
+      margin-top: 15px;
+
+    }
+
+
+    .technical-item {
+
+      padding: 15px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 13px;
+
+      background: var(--surface-2);
+
+      min-width: 0;
+
+    }
+
+
+    .technical-item span {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 7px;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+      margin-bottom: 8px;
+
+    }
+
+
+    .technical-item span i {
+      color: var(--primary);
+    }
+
+
+    .technical-item strong {
+
+      display: block;
+
+      color: var(--text);
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size: 11px;
+
+      word-break: break-all;
+
+    }
+
+
+    /* STATUS */
+
+    .status-line {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      margin-top: 16px;
+
+      color: var(--success);
+
+      font-size: 12px;
+
+      font-weight: 600;
+
+    }
+
+
+    /* STATS */
+
+    .stats-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 12px;
+
+      padding:
+        0 25px 25px;
+
+    }
+
+
+    .stat {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      padding: 15px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 14px;
+
+      background: var(--surface-2);
+
+    }
+
+
+    .stat-icon {
+
+      width: 42px;
+      height: 42px;
+
+      flex: 0 0 42px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 11px;
+
+      color: var(--primary);
+
+      background: var(--primary-soft);
+
+    }
+
+
+    .stat span {
+
+      display: block;
+
+      color: var(--muted);
+
+      font-size: 10px;
+
+      margin-bottom: 2px;
+
+    }
+
+
+    .stat strong {
+
+      display: block;
+
+      font-size: 15px;
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      word-break: break-word;
+
+    }
+
+
+    /* SECURITY */
+
+    .security-note {
+
+      display: flex;
+
+      align-items: flex-start;
+
+      gap: 14px;
+
+      margin:
+        0 25px 25px;
+
+      padding: 17px;
+
+      border-radius: 15px;
+
+      border:
+        1px solid
+        rgba(22, 163, 74, 0.15);
+
+      background:
+        rgba(22, 163, 74, 0.05);
+
+    }
+
+
+    .security-icon {
+
+      width: 40px;
+      height: 40px;
+
+      flex: 0 0 40px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 10px;
+
+      color: var(--success);
+
+      background:
+        rgba(22, 163, 74, 0.1);
+
+    }
+
+
+    .security-note strong {
+
+      display: block;
+
+      margin-bottom: 4px;
+
+      font-size: 13px;
+
+    }
+
+
+    .security-note p {
+
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.8;
+
+    }
+
+
+    /* =========================
+       INFO
+    ========================== */
+
+    .info-section {
+
+      padding:
+        70px 0;
+
+      background: var(--surface);
+
+      border-top:
+        1px solid var(--border);
+
+      border-bottom:
+        1px solid var(--border);
+
+    }
+
+
+    .section-heading {
+
+      max-width: 750px;
+
+      margin:
+        0 auto 35px;
+
+      text-align: center;
+
+    }
+
+
+    .section-heading > span {
+
+      color: var(--primary);
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+      letter-spacing: 1px;
+
+    }
+
+
+    .section-heading h2 {
+
+      margin:
+        7px 0 8px;
+
+      font-size:
+        clamp(24px, 4vw, 34px);
+
+    }
+
+
+    .section-heading p {
+
+      margin: 0;
+
+      color: var(--muted);
+
+      line-height: 1.9;
+
+      font-size: 14px;
+
+    }
+
+
+    .info-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 18px;
+
+    }
+
+
+    .info-card {
+
+      padding: 25px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 18px;
+
+      background: var(--surface-2);
+
+      transition:
+        transform 0.25s ease,
+        border-color 0.25s ease;
+
+    }
+
+
+    .info-card:hover {
+
+      transform:
+        translateY(-5px);
+
+      border-color:
+        rgba(37, 99, 235, 0.35);
+
+    }
+
+
+    .info-icon {
+
+      width: 50px;
+      height: 50px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 14px;
+
+      color: var(--primary);
+
+      background: var(--primary-soft);
+
+      font-size: 20px;
+
+      margin-bottom: 15px;
+
+    }
+
+
+    .info-card h3 {
+
+      margin:
+        0 0 7px;
+
+      font-size: 17px;
+
+    }
+
+
+    .info-card p {
+
+      margin: 0;
+
+      color: var(--muted);
+
+      line-height: 1.9;
+
+      font-size: 13px;
+
+    }
+
+
+    /* =========================
+       HOW TO
+    ========================== */
+
+    .how-section {
+
+      padding:
+        70px 0;
+
+    }
+
+
+    .steps {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap: 15px;
+
+    }
+
+
+    .step {
+
+      position: relative;
+
+      padding: 22px;
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 17px;
+
+      background: var(--surface);
+
+    }
+
+
+    .step-number {
+
+      width: 40px;
+      height: 40px;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 12px;
+
+      color: white;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-2)
+        );
+
+      font-weight: 800;
+
+      margin-bottom: 15px;
+
+    }
+
+
+    .step h3 {
+
+      margin:
+        0 0 7px;
+
+      font-size: 15px;
+
+    }
+
+
+    .step p {
+
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.8;
+
+    }
+
+
+    /* =========================
+       FAQ
+    ========================== */
+
+    .faq-section {
+
+      padding:
+        70px 0;
+
+      background: var(--surface);
+
+      border-top:
+        1px solid var(--border);
+
+    }
+
+
+    .faq-list {
+
+      max-width: 850px;
+
+      margin-inline: auto;
+
+      display: grid;
+
+      gap: 10px;
+
+    }
+
+
+    .faq-list details {
+
+      border:
+        1px solid var(--border);
+
+      border-radius: 14px;
+
+      background: var(--surface-2);
+
+      overflow: hidden;
+
+    }
+
+
+    .faq-list summary {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding:
+        17px 19px;
+
+      cursor: pointer;
+
+      list-style: none;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+    }
+
+
+    .faq-list summary::-webkit-details-marker {
+      display: none;
+    }
+
+
+    .faq-list summary i {
+
+      color: var(--primary);
+
+      transition:
+        transform 0.2s ease;
+
+    }
+
+
+    .faq-list details[open]
+    summary i {
+
+      transform:
+        rotate(180deg);
+
+    }
+
+
+    .faq-list details p {
+
+      margin: 0;
+
+      padding:
+        0 19px 18px;
+
+      color: var(--muted);
+
+      font-size: 12px;
+
+      line-height: 1.9;
+
+    }
+
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media (max-width: 900px) {
+
+      .info-grid,
+      .steps {
+
+        grid-template-columns:
+          repeat(2, 1fr);
+
       }
 
-      .btn-secondary {
-        border: 1px solid var(--border);
-        background: var(--surface-2);
-        color: var(--text);
+      .stats-grid {
+
+        grid-template-columns:
+          repeat(2, 1fr);
+
       }
 
-      /* STATUS */
+    }
 
-      .status {
-        margin-top: 17px;
-        padding: 12px 14px;
+
+    @media (max-width: 700px) {
+
+      .hero {
+
+        padding:
+          30px 0 50px;
+
+      }
+
+
+      .hero-content {
+
+        align-items: flex-start;
+
+        flex-direction: column;
+
+      }
+
+
+      .hero-icon {
+
+        width: 76px;
+        height: 76px;
+
+        flex-basis: 76px;
+
+        border-radius: 21px;
+
+        font-size: 30px;
+
+      }
+
+
+      .hero p {
+
+        font-size: 14px;
+
+      }
+
+
+      .actionbar {
+
+        align-items: stretch;
+
+        flex-direction: column;
+
+      }
+
+
+      .action-group {
+
+        width: 100%;
+
+      }
+
+
+      .action-group .btn {
+
+        flex: 1;
+
+      }
+
+
+      .timezone-grid {
+
+        grid-template-columns:
+          1fr;
+
+        align-items: stretch;
+
+      }
+
+
+      .swap-wrapper {
+
         display: flex;
-        align-items: center;
-        gap: 9px;
-        border-radius: 12px;
-        background: var(--success-soft);
-        color: var(--success);
-        font-size: 11px;
+
+        justify-content: center;
+
+        padding: 0;
+
       }
 
-      /* STATS */
 
-      .stats {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 11px;
-        margin-top: 17px;
+      #swapBtn {
+
+        transform: rotate(90deg);
+
       }
+
+
+      #swapBtn:hover {
+
+        transform:
+          rotate(270deg);
+
+      }
+
+
+      .technical-grid {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .result-box {
+
+        align-items: flex-start;
+
+      }
+
+
+      .info-grid,
+      .steps {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+    }
+
+
+    @media (max-width: 520px) {
+
+      .container {
+
+        width:
+          min(
+            100% - 20px,
+            1180px
+          );
+
+      }
+
+
+      .converter-body {
+
+        padding: 16px;
+
+      }
+
+
+      .stats-grid {
+
+        grid-template-columns:
+          1fr 1fr;
+
+        padding:
+          0 16px 16px;
+
+      }
+
 
       .stat {
-        padding: 15px;
-        border: 1px solid var(--border);
-        border-radius: 15px;
-        background: var(--surface-2);
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
       }
 
-      .stat-label {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        color: var(--muted);
-        font-size: 9px;
-        margin-bottom: 7px;
+
+      .security-note {
+
+        margin:
+          0 16px 16px;
+
       }
 
-      .stat-label i {
-        color: var(--primary);
+
+      .card-topbar {
+
+        padding:
+          0 15px;
+
       }
 
-      .stat strong {
-        display: block;
-        font-family: "JetBrains Mono", monospace;
-        font-size: 14px;
-        word-break: break-word;
-      }
 
-      /* INFO */
+      .window-dots {
 
-      .info-section,
-      .how-section,
-      .faq-section {
-        padding: 55px 0;
-      }
-
-      .section-heading {
-        max-width: 700px;
-        margin: 0 auto 30px;
-        text-align: center;
-      }
-
-      .section-heading > span {
-        color: var(--primary);
-        font-family: "JetBrains Mono", monospace;
-        font-size: 10px;
-        letter-spacing: 1px;
-      }
-
-      .section-heading h2 {
-        margin: 7px 0;
-        font-size: clamp(24px, 4vw, 32px);
-      }
-
-      .section-heading p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 13px;
-        line-height: 1.9;
-      }
-
-      .info-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 15px;
-      }
-
-      .info-card {
-        padding: 24px;
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        background: var(--surface);
-        transition: 0.2s;
-      }
-
-      .info-card:hover {
-        transform: translateY(-4px);
-        border-color: var(--primary);
-      }
-
-      .info-icon {
-        width: 48px;
-        height: 48px;
-        display: grid;
-        place-items: center;
-        border-radius: 14px;
-        background: var(--primary-soft);
-        color: var(--primary);
-        margin-bottom: 16px;
-      }
-
-      .info-card h3 {
-        margin: 0 0 8px;
-        font-size: 15px;
-      }
-
-      .info-card p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 11px;
-        line-height: 1.9;
-      }
-
-      /* STEPS */
-
-      .steps {
-        max-width: 900px;
-        margin: auto;
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-      }
-
-      .step {
-        padding: 23px;
-        border: 1px solid var(--border);
-        border-radius: 20px;
-        background: var(--surface);
-      }
-
-      .step-number {
-        width: 40px;
-        height: 40px;
-        display: grid;
-        place-items: center;
-        border-radius: 12px;
-        color: white;
-        background: var(--primary);
-        font-weight: 800;
-        margin-bottom: 17px;
-      }
-
-      .step h3 {
-        margin: 0 0 7px;
-        font-size: 14px;
-      }
-
-      .step p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 11px;
-        line-height: 1.9;
-      }
-
-      /* FAQ */
-
-      .faq-list {
-        max-width: 850px;
-        margin: auto;
-        display: grid;
-        gap: 9px;
-      }
-
-      details {
-        border: 1px solid var(--border);
-        border-radius: 15px;
-        background: var(--surface);
-        overflow: hidden;
-      }
-
-      summary {
-        list-style: none;
-        cursor: pointer;
-        padding: 17px 19px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        font-size: 12px;
-        font-weight: 700;
-      }
-
-      summary::-webkit-details-marker {
         display: none;
+
       }
 
-      summary i {
-        color: var(--primary);
-        transition: 0.2s;
+
+      .tool-name {
+
+        font-size: 12px;
+
       }
 
-      details[open] summary i {
-        transform: rotate(180deg);
+
+      .secure {
+
+        font-size: 10px;
+
       }
 
-      details p {
-        margin: 0;
-        padding: 0 19px 17px;
-        color: var(--muted);
-        font-size: 11px;
-        line-height: 1.9;
+
+      .result-box {
+
+        padding: 16px;
+
       }
 
-      @media (max-width: 850px) {
-        .result-area {
-          grid-template-columns: 1fr 1fr;
-        }
 
-        .result-card.main {
-          grid-column: 1 / -1;
-        }
+      .result-icon {
 
-        .info-grid,
-        .steps {
-          grid-template-columns: 1fr;
-        }
+        width: 45px;
+        height: 45px;
+
+        flex-basis: 45px;
+
+        border-radius: 12px;
+
+        font-size: 18px;
+
       }
 
-      @media (max-width: 650px) {
-        .container {
-          width: min(100% - 22px, 1120px);
-        }
 
-        .hero {
-          padding: 35px 0;
-        }
+      .result-content strong {
 
-        .hero-content {
-          align-items: flex-start;
-          flex-direction: column;
-          gap: 20px;
-        }
+        font-size: 16px;
 
-        .hero-icon {
-          width: 80px;
-          height: 80px;
-          flex-basis: 80px;
-          border-radius: 24px;
-        }
-
-        .hero-icon i {
-          font-size: 27px;
-        }
-
-        h1 {
-          font-size: 30px;
-        }
-
-        .hero-text > p {
-          font-size: 13px;
-        }
-
-        .workspace {
-          padding: 14px;
-        }
-
-        .tool-top {
-          padding: 0 14px;
-        }
-
-        .zones {
-          grid-template-columns: 1fr;
-          gap: 10px;
-        }
-
-        .zone-arrow {
-          height: 25px;
-          transform: rotate(90deg);
-        }
-
-        .result-area {
-          grid-template-columns: 1fr;
-        }
-
-        .result-card.main {
-          grid-column: auto;
-        }
-
-        .actions {
-          flex-direction: column;
-          align-items: stretch;
-        }
-
-        .action-group {
-          display: grid;
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .btn {
-          width: 100%;
-          padding: 0 8px;
-        }
-
-        .stats {
-          grid-template-columns: repeat(2, 1fr);
-        }
-
-        .info-section,
-        .how-section,
-        .faq-section {
-          padding: 40px 0;
-        }
       }
-    </style>
-  </head>
 
-  <body>
-    <Header />
+    }
 
-    <main>
-      <!-- HERO -->
-      <section class="hero">
-        <div class="container">
-          <div class="breadcrumb">
-            <a href={`${base}/`}>الرئيسية</a>
-            <i class="fa-solid fa-chevron-left"></i>
-            <a href={`${base}/tools/`}>الأدوات</a>
-            <i class="fa-solid fa-chevron-left"></i>
-            <span>Timezone Converter</span>
-          </div>
+  </style>
 
-          <div class="hero-content">
-            <div class="hero-icon">
-              <i class="fa-solid fa-earth-americas"></i>
-              <span>TIMEZONE</span>
-            </div>
-
-            <div class="hero-text">
-              <div class="badge">
-                <i class="fa-solid fa-globe"></i>
-                Developer Tools
-              </div>
-
-              <h1>Timezone Converter</h1>
-
-              <p>
-                حوّل التاريخ والوقت بين المناطق الزمنية المختلفة
-                واعرف الوقت المقابل بدقة وسرعة.
-              </p>
-
-              <div class="tags">
-                <span>UTC</span>
-                <span>Local Time</span>
-                <span>Timezone</span>
-                <span>ISO 8601</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- TOOL -->
-      <section class="tool-section">
-        <div class="container">
-          <div class="converter-card">
-            <div class="tool-top">
-              <div class="tool-name">
-                <i class="fa-solid fa-earth-americas"></i>
-                Timezone Converter
-              </div>
-
-              <div class="local-badge">
-                <i class="fa-solid fa-shield-halved"></i>
-                LOCAL
-              </div>
-            </div>
-
-            <div class="workspace">
-              <div class="time-input">
-                <div class="field-head">
-                  <div>
-                    <i class="fa-regular fa-calendar-days"></i>
-                    التاريخ والوقت
-                  </div>
-
-                  <span>DATETIME</span>
-                </div>
-
-                <div class="input-body">
-                  <input
-                    id="dateInput"
-                    class="datetime-input"
-                    type="datetime-local"
-                  />
-                </div>
-              </div>
-
-              <div class="zones">
-                <div class="zone-field">
-                  <label for="fromZone">
-                    المنطقة الزمنية الأصلية
-                  </label>
-
-                  <select id="fromZone">
-                    <option value="UTC">UTC</option>
-                    <option value="Africa/Casablanca">
-                      Africa/Casablanca — المغرب
-                    </option>
-                    <option value="Europe/London">
-                      Europe/London — لندن
-                    </option>
-                    <option value="Europe/Paris">
-                      Europe/Paris — باريس
-                    </option>
-                    <option value="Europe/Berlin">
-                      Europe/Berlin — برلين
-                    </option>
-                    <option value="America/New_York">
-                      America/New_York — نيويورك
-                    </option>
-                    <option value="America/Los_Angeles">
-                      America/Los_Angeles — لوس أنجلوس
-                    </option>
-                    <option value="Asia/Dubai">
-                      Asia/Dubai — دبي
-                    </option>
-                    <option value="Asia/Riyadh">
-                      Asia/Riyadh — الرياض
-                    </option>
-                    <option value="Asia/Tokyo">
-                      Asia/Tokyo — طوكيو
-                    </option>
-                    <option value="Asia/Shanghai">
-                      Asia/Shanghai — شنغهاي
-                    </option>
-                    <option value="Australia/Sydney">
-                      Australia/Sydney — سيدني
-                    </option>
-                  </select>
-                </div>
-
-                <div class="zone-arrow">
-                  <i class="fa-solid fa-arrow-left"></i>
-                </div>
-
-                <div class="zone-field">
-                  <label for="toZone">
-                    المنطقة الزمنية المستهدفة
-                  </label>
-
-                  <select id="toZone">
-                    <option value="UTC">UTC</option>
-                    <option value="Africa/Casablanca" selected>
-                      Africa/Casablanca — المغرب
-                    </option>
-                    <option value="Europe/London">
-                      Europe/London — لندن
-                    </option>
-                    <option value="Europe/Paris">
-                      Europe/Paris — باريس
-                    </option>
-                    <option value="Europe/Berlin">
-                      Europe/Berlin — برلين
-                    </option>
-                    <option value="America/New_York">
-                      America/New_York — نيويورك
-                    </option>
-                    <option value="America/Los_Angeles">
-                      America/Los_Angeles — لوس أنجلوس
-                    </option>
-                    <option value="Asia/Dubai">
-                      Asia/Dubai — دبي
-                    </option>
-                    <option value="Asia/Riyadh">
-                      Asia/Riyadh — الرياض
-                    </option>
-                    <option value="Asia/Tokyo">
-                      Asia/Tokyo — طوكيو
-                    </option>
-                    <option value="Asia/Shanghai">
-                      Asia/Shanghai — شنغهاي
-                    </option>
-                    <option value="Australia/Sydney">
-                      Australia/Sydney — سيدني
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <!-- RESULTS -->
-              <div class="result-area">
-                <div class="result-card main">
-                  <div class="result-label">
-                    <div>
-                      <i class="fa-solid fa-clock"></i>
-                      الوقت المحوّل
-                    </div>
-
-                    <button
-                      class="copy-btn"
-                      data-copy="converted"
-                    >
-                      <i class="fa-regular fa-copy"></i>
-                      نسخ
-                    </button>
-                  </div>
-
-                  <div id="convertedOutput" class="result-value">
-                    —
-                  </div>
-
-                  <div id="convertedZone" class="result-zone">
-                    —
-                  </div>
-                </div>
-
-                <div class="result-card">
-                  <div class="result-label">
-                    <div>
-                      <i class="fa-solid fa-globe"></i>
-                      UTC
-                    </div>
-
-                    <button
-                      class="copy-btn"
-                      data-copy="utc"
-                    >
-                      <i class="fa-regular fa-copy"></i>
-                    </button>
-                  </div>
-
-                  <div id="utcOutput" class="result-value">
-                    —
-                  </div>
-                </div>
-
-                <div class="result-card">
-                  <div class="result-label">
-                    <div>
-                      <i class="fa-solid fa-code"></i>
-                      ISO 8601
-                    </div>
-
-                    <button
-                      class="copy-btn"
-                      data-copy="iso"
-                    >
-                      <i class="fa-regular fa-copy"></i>
-                    </button>
-                  </div>
-
-                  <div id="isoOutput" class="result-value">
-                    —
-                  </div>
-                </div>
-              </div>
-
-              <!-- ACTIONS -->
-              <div class="actions">
-                <div class="action-group">
-                  <button id="convertBtn" class="btn btn-primary">
-                    <i class="fa-solid fa-arrows-rotate"></i>
-                    تحويل الوقت
-                  </button>
-
-                  <button id="nowBtn" class="btn btn-secondary">
-                    <i class="fa-solid fa-clock"></i>
-                    الآن
-                  </button>
-                </div>
-
-                <div class="action-group">
-                  <button id="copyMainBtn" class="btn btn-secondary">
-                    <i class="fa-regular fa-copy"></i>
-                    نسخ النتيجة
-                  </button>
-
-                  <button id="clearBtn" class="btn btn-secondary">
-                    <i class="fa-solid fa-eraser"></i>
-                    مسح
-                  </button>
-                </div>
-              </div>
-
-              <div class="status">
-                <i class="fa-solid fa-circle-check"></i>
-                <span id="statusText">
-                  جاهز لتحويل المنطقة الزمنية.
-                </span>
-              </div>
-
-              <!-- STATS -->
-              <div class="stats">
-                <div class="stat">
-                  <div class="stat-label">
-                    <span>FROM</span>
-                    <i class="fa-solid fa-location-arrow"></i>
-                  </div>
-
-                  <strong id="statFrom">UTC</strong>
-                </div>
-
-                <div class="stat">
-                  <div class="stat-label">
-                    <span>TO</span>
-                    <i class="fa-solid fa-location-dot"></i>
-                  </div>
-
-                  <strong id="statTo">
-                    Africa/Casablanca
-                  </strong>
-                </div>
-
-                <div class="stat">
-                  <div class="stat-label">
-                    <span>DATE</span>
-                    <i class="fa-regular fa-calendar"></i>
-                  </div>
-
-                  <strong id="statDate">—</strong>
-                </div>
-
-                <div class="stat">
-                  <div class="stat-label">
-                    <span>OFFSET</span>
-                    <i class="fa-solid fa-hourglass-half"></i>
-                  </div>
-
-                  <strong id="statOffset">—</strong>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- INFO -->
-      <section class="info-section">
-        <div class="container">
-          <div class="section-heading">
-            <span>TIMEZONE CONVERTER</span>
-            <h2>تحويل المناطق الزمنية</h2>
-            <p>
-              أداة عملية للمطورين والمسافرين والعمل عن بعد للتعامل
-              مع فروقات التوقيت.
-            </p>
-          </div>
-
-          <div class="info-grid">
-            <article class="info-card">
-              <div class="info-icon">
-                <i class="fa-solid fa-earth-americas"></i>
-              </div>
-
-              <h3>مناطق زمنية متعددة</h3>
-
-              <p>
-                حوّل الوقت بين مجموعة من المناطق الزمنية الشائعة حول العالم.
-              </p>
-            </article>
-
-            <article class="info-card">
-              <div class="info-icon">
-                <i class="fa-solid fa-code"></i>
-              </div>
-
-              <h3>ISO و UTC</h3>
-
-              <p>
-                اعرض الوقت الناتج بصيغ قياسية مناسبة للبرمجة وواجهات API.
-              </p>
-            </article>
-
-            <article class="info-card">
-              <div class="info-icon">
-                <i class="fa-solid fa-shield-halved"></i>
-              </div>
-
-              <h3>معالجة محلية</h3>
-
-              <p>
-                تتم عمليات التحويل داخل المتصفح دون إرسال البيانات إلى خادم.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-
-      <!-- HOW TO -->
-      <section class="how-section">
-        <div class="container">
-          <div class="section-heading">
-            <span>HOW IT WORKS</span>
-            <h2>كيفية استخدام الأداة</h2>
-          </div>
-
-          <div class="steps">
-            <div class="step">
-              <div class="step-number">1</div>
-
-              <h3>حدد التاريخ والوقت</h3>
-
-              <p>
-                اختر التاريخ والوقت الذي تريد تحويله.
-              </p>
-            </div>
-
-            <div class="step">
-              <div class="step-number">2</div>
-
-              <h3>اختر المناطق</h3>
-
-              <p>
-                حدد المنطقة الزمنية الأصلية والمنطقة التي تريد التحويل إليها.
-              </p>
-            </div>
-
-            <div class="step">
-              <div class="step-number">3</div>
-
-              <h3>احصل على النتيجة</h3>
-
-              <p>
-                اضغط على تحويل وانسخ الوقت الناتج أو استخدم صيغة ISO.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- FAQ -->
-      <section class="faq-section">
-        <div class="container">
-          <div class="section-heading">
-            <span>FAQ</span>
-            <h2>الأسئلة الشائعة</h2>
-          </div>
-
-          <div class="faq-list">
-            {faqs.map((faq) => (
-              <details>
-                <summary>
-                  <span>{faq.q}</span>
-                  <i class="fa-solid fa-chevron-down"></i>
-                </summary>
-
-                <p>{faq.a}</p>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <Footer />
-
-    <script is:inline>
-      (() => {
-        const dateInput =
-          document.getElementById("dateInput");
-
-        const fromZone =
-          document.getElementById("fromZone");
-
-        const toZone =
-          document.getElementById("toZone");
-
-        const convertedOutput =
-          document.getElementById("convertedOutput");
-
-        const convertedZone =
-          document.getElementById("convertedZone");
-
-        const utcOutput =
-          document.getElementById("utcOutput");
-
-        const isoOutput =
-          document.getElementById("isoOutput");
-
-        const statusText =
-          document.getElementById("statusText");
-
-        const statFrom =
-          document.getElementById("statFrom");
-
-        const statTo =
-          document.getElementById("statTo");
-
-        const statDate =
-          document.getElementById("statDate");
-
-        const statOffset =
-          document.getElementById("statOffset");
-
-        function pad(value) {
-          return String(value).padStart(2, "0");
-        }
-
-        function setNow() {
-          const now = new Date();
-
-          const year = now.getFullYear();
-          const month = pad(now.getMonth() + 1);
-          const day = pad(now.getDate());
-          const hours = pad(now.getHours());
-          const minutes = pad(now.getMinutes());
-
-          dateInput.value =
-            `${year}-${month}-${day}T${hours}:${minutes}`;
-
-          convert();
-        }
-
-        function getParts(date, timeZone) {
-          const formatter =
-            new Intl.DateTimeFormat("en-GB", {
-              timeZone,
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-              hourCycle: "h23"
-            });
-
-          const parts = formatter.formatToParts(date);
-
-          const result = {};
-
-          parts.forEach((part) => {
-            if (part.type !== "literal") {
-              result[part.type] = part.value;
-            }
-          });
-
-          return result;
-        }
-
-        function getTimeZoneOffset(date, timeZone) {
-          const parts = getParts(date, timeZone);
-
-          const utcTimestamp = Date.UTC(
-            Number(parts.year),
-            Number(parts.month) - 1,
-            Number(parts.day),
-            Number(parts.hour),
-            Number(parts.minute),
-            Number(parts.second)
-          );
-
-          const offsetMinutes =
-            Math.round(
-              (utcTimestamp - date.getTime()) / 60000
-            );
-
-          const sign =
-            offsetMinutes >= 0 ? "+" : "-";
-
-          const absolute =
-            Math.abs(offsetMinutes);
-
-          const hours =
-            Math.floor(absolute / 60);
-
-          const minutes =
-            absolute % 60;
-
-          return `UTC${sign}${pad(hours)}:${pad(minutes)}`;
-        }
-
-        function formatInZone(date, timeZone) {
-          const formatter =
-            new Intl.DateTimeFormat("en-GB", {
-              timeZone,
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-              second: "2-digit",
-              hourCycle: "h23"
-            });
-
-          return formatter.format(date);
-        }
-
-        function getOffsetForZone(
-          date,
-          timeZone
-        ) {
-          const parts =
-            getParts(date, timeZone);
-
-          const utc =
-            Date.UTC(
-              Number(parts.year),
-              Number(parts.month) - 1,
-              Number(parts.day),
-              Number(parts.hour),
-              Number(parts.minute),
-              Number(parts.second)
-            );
-
-          return Math.round(
-            (utc - date.getTime()) / 60000
-          );
-        }
-
-        function parseInputAsZone(
-          value,
-          timeZone
-        ) {
-          const match =
-            value.match(
-              /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/
-            );
-
-          if (!match) return null;
-
-          const year = Number(match[1]);
-          const month = Number(match[2]);
-          const day = Number(match[3]);
-          const hour = Number(match[4]);
-          const minute = Number(match[5]);
-
-          const guess =
-            new Date(
-              Date.UTC(
-                year,
-                month - 1,
-                day,
-                hour,
-                minute
-              )
-            );
-
-          let offset =
-            getOffsetForZone(
-              guess,
-              timeZone
-            );
-
-          let timestamp =
-            guess.getTime() - offset * 60000;
-
-          const corrected =
-            new Date(timestamp);
-
-          const correctedOffset =
-            getOffsetForZone(
-              corrected,
-              timeZone
-            );
-
-          if (correctedOffset !== offset) {
-            timestamp =
-              guess.getTime() -
-              correctedOffset * 60000;
-          }
-
-          const finalDate =
-            new Date(timestamp);
-
-          if (Number.isNaN(finalDate.getTime())) {
-            return null;
-          }
-
-          return finalDate;
-        }
-
-        function convert() {
-          if (!dateInput.value) {
-            convertedOutput.textContent = "—";
-            convertedZone.textContent = "—";
-            utcOutput.textContent = "—";
-            isoOutput.textContent = "—";
-
-            statFrom.textContent = "—";
-            statTo.textContent = "—";
-            statDate.textContent = "—";
-            statOffset.textContent = "—";
-
-            statusText.textContent =
-              "اختر التاريخ والوقت للبدء.";
-
-            return;
-          }
-
-          const date =
-            parseInputAsZone(
-              dateInput.value,
-              fromZone.value
-            );
-
-          if (!date) {
-            statusText.textContent =
-              "تعذر قراءة التاريخ. اختر قيمة صحيحة.";
-
-            return;
-          }
-
-          const converted =
-            formatInZone(
-              date,
-              toZone.value
-            );
-
-          const offset =
-            getTimeZoneOffset(
-              date,
-              toZone.value
-            );
-
-          convertedOutput.textContent =
-            converted;
-
-          convertedZone.textContent =
-            `${toZone.value} · ${offset}`;
-
-          utcOutput.textContent =
-            date.toUTCString();
-
-          isoOutput.textContent =
-            date.toISOString();
-
-          statFrom.textContent =
-            fromZone.value;
-
-          statTo.textContent =
-            toZone.value;
-
-          statDate.textContent =
-            converted.split(",")[0];
-
-          statOffset.textContent =
-            offset;
-
-          statusText.textContent =
-            "تم تحويل الوقت بنجاح.";
-        }
-
-        async function copyText(text) {
-          if (!text || text === "—") return;
-
-          try {
-            await navigator.clipboard.writeText(text);
-
-            statusText.textContent =
-              "تم نسخ النتيجة إلى الحافظة.";
-          } catch {
-            const textarea =
-              document.createElement("textarea");
-
-            textarea.value = text;
-            textarea.style.position = "fixed";
-            textarea.style.opacity = "0";
-
-            document.body.appendChild(textarea);
-
-            textarea.select();
-            document.execCommand("copy");
-
-            textarea.remove();
-
-            statusText.textContent =
-              "تم نسخ النتيجة إلى الحافظة.";
-          }
-        }
-
-        function getCopyValue(type) {
-          if (type === "converted") {
-            return convertedOutput.textContent;
-          }
-
-          if (type === "utc") {
-            return utcOutput.textContent;
-          }
-
-          if (type === "iso") {
-            return isoOutput.textContent;
-          }
-
-          return "";
-        }
-
-        document
-          .getElementById("convertBtn")
-          .addEventListener(
-            "click",
-            convert
-          );
-
-        document
-          .getElementById("nowBtn")
-          .addEventListener(
-            "click",
-            setNow
-          );
-
-        document
-          .getElementById("clearBtn")
-          .addEventListener(
-            "click",
-            () => {
-              dateInput.value = "";
-
-              convertedOutput.textContent = "—";
-              convertedZone.textContent = "—";
-              utcOutput.textContent = "—";
-              isoOutput.textContent = "—";
-
-              statFrom.textContent = fromZone.value;
-              statTo.textContent = toZone.value;
-              statDate.textContent = "—";
-              statOffset.textContent = "—";
-
-              statusText.textContent =
-                "تم مسح البيانات.";
-            }
-          );
-
-        document
-          .getElementById("copyMainBtn")
-          .addEventListener(
-            "click",
-            () => {
-              copyText(
-                convertedOutput.textContent
-              );
-            }
-          );
-
-        document
-          .querySelectorAll(".copy-btn")
-          .forEach((button) => {
-            button.addEventListener(
-              "click",
-              () => {
-                copyText(
-                  getCopyValue(
-                    button.dataset.copy
-                  )
-                );
-              }
-            );
-          });
-
-        dateInput.addEventListener(
-          "change",
-          convert
-        );
-
-        fromZone.addEventListener(
-          "change",
-          convert
-        );
-
-        toZone.addEventListener(
-          "change",
-          convert
-        );
-
-        document.addEventListener(
-          "keydown",
-          (event) => {
-            if (
-              (event.ctrlKey || event.metaKey) &&
-              event.key === "Enter"
-            ) {
-              convert();
-            }
-          }
-        );
-
-        setNow();
-      })();
-    </script>
-  </body>
+</body>
 </html>
