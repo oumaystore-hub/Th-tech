@@ -1,0 +1,3060 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "RGB to HEX Converter - تحويل RGB إلى HEX أونلاين | Th.Tech";
+
+const description =
+  "أداة RGB to HEX مجانية لتحويل ألوان RGB إلى HEX مباشرة من المتصفح، مع معاينة اللون ونسخ قيمة HEX وCSS بسهولة.";
+
+const faqs = [
+  {
+    q: "ما هو RGB؟",
+    a: "RGB هو نظام ألوان يعتمد على ثلاث قنوات: الأحمر Red والأخضر Green والأزرق Blue، وتتراوح قيمة كل قناة عادةً من 0 إلى 255."
+  },
+  {
+    q: "ما هو HEX؟",
+    a: "HEX هو نظام لتمثيل الألوان باستخدام قيم hexadecimal، ويكتب عادةً بستة أحرف أو أرقام مثل #3B82F6."
+  },
+  {
+    q: "هل يتم إرسال البيانات إلى الخادم؟",
+    a: "لا. تتم عملية تحويل RGB إلى HEX بالكامل داخل المتصفح باستخدام JavaScript، ولا يتم إرسال القيم إلى خادم خارجي."
+  },
+  {
+    q: "هل يمكن استخدام HEX مباشرة في CSS؟",
+    a: "نعم. قيمة HEX الناتجة مثل #3B82F6 يمكن استخدامها مباشرة كقيمة للخاصية color أو background-color وغيرها من خصائص CSS."
+  }
+];
+---
+
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+
+    <meta name="description" content={description} />
+
+    <meta
+      name="keywords"
+      content="RGB to HEX, RGB HEX, تحويل RGB إلى HEX, HEX Converter, Color Converter, أدوات الألوان"
+    />
+
+    <link
+      rel="canonical"
+      href={`https://oumaystore-hub.github.io${base}/tools/rgb-to-hex/`}
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+
+          if (saved === "dark") {
+            document.documentElement.classList.add("dark-mode");
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
+      <!-- HERO -->
+      <section class="hero">
+        <div class="container">
+
+          <div class="breadcrumb">
+            <a href={`${base}/`}>
+              <i class="fa-solid fa-house"></i>
+              الرئيسية
+            </a>
+
+            <i class="fa-solid fa-chevron-left separator"></i>
+
+            <a href={`${base}/tools/`}>
+              الأدوات
+            </a>
+
+            <i class="fa-solid fa-chevron-left separator"></i>
+
+            <span>RGB to HEX</span>
+          </div>
+
+          <div class="hero-content">
+
+            <div class="hero-icon">
+              <div
+                class="color-preview"
+                id="heroColor"
+              ></div>
+
+              <i class="fa-solid fa-palette"></i>
+            </div>
+
+            <div class="hero-text">
+
+              <div class="badge">
+                <i class="fa-solid fa-code"></i>
+                Developer Tools
+              </div>
+
+              <h1>
+                RGB to HEX Converter
+              </h1>
+
+              <p>
+                حوّل ألوان RGB إلى HEX بسرعة ودقة مباشرة من المتصفح.
+              </p>
+
+              <div class="tags">
+                <span>RGB</span>
+                <span>HEX</span>
+                <span>CSS</span>
+                <span>Local</span>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TOOL -->
+      <section class="tool-section">
+        <div class="container">
+
+          <div class="converter-card">
+
+            <!-- TOP BAR -->
+            <div class="card-topbar">
+
+              <div class="window-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+
+              <div class="tool-name">
+                <i class="fa-solid fa-palette"></i>
+                RGB to HEX
+              </div>
+
+              <div class="secure">
+                <i class="fa-solid fa-shield-halved"></i>
+                Local
+              </div>
+
+            </div>
+
+            <!-- ACTION BAR -->
+            <div class="actionbar">
+
+              <div class="action-group">
+
+                <button
+                  id="exampleBtn"
+                  class="btn btn-secondary"
+                  type="button"
+                >
+                  <i class="fa-solid fa-flask"></i>
+                  مثال
+                </button>
+
+                <button
+                  id="clearBtn"
+                  class="btn btn-secondary"
+                  type="button"
+                >
+                  <i class="fa-solid fa-eraser"></i>
+                  مسح
+                </button>
+
+              </div>
+
+              <div class="action-group">
+
+                <button
+                  id="copyHexBtn"
+                  class="btn btn-secondary"
+                  type="button"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                  نسخ HEX
+                </button>
+
+                <button
+                  id="convertBtn"
+                  class="btn btn-primary"
+                  type="button"
+                >
+                  <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                  تحويل إلى HEX
+                </button>
+
+              </div>
+
+            </div>
+
+            <!-- RGB INPUT -->
+            <div class="rgb-input-section">
+
+              <div class="editor-header">
+
+                <div>
+                  <i class="fa-solid fa-sliders"></i>
+                  RGB Color
+                </div>
+
+                <span id="inputStatus">
+                  0 - 255
+                </span>
+
+              </div>
+
+              <div class="rgb-input-grid">
+
+                <div class="channel-input red-channel">
+
+                  <label for="redInput">
+                    <span class="channel-dot"></span>
+                    Red
+                  </label>
+
+                  <div class="number-input">
+                    <input
+                      id="redInput"
+                      type="number"
+                      min="0"
+                      max="255"
+                      step="1"
+                      value="59"
+                      inputmode="numeric"
+                    />
+
+                    <span>R</span>
+                  </div>
+
+                </div>
+
+                <div class="channel-input green-channel">
+
+                  <label for="greenInput">
+                    <span class="channel-dot"></span>
+                    Green
+                  </label>
+
+                  <div class="number-input">
+                    <input
+                      id="greenInput"
+                      type="number"
+                      min="0"
+                      max="255"
+                      step="1"
+                      value="130"
+                      inputmode="numeric"
+                    />
+
+                    <span>G</span>
+                  </div>
+
+                </div>
+
+                <div class="channel-input blue-channel">
+
+                  <label for="blueInput">
+                    <span class="channel-dot"></span>
+                    Blue
+                  </label>
+
+                  <div class="number-input">
+                    <input
+                      id="blueInput"
+                      type="number"
+                      min="0"
+                      max="255"
+                      step="1"
+                      value="246"
+                      inputmode="numeric"
+                    />
+
+                    <span>B</span>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="input-help">
+
+                <span>
+                  <i class="fa-solid fa-circle-info"></i>
+                  أدخل قيمة من 0 إلى 255 لكل قناة
+                </span>
+
+                <span>
+                  RGB
+                </span>
+
+              </div>
+
+            </div>
+
+            <!-- COLOR PICKER -->
+            <div class="picker-section">
+
+              <div class="editor-header">
+
+                <div>
+                  <i class="fa-solid fa-eye-dropper"></i>
+                  Color Picker
+                </div>
+
+                <span>
+                  معاينة
+                </span>
+
+              </div>
+
+              <div class="picker-box">
+
+                <input
+                  id="colorPicker"
+                  type="color"
+                  value="#3B82F6"
+                  aria-label="اختيار اللون"
+                />
+
+                <div class="picker-preview">
+                  <div
+                    id="largeColor"
+                    class="large-color"
+                  ></div>
+
+                  <div class="picker-info">
+
+                    <strong id="previewHex">
+                      #3B82F6
+                    </strong>
+
+                    <span id="previewRgb">
+                      rgb(59, 130, 246)
+                    </span>
+
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- RESULT -->
+            <div
+              class="result-box"
+              id="resultBox"
+            >
+
+              <div
+                class="result-icon"
+                id="resultIcon"
+              >
+                <i class="fa-solid fa-circle-check"></i>
+              </div>
+
+              <div class="result-content">
+
+                <strong id="resultTitle">
+                  تم التحويل بنجاح
+                </strong>
+
+                <p id="resultMessage">
+                  تم تحويل قيمة RGB إلى HEX بنجاح.
+                </p>
+
+              </div>
+
+            </div>
+
+            <!-- HEX OUTPUT -->
+            <div class="output-section">
+
+              <div class="editor-header">
+
+                <div>
+                  <i class="fa-solid fa-hashtag"></i>
+                  HEX Color
+                </div>
+
+                <span>
+                  6 HEX
+                </span>
+
+              </div>
+
+              <div
+                class="hex-output"
+                id="hexOutput"
+              >
+                #3B82F6
+              </div>
+
+              <button
+                id="outputCopyBtn"
+                class="copy-output"
+                type="button"
+              >
+                <i class="fa-regular fa-copy"></i>
+                نسخ HEX
+              </button>
+
+            </div>
+
+            <!-- CSS OUTPUT -->
+            <div class="output-section">
+
+              <div class="editor-header">
+
+                <div>
+                  <i class="fa-brands fa-css3-alt"></i>
+                  CSS Output
+                </div>
+
+                <span>
+                  HEX
+                </span>
+
+              </div>
+
+              <div
+                class="code-output"
+                id="cssOutput"
+              >
+                #3B82F6
+              </div>
+
+              <button
+                id="copyCssBtn"
+                class="copy-output"
+                type="button"
+              >
+                <i class="fa-regular fa-copy"></i>
+                نسخ CSS
+              </button>
+
+            </div>
+
+            <!-- RGB OUTPUT -->
+            <div class="raw-section">
+
+              <div class="editor-header">
+
+                <div>
+                  <i class="fa-solid fa-code"></i>
+                  RGB Output
+                </div>
+
+                <span>
+                  R,G,B
+                </span>
+
+              </div>
+
+              <div
+                class="raw-output"
+                id="rawOutput"
+              >
+                59, 130, 246
+              </div>
+
+              <button
+                id="copyRawBtn"
+                class="copy-output"
+                type="button"
+              >
+                <i class="fa-regular fa-copy"></i>
+                نسخ القيم
+              </button>
+
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-grid">
+
+              <div class="stat">
+
+                <div class="stat-icon">
+                  <i class="fa-solid fa-hashtag"></i>
+                </div>
+
+                <div>
+                  <span>HEX</span>
+                  <strong id="statHex">
+                    #3B82F6
+                  </strong>
+                </div>
+
+              </div>
+
+              <div class="stat">
+
+                <div class="stat-icon red-stat">
+                  <i class="fa-solid fa-circle"></i>
+                </div>
+
+                <div>
+                  <span>Red</span>
+                  <strong id="statRed">
+                    59
+                  </strong>
+                </div>
+
+              </div>
+
+              <div class="stat">
+
+                <div class="stat-icon green-stat">
+                  <i class="fa-solid fa-circle"></i>
+                </div>
+
+                <div>
+                  <span>Green</span>
+                  <strong id="statGreen">
+                    130
+                  </strong>
+                </div>
+
+              </div>
+
+              <div class="stat">
+
+                <div class="stat-icon blue-stat">
+                  <i class="fa-solid fa-circle"></i>
+                </div>
+
+                <div>
+                  <span>Blue</span>
+                  <strong id="statBlue">
+                    246
+                  </strong>
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- SECURITY NOTE -->
+            <div class="security-note">
+
+              <div class="security-icon">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+
+              <div>
+
+                <strong>
+                  خصوصية وأمان
+                </strong>
+
+                <p>
+                  تتم عملية تحويل RGB إلى HEX بالكامل داخل متصفحك.
+                  لا يتم إرسال القيم أو أي بيانات إلى خادم خارجي.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- INFO -->
+      <section class="info-section">
+
+        <div class="container">
+
+          <div class="section-heading">
+
+            <span>
+              RGB TO HEX
+            </span>
+
+            <h2>
+              ما هي أداة RGB to HEX؟
+            </h2>
+
+            <p>
+              أداة مجانية لتحويل قيم الألوان من نظام RGB إلى HEX
+              واستخدامها بسهولة في مشاريع الويب والتصميم.
+            </p>
+
+          </div>
+
+          <div class="info-grid">
+
+            <article class="info-card">
+
+              <div class="info-icon">
+                <i class="fa-solid fa-palette"></i>
+              </div>
+
+              <h3>
+                تحويل دقيق
+              </h3>
+
+              <p>
+                حوّل قيم Red وGreen وBlue إلى قيمة HEX
+                صحيحة وجاهزة للاستخدام.
+              </p>
+
+            </article>
+
+            <article class="info-card">
+
+              <div class="info-icon">
+                <i class="fa-brands fa-css3-alt"></i>
+              </div>
+
+              <h3>
+                جاهز لـ CSS
+              </h3>
+
+              <p>
+                استخدم قيمة HEX الناتجة مباشرة في خصائص
+                الألوان داخل ملفات CSS.
+              </p>
+
+            </article>
+
+            <article class="info-card">
+
+              <div class="info-icon">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+
+              <h3>
+                سريع ومحلي
+              </h3>
+
+              <p>
+                يتم التحويل فورياً داخل المتصفح دون إرسال
+                البيانات إلى أي خادم خارجي.
+              </p>
+
+            </article>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- HOW TO -->
+      <section class="how-section">
+
+        <div class="container">
+
+          <div class="section-heading">
+
+            <span>
+              HOW IT WORKS
+            </span>
+
+            <h2>
+              كيفية استخدام RGB to HEX Converter
+            </h2>
+
+          </div>
+
+          <div class="steps">
+
+            <div class="step">
+
+              <div class="step-number">
+                1
+              </div>
+
+              <div>
+
+                <h3>
+                  أدخل قيم RGB
+                </h3>
+
+                <p>
+                  أدخل قيم Red وGreen وBlue، بحيث تكون كل قيمة
+                  بين 0 و255.
+                </p>
+
+              </div>
+
+            </div>
+
+            <div class="step">
+
+              <div class="step-number">
+                2
+              </div>
+
+              <div>
+
+                <h3>
+                  حوّل اللون
+                </h3>
+
+                <p>
+                  اضغط على زر تحويل إلى HEX للحصول على
+                  قيمة اللون بصيغة hexadecimal.
+                </p>
+
+              </div>
+
+            </div>
+
+            <div class="step">
+
+              <div class="step-number">
+                3
+              </div>
+
+              <div>
+
+                <h3>
+                  انسخ النتيجة
+                </h3>
+
+                <p>
+                  انسخ قيمة HEX أو استخدمها مباشرة داخل
+                  مشروع CSS أو مشروع الويب الخاص بك.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq-section">
+
+        <div class="container">
+
+          <div class="section-heading">
+
+            <span>
+              FAQ
+            </span>
+
+            <h2>
+              الأسئلة الشائعة
+            </h2>
+
+          </div>
+
+          <div class="faq-list">
+
+            {faqs.map((faq) => (
+              <details>
+
+                <summary>
+
+                  <span>
+                    {faq.q}
+                  </span>
+
+                  <i class="fa-solid fa-chevron-down"></i>
+
+                </summary>
+
+                <p>
+                  {faq.a}
+                </p>
+
+              </details>
+            ))}
+
+          </div>
+
+        </div>
+
+      </section>
+    </main>
+
+    <Footer />
+
+    <!-- JAVASCRIPT -->
+    <script is:inline>
+      (() => {
+        const redInput =
+          document.getElementById("redInput");
+
+        const greenInput =
+          document.getElementById("greenInput");
+
+        const blueInput =
+          document.getElementById("blueInput");
+
+        const colorPicker =
+          document.getElementById("colorPicker");
+
+        const exampleBtn =
+          document.getElementById("exampleBtn");
+
+        const clearBtn =
+          document.getElementById("clearBtn");
+
+        const convertBtn =
+          document.getElementById("convertBtn");
+
+        const copyHexBtn =
+          document.getElementById("copyHexBtn");
+
+        const outputCopyBtn =
+          document.getElementById("outputCopyBtn");
+
+        const copyCssBtn =
+          document.getElementById("copyCssBtn");
+
+        const copyRawBtn =
+          document.getElementById("copyRawBtn");
+
+        const heroColor =
+          document.getElementById("heroColor");
+
+        const largeColor =
+          document.getElementById("largeColor");
+
+        const previewHex =
+          document.getElementById("previewHex");
+
+        const previewRgb =
+          document.getElementById("previewRgb");
+
+        const hexOutput =
+          document.getElementById("hexOutput");
+
+        const cssOutput =
+          document.getElementById("cssOutput");
+
+        const rawOutput =
+          document.getElementById("rawOutput");
+
+        const statHex =
+          document.getElementById("statHex");
+
+        const statRed =
+          document.getElementById("statRed");
+
+        const statGreen =
+          document.getElementById("statGreen");
+
+        const statBlue =
+          document.getElementById("statBlue");
+
+        const resultBox =
+          document.getElementById("resultBox");
+
+        const resultIcon =
+          document.getElementById("resultIcon");
+
+        const resultTitle =
+          document.getElementById("resultTitle");
+
+        const resultMessage =
+          document.getElementById("resultMessage");
+
+        if (
+          !redInput ||
+          !greenInput ||
+          !blueInput
+        ) {
+          return;
+        }
+
+        function clamp(value) {
+          const number =
+            Number(value);
+
+          if (
+            !Number.isFinite(number)
+          ) {
+            return 0;
+          }
+
+          return Math.min(
+            255,
+            Math.max(
+              0,
+              Math.round(number)
+            )
+          );
+        }
+
+        function componentToHex(value) {
+          return value
+            .toString(16)
+            .padStart(2, "0")
+            .toUpperCase();
+        }
+
+        function rgbToHex(r, g, b) {
+          return (
+            "#" +
+            componentToHex(r) +
+            componentToHex(g) +
+            componentToHex(b)
+          );
+        }
+
+        function hexToRgb(hex) {
+          const clean =
+            String(hex || "")
+              .replace("#", "")
+              .trim();
+
+          if (
+            !/^[0-9a-fA-F]{6}$/.test(clean)
+          ) {
+            return null;
+          }
+
+          return {
+            r: parseInt(
+              clean.slice(0, 2),
+              16
+            ),
+
+            g: parseInt(
+              clean.slice(2, 4),
+              16
+            ),
+
+            b: parseInt(
+              clean.slice(4, 6),
+              16
+            )
+          };
+        }
+
+        function setStatus(
+          type,
+          title,
+          message
+        ) {
+          resultBox.classList.remove(
+            "success",
+            "error",
+            "warning"
+          );
+
+          if (type) {
+            resultBox.classList.add(
+              type
+            );
+          }
+
+          if (type === "error") {
+            resultIcon.innerHTML =
+              '<i class="fa-solid fa-circle-xmark"></i>';
+          } else if (
+            type === "warning"
+          ) {
+            resultIcon.innerHTML =
+              '<i class="fa-solid fa-triangle-exclamation"></i>';
+          } else {
+            resultIcon.innerHTML =
+              '<i class="fa-solid fa-circle-check"></i>';
+          }
+
+          resultTitle.textContent =
+            title;
+
+          resultMessage.textContent =
+            message;
+        }
+
+        function getValues() {
+          return {
+            r: clamp(redInput.value),
+            g: clamp(greenInput.value),
+            b: clamp(blueInput.value)
+          };
+        }
+
+        function updateInputs(
+          r,
+          g,
+          b
+        ) {
+          redInput.value = r;
+          greenInput.value = g;
+          blueInput.value = b;
+        }
+
+        function updatePreview(
+          hex,
+          r,
+          g,
+          b
+        ) {
+          const rgbString =
+            `rgb(${r}, ${g}, ${b})`;
+
+          heroColor.style.backgroundColor =
+            hex;
+
+          largeColor.style.backgroundColor =
+            hex;
+
+          previewHex.textContent =
+            hex;
+
+          previewRgb.textContent =
+            rgbString;
+
+          colorPicker.value =
+            hex;
+        }
+
+        function convert() {
+          const r =
+            Number(redInput.value);
+
+          const g =
+            Number(greenInput.value);
+
+          const b =
+            Number(blueInput.value);
+
+          if (
+            !Number.isInteger(r) ||
+            !Number.isInteger(g) ||
+            !Number.isInteger(b) ||
+            r < 0 ||
+            r > 255 ||
+            g < 0 ||
+            g > 255 ||
+            b < 0 ||
+            b > 255
+          ) {
+            setStatus(
+              "error",
+              "قيم RGB غير صحيحة",
+              "يجب أن تكون كل قيمة RGB رقماً صحيحاً بين 0 و255."
+            );
+
+            return;
+          }
+
+          const hex =
+            rgbToHex(
+              r,
+              g,
+              b
+            );
+
+          const rgbString =
+            `rgb(${r}, ${g}, ${b})`;
+
+          const rawString =
+            `${r}, ${g}, ${b}`;
+
+          hexOutput.textContent =
+            hex;
+
+          cssOutput.textContent =
+            hex;
+
+          rawOutput.textContent =
+            rawString;
+
+          statHex.textContent =
+            hex;
+
+          statRed.textContent =
+            r;
+
+          statGreen.textContent =
+            g;
+
+          statBlue.textContent =
+            b;
+
+          updatePreview(
+            hex,
+            r,
+            g,
+            b
+          );
+
+          setStatus(
+            "success",
+            "تم التحويل بنجاح",
+            `${rgbString} = ${hex}`
+          );
+        }
+
+        function setExample() {
+          updateInputs(
+            59,
+            130,
+            246
+          );
+
+          convert();
+        }
+
+        function clearAll() {
+          updateInputs(
+            0,
+            0,
+            0
+          );
+
+          const hex = "#000000";
+
+          hexOutput.textContent =
+            "—";
+
+          cssOutput.textContent =
+            "—";
+
+          rawOutput.textContent =
+            "0, 0, 0";
+
+          statHex.textContent =
+            "—";
+
+          statRed.textContent =
+            "0";
+
+          statGreen.textContent =
+            "0";
+
+          statBlue.textContent =
+            "0";
+
+          heroColor.style.backgroundColor =
+            hex;
+
+          largeColor.style.backgroundColor =
+            hex;
+
+          colorPicker.value =
+            hex;
+
+          previewHex.textContent =
+            hex;
+
+          previewRgb.textContent =
+            "rgb(0, 0, 0)";
+
+          setStatus(
+            "",
+            "تم المسح",
+            "أدخل قيم RGB جديدة ثم اضغط على تحويل إلى HEX."
+          );
+
+          redInput.focus();
+        }
+
+        async function copyText(
+          text,
+          button
+        ) {
+          if (
+            !text ||
+            text === "—"
+          ) {
+            return;
+          }
+
+          const original =
+            button.innerHTML;
+
+          try {
+            await navigator.clipboard.writeText(
+              text
+            );
+
+            button.innerHTML =
+              '<i class="fa-solid fa-check"></i> تم النسخ';
+
+            setTimeout(() => {
+              button.innerHTML =
+                original;
+            }, 1500);
+
+          } catch {
+            const textarea =
+              document.createElement(
+                "textarea"
+              );
+
+            textarea.value =
+              text;
+
+            textarea.style.position =
+              "fixed";
+
+            textarea.style.opacity =
+              "0";
+
+            document.body.appendChild(
+              textarea
+            );
+
+            textarea.select();
+
+            try {
+              document.execCommand(
+                "copy"
+              );
+
+              button.innerHTML =
+                '<i class="fa-solid fa-check"></i> تم النسخ';
+
+              setTimeout(() => {
+                button.innerHTML =
+                  original;
+              }, 1500);
+
+            } catch {
+              button.innerHTML =
+                '<i class="fa-solid fa-xmark"></i> فشل النسخ';
+
+              setTimeout(() => {
+                button.innerHTML =
+                  original;
+              }, 1500);
+            }
+
+            textarea.remove();
+          }
+        }
+
+        function pickerToRgb() {
+          const rgb =
+            hexToRgb(
+              colorPicker.value
+            );
+
+          if (!rgb) {
+            return;
+          }
+
+          updateInputs(
+            rgb.r,
+            rgb.g,
+            rgb.b
+          );
+
+          convert();
+        }
+
+        [
+          redInput,
+          greenInput,
+          blueInput
+        ].forEach(input => {
+          input.addEventListener(
+            "input",
+            () => {
+              if (
+                Number(input.value) > 255
+              ) {
+                input.value = "255";
+              }
+
+              if (
+                Number(input.value) < 0
+              ) {
+                input.value = "0";
+              }
+            }
+          );
+
+          input.addEventListener(
+            "keydown",
+            event => {
+              if (
+                event.key === "Enter"
+              ) {
+                event.preventDefault();
+                convert();
+              }
+            }
+          );
+        });
+
+        colorPicker.addEventListener(
+          "input",
+          pickerToRgb
+        );
+
+        convertBtn.addEventListener(
+          "click",
+          convert
+        );
+
+        exampleBtn.addEventListener(
+          "click",
+          setExample
+        );
+
+        clearBtn.addEventListener(
+          "click",
+          clearAll
+        );
+
+        copyHexBtn.addEventListener(
+          "click",
+          () => {
+            copyText(
+              hexOutput.textContent,
+              copyHexBtn
+            );
+          }
+        );
+
+        outputCopyBtn.addEventListener(
+          "click",
+          () => {
+            copyText(
+              hexOutput.textContent,
+              outputCopyBtn
+            );
+          }
+        );
+
+        copyCssBtn.addEventListener(
+          "click",
+          () => {
+            copyText(
+              cssOutput.textContent,
+              copyCssBtn
+            );
+          }
+        );
+
+        copyRawBtn.addEventListener(
+          "click",
+          () => {
+            copyText(
+              rawOutput.textContent,
+              copyRawBtn
+            );
+          }
+        );
+
+        function syncTheme() {
+          try {
+            const saved =
+              localStorage.getItem(
+                "theme"
+              );
+
+            if (
+              saved === "dark"
+            ) {
+              document.documentElement.classList.add(
+                "dark-mode"
+              );
+            } else {
+              document.documentElement.classList.remove(
+                "dark-mode"
+              );
+            }
+          } catch {}
+        }
+
+        syncTheme();
+
+        window.addEventListener(
+          "themeChange",
+          syncTheme
+        );
+
+        document.addEventListener(
+          "click",
+          event => {
+            const button =
+              event.target.closest(
+                "#theme-btn"
+              );
+
+            if (button) {
+              setTimeout(
+                syncTheme,
+                0
+              );
+            }
+          }
+        );
+
+        convert();
+      })();
+    </script>
+
+    <!-- CSS -->
+    <style>
+      :root {
+        --bg: #f6f9fc;
+        --surface: #ffffff;
+        --surface-2: #f8fafc;
+        --border: #e2e8f0;
+
+        --text: #0f172a;
+        --muted: #64748b;
+
+        --primary: #2563eb;
+        --primary-2: #06b6d4;
+
+        --success: #16a34a;
+        --danger: #dc2626;
+        --warning: #d97706;
+
+        --shadow:
+          0 20px 60px rgba(15, 23, 42, 0.08);
+
+        --radius: 22px;
+      }
+
+      html.dark-mode {
+        --bg: #080b12;
+        --surface: #0f141e;
+        --surface-2: #131a25;
+        --border: #253043;
+
+        --text: #f1f5f9;
+        --muted: #94a3b8;
+
+        --primary: #60a5fa;
+        --primary-2: #22d3ee;
+
+        --success: #4ade80;
+        --danger: #f87171;
+        --warning: #fbbf24;
+
+        --shadow:
+          0 20px 70px rgba(0, 0, 0, 0.35);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+
+        background: var(--bg);
+        color: var(--text);
+
+        font-family:
+          "Cairo",
+          sans-serif;
+
+        transition:
+          background 0.25s ease,
+          color 0.25s ease;
+      }
+
+      button,
+      input {
+        font-family: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .container {
+        width:
+          min(
+            1120px,
+            calc(100% - 32px)
+          );
+
+        margin: 0 auto;
+      }
+
+      /* HERO */
+
+      .hero {
+        position: relative;
+
+        overflow: hidden;
+
+        padding:
+          42px 0
+          50px;
+
+        background:
+          radial-gradient(
+            circle at 15% 20%,
+            rgba(37, 99, 235, 0.14),
+            transparent 35%
+          ),
+          radial-gradient(
+            circle at 85% 30%,
+            rgba(6, 182, 212, 0.12),
+            transparent 35%
+          );
+      }
+
+      .hero::after {
+        content: "";
+
+        position: absolute;
+
+        width: 420px;
+        height: 420px;
+
+        left: -220px;
+        bottom: -300px;
+
+        border-radius: 50%;
+
+        background:
+          rgba(37, 99, 235, 0.06);
+
+        filter: blur(10px);
+      }
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+
+        flex-wrap: wrap;
+
+        gap: 10px;
+
+        margin-bottom: 38px;
+
+        color: var(--muted);
+
+        font-size: 0.88rem;
+      }
+
+      .breadcrumb a {
+        color: var(--muted);
+
+        text-decoration: none;
+
+        transition:
+          color 0.2s ease;
+      }
+
+      .breadcrumb a:hover {
+        color:
+          var(--primary);
+      }
+
+      .breadcrumb i {
+        font-size: 0.7rem;
+      }
+
+      .separator {
+        opacity: 0.55;
+      }
+
+      .hero-content {
+        display: flex;
+        align-items: center;
+
+        gap: 28px;
+      }
+
+      .hero-icon {
+        position: relative;
+
+        width: 118px;
+        height: 118px;
+
+        flex: 0 0 118px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        overflow: hidden;
+
+        border-radius: 30px;
+
+        color: white;
+
+        font-size: 2.8rem;
+
+        background:
+          linear-gradient(
+            135deg,
+            #2563eb,
+            #06b6d4
+          );
+
+        box-shadow:
+          0 18px 45px
+          rgba(37, 99, 235, 0.28);
+      }
+
+      .hero-icon::before {
+        content: "";
+
+        position: absolute;
+
+        inset: -40%;
+
+        background:
+          linear-gradient(
+            120deg,
+            transparent 40%,
+            rgba(255,255,255,0.2),
+            transparent 60%
+          );
+
+        transform:
+          rotate(20deg);
+      }
+
+      .hero-icon i {
+        position: relative;
+
+        z-index: 2;
+      }
+
+      .color-preview {
+        position: absolute;
+
+        width: 20px;
+        height: 20px;
+
+        left: 16px;
+        bottom: 16px;
+
+        z-index: 3;
+
+        border:
+          3px solid
+          rgba(255,255,255,0.9);
+
+        border-radius: 50%;
+
+        box-shadow:
+          0 4px 12px
+          rgba(0,0,0,0.25);
+      }
+
+      .hero-text {
+        min-width: 0;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+
+        gap: 8px;
+
+        padding:
+          7px 12px;
+
+        margin-bottom: 12px;
+
+        border:
+          1px solid
+          rgba(37, 99, 235, 0.18);
+
+        border-radius: 999px;
+
+        background:
+          rgba(37, 99, 235, 0.08);
+
+        color:
+          var(--primary);
+
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      h1 {
+        margin:
+          0 0
+          12px;
+
+        font-size:
+          clamp(
+            2rem,
+            4vw,
+            3.2rem
+          );
+
+        line-height: 1.15;
+
+        letter-spacing: -1px;
+      }
+
+      .hero-text p {
+        margin:
+          0 0
+          18px;
+
+        color:
+          var(--muted);
+
+        font-size: 1.03rem;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+
+        gap: 8px;
+      }
+
+      .tags span {
+        padding:
+          6px 11px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius: 8px;
+
+        background:
+          var(--surface);
+
+        color:
+          var(--muted);
+
+        font-family:
+          "JetBrains Mono",
+          monospace;
+
+        font-size: 0.72rem;
+      }
+
+      /* TOOL */
+
+      .tool-section {
+        padding:
+          15px 0
+          70px;
+      }
+
+      .converter-card {
+        overflow: hidden;
+
+        background:
+          var(--surface);
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius:
+          var(--radius);
+
+        box-shadow:
+          var(--shadow);
+      }
+
+      .card-topbar {
+        min-height: 58px;
+
+        display: flex;
+        align-items: center;
+
+        padding:
+          0 20px;
+
+        border-bottom:
+          1px solid
+          var(--border);
+
+        background:
+          var(--surface-2);
+      }
+
+      .window-dots {
+        display: flex;
+        gap: 7px;
+
+        width: 90px;
+      }
+
+      .window-dots span {
+        width: 9px;
+        height: 9px;
+
+        border-radius: 50%;
+
+        background:
+          var(--border);
+      }
+
+      .tool-name {
+        flex: 1;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 9px;
+
+        font-size: 0.92rem;
+        font-weight: 700;
+      }
+
+      .tool-name i {
+        color:
+          var(--primary);
+      }
+
+      .secure {
+        width: 90px;
+
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+
+        gap: 6px;
+
+        color:
+          var(--success);
+
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+
+      .actionbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 12px;
+
+        padding:
+          18px 20px;
+
+        border-bottom:
+          1px solid
+          var(--border);
+      }
+
+      .action-group {
+        display: flex;
+        gap: 9px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 8px;
+
+        min-height: 42px;
+
+        padding:
+          0 15px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius: 10px;
+
+        font-size: 0.84rem;
+        font-weight: 700;
+
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease,
+          background 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .btn:hover {
+        transform:
+          translateY(-2px);
+      }
+
+      .btn-secondary {
+        background:
+          var(--surface);
+
+        color:
+          var(--text);
+      }
+
+      .btn-secondary:hover {
+        border-color:
+          var(--primary);
+
+        color:
+          var(--primary);
+      }
+
+      .btn-primary {
+        border-color:
+          transparent;
+
+        background:
+          linear-gradient(
+            135deg,
+            #2563eb,
+            #0891b2
+          );
+
+        color: white;
+
+        box-shadow:
+          0 8px 22px
+          rgba(37, 99, 235, 0.2);
+      }
+
+      .btn-primary:hover {
+        box-shadow:
+          0 12px 28px
+          rgba(37, 99, 235, 0.3);
+      }
+
+      /* HEADERS */
+
+      .editor-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-bottom: 11px;
+
+        color:
+          var(--muted);
+
+        font-size: 0.8rem;
+        font-weight: 700;
+      }
+
+      .editor-header > div {
+        display: flex;
+        align-items: center;
+
+        gap: 8px;
+
+        color:
+          var(--text);
+      }
+
+      .editor-header i {
+        color:
+          var(--primary);
+      }
+
+      /* RGB INPUT */
+
+      .rgb-input-section {
+        padding:
+          24px 24px 0;
+      }
+
+      .rgb-input-grid {
+        display: grid;
+
+        grid-template-columns:
+          repeat(3, 1fr);
+
+        gap: 13px;
+      }
+
+      .channel-input {
+        padding:
+          14px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius: 14px;
+
+        background:
+          var(--surface-2);
+      }
+
+      .channel-input label {
+        display: flex;
+        align-items: center;
+
+        gap: 7px;
+
+        margin-bottom: 9px;
+
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+
+      .channel-dot {
+        width: 9px;
+        height: 9px;
+
+        border-radius: 50%;
+      }
+
+      .red-channel .channel-dot {
+        background:
+          #ef4444;
+      }
+
+      .green-channel .channel-dot {
+        background:
+          #22c55e;
+      }
+
+      .blue-channel .channel-dot {
+        background:
+          #3b82f6;
+      }
+
+      .number-input {
+        display: flex;
+
+        overflow: hidden;
+
+        height: 48px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius: 10px;
+
+        background:
+          var(--surface);
+      }
+
+      .number-input input {
+        flex: 1;
+
+        min-width: 0;
+
+        border: 0;
+        outline: 0;
+
+        background:
+          transparent;
+
+        color:
+          var(--text);
+
+        font-family:
+          "JetBrains Mono",
+          monospace;
+
+        font-size: 1rem;
+        font-weight: 600;
+
+        text-align: center;
+      }
+
+      .number-input span {
+        width: 40px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-right:
+          1px solid
+          var(--border);
+
+        color:
+          var(--muted);
+
+        font-family:
+          "JetBrains Mono",
+          monospace;
+
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+
+      .input-help {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        margin-top: 9px;
+
+        color:
+          var(--muted);
+
+        font-size: 0.72rem;
+      }
+
+      .input-help span:first-child {
+        display: flex;
+        align-items: center;
+
+        gap: 6px;
+      }
+
+      /* PICKER */
+
+      .picker-section {
+        padding:
+          24px 24px 0;
+      }
+
+      .picker-box {
+        position: relative;
+      }
+
+      #colorPicker {
+        position: absolute;
+
+        width: 1px;
+        height: 1px;
+
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .picker-preview {
+        display: flex;
+
+        overflow: hidden;
+
+        min-height: 130px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius: 15px;
+
+        background:
+          var(--surface-2);
+      }
+
+      .large-color {
+        width: 42%;
+
+        min-height: 130px;
+      }
+
+      .picker-info {
+        flex: 1;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        gap: 6px;
+
+        padding:
+          20px 24px;
+      }
+
+      .picker-info strong {
+        color:
+          var(--text);
+
+        font-family:
+          "JetBrains Mono",
+          monospace;
+
+        font-size: 1.15rem;
+      }
+
+      .picker-info span {
+        color:
+          var(--muted);
+
+        font-family:
+          "JetBrains Mono",
+          monospace;
+
+        font-size: 0.78rem;
+
+        direction: ltr;
+        text-align: right;
+      }
+
+      /* RESULT */
+
+      .result-box {
+        display: flex;
+        align-items: center;
+
+        gap: 13px;
+
+        margin:
+          24px 24px 0;
+
+        padding:
+          15px 17px;
+
+        border:
+          1px solid
+          rgba(22, 163, 74, 0.2);
+
+        border-radius: 13px;
+
+        background:
+          rgba(22, 163, 74, 0.06);
+      }
+
+      .result-box.error {
+        border-color:
+          rgba(220, 38, 38, 0.2);
+
+        background:
+          rgba(220, 38, 38, 0.06);
+      }
+
+      .result-box.warning {
+        border-color:
+          rgba(217, 119, 6, 0.2);
+
+        background:
+          rgba(217, 119, 6, 0.06);
+      }
+
+      .result-icon {
+        width: 39px;
+        height: 39px;
+
+        flex: 0 0 39px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background:
+          rgba(22, 163, 74, 0.12);
+
+        color:
+          var(--success);
+      }
+
+      .error .result-icon {
+        background:
+          rgba(220, 38, 38, 0.12);
+
+        color:
+          var(--danger);
+      }
+
+      .warning .result-icon {
+        background:
+          rgba(217, 119, 6, 0.12);
+
+        color:
+          var(--warning);
+      }
+
+      .result-content {
+        min-width: 0;
+      }
+
+      .result-content strong {
+        display: block;
+
+        margin-bottom: 2px;
+
+        font-size: 0.86rem;
+      }
+
+      .result-content p {
+        margin: 0;
+
+        color:
+          var(--muted);
+
+        font-size: 0.73rem;
+      }
+
+      /* OUTPUT */
+
+      .output-section,
+      .raw-section {
+        padding:
+          24px 24px 0;
+      }
+
+      .hex-output,
+      .code-output,
+      .raw-output {
+        overflow-x: auto;
+
+        padding:
+          18px 20px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius: 13px;
+
+        background:
+          #0b1120;
+
+        color:
+          #dbeafe;
+
+        font-family:
+          "JetBrains Mono",
+          monospace;
+
+        font-size: 1rem;
+
+        direction: ltr;
+        text-align: left;
+
+        white-space: nowrap;
+      }
+
+      .hex-output {
+        font-size: 1.35rem;
+        font-weight: 700;
+      }
+
+      .raw-output {
+        background:
+          var(--surface-2);
+
+        color:
+          var(--text);
+      }
+
+      .copy-output {
+        width: 100%;
+
+        min-height: 39px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 7px;
+
+        margin-top: 9px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius: 9px;
+
+        background:
+          var(--surface);
+
+        color:
+          var(--muted);
+
+        font-size: 0.76rem;
+        font-weight: 700;
+
+        transition:
+          color 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .copy-output:hover {
+        border-color:
+          var(--primary);
+
+        color:
+          var(--primary);
+      }
+
+      /* STATS */
+
+      .stats-grid {
+        display: grid;
+
+        grid-template-columns:
+          repeat(4, 1fr);
+
+        gap: 12px;
+
+        padding:
+          24px;
+      }
+
+      .stat {
+        display: flex;
+        align-items: center;
+
+        gap: 11px;
+
+        min-width: 0;
+
+        padding:
+          14px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius: 13px;
+
+        background:
+          var(--surface-2);
+      }
+
+      .stat-icon {
+        width: 38px;
+        height: 38px;
+
+        flex: 0 0 38px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background:
+          rgba(37, 99, 235, 0.1);
+
+        color:
+          var(--primary);
+      }
+
+      .red-stat {
+        background:
+          rgba(239, 68, 68, 0.1);
+
+        color:
+          #ef4444;
+      }
+
+      .green-stat {
+        background:
+          rgba(34, 197, 94, 0.1);
+
+        color:
+          #22c55e;
+      }
+
+      .blue-stat {
+        background:
+          rgba(59, 130, 246, 0.1);
+
+        color:
+          #3b82f6;
+      }
+
+      .stat > div:last-child {
+        min-width: 0;
+      }
+
+      .stat span {
+        display: block;
+
+        margin-bottom: 2px;
+
+        color:
+          var(--muted);
+
+        font-size: 0.67rem;
+      }
+
+      .stat strong {
+        display: block;
+
+        overflow: hidden;
+
+        color:
+          var(--text);
+
+        font-family:
+          "JetBrains Mono",
+          monospace;
+
+        font-size: 0.78rem;
+
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      /* SECURITY */
+
+      .security-note {
+        display: flex;
+
+        gap: 13px;
+
+        margin:
+          0 24px
+          24px;
+
+        padding:
+          16px 18px;
+
+        border:
+          1px solid
+          rgba(37, 99, 235, 0.18);
+
+        border-radius: 13px;
+
+        background:
+          rgba(37, 99, 235, 0.05);
+      }
+
+      .security-icon {
+        width: 40px;
+        height: 40px;
+
+        flex: 0 0 40px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 10px;
+
+        background:
+          rgba(37, 99, 235, 0.1);
+
+        color:
+          var(--primary);
+      }
+
+      .security-note strong {
+        display: block;
+
+        margin-bottom: 3px;
+
+        font-size: 0.82rem;
+      }
+
+      .security-note p {
+        margin: 0;
+
+        color:
+          var(--muted);
+
+        font-size: 0.72rem;
+
+        line-height: 1.8;
+      }
+
+      /* INFO */
+
+      .info-section,
+      .how-section,
+      .faq-section {
+        padding:
+          75px 0;
+      }
+
+      .info-section {
+        border-top:
+          1px solid
+          var(--border);
+      }
+
+      .section-heading {
+        max-width: 720px;
+
+        margin:
+          0 auto
+          40px;
+
+        text-align: center;
+      }
+
+      .section-heading > span {
+        display: inline-block;
+
+        margin-bottom: 8px;
+
+        color:
+          var(--primary);
+
+        font-family:
+          "JetBrains Mono",
+          monospace;
+
+        font-size: 0.72rem;
+        font-weight: 700;
+
+        letter-spacing: 1px;
+      }
+
+      .section-heading h2 {
+        margin:
+          0 0
+          10px;
+
+        font-size:
+          clamp(
+            1.6rem,
+            3vw,
+            2.25rem
+          );
+      }
+
+      .section-heading p {
+        margin: 0;
+
+        color:
+          var(--muted);
+
+        font-size: 0.9rem;
+
+        line-height: 1.9;
+      }
+
+      .info-grid {
+        display: grid;
+
+        grid-template-columns:
+          repeat(3, 1fr);
+
+        gap: 18px;
+      }
+
+      .info-card {
+        padding:
+          28px 24px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius: 18px;
+
+        background:
+          var(--surface);
+
+        transition:
+          transform 0.25s ease,
+          border-color 0.25s ease,
+          box-shadow 0.25s ease;
+      }
+
+      .info-card:hover {
+        transform:
+          translateY(-5px);
+
+        border-color:
+          rgba(37, 99, 235, 0.35);
+
+        box-shadow:
+          0 18px 40px
+          rgba(15, 23, 42, 0.07);
+      }
+
+      .info-icon {
+        width: 50px;
+        height: 50px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        margin-bottom: 17px;
+
+        border-radius: 14px;
+
+        background:
+          rgba(37, 99, 235, 0.1);
+
+        color:
+          var(--primary);
+
+        font-size: 1.2rem;
+      }
+
+      .info-card h3 {
+        margin:
+          0 0
+          8px;
+
+        font-size: 1rem;
+      }
+
+      .info-card p {
+        margin: 0;
+
+        color:
+          var(--muted);
+
+        font-size: 0.8rem;
+
+        line-height: 1.9;
+      }
+
+      /* HOW */
+
+      .how-section {
+        background:
+          var(--surface-2);
+
+        border-top:
+          1px solid
+          var(--border);
+
+        border-bottom:
+          1px solid
+          var(--border);
+      }
+
+      .steps {
+        display: grid;
+
+        grid-template-columns:
+          repeat(3, 1fr);
+
+        gap: 18px;
+      }
+
+      .step {
+        display: flex;
+
+        gap: 16px;
+
+        padding:
+          22px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius: 17px;
+
+        background:
+          var(--surface);
+      }
+
+      .step-number {
+        width: 42px;
+        height: 42px;
+
+        flex: 0 0 42px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 12px;
+
+        background:
+          linear-gradient(
+            135deg,
+            #2563eb,
+            #06b6d4
+          );
+
+        color: white;
+
+        font-family:
+          "JetBrains Mono",
+          monospace;
+
+        font-weight: 700;
+      }
+
+      .step h3 {
+        margin:
+          0 0
+          5px;
+
+        font-size: 0.95rem;
+      }
+
+      .step p {
+        margin: 0;
+
+        color:
+          var(--muted);
+
+        font-size: 0.76rem;
+
+        line-height: 1.8;
+      }
+
+      /* FAQ */
+
+      .faq-list {
+        max-width: 850px;
+
+        margin: 0 auto;
+      }
+
+      details {
+        overflow: hidden;
+
+        margin-bottom: 10px;
+
+        border:
+          1px solid
+          var(--border);
+
+        border-radius: 13px;
+
+        background:
+          var(--surface);
+      }
+
+      summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 15px;
+
+        padding:
+          18px 20px;
+
+        cursor: pointer;
+
+        list-style: none;
+
+        font-size: 0.86rem;
+        font-weight: 700;
+      }
+
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      summary i {
+        color:
+          var(--primary);
+
+        transition:
+          transform 0.2s ease;
+      }
+
+      details[open] summary i {
+        transform:
+          rotate(180deg);
+      }
+
+      details p {
+        margin: 0;
+
+        padding:
+          0 20px
+          20px;
+
+        color:
+          var(--muted);
+
+        font-size: 0.78rem;
+
+        line-height: 1.9;
+      }
+
+      /* RESPONSIVE */
+
+      @media (max-width: 850px) {
+        .info-grid,
+        .steps {
+          grid-template-columns:
+            1fr;
+        }
+
+        .stats-grid {
+          grid-template-columns:
+            repeat(2, 1fr);
+        }
+
+        .rgb-input-grid {
+          grid-template-columns:
+            1fr;
+        }
+      }
+
+      @media (max-width: 680px) {
+        .container {
+          width:
+            min(
+              calc(100% - 22px),
+              1120px
+            );
+        }
+
+        .hero {
+          padding:
+            30px 0
+            38px;
+        }
+
+        .breadcrumb {
+          margin-bottom:
+            27px;
+        }
+
+        .hero-content {
+          align-items:
+            flex-start;
+
+          gap: 18px;
+        }
+
+        .hero-icon {
+          width: 76px;
+          height: 76px;
+
+          flex: 0 0 76px;
+
+          border-radius: 20px;
+
+          font-size: 1.8rem;
+        }
+
+        .color-preview {
+          width: 14px;
+          height: 14px;
+
+          left: 10px;
+          bottom: 10px;
+
+          border-width: 2px;
+        }
+
+        h1 {
+          font-size: 1.7rem;
+        }
+
+        .hero-text p {
+          font-size: 0.85rem;
+        }
+
+        .tags span {
+          font-size: 0.65rem;
+        }
+
+        .card-topbar {
+          padding:
+            0 13px;
+        }
+
+        .window-dots {
+          width: 65px;
+        }
+
+        .secure {
+          width: 65px;
+
+          font-size: 0.68rem;
+        }
+
+        .actionbar {
+          flex-direction: column;
+
+          align-items: stretch;
+
+          padding: 14px;
+        }
+
+        .action-group {
+          width: 100%;
+        }
+
+        .action-group .btn {
+          flex: 1;
+        }
+
+        .rgb-input-section,
+        .picker-section,
+        .output-section,
+        .raw-section {
+          padding:
+            20px 15px 0;
+        }
+
+        .result-box {
+          margin:
+            20px 15px 0;
+        }
+
+        .stats-grid {
+          padding:
+            20px 15px;
+        }
+
+        .security-note {
+          margin:
+            0 15px
+            20px;
+        }
+
+        .picker-preview {
+          flex-direction: column;
+        }
+
+        .large-color {
+          width: 100%;
+
+          min-height: 105px;
+        }
+
+        .picker-info {
+          min-height: 85px;
+        }
+      }
+
+      @media (max-width: 430px) {
+        .hero-content {
+          flex-direction: column;
+        }
+
+        .hero-icon {
+          width: 70px;
+          height: 70px;
+        }
+
+        .stats-grid {
+          grid-template-columns:
+            1fr;
+        }
+
+        .btn {
+          padding:
+            0 10px;
+
+          font-size: 0.76rem;
+        }
+
+        .number-input {
+          height: 52px;
+        }
+
+        .number-input input {
+          font-size: 0.95rem;
+        }
+      }
+    </style>
+  </body>
+</html>
