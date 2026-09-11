@@ -1,0 +1,2467 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Timestamp Converter - تحويل Unix Timestamp أونلاين | Th.Tech";
+
+const description =
+  "أداة Timestamp Converter مجانية لتحويل Unix Timestamp إلى تاريخ ووقت والعكس، مباشرة داخل المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هو Unix Timestamp؟",
+    a: "Unix Timestamp هو عدد الثواني المنقضية منذ 1 يناير 1970 عند منتصف الليل بتوقيت UTC، ويستخدم على نطاق واسع في البرمجة والأنظمة."
+  },
+  {
+    q: "ما الفرق بين Timestamp بالثواني والميلي ثانية؟",
+    a: "Unix Timestamp التقليدي يستخدم الثواني، بينما JavaScript يستخدم غالباً الميلي ثانية. لذلك يكون Timestamp بالميلي ثانية أكبر بألف مرة تقريباً."
+  },
+  {
+    q: "هل يتم إرسال البيانات إلى الخادم؟",
+    a: "لا. تتم جميع عمليات التحويل داخل المتصفح باستخدام JavaScript ولا يتم إرسال البيانات إلى خادم خارجي."
+  },
+  {
+    q: "ما هو توقيت Unix Timestamp؟",
+    a: "Unix Timestamp يعتمد على UTC ولا يتأثر بالمنطقة الزمنية. عند تحويله إلى تاريخ ووقت يمكن عرضه بالتوقيت المحلي لجهازك."
+  }
+];
+---
+
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="index, follow" />
+
+  <link
+    rel="canonical"
+    href={`https://oumaystore-hub.github.io${base}/tools/timestamp-converter/`}
+  />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <script is:inline>
+    (() => {
+      try {
+        const saved = localStorage.getItem("theme");
+
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark-mode");
+        } else {
+          document.documentElement.classList.remove("dark-mode");
+        }
+      } catch {}
+    })();
+  </script>
+</head>
+
+<body>
+  <Header />
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <a href={`${base}/tools/`}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <span>Timestamp Converter</span>
+        </div>
+
+        <div class="hero-content">
+
+          <div class="hero-icon">
+            <i class="fa-solid fa-clock"></i>
+            <span>TIME</span>
+          </div>
+
+          <div class="hero-text">
+
+            <div class="badge">
+              <i class="fa-solid fa-code"></i>
+              Developer Tools
+            </div>
+
+            <h1>Timestamp Converter</h1>
+
+            <p>
+              حوّل Unix Timestamp إلى تاريخ ووقت والعكس بسرعة وسهولة.
+            </p>
+
+            <div class="tags">
+              <span>UNIX</span>
+              <span>Timestamp</span>
+              <span>UTC</span>
+              <span>Local</span>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- TOOL -->
+    <section class="tool-section">
+      <div class="container">
+
+        <div class="converter-card">
+
+          <div class="card-topbar">
+
+            <div class="window-dots">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <div class="tool-name">
+              <i class="fa-solid fa-clock"></i>
+              Timestamp Converter
+            </div>
+
+            <div class="secure">
+              <i class="fa-solid fa-shield-halved"></i>
+              Local
+            </div>
+
+          </div>
+
+
+          <div class="actionbar">
+
+            <button id="nowBtn" class="btn btn-secondary">
+              <i class="fa-solid fa-bolt"></i>
+              الآن
+            </button>
+
+            <button id="exampleBtn" class="btn btn-secondary">
+              <i class="fa-solid fa-flask"></i>
+              مثال
+            </button>
+
+            <button id="clearBtn" class="btn btn-secondary">
+              <i class="fa-solid fa-eraser"></i>
+              مسح
+            </button>
+
+            <button id="convertBtn" class="btn btn-primary">
+              <i class="fa-solid fa-arrows-rotate"></i>
+              تحويل
+            </button>
+
+          </div>
+
+
+          <div class="converter-grid">
+
+            <!-- TIMESTAMP -->
+            <div class="panel">
+
+              <div class="panel-header">
+                <div>
+                  <i class="fa-solid fa-hashtag"></i>
+                  Unix Timestamp
+                </div>
+
+                <span>Seconds</span>
+              </div>
+
+              <div class="input-wrap">
+
+                <input
+                  id="timestampInput"
+                  type="text"
+                  inputmode="numeric"
+                  placeholder="مثال: 1725446400"
+                  autocomplete="off"
+                />
+
+                <button
+                  id="copyTimestampBtn"
+                  class="mini-copy"
+                  type="button"
+                  title="نسخ"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+
+              </div>
+
+              <p class="field-help">
+                أدخل Timestamp بالثواني منذ 1 يناير 1970.
+              </p>
+
+            </div>
+
+
+            <div class="swap-icon">
+              <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            </div>
+
+
+            <!-- DATE -->
+            <div class="panel">
+
+              <div class="panel-header">
+                <div>
+                  <i class="fa-regular fa-calendar"></i>
+                  Date & Time
+                </div>
+
+                <span>Local</span>
+              </div>
+
+              <input
+                id="dateInput"
+                type="datetime-local"
+                step="1"
+              />
+
+              <p class="field-help">
+                أدخل التاريخ والوقت بالتوقيت المحلي لجهازك.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- RESULT -->
+          <div class="result-box" id="resultBox">
+
+            <div class="result-icon" id="resultIcon">
+              <i class="fa-solid fa-circle-question"></i>
+            </div>
+
+            <div class="result-content">
+
+              <strong id="resultTitle">
+                جاهز للتحويل
+              </strong>
+
+              <p id="resultMessage">
+                أدخل Timestamp أو تاريخاً ثم اضغط على تحويل.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- OUTPUT -->
+          <div class="output-section">
+
+            <div class="editor-header">
+
+              <div>
+                <i class="fa-solid fa-clock"></i>
+                تفاصيل الوقت
+              </div>
+
+              <span id="timezoneLabel">LOCAL</span>
+
+            </div>
+
+
+            <div class="details-grid">
+
+              <div class="detail-card">
+
+                <span>
+                  <i class="fa-solid fa-hashtag"></i>
+                  Unix Seconds
+                </span>
+
+                <strong
+                  id="outputSeconds"
+                  dir="ltr"
+                >
+                  —
+                </strong>
+
+                <button
+                  class="copy-detail"
+                  data-copy="outputSeconds"
+                  type="button"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+
+              </div>
+
+
+              <div class="detail-card">
+
+                <span>
+                  <i class="fa-solid fa-bolt"></i>
+                  Milliseconds
+                </span>
+
+                <strong
+                  id="outputMilliseconds"
+                  dir="ltr"
+                >
+                  —
+                </strong>
+
+                <button
+                  class="copy-detail"
+                  data-copy="outputMilliseconds"
+                  type="button"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+
+              </div>
+
+
+              <div class="detail-card wide">
+
+                <span>
+                  <i class="fa-regular fa-calendar"></i>
+                  Local Date
+                </span>
+
+                <strong
+                  id="outputLocal"
+                  dir="ltr"
+                >
+                  —
+                </strong>
+
+                <button
+                  class="copy-detail"
+                  data-copy="outputLocal"
+                  type="button"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+
+              </div>
+
+
+              <div class="detail-card wide">
+
+                <span>
+                  <i class="fa-solid fa-globe"></i>
+                  UTC Date
+                </span>
+
+                <strong
+                  id="outputUtc"
+                  dir="ltr"
+                >
+                  —
+                </strong>
+
+                <button
+                  class="copy-detail"
+                  data-copy="outputUtc"
+                  type="button"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- STATS -->
+          <div class="stats-grid">
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-clock"></i>
+              </div>
+
+              <div>
+                <span>Timestamp</span>
+                <strong id="statTimestamp">0</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-calendar-days"></i>
+              </div>
+
+              <div>
+                <span>السنة</span>
+                <strong id="statYear">—</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-globe"></i>
+              </div>
+
+              <div>
+                <span>Timezone</span>
+                <strong id="statTimezone">—</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+
+              <div>
+                <span>الحالة</span>
+                <strong id="statStatus">جاهز</strong>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- NOTE -->
+          <div class="security-note">
+
+            <div class="security-icon">
+              <i class="fa-solid fa-circle-info"></i>
+            </div>
+
+            <div>
+
+              <strong>معلومة مهمة</strong>
+
+              <p>
+                Unix Timestamp يعتمد على UTC ولا يتأثر بالمنطقة الزمنية.
+                عند تحويله إلى تاريخ يتم عرض النتيجة بالتوقيت المحلي
+                لجهازك، مع توفير نسخة UTC أيضاً.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- INFO -->
+    <section class="info-section">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>TIMESTAMP CONVERTER</span>
+
+          <h2>
+            ما هو Timestamp Converter؟
+          </h2>
+
+          <p>
+            أداة تساعد المطورين على تحويل Unix Timestamp بين الثواني
+            والتاريخ والوقت بسهولة مباشرة داخل المتصفح.
+          </p>
+
+        </div>
+
+
+        <div class="info-grid">
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-clock"></i>
+            </div>
+
+            <h3>Unix Timestamp</h3>
+
+            <p>
+              يمثل عدد الثواني المنقضية منذ بداية Unix Epoch في
+              1 يناير 1970 بتوقيت UTC.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-arrows-rotate"></i>
+            </div>
+
+            <h3>تحويل في الاتجاهين</h3>
+
+            <p>
+              يمكنك تحويل Timestamp إلى تاريخ ووقت أو تحويل التاريخ
+              والوقت إلى Unix Timestamp.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-laptop-code"></i>
+            </div>
+
+            <h3>يعمل محلياً</h3>
+
+            <p>
+              جميع العمليات تتم داخل المتصفح باستخدام JavaScript
+              دون إرسال البيانات إلى خادم خارجي.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- HOW TO -->
+    <section class="how-section">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>HOW IT WORKS</span>
+
+          <h2>
+            كيفية استخدام Timestamp Converter
+          </h2>
+
+        </div>
+
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">
+              1
+            </div>
+
+            <div>
+              <h3>أدخل القيمة</h3>
+
+              <p>
+                أدخل Unix Timestamp بالثواني أو اختر تاريخاً ووقتاً
+                من حقل التاريخ.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              2
+            </div>
+
+            <div>
+              <h3>اضغط تحويل</h3>
+
+              <p>
+                اضغط على زر تحويل لمعالجة القيمة مباشرة داخل المتصفح.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              3
+            </div>
+
+            <div>
+              <h3>استخدم النتيجة</h3>
+
+              <p>
+                احصل على Timestamp بالثواني والميلي ثانية والتاريخ
+                المحلي وتاريخ UTC.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>FAQ</span>
+
+          <h2>
+            الأسئلة الشائعة
+          </h2>
+
+        </div>
+
+
+        <div class="faq-list">
+
+          {faqs.map((faq) => (
+            <details>
+
+              <summary>
+                <span>{faq.q}</span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>{faq.a}</p>
+
+            </details>
+          ))}
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <Footer />
+
+
+  <script is:inline>
+    (() => {
+
+      const timestampInput =
+        document.getElementById("timestampInput");
+
+      const dateInput =
+        document.getElementById("dateInput");
+
+      const convertBtn =
+        document.getElementById("convertBtn");
+
+      const nowBtn =
+        document.getElementById("nowBtn");
+
+      const exampleBtn =
+        document.getElementById("exampleBtn");
+
+      const clearBtn =
+        document.getElementById("clearBtn");
+
+      const copyTimestampBtn =
+        document.getElementById("copyTimestampBtn");
+
+      const resultBox =
+        document.getElementById("resultBox");
+
+      const resultIcon =
+        document.getElementById("resultIcon");
+
+      const resultTitle =
+        document.getElementById("resultTitle");
+
+      const resultMessage =
+        document.getElementById("resultMessage");
+
+      const outputSeconds =
+        document.getElementById("outputSeconds");
+
+      const outputMilliseconds =
+        document.getElementById("outputMilliseconds");
+
+      const outputLocal =
+        document.getElementById("outputLocal");
+
+      const outputUtc =
+        document.getElementById("outputUtc");
+
+      const timezoneLabel =
+        document.getElementById("timezoneLabel");
+
+      const statTimestamp =
+        document.getElementById("statTimestamp");
+
+      const statYear =
+        document.getElementById("statYear");
+
+      const statTimezone =
+        document.getElementById("statTimezone");
+
+      const statStatus =
+        document.getElementById("statStatus");
+
+
+      const timezone =
+        Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+
+      statTimezone.textContent =
+        timezone || "Local";
+
+      timezoneLabel.textContent =
+        timezone || "LOCAL";
+
+
+      function setResult(type, title, message) {
+
+        resultBox.classList.remove(
+          "success",
+          "error"
+        );
+
+        if (type === "success") {
+
+          resultBox.classList.add("success");
+
+          resultIcon.innerHTML =
+            '<i class="fa-solid fa-circle-check"></i>';
+
+        } else if (type === "error") {
+
+          resultBox.classList.add("error");
+
+          resultIcon.innerHTML =
+            '<i class="fa-solid fa-circle-exclamation"></i>';
+
+        } else {
+
+          resultIcon.innerHTML =
+            '<i class="fa-solid fa-circle-question"></i>';
+        }
+
+        resultTitle.textContent = title;
+        resultMessage.textContent = message;
+      }
+
+
+      function formatLocal(date) {
+
+        return new Intl.DateTimeFormat(
+          "en-GB",
+          {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+            hour: "2-digit",
+            minute: "2-digit",
+            second: "2-digit",
+            hour12: false
+          }
+        ).format(date);
+      }
+
+
+      function formatUTC(date) {
+
+        const year =
+          date.getUTCFullYear();
+
+        const month =
+          String(date.getUTCMonth() + 1)
+            .padStart(2, "0");
+
+        const day =
+          String(date.getUTCDate())
+            .padStart(2, "0");
+
+        const hours =
+          String(date.getUTCHours())
+            .padStart(2, "0");
+
+        const minutes =
+          String(date.getUTCMinutes())
+            .padStart(2, "0");
+
+        const seconds =
+          String(date.getUTCSeconds())
+            .padStart(2, "0");
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds} UTC`;
+      }
+
+
+      function formatDateInput(date) {
+
+        const year =
+          date.getFullYear();
+
+        const month =
+          String(date.getMonth() + 1)
+            .padStart(2, "0");
+
+        const day =
+          String(date.getDate())
+            .padStart(2, "0");
+
+        const hours =
+          String(date.getHours())
+            .padStart(2, "0");
+
+        const minutes =
+          String(date.getMinutes())
+            .padStart(2, "0");
+
+        const seconds =
+          String(date.getSeconds())
+            .padStart(2, "0");
+
+        return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+      }
+
+
+      function showResult(date, timestamp) {
+
+        const milliseconds =
+          date.getTime();
+
+        outputSeconds.textContent =
+          String(timestamp);
+
+        outputMilliseconds.textContent =
+          String(milliseconds);
+
+        outputLocal.textContent =
+          formatLocal(date);
+
+        outputUtc.textContent =
+          formatUTC(date);
+
+        statTimestamp.textContent =
+          String(timestamp);
+
+        statYear.textContent =
+          String(date.getFullYear());
+
+        statStatus.textContent =
+          "تم";
+
+        setResult(
+          "success",
+          "تم التحويل بنجاح",
+          "تم تحويل Timestamp والتاريخ والوقت مباشرة داخل المتصفح."
+        );
+      }
+
+
+      function convertFromTimestamp() {
+
+        const value =
+          timestampInput.value.trim();
+
+        if (!value) {
+
+          setResult(
+            "error",
+            "لا يوجد Timestamp",
+            "أدخل Unix Timestamp أولاً."
+          );
+
+          return;
+        }
+
+
+        if (!/^-?\d+(?:\.\d+)?$/.test(value)) {
+
+          setResult(
+            "error",
+            "قيمة غير صالحة",
+            "أدخل Timestamp رقمياً بالثواني."
+          );
+
+          return;
+        }
+
+
+        const seconds =
+          Number(value);
+
+        const milliseconds =
+          seconds * 1000;
+
+
+        if (!Number.isFinite(milliseconds)) {
+
+          setResult(
+            "error",
+            "قيمة كبيرة جداً",
+            "القيمة المدخلة تتجاوز النطاق المدعوم."
+          );
+
+          return;
+        }
+
+
+        const date =
+          new Date(milliseconds);
+
+
+        if (Number.isNaN(date.getTime())) {
+
+          setResult(
+            "error",
+            "Timestamp غير صالح",
+            "تعذر تحويل القيمة إلى تاريخ."
+          );
+
+          return;
+        }
+
+
+        dateInput.value =
+          formatDateInput(date);
+
+        showResult(
+          date,
+          Math.floor(seconds)
+        );
+      }
+
+
+      function convertFromDate() {
+
+        const value =
+          dateInput.value;
+
+        if (!value) {
+
+          setResult(
+            "error",
+            "لا يوجد تاريخ",
+            "اختر تاريخاً ووقتاً أولاً."
+          );
+
+          return;
+        }
+
+
+        const date =
+          new Date(value);
+
+
+        if (Number.isNaN(date.getTime())) {
+
+          setResult(
+            "error",
+            "تاريخ غير صالح",
+            "تعذر قراءة التاريخ والوقت."
+          );
+
+          return;
+        }
+
+
+        const milliseconds =
+          date.getTime();
+
+        const timestamp =
+          Math.floor(milliseconds / 1000);
+
+
+        timestampInput.value =
+          String(timestamp);
+
+        showResult(
+          date,
+          timestamp
+        );
+      }
+
+
+      function convert() {
+
+        const timestamp =
+          timestampInput.value.trim();
+
+        const date =
+          dateInput.value;
+
+
+        if (timestamp) {
+
+          convertFromTimestamp();
+
+        } else if (date) {
+
+          convertFromDate();
+
+        } else {
+
+          setResult(
+            "error",
+            "لا توجد قيمة",
+            "أدخل Timestamp أو اختر تاريخاً ووقتاً."
+          );
+
+        }
+      }
+
+
+      function setNow() {
+
+        const now =
+          new Date();
+
+        const timestamp =
+          Math.floor(
+            now.getTime() / 1000
+          );
+
+
+        timestampInput.value =
+          String(timestamp);
+
+        dateInput.value =
+          formatDateInput(now);
+
+        showResult(
+          now,
+          timestamp
+        );
+      }
+
+
+      function setExample() {
+
+        const date =
+          new Date("2024-01-01T00:00:00");
+
+        const timestamp =
+          Math.floor(
+            date.getTime() / 1000
+          );
+
+
+        timestampInput.value =
+          String(timestamp);
+
+        dateInput.value =
+          formatDateInput(date);
+
+        showResult(
+          date,
+          timestamp
+        );
+      }
+
+
+      function clearAll() {
+
+        timestampInput.value = "";
+        dateInput.value = "";
+
+        outputSeconds.textContent = "—";
+        outputMilliseconds.textContent = "—";
+        outputLocal.textContent = "—";
+        outputUtc.textContent = "—";
+
+        statTimestamp.textContent = "0";
+        statYear.textContent = "—";
+        statStatus.textContent = "جاهز";
+
+        setResult(
+          "default",
+          "جاهز للتحويل",
+          "أدخل Timestamp أو تاريخاً ثم اضغط على تحويل."
+        );
+
+        timestampInput.focus();
+      }
+
+
+      async function copyText(text) {
+
+        if (
+          !text ||
+          text === "—"
+        ) {
+          return false;
+        }
+
+
+        try {
+
+          await navigator.clipboard.writeText(text);
+
+          return true;
+
+        } catch {
+
+          const textarea =
+            document.createElement("textarea");
+
+          textarea.value = text;
+
+          textarea.style.position = "fixed";
+          textarea.style.opacity = "0";
+
+          document.body.appendChild(textarea);
+
+          textarea.select();
+
+          const success =
+            document.execCommand("copy");
+
+          textarea.remove();
+
+          return success;
+        }
+      }
+
+
+      async function copyTimestamp() {
+
+        const value =
+          timestampInput.value.trim();
+
+        if (!value) {
+
+          setResult(
+            "error",
+            "لا توجد قيمة",
+            "أدخل Timestamp أولاً ثم حاول النسخ."
+          );
+
+          return;
+        }
+
+
+        const copied =
+          await copyText(value);
+
+
+        if (copied) {
+
+          setResult(
+            "success",
+            "تم النسخ",
+            "تم نسخ Unix Timestamp إلى الحافظة."
+          );
+
+        }
+
+      }
+
+
+      convertBtn.addEventListener(
+        "click",
+        convert
+      );
+
+
+      nowBtn.addEventListener(
+        "click",
+        setNow
+      );
+
+
+      exampleBtn.addEventListener(
+        "click",
+        setExample
+      );
+
+
+      clearBtn.addEventListener(
+        "click",
+        clearAll
+      );
+
+
+      copyTimestampBtn.addEventListener(
+        "click",
+        copyTimestamp
+      );
+
+
+      timestampInput.addEventListener(
+        "keydown",
+        (event) => {
+
+          if (event.key === "Enter") {
+            convertFromTimestamp();
+          }
+
+        }
+      );
+
+
+      dateInput.addEventListener(
+        "keydown",
+        (event) => {
+
+          if (event.key === "Enter") {
+            convertFromDate();
+          }
+
+        }
+      );
+
+
+      document
+        .querySelectorAll(".copy-detail")
+        .forEach((button) => {
+
+          button.addEventListener(
+            "click",
+            async () => {
+
+              const id =
+                button.dataset.copy;
+
+              const element =
+                document.getElementById(id);
+
+              const text =
+                element?.textContent.trim();
+
+              const copied =
+                await copyText(text);
+
+
+              if (copied) {
+
+                setResult(
+                  "success",
+                  "تم النسخ",
+                  "تم نسخ القيمة إلى الحافظة."
+                );
+
+              }
+
+            }
+          );
+
+        });
+
+
+      setNow();
+
+    })();
+  </script>
+
+
+  <style>
+    :root {
+      --bg: #f7fafc;
+      --surface: #ffffff;
+      --surface-2: #f1f5f9;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --primary: #0ea5e9;
+      --primary-2: #06b6d4;
+      --primary-soft: rgba(14, 165, 233, 0.10);
+      --success: #16a34a;
+      --success-soft: rgba(22, 163, 74, 0.10);
+      --danger: #dc2626;
+      --danger-soft: rgba(220, 38, 38, 0.10);
+      --shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+    }
+
+
+    html.dark-mode {
+      --bg: #08070d;
+      --surface: #100d18;
+      --surface-2: #171321;
+      --border: #2a2337;
+      --text: #f8fafc;
+      --muted: #a1a1aa;
+      --primary: #22d3ee;
+      --primary-2: #0ea5e9;
+      --primary-soft: rgba(34, 211, 238, 0.12);
+      --success: #22c55e;
+      --success-soft: rgba(34, 197, 94, 0.12);
+      --danger: #ef4444;
+      --danger-soft: rgba(239, 68, 68, 0.12);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Cairo", sans-serif;
+      transition:
+        background 0.25s ease,
+        color 0.25s ease;
+    }
+
+
+    button,
+    input {
+      font-family: inherit;
+    }
+
+
+    .container {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+
+    /* HERO */
+
+    .hero {
+      padding: 42px 0 58px;
+      background:
+        radial-gradient(
+          circle at 10% 20%,
+          rgba(14, 165, 233, 0.12),
+          transparent 30%
+        ),
+        radial-gradient(
+          circle at 90% 80%,
+          rgba(6, 182, 212, 0.10),
+          transparent 30%
+        );
+      border-bottom: 1px solid var(--border);
+    }
+
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 38px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+
+    .breadcrumb a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+
+    .breadcrumb i {
+      font-size: 10px;
+      opacity: 0.6;
+    }
+
+
+    .hero-content {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+
+    .hero-icon {
+      width: 120px;
+      height: 120px;
+      flex: 0 0 120px;
+      border-radius: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      color: #fff;
+      background:
+        linear-gradient(
+          145deg,
+          #0284c7,
+          #06b6d4
+        );
+      box-shadow:
+        0 18px 40px rgba(14, 165, 233, 0.28);
+    }
+
+
+    .hero-icon i {
+      font-size: 38px;
+    }
+
+
+    .hero-icon span {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+
+    .hero-text {
+      min-width: 0;
+    }
+
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      color: var(--primary);
+      background: var(--primary-soft);
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 5vw, 48px);
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: -1px;
+    }
+
+
+    .hero-text p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.9;
+    }
+
+
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+
+    .tags span {
+      padding: 5px 11px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+    }
+
+
+    /* TOOL */
+
+    .tool-section {
+      padding: 58px 0;
+    }
+
+
+    .converter-card {
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+
+    .card-topbar {
+      min-height: 58px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 15px;
+      padding: 0 20px;
+      background: var(--surface-2);
+      border-bottom: 1px solid var(--border);
+    }
+
+
+    .window-dots {
+      display: flex;
+      gap: 7px;
+      direction: ltr;
+    }
+
+
+    .window-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border);
+    }
+
+
+    .tool-name {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+
+    .tool-name i {
+      color: var(--primary);
+    }
+
+
+    .secure {
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--success);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+
+    .actionbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+
+    .btn {
+      border: 0;
+      border-radius: 11px;
+      padding: 11px 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      transition:
+        transform 0.2s ease,
+        opacity 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+
+    .btn:hover {
+      transform: translateY(-1px);
+    }
+
+
+    .btn-primary {
+      margin-inline-start: auto;
+      color: #fff;
+      background:
+        linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-2)
+        );
+      box-shadow:
+        0 8px 20px rgba(14, 165, 233, 0.22);
+    }
+
+
+    .btn-secondary {
+      color: var(--text);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+    }
+
+
+    .converter-grid {
+      display: grid;
+      grid-template-columns: 1fr 54px 1fr;
+      align-items: center;
+      gap: 16px;
+      padding: 24px 20px;
+    }
+
+
+    .panel {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface-2);
+    }
+
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+
+    .panel-header div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+
+    .panel-header i {
+      color: var(--primary);
+    }
+
+
+    .panel-header span {
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 10px;
+    }
+
+
+    .input-wrap {
+      position: relative;
+    }
+
+
+    input[type="text"],
+    input[type="datetime-local"] {
+      width: 100%;
+      height: 52px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      background: var(--surface);
+      color: var(--text);
+      padding: 0 15px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 14px;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+
+    input:focus {
+      border-color: var(--primary);
+      box-shadow:
+        0 0 0 3px var(--primary-soft);
+    }
+
+
+    input[type="datetime-local"] {
+      direction: ltr;
+      text-align: left;
+    }
+
+
+    .input-wrap input {
+      padding-left: 50px;
+      direction: ltr;
+      text-align: left;
+    }
+
+
+    .mini-copy {
+      position: absolute;
+      left: 9px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 34px;
+      height: 34px;
+      border: 0;
+      border-radius: 8px;
+      background: var(--surface-2);
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+
+    .mini-copy:hover {
+      color: var(--primary);
+    }
+
+
+    .field-help {
+      margin: 9px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.7;
+    }
+
+
+    .swap-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 16px;
+    }
+
+
+    .result-box {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin: 0 20px 22px;
+      padding: 15px 17px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-2);
+    }
+
+
+    .result-box.success {
+      border-color: rgba(22, 163, 74, 0.25);
+      background: var(--success-soft);
+    }
+
+
+    .result-box.error {
+      border-color: rgba(220, 38, 38, 0.25);
+      background: var(--danger-soft);
+    }
+
+
+    .result-icon {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 40px;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+
+    .result-box.success .result-icon {
+      color: var(--success);
+      background: var(--success-soft);
+    }
+
+
+    .result-box.error .result-icon {
+      color: var(--danger);
+      background: var(--danger-soft);
+    }
+
+
+    .result-content {
+      min-width: 0;
+    }
+
+
+    .result-content strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 13px;
+    }
+
+
+    .result-content p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+
+    .output-section {
+      padding: 0 20px 22px;
+    }
+
+
+    .editor-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+
+    .editor-header div {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+    }
+
+
+    .editor-header i {
+      color: var(--primary);
+    }
+
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+
+    .detail-card {
+      position: relative;
+      min-width: 0;
+      padding: 16px 48px 16px 16px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-2);
+    }
+
+
+    .detail-card.wide {
+      grid-column: span 1;
+    }
+
+
+    .detail-card > span {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+
+    .detail-card > span i {
+      color: var(--primary);
+      margin-left: 4px;
+    }
+
+
+    .detail-card strong {
+      display: block;
+      overflow-x: auto;
+      color: var(--text);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+
+    .copy-detail {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+
+    .copy-detail:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      padding: 0 20px 22px;
+    }
+
+
+    .stat {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface-2);
+    }
+
+
+    .stat-icon {
+      width: 37px;
+      height: 37px;
+      flex: 0 0 37px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: var(--primary-soft);
+      color: var(--primary);
+    }
+
+
+    .stat span {
+      display: block;
+      margin-bottom: 2px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+
+    .stat strong {
+      display: block;
+      max-width: 120px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+    }
+
+
+    .security-note {
+      display: flex;
+      align-items: flex-start;
+      gap: 13px;
+      margin: 0 20px 20px;
+      padding: 15px;
+      border-radius: 14px;
+      background: var(--primary-soft);
+    }
+
+
+    .security-icon {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      background: rgba(14, 165, 233, 0.13);
+      color: var(--primary);
+    }
+
+
+    .security-note strong {
+      display: block;
+      margin-bottom: 3px;
+      font-size: 13px;
+    }
+
+
+    .security-note p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+
+    /* INFO */
+
+    .info-section,
+    .how-section,
+    .faq-section {
+      padding: 70px 0;
+    }
+
+
+    .info-section {
+      background: var(--surface-2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+
+    .section-heading {
+      max-width: 700px;
+      margin: 0 auto 35px;
+      text-align: center;
+    }
+
+
+    .section-heading > span {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--primary);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+
+    .section-heading h2 {
+      margin: 0 0 10px;
+      font-size: clamp(25px, 4vw, 34px);
+      font-weight: 800;
+    }
+
+
+    .section-heading p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.9;
+    }
+
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+
+    .info-card {
+      padding: 25px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+
+    .info-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow);
+    }
+
+
+    .info-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 18px;
+      border-radius: 13px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 19px;
+    }
+
+
+    .info-card h3 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+
+    .info-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+
+    /* STEPS */
+
+    .steps {
+      max-width: 820px;
+      margin: 0 auto;
+      display: grid;
+      gap: 14px;
+    }
+
+
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 17px;
+      padding: 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+    }
+
+
+    .step-number {
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background:
+        linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-2)
+        );
+      color: #fff;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 700;
+    }
+
+
+    .step h3 {
+      margin: 0 0 4px;
+      font-size: 15px;
+    }
+
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.8;
+    }
+
+
+    /* FAQ */
+
+    .faq-section {
+      background: var(--surface-2);
+      border-top: 1px solid var(--border);
+    }
+
+
+    .faq-list {
+      max-width: 820px;
+      margin: 0 auto;
+      display: grid;
+      gap: 10px;
+    }
+
+
+    details {
+      overflow: hidden;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+
+    summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 18px 20px;
+      cursor: pointer;
+      list-style: none;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+
+    summary i {
+      color: var(--primary);
+      font-size: 12px;
+      transition: transform 0.2s ease;
+    }
+
+
+    details[open] summary i {
+      transform: rotate(180deg);
+    }
+
+
+    details p {
+      margin: 0;
+      padding: 0 20px 20px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+
+    /* RESPONSIVE */
+
+    @media (max-width: 800px) {
+
+      .hero {
+        padding: 30px 0 45px;
+      }
+
+
+      .hero-content {
+        align-items: flex-start;
+      }
+
+
+      .hero-icon {
+        width: 90px;
+        height: 90px;
+        flex-basis: 90px;
+        border-radius: 23px;
+      }
+
+
+      .hero-icon i {
+        font-size: 28px;
+      }
+
+
+      .hero-icon span {
+        font-size: 9px;
+      }
+
+
+      .converter-grid {
+        grid-template-columns: 1fr;
+      }
+
+
+      .swap-icon {
+        margin: 0 auto;
+        transform: rotate(90deg);
+      }
+
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+
+    @media (max-width: 600px) {
+
+      .container {
+        width: min(100% - 22px, 1120px);
+      }
+
+
+      .hero-content {
+        flex-direction: column;
+      }
+
+
+      .hero-icon {
+        width: 82px;
+        height: 82px;
+        flex-basis: 82px;
+      }
+
+
+      .hero h1 {
+        font-size: 30px;
+      }
+
+
+      .hero-text p {
+        font-size: 14px;
+      }
+
+
+      .card-topbar {
+        grid-template-columns: auto 1fr auto;
+        padding: 0 13px;
+      }
+
+
+      .tool-name {
+        font-size: 11px;
+      }
+
+
+      .secure {
+        font-size: 10px;
+      }
+
+
+      .actionbar {
+        padding: 14px;
+      }
+
+
+      .btn {
+        flex: 1;
+        min-width: calc(50% - 5px);
+        padding: 10px 8px;
+        font-size: 11px;
+      }
+
+
+      .btn-primary {
+        margin-inline-start: 0;
+        min-width: 100%;
+      }
+
+
+      .converter-grid {
+        padding: 18px 14px;
+      }
+
+
+      .result-box {
+        margin: 0 14px 18px;
+      }
+
+
+      .output-section {
+        padding: 0 14px 18px;
+      }
+
+
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+
+
+      .detail-card.wide {
+        grid-column: span 1;
+      }
+
+
+      .stats-grid {
+        grid-template-columns: 1fr 1fr;
+        padding: 0 14px 18px;
+      }
+
+
+      .security-note {
+        margin: 0 14px 14px;
+      }
+
+
+      .info-section,
+      .how-section,
+      .faq-section {
+        padding: 50px 0;
+      }
+
+
+      .section-heading {
+        margin-bottom: 25px;
+      }
+
+
+      .step {
+        padding: 16px;
+      }
+
+    }
+
+
+    @media (max-width: 380px) {
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+
+      .btn {
+        min-width: 100%;
+      }
+
+    }
+  </style>
+
+
+  <!-- THEME SYNC -->
+  <script is:inline>
+    (() => {
+
+      function syncTheme() {
+
+        try {
+
+          const saved =
+            localStorage.getItem("theme");
+
+          if (saved === "dark") {
+
+            document.documentElement.classList.add(
+              "dark-mode"
+            );
+
+          } else {
+
+            document.documentElement.classList.remove(
+              "dark-mode"
+            );
+
+          }
+
+        } catch {}
+
+      }
+
+
+      syncTheme();
+
+
+      window.addEventListener(
+        "themeChange",
+        syncTheme
+      );
+
+
+      document.addEventListener(
+        "click",
+        (event) => {
+
+          const button =
+            event.target.closest("#theme-btn");
+
+          if (button) {
+
+            setTimeout(
+              syncTheme,
+              0
+            );
+
+          }
+
+        }
+      );
+
+    })();
+  </script>
+
+</body>
+</html>
