@@ -1,0 +1,1274 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const title = "Character Counter - حساب الأحرف والكلمات أونلاين | Th.Tech";
+const description =
+"أداة Character Counter مجانية لحساب الأحرف والكلمات والأسطر والفقرات مع وبدون مسافات، مباشرة من المتصفح.";
+const canonical =
+"https://oumaystore-hub.github.io" +
+base +
+"/tools/character-counter/";
+---
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<meta name="robots" content="index, follow" />
+<link rel="canonical" href={canonical} />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+rel="stylesheet"
+/>
+<link
+rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+/>
+<script is:inline>
+(() => {
+try {
+const saved = localStorage.getItem("theme");
+if (saved === "dark") {
+document.documentElement.classList.add("dark-mode");
+}
+} catch {}
+})();
+</script>
+</head>
+<body>
+<Header />
+<main class="tool-page">
+<!-- Breadcrumb -->
+<div class="container">
+<nav class="breadcrumb" aria-label="مسار الصفحة">
+<a href={base + "/"}>الرئيسية</a>
+<i class="fa-solid fa-chevron-left"></i>
+<a href={base + "/tools/"}>الأدوات</a>
+<i class="fa-solid fa-chevron-left"></i>
+<span>Character Counter</span>
+</nav>
+</div>
+<!-- Hero -->
+<section class="hero">
+<div class="container">
+<div class="hero-card">
+<div class="hero-icon">
+<i class="fa-solid fa-i-cursor"></i>
+</div>
+<div class="hero-content">
+<div class="eyebrow">
+<span class="dot"></span>
+Text Tools
+</div>
+<h1>Character Counter</h1>
+<p>
+احسب عدد الأحرف والكلمات والأسطر والفقرات في النص بسرعة ودقة.
+</p>
+<div class="tags">
+<span>Characters</span>
+<span>Words</span>
+<span>Lines</span>
+<span>Local</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tool -->
+<section class="tool-section">
+<div class="container">
+<div class="tool-card">
+<!-- Header -->
+<div class="tool-header">
+<div class="header-title">
+<div class="header-icon">
+<i class="fa-solid fa-file-lines"></i>
+</div>
+<div>
+<strong>محلل النص</strong>
+<span>اكتب أو الصق النص وسيتم الحساب تلقائياً</span>
+</div>
+</div>
+<div class="live-badge">
+<span></span>
+مباشر
+</div>
+</div>
+<!-- Editor -->
+<div class="editor-wrapper">
+<div class="editor-label">
+<span>
+<i class="fa-solid fa-pen-to-square"></i>
+النص
+</span>
+<span id="liveCount">0 حرف</span>
+</div>
+<textarea
+id="inputText"
+dir="auto"
+spellcheck="false"
+placeholder="اكتب أو الصق النص هنا...
+مثال:
+Th.Tech منصة تقنية مجانية.
+اكتشف أدوات مفيدة للمطورين.
+تعلم وابتكر مباشرة من المتصفح."
+></textarea>
+</div>
+<!-- Actions -->
+<div class="actions">
+<div class="main-actions">
+<button class="btn primary" id="sampleBtn" type="button">
+<i class="fa-solid fa-flask"></i>
+تجربة مثال
+</button>
+<button class="btn secondary" id="copyBtn" type="button">
+<i class="fa-regular fa-copy"></i>
+نسخ النص
+</button>
+</div>
+<button class="btn utility danger" id="clearBtn" type="button">
+<i class="fa-solid fa-trash-can"></i>
+مسح النص
+</button>
+</div>
+<!-- Status -->
+<div class="status" id="status">
+<i class="fa-solid fa-circle-info"></i>
+ابدأ بكتابة النص وستظهر النتائج مباشرة.
+</div>
+<!-- Stats -->
+<div class="stats-grid">
+<div class="stat-card featured">
+<div class="stat-icon">
+<i class="fa-solid fa-i-cursor"></i>
+</div>
+<div class="stat-content">
+<span>الأحرف</span>
+<strong id="charsStat">0</strong>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon green">
+<i class="fa-solid fa-text-width"></i>
+</div>
+<div class="stat-content">
+<span>بدون مسافات</span>
+<strong id="noSpaceStat">0</strong>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon purple">
+<i class="fa-solid fa-font"></i>
+</div>
+<div class="stat-content">
+<span>الكلمات</span>
+<strong id="wordsStat">0</strong>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon orange">
+<i class="fa-solid fa-list-ol"></i>
+</div>
+<div class="stat-content">
+<span>الأسطر</span>
+<strong id="linesStat">0</strong>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon cyan">
+<i class="fa-solid fa-paragraph"></i>
+</div>
+<div class="stat-content">
+<span>الفقرات</span>
+<strong id="paragraphsStat">0</strong>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon pink">
+<i class="fa-solid fa-arrows-left-right"></i>
+</div>
+<div class="stat-content">
+<span>المسافات</span>
+<strong id="spacesStat">0</strong>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon blue">
+<i class="fa-solid fa-code"></i>
+</div>
+<div class="stat-content">
+<span>UTF-8 Bytes</span>
+<strong id="bytesStat">0</strong>
+</div>
+</div>
+<div class="stat-card">
+<div class="stat-icon teal">
+<i class="fa-solid fa-ruler-horizontal"></i>
+</div>
+<div class="stat-content">
+<span>أطول سطر</span>
+<strong id="longestStat">0</strong>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Privacy -->
+<section class="container info-section">
+<div class="privacy-card">
+<div class="privacy-icon">
+<i class="fa-solid fa-shield-halved"></i>
+</div>
+<div>
+<h3>خصوصيتك محفوظة</h3>
+<p>
+يتم تحليل النص بالكامل داخل متصفحك ولا يتم إرساله إلى أي خادم.
+</p>
+</div>
+<span class="local-badge">
+<i class="fa-solid fa-bolt"></i>
+معالجة محلية
+</span>
+</div>
+</section>
+<!-- Info -->
+<section class="container info-section">
+<div class="section-heading">
+<span>دليل الأداة</span>
+<h2>ماذا يحسب Character Counter؟</h2>
+<p>
+مجموعة شاملة من إحصائيات النص في مكان واحد.
+</p>
+</div>
+<div class="info-grid">
+<article class="info-card">
+<div class="info-number">01</div>
+<div class="info-card-icon">
+<i class="fa-solid fa-i-cursor"></i>
+</div>
+<h3>الأحرف</h3>
+<p>
+احصل على عدد الأحرف الإجمالي في النص، بالإضافة إلى عدد الأحرف
+بعد استبعاد جميع المسافات.
+</p>
+</article>
+<article class="info-card">
+<div class="info-number">02</div>
+<div class="info-card-icon">
+<i class="fa-solid fa-font"></i>
+</div>
+<h3>الكلمات والأسطر</h3>
+<p>
+تعرف على عدد الكلمات والأسطر الموجودة في النص بشكل مباشر.
+</p>
+</article>
+<article class="info-card">
+<div class="info-number">03</div>
+<div class="info-card-icon">
+<i class="fa-solid fa-chart-simple"></i>
+</div>
+<h3>إحصائيات إضافية</h3>
+<p>
+احسب الفقرات والمسافات وحجم النص بالـ UTF-8 وأطول سطر.
+</p>
+</article>
+</div>
+</section>
+<!-- Steps -->
+<section class="container steps-section">
+<div class="section-heading">
+<span>طريقة الاستخدام</span>
+<h2>احسب الأحرف في 3 خطوات</h2>
+</div>
+<div class="steps">
+<div class="step">
+<div class="step-number">1</div>
+<div>
+<h3>أدخل النص</h3>
+<p>
+اكتب أو الصق النص داخل مربع المحرر.
+</p>
+</div>
+</div>
+<div class="step">
+<div class="step-number">2</div>
+<div>
+<h3>التحليل المباشر</h3>
+<p>
+سيتم تحديث جميع العدادات أثناء الكتابة.
+</p>
+</div>
+</div>
+<div class="step">
+<div class="step-number">3</div>
+<div>
+<h3>استخدم النتائج</h3>
+<p>
+انسخ النص أو امسحه وابدأ تحليلاً جديداً.
+</p>
+</div>
+</div>
+</div>
+</section>
+<!-- FAQ -->
+<section class="container faq-section">
+<div class="section-heading">
+<span>الأسئلة الشائعة</span>
+<h2>أسئلة حول حساب الأحرف</h2>
+</div>
+<div class="faq-grid">
+<details>
+<summary>
+<span>هل يتم احتساب المسافات كأحرف؟</span>
+<i class="fa-solid fa-plus"></i>
+</summary>
+<p>
+يعرض الموقع عدادين منفصلين: عدد الأحرف الإجمالي، وعدد الأحرف
+بعد إزالة المسافات وجميع أنواع الفراغات.
+</p>
+</details>
+<details>
+<summary>
+<span>هل الأداة تدعم اللغة العربية؟</span>
+<i class="fa-solid fa-plus"></i>
+</summary>
+<p>
+نعم. الأداة تعمل مع النصوص العربية والإنجليزية واللغات الأخرى
+التي يدعمها المتصفح.
+</p>
+</details>
+<details>
+<summary>
+<span>هل يتم إرسال النص إلى الخادم؟</span>
+<i class="fa-solid fa-plus"></i>
+</summary>
+<p>
+لا. جميع عمليات الحساب تتم محلياً داخل المتصفح، لذلك لا يحتاج
+النص إلى مغادرة جهازك.
+</p>
+</details>
+<details>
+<summary>
+<span>ما المقصود بـ UTF-8 Bytes؟</span>
+<i class="fa-solid fa-plus"></i>
+</summary>
+<p>
+هو الحجم الذي يشغله النص عند ترميزه باستخدام UTF-8. قد تختلف
+قيمة الـ Bytes عن عدد الأحرف، خصوصاً مع النصوص العربية.
+</p>
+</details>
+</div>
+</section>
+</main>
+<Footer />
+<style>
+:root {
+--bg: #f5f8fc;
+--surface: #ffffff;
+--surface-2: #f8fbff;
+--text: #102033;
+--muted: #6b7b8f;
+--border: #e2eaf3;
+--primary: #2563eb;
+--primary-2: #06b6d4;
+--success: #10b981;
+--danger: #ef4444;
+--orange: #f59e0b;
+--purple: #8b5cf6;
+--pink: #ec4899;
+--shadow: 0 18px 55px rgba(15, 35, 65, 0.08);
+--shadow-sm: 0 8px 25px rgba(15, 35, 65, 0.06);
+}
+html.dark-mode {
+--bg: #07111f;
+--surface: #0d1a2b;
+--surface-2: #101f32;
+--text: #e8f0fa;
+--muted: #91a3b8;
+--border: #1d3148;
+--primary: #4f8cff;
+--primary-2: #22d3ee;
+--success: #34d399;
+--danger: #fb7185;
+--orange: #fbbf24;
+--purple: #a78bfa;
+--pink: #f472b6;
+--shadow: 0 18px 55px rgba(0, 0, 0, 0.24);
+--shadow-sm: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+* {
+box-sizing: border-box;
+}
+body {
+margin: 0;
+background:
+radial-gradient(
+circle at 10% 5%,
+rgba(37, 99, 235, 0.07),
+transparent 28%
+),
+radial-gradient(
+circle at 90% 15%,
+rgba(6, 182, 212, 0.06),
+transparent 25%
+),
+var(--bg);
+color: var(--text);
+font-family: "Cairo", sans-serif;
+transition:
+background 0.25s ease,
+color 0.25s ease;
+}
+button,
+textarea {
+font: inherit;
+}
+button {
+cursor: pointer;
+}
+.container {
+width: min(1180px, calc(100% - 32px));
+margin: 0 auto;
+}
+.tool-page {
+min-height: 100vh;
+padding-bottom: 70px;
+}
+.breadcrumb {
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 24px 0 10px;
+color: var(--muted);
+font-size: 13px;
+}
+.breadcrumb a {
+color: var(--muted);
+text-decoration: none;
+transition: color 0.2s ease;
+}
+.breadcrumb a:hover {
+color: var(--primary);
+}
+.breadcrumb i {
+font-size: 9px;
+opacity: 0.65;
+}
+.hero {
+padding: 18px 0 30px;
+}
+.hero-card {
+position: relative;
+overflow: hidden;
+display: flex;
+align-items: center;
+gap: 24px;
+padding: 34px;
+border: 1px solid var(--border);
+border-radius: 28px;
+background: var(--surface);
+box-shadow: var(--shadow);
+}
+.hero-card::before {
+content: "";
+position: absolute;
+width: 260px;
+height: 260px;
+left: -100px;
+top: -150px;
+border-radius: 50%;
+background: rgba(37, 99, 235, 0.08);
+pointer-events: none;
+}
+.hero-icon {
+position: relative;
+flex: 0 0 88px;
+width: 88px;
+height: 88px;
+display: grid;
+place-items: center;
+border-radius: 24px;
+color: #fff;
+font-size: 34px;
+background: linear-gradient(135deg, #2563eb, #06b6d4);
+box-shadow: 0 15px 35px rgba(37, 99, 235, 0.25);
+}
+.hero-content {
+position: relative;
+}
+.eyebrow {
+display: flex;
+align-items: center;
+gap: 8px;
+margin-bottom: 5px;
+color: var(--primary);
+font-size: 12px;
+font-weight: 800;
+letter-spacing: 0.4px;
+text-transform: uppercase;
+}
+.dot {
+width: 7px;
+height: 7px;
+border-radius: 50%;
+background: var(--primary);
+}
+h1 {
+margin: 0;
+font-size: clamp(27px, 4vw, 40px);
+line-height: 1.25;
+font-weight: 800;
+}
+.hero p {
+margin: 8px 0 14px;
+color: var(--muted);
+font-size: 15px;
+}
+.tags {
+display: flex;
+flex-wrap: wrap;
+gap: 7px;
+}
+.tags span {
+padding: 5px 11px;
+border: 1px solid var(--border);
+border-radius: 999px;
+color: var(--muted);
+background: var(--surface-2);
+font-size: 11px;
+font-weight: 700;
+}
+.tool-section {
+padding: 8px 0 20px;
+}
+.tool-card {
+overflow: hidden;
+border: 1px solid var(--border);
+border-radius: 26px;
+background: var(--surface);
+box-shadow: var(--shadow);
+}
+.tool-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 15px;
+padding: 18px 20px;
+border-bottom: 1px solid var(--border);
+background: var(--surface-2);
+}
+.header-title {
+display: flex;
+align-items: center;
+gap: 12px;
+}
+.header-icon {
+width: 42px;
+height: 42px;
+display: grid;
+place-items: center;
+border-radius: 12px;
+color: var(--primary);
+background: rgba(37, 99, 235, 0.1);
+}
+.header-title div:last-child {
+display: flex;
+flex-direction: column;
+}
+.header-title strong {
+font-size: 14px;
+}
+.header-title span {
+margin-top: 2px;
+color: var(--muted);
+font-size: 10px;
+}
+.live-badge {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+padding: 7px 10px;
+border-radius: 9px;
+color: var(--success);
+background: rgba(16, 185, 129, 0.08);
+font-size: 10px;
+font-weight: 800;
+}
+.live-badge span {
+width: 6px;
+height: 6px;
+border-radius: 50%;
+background: var(--success);
+box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08);
+}
+.editor-wrapper {
+padding: 20px 20px 0;
+}
+.editor-label {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 9px;
+color: var(--muted);
+font-size: 11px;
+font-weight: 700;
+}
+.editor-label span:first-child {
+display: inline-flex;
+align-items: center;
+gap: 7px;
+}
+textarea {
+display: block;
+width: 100%;
+min-height: 300px;
+padding: 18px;
+resize: vertical;
+outline: none;
+border: 1px solid var(--border);
+border-radius: 17px;
+color: var(--text);
+background: var(--surface-2);
+font-family: "JetBrains Mono", monospace;
+font-size: 13px;
+line-height: 1.85;
+transition:
+border-color 0.2s ease,
+box-shadow 0.2s ease;
+}
+textarea::placeholder {
+color: var(--muted);
+opacity: 0.7;
+}
+textarea:focus {
+border-color: var(--primary);
+box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+.actions {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 15px;
+padding: 18px 20px;
+}
+.main-actions {
+display: flex;
+flex-wrap: wrap;
+gap: 9px;
+}
+.btn {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+min-height: 44px;
+padding: 10px 16px;
+border-radius: 12px;
+border: 1px solid transparent;
+font-size: 12px;
+font-weight: 800;
+transition:
+transform 0.2s ease,
+box-shadow 0.2s ease,
+border-color 0.2s ease;
+}
+.btn:hover {
+transform: translateY(-1px);
+}
+.btn.primary {
+color: #fff;
+background: linear-gradient(135deg, #2563eb, #06b6d4);
+box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+}
+.btn.secondary,
+.btn.utility {
+color: var(--muted);
+border-color: var(--border);
+background: var(--surface);
+}
+.btn.secondary {
+color: var(--primary);
+}
+.btn.secondary:hover,
+.btn.utility:hover {
+color: var(--primary);
+border-color: var(--primary);
+}
+.btn.danger:hover {
+color: var(--danger);
+border-color: rgba(239, 68, 68, 0.4);
+}
+.status {
+display: flex;
+align-items: center;
+gap: 8px;
+margin: 0 20px 20px;
+padding: 12px 14px;
+border: 1px solid var(--border);
+border-radius: 12px;
+color: var(--muted);
+background: var(--surface-2);
+font-size: 12px;
+}
+.status.success {
+color: var(--success);
+border-color: rgba(16, 185, 129, 0.22);
+background: rgba(16, 185, 129, 0.06);
+}
+.status.error {
+color: var(--danger);
+border-color: rgba(239, 68, 68, 0.2);
+background: rgba(239, 68, 68, 0.05);
+}
+.stats-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 1px;
+border-top: 1px solid var(--border);
+background: var(--border);
+}
+.stat-card {
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 18px;
+background: var(--surface);
+}
+.stat-card.featured {
+background:
+linear-gradient(
+135deg,
+rgba(37, 99, 235, 0.06),
+rgba(6, 182, 212, 0.04)
+),
+var(--surface);
+}
+.stat-icon {
+width: 40px;
+height: 40px;
+flex: 0 0 40px;
+display: grid;
+place-items: center;
+border-radius: 11px;
+color: var(--primary);
+background: rgba(37, 99, 235, 0.09);
+}
+.stat-icon.green {
+color: var(--success);
+background: rgba(16, 185, 129, 0.09);
+}
+.stat-icon.orange {
+color: var(--orange);
+background: rgba(245, 158, 11, 0.1);
+}
+.stat-icon.purple {
+color: var(--purple);
+background: rgba(139, 92, 246, 0.1);
+}
+.stat-icon.cyan {
+color: var(--primary-2);
+background: rgba(6, 182, 212, 0.1);
+}
+.stat-icon.pink {
+color: var(--pink);
+background: rgba(236, 72, 153, 0.1);
+}
+.stat-icon.blue {
+color: var(--primary);
+background: rgba(37, 99, 235, 0.09);
+}
+.stat-icon.teal {
+color: #14b8a6;
+background: rgba(20, 184, 166, 0.1);
+}
+.stat-content {
+display: flex;
+flex-direction: column;
+min-width: 0;
+}
+.stat-content span {
+color: var(--muted);
+font-size: 10px;
+}
+.stat-content strong {
+margin-top: 1px;
+font-family: "JetBrains Mono", monospace;
+font-size: 18px;
+}
+.info-section,
+.steps-section,
+.faq-section {
+padding-top: 55px;
+}
+.privacy-card {
+display: flex;
+align-items: center;
+gap: 15px;
+padding: 20px;
+border: 1px solid rgba(37, 99, 235, 0.18);
+border-radius: 18px;
+background: rgba(37, 99, 235, 0.05);
+}
+.privacy-icon {
+width: 46px;
+height: 46px;
+flex: 0 0 46px;
+display: grid;
+place-items: center;
+border-radius: 13px;
+color: var(--primary);
+background: rgba(37, 99, 235, 0.1);
+font-size: 19px;
+}
+.privacy-card h3 {
+margin: 0 0 2px;
+font-size: 14px;
+}
+.privacy-card p {
+margin: 0;
+color: var(--muted);
+font-size: 11px;
+line-height: 1.8;
+}
+.local-badge {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+margin-right: auto;
+padding: 7px 10px;
+border-radius: 9px;
+color: var(--success);
+background: rgba(16, 185, 129, 0.08);
+font-size: 10px;
+font-weight: 800;
+white-space: nowrap;
+}
+.section-heading {
+margin-bottom: 22px;
+}
+.section-heading > span {
+color: var(--primary);
+font-size: 11px;
+font-weight: 800;
+}
+.section-heading h2 {
+margin: 4px 0 5px;
+font-size: clamp(20px, 3vw, 27px);
+}
+.section-heading p {
+margin: 0;
+color: var(--muted);
+font-size: 12px;
+}
+.info-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 16px;
+}
+.info-card {
+position: relative;
+overflow: hidden;
+padding: 24px;
+border: 1px solid var(--border);
+border-radius: 18px;
+background: var(--surface);
+box-shadow: var(--shadow-sm);
+}
+.info-number {
+position: absolute;
+top: 17px;
+left: 20px;
+color: var(--border);
+font-family: "JetBrains Mono", monospace;
+font-size: 20px;
+font-weight: 700;
+}
+.info-card-icon {
+width: 45px;
+height: 45px;
+display: grid;
+place-items: center;
+margin-bottom: 15px;
+border-radius: 13px;
+color: var(--primary);
+background: rgba(37, 99, 235, 0.09);
+}
+.info-card h3 {
+margin: 0 0 7px;
+font-size: 14px;
+}
+.info-card p {
+margin: 0;
+color: var(--muted);
+font-size: 11px;
+line-height: 1.9;
+}
+.steps {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 16px;
+}
+.step {
+display: flex;
+align-items: flex-start;
+gap: 14px;
+padding: 21px;
+border: 1px solid var(--border);
+border-radius: 18px;
+background: var(--surface);
+}
+.step-number {
+width: 38px;
+height: 38px;
+flex: 0 0 38px;
+display: grid;
+place-items: center;
+border-radius: 11px;
+color: #fff;
+background: linear-gradient(135deg, #2563eb, #06b6d4);
+font-family: "JetBrains Mono", monospace;
+font-size: 13px;
+font-weight: 700;
+}
+.step h3 {
+margin: 0 0 4px;
+font-size: 13px;
+}
+.step p {
+margin: 0;
+color: var(--muted);
+font-size: 11px;
+line-height: 1.8;
+}
+.faq-grid {
+display: grid;
+gap: 10px;
+}
+details {
+border: 1px solid var(--border);
+border-radius: 15px;
+background: var(--surface);
+}
+summary {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 15px;
+padding: 17px 18px;
+cursor: pointer;
+list-style: none;
+font-size: 12px;
+font-weight: 700;
+}
+summary::-webkit-details-marker {
+display: none;
+}
+summary i {
+color: var(--primary);
+transition: transform 0.2s ease;
+}
+details[open] summary i {
+transform: rotate(45deg);
+}
+details p {
+margin: 0;
+padding: 0 18px 18px;
+color: var(--muted);
+font-size: 11px;
+line-height: 2;
+}
+@media (max-width: 950px) {
+.stats-grid {
+grid-template-columns: repeat(2, 1fr);
+}
+.info-grid,
+.steps {
+grid-template-columns: 1fr;
+}
+}
+@media (max-width: 650px) {
+.container {
+width: min(100% - 20px, 1180px);
+}
+.hero-card {
+flex-direction: column;
+align-items: flex-start;
+padding: 24px;
+border-radius: 22px;
+}
+.hero-icon {
+width: 68px;
+height: 68px;
+flex-basis: 68px;
+border-radius: 19px;
+font-size: 27px;
+}
+.breadcrumb {
+padding-top: 17px;
+font-size: 11px;
+}
+.tool-card {
+border-radius: 20px;
+}
+.tool-header {
+padding: 14px;
+}
+.live-badge {
+display: none;
+}
+.editor-wrapper {
+padding: 14px 14px 0;
+}
+textarea {
+min-height: 250px;
+padding: 14px;
+font-size: 12px;
+}
+.actions {
+align-items: stretch;
+flex-direction: column;
+padding: 14px;
+}
+.main-actions {
+width: 100%;
+}
+.btn {
+flex: 1;
+padding: 10px;
+font-size: 10px;
+}
+.stats-grid {
+grid-template-columns: repeat(2, 1fr);
+}
+.stat-card {
+padding: 14px 10px;
+gap: 8px;
+}
+.stat-icon {
+width: 34px;
+height: 34px;
+flex-basis: 34px;
+font-size: 12px;
+}
+.stat-content span {
+font-size: 9px;
+}
+.stat-content strong {
+font-size: 15px;
+}
+.privacy-card {
+align-items: flex-start;
+flex-wrap: wrap;
+}
+.local-badge {
+margin-right: 0;
+width: 100%;
+justify-content: center;
+}
+.info-section,
+.steps-section,
+.faq-section {
+padding-top: 42px;
+}
+}
+</style>
+<script is:inline>
+(() => {
+const input = document.getElementById("inputText");
+const sampleBtn = document.getElementById("sampleBtn");
+const copyBtn = document.getElementById("copyBtn");
+const clearBtn = document.getElementById("clearBtn");
+const status = document.getElementById("status");
+const liveCount = document.getElementById("liveCount");
+const charsStat = document.getElementById("charsStat");
+const noSpaceStat = document.getElementById("noSpaceStat");
+const wordsStat = document.getElementById("wordsStat");
+const linesStat = document.getElementById("linesStat");
+const paragraphsStat = document.getElementById("paragraphsStat");
+const spacesStat = document.getElementById("spacesStat");
+const bytesStat = document.getElementById("bytesStat");
+const longestStat = document.getElementById("longestStat");
+function syncTheme() {
+try {
+const saved = localStorage.getItem("theme");
+if (saved === "dark") {
+document.documentElement.classList.add("dark-mode");
+} else {
+document.documentElement.classList.remove("dark-mode");
+}
+} catch {}
+}
+syncTheme();
+window.addEventListener("themeChange", syncTheme);
+document.addEventListener("click", function (event) {
+const target = event.target;
+if (
+target &&
+(
+target.id === "theme-btn" ||
+(target.closest && target.closest("#theme-btn"))
+)
+) {
+setTimeout(syncTheme, 0);
+}
+});
+function setStatus(message, type) {
+status.className = "status";
+if (type) {
+status.classList.add(type);
+}
+let icon = "fa-circle-info";
+if (type === "success") {
+icon = "fa-circle-check";
+}
+if (type === "error") {
+icon = "fa-circle-exclamation";
+}
+status.innerHTML =
+'<i class="fa-solid ' +
+icon +
+'"></i>' +
+message;
+}
+function countWords(text) {
+const cleaned = text.trim();
+if (!cleaned) {
+return 0;
+}
+return cleaned.split(/\s+/u).length;
+}
+function countParagraphs(text) {
+const cleaned = text.trim();
+if (!cleaned) {
+return 0;
+}
+return cleaned
+.split(/\r?\n\s*\r?\n+/u)
+.filter(function (item) {
+return item.trim() !== "";
+}).length;
+}
+function analyze() {
+const text = input.value;
+if (!text) {
+charsStat.textContent = "0";
+noSpaceStat.textContent = "0";
+wordsStat.textContent = "0";
+linesStat.textContent = "0";
+paragraphsStat.textContent = "0";
+spacesStat.textContent = "0";
+bytesStat.textContent = "0";
+longestStat.textContent = "0";
+liveCount.textContent = "0 حرف";
+return;
+}
+const lines = text.split(/\r?\n/);
+const characters = text.length;
+const charactersWithoutSpaces =
+text.replace(/\s/g, "").length;
+const words = countWords(text);
+const lineCount = lines.length;
+const paragraphs = countParagraphs(text);
+const spaces = (text.match(/\s/g) || []).length;
+const bytes =
+new TextEncoder().encode(text).length;
+let longestLine = 0;
+lines.forEach(function (line) {
+if (line.length > longestLine) {
+longestLine = line.length;
+}
+});
+charsStat.textContent = String(characters);
+noSpaceStat.textContent =
+String(charactersWithoutSpaces);
+wordsStat.textContent = String(words);
+linesStat.textContent = String(lineCount);
+paragraphsStat.textContent =
+String(paragraphs);
+spacesStat.textContent = String(spaces);
+bytesStat.textContent = String(bytes);
+longestStat.textContent =
+String(longestLine);
+liveCount.textContent =
+String(characters) + " حرف";
+}
+function loadSample() {
+input.value =
+"Th.Tech منصة تقنية مجانية.\n" +
+"اكتشف أدوات مفيدة للمطورين.\n" +
+"تعلم وابتكر مباشرة من المتصفح.\n" +
+"\n" +
+"جميع الأدوات سهلة وسريعة ومجانية.";
+analyze();
+setStatus(
+"تم تحميل المثال وحساب جميع الإحصائيات.",
+"success"
+);
+}
+async function copyText() {
+const value = input.value;
+if (!value) {
+setStatus("لا يوجد نص لنسخه.", "error");
+return;
+}
+try {
+await navigator.clipboard.writeText(value);
+setStatus(
+"تم نسخ النص إلى الحافظة.",
+"success"
+);
+} catch {
+input.select();
+document.execCommand("copy");
+setStatus(
+"تم نسخ النص.",
+"success"
+);
+}
+}
+function clearText() {
+input.value = "";
+analyze();
+setStatus(
+"تم مسح النص وجميع الإحصائيات.",
+""
+);
+input.focus();
+}
+input.addEventListener("input", function () {
+analyze();
+if (input.value) {
+setStatus(
+"يتم تحديث الإحصائيات تلقائياً.",
+""
+);
+} else {
+setStatus(
+"ابدأ بكتابة النص وستظهر النتائج مباشرة.",
+""
+);
+}
+});
+sampleBtn.addEventListener(
+"click",
+loadSample
+);
+copyBtn.addEventListener(
+"click",
+copyText
+);
+clearBtn.addEventListener(
+"click",
+clearText
+);
+analyze();
+})();
+</script>
+</body>
+</html>
