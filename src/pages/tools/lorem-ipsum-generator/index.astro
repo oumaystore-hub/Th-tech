@@ -1,0 +1,2184 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Lorem Ipsum Generator - إنشاء نص تجريبي | Th.Tech";
+const description =
+  "أداة Lorem Ipsum مجانية لإنشاء نصوص تجريبية بسرعة. اختر عدد الفقرات أو الجمل أو الكلمات وانسخ النص مباشرة.";
+
+const canonical =
+  "https://oumaystore-hub.github.io" +
+  base +
+  "/tools/lorem-ipsum-generator/";
+
+const faqs = [
+  {
+    q: "ما هو Lorem Ipsum؟",
+    a: "Lorem Ipsum هو نص تجريبي يستخدم في تصميم المواقع والتطبيقات والمطبوعات لاختبار شكل المحتوى قبل توفر النص النهائي."
+  },
+  {
+    q: "هل يمكنني تحديد عدد الفقرات؟",
+    a: "نعم، يمكنك اختيار نوع المحتوى وتحديد العدد الذي تريده ثم إنشاء النص مباشرة."
+  },
+  {
+    q: "هل يتم إرسال النص إلى الخادم؟",
+    a: "لا. يتم إنشاء النص بالكامل داخل المتصفح ولا يتم إرسال أي بيانات إلى خادم خارجي."
+  },
+  {
+    q: "هل يمكن نسخ النص الناتج؟",
+    a: "نعم، يمكنك نسخ النص بالكامل بضغطة واحدة أو إعادة توليده في أي وقت."
+  }
+];
+---
+
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <title>{title}</title>
+
+    <meta
+      name="description"
+      content={description}
+    />
+
+    <meta
+      name="robots"
+      content="index, follow"
+    />
+
+    <link
+      rel="canonical"
+      href={canonical}
+    />
+
+    <meta
+      property="og:title"
+      content={title}
+    />
+
+    <meta
+      property="og:description"
+      content={description}
+    />
+
+    <meta
+      property="og:type"
+      content="website"
+    />
+
+    <meta
+      property="og:url"
+      content={canonical}
+    />
+
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+
+          if (saved === "dark") {
+            document.documentElement.classList.add("dark-mode");
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-shape shape-one"></div>
+        <div class="hero-shape shape-two"></div>
+
+        <div class="container hero-inner">
+
+          <div class="breadcrumb">
+            <a href={base + "/"}>الرئيسية</a>
+
+            <i class="fa-solid fa-chevron-left"></i>
+
+            <a href={base + "/tools/"}>الأدوات</a>
+
+            <i class="fa-solid fa-chevron-left"></i>
+
+            <span>Lorem Ipsum Generator</span>
+          </div>
+
+          <div class="hero-content">
+
+            <div class="hero-icon">
+              <i class="fa-solid fa-paragraph"></i>
+            </div>
+
+            <div class="hero-text">
+
+              <div class="hero-badge">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                مولد النصوص التجريبية
+              </div>
+
+              <h1>Lorem Ipsum Generator</h1>
+
+              <p>
+                أنشئ نصوصًا تجريبية بسرعة لاستخدامها في تصميم المواقع
+                والتطبيقات والمشاريع.
+              </p>
+
+              <div class="hero-tags">
+                <span>Lorem Ipsum</span>
+                <span>Generator</span>
+                <span>Text</span>
+                <span>Local</span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- TOOL -->
+      <section class="tool-section">
+        <div class="container">
+
+          <div class="tool-card">
+
+            <div class="tool-header">
+
+              <div>
+                <span class="section-label">
+                  <i class="fa-solid fa-sliders"></i>
+                  إعدادات التوليد
+                </span>
+
+                <h2>أنشئ النص التجريبي</h2>
+
+                <p>
+                  اختر نوع النص وعدد العناصر ثم اضغط على إنشاء.
+                </p>
+              </div>
+
+              <div class="live-badge">
+                <span></span>
+                يعمل محليًا
+              </div>
+
+            </div>
+
+            <!-- SETTINGS -->
+            <div class="settings-grid">
+
+              <div class="setting-box">
+
+                <label for="typeSelect">
+                  <i class="fa-solid fa-list"></i>
+                  نوع المحتوى
+                </label>
+
+                <div class="select-wrap">
+                  <select id="typeSelect">
+                    <option value="paragraphs">فقرات</option>
+                    <option value="sentences">جمل</option>
+                    <option value="words">كلمات</option>
+                  </select>
+
+                  <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+              </div>
+
+              <div class="setting-box">
+
+                <label for="countInput">
+                  <i class="fa-solid fa-hashtag"></i>
+                  العدد
+                </label>
+
+                <div class="number-wrap">
+
+                  <button
+                    id="minusBtn"
+                    type="button"
+                    aria-label="تقليل العدد"
+                  >
+                    <i class="fa-solid fa-minus"></i>
+                  </button>
+
+                  <input
+                    id="countInput"
+                    type="number"
+                    min="1"
+                    max="50"
+                    value="3"
+                  />
+
+                  <button
+                    id="plusBtn"
+                    type="button"
+                    aria-label="زيادة العدد"
+                  >
+                    <i class="fa-solid fa-plus"></i>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <!-- OPTIONS -->
+            <div class="options-row">
+
+              <label class="check-option">
+                <input
+                  id="startLorem"
+                  type="checkbox"
+                  checked
+                />
+
+                <span class="custom-check">
+                  <i class="fa-solid fa-check"></i>
+                </span>
+
+                <span>
+                  ابدأ بـ Lorem ipsum
+                </span>
+              </label>
+
+              <span class="limit-info">
+                الحد الأقصى: 50
+              </span>
+
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="actions">
+
+              <button
+                id="generateBtn"
+                class="btn btn-primary"
+                type="button"
+              >
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                إنشاء النص
+              </button>
+
+              <button
+                id="copyBtn"
+                class="btn btn-secondary"
+                type="button"
+              >
+                <i class="fa-regular fa-copy"></i>
+                نسخ النص
+              </button>
+
+              <button
+                id="clearBtn"
+                class="btn btn-ghost"
+                type="button"
+              >
+                <i class="fa-solid fa-trash-can"></i>
+                مسح
+              </button>
+
+            </div>
+
+            <!-- STATUS -->
+            <div
+              id="status"
+              class="status"
+              aria-live="polite"
+            >
+              <i class="fa-solid fa-circle-info"></i>
+              اضغط على «إنشاء النص» لبدء التوليد.
+            </div>
+
+            <!-- OUTPUT -->
+            <div class="output-section">
+
+              <div class="output-header">
+
+                <div>
+                  <span class="section-label">
+                    <i class="fa-solid fa-file-lines"></i>
+                    النص الناتج
+                  </span>
+
+                  <h3>المحتوى التجريبي</h3>
+                </div>
+
+                <div class="output-actions">
+
+                  <button
+                    id="copyTopBtn"
+                    type="button"
+                    title="نسخ النص"
+                  >
+                    <i class="fa-regular fa-copy"></i>
+                  </button>
+
+                  <button
+                    id="regenerateBtn"
+                    type="button"
+                    title="توليد جديد"
+                  >
+                    <i class="fa-solid fa-rotate"></i>
+                  </button>
+
+                </div>
+
+              </div>
+
+              <div
+                id="output"
+                class="output"
+                tabindex="0"
+              >
+                <p class="placeholder-text">
+                  سيظهر النص التجريبي هنا بعد الضغط على زر إنشاء النص.
+                </p>
+              </div>
+
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-grid">
+
+              <div class="stat-card">
+
+                <div class="stat-icon">
+                  <i class="fa-solid fa-font"></i>
+                </div>
+
+                <strong id="wordCount">0</strong>
+
+                <span>كلمة</span>
+
+              </div>
+
+              <div class="stat-card">
+
+                <div class="stat-icon">
+                  <i class="fa-solid fa-align-left"></i>
+                </div>
+
+                <strong id="charCount">0</strong>
+
+                <span>حرف</span>
+
+              </div>
+
+              <div class="stat-card">
+
+                <div class="stat-icon">
+                  <i class="fa-solid fa-file-lines"></i>
+                </div>
+
+                <strong id="paragraphCount">0</strong>
+
+                <span>فقرة</span>
+
+              </div>
+
+              <div class="stat-card">
+
+                <div class="stat-icon">
+                  <i class="fa-solid fa-bolt"></i>
+                </div>
+
+                <strong>100%</strong>
+
+                <span>محلي</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- PRIVACY -->
+          <div class="privacy-card">
+
+            <div class="privacy-icon">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div class="privacy-content">
+              <h3>خصوصيتك محفوظة</h3>
+
+              <p>
+                يتم إنشاء جميع النصوص داخل متصفحك مباشرة، ولا يتم إرسال
+                أي محتوى إلى الخادم.
+              </p>
+            </div>
+
+            <div class="privacy-badge">
+              <i class="fa-solid fa-lock"></i>
+              محلي 100%
+            </div>
+
+          </div>
+
+          <!-- INFO -->
+          <section class="info-section">
+
+            <div class="section-heading">
+
+              <span class="section-label">
+                <i class="fa-solid fa-circle-info"></i>
+                معلومات الأداة
+              </span>
+
+              <h2>لماذا تستخدم Lorem Ipsum؟</h2>
+
+            </div>
+
+            <div class="info-grid">
+
+              <article class="info-card">
+
+                <div class="info-icon">
+                  <i class="fa-solid fa-palette"></i>
+                </div>
+
+                <h3>اختبار التصميم</h3>
+
+                <p>
+                  يساعد النص التجريبي المصممين على رؤية شكل الصفحة
+                  وتوزيع المحتوى قبل توفر النص النهائي.
+                </p>
+
+              </article>
+
+              <article class="info-card">
+
+                <div class="info-icon">
+                  <i class="fa-solid fa-ruler-combined"></i>
+                </div>
+
+                <h3>اختبار التخطيط</h3>
+
+                <p>
+                  استخدم النصوص الوهمية لاختبار المساحات والأحجام
+                  والمحاذاة وتوزيع العناصر.
+                </p>
+
+              </article>
+
+              <article class="info-card">
+
+                <div class="info-icon">
+                  <i class="fa-solid fa-code"></i>
+                </div>
+
+                <h3>للمطورين</h3>
+
+                <p>
+                  مناسب لاختبار واجهات HTML وCSS والمكونات البرمجية
+                  أثناء مرحلة التطوير.
+                </p>
+
+              </article>
+
+            </div>
+
+          </section>
+
+          <!-- HOW TO -->
+          <section class="how-section">
+
+            <div class="section-heading">
+
+              <span class="section-label">
+                <i class="fa-solid fa-list-check"></i>
+                طريقة الاستخدام
+              </span>
+
+              <h2>أنشئ النص في 3 خطوات</h2>
+
+            </div>
+
+            <div class="steps">
+
+              <div class="step">
+
+                <div class="step-number">
+                  01
+                </div>
+
+                <div>
+                  <h3>اختر النوع</h3>
+
+                  <p>
+                    اختر فقرات أو جمل أو كلمات.
+                  </p>
+                </div>
+
+              </div>
+
+              <div class="step">
+
+                <div class="step-number">
+                  02
+                </div>
+
+                <div>
+                  <h3>حدد العدد</h3>
+
+                  <p>
+                    اختر عدد العناصر التي تريد إنشاءها.
+                  </p>
+                </div>
+
+              </div>
+
+              <div class="step">
+
+                <div class="step-number">
+                  03
+                </div>
+
+                <div>
+                  <h3>انسخ النتيجة</h3>
+
+                  <p>
+                    انسخ النص واستخدمه مباشرة في مشروعك.
+                  </p>
+                </div>
+
+              </div>
+
+            </div>
+
+          </section>
+
+          <!-- FAQ -->
+          <section class="faq-section">
+
+            <div class="section-heading">
+
+              <span class="section-label">
+                <i class="fa-solid fa-circle-question"></i>
+                الأسئلة الشائعة
+              </span>
+
+              <h2>أسئلة حول Lorem Ipsum Generator</h2>
+
+            </div>
+
+            <div class="faq-list">
+
+              {faqs.map((item, index) => (
+                <details
+                  class="faq-item"
+                  open={index === 0}
+                >
+                  <summary>
+                    <span>{item.q}</span>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </summary>
+
+                  <p>{item.a}</p>
+                </details>
+              ))}
+
+            </div>
+
+          </section>
+
+        </div>
+      </section>
+
+    </main>
+
+    <Footer />
+
+    <script is:inline>
+      (() => {
+        const typeSelect =
+          document.getElementById("typeSelect");
+
+        const countInput =
+          document.getElementById("countInput");
+
+        const startLorem =
+          document.getElementById("startLorem");
+
+        const generateBtn =
+          document.getElementById("generateBtn");
+
+        const copyBtn =
+          document.getElementById("copyBtn");
+
+        const copyTopBtn =
+          document.getElementById("copyTopBtn");
+
+        const clearBtn =
+          document.getElementById("clearBtn");
+
+        const regenerateBtn =
+          document.getElementById("regenerateBtn");
+
+        const minusBtn =
+          document.getElementById("minusBtn");
+
+        const plusBtn =
+          document.getElementById("plusBtn");
+
+        const output =
+          document.getElementById("output");
+
+        const status =
+          document.getElementById("status");
+
+        const wordCount =
+          document.getElementById("wordCount");
+
+        const charCount =
+          document.getElementById("charCount");
+
+        const paragraphCount =
+          document.getElementById("paragraphCount");
+
+        const words = [
+          "lorem",
+          "ipsum",
+          "dolor",
+          "sit",
+          "amet",
+          "consectetur",
+          "adipiscing",
+          "elit",
+          "sed",
+          "do",
+          "eiusmod",
+          "tempor",
+          "incididunt",
+          "ut",
+          "labore",
+          "et",
+          "dolore",
+          "magna",
+          "aliqua",
+          "enim",
+          "ad",
+          "minim",
+          "veniam",
+          "quis",
+          "nostrud",
+          "exercitation",
+          "ullamco",
+          "laboris",
+          "nisi",
+          "aliquip",
+          "ex",
+          "ea",
+          "commodo",
+          "consequat",
+          "duis",
+          "aute",
+          "irure",
+          "reprehenderit",
+          "voluptate",
+          "velit",
+          "esse",
+          "cillum",
+          "fugiat",
+          "nulla",
+          "pariatur",
+          "excepteur",
+          "sint",
+          "occaecat",
+          "cupidatat",
+          "non",
+          "proident",
+          "sunt",
+          "culpa",
+          "qui",
+          "officia",
+          "deserunt",
+          "mollit",
+          "anim",
+          "id",
+          "est",
+          "laborum"
+        ];
+
+        const starters = [
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+        ];
+
+        function randomWord() {
+          const index =
+            Math.floor(
+              Math.random() * words.length
+            );
+
+          return words[index];
+        }
+
+        function createSentence(minimum, maximum) {
+          const length =
+            Math.floor(
+              Math.random() *
+              (maximum - minimum + 1)
+            ) + minimum;
+
+          const result = [];
+
+          for (let i = 0; i < length; i++) {
+            result.push(randomWord());
+          }
+
+          result[0] =
+            result[0].charAt(0).toUpperCase() +
+            result[0].slice(1);
+
+          return result.join(" ") + ".";
+        }
+
+        function createParagraph() {
+          const sentenceCount =
+            Math.floor(Math.random() * 4) + 4;
+
+          const sentences = [];
+
+          for (
+            let i = 0;
+            i < sentenceCount;
+            i++
+          ) {
+            sentences.push(
+              createSentence(8, 18)
+            );
+          }
+
+          return sentences.join(" ");
+        }
+
+        function createWords(count) {
+          const result = [];
+
+          for (let i = 0; i < count; i++) {
+            result.push(randomWord());
+          }
+
+          if (result.length > 0) {
+            result[0] =
+              result[0].charAt(0).toUpperCase() +
+              result[0].slice(1);
+          }
+
+          return result.join(" ") + ".";
+        }
+
+        function createSentences(count) {
+          const result = [];
+
+          for (let i = 0; i < count; i++) {
+            result.push(
+              createSentence(8, 18)
+            );
+          }
+
+          return result.join(" ");
+        }
+
+        function escapeHtml(value) {
+          return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+        }
+
+        function updateStats(text, paragraphs) {
+          const clean =
+            String(text || "").trim();
+
+          const wordsFound =
+            clean
+              ? clean.split(/\s+/).filter(Boolean)
+              : [];
+
+          wordCount.textContent =
+            wordsFound.length.toLocaleString("en-US");
+
+          charCount.textContent =
+            clean.length.toLocaleString("en-US");
+
+          paragraphCount.textContent =
+            paragraphs.toLocaleString("en-US");
+        }
+
+        function setStatus(message, type) {
+          status.className = "status";
+
+          if (type) {
+            status.classList.add(type);
+          }
+
+          status.innerHTML =
+            '<i class="fa-solid fa-circle-info"></i> ' +
+            escapeHtml(message);
+        }
+
+        function generate() {
+          let count =
+            parseInt(countInput.value, 10);
+
+          if (Number.isNaN(count)) {
+            count = 3;
+          }
+
+          count =
+            Math.max(
+              1,
+              Math.min(50, count)
+            );
+
+          countInput.value = count;
+
+          const type =
+            typeSelect.value;
+
+          let html = "";
+          let plainText = "";
+          let paragraphs = 0;
+
+          if (type === "paragraphs") {
+            const paragraphItems = [];
+
+            for (
+              let i = 0;
+              i < count;
+              i++
+            ) {
+              let paragraph =
+                createParagraph();
+
+              if (
+                i === 0 &&
+                startLorem.checked
+              ) {
+                paragraph =
+                  starters[
+                    Math.floor(
+                      Math.random() *
+                      starters.length
+                    )
+                  ] +
+                  " " +
+                  paragraph;
+              }
+
+              paragraphItems.push(
+                paragraph
+              );
+            }
+
+            paragraphItems.forEach(
+              function (paragraph) {
+                html +=
+                  "<p>" +
+                  escapeHtml(paragraph) +
+                  "</p>";
+
+                plainText +=
+                  paragraph +
+                  "\n\n";
+              }
+            );
+
+            paragraphs = count;
+          }
+
+          if (type === "sentences") {
+            const sentenceItems = [];
+
+            for (
+              let i = 0;
+              i < count;
+              i++
+            ) {
+              sentenceItems.push(
+                createSentence(8, 18)
+              );
+            }
+
+            if (startLorem.checked) {
+              sentenceItems[0] =
+                starters[0] +
+                " " +
+                sentenceItems[0];
+            }
+
+            const sentenceText =
+              sentenceItems.join(" ");
+
+            html =
+              "<p>" +
+              escapeHtml(sentenceText) +
+              "</p>";
+
+            plainText =
+              sentenceText;
+
+            paragraphs = 1;
+          }
+
+          if (type === "words") {
+            const wordText =
+              createWords(count);
+
+            html =
+              "<p>" +
+              escapeHtml(wordText) +
+              "</p>";
+
+            plainText =
+              wordText;
+
+            paragraphs = 1;
+          }
+
+          output.innerHTML = html;
+
+          updateStats(
+            plainText,
+            paragraphs
+          );
+
+          setStatus(
+            "تم إنشاء النص بنجاح.",
+            "success"
+          );
+        }
+
+        function getOutputText() {
+          return (
+            output.innerText ||
+            output.textContent ||
+            ""
+          ).trim();
+        }
+
+        async function copyOutput(button) {
+          const text =
+            getOutputText();
+
+          if (
+            !text ||
+            text ===
+              "سيظهر النص التجريبي هنا بعد الضغط على زر إنشاء النص."
+          ) {
+            setStatus(
+              "لا يوجد نص لنسخه.",
+              "warning"
+            );
+
+            return;
+          }
+
+          try {
+            await navigator.clipboard.writeText(
+              text
+            );
+
+            const original =
+              button.innerHTML;
+
+            button.innerHTML =
+              '<i class="fa-solid fa-check"></i>';
+
+            button.classList.add(
+              "copied"
+            );
+
+            setStatus(
+              "تم نسخ النص إلى الحافظة.",
+              "success"
+            );
+
+            setTimeout(
+              function () {
+                button.innerHTML =
+                  original;
+
+                button.classList.remove(
+                  "copied"
+                );
+              },
+              1200
+            );
+
+          } catch {
+            const textarea =
+              document.createElement(
+                "textarea"
+              );
+
+            textarea.value = text;
+
+            textarea.style.position =
+              "fixed";
+
+            textarea.style.opacity = "0";
+
+            document.body.appendChild(
+              textarea
+            );
+
+            textarea.select();
+
+            try {
+              document.execCommand(
+                "copy"
+              );
+            } catch {}
+
+            textarea.remove();
+
+            setStatus(
+              "تم نسخ النص.",
+              "success"
+            );
+          }
+        }
+
+        function clearOutput() {
+          output.innerHTML =
+            '<p class="placeholder-text">' +
+            "سيظهر النص التجريبي هنا بعد الضغط على زر إنشاء النص." +
+            "</p>";
+
+          wordCount.textContent = "0";
+          charCount.textContent = "0";
+          paragraphCount.textContent = "0";
+
+          setStatus(
+            "تم مسح النص.",
+            "warning"
+          );
+        }
+
+        function changeCount(amount) {
+          let count =
+            parseInt(
+              countInput.value,
+              10
+            );
+
+          if (Number.isNaN(count)) {
+            count = 1;
+          }
+
+          count += amount;
+
+          count =
+            Math.max(
+              1,
+              Math.min(50, count)
+            );
+
+          countInput.value = count;
+        }
+
+        generateBtn.addEventListener(
+          "click",
+          generate
+        );
+
+        regenerateBtn.addEventListener(
+          "click",
+          generate
+        );
+
+        copyBtn.addEventListener(
+          "click",
+          function () {
+            copyOutput(copyBtn);
+          }
+        );
+
+        copyTopBtn.addEventListener(
+          "click",
+          function () {
+            copyOutput(copyTopBtn);
+          }
+        );
+
+        clearBtn.addEventListener(
+          "click",
+          clearOutput
+        );
+
+        minusBtn.addEventListener(
+          "click",
+          function () {
+            changeCount(-1);
+          }
+        );
+
+        plusBtn.addEventListener(
+          "click",
+          function () {
+            changeCount(1);
+          }
+        );
+
+        countInput.addEventListener(
+          "change",
+          function () {
+            let value =
+              parseInt(
+                countInput.value,
+                10
+              );
+
+            if (Number.isNaN(value)) {
+              value = 1;
+            }
+
+            value =
+              Math.max(
+                1,
+                Math.min(50, value)
+              );
+
+            countInput.value = value;
+          }
+        );
+
+        typeSelect.addEventListener(
+          "change",
+          function () {
+            setStatus(
+              "تم تغيير نوع المحتوى.",
+              "info"
+            );
+          }
+        );
+
+        function syncTheme() {
+          try {
+            const saved =
+              localStorage.getItem(
+                "theme"
+              );
+
+            if (saved === "dark") {
+              document.documentElement.classList.add(
+                "dark-mode"
+              );
+            } else {
+              document.documentElement.classList.remove(
+                "dark-mode"
+              );
+            }
+          } catch {}
+        }
+
+        syncTheme();
+
+        window.addEventListener(
+          "themeChange",
+          syncTheme
+        );
+
+        document.addEventListener(
+          "click",
+          function (event) {
+            const target =
+              event.target;
+
+            if (
+              target &&
+              (
+                target.id ===
+                  "theme-btn" ||
+                (
+                  target.closest &&
+                  target.closest(
+                    "#theme-btn"
+                  )
+                )
+              )
+            ) {
+              setTimeout(
+                syncTheme,
+                0
+              );
+            }
+          }
+        );
+
+        generate();
+      })();
+    </script>
+
+    <style>
+      :root {
+        --bg: #f5f8fc;
+        --surface: #ffffff;
+        --surface-2: #f8fafc;
+        --text: #111827;
+        --muted: #64748b;
+        --border: #e2e8f0;
+        --primary: #2563eb;
+        --primary-2: #0ea5e9;
+        --green: #16a34a;
+        --orange: #f59e0b;
+        --red: #dc2626;
+        --shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+        --radius: 24px;
+      }
+
+      html.dark-mode {
+        --bg: #08111f;
+        --surface: #0f1b2d;
+        --surface-2: #132238;
+        --text: #f1f5f9;
+        --muted: #94a3b8;
+        --border: #26384f;
+        --primary: #60a5fa;
+        --primary-2: #38bdf8;
+        --green: #4ade80;
+        --orange: #fbbf24;
+        --red: #f87171;
+        --shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: "Cairo", sans-serif;
+        line-height: 1.8;
+      }
+
+      button,
+      input,
+      select {
+        font-family: inherit;
+      }
+
+      .container {
+        width: min(1120px, calc(100% - 32px));
+        margin: auto;
+      }
+
+      /* HERO */
+
+      .hero {
+        position: relative;
+        overflow: hidden;
+        padding: 42px 0 68px;
+        background:
+          linear-gradient(
+            135deg,
+            rgba(37, 99, 235, 0.08),
+            rgba(14, 165, 233, 0.04)
+          );
+        border-bottom: 1px solid var(--border);
+      }
+
+      .hero-shape {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        pointer-events: none;
+        filter: blur(12px);
+      }
+
+      .shape-one {
+        top: -180px;
+        right: -100px;
+        background: rgba(37, 99, 235, 0.13);
+      }
+
+      .shape-two {
+        bottom: -210px;
+        left: -120px;
+        background: rgba(14, 165, 233, 0.1);
+      }
+
+      .hero-inner {
+        position: relative;
+        z-index: 2;
+      }
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-bottom: 34px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .breadcrumb a {
+        color: var(--primary);
+        text-decoration: none;
+      }
+
+      .breadcrumb i {
+        font-size: 9px;
+        opacity: 0.6;
+      }
+
+      .hero-content {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .hero-icon {
+        width: 92px;
+        height: 92px;
+        flex: 0 0 92px;
+        display: grid;
+        place-items: center;
+        border-radius: 28px;
+        color: #ffffff;
+        background:
+          linear-gradient(
+            135deg,
+            #7c3aed,
+            #2563eb
+          );
+        font-size: 38px;
+        box-shadow:
+          0 18px 40px rgba(99, 102, 241, 0.25);
+      }
+
+      .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 12px;
+        margin-bottom: 7px;
+        border-radius: 999px;
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.09);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .hero-text h1 {
+        margin: 0;
+        font-size: clamp(30px, 5vw, 46px);
+        line-height: 1.2;
+        letter-spacing: -1px;
+      }
+
+      .hero-text p {
+        margin: 10px 0 15px;
+        color: var(--muted);
+        font-size: 16px;
+      }
+
+      .hero-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+
+      .hero-tags span {
+        padding: 4px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        color: var(--muted);
+        background: var(--surface);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+      }
+
+      /* TOOL */
+
+      .tool-section {
+        padding: 55px 0 80px;
+      }
+
+      .tool-card {
+        padding: 30px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+      }
+
+      .tool-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 28px;
+      }
+
+      .section-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .tool-header h2 {
+        margin: 5px 0 3px;
+        font-size: 24px;
+      }
+
+      .tool-header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border: 1px solid rgba(22, 163, 74, 0.2);
+        border-radius: 999px;
+        color: var(--green);
+        background: rgba(22, 163, 74, 0.07);
+        white-space: nowrap;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .live-badge span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow:
+          0 0 0 5px rgba(22, 163, 74, 0.1);
+      }
+
+      /* SETTINGS */
+
+      .settings-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      .setting-box {
+        padding: 18px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface-2);
+      }
+
+      .setting-box label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+        color: var(--text);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .setting-box label i {
+        color: var(--primary);
+      }
+
+      .select-wrap {
+        position: relative;
+      }
+
+      .select-wrap select {
+        width: 100%;
+        height: 50px;
+        padding: 0 15px;
+        padding-left: 40px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        outline: none;
+        color: var(--text);
+        background: var(--surface);
+        appearance: none;
+        cursor: pointer;
+        font-size: 13px;
+      }
+
+      .select-wrap > i {
+        position: absolute;
+        top: 50%;
+        left: 15px;
+        transform: translateY(-50%);
+        color: var(--muted);
+        pointer-events: none;
+        font-size: 11px;
+      }
+
+      .number-wrap {
+        display: flex;
+        align-items: center;
+        height: 50px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--surface);
+        direction: ltr;
+      }
+
+      .number-wrap button {
+        width: 50px;
+        height: 100%;
+        border: 0;
+        color: var(--primary);
+        background: transparent;
+        cursor: pointer;
+      }
+
+      .number-wrap button:hover {
+        background: rgba(37, 99, 235, 0.08);
+      }
+
+      .number-wrap input {
+        width: 100%;
+        height: 100%;
+        border: 0;
+        outline: 0;
+        color: var(--text);
+        background: transparent;
+        text-align: center;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+      }
+
+      /* OPTIONS */
+
+      .options-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-top: 15px;
+        padding: 13px 15px;
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        background: var(--surface-2);
+      }
+
+      .check-option {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .check-option input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .custom-check {
+        width: 20px;
+        height: 20px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        color: transparent;
+        background: var(--surface);
+        transition: 0.2s ease;
+      }
+
+      .check-option input:checked + .custom-check {
+        color: white;
+        border-color: var(--primary);
+        background: var(--primary);
+      }
+
+      .custom-check i {
+        font-size: 10px;
+      }
+
+      .limit-info {
+        color: var(--muted);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+      }
+
+      /* ACTIONS */
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 20px 0 12px;
+      }
+
+      .btn {
+        min-height: 46px;
+        padding: 0 17px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 1px solid transparent;
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 800;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .btn-primary {
+        color: white;
+        background:
+          linear-gradient(
+            135deg,
+            #7c3aed,
+            #2563eb
+          );
+        box-shadow:
+          0 10px 25px rgba(99, 102, 241, 0.2);
+      }
+
+      .btn-secondary {
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.08);
+        border-color: rgba(37, 99, 235, 0.15);
+      }
+
+      .btn-ghost {
+        color: var(--muted);
+        background: var(--surface-2);
+        border-color: var(--border);
+      }
+
+      /* STATUS */
+
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-height: 42px;
+        padding: 9px 13px;
+        border-radius: 11px;
+        color: var(--muted);
+        background: var(--surface-2);
+        font-size: 11px;
+      }
+
+      .status i {
+        color: var(--primary);
+      }
+
+      .status.success {
+        color: var(--green);
+        background: rgba(22, 163, 74, 0.07);
+      }
+
+      .status.warning {
+        color: var(--orange);
+        background: rgba(245, 158, 11, 0.08);
+      }
+
+      /* OUTPUT */
+
+      .output-section {
+        margin-top: 20px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        background: var(--surface-2);
+      }
+
+      .output-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 17px 19px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .output-header h3 {
+        margin: 3px 0 0;
+        font-size: 16px;
+      }
+
+      .output-actions {
+        display: flex;
+        gap: 7px;
+      }
+
+      .output-actions button {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        color: var(--muted);
+        background: var(--surface);
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .output-actions button:hover,
+      .output-actions button.copied {
+        color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .output {
+        min-height: 300px;
+        max-height: 500px;
+        overflow-y: auto;
+        padding: 23px;
+        background: var(--surface);
+        font-size: 14px;
+        line-height: 2;
+      }
+
+      .output p {
+        margin: 0 0 18px;
+      }
+
+      .output p:last-child {
+        margin-bottom: 0;
+      }
+
+      .placeholder-text {
+        color: var(--muted);
+        text-align: center;
+        opacity: 0.75;
+        padding: 80px 20px;
+      }
+
+      /* STATS */
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .stat-card {
+        padding: 19px 12px;
+        text-align: center;
+        border: 1px solid var(--border);
+        border-radius: 17px;
+        background: var(--surface);
+      }
+
+      .stat-icon {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        margin: 0 auto 8px;
+        border-radius: 12px;
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.09);
+      }
+
+      .stat-card strong,
+      .stat-card span {
+        display: block;
+      }
+
+      .stat-card strong {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 15px;
+      }
+
+      .stat-card span {
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      /* PRIVACY */
+
+      .privacy-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 18px;
+        padding: 20px;
+        border: 1px solid rgba(22, 163, 74, 0.16);
+        border-radius: 18px;
+        background: rgba(22, 163, 74, 0.045);
+      }
+
+      .privacy-icon {
+        width: 48px;
+        height: 48px;
+        flex: 0 0 48px;
+        display: grid;
+        place-items: center;
+        border-radius: 14px;
+        color: var(--green);
+        background: rgba(22, 163, 74, 0.1);
+        font-size: 20px;
+      }
+
+      .privacy-content {
+        flex: 1;
+      }
+
+      .privacy-content h3 {
+        margin: 0;
+        font-size: 14px;
+      }
+
+      .privacy-content p {
+        margin: 3px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .privacy-badge {
+        color: var(--green);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      /* SECTIONS */
+
+      .info-section,
+      .how-section,
+      .faq-section {
+        margin-top: 75px;
+      }
+
+      .section-heading {
+        margin-bottom: 25px;
+      }
+
+      .section-heading h2 {
+        margin: 4px 0 0;
+        font-size: 25px;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .info-card {
+        padding: 23px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+      }
+
+      .info-icon {
+        width: 45px;
+        height: 45px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 14px;
+        border-radius: 13px;
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.09);
+      }
+
+      .info-card h3 {
+        margin: 0 0 7px;
+        font-size: 15px;
+      }
+
+      .info-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      /* STEPS */
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .step {
+        display: flex;
+        gap: 15px;
+        padding: 21px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+      }
+
+      .step-number {
+        width: 42px;
+        height: 42px;
+        flex: 0 0 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        color: white;
+        background:
+          linear-gradient(
+            135deg,
+            #7c3aed,
+            #2563eb
+          );
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+      .step h3 {
+        margin: 0;
+        font-size: 14px;
+      }
+
+      .step p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.8;
+      }
+
+      /* FAQ */
+
+      .faq-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .faq-item {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: var(--surface);
+      }
+
+      .faq-item summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 17px 20px;
+        cursor: pointer;
+        list-style: none;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .faq-item summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq-item summary i {
+        color: var(--muted);
+        font-size: 10px;
+        transition: transform 0.2s ease;
+      }
+
+      .faq-item[open] summary i {
+        transform: rotate(180deg);
+      }
+
+      .faq-item p {
+        margin: 0;
+        padding: 0 20px 18px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      /* RESPONSIVE */
+
+      @media (max-width: 850px) {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .info-grid,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .hero {
+          padding: 30px 0 50px;
+        }
+
+        .hero-content {
+          align-items: flex-start;
+        }
+
+        .hero-icon {
+          width: 70px;
+          height: 70px;
+          flex-basis: 70px;
+          border-radius: 21px;
+          font-size: 28px;
+        }
+
+        .tool-section {
+          padding-top: 35px;
+        }
+
+        .tool-card {
+          padding: 20px;
+        }
+
+        .tool-header {
+          flex-direction: column;
+        }
+
+        .settings-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .privacy-card {
+          align-items: flex-start;
+          flex-wrap: wrap;
+        }
+
+        .privacy-badge {
+          width: 100%;
+        }
+      }
+
+      @media (max-width: 500px) {
+        .container {
+          width: min(100% - 20px, 1120px);
+        }
+
+        .hero-content {
+          gap: 14px;
+        }
+
+        .hero-text h1 {
+          font-size: 28px;
+        }
+
+        .hero-text p {
+          font-size: 13px;
+        }
+
+        .hero-tags span {
+          font-size: 9px;
+        }
+
+        .tool-card {
+          padding: 15px;
+          border-radius: 19px;
+        }
+
+        .actions {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .btn-primary {
+          grid-column: 1 / -1;
+          order: -1;
+        }
+
+        .options-row {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .output {
+          min-height: 270px;
+          padding: 18px;
+          font-size: 13px;
+        }
+
+        .output-header {
+          padding: 14px;
+        }
+
+        .stats-grid {
+          gap: 8px;
+        }
+
+        .stat-card {
+          padding: 14px 7px;
+        }
+
+        .stat-card strong {
+          font-size: 12px;
+        }
+
+        .stat-card span {
+          font-size: 9px;
+        }
+
+        .info-section,
+        .how-section,
+        .faq-section {
+          margin-top: 55px;
+        }
+      }
+    </style>
+  </body>
+</html>
