@@ -1,0 +1,1431 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Word Counter - عداد الكلمات والأحرف أونلاين | Th.Tech";
+
+const description =
+  "أداة مجانية لحساب عدد الكلمات والأحرف والأسطر ووقت القراءة مباشرة من المتصفح.";
+
+const canonical = `https://oumaystore-hub.github.io${base}/tools/word-counter/`;
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+
+          if (saved === "dark") {
+            document.documentElement.classList.add("dark-mode");
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="page">
+      <div class="container">
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb" aria-label="مسار التنقل">
+          <a href={`${base}/`}>
+            <i class="fa-solid fa-house"></i>
+            الرئيسية
+          </a>
+
+          <i class="fa-solid fa-chevron-left separator"></i>
+
+          <a href={`${base}/tools/`}>
+            الأدوات
+          </a>
+
+          <i class="fa-solid fa-chevron-left separator"></i>
+
+          <span>Word Counter</span>
+        </nav>
+
+        <!-- Hero -->
+        <section class="hero">
+          <div class="hero-icon">
+            <i class="fa-solid fa-calculator"></i>
+          </div>
+
+          <div class="hero-content">
+            <div class="eyebrow">
+              <span class="dot"></span>
+              أداة تحليل النص
+            </div>
+
+            <h1>Word Counter</h1>
+
+            <p>
+              احسب عدد الكلمات والأحرف والأسطر ووقت القراءة
+              بسرعة ودقة مباشرة من متصفحك.
+            </p>
+
+            <div class="tags">
+              <span>
+                <i class="fa-solid fa-font"></i>
+                Words
+              </span>
+
+              <span>
+                <i class="fa-solid fa-text-width"></i>
+                Characters
+              </span>
+
+              <span>
+                <i class="fa-solid fa-list-ol"></i>
+                Lines
+              </span>
+
+              <span>
+                <i class="fa-solid fa-lock"></i>
+                Local
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Main Card -->
+        <section class="tool-card">
+
+          <div class="tool-header">
+            <div>
+              <h2>
+                <i class="fa-solid fa-file-lines"></i>
+                محلل النص
+              </h2>
+
+              <p>
+                اكتب أو الصق النص للحصول على الإحصائيات مباشرة.
+              </p>
+            </div>
+
+            <div class="live-badge">
+              <span></span>
+              مباشر
+            </div>
+          </div>
+
+          <!-- Stats -->
+          <div class="stats-grid">
+
+            <div class="stat-card primary">
+              <div class="stat-icon">
+                <i class="fa-solid fa-font"></i>
+              </div>
+
+              <div class="stat-info">
+                <span>الكلمات</span>
+                <strong id="wordCount">0</strong>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fa-solid fa-text-width"></i>
+              </div>
+
+              <div class="stat-info">
+                <span>الأحرف</span>
+                <strong id="charCount">0</strong>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fa-solid fa-align-left"></i>
+              </div>
+
+              <div class="stat-info">
+                <span>بدون مسافات</span>
+                <strong id="charNoSpace">0</strong>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fa-solid fa-list-ol"></i>
+              </div>
+
+              <div class="stat-info">
+                <span>الأسطر</span>
+                <strong id="lineCount">0</strong>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Editor -->
+          <div class="editor-section">
+
+            <div class="editor-top">
+              <label for="textInput">
+                <i class="fa-solid fa-pen-to-square"></i>
+                النص
+              </label>
+
+              <span id="charLive">0 حرف</span>
+            </div>
+
+            <textarea
+              id="textInput"
+              dir="auto"
+              spellcheck="false"
+              placeholder="اكتب النص هنا أو الصق النص الذي تريد تحليله..."
+            ></textarea>
+
+            <div class="editor-footer">
+              <span>
+                <i class="fa-solid fa-keyboard"></i>
+                يتم التحليل تلقائياً
+              </span>
+
+              <span id="readingTime">
+                وقت القراءة: 0 دقيقة
+              </span>
+            </div>
+
+          </div>
+
+          <!-- Actions -->
+          <div class="actions">
+
+            <button id="sampleBtn" class="btn secondary" type="button">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              نص تجريبي
+            </button>
+
+            <button id="copyBtn" class="btn primary-btn" type="button">
+              <i class="fa-regular fa-copy"></i>
+              نسخ النص
+            </button>
+
+            <button id="clearBtn" class="btn danger" type="button">
+              <i class="fa-solid fa-trash"></i>
+              مسح
+            </button>
+
+          </div>
+
+          <div id="status" class="status">
+            <i class="fa-solid fa-circle-info"></i>
+            اكتب نصاً لعرض الإحصائيات.
+          </div>
+
+        </section>
+
+        <!-- Detailed Statistics -->
+        <section class="details-card">
+
+          <div class="section-title">
+            <div class="section-title-icon">
+              <i class="fa-solid fa-chart-simple"></i>
+            </div>
+
+            <div>
+              <h2>إحصائيات النص</h2>
+              <p>نظرة سريعة على محتوى النص الذي أدخلته.</p>
+            </div>
+          </div>
+
+          <div class="details-grid">
+
+            <div class="detail-item">
+              <span>عدد الكلمات</span>
+              <strong id="detailWords">0</strong>
+            </div>
+
+            <div class="detail-item">
+              <span>عدد الأحرف</span>
+              <strong id="detailChars">0</strong>
+            </div>
+
+            <div class="detail-item">
+              <span>الأحرف بدون مسافات</span>
+              <strong id="detailNoSpaces">0</strong>
+            </div>
+
+            <div class="detail-item">
+              <span>عدد الأسطر</span>
+              <strong id="detailLines">0</strong>
+            </div>
+
+            <div class="detail-item">
+              <span>عدد الفقرات</span>
+              <strong id="paragraphCount">0</strong>
+            </div>
+
+            <div class="detail-item">
+              <span>وقت القراءة</span>
+              <strong id="detailReading">0 دقيقة</strong>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- Privacy -->
+        <section class="privacy-card">
+
+          <div class="privacy-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+
+          <div>
+            <h3>خصوصيتك أولاً</h3>
+
+            <p>
+              تتم معالجة النص بالكامل داخل متصفحك.
+              لا يتم إرسال النص إلى خادم أو تخزينه على موقع Th.Tech.
+            </p>
+          </div>
+
+        </section>
+
+        <!-- Info -->
+        <section class="info-section">
+
+          <div class="section-title centered">
+            <div class="section-title-icon">
+              <i class="fa-solid fa-circle-question"></i>
+            </div>
+
+            <div>
+              <h2>ماذا تحسب الأداة؟</h2>
+              <p>أهم الإحصائيات التي توفرها الأداة.</p>
+            </div>
+          </div>
+
+          <div class="info-grid">
+
+            <article class="info-card">
+              <div class="info-icon blue">
+                <i class="fa-solid fa-font"></i>
+              </div>
+
+              <h3>عدد الكلمات</h3>
+
+              <p>
+                يحسب عدد الكلمات الموجودة في النص مع تجاهل المسافات
+                الزائدة والأسطر الفارغة.
+              </p>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon cyan">
+                <i class="fa-solid fa-text-width"></i>
+              </div>
+
+              <h3>عدد الأحرف</h3>
+
+              <p>
+                يعرض إجمالي الأحرف الموجودة في النص، بما في ذلك
+                المسافات وعلامات الترقيم.
+              </p>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon purple">
+                <i class="fa-solid fa-clock"></i>
+              </div>
+
+              <h3>وقت القراءة</h3>
+
+              <p>
+                تقدير تقريبي لمدة قراءة النص بناءً على متوسط
+                سرعة القراءة.
+              </p>
+            </article>
+
+          </div>
+
+        </section>
+
+        <!-- How to -->
+        <section class="how-section">
+
+          <div class="section-title centered">
+            <div class="section-title-icon">
+              <i class="fa-solid fa-route"></i>
+            </div>
+
+            <div>
+              <h2>كيفية الاستخدام</h2>
+              <p>ثلاث خطوات بسيطة لتحليل أي نص.</p>
+            </div>
+          </div>
+
+          <div class="steps">
+
+            <div class="step">
+              <div class="step-number">1</div>
+
+              <div>
+                <h3>أدخل النص</h3>
+                <p>
+                  اكتب النص أو الصقه داخل محرر النصوص.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">2</div>
+
+              <div>
+                <h3>شاهد النتائج</h3>
+                <p>
+                  ستظهر الكلمات والأحرف والأسطر تلقائياً.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">3</div>
+
+              <div>
+                <h3>انسخ أو عدّل</h3>
+                <p>
+                  يمكنك نسخ النص أو مسحه والبدء من جديد.
+                </p>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq-section">
+
+          <div class="section-title centered">
+            <div class="section-title-icon">
+              <i class="fa-solid fa-comments"></i>
+            </div>
+
+            <div>
+              <h2>الأسئلة الشائعة</h2>
+              <p>إجابات سريعة حول عداد الكلمات.</p>
+            </div>
+          </div>
+
+          <div class="faq-list">
+
+            <details>
+              <summary>
+                كيف يتم حساب الكلمات؟
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>
+                يتم تقسيم النص إلى كلمات اعتماداً على المسافات
+                وفواصل الأسطر، مع تجاهل المسافات الزائدة.
+              </p>
+            </details>
+
+            <details>
+              <summary>
+                هل يتم إرسال النص إلى الخادم؟
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>
+                لا. تتم عملية التحليل محلياً داخل متصفحك،
+                لذلك لا يحتاج النص إلى مغادرة جهازك.
+              </p>
+            </details>
+
+            <details>
+              <summary>
+                هل يمكنني استخدام الأداة للنصوص العربية؟
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>
+                نعم. الأداة تدعم النصوص العربية والإنجليزية
+                وغيرها من اللغات الحديثة.
+              </p>
+            </details>
+
+            <details>
+              <summary>
+                كيف يتم حساب وقت القراءة؟
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>
+                يتم تقدير وقت القراءة اعتماداً على عدد الكلمات
+                ومتوسط سرعة القراءة البشرية.
+              </p>
+            </details>
+
+          </div>
+
+        </section>
+
+      </div>
+    </main>
+
+    <Footer />
+
+    <script is:inline>
+      (() => {
+        const input = document.getElementById("textInput");
+
+        const wordCount = document.getElementById("wordCount");
+        const charCount = document.getElementById("charCount");
+        const charNoSpace = document.getElementById("charNoSpace");
+        const lineCount = document.getElementById("lineCount");
+
+        const detailWords = document.getElementById("detailWords");
+        const detailChars = document.getElementById("detailChars");
+        const detailNoSpaces = document.getElementById("detailNoSpaces");
+        const detailLines = document.getElementById("detailLines");
+
+        const paragraphCount = document.getElementById("paragraphCount");
+        const detailReading = document.getElementById("detailReading");
+
+        const charLive = document.getElementById("charLive");
+        const readingTime = document.getElementById("readingTime");
+
+        const status = document.getElementById("status");
+
+        const copyBtn = document.getElementById("copyBtn");
+        const clearBtn = document.getElementById("clearBtn");
+        const sampleBtn = document.getElementById("sampleBtn");
+
+        if (!input) return;
+
+        function getWords(text) {
+          const clean = text.trim();
+
+          if (!clean) {
+            return [];
+          }
+
+          return clean.split(/\s+/u);
+        }
+
+        function getLines(text) {
+          if (!text) {
+            return [];
+          }
+
+          return text.split(/\r?\n/u);
+        }
+
+        function getParagraphs(text) {
+          const clean = text.trim();
+
+          if (!clean) {
+            return [];
+          }
+
+          return clean.split(/\n\s*\n/u).filter(function(item) {
+            return item.trim() !== "";
+          });
+        }
+
+        function formatReadingTime(words) {
+          if (words === 0) {
+            return "0 دقيقة";
+          }
+
+          const minutes = Math.ceil(words / 200);
+
+          if (minutes === 1) {
+            return "أقل من دقيقة";
+          }
+
+          return minutes + " دقائق";
+        }
+
+        function updateStats() {
+          const text = input.value || "";
+
+          const words = getWords(text);
+          const lines = text ? getLines(text).length : 0;
+          const paragraphs = getParagraphs(text).length;
+
+          const wordsNumber = words.length;
+          const charsNumber = text.length;
+          const noSpaceNumber = text.replace(/\s/gu, "").length;
+
+          const reading = formatReadingTime(wordsNumber);
+
+          wordCount.textContent = wordsNumber.toLocaleString("ar");
+          charCount.textContent = charsNumber.toLocaleString("ar");
+          charNoSpace.textContent = noSpaceNumber.toLocaleString("ar");
+          lineCount.textContent = lines.toLocaleString("ar");
+
+          detailWords.textContent = wordsNumber.toLocaleString("ar");
+          detailChars.textContent = charsNumber.toLocaleString("ar");
+          detailNoSpaces.textContent = noSpaceNumber.toLocaleString("ar");
+          detailLines.textContent = lines.toLocaleString("ar");
+
+          paragraphCount.textContent = paragraphs.toLocaleString("ar");
+          detailReading.textContent = reading;
+
+          charLive.textContent =
+            charsNumber.toLocaleString("ar") + " حرف";
+
+          readingTime.textContent =
+            "وقت القراءة: " + reading;
+
+          if (!text.trim()) {
+            status.innerHTML =
+              '<i class="fa-solid fa-circle-info"></i> اكتب نصاً لعرض الإحصائيات.';
+          } else {
+            status.innerHTML =
+              '<i class="fa-solid fa-circle-check"></i> تم تحليل النص محلياً.';
+          }
+        }
+
+        input.addEventListener("input", updateStats);
+
+        sampleBtn.addEventListener("click", function() {
+          input.value =
+            "مرحباً بك في Th.Tech، منصتك التقنية لاكتشاف الأدوات المجانية والمفيدة. " +
+            "استخدم هذه الأداة لحساب الكلمات والأحرف والأسطر ووقت القراءة بسهولة وسرعة.";
+
+          updateStats();
+          input.focus();
+        });
+
+        clearBtn.addEventListener("click", function() {
+          input.value = "";
+          updateStats();
+          input.focus();
+        });
+
+        copyBtn.addEventListener("click", async function() {
+          const text = input.value;
+
+          if (!text.trim()) {
+            status.innerHTML =
+              '<i class="fa-solid fa-triangle-exclamation"></i> لا يوجد نص لنسخه.';
+            return;
+          }
+
+          try {
+            await navigator.clipboard.writeText(text);
+
+            status.innerHTML =
+              '<i class="fa-solid fa-circle-check"></i> تم نسخ النص بنجاح.';
+          } catch {
+            input.select();
+            document.execCommand("copy");
+
+            status.innerHTML =
+              '<i class="fa-solid fa-circle-check"></i> تم نسخ النص بنجاح.';
+          }
+        });
+
+        updateStats();
+
+        function syncTheme() {
+          try {
+            const saved = localStorage.getItem("theme");
+
+            if (saved === "dark") {
+              document.documentElement.classList.add("dark-mode");
+            } else {
+              document.documentElement.classList.remove("dark-mode");
+            }
+          } catch {}
+        }
+
+        syncTheme();
+
+        window.addEventListener("themeChange", syncTheme);
+
+        document.addEventListener("click", function(event) {
+          const target = event.target;
+
+          if (
+            target &&
+            (
+              target.id === "theme-btn" ||
+              target.closest("#theme-btn")
+            )
+          ) {
+            setTimeout(syncTheme, 0);
+          }
+        });
+      })();
+    </script>
+
+    <style>
+      :root {
+        --bg: #f5f9ff;
+        --surface: #ffffff;
+        --surface-2: #f8fbff;
+        --text: #102033;
+        --muted: #64748b;
+        --border: #dce7f3;
+        --primary: #2563eb;
+        --primary-2: #06b6d4;
+        --danger: #ef4444;
+        --success: #10b981;
+        --shadow: 0 18px 50px rgba(37, 99, 235, 0.08);
+      }
+
+      html.dark-mode {
+        --bg: #07111f;
+        --surface: #0d1b2a;
+        --surface-2: #101f31;
+        --text: #e8f1fb;
+        --muted: #91a4b9;
+        --border: #20364c;
+        --primary: #60a5fa;
+        --primary-2: #22d3ee;
+        --danger: #f87171;
+        --success: #34d399;
+        --shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at top right, rgba(37, 99, 235, 0.08), transparent 30%),
+          var(--bg);
+        color: var(--text);
+        font-family: "Cairo", sans-serif;
+      }
+
+      button,
+      textarea,
+      select,
+      input {
+        font-family: inherit;
+      }
+
+      .page {
+        min-height: 100vh;
+        padding: 28px 16px 70px;
+      }
+
+      .container {
+        width: min(1100px, 100%);
+        margin: auto;
+      }
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 30px;
+      }
+
+      .breadcrumb a {
+        color: var(--muted);
+        text-decoration: none;
+        transition: 0.2s;
+      }
+
+      .breadcrumb a:hover {
+        color: var(--primary);
+      }
+
+      .separator {
+        font-size: 10px;
+        opacity: 0.6;
+      }
+
+      .hero {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        margin-bottom: 28px;
+      }
+
+      .hero-icon {
+        width: 76px;
+        height: 76px;
+        flex: 0 0 76px;
+        display: grid;
+        place-items: center;
+        border-radius: 22px;
+        color: white;
+        font-size: 30px;
+        background: linear-gradient(135deg, #2563eb, #06b6d4);
+        box-shadow: 0 15px 35px rgba(37, 99, 235, 0.22);
+      }
+
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--primary);
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--success);
+        box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.1);
+      }
+
+      .hero h1 {
+        margin: 0 0 6px;
+        font-size: clamp(30px, 5vw, 44px);
+        font-weight: 800;
+        letter-spacing: -1px;
+      }
+
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.9;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .tags span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 11px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--muted);
+        font-size: 11px;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .tool-card,
+      .details-card,
+      .privacy-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+      }
+
+      .tool-card {
+        padding: 24px;
+      }
+
+      .tool-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 22px;
+      }
+
+      .tool-header h2 {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin: 0 0 4px;
+        font-size: 20px;
+      }
+
+      .tool-header h2 i {
+        color: var(--primary);
+      }
+
+      .tool-header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--success);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .live-badge span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--success);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 12px;
+        margin-bottom: 22px;
+      }
+
+      .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px;
+        border: 1px solid var(--border);
+        border-radius: 17px;
+        background: var(--surface-2);
+      }
+
+      .stat-card.primary {
+        border-color: rgba(37, 99, 235, 0.25);
+      }
+
+      .stat-icon {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        flex: 0 0 42px;
+        border-radius: 12px;
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--primary);
+      }
+
+      .stat-info {
+        min-width: 0;
+      }
+
+      .stat-info span {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+        margin-bottom: 2px;
+      }
+
+      .stat-info strong {
+        display: block;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .editor-section {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface-2);
+      }
+
+      .editor-top,
+      .editor-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 15px;
+      }
+
+      .editor-top {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .editor-top label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      .editor-top label i {
+        color: var(--primary);
+      }
+
+      .editor-top span,
+      .editor-footer {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 300px;
+        padding: 20px;
+        border: 0;
+        outline: none;
+        resize: vertical;
+        background: transparent;
+        color: var(--text);
+        font-family: "Cairo", sans-serif;
+        font-size: 15px;
+        line-height: 2;
+      }
+
+      textarea::placeholder {
+        color: var(--muted);
+        opacity: 0.75;
+      }
+
+      .editor-footer {
+        border-top: 1px solid var(--border);
+      }
+
+      .editor-footer span {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+      }
+
+      .btn {
+        border: 0;
+        border-radius: 13px;
+        padding: 12px 17px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .primary-btn {
+        background: linear-gradient(135deg, #2563eb, #0891b2);
+        color: white;
+        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.18);
+      }
+
+      .secondary {
+        background: rgba(37, 99, 235, 0.09);
+        color: var(--primary);
+      }
+
+      .danger {
+        background: rgba(239, 68, 68, 0.09);
+        color: var(--danger);
+      }
+
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 15px;
+        padding: 11px 14px;
+        border-radius: 12px;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .status i {
+        color: var(--primary);
+      }
+
+      .details-card {
+        padding: 25px;
+        margin-top: 22px;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-bottom: 20px;
+      }
+
+      .section-title.centered {
+        justify-content: center;
+        text-align: right;
+      }
+
+      .section-title-icon {
+        width: 45px;
+        height: 45px;
+        display: grid;
+        place-items: center;
+        flex: 0 0 45px;
+        border-radius: 13px;
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--primary);
+      }
+
+      .section-title h2 {
+        margin: 0 0 2px;
+        font-size: 20px;
+      }
+
+      .section-title p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .details-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+
+      .detail-item {
+        padding: 16px;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: var(--surface-2);
+      }
+
+      .detail-item span {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+        margin-bottom: 6px;
+      }
+
+      .detail-item strong {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 18px;
+      }
+
+      .privacy-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 19px;
+        margin-top: 22px;
+        border-color: rgba(16, 185, 129, 0.2);
+      }
+
+      .privacy-icon {
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        flex: 0 0 48px;
+        border-radius: 14px;
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--success);
+        font-size: 20px;
+      }
+
+      .privacy-card h3 {
+        margin: 0 0 4px;
+        font-size: 15px;
+      }
+
+      .privacy-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      .info-section,
+      .how-section,
+      .faq-section {
+        margin-top: 55px;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .info-card {
+        padding: 22px;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .info-icon {
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        border-radius: 14px;
+        margin-bottom: 15px;
+        font-size: 20px;
+      }
+
+      .info-icon.blue {
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--primary);
+      }
+
+      .info-icon.cyan {
+        background: rgba(6, 182, 212, 0.1);
+        color: var(--primary-2);
+      }
+
+      .info-icon.purple {
+        background: rgba(139, 92, 246, 0.1);
+        color: #8b5cf6;
+      }
+
+      .info-card h3 {
+        margin: 0 0 7px;
+        font-size: 16px;
+      }
+
+      .info-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.9;
+        font-size: 12px;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .step {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        padding: 20px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+      }
+
+      .step-number {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        flex: 0 0 38px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #2563eb, #06b6d4);
+        color: white;
+        font-weight: 800;
+      }
+
+      .step h3 {
+        margin: 0 0 5px;
+        font-size: 14px;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      .faq-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      details {
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: var(--surface);
+        overflow: hidden;
+      }
+
+      summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 17px 18px;
+        cursor: pointer;
+        list-style: none;
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      summary i {
+        color: var(--primary);
+        transition: transform 0.2s;
+      }
+
+      details[open] summary i {
+        transform: rotate(180deg);
+      }
+
+      details p {
+        margin: 0;
+        padding: 0 18px 18px;
+        color: var(--muted);
+        line-height: 1.9;
+        font-size: 12px;
+      }
+
+      @media (max-width: 800px) {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .details-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .info-grid,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .page {
+          padding: 20px 12px 55px;
+        }
+
+        .hero {
+          align-items: flex-start;
+        }
+
+        .hero-icon {
+          width: 62px;
+          height: 62px;
+          flex-basis: 62px;
+          border-radius: 18px;
+          font-size: 24px;
+        }
+
+        .hero h1 {
+          font-size: 30px;
+        }
+
+        .tool-card,
+        .details-card {
+          padding: 17px;
+          border-radius: 19px;
+        }
+
+        .tool-header {
+          flex-direction: column;
+        }
+
+        .stats-grid {
+          gap: 8px;
+        }
+
+        .stat-card {
+          padding: 11px;
+        }
+
+        .stat-icon {
+          width: 36px;
+          height: 36px;
+          flex-basis: 36px;
+        }
+
+        .stat-info strong {
+          font-size: 17px;
+        }
+
+        .details-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        textarea {
+          min-height: 260px;
+          padding: 15px;
+        }
+
+        .actions {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .actions .primary-btn {
+          grid-column: span 2;
+          order: -1;
+        }
+
+        .privacy-card {
+          align-items: flex-start;
+        }
+
+        .section-title.centered {
+          justify-content: flex-start;
+        }
+      }
+
+      @media (max-width: 390px) {
+        .stats-grid,
+        .details-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .actions {
+          grid-template-columns: 1fr;
+        }
+
+        .actions .primary-btn {
+          grid-column: auto;
+        }
+      }
+    </style>
+  </body>
+</html>
