@@ -1,0 +1,1895 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Text Reverser - عكس النص أونلاين مجاناً | Th.Tech";
+
+const description =
+  "أداة Text Reverser مجانية لعكس النص وترتيب الكلمات والأسطر بسهولة، مع نسخ النتيجة مباشرة من المتصفح.";
+
+const canonical =
+  "https://oumaystore-hub.github.io" +
+  base +
+  "/tools/text-reverser/";
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+
+          if (saved === "dark") {
+            document.documentElement.classList.add("dark-mode");
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="tool-page">
+
+      <!-- Breadcrumb -->
+      <div class="container">
+        <nav class="breadcrumb" aria-label="مسار الصفحة">
+          <a href={base + "/"}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <a href={base + "/tools/"}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <span>Text Reverser</span>
+        </nav>
+      </div>
+
+      <!-- Hero -->
+      <section class="hero">
+        <div class="container">
+          <div class="hero-card">
+
+            <div class="hero-icon">
+              <i class="fa-solid fa-right-left"></i>
+            </div>
+
+            <div class="hero-content">
+
+              <div class="eyebrow">
+                <span class="dot"></span>
+                Text Tools
+              </div>
+
+              <h1>Text Reverser</h1>
+
+              <p>
+                اعكس النص أو الكلمات أو ترتيب الأسطر بسهولة مباشرة من المتصفح.
+              </p>
+
+              <div class="tags">
+                <span>Reverse</span>
+                <span>Text</span>
+                <span>Words</span>
+                <span>Local</span>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Tool -->
+      <section class="tool-section">
+        <div class="container">
+
+          <div class="tool-card">
+
+            <!-- Header -->
+            <div class="tool-header">
+
+              <div class="header-title">
+
+                <div class="header-icon">
+                  <i class="fa-solid fa-right-left"></i>
+                </div>
+
+                <div>
+                  <strong>عاكس النص</strong>
+                  <span>اختر طريقة العكس ثم أدخل النص</span>
+                </div>
+
+              </div>
+
+              <div class="live-badge">
+                <span></span>
+                مباشر
+              </div>
+
+            </div>
+
+            <!-- Controls -->
+            <div class="controls">
+
+              <div class="control-title">
+                <i class="fa-solid fa-sliders"></i>
+                طريقة عكس النص
+              </div>
+
+              <div class="mode-grid">
+
+                <button
+                  class="mode-btn active"
+                  data-mode="characters"
+                  type="button"
+                >
+                  <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                  <span>
+                    <strong>عكس الأحرف</strong>
+                    <small>النص بالكامل من النهاية للبداية</small>
+                  </span>
+                </button>
+
+                <button
+                  class="mode-btn"
+                  data-mode="words"
+                  type="button"
+                >
+                  <i class="fa-solid fa-text-width"></i>
+                  <span>
+                    <strong>عكس الكلمات</strong>
+                    <small>تغيير ترتيب الكلمات فقط</small>
+                  </span>
+                </button>
+
+                <button
+                  class="mode-btn"
+                  data-mode="lines"
+                  type="button"
+                >
+                  <i class="fa-solid fa-list-ol"></i>
+                  <span>
+                    <strong>عكس الأسطر</strong>
+                    <small>تغيير ترتيب الأسطر</small>
+                  </span>
+                </button>
+
+                <button
+                  class="mode-btn"
+                  data-mode="each-line"
+                  type="button"
+                >
+                  <i class="fa-solid fa-repeat"></i>
+                  <span>
+                    <strong>عكس كل سطر</strong>
+                    <small>عكس الأحرف داخل كل سطر</small>
+                  </span>
+                </button>
+
+              </div>
+
+            </div>
+
+            <!-- Editors -->
+            <div class="editors">
+
+              <div class="editor-box">
+
+                <div class="editor-label">
+
+                  <span>
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    النص الأصلي
+                  </span>
+
+                  <span id="inputCount">0 حرف</span>
+
+                </div>
+
+                <textarea
+                  id="inputText"
+                  dir="auto"
+                  spellcheck="false"
+                  placeholder="اكتب أو الصق النص هنا..."
+                ></textarea>
+
+              </div>
+
+              <div class="swap-icon">
+                <i class="fa-solid fa-arrow-left-arrow-right"></i>
+              </div>
+
+              <div class="editor-box">
+
+                <div class="editor-label">
+
+                  <span>
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    النتيجة
+                  </span>
+
+                  <span id="outputCount">0 حرف</span>
+
+                </div>
+
+                <textarea
+                  id="outputText"
+                  dir="auto"
+                  spellcheck="false"
+                  readonly
+                  placeholder="ستظهر النتيجة هنا..."
+                ></textarea>
+
+              </div>
+
+            </div>
+
+            <!-- Actions -->
+            <div class="actions">
+
+              <div class="main-actions">
+
+                <button class="btn primary" id="reverseBtn" type="button">
+                  <i class="fa-solid fa-right-left"></i>
+                  عكس النص
+                </button>
+
+                <button class="btn secondary" id="sampleBtn" type="button">
+                  <i class="fa-solid fa-flask"></i>
+                  تجربة مثال
+                </button>
+
+                <button class="btn secondary" id="copyBtn" type="button">
+                  <i class="fa-regular fa-copy"></i>
+                  نسخ النتيجة
+                </button>
+
+              </div>
+
+              <button class="btn utility danger" id="clearBtn" type="button">
+                <i class="fa-solid fa-trash-can"></i>
+                مسح
+              </button>
+
+            </div>
+
+            <!-- Status -->
+            <div class="status" id="status">
+              <i class="fa-solid fa-circle-info"></i>
+              أدخل النص واختر طريقة العكس.
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid">
+
+              <div class="stat-card featured">
+
+                <div class="stat-icon">
+                  <i class="fa-solid fa-font"></i>
+                </div>
+
+                <div class="stat-content">
+                  <span>الأحرف</span>
+                  <strong id="charsStat">0</strong>
+                </div>
+
+              </div>
+
+              <div class="stat-card">
+
+                <div class="stat-icon green">
+                  <i class="fa-solid fa-text-width"></i>
+                </div>
+
+                <div class="stat-content">
+                  <span>الكلمات</span>
+                  <strong id="wordsStat">0</strong>
+                </div>
+
+              </div>
+
+              <div class="stat-card">
+
+                <div class="stat-icon orange">
+                  <i class="fa-solid fa-list-ol"></i>
+                </div>
+
+                <div class="stat-content">
+                  <span>الأسطر</span>
+                  <strong id="linesStat">0</strong>
+                </div>
+
+              </div>
+
+              <div class="stat-card">
+
+                <div class="stat-icon purple">
+                  <i class="fa-solid fa-repeat"></i>
+                </div>
+
+                <div class="stat-content">
+                  <span>الوضع الحالي</span>
+                  <strong id="modeStat">أحرف</strong>
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Privacy -->
+      <section class="container info-section">
+
+        <div class="privacy-card">
+
+          <div class="privacy-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+
+          <div>
+            <h3>المعالجة تتم محلياً</h3>
+
+            <p>
+              يتم عكس النص داخل متصفحك مباشرة ولا يتم إرسال المحتوى إلى أي
+              خادم خارجي.
+            </p>
+          </div>
+
+          <span class="local-badge">
+            <i class="fa-solid fa-bolt"></i>
+            100% Local
+          </span>
+
+        </div>
+
+      </section>
+
+      <!-- Information -->
+      <section class="container info-section">
+
+        <div class="section-heading">
+
+          <span>دليل الأداة</span>
+
+          <h2>طرق مختلفة لعكس النص</h2>
+
+          <p>
+            اختر الطريقة التي تناسب نوع النص الذي تعمل عليه.
+          </p>
+
+        </div>
+
+        <div class="info-grid">
+
+          <article class="info-card">
+
+            <div class="info-number">01</div>
+
+            <div class="info-card-icon">
+              <i class="fa-solid fa-arrow-right-arrow-left"></i>
+            </div>
+
+            <h3>عكس الأحرف</h3>
+
+            <p>
+              يقلب جميع الأحرف في النص، بحيث يصبح آخر حرف هو الأول والعكس.
+            </p>
+
+          </article>
+
+          <article class="info-card">
+
+            <div class="info-number">02</div>
+
+            <div class="info-card-icon">
+              <i class="fa-solid fa-text-width"></i>
+            </div>
+
+            <h3>عكس الكلمات</h3>
+
+            <p>
+              يحافظ على الأحرف داخل الكلمات ويغير ترتيب الكلمات في النص.
+            </p>
+
+          </article>
+
+          <article class="info-card">
+
+            <div class="info-number">03</div>
+
+            <div class="info-card-icon">
+              <i class="fa-solid fa-list-ol"></i>
+            </div>
+
+            <h3>عكس الأسطر</h3>
+
+            <p>
+              يغير ترتيب الأسطر بحيث يصبح السطر الأخير في البداية.
+            </p>
+
+          </article>
+
+        </div>
+
+      </section>
+
+      <!-- Steps -->
+      <section class="container steps-section">
+
+        <div class="section-heading">
+
+          <span>طريقة الاستخدام</span>
+
+          <h2>اعكس النص في 3 خطوات</h2>
+
+        </div>
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">1</div>
+
+            <div>
+              <h3>اختر الوضع</h3>
+              <p>
+                حدد عكس الأحرف أو الكلمات أو الأسطر حسب حاجتك.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="step">
+
+            <div class="step-number">2</div>
+
+            <div>
+              <h3>أدخل النص</h3>
+              <p>
+                اكتب النص أو الصقه داخل المحرر.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="step">
+
+            <div class="step-number">3</div>
+
+            <div>
+              <h3>انسخ النتيجة</h3>
+              <p>
+                اضغط على عكس النص ثم انسخ النتيجة بضغطة واحدة.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- FAQ -->
+      <section class="container faq-section">
+
+        <div class="section-heading">
+
+          <span>الأسئلة الشائعة</span>
+
+          <h2>أسئلة حول Text Reverser</h2>
+
+        </div>
+
+        <div class="faq-grid">
+
+          <details>
+            <summary>
+              <span>ما الفرق بين عكس الأحرف وعكس الكلمات؟</span>
+              <i class="fa-solid fa-plus"></i>
+            </summary>
+
+            <p>
+              عكس الأحرف يقلب كل حرف في النص، بينما عكس الكلمات يحافظ على
+              محتوى كل كلمة ويغير ترتيب الكلمات فقط.
+            </p>
+          </details>
+
+          <details>
+            <summary>
+              <span>هل الأداة تدعم اللغة العربية؟</span>
+              <i class="fa-solid fa-plus"></i>
+            </summary>
+
+            <p>
+              نعم. الأداة تدعم النصوص العربية والإنجليزية وغيرها، وتعمل
+              مباشرة داخل المتصفح.
+            </p>
+          </details>
+
+          <details>
+            <summary>
+              <span>هل يتم إرسال النص إلى الخادم؟</span>
+              <i class="fa-solid fa-plus"></i>
+            </summary>
+
+            <p>
+              لا. جميع عمليات العكس تتم محلياً داخل المتصفح، ولا يتم رفع النص
+              إلى خادم خارجي.
+            </p>
+          </details>
+
+          <details>
+            <summary>
+              <span>هل يمكن عكس كل سطر بشكل منفصل؟</span>
+              <i class="fa-solid fa-plus"></i>
+            </summary>
+
+            <p>
+              نعم. استخدم وضع "عكس كل سطر" لعكس الأحرف داخل كل سطر مع الحفاظ
+              على ترتيب الأسطر.
+            </p>
+          </details>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <Footer />
+
+    <style>
+      :root {
+        --bg: #f5f8fc;
+        --surface: #ffffff;
+        --surface-2: #f8fbff;
+        --text: #102033;
+        --muted: #6b7b8f;
+        --border: #e2eaf3;
+        --primary: #2563eb;
+        --primary-2: #06b6d4;
+        --success: #10b981;
+        --danger: #ef4444;
+        --orange: #f59e0b;
+        --purple: #8b5cf6;
+        --shadow: 0 18px 55px rgba(15, 35, 65, 0.08);
+        --shadow-sm: 0 8px 25px rgba(15, 35, 65, 0.06);
+      }
+
+      html.dark-mode {
+        --bg: #07111f;
+        --surface: #0d1a2b;
+        --surface-2: #101f32;
+        --text: #e8f0fa;
+        --muted: #91a3b8;
+        --border: #1d3148;
+        --primary: #4f8cff;
+        --primary-2: #22d3ee;
+        --success: #34d399;
+        --danger: #fb7185;
+        --orange: #fbbf24;
+        --purple: #a78bfa;
+        --shadow: 0 18px 55px rgba(0, 0, 0, 0.24);
+        --shadow-sm: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(
+            circle at 10% 5%,
+            rgba(37, 99, 235, 0.07),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at 90% 15%,
+            rgba(6, 182, 212, 0.06),
+            transparent 25%
+          ),
+          var(--bg);
+        color: var(--text);
+        font-family: "Cairo", sans-serif;
+        transition:
+          background 0.25s ease,
+          color 0.25s ease;
+      }
+
+      button,
+      textarea {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .tool-page {
+        min-height: 100vh;
+        padding-bottom: 70px;
+      }
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 24px 0 10px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .breadcrumb a {
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .breadcrumb a:hover {
+        color: var(--primary);
+      }
+
+      .breadcrumb i {
+        font-size: 9px;
+        opacity: 0.65;
+      }
+
+      .hero {
+        padding: 18px 0 30px;
+      }
+
+      .hero-card {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        padding: 34px;
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .hero-card::before {
+        content: "";
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        left: -100px;
+        top: -150px;
+        border-radius: 50%;
+        background: rgba(37, 99, 235, 0.08);
+        pointer-events: none;
+      }
+
+      .hero-icon {
+        position: relative;
+        flex: 0 0 88px;
+        width: 88px;
+        height: 88px;
+        display: grid;
+        place-items: center;
+        border-radius: 24px;
+        color: #fff;
+        font-size: 34px;
+        background: linear-gradient(135deg, #2563eb, #06b6d4);
+        box-shadow: 0 15px 35px rgba(37, 99, 235, 0.25);
+      }
+
+      .hero-content {
+        position: relative;
+      }
+
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 5px;
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+      }
+
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--primary);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(27px, 4vw, 40px);
+        line-height: 1.25;
+        font-weight: 800;
+      }
+
+      .hero p {
+        margin: 8px 0 14px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+
+      .tags span {
+        padding: 5px 11px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        color: var(--muted);
+        background: var(--surface-2);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .tool-section {
+        padding: 8px 0 20px;
+      }
+
+      .tool-card {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .tool-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface-2);
+      }
+
+      .header-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .header-icon {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.1);
+      }
+
+      .header-title div:last-child {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .header-title strong {
+        font-size: 14px;
+      }
+
+      .header-title span {
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border-radius: 9px;
+        color: var(--success);
+        background: rgba(16, 185, 129, 0.08);
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .live-badge span {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--success);
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08);
+      }
+
+      .controls {
+        padding: 20px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .control-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .control-title i {
+        color: var(--primary);
+      }
+
+      .mode-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      .mode-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+        padding: 13px;
+        text-align: right;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        color: var(--muted);
+        background: var(--surface);
+        transition:
+          border-color 0.2s ease,
+          background 0.2s ease,
+          transform 0.2s ease;
+      }
+
+      .mode-btn:hover {
+        transform: translateY(-1px);
+        border-color: rgba(37, 99, 235, 0.45);
+      }
+
+      .mode-btn.active {
+        color: var(--primary);
+        border-color: rgba(37, 99, 235, 0.45);
+        background: rgba(37, 99, 235, 0.07);
+      }
+
+      .mode-btn > i {
+        width: 35px;
+        height: 35px;
+        flex: 0 0 35px;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        background: var(--surface-2);
+      }
+
+      .mode-btn.active > i {
+        background: rgba(37, 99, 235, 0.1);
+      }
+
+      .mode-btn span {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .mode-btn strong {
+        font-size: 11px;
+        color: var(--text);
+      }
+
+      .mode-btn.active strong {
+        color: var(--primary);
+      }
+
+      .mode-btn small {
+        margin-top: 3px;
+        color: var(--muted);
+        font-size: 8px;
+        line-height: 1.5;
+      }
+
+      .editors {
+        display: grid;
+        grid-template-columns: 1fr 46px 1fr;
+        align-items: center;
+        gap: 10px;
+        padding: 20px;
+      }
+
+      .editor-box {
+        min-width: 0;
+      }
+
+      .editor-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 9px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .editor-label span:first-child {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 285px;
+        padding: 16px;
+        resize: vertical;
+        outline: none;
+        border: 1px solid var(--border);
+        border-radius: 17px;
+        color: var(--text);
+        background: var(--surface-2);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        line-height: 1.85;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      textarea::placeholder {
+        color: var(--muted);
+        opacity: 0.7;
+      }
+
+      textarea:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+      }
+
+      #outputText {
+        cursor: text;
+      }
+
+      .swap-icon {
+        width: 40px;
+        height: 40px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--primary);
+        background: var(--surface-2);
+        font-size: 13px;
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 0 20px 18px;
+      }
+
+      .main-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 44px;
+        padding: 10px 16px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        font-size: 12px;
+        font-weight: 800;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn.primary {
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #06b6d4);
+        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+      }
+
+      .btn.secondary,
+      .btn.utility {
+        color: var(--muted);
+        border-color: var(--border);
+        background: var(--surface);
+      }
+
+      .btn.secondary {
+        color: var(--primary);
+      }
+
+      .btn.secondary:hover,
+      .btn.utility:hover {
+        color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .btn.danger:hover {
+        color: var(--danger);
+        border-color: rgba(239, 68, 68, 0.4);
+      }
+
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 20px 20px;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--muted);
+        background: var(--surface-2);
+        font-size: 12px;
+      }
+
+      .status.success {
+        color: var(--success);
+        border-color: rgba(16, 185, 129, 0.22);
+        background: rgba(16, 185, 129, 0.06);
+      }
+
+      .status.error {
+        color: var(--danger);
+        border-color: rgba(239, 68, 68, 0.2);
+        background: rgba(239, 68, 68, 0.05);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        border-top: 1px solid var(--border);
+        background: var(--border);
+      }
+
+      .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 18px;
+        background: var(--surface);
+      }
+
+      .stat-card.featured {
+        background:
+          linear-gradient(
+            135deg,
+            rgba(37, 99, 235, 0.06),
+            rgba(6, 182, 212, 0.04)
+          ),
+          var(--surface);
+      }
+
+      .stat-icon {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.09);
+      }
+
+      .stat-icon.green {
+        color: var(--success);
+        background: rgba(16, 185, 129, 0.09);
+      }
+
+      .stat-icon.orange {
+        color: var(--orange);
+        background: rgba(245, 158, 11, 0.1);
+      }
+
+      .stat-icon.purple {
+        color: var(--purple);
+        background: rgba(139, 92, 246, 0.1);
+      }
+
+      .stat-content {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .stat-content span {
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .stat-content strong {
+        margin-top: 1px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 16px;
+      }
+
+      .info-section,
+      .steps-section,
+      .faq-section {
+        padding-top: 55px;
+      }
+
+      .privacy-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 20px;
+        border: 1px solid rgba(37, 99, 235, 0.18);
+        border-radius: 18px;
+        background: rgba(37, 99, 235, 0.05);
+      }
+
+      .privacy-icon {
+        width: 46px;
+        height: 46px;
+        flex: 0 0 46px;
+        display: grid;
+        place-items: center;
+        border-radius: 13px;
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.1);
+        font-size: 19px;
+      }
+
+      .privacy-card h3 {
+        margin: 0 0 2px;
+        font-size: 14px;
+      }
+
+      .privacy-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.8;
+      }
+
+      .local-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-right: auto;
+        padding: 7px 10px;
+        border-radius: 9px;
+        color: var(--success);
+        background: rgba(16, 185, 129, 0.08);
+        font-size: 10px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .section-heading {
+        margin-bottom: 22px;
+      }
+
+      .section-heading > span {
+        color: var(--primary);
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .section-heading h2 {
+        margin: 4px 0 5px;
+        font-size: clamp(20px, 3vw, 27px);
+      }
+
+      .section-heading p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .info-card {
+        position: relative;
+        overflow: hidden;
+        padding: 24px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .info-number {
+        position: absolute;
+        top: 17px;
+        left: 20px;
+        color: var(--border);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .info-card-icon {
+        width: 45px;
+        height: 45px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 15px;
+        border-radius: 13px;
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.09);
+      }
+
+      .info-card h3 {
+        margin: 0 0 7px;
+        font-size: 14px;
+      }
+
+      .info-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.9;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .step {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 21px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+      }
+
+      .step-number {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #06b6d4);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .step h3 {
+        margin: 0 0 4px;
+        font-size: 13px;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.8;
+      }
+
+      .faq-grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      details {
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: var(--surface);
+      }
+
+      summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 17px 18px;
+        cursor: pointer;
+        list-style: none;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      summary i {
+        color: var(--primary);
+        transition: transform 0.2s ease;
+      }
+
+      details[open] summary i {
+        transform: rotate(45deg);
+      }
+
+      details p {
+        margin: 0;
+        padding: 0 18px 18px;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 2;
+      }
+
+      @media (max-width: 1000px) {
+        .mode-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .editors {
+          grid-template-columns: 1fr;
+        }
+
+        .swap-icon {
+          display: none;
+        }
+
+        .info-grid,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 750px) {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 650px) {
+        .container {
+          width: min(100% - 20px, 1180px);
+        }
+
+        .hero-card {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 24px;
+          border-radius: 22px;
+        }
+
+        .hero-icon {
+          width: 68px;
+          height: 68px;
+          flex-basis: 68px;
+          border-radius: 19px;
+          font-size: 27px;
+        }
+
+        .breadcrumb {
+          padding-top: 17px;
+          font-size: 11px;
+        }
+
+        .tool-card {
+          border-radius: 20px;
+        }
+
+        .tool-header {
+          padding: 14px;
+        }
+
+        .live-badge {
+          display: none;
+        }
+
+        .controls {
+          padding: 14px;
+        }
+
+        .mode-grid {
+          grid-template-columns: 1fr 1fr;
+          gap: 8px;
+        }
+
+        .mode-btn {
+          padding: 10px;
+          gap: 7px;
+        }
+
+        .mode-btn > i {
+          width: 30px;
+          height: 30px;
+          flex-basis: 30px;
+          font-size: 11px;
+        }
+
+        .mode-btn strong {
+          font-size: 9px;
+        }
+
+        .mode-btn small {
+          font-size: 7px;
+        }
+
+        .editors {
+          padding: 14px;
+        }
+
+        textarea {
+          min-height: 220px;
+          padding: 14px;
+          font-size: 12px;
+        }
+
+        .actions {
+          align-items: stretch;
+          flex-direction: column;
+          padding: 0 14px 14px;
+        }
+
+        .main-actions {
+          width: 100%;
+        }
+
+        .btn {
+          flex: 1;
+          padding: 10px;
+          font-size: 10px;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .stat-card {
+          padding: 14px 10px;
+          gap: 8px;
+        }
+
+        .stat-icon {
+          width: 34px;
+          height: 34px;
+          flex-basis: 34px;
+          font-size: 12px;
+        }
+
+        .stat-content span {
+          font-size: 9px;
+        }
+
+        .stat-content strong {
+          font-size: 14px;
+        }
+
+        .privacy-card {
+          align-items: flex-start;
+          flex-wrap: wrap;
+        }
+
+        .local-badge {
+          margin-right: 0;
+          width: 100%;
+          justify-content: center;
+        }
+
+        .info-section,
+        .steps-section,
+        .faq-section {
+          padding-top: 42px;
+        }
+      }
+    </style>
+
+    <script is:inline>
+      (() => {
+        const input = document.getElementById("inputText");
+        const output = document.getElementById("outputText");
+
+        const reverseBtn = document.getElementById("reverseBtn");
+        const sampleBtn = document.getElementById("sampleBtn");
+        const copyBtn = document.getElementById("copyBtn");
+        const clearBtn = document.getElementById("clearBtn");
+
+        const status = document.getElementById("status");
+
+        const inputCount = document.getElementById("inputCount");
+        const outputCount = document.getElementById("outputCount");
+
+        const charsStat = document.getElementById("charsStat");
+        const wordsStat = document.getElementById("wordsStat");
+        const linesStat = document.getElementById("linesStat");
+        const modeStat = document.getElementById("modeStat");
+
+        const modeButtons =
+          document.querySelectorAll(".mode-btn");
+
+        let currentMode = "characters";
+
+        function syncTheme() {
+          try {
+            const saved = localStorage.getItem("theme");
+
+            if (saved === "dark") {
+              document.documentElement.classList.add("dark-mode");
+            } else {
+              document.documentElement.classList.remove("dark-mode");
+            }
+          } catch {}
+        }
+
+        syncTheme();
+
+        window.addEventListener("themeChange", syncTheme);
+
+        document.addEventListener("click", function (event) {
+          const target = event.target;
+
+          if (
+            target &&
+            (
+              target.id === "theme-btn" ||
+              (target.closest && target.closest("#theme-btn"))
+            )
+          ) {
+            setTimeout(syncTheme, 0);
+          }
+        });
+
+        function setStatus(message, type) {
+          status.className = "status";
+
+          if (type) {
+            status.classList.add(type);
+          }
+
+          let icon = "fa-circle-info";
+
+          if (type === "success") {
+            icon = "fa-circle-check";
+          }
+
+          if (type === "error") {
+            icon = "fa-circle-exclamation";
+          }
+
+          status.innerHTML =
+            '<i class="fa-solid ' +
+            icon +
+            '"></i>' +
+            message;
+        }
+
+        function reverseCharacters(text) {
+          return Array.from(text).reverse().join("");
+        }
+
+        function reverseWords(text) {
+          const lines = text.split(/\r?\n/);
+
+          return lines
+            .map(function (line) {
+              const leading =
+                line.match(/^\s*/u)?.[0] || "";
+
+              const trailing =
+                line.match(/\s*$/u)?.[0] || "";
+
+              const content =
+                line.trim();
+
+              if (!content) {
+                return line;
+              }
+
+              const words =
+                content.split(/\s+/u).reverse();
+
+              return (
+                leading +
+                words.join(" ") +
+                trailing
+              );
+            })
+            .join("\n");
+        }
+
+        function reverseLines(text) {
+          return text
+            .split(/\r?\n/)
+            .reverse()
+            .join("\n");
+        }
+
+        function reverseEachLine(text) {
+          return text
+            .split(/\r?\n/)
+            .map(function (line) {
+              return reverseCharacters(line);
+            })
+            .join("\n");
+        }
+
+        function getModeName() {
+          if (currentMode === "characters") {
+            return "أحرف";
+          }
+
+          if (currentMode === "words") {
+            return "كلمات";
+          }
+
+          if (currentMode === "lines") {
+            return "أسطر";
+          }
+
+          return "كل سطر";
+        }
+
+        function updateStats() {
+          const text = input.value;
+
+          const chars = text.length;
+
+          const words = text.trim()
+            ? text.trim().split(/\s+/u).length
+            : 0;
+
+          const lines = text
+            ? text.split(/\r?\n/).length
+            : 0;
+
+          inputCount.textContent =
+            String(chars) + " حرف";
+
+          outputCount.textContent =
+            String(output.value.length) + " حرف";
+
+          charsStat.textContent =
+            String(chars);
+
+          wordsStat.textContent =
+            String(words);
+
+          linesStat.textContent =
+            String(lines);
+
+          modeStat.textContent =
+            getModeName();
+        }
+
+        function reverseText() {
+          const text = input.value;
+
+          if (!text) {
+            output.value = "";
+            updateStats();
+
+            setStatus(
+              "أدخل نصاً أولاً لعكسه.",
+              "error"
+            );
+
+            return;
+          }
+
+          if (currentMode === "characters") {
+            output.value =
+              reverseCharacters(text);
+          } else if (currentMode === "words") {
+            output.value =
+              reverseWords(text);
+          } else if (currentMode === "lines") {
+            output.value =
+              reverseLines(text);
+          } else {
+            output.value =
+              reverseEachLine(text);
+          }
+
+          updateStats();
+
+          setStatus(
+            "تم عكس النص بنجاح.",
+            "success"
+          );
+        }
+
+        function selectMode(button) {
+          modeButtons.forEach(function (item) {
+            item.classList.remove("active");
+          });
+
+          button.classList.add("active");
+
+          currentMode =
+            button.getAttribute("data-mode") ||
+            "characters";
+
+          updateStats();
+
+          if (input.value) {
+            reverseText();
+          }
+        }
+
+        function loadSample() {
+          input.value =
+            "Th.Tech منصة تقنية مجانية.\n" +
+            "اكتشف أدوات مفيدة للمطورين.\n" +
+            "تعلم وابتكر بسهولة.";
+
+          currentMode = "characters";
+
+          modeButtons.forEach(function (item) {
+            item.classList.remove("active");
+          });
+
+          const firstMode =
+            document.querySelector(
+              '.mode-btn[data-mode="characters"]'
+            );
+
+          if (firstMode) {
+            firstMode.classList.add("active");
+          }
+
+          reverseText();
+
+          setStatus(
+            "تم تحميل المثال وعكس النص.",
+            "success"
+          );
+        }
+
+        async function copyResult() {
+          const value = output.value;
+
+          if (!value) {
+            setStatus(
+              "لا توجد نتيجة لنسخها.",
+              "error"
+            );
+
+            return;
+          }
+
+          try {
+            await navigator.clipboard.writeText(value);
+
+            setStatus(
+              "تم نسخ النتيجة إلى الحافظة.",
+              "success"
+            );
+          } catch {
+            output.select();
+
+            document.execCommand("copy");
+
+            setStatus(
+              "تم نسخ النتيجة.",
+              "success"
+            );
+          }
+        }
+
+        function clearAll() {
+          input.value = "";
+          output.value = "";
+
+          updateStats();
+
+          setStatus(
+            "تم مسح النص والنتيجة.",
+            ""
+          );
+
+          input.focus();
+        }
+
+        input.addEventListener("input", function () {
+          updateStats();
+
+          if (input.value) {
+            reverseText();
+          } else {
+            output.value = "";
+
+            setStatus(
+              "أدخل النص واختر طريقة العكس.",
+              ""
+            );
+
+            updateStats();
+          }
+        });
+
+        modeButtons.forEach(function (button) {
+          button.addEventListener("click", function () {
+            selectMode(button);
+          });
+        });
+
+        reverseBtn.addEventListener(
+          "click",
+          reverseText
+        );
+
+        sampleBtn.addEventListener(
+          "click",
+          loadSample
+        );
+
+        copyBtn.addEventListener(
+          "click",
+          copyResult
+        );
+
+        clearBtn.addEventListener(
+          "click",
+          clearAll
+        );
+
+        input.addEventListener(
+          "keydown",
+          function (event) {
+            if (
+              event.ctrlKey &&
+              event.key === "Enter"
+            ) {
+              event.preventDefault();
+              reverseText();
+            }
+          }
+        );
+
+        updateStats();
+      })();
+    </script>
+  </body>
+</html>
