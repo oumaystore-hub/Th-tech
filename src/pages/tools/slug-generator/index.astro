@@ -1,0 +1,1960 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Slug Generator - إنشاء Slug للرابط أونلاين | Th.Tech";
+const description =
+  "أداة Slug Generator مجانية لتحويل العناوين والنصوص إلى روابط URL Slug نظيفة ومتوافقة مع محركات البحث.";
+const canonical =
+  "https://oumaystore-hub.github.io" +
+  base +
+  "/tools/slug-generator/";
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+
+          if (saved === "dark") {
+            document.documentElement.classList.add("dark-mode");
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="tool-page">
+
+      <div class="container">
+        <nav class="breadcrumb" aria-label="مسار الصفحة">
+          <a href={base + "/"}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <a href={base + "/tools/"}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <span>Slug Generator</span>
+        </nav>
+      </div>
+
+      <section class="hero">
+        <div class="container">
+          <div class="hero-card">
+
+            <div class="hero-icon">
+              <i class="fa-solid fa-link"></i>
+            </div>
+
+            <div class="hero-content">
+              <div class="eyebrow">
+                <span class="dot"></span>
+                SEO &amp; URL Tools
+              </div>
+
+              <h1>Slug Generator</h1>
+
+              <p>
+                حوّل العناوين والنصوص إلى Slug نظيف ومناسب للروابط ومحركات البحث.
+              </p>
+
+              <div class="tags">
+                <span>URL Slug</span>
+                <span>SEO</span>
+                <span>Arabic</span>
+                <span>Local</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-section">
+        <div class="container">
+
+          <div class="tool-card">
+
+            <div class="tool-header">
+
+              <div class="header-title">
+                <div class="header-icon">
+                  <i class="fa-solid fa-link"></i>
+                </div>
+
+                <div>
+                  <strong>منشئ Slug</strong>
+                  <span>أنشئ رابطاً نظيفاً من أي عنوان</span>
+                </div>
+              </div>
+
+              <div class="live-badge">
+                <span></span>
+                مباشر
+              </div>
+
+            </div>
+
+            <div class="editor-area">
+
+              <div class="field">
+
+                <div class="field-label">
+                  <span>
+                    <i class="fa-solid fa-heading"></i>
+                    النص أو العنوان
+                  </span>
+
+                  <span id="inputCount">0 حرف</span>
+                </div>
+
+                <textarea
+                  id="inputText"
+                  dir="auto"
+                  spellcheck="false"
+                  placeholder="مثال: أفضل أدوات الذكاء الاصطناعي للمطورين"
+                ></textarea>
+
+              </div>
+
+              <div class="options">
+
+                <label class="option">
+                  <input id="lowercase" type="checkbox" checked />
+                  <span class="checkmark">
+                    <i class="fa-solid fa-check"></i>
+                  </span>
+                  <span class="option-text">
+                    <strong>أحرف صغيرة</strong>
+                    <small>تحويل الأحرف الإنجليزية إلى lowercase</small>
+                  </span>
+                </label>
+
+                <label class="option">
+                  <input id="removeStopWords" type="checkbox" />
+                  <span class="checkmark">
+                    <i class="fa-solid fa-check"></i>
+                  </span>
+                  <span class="option-text">
+                    <strong>إزالة الكلمات الشائعة</strong>
+                    <small>مثل the و a و an في النص الإنجليزي</small>
+                  </span>
+                </label>
+
+              </div>
+
+              <div class="result-box">
+
+                <div class="result-label">
+
+                  <span>
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    Slug الناتج
+                  </span>
+
+                  <span id="outputCount">0 حرف</span>
+
+                </div>
+
+                <div class="result-row">
+
+                  <div id="outputText" class="slug-output" dir="ltr">
+                    <span class="placeholder">
+                      سيظهر الـ Slug هنا...
+                    </span>
+                  </div>
+
+                  <button
+                    id="copyBtn"
+                    class="copy-btn"
+                    type="button"
+                    title="نسخ Slug"
+                    aria-label="نسخ Slug"
+                  >
+                    <i class="fa-regular fa-copy"></i>
+                  </button>
+
+                </div>
+
+              </div>
+
+              <div class="preview-box">
+
+                <div class="preview-title">
+                  <i class="fa-solid fa-eye"></i>
+                  معاينة الرابط
+                </div>
+
+                <div class="url-preview" dir="ltr">
+                  <span>https://example.com/</span><strong id="urlPreview">slug</strong>
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="actions">
+
+              <div class="main-actions">
+
+                <button
+                  class="btn primary"
+                  id="generateBtn"
+                  type="button"
+                >
+                  <i class="fa-solid fa-wand-magic-sparkles"></i>
+                  إنشاء Slug
+                </button>
+
+                <button
+                  class="btn secondary"
+                  id="sampleBtn"
+                  type="button"
+                >
+                  <i class="fa-solid fa-flask"></i>
+                  تجربة مثال
+                </button>
+
+                <button
+                  class="btn secondary"
+                  id="copyBtn2"
+                  type="button"
+                >
+                  <i class="fa-regular fa-copy"></i>
+                  نسخ
+                </button>
+
+              </div>
+
+              <button
+                class="btn utility danger"
+                id="clearBtn"
+                type="button"
+              >
+                <i class="fa-solid fa-trash-can"></i>
+                مسح
+              </button>
+
+            </div>
+
+            <div class="status" id="status">
+              <i class="fa-solid fa-circle-info"></i>
+              أدخل عنواناً لإنشاء Slug مناسب للرابط.
+            </div>
+
+            <div class="stats-grid">
+
+              <div class="stat-card featured">
+                <div class="stat-icon">
+                  <i class="fa-solid fa-font"></i>
+                </div>
+
+                <div class="stat-content">
+                  <span>النص الأصلي</span>
+                  <strong id="charsStat">0</strong>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon green">
+                  <i class="fa-solid fa-link"></i>
+                </div>
+
+                <div class="stat-content">
+                  <span>طول Slug</span>
+                  <strong id="slugLengthStat">0</strong>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon orange">
+                  <i class="fa-solid fa-layer-group"></i>
+                </div>
+
+                <div class="stat-content">
+                  <span>عدد الكلمات</span>
+                  <strong id="wordsStat">0</strong>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon purple">
+                  <i class="fa-solid fa-language"></i>
+                </div>
+
+                <div class="stat-content">
+                  <span>اللغة</span>
+                  <strong id="languageStat">—</strong>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      <section class="container info-section">
+
+        <div class="privacy-card">
+
+          <div class="privacy-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+
+          <div>
+            <h3>المعالجة تتم محلياً</h3>
+            <p>
+              النص لا يغادر جهازك. يتم إنشاء الـ Slug بالكامل داخل المتصفح.
+            </p>
+          </div>
+
+          <span class="local-badge">
+            <i class="fa-solid fa-bolt"></i>
+            100% Local
+          </span>
+
+        </div>
+
+      </section>
+
+      <section class="container info-section">
+
+        <div class="section-heading">
+          <span>لماذا تستخدم Slug؟</span>
+          <h2>روابط أنظف وأسهل للقراءة</h2>
+          <p>
+            الـ Slug هو الجزء النصي من الرابط الذي يصف محتوى الصفحة.
+          </p>
+        </div>
+
+        <div class="info-grid">
+
+          <article class="info-card">
+
+            <div class="info-number">01</div>
+
+            <div class="info-card-icon">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <h3>أفضل لمحركات البحث</h3>
+
+            <p>
+              الروابط الواضحة تساعد المستخدم ومحركات البحث على فهم موضوع
+              الصفحة بسهولة أكبر.
+            </p>
+
+          </article>
+
+          <article class="info-card">
+
+            <div class="info-number">02</div>
+
+            <div class="info-card-icon">
+              <i class="fa-solid fa-user"></i>
+            </div>
+
+            <h3>أسهل للقراءة</h3>
+
+            <p>
+              Slug نظيف ومختصر يجعل الرابط أكثر وضوحاً وسهولة في المشاركة.
+            </p>
+
+          </article>
+
+          <article class="info-card">
+
+            <div class="info-number">03</div>
+
+            <div class="info-card-icon">
+              <i class="fa-solid fa-code"></i>
+            </div>
+
+            <h3>مناسب للمطورين</h3>
+
+            <p>
+              يمكنك استخدام الناتج في WordPress وAstro وLaravel وواجهات API
+              ومختلف أنظمة المواقع.
+            </p>
+
+          </article>
+
+        </div>
+
+      </section>
+
+      <section class="container steps-section">
+
+        <div class="section-heading">
+          <span>طريقة الاستخدام</span>
+          <h2>أنشئ Slug في 3 خطوات</h2>
+        </div>
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">1</div>
+
+            <div>
+              <h3>أدخل العنوان</h3>
+              <p>
+                اكتب أو الصق عنوان الصفحة أو المقال.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="step">
+
+            <div class="step-number">2</div>
+
+            <div>
+              <h3>أنشئ Slug</h3>
+              <p>
+                اضغط على زر إنشاء Slug لتحويل النص إلى صيغة مناسبة للرابط.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="step">
+
+            <div class="step-number">3</div>
+
+            <div>
+              <h3>انسخ النتيجة</h3>
+              <p>
+                انسخ الـ Slug واستخدمه مباشرة في رابط صفحتك.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <section class="container faq-section">
+
+        <div class="section-heading">
+          <span>الأسئلة الشائعة</span>
+          <h2>أسئلة حول Slug Generator</h2>
+        </div>
+
+        <div class="faq-grid">
+
+          <details>
+            <summary>
+              <span>ما هو Slug في الرابط؟</span>
+              <i class="fa-solid fa-plus"></i>
+            </summary>
+
+            <p>
+              الـ Slug هو الجزء النصي من عنوان URL الذي يصف محتوى الصفحة،
+              مثل
+              <strong>best-ai-tools</strong>.
+            </p>
+          </details>
+
+          <details>
+            <summary>
+              <span>هل يمكن إنشاء Slug باللغة العربية؟</span>
+              <i class="fa-solid fa-plus"></i>
+            </summary>
+
+            <p>
+              نعم. الأداة تدعم الأحرف العربية وتحافظ عليها عند إنشاء Slug،
+              مع إزالة الرموز غير المناسبة وتحويل المسافات إلى شرطات.
+            </p>
+          </details>
+
+          <details>
+            <summary>
+              <span>هل يتم إرسال النص إلى الخادم؟</span>
+              <i class="fa-solid fa-plus"></i>
+            </summary>
+
+            <p>
+              لا. عملية إنشاء Slug تتم محلياً داخل متصفحك ولا يتم إرسال
+              النص إلى خادم خارجي.
+            </p>
+          </details>
+
+          <details>
+            <summary>
+              <span>هل استخدام Slug مهم للـ SEO؟</span>
+              <i class="fa-solid fa-plus"></i>
+            </summary>
+
+            <p>
+              الرابط الواضح والوصفّي يمكن أن يساعد في فهم الصفحة وتحسين
+              تجربة المستخدم، لكنه ليس العامل الوحيد في تحسين محركات البحث.
+            </p>
+          </details>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <Footer />
+
+    <style>
+      :root {
+        --bg: #f5f8fc;
+        --surface: #ffffff;
+        --surface-2: #f8fbff;
+        --text: #102033;
+        --muted: #6b7b8f;
+        --border: #e2eaf3;
+        --primary: #2563eb;
+        --primary-2: #06b6d4;
+        --success: #10b981;
+        --danger: #ef4444;
+        --orange: #f59e0b;
+        --purple: #8b5cf6;
+        --shadow: 0 18px 55px rgba(15, 35, 65, 0.08);
+        --shadow-sm: 0 8px 25px rgba(15, 35, 65, 0.06);
+      }
+
+      html.dark-mode {
+        --bg: #07111f;
+        --surface: #0d1a2b;
+        --surface-2: #101f32;
+        --text: #e8f0fa;
+        --muted: #91a3b8;
+        --border: #1d3148;
+        --primary: #4f8cff;
+        --primary-2: #22d3ee;
+        --success: #34d399;
+        --danger: #fb7185;
+        --orange: #fbbf24;
+        --purple: #a78bfa;
+        --shadow: 0 18px 55px rgba(0, 0, 0, 0.24);
+        --shadow-sm: 0 8px 25px rgba(0, 0, 0, 0.2);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(
+            circle at 10% 5%,
+            rgba(37, 99, 235, 0.07),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at 90% 15%,
+            rgba(6, 182, 212, 0.06),
+            transparent 25%
+          ),
+          var(--bg);
+        color: var(--text);
+        font-family: "Cairo", sans-serif;
+        transition:
+          background 0.25s ease,
+          color 0.25s ease;
+      }
+
+      button,
+      textarea {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .tool-page {
+        min-height: 100vh;
+        padding-bottom: 70px;
+      }
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 24px 0 10px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .breadcrumb a {
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      .breadcrumb a:hover {
+        color: var(--primary);
+      }
+
+      .breadcrumb i {
+        font-size: 9px;
+        opacity: 0.65;
+      }
+
+      .hero {
+        padding: 18px 0 30px;
+      }
+
+      .hero-card {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        gap: 24px;
+        padding: 34px;
+        border: 1px solid var(--border);
+        border-radius: 28px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .hero-card::before {
+        content: "";
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        left: -100px;
+        top: -150px;
+        border-radius: 50%;
+        background: rgba(37, 99, 235, 0.08);
+        pointer-events: none;
+      }
+
+      .hero-icon {
+        position: relative;
+        flex: 0 0 88px;
+        width: 88px;
+        height: 88px;
+        display: grid;
+        place-items: center;
+        border-radius: 24px;
+        color: #fff;
+        font-size: 34px;
+        background: linear-gradient(135deg, #2563eb, #06b6d4);
+        box-shadow: 0 15px 35px rgba(37, 99, 235, 0.25);
+      }
+
+      .hero-content {
+        position: relative;
+      }
+
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 5px;
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+        text-transform: uppercase;
+      }
+
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--primary);
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(27px, 4vw, 40px);
+        line-height: 1.25;
+        font-weight: 800;
+      }
+
+      .hero p {
+        margin: 8px 0 14px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+
+      .tags span {
+        padding: 5px 11px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        color: var(--muted);
+        background: var(--surface-2);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .tool-section {
+        padding: 8px 0 20px;
+      }
+
+      .tool-card {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .tool-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 18px 20px;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface-2);
+      }
+
+      .header-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .header-icon {
+        width: 42px;
+        height: 42px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.1);
+      }
+
+      .header-title div:last-child {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .header-title strong {
+        font-size: 14px;
+      }
+
+      .header-title span {
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border-radius: 9px;
+        color: var(--success);
+        background: rgba(16, 185, 129, 0.08);
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .live-badge span {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--success);
+        box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08);
+      }
+
+      .editor-area {
+        padding: 20px;
+      }
+
+      .field-label,
+      .result-label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 9px;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .field-label span:first-child,
+      .result-label span:first-child {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 175px;
+        padding: 16px;
+        resize: vertical;
+        outline: none;
+        border: 1px solid var(--border);
+        border-radius: 17px;
+        color: var(--text);
+        background: var(--surface-2);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        line-height: 1.85;
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      textarea::placeholder {
+        color: var(--muted);
+        opacity: 0.7;
+      }
+
+      textarea:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+      }
+
+      .options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .option {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 250px;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--surface-2);
+        cursor: pointer;
+      }
+
+      .option input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .checkmark {
+        width: 24px;
+        height: 24px;
+        flex: 0 0 24px;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--border);
+        border-radius: 7px;
+        color: transparent;
+        background: var(--surface);
+        transition: 0.2s ease;
+      }
+
+      .option input:checked + .checkmark {
+        color: #fff;
+        border-color: var(--primary);
+        background: var(--primary);
+      }
+
+      .checkmark i {
+        font-size: 10px;
+      }
+
+      .option-text {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .option-text strong {
+        font-size: 11px;
+      }
+
+      .option-text small {
+        margin-top: 2px;
+        color: var(--muted);
+        font-size: 8px;
+      }
+
+      .result-box {
+        margin-top: 18px;
+      }
+
+      .result-row {
+        display: flex;
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .slug-output {
+        flex: 1;
+        min-height: 66px;
+        display: flex;
+        align-items: center;
+        overflow-x: auto;
+        padding: 15px 16px;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        color: var(--primary);
+        background: var(--surface-2);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
+
+      .slug-output .placeholder {
+        color: var(--muted);
+        font-family: "Cairo", sans-serif;
+        font-size: 11px;
+        font-weight: 400;
+      }
+
+      .copy-btn {
+        width: 56px;
+        min-width: 56px;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        color: var(--primary);
+        background: var(--surface-2);
+        font-size: 16px;
+        transition: 0.2s ease;
+      }
+
+      .copy-btn:hover {
+        border-color: var(--primary);
+        background: rgba(37, 99, 235, 0.08);
+      }
+
+      .preview-box {
+        margin-top: 14px;
+        padding: 15px;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: var(--surface-2);
+      }
+
+      .preview-title {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        margin-bottom: 8px;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .preview-title i {
+        color: var(--primary);
+      }
+
+      .url-preview {
+        overflow-x: auto;
+        color: var(--muted);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        white-space: nowrap;
+      }
+
+      .url-preview strong {
+        color: var(--primary);
+        font-weight: 600;
+      }
+
+      .actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 0 20px 18px;
+      }
+
+      .main-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        min-height: 44px;
+        padding: 10px 16px;
+        border-radius: 12px;
+        border: 1px solid transparent;
+        font-size: 12px;
+        font-weight: 800;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn.primary {
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #06b6d4);
+        box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+      }
+
+      .btn.secondary,
+      .btn.utility {
+        color: var(--muted);
+        border-color: var(--border);
+        background: var(--surface);
+      }
+
+      .btn.secondary {
+        color: var(--primary);
+      }
+
+      .btn.secondary:hover,
+      .btn.utility:hover {
+        color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .btn.danger:hover {
+        color: var(--danger);
+        border-color: rgba(239, 68, 68, 0.4);
+      }
+
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin: 0 20px 20px;
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        color: var(--muted);
+        background: var(--surface-2);
+        font-size: 12px;
+      }
+
+      .status.success {
+        color: var(--success);
+        border-color: rgba(16, 185, 129, 0.22);
+        background: rgba(16, 185, 129, 0.06);
+      }
+
+      .status.error {
+        color: var(--danger);
+        border-color: rgba(239, 68, 68, 0.2);
+        background: rgba(239, 68, 68, 0.05);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        border-top: 1px solid var(--border);
+        background: var(--border);
+      }
+
+      .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 18px;
+        background: var(--surface);
+      }
+
+      .stat-card.featured {
+        background:
+          linear-gradient(
+            135deg,
+            rgba(37, 99, 235, 0.06),
+            rgba(6, 182, 212, 0.04)
+          ),
+          var(--surface);
+      }
+
+      .stat-icon {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.09);
+      }
+
+      .stat-icon.green {
+        color: var(--success);
+        background: rgba(16, 185, 129, 0.09);
+      }
+
+      .stat-icon.orange {
+        color: var(--orange);
+        background: rgba(245, 158, 11, 0.1);
+      }
+
+      .stat-icon.purple {
+        color: var(--purple);
+        background: rgba(139, 92, 246, 0.1);
+      }
+
+      .stat-content {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .stat-content span {
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .stat-content strong {
+        margin-top: 1px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 16px;
+      }
+
+      .info-section,
+      .steps-section,
+      .faq-section {
+        padding-top: 55px;
+      }
+
+      .privacy-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 20px;
+        border: 1px solid rgba(37, 99, 235, 0.18);
+        border-radius: 18px;
+        background: rgba(37, 99, 235, 0.05);
+      }
+
+      .privacy-icon {
+        width: 46px;
+        height: 46px;
+        flex: 0 0 46px;
+        display: grid;
+        place-items: center;
+        border-radius: 13px;
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.1);
+        font-size: 19px;
+      }
+
+      .privacy-card h3 {
+        margin: 0 0 2px;
+        font-size: 14px;
+      }
+
+      .privacy-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.8;
+      }
+
+      .local-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-right: auto;
+        padding: 7px 10px;
+        border-radius: 9px;
+        color: var(--success);
+        background: rgba(16, 185, 129, 0.08);
+        font-size: 10px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .section-heading {
+        margin-bottom: 22px;
+      }
+
+      .section-heading > span {
+        color: var(--primary);
+        font-size: 11px;
+        font-weight: 800;
+      }
+
+      .section-heading h2 {
+        margin: 4px 0 5px;
+        font-size: clamp(20px, 3vw, 27px);
+      }
+
+      .section-heading p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .info-card {
+        position: relative;
+        overflow: hidden;
+        padding: 24px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+        box-shadow: var(--shadow-sm);
+      }
+
+      .info-number {
+        position: absolute;
+        top: 17px;
+        left: 20px;
+        color: var(--border);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .info-card-icon {
+        width: 45px;
+        height: 45px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 15px;
+        border-radius: 13px;
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.09);
+      }
+
+      .info-card h3 {
+        margin: 0 0 7px;
+        font-size: 14px;
+      }
+
+      .info-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.9;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .step {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 21px;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+      }
+
+      .step-number {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        color: #fff;
+        background: linear-gradient(135deg, #2563eb, #06b6d4);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .step h3 {
+        margin: 0 0 4px;
+        font-size: 13px;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.8;
+      }
+
+      .faq-grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      details {
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: var(--surface);
+      }
+
+      summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 17px 18px;
+        cursor: pointer;
+        list-style: none;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      summary i {
+        color: var(--primary);
+        transition: transform 0.2s ease;
+      }
+
+      details[open] summary i {
+        transform: rotate(45deg);
+      }
+
+      details p {
+        margin: 0;
+        padding: 0 18px 18px;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 2;
+      }
+
+      @media (max-width: 900px) {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .info-grid,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 650px) {
+        .container {
+          width: min(100% - 20px, 1180px);
+        }
+
+        .hero-card {
+          flex-direction: column;
+          align-items: flex-start;
+          padding: 24px;
+          border-radius: 22px;
+        }
+
+        .hero-icon {
+          width: 68px;
+          height: 68px;
+          flex-basis: 68px;
+          border-radius: 19px;
+          font-size: 27px;
+        }
+
+        .breadcrumb {
+          padding-top: 17px;
+          font-size: 11px;
+        }
+
+        .tool-card {
+          border-radius: 20px;
+        }
+
+        .tool-header {
+          padding: 14px;
+        }
+
+        .live-badge {
+          display: none;
+        }
+
+        .editor-area {
+          padding: 14px;
+        }
+
+        textarea {
+          min-height: 150px;
+          padding: 14px;
+          font-size: 12px;
+        }
+
+        .options {
+          flex-direction: column;
+        }
+
+        .option {
+          width: 100%;
+          min-width: 0;
+        }
+
+        .slug-output {
+          min-height: 60px;
+          font-size: 12px;
+        }
+
+        .copy-btn {
+          width: 48px;
+          min-width: 48px;
+        }
+
+        .actions {
+          align-items: stretch;
+          flex-direction: column;
+          padding: 0 14px 14px;
+        }
+
+        .main-actions {
+          width: 100%;
+        }
+
+        .btn {
+          flex: 1;
+          padding: 10px;
+          font-size: 10px;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .stat-card {
+          padding: 14px 10px;
+          gap: 8px;
+        }
+
+        .stat-icon {
+          width: 34px;
+          height: 34px;
+          flex-basis: 34px;
+          font-size: 12px;
+        }
+
+        .stat-content span {
+          font-size: 9px;
+        }
+
+        .stat-content strong {
+          font-size: 14px;
+        }
+
+        .privacy-card {
+          align-items: flex-start;
+          flex-wrap: wrap;
+        }
+
+        .local-badge {
+          margin-right: 0;
+          width: 100%;
+          justify-content: center;
+        }
+
+        .info-section,
+        .steps-section,
+        .faq-section {
+          padding-top: 42px;
+        }
+      }
+    </style>
+
+    <script is:inline>
+      (() => {
+        const input =
+          document.getElementById("inputText");
+
+        const output =
+          document.getElementById("outputText");
+
+        const urlPreview =
+          document.getElementById("urlPreview");
+
+        const lowercase =
+          document.getElementById("lowercase");
+
+        const removeStopWords =
+          document.getElementById("removeStopWords");
+
+        const generateBtn =
+          document.getElementById("generateBtn");
+
+        const sampleBtn =
+          document.getElementById("sampleBtn");
+
+        const copyBtn =
+          document.getElementById("copyBtn");
+
+        const copyBtn2 =
+          document.getElementById("copyBtn2");
+
+        const clearBtn =
+          document.getElementById("clearBtn");
+
+        const status =
+          document.getElementById("status");
+
+        const inputCount =
+          document.getElementById("inputCount");
+
+        const outputCount =
+          document.getElementById("outputCount");
+
+        const charsStat =
+          document.getElementById("charsStat");
+
+        const slugLengthStat =
+          document.getElementById("slugLengthStat");
+
+        const wordsStat =
+          document.getElementById("wordsStat");
+
+        const languageStat =
+          document.getElementById("languageStat");
+
+        function syncTheme() {
+          try {
+            const saved =
+              localStorage.getItem("theme");
+
+            if (saved === "dark") {
+              document.documentElement.classList.add(
+                "dark-mode"
+              );
+            } else {
+              document.documentElement.classList.remove(
+                "dark-mode"
+              );
+            }
+          } catch {}
+        }
+
+        syncTheme();
+
+        window.addEventListener(
+          "themeChange",
+          syncTheme
+        );
+
+        document.addEventListener(
+          "click",
+          function (event) {
+            const target = event.target;
+
+            if (
+              target &&
+              (
+                target.id === "theme-btn" ||
+                (
+                  target.closest &&
+                  target.closest("#theme-btn")
+                )
+              )
+            ) {
+              setTimeout(syncTheme, 0);
+            }
+          }
+        );
+
+        function setStatus(message, type) {
+          status.className = "status";
+
+          if (type) {
+            status.classList.add(type);
+          }
+
+          let icon =
+            "fa-circle-info";
+
+          if (type === "success") {
+            icon = "fa-circle-check";
+          }
+
+          if (type === "error") {
+            icon = "fa-circle-exclamation";
+          }
+
+          status.innerHTML =
+            '<i class="fa-solid ' +
+            icon +
+            '"></i>' +
+            message;
+        }
+
+        function cleanText(text) {
+          let value = text.normalize("NFKC");
+
+          value = value.replace(
+            /[\u200B-\u200D\uFEFF]/g,
+            ""
+          );
+
+          value = value.trim();
+
+          if (removeStopWords.checked) {
+            const stopWords = [
+              "the",
+              "a",
+              "an",
+              "and",
+              "or",
+              "of",
+              "to",
+              "in",
+              "on",
+              "for",
+              "with",
+              "at",
+              "by",
+              "from"
+            ];
+
+            const words =
+              value.split(/\s+/u);
+
+            value = words
+              .filter(function (word) {
+                const clean =
+                  word
+                    .toLowerCase()
+                    .replace(
+                      /[^a-z]/g,
+                      ""
+                    );
+
+                return (
+                  !stopWords.includes(clean) ||
+                  /[^\x00-\x7F]/.test(word)
+                );
+              })
+              .join(" ");
+          }
+
+          value = value.replace(
+            /[\/\\|]+/g,
+            " "
+          );
+
+          value = value.replace(
+            /[^\p{L}\p{N}\s_-]/gu,
+            " "
+          );
+
+          value = value.replace(
+            /[_\s]+/gu,
+            "-"
+          );
+
+          value = value.replace(
+            /-+/g,
+            "-"
+          );
+
+          value = value.replace(
+            /^-+|-+$/g,
+            ""
+          );
+
+          if (lowercase.checked) {
+            value = value.toLowerCase();
+          }
+
+          return value;
+        }
+
+        function detectLanguage(text) {
+          if (!text.trim()) {
+            return "—";
+          }
+
+          const arabic =
+            (text.match(/[\u0600-\u06FF]/g) || [])
+              .length;
+
+          const latin =
+            (text.match(/[A-Za-z]/g) || [])
+              .length;
+
+          if (
+            arabic > 0 &&
+            arabic >= latin
+          ) {
+            return "العربية";
+          }
+
+          if (latin > 0) {
+            return "English";
+          }
+
+          return "متعددة";
+        }
+
+        function updateStats(slug) {
+          const text = input.value;
+
+          const words =
+            text.trim()
+              ? text.trim().split(/\s+/u).length
+              : 0;
+
+          inputCount.textContent =
+            String(text.length) +
+            " حرف";
+
+          outputCount.textContent =
+            String(slug.length) +
+            " حرف";
+
+          charsStat.textContent =
+            String(text.length);
+
+          slugLengthStat.textContent =
+            String(slug.length);
+
+          wordsStat.textContent =
+            String(words);
+
+          languageStat.textContent =
+            detectLanguage(text);
+        }
+
+        function renderSlug(slug) {
+          if (!slug) {
+            output.innerHTML =
+              '<span class="placeholder">' +
+              "سيظهر الـ Slug هنا..." +
+              "</span>";
+
+            urlPreview.textContent =
+              "slug";
+
+            updateStats("");
+
+            return;
+          }
+
+          output.textContent = slug;
+          urlPreview.textContent = slug;
+
+          updateStats(slug);
+        }
+
+        function generateSlug() {
+          const text = input.value;
+
+          if (!text.trim()) {
+            renderSlug("");
+
+            setStatus(
+              "أدخل نصاً أولاً لإنشاء Slug.",
+              "error"
+            );
+
+            return;
+          }
+
+          const slug =
+            cleanText(text);
+
+          renderSlug(slug);
+
+          if (!slug) {
+            setStatus(
+              "تعذر إنشاء Slug من النص المدخل.",
+              "error"
+            );
+
+            return;
+          }
+
+          setStatus(
+            "تم إنشاء Slug بنجاح.",
+            "success"
+          );
+        }
+
+        function loadSample() {
+          input.value =
+            "أفضل أدوات الذكاء الاصطناعي للمطورين في 2026";
+
+          generateSlug();
+
+          setStatus(
+            "تم تحميل مثال وإنشاء Slug.",
+            "success"
+          );
+        }
+
+        async function copySlug() {
+          const slug =
+            output.textContent.trim();
+
+          if (
+            !slug ||
+            slug === "سيظهر الـ Slug هنا..."
+          ) {
+            setStatus(
+              "لا يوجد Slug لنسخه.",
+              "error"
+            );
+
+            return;
+          }
+
+          try {
+            await navigator.clipboard.writeText(
+              slug
+            );
+
+            setStatus(
+              "تم نسخ Slug إلى الحافظة.",
+              "success"
+            );
+          } catch {
+            const temp =
+              document.createElement("textarea");
+
+            temp.value = slug;
+
+            document.body.appendChild(temp);
+            temp.select();
+
+            document.execCommand("copy");
+
+            temp.remove();
+
+            setStatus(
+              "تم نسخ Slug.",
+              "success"
+            );
+          }
+        }
+
+        function clearAll() {
+          input.value = "";
+
+          renderSlug("");
+
+          setStatus(
+            "تم مسح النص والنتيجة.",
+            ""
+          );
+
+          input.focus();
+        }
+
+        input.addEventListener(
+          "input",
+          function () {
+            updateStats("");
+
+            if (input.value.trim()) {
+              generateSlug();
+            } else {
+              renderSlug("");
+
+              setStatus(
+                "أدخل عنواناً لإنشاء Slug مناسب للرابط.",
+                ""
+              );
+            }
+          }
+        );
+
+        lowercase.addEventListener(
+          "change",
+          generateSlug
+        );
+
+        removeStopWords.addEventListener(
+          "change",
+          generateSlug
+        );
+
+        generateBtn.addEventListener(
+          "click",
+          generateSlug
+        );
+
+        sampleBtn.addEventListener(
+          "click",
+          loadSample
+        );
+
+        copyBtn.addEventListener(
+          "click",
+          copySlug
+        );
+
+        copyBtn2.addEventListener(
+          "click",
+          copySlug
+        );
+
+        clearBtn.addEventListener(
+          "click",
+          clearAll
+        );
+
+        input.addEventListener(
+          "keydown",
+          function (event) {
+            if (
+              event.ctrlKey &&
+              event.key === "Enter"
+            ) {
+              event.preventDefault();
+              generateSlug();
+            }
+          }
+        );
+
+        renderSlug("");
+      })();
+    </script>
+  </body>
+</html>
