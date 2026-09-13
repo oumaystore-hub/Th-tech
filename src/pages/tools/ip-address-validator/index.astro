@@ -1,0 +1,1667 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "IP Address Validator | مدقق عنوان IP | Th.Tech";
+const description =
+  "أداة مجانية للتحقق من صحة عناوين IPv4 وIPv6 ومعرفة نوع عنوان IP وخصائصه الأساسية مباشرة داخل المتصفح.";
+const canonical =
+  `https://oumaystore-hub.github.io${base}/tools/ip-address-validator/`;
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href={canonical} />
+
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <script is:inline>
+    (() => {
+      try {
+        if (localStorage.getItem("theme") === "light") {
+          document.documentElement.setAttribute("data-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark-mode");
+        }
+      } catch {}
+    })();
+  </script>
+
+  <style>
+    :root {
+      --bg: #f5f9ff;
+      --surface: #ffffff;
+      --surface-2: #f8fbff;
+      --text: #102033;
+      --muted: #64748b;
+      --border: #dce7f3;
+      --primary: #2563eb;
+      --primary-2: #3b82f6;
+      --cyan: #06b6d4;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --code: #eef4fb;
+      --shadow: 0 18px 50px rgba(37, 99, 235, 0.08);
+    }
+
+    html.dark-mode,
+    html:not([data-theme="light"]).dark-mode {
+      --bg: #07111f;
+      --surface: #0d1b2a;
+      --surface-2: #101f31;
+      --text: #e8f1fb;
+      --muted: #91a4b9;
+      --border: #20364c;
+      --primary: #60a5fa;
+      --primary-2: #3b82f6;
+      --cyan: #22d3ee;
+      --success: #34d399;
+      --danger: #f87171;
+      --warning: #fbbf24;
+      --code: #081522;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    html[data-theme="light"] {
+      --bg: #f5f9ff;
+      --surface: #ffffff;
+      --surface-2: #f8fbff;
+      --text: #102033;
+      --muted: #64748b;
+      --border: #dce7f3;
+      --primary: #2563eb;
+      --primary-2: #3b82f6;
+      --cyan: #06b6d4;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --code: #eef4fb;
+      --shadow: 0 18px 50px rgba(37, 99, 235, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(37, 99, 235, 0.08), transparent 28%),
+        radial-gradient(circle at 90% 10%, rgba(6, 182, 212, 0.07), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Cairo", sans-serif;
+      line-height: 1.7;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 34px 18px 70px;
+    }
+
+    .container {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 22px;
+    }
+
+    .breadcrumb a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .breadcrumb i {
+      font-size: 0.7rem;
+      opacity: 0.7;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 25px 10px 35px;
+    }
+
+    .hero-icon {
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      color: #fff;
+      font-size: 1.75rem;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      box-shadow: 0 18px 38px rgba(37, 99, 235, 0.23);
+      animation: floatIcon 4s ease-in-out infinite;
+    }
+
+    @keyframes floatIcon {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .eyebrow {
+      color: var(--primary);
+      font-size: 0.87rem;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: -0.7px;
+    }
+
+    .hero p {
+      max-width: 770px;
+      margin: 14px auto 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      padding: 6px 11px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .tool-card,
+    .info-section,
+    .how-card,
+    .faq-section,
+    .privacy-card {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .tool-card {
+      padding: 24px;
+    }
+
+    .tool-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .tool-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tool-title-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+    }
+
+    .tool-title h2 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .tool-title p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: var(--success);
+      background: rgba(16, 185, 129, 0.09);
+      font-size: 0.75rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      50% {
+        opacity: 0.35;
+        transform: scale(0.8);
+      }
+    }
+
+    .validator-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 16px;
+    }
+
+    .panel {
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 13px 15px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .panel-title i {
+      color: var(--primary);
+    }
+
+    .panel-badge {
+      padding: 4px 8px;
+      border-radius: 7px;
+      background: var(--code);
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.67rem;
+    }
+
+    .input-area {
+      padding: 15px;
+    }
+
+    .ip-input {
+      width: 100%;
+      min-height: 58px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      outline: 0;
+      padding: 0 16px;
+      background: var(--surface);
+      color: var(--text);
+      direction: ltr;
+      text-align: left;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 1rem;
+      transition: 0.2s ease;
+    }
+
+    .ip-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    }
+
+    .ip-input.valid {
+      border-color: var(--success);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08);
+    }
+
+    .ip-input.invalid {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.08);
+    }
+
+    .hint {
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 0.74rem;
+    }
+
+    .result {
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .result-icon {
+      width: 65px;
+      height: 65px;
+      display: grid;
+      place-items: center;
+      border-radius: 19px;
+      margin-bottom: 12px;
+      background: rgba(37, 99, 235, 0.09);
+      color: var(--primary);
+      font-size: 1.55rem;
+      transition: 0.25s ease;
+    }
+
+    .result.valid .result-icon {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .result.invalid .result-icon {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
+    .result h3 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .result p {
+      max-width: 450px;
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .type-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--code);
+      color: var(--primary);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+    }
+
+    .checks {
+      display: grid;
+      gap: 8px;
+      padding: 15px;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--surface);
+      font-size: 0.77rem;
+    }
+
+    .check-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+    }
+
+    .check-name i {
+      width: 17px;
+      text-align: center;
+    }
+
+    .check-status {
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .check-status.ok {
+      color: var(--success);
+    }
+
+    .check-status.bad {
+      color: var(--danger);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .btn {
+      min-height: 46px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 800;
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+    .btn-primary {
+      border-color: transparent;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-primary:hover {
+      border-color: transparent;
+      box-shadow: 0 13px 30px rgba(37, 99, 235, 0.28);
+    }
+
+    .btn i {
+      margin-left: 6px;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 47px;
+      margin-top: 13px;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 0.81rem;
+    }
+
+    .status.success {
+      color: var(--success);
+      border-color: rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.06);
+    }
+
+    .status.error {
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.25);
+      background: rgba(239, 68, 68, 0.06);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .stat {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface-2);
+      text-align: center;
+    }
+
+    .stat-value {
+      display: block;
+      color: var(--primary);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.95rem;
+      font-weight: 800;
+      direction: ltr;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .stat-label {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.7rem;
+    }
+
+    .privacy-card {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 17px 20px;
+      margin-top: 18px;
+    }
+
+    .privacy-icon {
+      flex: 0 0 auto;
+      width: 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .privacy-card strong {
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    .privacy-card span {
+      color: var(--muted);
+      font-size: 0.77rem;
+    }
+
+    .info-section,
+    .how-card,
+    .faq-section {
+      padding: 27px;
+      margin-top: 20px;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 1.45rem;
+    }
+
+    .section-heading p {
+      max-width: 700px;
+      margin: 7px auto 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .info-grid,
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 13px;
+    }
+
+    .info-box,
+    .step {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface-2);
+    }
+
+    .info-box-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+    }
+
+    .info-box h3,
+    .step h3 {
+      margin: 0 0 5px;
+      font-size: 0.96rem;
+    }
+
+    .info-box p,
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .step-number {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 11px;
+      border-radius: 10px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 800;
+    }
+
+    .faq-list {
+      display: grid;
+      gap: 10px;
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    details {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 15px 17px;
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "+";
+      float: left;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    details[open] summary::after {
+      content: "−";
+    }
+
+    details p {
+      margin: 0;
+      padding: 0 17px 16px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 900px) {
+      .validator-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 850px) {
+      .actions {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .info-grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .tool-header {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 22px 11px 45px;
+      }
+
+      .hero {
+        padding: 18px 5px 25px;
+      }
+
+      .hero-icon {
+        width: 62px;
+        height: 62px;
+        border-radius: 18px;
+        font-size: 1.45rem;
+      }
+
+      .hero p {
+        font-size: 0.9rem;
+      }
+
+      .tool-card,
+      .info-section,
+      .how-card,
+      .faq-section,
+      .privacy-card {
+        padding: 17px;
+        border-radius: 18px;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .privacy-card {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .tool-header {
+        flex-direction: column;
+      }
+
+      .live-badge {
+        align-self: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <Header />
+
+  <main class="page">
+    <div class="container">
+
+      <nav class="breadcrumb" aria-label="مسار التنقل">
+        <a href={`${base}/`}>الرئيسية</a>
+        <i class="fa-solid fa-chevron-left"></i>
+        <a href={`${base}/tools/`}>الأدوات</a>
+        <i class="fa-solid fa-chevron-left"></i>
+        <span>IP Address Validator</span>
+      </nav>
+
+      <section class="hero">
+        <div class="hero-icon">
+          <i class="fa-solid fa-network-wired"></i>
+        </div>
+
+        <div class="eyebrow">أداة الشبكات</div>
+
+        <h1>IP Address Validator</h1>
+
+        <p>
+          تحقق من صحة عناوين IPv4 وIPv6 فورًا، واكتشف نوع العنوان
+          وبعض خصائصه الأساسية مباشرة داخل المتصفح.
+        </p>
+
+        <div class="tags">
+          <span class="tag">IPv4</span>
+          <span class="tag">IPv6</span>
+          <span class="tag">IP Address</span>
+          <span class="tag">Network</span>
+          <span class="tag">Validator</span>
+        </div>
+      </section>
+
+      <section class="tool-card">
+
+        <div class="tool-header">
+          <div class="tool-title">
+            <div class="tool-title-icon">
+              <i class="fa-solid fa-network-wired"></i>
+            </div>
+
+            <div>
+              <h2>مدقق عنوان IP</h2>
+              <p>التحقق يتم تلقائيًا أثناء الكتابة</p>
+            </div>
+          </div>
+
+          <div class="live-badge">
+            <span class="live-dot"></span>
+            فحص فوري
+          </div>
+        </div>
+
+        <div class="validator-grid">
+
+          <div class="panel">
+
+            <div class="panel-header">
+              <div class="panel-title">
+                <i class="fa-solid fa-location-crosshairs"></i>
+                <span>عنوان IP</span>
+              </div>
+
+              <span class="panel-badge">IP</span>
+            </div>
+
+            <div class="input-area">
+              <input
+                id="ipInput"
+                class="ip-input"
+                type="text"
+                inputmode="text"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="192.168.1.1 أو 2001:db8::1"
+                aria-label="IP Address"
+              />
+
+              <div class="hint">
+                يدعم IPv4 وIPv6. أدخل عنوانًا واحدًا للتحقق منه.
+              </div>
+            </div>
+
+            <div id="result" class="result">
+              <div id="resultIcon" class="result-icon">
+                <i class="fa-solid fa-network-wired"></i>
+              </div>
+
+              <h3 id="resultTitle">بانتظار عنوان IP</h3>
+
+              <p id="resultText">
+                أدخل عنوان IPv4 أو IPv6 لبدء الفحص.
+              </p>
+
+              <div id="typePill" class="type-pill" hidden>
+                <i class="fa-solid fa-code-branch"></i>
+                <span>—</span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="panel">
+
+            <div class="panel-header">
+              <div class="panel-title">
+                <i class="fa-solid fa-list-check"></i>
+                <span>نتائج الفحص</span>
+              </div>
+
+              <span class="panel-badge">CHECKS</span>
+            </div>
+
+            <div class="checks">
+
+              <div class="check-row">
+                <span class="check-name">
+                  <i class="fa-solid fa-circle-check"></i>
+                  الصيغة الصحيحة
+                </span>
+
+                <span id="checkFormat" class="check-status">—</span>
+              </div>
+
+              <div class="check-row">
+                <span class="check-name">
+                  <i class="fa-solid fa-code-branch"></i>
+                  نوع العنوان
+                </span>
+
+                <span id="checkVersion" class="check-status">—</span>
+              </div>
+
+              <div class="check-row">
+                <span class="check-name">
+                  <i class="fa-solid fa-house"></i>
+                  Local / Private
+                </span>
+
+                <span id="checkPrivate" class="check-status">—</span>
+              </div>
+
+              <div class="check-row">
+                <span class="check-name">
+                  <i class="fa-solid fa-bullseye"></i>
+                  Loopback
+                </span>
+
+                <span id="checkLoopback" class="check-status">—</span>
+              </div>
+
+              <div class="check-row">
+                <span class="check-name">
+                  <i class="fa-solid fa-tower-broadcast"></i>
+                  Multicast
+                </span>
+
+                <span id="checkMulticast" class="check-status">—</span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+          <button id="validateBtn" class="btn btn-primary" type="button">
+            <i class="fa-solid fa-circle-check"></i>
+            تحقق الآن
+          </button>
+
+          <button id="ipv4Btn" class="btn" type="button">
+            <i class="fa-solid fa-network-wired"></i>
+            مثال IPv4
+          </button>
+
+          <button id="ipv6Btn" class="btn" type="button">
+            <i class="fa-solid fa-globe"></i>
+            مثال IPv6
+          </button>
+
+          <button id="clearBtn" class="btn" type="button">
+            <i class="fa-solid fa-eraser"></i>
+            مسح
+          </button>
+        </div>
+
+        <div id="status" class="status" aria-live="polite">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>أدخل عنوان IP لبدء الفحص.</span>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat">
+            <span id="statLength" class="stat-value">0</span>
+            <span class="stat-label">Characters</span>
+          </div>
+
+          <div class="stat">
+            <span id="statVersion" class="stat-value">—</span>
+            <span class="stat-label">Version</span>
+          </div>
+
+          <div class="stat">
+            <span id="statClass" class="stat-value">—</span>
+            <span class="stat-label">Type</span>
+          </div>
+
+          <div class="stat">
+            <span id="statStatus" class="stat-value">—</span>
+            <span class="stat-label">Status</span>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="privacy-card">
+        <div class="privacy-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div>
+          <strong>فحص محلي وآمن</strong>
+          <span>
+            يتم تحليل عنوان IP داخل متصفحك فقط ولا يتم إرساله إلى خادم خارجي.
+          </span>
+        </div>
+      </div>
+
+      <section class="info-section">
+        <div class="section-heading">
+          <h2>ماذا تفحص الأداة؟</h2>
+          <p>
+            تحليل أساسي لعنوان IP دون الحاجة إلى أي خدمة خارجية.
+          </p>
+        </div>
+
+        <div class="info-grid">
+
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-network-wired"></i>
+            </div>
+
+            <h3>IPv4 و IPv6</h3>
+
+            <p>
+              تكتشف الأداة تلقائيًا ما إذا كان العنوان IPv4 أو IPv6.
+            </p>
+          </article>
+
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-house"></i>
+            </div>
+
+            <h3>Private IP</h3>
+
+            <p>
+              تتحقق من كون العنوان ضمن نطاقات العناوين الخاصة المعروفة.
+            </p>
+          </article>
+
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-bullseye"></i>
+            </div>
+
+            <h3>Special Addresses</h3>
+
+            <p>
+              تكتشف عناوين Loopback وMulticast وبعض الأنواع الخاصة.
+            </p>
+          </article>
+
+        </div>
+      </section>
+
+      <section class="how-card">
+        <div class="section-heading">
+          <h2>كيفية الاستخدام</h2>
+          <p>تحقق من عنوان IP في ثلاث خطوات بسيطة.</p>
+        </div>
+
+        <div class="steps">
+
+          <article class="step">
+            <div class="step-number">01</div>
+
+            <h3>أدخل العنوان</h3>
+
+            <p>
+              اكتب عنوان IPv4 أو IPv6 في حقل الإدخال.
+            </p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">02</div>
+
+            <h3>الفحص الفوري</h3>
+
+            <p>
+              يتم تحليل العنوان تلقائيًا أثناء الكتابة.
+            </p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">03</div>
+
+            <h3>راجع التفاصيل</h3>
+
+            <p>
+              ستظهر صحة العنوان ونوعه وخصائصه الأساسية.
+            </p>
+          </article>
+
+        </div>
+      </section>
+
+      <section class="faq-section">
+        <div class="section-heading">
+          <h2>الأسئلة الشائعة</h2>
+          <p>معلومات سريعة حول عناوين IP.</p>
+        </div>
+
+        <div class="faq-list">
+
+          <details>
+            <summary>ما الفرق بين IPv4 وIPv6؟</summary>
+            <p>
+              IPv4 يستخدم عناوين مكونة من 32 بت مثل 192.168.1.1،
+              بينما IPv6 يستخدم عناوين مكونة من 128 بت مثل 2001:db8::1.
+            </p>
+          </details>
+
+          <details>
+            <summary>هل الأداة تعرض موقعي الجغرافي؟</summary>
+            <p>
+              لا. هذه الأداة تتحقق من صيغة عنوان IP وخصائصه الأساسية فقط،
+              ولا تستخدم خدمة تحديد الموقع الجغرافي.
+            </p>
+          </details>
+
+          <details>
+            <summary>هل يمكن التحقق من عنوان Private IP؟</summary>
+            <p>
+              نعم. الأداة تتعرف على نطاقات IPv4 الخاصة مثل 10.0.0.0/8
+              و172.16.0.0/12 و192.168.0.0/16.
+            </p>
+          </details>
+
+          <details>
+            <summary>هل يتم إرسال عنوان IP إلى الخادم؟</summary>
+            <p>
+              لا. عملية التحقق تتم محليًا داخل المتصفح.
+            </p>
+          </details>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+
+  <script is:inline>
+    (() => {
+      const ipInput = document.getElementById("ipInput");
+
+      const result = document.getElementById("result");
+      const resultIcon = document.getElementById("resultIcon");
+      const resultTitle = document.getElementById("resultTitle");
+      const resultText = document.getElementById("resultText");
+      const typePill = document.getElementById("typePill");
+      const typePillText = typePill.querySelector("span");
+
+      const checkFormat = document.getElementById("checkFormat");
+      const checkVersion = document.getElementById("checkVersion");
+      const checkPrivate = document.getElementById("checkPrivate");
+      const checkLoopback = document.getElementById("checkLoopback");
+      const checkMulticast = document.getElementById("checkMulticast");
+
+      const validateBtn = document.getElementById("validateBtn");
+      const ipv4Btn = document.getElementById("ipv4Btn");
+      const ipv6Btn = document.getElementById("ipv6Btn");
+      const clearBtn = document.getElementById("clearBtn");
+
+      const status = document.getElementById("status");
+
+      const statLength = document.getElementById("statLength");
+      const statVersion = document.getElementById("statVersion");
+      const statClass = document.getElementById("statClass");
+      const statStatus = document.getElementById("statStatus");
+
+      function setStatus(message, type = "info") {
+        status.className = "status";
+
+        if (type === "success") {
+          status.classList.add("success");
+        }
+
+        if (type === "error") {
+          status.classList.add("error");
+        }
+
+        const icon = status.querySelector("i");
+        const text = status.querySelector("span");
+
+        if (type === "success") {
+          icon.className = "fa-solid fa-circle-check";
+        } else if (type === "error") {
+          icon.className = "fa-solid fa-circle-xmark";
+        } else {
+          icon.className = "fa-solid fa-circle-info";
+        }
+
+        text.textContent = message;
+      }
+
+      function setCheck(element, state, customText = null) {
+        element.className = "check-status";
+
+        if (customText) {
+          element.textContent = customText;
+          element.classList.add(
+            state ? "ok" : "bad"
+          );
+          return;
+        }
+
+        if (state === true) {
+          element.classList.add("ok");
+          element.textContent = "✓";
+        } else if (state === false) {
+          element.classList.add("bad");
+          element.textContent = "✕";
+        } else {
+          element.textContent = "—";
+        }
+      }
+
+      function resetChecks() {
+        [
+          checkFormat,
+          checkVersion,
+          checkPrivate,
+          checkLoopback,
+          checkMulticast
+        ].forEach((element) => setCheck(element, null));
+      }
+
+      function parseIPv4(value) {
+        const parts = value.split(".");
+
+        if (parts.length !== 4) {
+          return null;
+        }
+
+        const numbers = [];
+
+        for (const part of parts) {
+          if (!/^\d+$/.test(part)) {
+            return null;
+          }
+
+          if (part.length > 1 && part.startsWith("0")) {
+            return null;
+          }
+
+          const number = Number(part);
+
+          if (
+            !Number.isInteger(number) ||
+            number < 0 ||
+            number > 255
+          ) {
+            return null;
+          }
+
+          numbers.push(number);
+        }
+
+        return numbers;
+      }
+
+      function isIPv4(value) {
+        return parseIPv4(value) !== null;
+      }
+
+      function isIPv6(value) {
+        if (!value || !value.includes(":")) {
+          return false;
+        }
+
+        if (value.includes(".")) {
+          const lastColon = value.lastIndexOf(":");
+          const embeddedIPv4 = value.slice(lastColon + 1);
+
+          if (!isIPv4(embeddedIPv4)) {
+            return false;
+          }
+
+          value =
+            value.slice(0, lastColon + 1) +
+            "0:0";
+        }
+
+        if ((value.match(/::/g) || []).length > 1) {
+          return false;
+        }
+
+        const hasCompression = value.includes("::");
+        const groups = value.split(":");
+
+        if (hasCompression) {
+          if (
+            groups.length > 8 ||
+            value.indexOf("::") !== value.lastIndexOf("::")
+          ) {
+            return false;
+          }
+        } else if (groups.length !== 8) {
+          return false;
+        }
+
+        for (const group of groups) {
+          if (group === "") {
+            continue;
+          }
+
+          if (!/^[0-9a-fA-F]{1,4}$/.test(group)) {
+            return false;
+          }
+        }
+
+        if (hasCompression) {
+          const explicitGroups = groups.filter(
+            (group) => group !== ""
+          );
+
+          if (explicitGroups.length >= 8) {
+            return false;
+          }
+        }
+
+        return true;
+      }
+
+      function ipv4ToNumber(parts) {
+        return (
+          parts[0] * 16777216 +
+          parts[1] * 65536 +
+          parts[2] * 256 +
+          parts[3]
+        );
+      }
+
+      function inRange(number, start, end) {
+        return number >= start && number <= end;
+      }
+
+      function getIPv4Info(parts) {
+        const number = ipv4ToNumber(parts);
+
+        const privateIp =
+          inRange(number, 0x0A000000, 0x0AFFFFFF) ||
+          inRange(number, 0xAC100000, 0xAC1FFFFF) ||
+          inRange(number, 0xC0A80000, 0xC0A8FFFF);
+
+        const loopback =
+          inRange(number, 0x7F000000, 0x7FFFFFFF);
+
+        const multicast =
+          inRange(number, 0xE0000000, 0xEFFFFFFF);
+
+        const linkLocal =
+          inRange(number, 0xA9FE0000, 0xA9FEFFFF);
+
+        const broadcast =
+          number === 0xFFFFFFFF;
+
+        return {
+          privateIp,
+          loopback,
+          multicast,
+          linkLocal,
+          broadcast
+        };
+      }
+
+      function getIPv6Info(value) {
+        const normalized = value.toLowerCase();
+
+        const loopback =
+          normalized === "::1";
+
+        const unspecified =
+          normalized === "::";
+
+        const multicast =
+          normalized.startsWith("ff");
+
+        const uniqueLocal =
+          normalized.startsWith("fc") ||
+          normalized.startsWith("fd");
+
+        const linkLocal =
+          normalized.startsWith("fe8") ||
+          normalized.startsWith("fe9") ||
+          normalized.startsWith("fea") ||
+          normalized.startsWith("feb");
+
+        return {
+          privateIp: uniqueLocal,
+          loopback,
+          multicast,
+          linkLocal,
+          unspecified
+        };
+      }
+
+      function validateIP() {
+        const value = ipInput.value.trim();
+
+        statLength.textContent =
+          value.length.toLocaleString("ar");
+
+        ipInput.classList.remove("valid", "invalid");
+
+        typePill.hidden = true;
+
+        if (!value) {
+          result.className = "result";
+
+          resultIcon.className = "result-icon";
+          resultIcon.innerHTML =
+            '<i class="fa-solid fa-network-wired"></i>';
+
+          resultTitle.textContent =
+            "بانتظار عنوان IP";
+
+          resultText.textContent =
+            "أدخل عنوان IPv4 أو IPv6 لبدء الفحص.";
+
+          statVersion.textContent = "—";
+          statClass.textContent = "—";
+          statStatus.textContent = "—";
+
+          resetChecks();
+
+          setStatus(
+            "أدخل عنوان IP لبدء الفحص.",
+            "info"
+          );
+
+          return;
+        }
+
+        const ipv4 = isIPv4(value);
+        const ipv6 = !ipv4 && isIPv6(value);
+        const valid = ipv4 || ipv6;
+
+        setCheck(checkFormat, valid);
+
+        if (!valid) {
+          ipInput.classList.add("invalid");
+
+          result.className = "result invalid";
+
+          resultIcon.className = "result-icon";
+          resultIcon.innerHTML =
+            '<i class="fa-solid fa-circle-xmark"></i>';
+
+          resultTitle.textContent =
+            "عنوان IP غير صالح";
+
+          resultText.textContent =
+            "لم يتم التعرف على العنوان كـ IPv4 أو IPv6 صالح.";
+
+          statVersion.textContent = "—";
+          statClass.textContent = "INVALID";
+          statStatus.textContent = "INVALID";
+
+          setCheck(checkVersion, false);
+          setCheck(checkPrivate, null);
+          setCheck(checkLoopback, null);
+          setCheck(checkMulticast, null);
+
+          setStatus(
+            "عنوان IP غير صالح. تحقق من الصيغة.",
+            "error"
+          );
+
+          return;
+        }
+
+        ipInput.classList.add("valid");
+
+        const version = ipv4 ? "IPv4" : "IPv6";
+
+        statVersion.textContent = version;
+
+        setCheck(
+          checkVersion,
+          true,
+          version
+        );
+
+        let info;
+
+        if (ipv4) {
+          const parts = parseIPv4(value);
+          info = getIPv4Info(parts);
+        } else {
+          info = getIPv6Info(value);
+        }
+
+        const specialPrivate =
+          info.privateIp;
+
+        const specialLoopback =
+          info.loopback;
+
+        const specialMulticast =
+          info.multicast;
+
+        const specialLabel =
+          specialPrivate
+            ? "Private"
+            : specialLoopback
+              ? "Loopback"
+              : specialMulticast
+                ? "Multicast"
+                : "Public";
+
+        statClass.textContent = specialLabel;
+        statStatus.textContent = "VALID";
+
+        setCheck(
+          checkPrivate,
+          true,
+          specialPrivate ? "YES" : "NO"
+        );
+
+        setCheck(
+          checkLoopback,
+          true,
+          specialLoopback ? "YES" : "NO"
+        );
+
+        setCheck(
+          checkMulticast,
+          true,
+          specialMulticast ? "YES" : "NO"
+        );
+
+        result.className = "result valid";
+
+        resultIcon.className = "result-icon";
+        resultIcon.innerHTML =
+          '<i class="fa-solid fa-circle-check"></i>';
+
+        resultTitle.textContent =
+          "عنوان IP صالح";
+
+        resultText.textContent =
+          `تم التعرف على عنوان ${version} صالح.`;
+
+        typePill.hidden = false;
+        typePillText.textContent =
+          `${version} • ${specialLabel}`;
+
+        setStatus(
+          `العنوان صالح — ${version}.`,
+          "success"
+        );
+      }
+
+      function loadIPv4() {
+        ipInput.value = "192.168.1.1";
+        validateIP();
+        ipInput.focus();
+      }
+
+      function loadIPv6() {
+        ipInput.value = "2001:db8::1";
+        validateIP();
+        ipInput.focus();
+      }
+
+      function clearIP() {
+        ipInput.value = "";
+        validateIP();
+        ipInput.focus();
+      }
+
+      ipInput.addEventListener(
+        "input",
+        validateIP
+      );
+
+      validateBtn.addEventListener(
+        "click",
+        validateIP
+      );
+
+      ipv4Btn.addEventListener(
+        "click",
+        loadIPv4
+      );
+
+      ipv6Btn.addEventListener(
+        "click",
+        loadIPv6
+      );
+
+      clearBtn.addEventListener(
+        "click",
+        clearIP
+      );
+
+      ipInput.addEventListener(
+        "keydown",
+        (event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            validateIP();
+          }
+        }
+      );
+
+      validateIP();
+    })();
+  </script>
+</body>
+</html>
