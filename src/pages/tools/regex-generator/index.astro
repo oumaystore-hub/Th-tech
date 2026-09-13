@@ -1,0 +1,1494 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Regex Generator | مولد Regular Expressions | Th.Tech";
+const description =
+  "مولد Regex مجاني لإنشاء Regular Expressions جاهزة للبريد الإلكتروني والروابط وأرقام الهاتف والتواريخ والأرقام واسم المستخدم وغيرها.";
+const canonical =
+  `https://oumaystore-hub.github.io${base}/tools/regex-generator/`;
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href={canonical} />
+
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <script is:inline>
+    (() => {
+      try {
+        if (localStorage.getItem("theme") === "light") {
+          document.documentElement.setAttribute("data-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark-mode");
+        }
+      } catch {}
+    })();
+  </script>
+
+  <style>
+    :root {
+      --bg: #f5f9ff;
+      --surface: #ffffff;
+      --surface-2: #f8fbff;
+      --text: #102033;
+      --muted: #64748b;
+      --border: #dce7f3;
+      --primary: #2563eb;
+      --primary-2: #3b82f6;
+      --cyan: #06b6d4;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --code: #eef4fb;
+      --shadow: 0 18px 50px rgba(37, 99, 235, 0.08);
+    }
+
+    html.dark-mode,
+    html:not([data-theme="light"]).dark-mode {
+      --bg: #07111f;
+      --surface: #0d1b2a;
+      --surface-2: #101f31;
+      --text: #e8f1fb;
+      --muted: #91a4b9;
+      --border: #20364c;
+      --primary: #60a5fa;
+      --primary-2: #3b82f6;
+      --cyan: #22d3ee;
+      --success: #34d399;
+      --danger: #f87171;
+      --warning: #fbbf24;
+      --code: #081522;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    html[data-theme="light"] {
+      --bg: #f5f9ff;
+      --surface: #ffffff;
+      --surface-2: #f8fbff;
+      --text: #102033;
+      --muted: #64748b;
+      --border: #dce7f3;
+      --primary: #2563eb;
+      --primary-2: #3b82f6;
+      --cyan: #06b6d4;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --code: #eef4fb;
+      --shadow: 0 18px 50px rgba(37, 99, 235, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(37, 99, 235, 0.08), transparent 28%),
+        radial-gradient(circle at 90% 10%, rgba(6, 182, 212, 0.07), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Cairo", sans-serif;
+      line-height: 1.7;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 34px 18px 70px;
+    }
+
+    .container {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 22px;
+    }
+
+    .breadcrumb a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .breadcrumb i {
+      font-size: 0.7rem;
+      opacity: 0.7;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 26px 10px 34px;
+    }
+
+    .hero-icon {
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      color: #fff;
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      box-shadow: 0 18px 38px rgba(37, 99, 235, 0.23);
+      animation: floatIcon 4s ease-in-out infinite;
+    }
+
+    @keyframes floatIcon {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .eyebrow {
+      color: var(--primary);
+      font-size: 0.88rem;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: -0.7px;
+    }
+
+    .hero p {
+      max-width: 780px;
+      margin: 14px auto 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      padding: 6px 11px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.77rem;
+      font-weight: 700;
+    }
+
+    .tool-card,
+    .info-section,
+    .how-card,
+    .faq-section,
+    .privacy-card {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .tool-card {
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    .tool-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .tool-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tool-title-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+    }
+
+    .tool-title h2 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .tool-title p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: var(--success);
+      background: rgba(16, 185, 129, 0.09);
+      font-size: 0.75rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      50% {
+        opacity: 0.35;
+        transform: scale(0.8);
+      }
+    }
+
+    .generator-layout {
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: 16px;
+    }
+
+    .panel {
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 13px 15px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .panel-title i {
+      color: var(--primary);
+    }
+
+    .panel-badge {
+      padding: 4px 8px;
+      border-radius: 7px;
+      background: var(--code);
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.68rem;
+    }
+
+    .options {
+      padding: 15px;
+    }
+
+    .option-label {
+      display: block;
+      margin-bottom: 7px;
+      color: var(--muted);
+      font-size: 0.77rem;
+      font-weight: 700;
+    }
+
+    select,
+    .text-input {
+      width: 100%;
+      height: 46px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      outline: 0;
+      padding: 0 12px;
+      background: var(--surface);
+      color: var(--text);
+    }
+
+    select:focus,
+    .text-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .field {
+      margin-bottom: 13px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    .checks {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.75rem;
+      cursor: pointer;
+    }
+
+    .check input {
+      accent-color: var(--primary);
+    }
+
+    .output {
+      min-width: 0;
+    }
+
+    .regex-display {
+      position: relative;
+      margin: 15px;
+    }
+
+    .regex-output {
+      width: 100%;
+      min-height: 190px;
+      display: block;
+      resize: vertical;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      outline: 0;
+      padding: 17px;
+      background: var(--code);
+      color: var(--primary);
+      direction: ltr;
+      text-align: left;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.96rem;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .regex-output:focus {
+      border-color: var(--primary);
+    }
+
+    .output-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 0 15px 15px;
+      color: var(--muted);
+      font-size: 0.72rem;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .btn {
+      min-height: 46px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 800;
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+    .btn-primary {
+      border-color: transparent;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-primary:hover {
+      border-color: transparent;
+      box-shadow: 0 13px 30px rgba(37, 99, 235, 0.28);
+    }
+
+    .btn i {
+      margin-left: 6px;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 47px;
+      margin-top: 13px;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 0.81rem;
+    }
+
+    .status.success {
+      color: var(--success);
+      border-color: rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.06);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .stat {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface-2);
+      text-align: center;
+    }
+
+    .stat-value {
+      display: block;
+      color: var(--primary);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 1.05rem;
+      font-weight: 800;
+      direction: ltr;
+    }
+
+    .stat-label {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.7rem;
+    }
+
+    .privacy-card {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 17px 20px;
+      margin-top: 18px;
+    }
+
+    .privacy-icon {
+      flex: 0 0 auto;
+      width: 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .privacy-card strong {
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    .privacy-card span {
+      color: var(--muted);
+      font-size: 0.77rem;
+    }
+
+    .info-section,
+    .how-card,
+    .faq-section {
+      padding: 27px;
+      margin-top: 20px;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 1.45rem;
+    }
+
+    .section-heading p {
+      max-width: 700px;
+      margin: 7px auto 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .info-grid,
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 13px;
+    }
+
+    .info-box,
+    .step {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface-2);
+    }
+
+    .info-box-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+    }
+
+    .info-box h3,
+    .step h3 {
+      margin: 0 0 5px;
+      font-size: 0.96rem;
+    }
+
+    .info-box p,
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .step-number {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 11px;
+      border-radius: 10px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 800;
+    }
+
+    .faq-list {
+      display: grid;
+      gap: 10px;
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    details {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 15px 17px;
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "+";
+      float: left;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    details[open] summary::after {
+      content: "−";
+    }
+
+    details p {
+      margin: 0;
+      padding: 0 17px 16px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 900px) {
+      .generator-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 850px) {
+      .actions {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .info-grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .tool-header {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 22px 11px 45px;
+      }
+
+      .hero {
+        padding: 18px 5px 25px;
+      }
+
+      .hero-icon {
+        width: 62px;
+        height: 62px;
+        border-radius: 18px;
+        font-size: 1.45rem;
+      }
+
+      .hero p {
+        font-size: 0.9rem;
+      }
+
+      .tool-card,
+      .info-section,
+      .how-card,
+      .faq-section,
+      .privacy-card {
+        padding: 17px;
+        border-radius: 18px;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .privacy-card {
+        align-items: flex-start;
+      }
+
+      .checks {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .tool-header {
+        flex-direction: column;
+      }
+
+      .live-badge {
+        align-self: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <Header />
+
+  <main class="page">
+    <div class="container">
+
+      <nav class="breadcrumb" aria-label="مسار التنقل">
+        <a href={`${base}/`}>الرئيسية</a>
+        <i class="fa-solid fa-chevron-left"></i>
+        <a href={`${base}/tools/`}>الأدوات</a>
+        <i class="fa-solid fa-chevron-left"></i>
+        <span>Regex Generator</span>
+      </nav>
+
+      <section class="hero">
+        <div class="hero-icon">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+        </div>
+
+        <div class="eyebrow">أداة المطورين</div>
+
+        <h1>Regex Generator</h1>
+
+        <p>
+          أنشئ Regular Expressions جاهزة للاستخدام بسرعة، واختر نوع النمط
+          والخيارات المناسبة ثم انسخ Regex الناتج مباشرة.
+        </p>
+
+        <div class="tags">
+          <span class="tag">Regex</span>
+          <span class="tag">Generator</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Patterns</span>
+          <span class="tag">Developer Tool</span>
+        </div>
+      </section>
+
+      <section class="tool-card">
+
+        <div class="tool-header">
+          <div class="tool-title">
+            <div class="tool-title-icon">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+            </div>
+
+            <div>
+              <h2>مولد Regex</h2>
+              <p>يتحدث النمط تلقائيًا عند تغيير الخيارات</p>
+            </div>
+          </div>
+
+          <div class="live-badge">
+            <span class="live-dot"></span>
+            توليد فوري
+          </div>
+        </div>
+
+        <div class="generator-layout">
+
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <i class="fa-solid fa-sliders"></i>
+                <span>الإعدادات</span>
+              </div>
+
+              <span class="panel-badge">OPTIONS</span>
+            </div>
+
+            <div class="options">
+
+              <div class="field">
+                <label class="option-label" for="type">
+                  نوع Regex
+                </label>
+
+                <select id="type">
+                  <option value="email">Email</option>
+                  <option value="url">URL</option>
+                  <option value="phone">Phone Number</option>
+                  <option value="ipv4">IPv4 Address</option>
+                  <option value="date">Date</option>
+                  <option value="number">Number</option>
+                  <option value="integer">Integer</option>
+                  <option value="decimal">Decimal Number</option>
+                  <option value="username">Username</option>
+                  <option value="password">Password</option>
+                  <option value="hex">Hexadecimal</option>
+                  <option value="binary">Binary</option>
+                  <option value="letters">Letters Only</option>
+                  <option value="alphanumeric">Alphanumeric</option>
+                  <option value="whitespace">Whitespace</option>
+                  <option value="custom">Custom Pattern</option>
+                </select>
+              </div>
+
+              <div class="field" id="lengthField">
+                <label class="option-label" for="length">
+                  الحد الأدنى للطول
+                </label>
+
+                <input
+                  id="length"
+                  class="text-input"
+                  type="number"
+                  min="1"
+                  max="999"
+                  value="8"
+                  inputmode="numeric"
+                />
+              </div>
+
+              <div class="field" id="customField" hidden>
+                <label class="option-label" for="customPattern">
+                  النمط المخصص
+                </label>
+
+                <input
+                  id="customPattern"
+                  class="text-input"
+                  type="text"
+                  dir="ltr"
+                  placeholder="مثال: [A-Z]{3}[0-9]{4}"
+                  spellcheck="false"
+                />
+              </div>
+
+              <div class="field">
+                <span class="option-label">خيارات إضافية</span>
+
+                <div class="checks">
+                  <label class="check">
+                    <input id="globalFlag" type="checkbox" checked />
+                    Global (g)
+                  </label>
+
+                  <label class="check">
+                    <input id="ignoreCase" type="checkbox" />
+                    Ignore Case (i)
+                  </label>
+
+                  <label class="check">
+                    <input id="anchors" type="checkbox" checked />
+                    Anchors
+                  </label>
+
+                  <label class="check">
+                    <input id="unicode" type="checkbox" checked />
+                    Unicode (u)
+                  </label>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="panel output">
+
+            <div class="panel-header">
+              <div class="panel-title">
+                <i class="fa-solid fa-code"></i>
+                <span>Regex الناتج</span>
+              </div>
+
+              <span id="patternType" class="panel-badge">
+                EMAIL
+              </span>
+            </div>
+
+            <div class="regex-display">
+              <textarea
+                id="output"
+                class="regex-output"
+                readonly
+                spellcheck="false"
+                aria-label="Generated Regex"
+              ></textarea>
+            </div>
+
+            <div class="output-footer">
+              <span id="flagPreview">Flags: g</span>
+              <span id="patternLength">0 رمز</span>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+          <button id="generateBtn" class="btn btn-primary" type="button">
+            <i class="fa-solid fa-bolt"></i>
+            توليد Regex
+          </button>
+
+          <button id="exampleBtn" class="btn" type="button">
+            <i class="fa-solid fa-flask"></i>
+            مثال
+          </button>
+
+          <button id="copyBtn" class="btn" type="button">
+            <i class="fa-regular fa-copy"></i>
+            نسخ Regex
+          </button>
+
+          <button id="resetBtn" class="btn" type="button">
+            <i class="fa-solid fa-rotate-left"></i>
+            إعادة ضبط
+          </button>
+        </div>
+
+        <div id="status" class="status" aria-live="polite">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>اختر نوع Regex وسيتم إنشاء النمط تلقائيًا.</span>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat">
+            <span id="statLength" class="stat-value">0</span>
+            <span class="stat-label">Pattern Length</span>
+          </div>
+
+          <div class="stat">
+            <span id="statFlags" class="stat-value">0</span>
+            <span class="stat-label">Flags</span>
+          </div>
+
+          <div class="stat">
+            <span id="statType" class="stat-value">—</span>
+            <span class="stat-label">Type</span>
+          </div>
+
+          <div class="stat">
+            <span id="statStatus" class="stat-value">✓</span>
+            <span class="stat-label">Valid Regex</span>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="privacy-card">
+        <div class="privacy-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div>
+          <strong>معالجة محلية</strong>
+          <span>
+            يتم إنشاء Regex داخل متصفحك ولا يتم إرسال أي بيانات إلى خادم خارجي.
+          </span>
+        </div>
+      </div>
+
+      <section class="info-section">
+        <div class="section-heading">
+          <h2>أنواع Regex المتاحة</h2>
+          <p>
+            مجموعة من الأنماط الشائعة للمطورين لاستخدامها مباشرة في المشاريع.
+          </p>
+        </div>
+
+        <div class="info-grid">
+
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+
+            <h3>Email & URL</h3>
+
+            <p>
+              أنشئ أنماطًا للتحقق من البريد الإلكتروني والروابط الإلكترونية.
+            </p>
+          </article>
+
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-phone"></i>
+            </div>
+
+            <h3>Phone & IP</h3>
+
+            <p>
+              أنماط جاهزة لأرقام الهاتف وعناوين IPv4.
+            </p>
+          </article>
+
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <h3>Password & Username</h3>
+
+            <p>
+              أنشئ Regex لأسماء المستخدمين وكلمات المرور وفق طول وشروط محددة.
+            </p>
+          </article>
+
+        </div>
+      </section>
+
+      <section class="how-card">
+        <div class="section-heading">
+          <h2>كيفية استخدام Regex Generator</h2>
+          <p>أنشئ النمط المطلوب في ثلاث خطوات.</p>
+        </div>
+
+        <div class="steps">
+
+          <article class="step">
+            <div class="step-number">01</div>
+
+            <h3>اختر النوع</h3>
+
+            <p>
+              حدد نوع البيانات التي تريد إنشاء Regex لها.
+            </p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">02</div>
+
+            <h3>خصص الخيارات</h3>
+
+            <p>
+              غيّر الطول والـ Flags والخيارات الإضافية حسب احتياجك.
+            </p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">03</div>
+
+            <h3>انسخ Regex</h3>
+
+            <p>
+              انسخ النمط الناتج واستخدمه مباشرة في مشروعك.
+            </p>
+          </article>
+
+        </div>
+      </section>
+
+      <section class="faq-section">
+        <div class="section-heading">
+          <h2>الأسئلة الشائعة</h2>
+          <p>إجابات سريعة حول مولد Regex.</p>
+        </div>
+
+        <div class="faq-list">
+
+          <details>
+            <summary>ما هو Regex؟</summary>
+            <p>
+              Regex أو Regular Expression هو نمط يستخدم للبحث عن نصوص معينة
+              أو التحقق من صحة البيانات واستخراج أجزاء منها.
+            </p>
+          </details>
+
+          <details>
+            <summary>هل Regex الناتج جاهز للاستخدام في JavaScript؟</summary>
+            <p>
+              نعم. الأنماط التي يتم توليدها متوافقة مع JavaScript RegExp،
+              ويمكن استخدامها مباشرة داخل الكود.
+            </p>
+          </details>
+
+          <details>
+            <summary>هل يمكن إنشاء Regex مخصص؟</summary>
+            <p>
+              نعم. اختر Custom Pattern وأدخل النمط الذي تريد استخدامه،
+              وستظهر النتيجة مباشرة.
+            </p>
+          </details>
+
+          <details>
+            <summary>ما الفرق بين g و i؟</summary>
+            <p>
+              Flag g تبحث عن جميع التطابقات، بينما i تجعل المطابقة غير حساسة
+              لحالة الأحرف.
+            </p>
+          </details>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+
+  <script is:inline>
+    (() => {
+      const type = document.getElementById("type");
+      const length = document.getElementById("length");
+      const customField = document.getElementById("customField");
+      const customPattern = document.getElementById("customPattern");
+
+      const lengthField = document.getElementById("lengthField");
+
+      const globalFlag = document.getElementById("globalFlag");
+      const ignoreCase = document.getElementById("ignoreCase");
+      const anchors = document.getElementById("anchors");
+      const unicode = document.getElementById("unicode");
+
+      const output = document.getElementById("output");
+      const patternType = document.getElementById("patternType");
+      const flagPreview = document.getElementById("flagPreview");
+      const patternLength = document.getElementById("patternLength");
+
+      const generateBtn = document.getElementById("generateBtn");
+      const exampleBtn = document.getElementById("exampleBtn");
+      const copyBtn = document.getElementById("copyBtn");
+      const resetBtn = document.getElementById("resetBtn");
+
+      const status = document.getElementById("status");
+
+      const statLength = document.getElementById("statLength");
+      const statFlags = document.getElementById("statFlags");
+      const statType = document.getElementById("statType");
+      const statStatus = document.getElementById("statStatus");
+
+      const patterns = {
+        email:
+          "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}",
+
+        url:
+          "https?:\\/\\/(?:www\\.)?[A-Za-z0-9.-]+\\.[A-Za-z]{2,}(?:\\/[^\\s]*)?",
+
+        phone:
+          "\\+?[0-9]{7,15}",
+
+        ipv4:
+          "(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)(?:\\.(?:25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)){3}",
+
+        date:
+          "\\d{4}[-\\/]\\d{2}[-\\/]\\d{2}",
+
+        number:
+          "-?\\d+(?:\\.\\d+)?",
+
+        integer:
+          "-?\\d+",
+
+        decimal:
+          "-?\\d+\\.\\d+",
+
+        username:
+          "[A-Za-z][A-Za-z0-9_]{2,15}",
+
+        hex:
+          "#?[A-Fa-f0-9]{6}",
+
+        binary:
+          "[01]+",
+
+        letters:
+          "[A-Za-z]+",
+
+        alphanumeric:
+          "[A-Za-z0-9]+",
+
+        whitespace:
+          "\\s+"
+      };
+
+      const typeLabels = {
+        email: "EMAIL",
+        url: "URL",
+        phone: "PHONE",
+        ipv4: "IPV4",
+        date: "DATE",
+        number: "NUMBER",
+        integer: "INTEGER",
+        decimal: "DECIMAL",
+        username: "USERNAME",
+        password: "PASSWORD",
+        hex: "HEX",
+        binary: "BINARY",
+        letters: "LETTERS",
+        alphanumeric: "ALPHANUMERIC",
+        whitespace: "WHITESPACE",
+        custom: "CUSTOM"
+      };
+
+      function setStatus(message, success = true) {
+        status.className = "status";
+
+        if (success) {
+          status.classList.add("success");
+        }
+
+        const icon = status.querySelector("i");
+        const text = status.querySelector("span");
+
+        icon.className = success
+          ? "fa-solid fa-circle-check"
+          : "fa-solid fa-circle-info";
+
+        text.textContent = message;
+      }
+
+      function getFlags() {
+        let flags = "";
+
+        if (globalFlag.checked) {
+          flags += "g";
+        }
+
+        if (ignoreCase.checked) {
+          flags += "i";
+        }
+
+        if (unicode.checked) {
+          flags += "u";
+        }
+
+        return flags;
+      }
+
+      function getPasswordPattern() {
+        const min = Math.max(
+          4,
+          Math.min(99, Number(length.value) || 8)
+        );
+
+        return `(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{${min},}`;
+      }
+
+      function applyAnchors(pattern) {
+        if (!anchors.checked) {
+          return pattern;
+        }
+
+        return `^${pattern}$`;
+      }
+
+      function generate() {
+        const selected = type.value;
+
+        customField.hidden = selected !== "custom";
+
+        if (selected === "custom") {
+          lengthField.hidden = true;
+        } else if (selected === "password") {
+          lengthField.hidden = false;
+        } else {
+          lengthField.hidden = true;
+        }
+
+        let generated = "";
+
+        if (selected === "custom") {
+          generated = customPattern.value.trim();
+        } else if (selected === "password") {
+          generated = getPasswordPattern();
+        } else {
+          generated = patterns[selected] || "";
+        }
+
+        if (selected !== "whitespace" && generated) {
+          generated = applyAnchors(generated);
+        }
+
+        output.value = generated;
+
+        patternType.textContent =
+          typeLabels[selected] || "REGEX";
+
+        const flags = getFlags();
+
+        flagPreview.textContent =
+          `Flags: ${flags || "none"}`;
+
+        patternLength.textContent =
+          `${generated.length.toLocaleString("ar")} رمز`;
+
+        statLength.textContent =
+          generated.length.toLocaleString("ar");
+
+        statFlags.textContent =
+          flags.length.toLocaleString("ar");
+
+        statType.textContent =
+          typeLabels[selected] || "REGEX";
+
+        if (!generated) {
+          statStatus.textContent = "—";
+
+          setStatus(
+            "اختر نوع Regex أو أدخل نمطًا مخصصًا.",
+            false
+          );
+
+          return;
+        }
+
+        try {
+          new RegExp(generated, flags);
+
+          statStatus.textContent = "✓";
+
+          setStatus(
+            "تم إنشاء Regex صالح وتحديثه تلقائيًا.",
+            true
+          );
+        } catch {
+          statStatus.textContent = "✕";
+
+          setStatus(
+            "النمط الناتج غير صالح. تحقق من الخيارات.",
+            false
+          );
+        }
+      }
+
+      async function copyRegex() {
+        if (!output.value) {
+          setStatus(
+            "لا يوجد Regex لنسخه.",
+            false
+          );
+          return;
+        }
+
+        const regex = `/${output.value}/${getFlags()}`;
+
+        try {
+          if (navigator.clipboard) {
+            await navigator.clipboard.writeText(regex);
+          } else {
+            const temp = document.createElement("textarea");
+            temp.value = regex;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand("copy");
+            temp.remove();
+          }
+
+          setStatus(
+            "تم نسخ Regex إلى الحافظة.",
+            true
+          );
+        } catch {
+          setStatus(
+            "تعذر نسخ Regex تلقائيًا.",
+            false
+          );
+        }
+      }
+
+      function loadExample() {
+        type.value = "password";
+        length.value = "8";
+
+        globalFlag.checked = true;
+        ignoreCase.checked = false;
+        anchors.checked = true;
+        unicode.checked = true;
+
+        generate();
+      }
+
+      function reset() {
+        type.value = "email";
+        length.value = "8";
+        customPattern.value = "";
+
+        globalFlag.checked = true;
+        ignoreCase.checked = false;
+        anchors.checked = true;
+        unicode.checked = true;
+
+        customField.hidden = true;
+        lengthField.hidden = true;
+
+        generate();
+
+        setStatus(
+          "تمت إعادة ضبط الإعدادات.",
+          true
+        );
+      }
+
+      type.addEventListener("change", generate);
+      length.addEventListener("input", generate);
+      customPattern.addEventListener("input", generate);
+
+      globalFlag.addEventListener("change", generate);
+      ignoreCase.addEventListener("change", generate);
+      anchors.addEventListener("change", generate);
+      unicode.addEventListener("change", generate);
+
+      generateBtn.addEventListener("click", generate);
+      exampleBtn.addEventListener("click", loadExample);
+      copyBtn.addEventListener("click", copyRegex);
+      resetBtn.addEventListener("click", reset);
+
+      customPattern.addEventListener("keydown", (event) => {
+        if (
+          (event.ctrlKey || event.metaKey) &&
+          event.key === "Enter"
+        ) {
+          event.preventDefault();
+          generate();
+        }
+      });
+
+      generate();
+    })();
+  </script>
+</body>
+</html>
