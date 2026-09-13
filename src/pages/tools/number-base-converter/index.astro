@@ -1,0 +1,1416 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Number Base Converter | محول أنظمة الأعداد | Th.Tech";
+const description =
+  "محول أنظمة الأعداد المجاني لتحويل القيم بين Binary وDecimal وOctal وHexadecimal بسرعة ودقة، مع معالجة محلية داخل المتصفح.";
+const canonical =
+  `https://oumaystore-hub.github.io${base}/tools/number-base-converter/`;
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href={canonical} />
+
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <script is:inline>
+    (() => {
+      try {
+        if (localStorage.getItem("theme") === "light") {
+          document.documentElement.setAttribute("data-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark-mode");
+        }
+      } catch {}
+    })();
+  </script>
+
+  <style>
+    :root {
+      --bg: #f5f9ff;
+      --surface: #ffffff;
+      --surface-2: #f8fbff;
+      --text: #102033;
+      --muted: #64748b;
+      --border: #dce7f3;
+      --primary: #2563eb;
+      --primary-2: #3b82f6;
+      --cyan: #06b6d4;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --code: #eef4fb;
+      --shadow: 0 18px 50px rgba(37, 99, 235, 0.08);
+    }
+
+    html.dark-mode,
+    html:not([data-theme="light"]).dark-mode {
+      --bg: #07111f;
+      --surface: #0d1b2a;
+      --surface-2: #101f31;
+      --text: #e8f1fb;
+      --muted: #91a4b9;
+      --border: #20364c;
+      --primary: #60a5fa;
+      --primary-2: #3b82f6;
+      --cyan: #22d3ee;
+      --success: #34d399;
+      --danger: #f87171;
+      --warning: #fbbf24;
+      --code: #081522;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    html[data-theme="light"] {
+      --bg: #f5f9ff;
+      --surface: #ffffff;
+      --surface-2: #f8fbff;
+      --text: #102033;
+      --muted: #64748b;
+      --border: #dce7f3;
+      --primary: #2563eb;
+      --primary-2: #3b82f6;
+      --cyan: #06b6d4;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --code: #eef4fb;
+      --shadow: 0 18px 50px rgba(37, 99, 235, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(37, 99, 235, 0.08), transparent 28%),
+        radial-gradient(circle at 90% 10%, rgba(6, 182, 212, 0.07), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Cairo", sans-serif;
+      line-height: 1.7;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    button,
+    textarea,
+    select,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 34px 18px 70px;
+    }
+
+    .container {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .breadcrumb a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .breadcrumb i {
+      font-size: 0.7rem;
+      opacity: 0.7;
+    }
+
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 26px 10px 34px;
+    }
+
+    .hero-icon {
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 18px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-size: 1.8rem;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      box-shadow: 0 18px 38px rgba(37, 99, 235, 0.23);
+      animation: floatIcon 4s ease-in-out infinite;
+    }
+
+    @keyframes floatIcon {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .eyebrow {
+      color: var(--primary);
+      font-weight: 800;
+      font-size: 0.88rem;
+      margin-bottom: 7px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.3rem);
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: -0.7px;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 14px auto 0;
+      color: var(--muted);
+      font-size: 1.03rem;
+    }
+
+    .tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      padding: 6px 11px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 700;
+      box-shadow: 0 5px 18px rgba(37, 99, 235, 0.04);
+    }
+
+    .tool-card,
+    .info-section,
+    .privacy-card,
+    .how-card,
+    .faq-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .tool-card {
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    .tool-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .tool-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tool-title-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 13px;
+      display: grid;
+      place-items: center;
+      color: var(--primary);
+      background: rgba(37, 99, 235, 0.1);
+      font-size: 1.05rem;
+    }
+
+    .tool-title h2 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .tool-title p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: var(--success);
+      background: rgba(16, 185, 129, 0.09);
+      font-size: 0.76rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      50% { opacity: 0.35; transform: scale(0.8); }
+    }
+
+    .settings {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .setting-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      padding: 12px;
+    }
+
+    .setting-box label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    select {
+      width: 100%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      border-radius: 11px;
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .editor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .panel {
+      min-width: 0;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      border-radius: 18px;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-name {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .panel-name i {
+      color: var(--primary);
+    }
+
+    .base-label {
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.7rem;
+      color: var(--muted);
+      background: var(--code);
+      padding: 4px 7px;
+      border-radius: 7px;
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 260px;
+      resize: vertical;
+      display: block;
+      border: 0;
+      outline: 0;
+      padding: 18px;
+      background: transparent;
+      color: var(--text);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 1rem;
+      line-height: 1.8;
+      direction: ltr;
+      text-align: left;
+    }
+
+    textarea::placeholder {
+      color: var(--muted);
+      opacity: 0.75;
+    }
+
+    #output {
+      background: rgba(37, 99, 235, 0.025);
+    }
+
+    .panel-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 9px 12px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.72rem;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1.25fr 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .btn {
+      min-height: 46px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 800;
+      transition: transform 0.18s ease, border-color 0.18s ease,
+        background 0.18s ease, box-shadow 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+    .btn-primary {
+      border-color: transparent;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-primary:hover {
+      border-color: transparent;
+      box-shadow: 0 13px 30px rgba(37, 99, 235, 0.28);
+    }
+
+    .btn i {
+      margin-left: 6px;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 48px;
+      margin-top: 13px;
+      padding: 11px 14px;
+      border-radius: 13px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .status.success {
+      color: var(--success);
+      border-color: rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.06);
+    }
+
+    .status.error {
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.25);
+      background: rgba(239, 68, 68, 0.06);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .stat {
+      padding: 15px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .stat-value {
+      display: block;
+      color: var(--primary);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 1.1rem;
+      font-weight: 800;
+      direction: ltr;
+    }
+
+    .stat-label {
+      display: block;
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 0.72rem;
+    }
+
+    .privacy-card {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 17px 20px;
+      margin-top: 18px;
+    }
+
+    .privacy-icon {
+      flex: 0 0 auto;
+      width: 43px;
+      height: 43px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      color: var(--success);
+      background: rgba(16, 185, 129, 0.1);
+    }
+
+    .privacy-card strong {
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    .privacy-card span {
+      color: var(--muted);
+      font-size: 0.77rem;
+    }
+
+    .info-section {
+      padding: 27px;
+      margin-top: 20px;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 1.45rem;
+    }
+
+    .section-heading p {
+      color: var(--muted);
+      margin: 7px auto 0;
+      max-width: 700px;
+      font-size: 0.9rem;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 13px;
+    }
+
+    .info-box {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface-2);
+    }
+
+    .info-box-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+
+    .info-box h3 {
+      margin: 0 0 5px;
+      font-size: 0.96rem;
+    }
+
+    .info-box p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .how-card {
+      padding: 27px;
+      margin-top: 20px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .step {
+      position: relative;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface-2);
+    }
+
+    .step-number {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 800;
+      margin-bottom: 11px;
+    }
+
+    .step h3 {
+      margin: 0 0 5px;
+      font-size: 0.93rem;
+    }
+
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.79rem;
+    }
+
+    .faq-section {
+      padding: 27px;
+      margin-top: 20px;
+    }
+
+    .faq-list {
+      display: grid;
+      gap: 10px;
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    details {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 15px 17px;
+      font-weight: 800;
+      font-size: 0.88rem;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "+";
+      float: left;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    details[open] summary::after {
+      content: "−";
+    }
+
+    details p {
+      margin: 0;
+      padding: 0 17px 16px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 850px) {
+      .editor-grid,
+      .settings,
+      .info-grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .actions {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .tool-header {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 22px 11px 45px;
+      }
+
+      .hero {
+        padding: 18px 5px 25px;
+      }
+
+      .hero-icon {
+        width: 62px;
+        height: 62px;
+        border-radius: 18px;
+        font-size: 1.45rem;
+      }
+
+      .hero p {
+        font-size: 0.9rem;
+      }
+
+      .tool-card,
+      .info-section,
+      .privacy-card,
+      .how-card,
+      .faq-section {
+        border-radius: 18px;
+        padding: 17px;
+      }
+
+      .live-badge {
+        font-size: 0.68rem;
+      }
+
+      textarea {
+        min-height: 220px;
+        padding: 15px;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        gap: 8px;
+      }
+
+      .stat {
+        padding: 12px 8px;
+      }
+
+      .privacy-card {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .tool-header {
+        flex-direction: column;
+      }
+
+      .live-badge {
+        align-self: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <Header />
+
+  <main class="page">
+    <div class="container">
+
+      <nav class="breadcrumb" aria-label="مسار التنقل">
+        <a href={`${base}/`}>الرئيسية</a>
+        <i class="fa-solid fa-chevron-left"></i>
+        <a href={`${base}/tools/`}>الأدوات</a>
+        <i class="fa-solid fa-chevron-left"></i>
+        <span>Number Base Converter</span>
+      </nav>
+
+      <section class="hero">
+        <div class="hero-icon">
+          <i class="fa-solid fa-code-compare"></i>
+        </div>
+
+        <div class="eyebrow">محول أنظمة الأعداد</div>
+
+        <h1>Number Base Converter</h1>
+
+        <p>
+          حوّل الأرقام بسهولة بين Binary وDecimal وOctal وHexadecimal
+          باستخدام أداة سريعة ودقيقة تعمل بالكامل داخل المتصفح.
+        </p>
+
+        <div class="tags">
+          <span class="tag">Binary</span>
+          <span class="tag">Decimal</span>
+          <span class="tag">Octal</span>
+          <span class="tag">Hexadecimal</span>
+          <span class="tag">Local Processing</span>
+        </div>
+      </section>
+
+      <section class="tool-card">
+        <div class="tool-header">
+          <div class="tool-title">
+            <div class="tool-title-icon">
+              <i class="fa-solid fa-arrows-left-right"></i>
+            </div>
+
+            <div>
+              <h2>تحويل أنظمة الأعداد</h2>
+              <p>اختر النظامين ثم أدخل القيمة للتحويل الفوري</p>
+            </div>
+          </div>
+
+          <div class="live-badge">
+            <span class="live-dot"></span>
+            تحويل فوري
+          </div>
+        </div>
+
+        <div class="settings">
+          <div class="setting-box">
+            <label for="fromBase">النظام المصدر</label>
+
+            <select id="fromBase">
+              <option value="2">Binary — Base 2</option>
+              <option value="8">Octal — Base 8</option>
+              <option value="10" selected>Decimal — Base 10</option>
+              <option value="16">Hexadecimal — Base 16</option>
+            </select>
+          </div>
+
+          <div class="setting-box">
+            <label for="toBase">النظام الهدف</label>
+
+            <select id="toBase">
+              <option value="2">Binary — Base 2</option>
+              <option value="8">Octal — Base 8</option>
+              <option value="10">Decimal — Base 10</option>
+              <option value="16" selected>Hexadecimal — Base 16</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="editor-grid">
+
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-name">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                <span id="fromName">Decimal</span>
+              </div>
+
+              <span class="base-label" id="fromLabel">BASE 10</span>
+            </div>
+
+            <textarea
+              id="input"
+              spellcheck="false"
+              autocomplete="off"
+              placeholder="أدخل الرقم هنا..."
+              aria-label="القيمة المصدر"
+            ></textarea>
+
+            <div class="panel-footer">
+              <span id="inputHint">الأرقام المسموحة: 0–9</span>
+              <span id="inputLength">0 رمز</span>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-name">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span id="toName">Hexadecimal</span>
+              </div>
+
+              <span class="base-label" id="toLabel">BASE 16</span>
+            </div>
+
+            <textarea
+              id="output"
+              readonly
+              spellcheck="false"
+              placeholder="ستظهر النتيجة هنا..."
+              aria-label="القيمة الناتجة"
+            ></textarea>
+
+            <div class="panel-footer">
+              <span>الناتج جاهز للنسخ</span>
+              <span id="outputLength">0 رمز</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-primary" id="convertBtn" type="button">
+            <i class="fa-solid fa-bolt"></i>
+            تحويل الآن
+          </button>
+
+          <button class="btn" id="exampleBtn" type="button">
+            <i class="fa-solid fa-flask"></i>
+            مثال
+          </button>
+
+          <button class="btn" id="copyBtn" type="button">
+            <i class="fa-regular fa-copy"></i>
+            نسخ النتيجة
+          </button>
+
+          <button class="btn" id="resetBtn" type="button">
+            <i class="fa-solid fa-rotate-left"></i>
+            إعادة ضبط
+          </button>
+        </div>
+
+        <div class="status" id="status" aria-live="polite">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>أدخل قيمة واختر النظام المصدر والهدف لبدء التحويل.</span>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat">
+            <span class="stat-value" id="inputDigits">0</span>
+            <span class="stat-label">رموز الإدخال</span>
+          </div>
+
+          <div class="stat">
+            <span class="stat-value" id="outputDigits">0</span>
+            <span class="stat-label">رموز الناتج</span>
+          </div>
+
+          <div class="stat">
+            <span class="stat-value" id="bits">0</span>
+            <span class="stat-label">Bits</span>
+          </div>
+
+          <div class="stat">
+            <span class="stat-value" id="bytes">0</span>
+            <span class="stat-label">Bytes</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="privacy-card">
+        <div class="privacy-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div>
+          <strong>خصوصيتك محفوظة</strong>
+          <span>
+            تتم جميع عمليات التحويل محليًا داخل متصفحك ولا يتم إرسال الأرقام إلى أي خادم.
+          </span>
+        </div>
+      </div>
+
+      <section class="info-section">
+        <div class="section-heading">
+          <h2>ما هو Number Base Converter؟</h2>
+          <p>
+            أداة واحدة لتحويل الأعداد بين أشهر أنظمة العد المستخدمة في البرمجة
+            والرياضيات والأنظمة الرقمية.
+          </p>
+        </div>
+
+        <div class="info-grid">
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-1"></i>
+            </div>
+            <h3>Binary — Base 2</h3>
+            <p>
+              يستخدم الرقمين 0 و1، وهو النظام الأساسي في تمثيل البيانات داخل الحواسيب.
+            </p>
+          </article>
+
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-0"></i>
+            </div>
+            <h3>Decimal — Base 10</h3>
+            <p>
+              النظام العشري المعتاد الذي يستخدم الأرقام من 0 إلى 9 في الحياة اليومية.
+            </p>
+          </article>
+
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-code"></i>
+            </div>
+            <h3>Octal & Hex</h3>
+            <p>
+              Octal يستخدم 8 رموز، بينما Hexadecimal يستخدم 16 رمزًا من 0 إلى F.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="how-card">
+        <div class="section-heading">
+          <h2>كيفية استخدام الأداة</h2>
+          <p>ثلاث خطوات بسيطة للحصول على النتيجة.</p>
+        </div>
+
+        <div class="steps">
+          <article class="step">
+            <div class="step-number">01</div>
+            <h3>اختر النظام المصدر</h3>
+            <p>
+              حدد النظام الذي تنتمي إليه القيمة مثل Binary أو Decimal أو Hexadecimal.
+            </p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">02</div>
+            <h3>أدخل الرقم</h3>
+            <p>
+              اكتب القيمة في مربع الإدخال. تتحقق الأداة تلقائيًا من الرموز المسموحة.
+            </p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">03</div>
+            <h3>احصل على النتيجة</h3>
+            <p>
+              اضغط على تحويل الآن وستظهر القيمة بالنظام المطلوب ويمكنك نسخها مباشرة.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="faq-section">
+        <div class="section-heading">
+          <h2>الأسئلة الشائعة</h2>
+          <p>إجابات سريعة حول تحويل أنظمة الأعداد.</p>
+        </div>
+
+        <div class="faq-list">
+          <details>
+            <summary>ما هي أنظمة الأعداد التي تدعمها الأداة؟</summary>
+            <p>
+              تدعم الأداة Binary بنظام 2، وOctal بنظام 8، وDecimal بنظام 10،
+              وHexadecimal بنظام 16.
+            </p>
+          </details>
+
+          <details>
+            <summary>هل يمكن التحويل بين أي نظامين؟</summary>
+            <p>
+              نعم. يمكنك اختيار أي نظام كمصدر وأي نظام آخر كهدف، بما في ذلك التحويل
+              من النظام إلى نفسه.
+            </p>
+          </details>
+
+          <details>
+            <summary>هل تدعم الأداة الأعداد الكبيرة؟</summary>
+            <p>
+              نعم. تستخدم الأداة BigInt في JavaScript للتعامل بدقة مع الأعداد الصحيحة
+              الكبيرة دون فقدان الدقة المعتاد في Number.
+            </p>
+          </details>
+
+          <details>
+            <summary>هل يتم إرسال البيانات إلى الخادم؟</summary>
+            <p>
+              لا. عملية التحويل تتم محليًا داخل المتصفح، لذلك لا تحتاج إلى رفع
+              القيمة إلى أي خدمة خارجية.
+            </p>
+          </details>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+
+  <script is:inline>
+    (() => {
+      const input = document.getElementById("input");
+      const output = document.getElementById("output");
+
+      const fromBase = document.getElementById("fromBase");
+      const toBase = document.getElementById("toBase");
+
+      const fromName = document.getElementById("fromName");
+      const toName = document.getElementById("toName");
+
+      const fromLabel = document.getElementById("fromLabel");
+      const toLabel = document.getElementById("toLabel");
+
+      const inputHint = document.getElementById("inputHint");
+      const inputLength = document.getElementById("inputLength");
+      const outputLength = document.getElementById("outputLength");
+
+      const convertBtn = document.getElementById("convertBtn");
+      const exampleBtn = document.getElementById("exampleBtn");
+      const copyBtn = document.getElementById("copyBtn");
+      const resetBtn = document.getElementById("resetBtn");
+
+      const status = document.getElementById("status");
+
+      const inputDigits = document.getElementById("inputDigits");
+      const outputDigits = document.getElementById("outputDigits");
+      const bits = document.getElementById("bits");
+      const bytes = document.getElementById("bytes");
+
+      const baseNames = {
+        2: "Binary",
+        8: "Octal",
+        10: "Decimal",
+        16: "Hexadecimal"
+      };
+
+      const examples = {
+        "2": "101101",
+        "8": "755",
+        "10": "255",
+        "16": "FF"
+      };
+
+      function cleanValue(value) {
+        return value
+          .trim()
+          .replace(/\s+/gu, "")
+          .replace(/^0x/iu, "");
+      }
+
+      function getAllowedPattern(base) {
+        if (base === 2) return /^[01]+$/u;
+        if (base === 8) return /^[0-7]+$/u;
+        if (base === 10) return /^\d+$/u;
+        if (base === 16) return /^[0-9a-f]+$/iu;
+        return /^$/u;
+      }
+
+      function updateNames() {
+        const from = Number(fromBase.value);
+        const to = Number(toBase.value);
+
+        fromName.textContent = baseNames[from];
+        toName.textContent = baseNames[to];
+
+        fromLabel.textContent = `BASE ${from}`;
+        toLabel.textContent = `BASE ${to}`;
+
+        if (from === 2) {
+          inputHint.textContent = "الأرقام المسموحة: 0 و1";
+        } else if (from === 8) {
+          inputHint.textContent = "الأرقام المسموحة: 0–7";
+        } else if (from === 10) {
+          inputHint.textContent = "الأرقام المسموحة: 0–9";
+        } else {
+          inputHint.textContent = "الأرقام المسموحة: 0–9 و A–F";
+        }
+
+        output.value = "";
+        outputLength.textContent = "0 رمز";
+        inputDigits.textContent = "0";
+        outputDigits.textContent = "0";
+        bits.textContent = "0";
+        bytes.textContent = "0";
+
+        setStatus(
+          "info",
+          "أدخل قيمة جديدة ثم اضغط على تحويل الآن."
+        );
+      }
+
+      function setStatus(type, message) {
+        status.className = "status";
+
+        if (type === "success") {
+          status.classList.add("success");
+        }
+
+        if (type === "error") {
+          status.classList.add("error");
+        }
+
+        const icon = status.querySelector("i");
+        const text = status.querySelector("span");
+
+        if (type === "success") {
+          icon.className = "fa-solid fa-circle-check";
+        } else if (type === "error") {
+          icon.className = "fa-solid fa-circle-exclamation";
+        } else {
+          icon.className = "fa-solid fa-circle-info";
+        }
+
+        text.textContent = message;
+      }
+
+      function updateStats(value, result) {
+        inputDigits.textContent = value.length.toLocaleString("ar");
+        outputDigits.textContent = result.length.toLocaleString("ar");
+
+        let bitCount = 1;
+
+        try {
+          const decimalValue = BigInt(`0x${value}`);
+
+          if (decimalValue > 0n) {
+            bitCount = decimalValue.toString(2).length;
+          }
+        } catch {
+          bitCount = Math.max(1, value.length);
+        }
+
+        const byteCount = Math.max(1, Math.ceil(bitCount / 8));
+
+        bits.textContent = bitCount.toLocaleString("ar");
+        bytes.textContent = byteCount.toLocaleString("ar");
+      }
+
+      function convert() {
+        const raw = cleanValue(input.value);
+        const sourceBase = Number(fromBase.value);
+        const targetBase = Number(toBase.value);
+
+        inputLength.textContent =
+          `${raw.length.toLocaleString("ar")} رمز`;
+
+        if (!raw) {
+          output.value = "";
+          outputLength.textContent = "0 رمز";
+
+          inputDigits.textContent = "0";
+          outputDigits.textContent = "0";
+          bits.textContent = "0";
+          bytes.textContent = "0";
+
+          setStatus("info", "أدخل قيمة أولًا لبدء التحويل.");
+          return;
+        }
+
+        const pattern = getAllowedPattern(sourceBase);
+
+        if (!pattern.test(raw)) {
+          output.value = "";
+          outputLength.textContent = "0 رمز";
+
+          setStatus(
+            "error",
+            `القيمة غير صالحة لنظام ${baseNames[sourceBase]}. تحقق من الرموز المسموحة.`
+          );
+          return;
+        }
+
+        try {
+          const decimalValue = BigInt(
+            parseInt(raw, sourceBase)
+          );
+
+          /*
+           * parseInt + BigInt قد يفقد الدقة مع الأعداد الكبيرة،
+           * لذلك نستخدم تحويلًا يدويًا من المصدر إلى BigInt.
+           */
+          let exactValue = 0n;
+
+          for (const char of raw.toUpperCase()) {
+            let digit;
+
+            if (char >= "0" && char <= "9") {
+              digit = BigInt(char.charCodeAt(0) - 48);
+            } else {
+              digit = BigInt(char.charCodeAt(0) - 55);
+            }
+
+            exactValue = exactValue * BigInt(sourceBase) + digit;
+          }
+
+          const result = exactValue
+            .toString(targetBase)
+            .toUpperCase();
+
+          output.value = result;
+
+          outputLength.textContent =
+            `${result.length.toLocaleString("ar")} رمز`;
+
+          updateStats(raw, result);
+
+          setStatus(
+            "success",
+            `${baseNames[sourceBase]} → ${baseNames[targetBase]} تم التحويل بنجاح.`
+          );
+
+          void decimalValue;
+        } catch {
+          output.value = "";
+          outputLength.textContent = "0 رمز";
+
+          setStatus(
+            "error",
+            "تعذر تحويل القيمة. تحقق من الرقم وحاول مرة أخرى."
+          );
+        }
+      }
+
+      function copyOutput() {
+        if (!output.value) {
+          setStatus("info", "لا توجد نتيجة لنسخها.");
+          return;
+        }
+
+        const copyText = output.value;
+
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(copyText)
+            .then(() => {
+              setStatus("success", "تم نسخ النتيجة إلى الحافظة.");
+            })
+            .catch(() => fallbackCopy(copyText));
+        } else {
+          fallbackCopy(copyText);
+        }
+      }
+
+      function fallbackCopy(text) {
+        output.focus();
+        output.select();
+
+        try {
+          document.execCommand("copy");
+          setStatus("success", "تم نسخ النتيجة إلى الحافظة.");
+        } catch {
+          setStatus("error", "تعذر النسخ تلقائيًا. انسخ النتيجة يدويًا.");
+        }
+      }
+
+      function loadExample() {
+        const sourceBase = fromBase.value;
+
+        input.value = examples[sourceBase] || "255";
+
+        convert();
+      }
+
+      function reset() {
+        input.value = "";
+        output.value = "";
+
+        inputLength.textContent = "0 رمز";
+        outputLength.textContent = "0 رمز";
+
+        inputDigits.textContent = "0";
+        outputDigits.textContent = "0";
+        bits.textContent = "0";
+        bytes.textContent = "0";
+
+        setStatus(
+          "info",
+          "تمت إعادة ضبط الأداة. أدخل قيمة جديدة للبدء."
+        );
+
+        input.focus();
+      }
+
+      fromBase.addEventListener("change", updateNames);
+      toBase.addEventListener("change", updateNames);
+
+      input.addEventListener("input", () => {
+        const raw = cleanValue(input.value);
+
+        inputLength.textContent =
+          `${raw.length.toLocaleString("ar")} رمز`;
+      });
+
+      input.addEventListener("keydown", (event) => {
+        if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+          event.preventDefault();
+          convert();
+        }
+      });
+
+      convertBtn.addEventListener("click", convert);
+      exampleBtn.addEventListener("click", loadExample);
+      copyBtn.addEventListener("click", copyOutput);
+      resetBtn.addEventListener("click", reset);
+
+      updateNames();
+    })();
+  </script>
+</body>
+</html>
