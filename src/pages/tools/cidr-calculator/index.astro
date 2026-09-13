@@ -3,675 +3,79 @@ import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const canonical = `https://oumaystore-hub.github.io${base}/tools/cidr-calculator/`;
+
+const title = "CIDR Calculator - حاسبة CIDR أونلاين مجاناً | Th.Tech";
+
+const description =
+  "حاسبة CIDR مجانية لحساب Network Address وBroadcast وSubnet Mask وWildcard وأول وآخر عنوان وعدد العناوين مباشرة من المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هي أداة CIDR Calculator؟",
+    a: "CIDR Calculator تقوم بتحليل عنوان IPv4 مع Prefix Length مثل /24 وحساب معلومات الشبكة والـSubnet Mask والـBroadcast ونطاق عناوين الأجهزة."
+  },
+  {
+    q: "ماذا يعني /24؟",
+    a: "يشير /24 إلى أن أول 24 بت من عنوان IPv4 مخصصة للشبكة، بينما تبقى 8 بت لعناوين الأجهزة داخل الشبكة."
+  },
+  {
+    q: "هل يتم إرسال عنوان IP إلى الخادم؟",
+    a: "لا. جميع الحسابات تتم داخل المتصفح باستخدام JavaScript، ولا يتم إرسال عنوان IP إلى خادم خارجي."
+  },
+  {
+    q: "هل تدعم الأداة /31 و /32؟",
+    a: "نعم. تدعم الأداة جميع Prefix Length من /0 إلى /32، مع معالجة خاصة لشبكات /31 و/32."
+  }
+];
 ---
 
-<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CIDR Calculator | حاسبة CIDR | Th.Tech</title>
-  <meta
-    name="description"
-    content="حاسبة CIDR مجانية لحساب الشبكة، قناع الشبكة، عدد العناوين، نطاق المضيفين، Broadcast وWildcard بسرعة داخل المتصفح."
-  />
-  <link rel="canonical" href={canonical} />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+
+  <link rel="canonical" href={`https://oumaystore-hub.github.io${base}/tools/cidr-calculator/`} />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
   <link
     href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
+
   <link
     rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
   />
 
   <script is:inline>
     (() => {
-      const saved = localStorage.getItem('theme');
-      if (saved === 'light') {
-        document.documentElement.setAttribute('data-theme', 'light');
-        document.documentElement.classList.remove('dark-mode');
-      } else {
-        document.documentElement.classList.add('dark-mode');
-        document.documentElement.removeAttribute('data-theme');
-      }
+      try {
+        const saved = localStorage.getItem("theme");
+
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark-mode");
+        }
+      } catch {}
     })();
   </script>
-
-  <style>
-    :root {
-      --bg: #07111f;
-      --bg-2: #0b1728;
-      --card: rgba(13, 27, 46, 0.88);
-      --card-2: #0f2035;
-      --border: rgba(148, 163, 184, 0.15);
-      --text: #edf6ff;
-      --muted: #91a4b9;
-      --primary: #38bdf8;
-      --primary-2: #60a5fa;
-      --success: #22c55e;
-      --danger: #fb7185;
-      --warning: #fbbf24;
-      --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
-      --radius: 22px;
-    }
-
-    html[data-theme="light"] {
-      --bg: #f4f9fd;
-      --bg-2: #eaf4fc;
-      --card: rgba(255, 255, 255, 0.94);
-      --card-2: #f6fbff;
-      --border: rgba(15, 63, 96, 0.12);
-      --text: #102235;
-      --muted: #61758a;
-      --shadow: 0 20px 50px rgba(24, 78, 119, 0.1);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: "Cairo", sans-serif;
-      color: var(--text);
-      background:
-        radial-gradient(circle at 10% 0%, rgba(56, 189, 248, 0.11), transparent 30%),
-        radial-gradient(circle at 90% 10%, rgba(96, 165, 250, 0.1), transparent 28%),
-        var(--bg);
-    }
-
-    button,
-    input {
-      font: inherit;
-    }
-
-    .page {
-      width: min(1180px, calc(100% - 28px));
-      margin: auto;
-    }
-
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 48px 0 28px;
-    }
-
-    .hero::before {
-      content: "";
-      position: absolute;
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      background: rgba(56, 189, 248, 0.09);
-      filter: blur(55px);
-      top: -100px;
-      left: -100px;
-      pointer-events: none;
-    }
-
-    .breadcrumbs {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-    }
-
-    .breadcrumbs a {
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    .breadcrumbs a:hover {
-      color: var(--primary);
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 25px;
-      align-items: center;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--primary);
-      background: rgba(56, 189, 248, 0.09);
-      border: 1px solid rgba(56, 189, 248, 0.16);
-      border-radius: 999px;
-      padding: 7px 13px;
-      font-size: 12px;
-      font-weight: 700;
-      margin-bottom: 15px;
-    }
-
-    h1 {
-      font-size: clamp(30px, 5vw, 48px);
-      line-height: 1.2;
-      margin: 0 0 12px;
-      letter-spacing: -1px;
-    }
-
-    .hero p {
-      color: var(--muted);
-      line-height: 1.9;
-      margin: 0;
-      max-width: 730px;
-      font-size: 15px;
-    }
-
-    .hero-icon {
-      width: 92px;
-      height: 92px;
-      border-radius: 28px;
-      display: grid;
-      place-items: center;
-      color: #fff;
-      font-size: 35px;
-      background: linear-gradient(135deg, #0284c7, #60a5fa);
-      box-shadow: 0 18px 40px rgba(14, 165, 233, 0.23);
-      transform: rotate(-4deg);
-    }
-
-    .tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 19px;
-    }
-
-    .tag {
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--muted);
-      padding: 6px 11px;
-      border-radius: 9px;
-      font-size: 12px;
-    }
-
-    .tool-card,
-    .info-card,
-    .faq-card {
-      border: 1px solid var(--border);
-      background: var(--card);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(12px);
-    }
-
-    .tool-card {
-      padding: 25px;
-      margin: 18px 0 26px;
-    }
-
-    .card-title {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 21px;
-    }
-
-    .card-title .icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 13px;
-      display: grid;
-      place-items: center;
-      color: var(--primary);
-      background: rgba(56, 189, 248, 0.1);
-    }
-
-    .card-title h2 {
-      margin: 0;
-      font-size: 18px;
-    }
-
-    .card-title p {
-      margin: 3px 0 0;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .input-grid {
-      display: grid;
-      grid-template-columns: 1fr 220px;
-      gap: 14px;
-    }
-
-    .field label {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    .input-wrap {
-      position: relative;
-    }
-
-    .input-wrap i {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--muted);
-      pointer-events: none;
-    }
-
-    input {
-      width: 100%;
-      border: 1px solid var(--border);
-      outline: none;
-      border-radius: 13px;
-      background: var(--card-2);
-      color: var(--text);
-      padding: 14px 43px 14px 14px;
-      direction: ltr;
-      font-family: "JetBrains Mono", monospace;
-      font-size: 14px;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    input:focus {
-      border-color: rgba(56, 189, 248, 0.65);
-      box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.08);
-    }
-
-    .range-wrap {
-      position: relative;
-    }
-
-    .range-wrap input {
-      padding-right: 48px;
-    }
-
-    .prefix-badge {
-      position: absolute;
-      left: 11px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--primary);
-      font-family: "JetBrains Mono", monospace;
-      font-size: 12px;
-      font-weight: 700;
-      pointer-events: none;
-    }
-
-    .quick-title {
-      color: var(--muted);
-      font-size: 12px;
-      margin: 18px 0 9px;
-    }
-
-    .examples {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .example {
-      border: 1px solid var(--border);
-      background: var(--card-2);
-      color: var(--muted);
-      border-radius: 9px;
-      padding: 7px 10px;
-      cursor: pointer;
-      font-family: "JetBrains Mono", monospace;
-      font-size: 11px;
-      transition: 0.2s;
-    }
-
-    .example:hover {
-      color: var(--primary);
-      border-color: rgba(56, 189, 248, 0.4);
-      transform: translateY(-1px);
-    }
-
-    .status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 16px;
-      min-height: 22px;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--success);
-      box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.09);
-    }
-
-    .status.error {
-      color: var(--danger);
-    }
-
-    .status.error .status-dot {
-      background: var(--danger);
-      box-shadow: 0 0 0 5px rgba(251, 113, 133, 0.09);
-    }
-
-    .results {
-      display: none;
-      margin-top: 22px;
-    }
-
-    .results.show {
-      display: block;
-      animation: reveal 0.3s ease;
-    }
-
-    @keyframes reveal {
-      from {
-        opacity: 0;
-        transform: translateY(7px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .results-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 11px;
-    }
-
-    .result {
-      position: relative;
-      min-height: 86px;
-      padding: 13px;
-      border-radius: 13px;
-      background: var(--card-2);
-      border: 1px solid var(--border);
-    }
-
-    .result .label {
-      color: var(--muted);
-      font-size: 11px;
-      margin-bottom: 8px;
-    }
-
-    .result .value {
-      color: var(--text);
-      font-family: "JetBrains Mono", monospace;
-      font-size: 13px;
-      line-height: 1.55;
-      direction: ltr;
-      text-align: right;
-      word-break: break-word;
-    }
-
-    .result.accent {
-      border-color: rgba(56, 189, 248, 0.22);
-      background: linear-gradient(
-        145deg,
-        rgba(56, 189, 248, 0.08),
-        var(--card-2)
-      );
-    }
-
-    .copy-mini {
-      position: absolute;
-      left: 9px;
-      top: 9px;
-      width: 28px;
-      height: 28px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      background: transparent;
-      color: var(--muted);
-      cursor: pointer;
-      display: grid;
-      place-items: center;
-      font-size: 11px;
-    }
-
-    .copy-mini:hover {
-      color: var(--primary);
-    }
-
-    .result.full {
-      grid-column: 1 / -1;
-    }
-
-    .actions {
-      display: flex;
-      gap: 9px;
-      flex-wrap: wrap;
-      margin-top: 18px;
-    }
-
-    .btn {
-      border: 1px solid var(--border);
-      border-radius: 11px;
-      padding: 11px 16px;
-      cursor: pointer;
-      background: var(--card-2);
-      color: var(--text);
-      font-weight: 700;
-      font-size: 13px;
-      transition: 0.2s;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      border-color: rgba(56, 189, 248, 0.35);
-    }
-
-    .btn.primary {
-      color: #fff;
-      border: 0;
-      background: linear-gradient(135deg, #0284c7, #3b82f6);
-      box-shadow: 0 10px 25px rgba(14, 165, 233, 0.16);
-    }
-
-    .btn.primary:hover {
-      box-shadow: 0 13px 28px rgba(14, 165, 233, 0.25);
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 11px;
-      margin-top: 14px;
-    }
-
-    .stat {
-      border: 1px solid var(--border);
-      background: var(--card-2);
-      border-radius: 13px;
-      padding: 13px;
-    }
-
-    .stat span {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      margin-bottom: 5px;
-    }
-
-    .stat strong {
-      display: block;
-      font-family: "JetBrains Mono", monospace;
-      font-size: 13px;
-      direction: ltr;
-      text-align: right;
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 17px;
-      margin-bottom: 20px;
-    }
-
-    .info-card,
-    .faq-card {
-      padding: 22px;
-    }
-
-    .info-card h2,
-    .faq-card h2 {
-      font-size: 18px;
-      margin: 0 0 13px;
-    }
-
-    .info-card p,
-    .faq-card p {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.9;
-      margin: 0;
-    }
-
-    .info-list {
-      display: grid;
-      gap: 9px;
-      margin-top: 13px;
-    }
-
-    .info-item {
-      display: flex;
-      align-items: flex-start;
-      gap: 9px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-    .info-item i {
-      color: var(--primary);
-      margin-top: 4px;
-    }
-
-    .faq-card {
-      margin-bottom: 34px;
-    }
-
-    details {
-      border-top: 1px solid var(--border);
-      padding: 13px 0;
-    }
-
-    details:first-of-type {
-      border-top: 0;
-    }
-
-    summary {
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    details p {
-      padding-top: 9px;
-    }
-
-    .privacy {
-      display: flex;
-      gap: 12px;
-      align-items: center;
-      margin: 0 0 20px;
-      padding: 14px 16px;
-      border-radius: 14px;
-      background: rgba(34, 197, 94, 0.055);
-      border: 1px solid rgba(34, 197, 94, 0.12);
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .privacy i {
-      color: var(--success);
-      font-size: 17px;
-    }
-
-    @media (max-width: 800px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-icon {
-        display: none;
-      }
-
-      .input-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .results-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .info-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 520px) {
-      .page {
-        width: min(100% - 18px, 1180px);
-      }
-
-      .hero {
-        padding-top: 30px;
-      }
-
-      .tool-card {
-        padding: 17px;
-        border-radius: 17px;
-      }
-
-      .results-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .result.full {
-        grid-column: auto;
-      }
-
-      .stats {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      h1 {
-        font-size: 29px;
-      }
-    }
-  </style>
 </head>
 
 <body>
+
   <Header />
 
   <main>
+
+    <!-- HERO -->
     <section class="hero">
-      <div class="page">
-        <div class="breadcrumbs">
+      <div class="container">
+
+        <div class="breadcrumb">
           <a href={`${base}/`}>الرئيسية</a>
           <i class="fa-solid fa-chevron-left"></i>
           <a href={`${base}/tools/`}>الأدوات</a>
@@ -679,634 +83,3606 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/cidr-calculator
           <span>CIDR Calculator</span>
         </div>
 
-        <div class="hero-grid">
-          <div>
-            <div class="eyebrow">
-              <i class="fa-solid fa-network-wired"></i>
-              Network &amp; Subnetting
-            </div>
-
-            <h1>حاسبة CIDR</h1>
-
-            <p>
-              احسب معلومات شبكة IPv4 باستخدام صيغة CIDR بسهولة، بما في ذلك
-              عنوان الشبكة، Broadcast، قناع الشبكة، Wildcard ونطاق المضيفين.
-            </p>
-
-            <div class="tags">
-              <span class="tag">IPv4</span>
-              <span class="tag">CIDR</span>
-              <span class="tag">Subnetting</span>
-              <span class="tag">Network Calculator</span>
-              <span class="tag">100% محلي</span>
-            </div>
-          </div>
+        <div class="hero-content">
 
           <div class="hero-icon">
             <i class="fa-solid fa-network-wired"></i>
+            <span>CIDR</span>
           </div>
+
+          <div class="hero-text">
+
+            <div class="badge">
+              <i class="fa-solid fa-network-wired"></i>
+              Network & Subnetting
+            </div>
+
+            <h1>CIDR Calculator</h1>
+
+            <p>
+              احسب معلومات شبكة IPv4 بسهولة،
+              من Network Address وBroadcast إلى Subnet Mask
+              ونطاق عناوين الأجهزة.
+            </p>
+
+            <div class="tags">
+              <span>IPv4</span>
+              <span>CIDR</span>
+              <span>Subnetting</span>
+              <span>Network Calculator</span>
+              <span>Local</span>
+            </div>
+
+          </div>
+
         </div>
+
       </div>
     </section>
 
-    <div class="page">
-      <section class="tool-card">
-        <div class="card-title">
-          <div class="icon">
-            <i class="fa-solid fa-calculator"></i>
-          </div>
-          <div>
-            <h2>أدخل عنوان الشبكة</h2>
-            <p>يمكنك الكتابة وستتحدث النتائج مباشرة.</p>
-          </div>
-        </div>
 
-        <div class="input-grid">
-          <div class="field">
-            <label for="ipInput">عنوان IPv4</label>
-            <div class="input-wrap">
-              <i class="fa-solid fa-location-dot"></i>
-              <input
-                id="ipInput"
-                type="text"
-                inputmode="decimal"
-                autocomplete="off"
-                spellcheck="false"
-                placeholder="192.168.1.0"
-                value="192.168.1.0"
-              />
-            </div>
-          </div>
+    <!-- TOOL -->
+    <section class="tool-section">
+      <div class="container">
 
-          <div class="field">
-            <label for="prefixInput">Prefix Length</label>
-            <div class="input-wrap range-wrap">
-              <input
-                id="prefixInput"
-                type="number"
-                min="0"
-                max="32"
-                step="1"
-                value="24"
-              />
-              <span class="prefix-badge">/CIDR</span>
-            </div>
-          </div>
-        </div>
+        <div class="cidr-card">
 
-        <div class="quick-title">أمثلة سريعة</div>
+          <!-- TOP BAR -->
+          <div class="card-topbar">
 
-        <div class="examples">
-          <button class="example" data-ip="192.168.1.0" data-prefix="24">192.168.1.0/24</button>
-          <button class="example" data-ip="10.0.0.0" data-prefix="8">10.0.0.0/8</button>
-          <button class="example" data-ip="172.16.0.0" data-prefix="16">172.16.0.0/16</button>
-          <button class="example" data-ip="192.168.10.64" data-prefix="26">192.168.10.64/26</button>
-          <button class="example" data-ip="192.168.1.128" data-prefix="25">192.168.1.128/25</button>
-        </div>
-
-        <div class="status" id="status">
-          <span class="status-dot"></span>
-          <span id="statusText">جاهز للحساب</span>
-        </div>
-
-        <div class="results" id="results">
-          <div class="results-grid">
-            <div class="result accent">
-              <button class="copy-mini" data-copy="network" title="نسخ">
-                <i class="fa-regular fa-copy"></i>
-              </button>
-              <div class="label">Network Address</div>
-              <div class="value" id="network">—</div>
+            <div class="window-dots">
+              <span></span>
+              <span></span>
+              <span></span>
             </div>
 
-            <div class="result accent">
-              <button class="copy-mini" data-copy="broadcast" title="نسخ">
-                <i class="fa-regular fa-copy"></i>
-              </button>
-              <div class="label">Broadcast Address</div>
-              <div class="value" id="broadcast">—</div>
-            </div>
-
-            <div class="result">
-              <button class="copy-mini" data-copy="mask" title="نسخ">
-                <i class="fa-regular fa-copy"></i>
-              </button>
-              <div class="label">Subnet Mask</div>
-              <div class="value" id="mask">—</div>
-            </div>
-
-            <div class="result">
-              <button class="copy-mini" data-copy="wildcard" title="نسخ">
-                <i class="fa-regular fa-copy"></i>
-              </button>
-              <div class="label">Wildcard Mask</div>
-              <div class="value" id="wildcard">—</div>
-            </div>
-
-            <div class="result">
-              <button class="copy-mini" data-copy="first" title="نسخ">
-                <i class="fa-regular fa-copy"></i>
-              </button>
-              <div class="label">First Host</div>
-              <div class="value" id="first">—</div>
-            </div>
-
-            <div class="result">
-              <button class="copy-mini" data-copy="last" title="نسخ">
-                <i class="fa-regular fa-copy"></i>
-              </button>
-              <div class="label">Last Host</div>
-              <div class="value" id="last">—</div>
-            </div>
-
-            <div class="result">
-              <div class="label">CIDR</div>
-              <div class="value" id="cidr">—</div>
-            </div>
-
-            <div class="result">
-              <div class="label">Total Addresses</div>
-              <div class="value" id="total">—</div>
-            </div>
-
-            <div class="result">
-              <div class="label">Usable Hosts</div>
-              <div class="value" id="usable">—</div>
-            </div>
-
-            <div class="result">
-              <div class="label">Network Type</div>
-              <div class="value" id="type">—</div>
-            </div>
-
-            <div class="result full">
-              <button class="copy-mini" data-copy="binary" title="نسخ">
-                <i class="fa-regular fa-copy"></i>
-              </button>
-              <div class="label">Binary Representation</div>
-              <div class="value" id="binary">—</div>
-            </div>
-
-            <div class="result full">
-              <button class="copy-mini" data-copy="networkCidr" title="نسخ">
-                <i class="fa-regular fa-copy"></i>
-              </button>
-              <div class="label">Network / CIDR</div>
-              <div class="value" id="networkCidr">—</div>
-            </div>
-          </div>
-
-          <div class="actions">
-            <button class="btn primary" id="copyAll">
-              <i class="fa-regular fa-copy"></i>
-              نسخ جميع النتائج
-            </button>
-
-            <button class="btn" id="resetBtn">
-              <i class="fa-solid fa-rotate-left"></i>
-              إعادة ضبط
-            </button>
-          </div>
-
-          <div class="stats">
-            <div class="stat">
-              <span>Prefix</span>
-              <strong id="statPrefix">/24</strong>
-            </div>
-            <div class="stat">
-              <span>Host Bits</span>
-              <strong id="statHostBits">8</strong>
-            </div>
-            <div class="stat">
-              <span>Subnet Bits</span>
-              <strong id="statSubnetBits">24</strong>
-            </div>
-            <div class="stat">
-              <span>Addresses</span>
-              <strong id="statAddresses">256</strong>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div class="privacy">
-        <i class="fa-solid fa-shield-halved"></i>
-        <span>
-          جميع الحسابات تتم محليًا داخل متصفحك. لا يتم إرسال عنوان IP أو بيانات
-          الشبكة إلى أي خادم.
-        </span>
-      </div>
-
-      <section class="info-grid">
-        <article class="info-card">
-          <h2>ما هي صيغة CIDR؟</h2>
-          <p>
-            CIDR هي طريقة مختصرة لتمثيل شبكة IP باستخدام عنوان IPv4 متبوعًا
-            بعدد البتات المخصصة لجزء الشبكة، مثل
-            <strong>192.168.1.0/24</strong>.
-          </p>
-
-          <div class="info-list">
-            <div class="info-item">
-              <i class="fa-solid fa-circle-check"></i>
-              <span>/24 تعني أن أول 24 بت مخصصة للشبكة.</span>
-            </div>
-            <div class="info-item">
-              <i class="fa-solid fa-circle-check"></i>
-              <span>يتبقى 8 بت لعناوين المضيفين.</span>
-            </div>
-            <div class="info-item">
-              <i class="fa-solid fa-circle-check"></i>
-              <span>إجمالي العناوين في /24 هو 256 عنوانًا.</span>
-            </div>
-          </div>
-        </article>
-
-        <article class="info-card">
-          <h2>ماذا تحسب الأداة؟</h2>
-          <p>
-            تدخل عنوان IPv4 مع Prefix Length وستقوم الأداة باستخراج أهم
-            معلومات الشبكة بشكل فوري.
-          </p>
-
-          <div class="info-list">
-            <div class="info-item">
+            <div class="tool-name">
               <i class="fa-solid fa-network-wired"></i>
-              <span>Network وBroadcast Address</span>
+              CIDR Calculator
             </div>
-            <div class="info-item">
-              <i class="fa-solid fa-mask-face"></i>
-              <span>Subnet Mask وWildcard Mask</span>
+
+            <div class="secure">
+              <i class="fa-solid fa-shield-halved"></i>
+              Local
             </div>
-            <div class="info-item">
-              <i class="fa-solid fa-server"></i>
-              <span>نطاق عناوين المضيفين وعددها</span>
-            </div>
+
           </div>
-        </article>
-      </section>
 
-      <section class="faq-card">
-        <h2>الأسئلة الشائعة</h2>
 
-        <details open>
-          <summary>ما معنى /24؟</summary>
+          <!-- ACTION BAR -->
+          <div class="actionbar">
+
+            <button id="exampleBtn" class="btn btn-secondary">
+              <i class="fa-solid fa-flask"></i>
+              مثال
+            </button>
+
+            <button id="clearBtn" class="btn btn-secondary">
+              <i class="fa-solid fa-eraser"></i>
+              مسح
+            </button>
+
+            <button id="copyBtn" class="btn btn-secondary">
+              <i class="fa-regular fa-copy"></i>
+              نسخ النتائج
+            </button>
+
+            <button id="calculateBtn" class="btn btn-primary">
+              <i class="fa-solid fa-calculator"></i>
+              حساب CIDR
+            </button>
+
+          </div>
+
+
+          <!-- INPUT -->
+          <div class="input-section">
+
+            <div class="editor-header">
+
+              <div>
+                <i class="fa-solid fa-network-wired"></i>
+                عنوان IPv4 وPrefix
+              </div>
+
+              <span id="inputStatus">
+                IPv4 / CIDR
+              </span>
+
+            </div>
+
+            <div class="cidr-input-grid">
+
+              <div class="field-box">
+
+                <label for="ipInput">
+                  <i class="fa-solid fa-globe"></i>
+                  IPv4 Address
+                </label>
+
+                <input
+                  id="ipInput"
+                  type="text"
+                  value="192.168.1.0"
+                  inputmode="decimal"
+                  autocomplete="off"
+                  spellcheck="false"
+                  placeholder="192.168.1.0"
+                />
+
+              </div>
+
+
+              <div class="slash-box">
+                /
+              </div>
+
+
+              <div class="field-box prefix-field">
+
+                <label for="prefixInput">
+                  <i class="fa-solid fa-hashtag"></i>
+                  Prefix Length
+                </label>
+
+                <input
+                  id="prefixInput"
+                  type="number"
+                  min="0"
+                  max="32"
+                  value="24"
+                  inputmode="numeric"
+                />
+
+              </div>
+
+            </div>
+
+
+            <!-- QUICK EXAMPLES -->
+            <div class="quick-section">
+
+              <div class="quick-title">
+                <i class="fa-solid fa-bolt"></i>
+                أمثلة سريعة
+              </div>
+
+              <div class="quick-list">
+
+                <button class="quick-btn" data-ip="192.168.1.0" data-prefix="24">
+                  192.168.1.0/24
+                </button>
+
+                <button class="quick-btn" data-ip="10.0.0.0" data-prefix="8">
+                  10.0.0.0/8
+                </button>
+
+                <button class="quick-btn" data-ip="172.16.0.0" data-prefix="16">
+                  172.16.0.0/16
+                </button>
+
+                <button class="quick-btn" data-ip="192.168.10.64" data-prefix="26">
+                  192.168.10.64/26
+                </button>
+
+                <button class="quick-btn" data-ip="192.168.1.128" data-prefix="25">
+                  192.168.1.128/25
+                </button>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- RESULT -->
+          <div class="result-box" id="resultBox">
+
+            <div class="result-icon" id="resultIcon">
+              <i class="fa-solid fa-circle-question"></i>
+            </div>
+
+            <div class="result-content">
+
+              <strong id="resultTitle">
+                جاهز للحساب
+              </strong>
+
+              <p id="resultMessage">
+                أدخل عنوان IPv4 وPrefix Length ثم اضغط على حساب CIDR.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <!-- RESULTS -->
+          <div class="results-panel" id="resultsPanel">
+
+            <div class="panel-title">
+              <i class="fa-solid fa-layer-group"></i>
+              نتائج تحليل الشبكة
+            </div>
+
+            <div class="results-grid">
+
+              <div class="result-item">
+                <div class="result-item-icon">
+                  <i class="fa-solid fa-house"></i>
+                </div>
+
+                <div class="result-item-content">
+                  <span>Network Address</span>
+                  <strong id="networkValue">—</strong>
+                </div>
+
+                <button class="mini-copy" data-copy="networkValue">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+
+
+              <div class="result-item">
+                <div class="result-item-icon">
+                  <i class="fa-solid fa-tower-broadcast"></i>
+                </div>
+
+                <div class="result-item-content">
+                  <span>Broadcast Address</span>
+                  <strong id="broadcastValue">—</strong>
+                </div>
+
+                <button class="mini-copy" data-copy="broadcastValue">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+
+
+              <div class="result-item">
+                <div class="result-item-icon">
+                  <i class="fa-solid fa-mask-face"></i>
+                </div>
+
+                <div class="result-item-content">
+                  <span>Subnet Mask</span>
+                  <strong id="maskValue">—</strong>
+                </div>
+
+                <button class="mini-copy" data-copy="maskValue">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+
+
+              <div class="result-item">
+                <div class="result-item-icon">
+                  <i class="fa-solid fa-eraser"></i>
+                </div>
+
+                <div class="result-item-content">
+                  <span>Wildcard Mask</span>
+                  <strong id="wildcardValue">—</strong>
+                </div>
+
+                <button class="mini-copy" data-copy="wildcardValue">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+
+
+              <div class="result-item">
+                <div class="result-item-icon">
+                  <i class="fa-solid fa-arrow-right"></i>
+                </div>
+
+                <div class="result-item-content">
+                  <span>First Host</span>
+                  <strong id="firstHostValue">—</strong>
+                </div>
+
+                <button class="mini-copy" data-copy="firstHostValue">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+
+
+              <div class="result-item">
+                <div class="result-item-icon">
+                  <i class="fa-solid fa-arrow-left"></i>
+                </div>
+
+                <div class="result-item-content">
+                  <span>Last Host</span>
+                  <strong id="lastHostValue">—</strong>
+                </div>
+
+                <button class="mini-copy" data-copy="lastHostValue">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+
+
+              <div class="result-item">
+                <div class="result-item-icon">
+                  <i class="fa-solid fa-code"></i>
+                </div>
+
+                <div class="result-item-content">
+                  <span>CIDR</span>
+                  <strong id="cidrValue">—</strong>
+                </div>
+
+                <button class="mini-copy" data-copy="cidrValue">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+
+
+              <div class="result-item">
+                <div class="result-item-icon">
+                  <i class="fa-solid fa-cubes"></i>
+                </div>
+
+                <div class="result-item-content">
+                  <span>Total Addresses</span>
+                  <strong id="totalValue">—</strong>
+                </div>
+
+                <button class="mini-copy" data-copy="totalValue">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+
+
+              <div class="result-item">
+                <div class="result-item-icon">
+                  <i class="fa-solid fa-users"></i>
+                </div>
+
+                <div class="result-item-content">
+                  <span>Usable Hosts</span>
+                  <strong id="usableValue">—</strong>
+                </div>
+
+                <button class="mini-copy" data-copy="usableValue">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+
+
+              <div class="result-item">
+                <div class="result-item-icon">
+                  <i class="fa-solid fa-tag"></i>
+                </div>
+
+                <div class="result-item-content">
+                  <span>Network Type</span>
+                  <strong id="typeValue">—</strong>
+                </div>
+              </div>
+
+
+              <div class="result-item full">
+                <div class="result-item-icon">
+                  <i class="fa-solid fa-binary"></i>
+                </div>
+
+                <div class="result-item-content">
+                  <span>Binary Representation</span>
+                  <strong id="binaryValue">—</strong>
+                </div>
+
+                <button class="mini-copy" data-copy="binaryValue">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+
+
+              <div class="result-item full">
+                <div class="result-item-icon">
+                  <i class="fa-solid fa-link"></i>
+                </div>
+
+                <div class="result-item-content">
+                  <span>Network / CIDR</span>
+                  <strong id="networkCidrValue">—</strong>
+                </div>
+
+                <button class="mini-copy" data-copy="networkCidrValue">
+                  <i class="fa-regular fa-copy"></i>
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- STATS -->
+          <div class="stats-grid">
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-hashtag"></i>
+              </div>
+
+              <div>
+                <span>Prefix</span>
+                <strong id="statPrefix">/24</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-microchip"></i>
+              </div>
+
+              <div>
+                <span>Host Bits</span>
+                <strong id="statHostBits">8</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-network-wired"></i>
+              </div>
+
+              <div>
+                <span>Network Bits</span>
+                <strong id="statNetworkBits">24</strong>
+              </div>
+
+            </div>
+
+
+            <div class="stat">
+
+              <div class="stat-icon">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+
+              <div>
+                <span>Addresses</span>
+                <strong id="statAddresses">256</strong>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- INFO -->
+    <section class="info-section">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>CIDR CALCULATOR</span>
+
+          <h2>
+            ما هو CIDR؟
+          </h2>
+
           <p>
-            يعني أن 24 بت من عنوان IPv4 مخصصة لتعريف الشبكة، بينما تبقى 8 بت
-            لجزء المضيف. لذلك تحتوي الشبكة على 256 عنوانًا إجمالًا.
+            CIDR هو اختصار لـ Classless Inter-Domain Routing،
+            ويستخدم لتحديد حجم شبكة IPv4 ونطاق عناوينها بطريقة مرنة.
           </p>
-        </details>
 
-        <details>
-          <summary>ما الفرق بين Network وBroadcast؟</summary>
-          <p>
-            Network Address يمثل بداية الشبكة ولا يُستخدم عادةً لجهاز مضيف،
-            بينما Broadcast هو آخر عنوان في الشبكة ويُستخدم للإرسال إلى جميع
-            الأجهزة داخلها.
-          </p>
-        </details>
+        </div>
 
-        <details>
-          <summary>لماذا قد يكون عدد Usable Hosts أقل من Total Addresses؟</summary>
-          <p>
-            في الشبكات التقليدية يتم حجز عنوان الشبكة وعنوان Broadcast، لذلك
-            يكون عدد المضيفين القابلين للاستخدام أقل بعنوانين. أما /31 و/32
-            فلها قواعد خاصة.
-          </p>
-        </details>
 
-        <details>
-          <summary>هل تعمل الحاسبة بدون إنترنت؟</summary>
-          <p>
-            نعم. جميع الحسابات تتم بواسطة JavaScript داخل المتصفح ولا تحتاج
-            إلى إرسال البيانات إلى خادم خارجي.
-          </p>
-        </details>
-      </section>
-    </div>
+        <div class="info-grid">
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-network-wired"></i>
+            </div>
+
+            <h3>
+              Network Address
+            </h3>
+
+            <p>
+              تحدد الأداة عنوان بداية الشبكة بناءً على
+              عنوان IPv4 والـPrefix المحدد.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-mask-face"></i>
+            </div>
+
+            <h3>
+              Subnet Mask
+            </h3>
+
+            <p>
+              يتم تحويل Prefix Length مثل /24 إلى
+              Subnet Mask مثل 255.255.255.0.
+            </p>
+
+          </article>
+
+
+          <article class="info-card">
+
+            <div class="info-icon">
+              <i class="fa-solid fa-arrows-left-right"></i>
+            </div>
+
+            <h3>
+              Host Range
+            </h3>
+
+            <p>
+              تعرض الأداة أول وآخر عنوان قابل للاستخدام
+              داخل الشبكة بالإضافة إلى عنوان Broadcast.
+            </p>
+
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- HOW TO -->
+    <section class="how-section">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>HOW IT WORKS</span>
+
+          <h2>
+            كيفية استخدام CIDR Calculator
+          </h2>
+
+        </div>
+
+
+        <div class="steps">
+
+          <div class="step">
+
+            <div class="step-number">
+              1
+            </div>
+
+            <div>
+              <h3>
+                أدخل عنوان IPv4
+              </h3>
+
+              <p>
+                أدخل عنوان الشبكة أو أي عنوان IPv4
+                تريد حساب معلومات الشبكة الخاصة به.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              2
+            </div>
+
+            <div>
+              <h3>
+                حدد Prefix
+              </h3>
+
+              <p>
+                اختر قيمة من /0 إلى /32 مثل /24 أو /16
+                لتحديد حجم الشبكة.
+              </p>
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <div class="step-number">
+              3
+            </div>
+
+            <div>
+              <h3>
+                راجع النتائج
+              </h3>
+
+              <p>
+                ستظهر Network وBroadcast وMask
+                ونطاق الأجهزة وعدد العناوين مباشرة.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="faq-section">
+      <div class="container">
+
+        <div class="section-heading">
+
+          <span>FAQ</span>
+
+          <h2>
+            الأسئلة الشائعة
+          </h2>
+
+        </div>
+
+
+        <div class="faq-list">
+
+          {faqs.map((faq) => (
+            <details>
+
+              <summary>
+
+                <span>
+                  {faq.q}
+                </span>
+
+                <i class="fa-solid fa-chevron-down"></i>
+
+              </summary>
+
+              <p>
+                {faq.a}
+              </p>
+
+            </details>
+          ))}
+
+        </div>
+
+      </div>
+    </section>
+
   </main>
+
 
   <Footer />
 
-  <script>
-    const ipInput = document.getElementById("ipInput");
-    const prefixInput = document.getElementById("prefixInput");
-    const results = document.getElementById("results");
-    const status = document.getElementById("status");
-    const statusText = document.getElementById("statusText");
 
-    const output = {
-      network: document.getElementById("network"),
-      broadcast: document.getElementById("broadcast"),
-      mask: document.getElementById("mask"),
-      wildcard: document.getElementById("wildcard"),
-      first: document.getElementById("first"),
-      last: document.getElementById("last"),
-      cidr: document.getElementById("cidr"),
-      total: document.getElementById("total"),
-      usable: document.getElementById("usable"),
-      type: document.getElementById("type"),
-      binary: document.getElementById("binary"),
-      networkCidr: document.getElementById("networkCidr"),
-      statPrefix: document.getElementById("statPrefix"),
-      statHostBits: document.getElementById("statHostBits"),
-      statSubnetBits: document.getElementById("statSubnetBits"),
-      statAddresses: document.getElementById("statAddresses")
-    };
+  <!-- JAVASCRIPT -->
+  <script is:inline>
+    (() => {
 
-    let currentData = null;
+      const ipInput =
+        document.getElementById("ipInput");
 
-    function ipToNumber(ip) {
-      const parts = ip.trim().split(".");
+      const prefixInput =
+        document.getElementById("prefixInput");
 
-      if (parts.length !== 4) {
-        return null;
-      }
+      const calculateBtn =
+        document.getElementById("calculateBtn");
 
-      const nums = parts.map(part => {
-        if (!/^\d+$/.test(part)) return null;
-        const value = Number(part);
-        return Number.isInteger(value) && value >= 0 && value <= 255
-          ? value
-          : null;
-      });
+      const exampleBtn =
+        document.getElementById("exampleBtn");
 
-      if (nums.some(value => value === null)) {
-        return null;
-      }
+      const clearBtn =
+        document.getElementById("clearBtn");
 
-      return (
-        nums[0] * 16777216 +
-        nums[1] * 65536 +
-        nums[2] * 256 +
-        nums[3]
-      );
-    }
+      const copyBtn =
+        document.getElementById("copyBtn");
 
-    function numberToIp(value) {
-      const n = value >>> 0;
 
-      return [
-        (n >>> 24) & 255,
-        (n >>> 16) & 255,
-        (n >>> 8) & 255,
-        n & 255
-      ].join(".");
-    }
+      const inputStatus =
+        document.getElementById("inputStatus");
 
-    function cidrToMask(prefix) {
-      if (prefix === 0) return 0;
 
-      return (0xffffffff << (32 - prefix)) >>> 0;
-    }
+      const resultBox =
+        document.getElementById("resultBox");
 
-    function numberToBinary(value) {
-      return [
-        (value >>> 24) & 255,
-        (value >>> 16) & 255,
-        (value >>> 8) & 255,
-        value & 255
-      ]
-        .map(part => part.toString(2).padStart(8, "0"))
-        .join(".");
-    }
+      const resultIcon =
+        document.getElementById("resultIcon");
 
-    function formatNumber(number) {
-      return new Intl.NumberFormat("en-US").format(number);
-    }
+      const resultTitle =
+        document.getElementById("resultTitle");
 
-    function getType(ip) {
-      const parts = ip.split(".").map(Number);
-      const first = parts[0];
+      const resultMessage =
+        document.getElementById("resultMessage");
 
-      if (ip === "127.0.0.1" || (first === 127)) {
-        return "Loopback";
-      }
 
-      if (first >= 224 && first <= 239) {
-        return "Multicast";
-      }
+      const resultsPanel =
+        document.getElementById("resultsPanel");
 
-      if (
-        first === 10 ||
-        (first === 172 && parts[1] >= 16 && parts[1] <= 31) ||
-        (first === 192 && parts[1] === 168)
-      ) {
-        return "Private";
-      }
 
-      if (first === 169 && parts[1] === 254) {
-        return "Link-local";
-      }
+      const networkValue =
+        document.getElementById("networkValue");
 
-      if (
-        first === 192 &&
-        parts[1] === 0 &&
-        parts[2] === 2
-      ) {
-        return "Documentation";
-      }
+      const broadcastValue =
+        document.getElementById("broadcastValue");
 
-      if (
-        first === 198 &&
-        parts[1] === 51 &&
-        parts[2] === 100
-      ) {
-        return "Documentation";
-      }
+      const maskValue =
+        document.getElementById("maskValue");
 
-      if (
-        first === 203 &&
-        parts[1] === 0 &&
-        parts[2] === 113
-      ) {
-        return "Documentation";
-      }
+      const wildcardValue =
+        document.getElementById("wildcardValue");
 
-      if (first >= 240) {
-        return "Reserved";
-      }
+      const firstHostValue =
+        document.getElementById("firstHostValue");
 
-      return "Public";
-    }
+      const lastHostValue =
+        document.getElementById("lastHostValue");
 
-    function setStatus(message, isError = false) {
-      statusText.textContent = message;
-      status.classList.toggle("error", isError);
-    }
+      const cidrValue =
+        document.getElementById("cidrValue");
 
-    function calculate() {
-      const ip = ipInput.value.trim();
-      const prefixRaw = prefixInput.value.trim();
+      const totalValue =
+        document.getElementById("totalValue");
 
-      if (!ip && !prefixRaw) {
-        results.classList.remove("show");
-        setStatus("أدخل عنوان IPv4 وPrefix للبدء.");
-        return;
-      }
+      const usableValue =
+        document.getElementById("usableValue");
 
-      const ipNumber = ipToNumber(ip);
-      const prefix = Number(prefixRaw);
+      const typeValue =
+        document.getElementById("typeValue");
 
-      if (ipNumber === null) {
-        results.classList.remove("show");
-        setStatus("عنوان IPv4 غير صالح. مثال: 192.168.1.0", true);
-        return;
-      }
+      const binaryValue =
+        document.getElementById("binaryValue");
 
-      if (
-        prefixRaw === "" ||
-        !Number.isInteger(prefix) ||
-        prefix < 0 ||
-        prefix > 32
-      ) {
-        results.classList.remove("show");
-        setStatus("Prefix يجب أن يكون رقمًا صحيحًا من 0 إلى 32.", true);
-        return;
-      }
+      const networkCidrValue =
+        document.getElementById("networkCidrValue");
 
-      const mask = cidrToMask(prefix);
-      const wildcard = (~mask) >>> 0;
-      const network = (ipNumber & mask) >>> 0;
-      const broadcast = (network | wildcard) >>> 0;
 
-      const total = 2 ** (32 - prefix);
+      const statPrefix =
+        document.getElementById("statPrefix");
 
-      let first;
-      let last;
-      let usable;
+      const statHostBits =
+        document.getElementById("statHostBits");
 
-      if (prefix === 32) {
-        first = network;
-        last = network;
-        usable = 1;
-      } else if (prefix === 31) {
-        first = network;
-        last = broadcast;
-        usable = 2;
-      } else {
-        first = (network + 1) >>> 0;
-        last = (broadcast - 1) >>> 0;
-        usable = Math.max(total - 2, 0);
-      }
+      const statNetworkBits =
+        document.getElementById("statNetworkBits");
 
-      const networkIp = numberToIp(network);
-      const broadcastIp = numberToIp(broadcast);
-      const maskIp = numberToIp(mask);
-      const wildcardIp = numberToIp(wildcard);
-      const firstIp = numberToIp(first);
-      const lastIp = numberToIp(last);
-      const inputIp = numberToIp(ipNumber);
+      const statAddresses =
+        document.getElementById("statAddresses");
 
-      currentData = {
-        input: inputIp,
-        prefix,
-        network: networkIp,
-        broadcast: broadcastIp,
-        mask: maskIp,
-        wildcard: wildcardIp,
-        first: firstIp,
-        last: lastIp,
-        cidr: `/${prefix}`,
-        total: formatNumber(total),
-        usable: formatNumber(usable),
-        type: getType(inputIp),
-        binary: numberToBinary(ipNumber),
-        networkCidr: `${networkIp}/${prefix}`
-      };
 
-      output.network.textContent = currentData.network;
-      output.broadcast.textContent = currentData.broadcast;
-      output.mask.textContent = currentData.mask;
-      output.wildcard.textContent = currentData.wildcard;
-      output.first.textContent = currentData.first;
-      output.last.textContent = currentData.last;
-      output.cidr.textContent = currentData.cidr;
-      output.total.textContent = currentData.total;
-      output.usable.textContent = currentData.usable;
-      output.type.textContent = currentData.type;
-      output.binary.textContent = currentData.binary;
-      output.networkCidr.textContent = currentData.networkCidr;
+      function ipToNumber(ip) {
 
-      output.statPrefix.textContent = `/${prefix}`;
-      output.statHostBits.textContent = 32 - prefix;
-      output.statSubnetBits.textContent = prefix;
-      output.statAddresses.textContent = formatNumber(total);
+        const parts =
+          ip.trim().split(".");
 
-      results.classList.add("show");
-      setStatus("تم الحساب بنجاح — النتائج محدثة مباشرة.");
-    }
-
-    async function copyText(text) {
-      try {
-        await navigator.clipboard.writeText(text);
-        setStatus("تم النسخ إلى الحافظة.");
-      } catch {
-        const textarea = document.createElement("textarea");
-        textarea.value = text;
-        textarea.style.position = "fixed";
-        textarea.style.opacity = "0";
-        document.body.appendChild(textarea);
-        textarea.select();
-        document.execCommand("copy");
-        textarea.remove();
-        setStatus("تم النسخ إلى الحافظة.");
-      }
-    }
-
-    ipInput.addEventListener("input", calculate);
-    prefixInput.addEventListener("input", calculate);
-
-    document.querySelectorAll(".example").forEach(button => {
-      button.addEventListener("click", () => {
-        ipInput.value = button.dataset.ip;
-        prefixInput.value = button.dataset.prefix;
-        calculate();
-      });
-    });
-
-    document.querySelectorAll(".copy-mini").forEach(button => {
-      button.addEventListener("click", () => {
-        if (!currentData) return;
-
-        const key = button.dataset.copy;
-        if (currentData[key]) {
-          copyText(currentData[key]);
+        if (parts.length !== 4) {
+          return null;
         }
-      });
-    });
 
-    document.getElementById("copyAll").addEventListener("click", () => {
-      if (!currentData) return;
+        const numbers =
+          parts.map(part => {
 
-      const text = [
-        `IPv4: ${currentData.input}`,
-        `CIDR: ${currentData.cidr}`,
-        `Network: ${currentData.network}`,
-        `Broadcast: ${currentData.broadcast}`,
-        `Subnet Mask: ${currentData.mask}`,
-        `Wildcard Mask: ${currentData.wildcard}`,
-        `First Host: ${currentData.first}`,
-        `Last Host: ${currentData.last}`,
-        `Total Addresses: ${currentData.total}`,
-        `Usable Hosts: ${currentData.usable}`,
-        `Type: ${currentData.type}`,
-        `Binary: ${currentData.binary}`
-      ].join("\n");
+            if (!/^\d+$/.test(part)) {
+              return null;
+            }
 
-      copyText(text);
-    });
+            const value =
+              Number(part);
 
-    document.getElementById("resetBtn").addEventListener("click", () => {
-      ipInput.value = "";
-      prefixInput.value = "";
-      results.classList.remove("show");
-      currentData = null;
-      setStatus("تمت إعادة الضبط.");
-      ipInput.focus();
-    });
+            if (
+              value < 0 ||
+              value > 255
+            ) {
+              return null;
+            }
 
-    calculate();
+            return value;
+          });
+
+
+        if (
+          numbers.some(
+            value => value === null
+          )
+        ) {
+          return null;
+        }
+
+
+        return (
+          (
+            numbers[0] * 16777216 +
+            numbers[1] * 65536 +
+            numbers[2] * 256 +
+            numbers[3]
+          ) >>> 0
+        );
+      }
+
+
+      function numberToIp(number) {
+
+        return [
+          (number >>> 24) & 255,
+          (number >>> 16) & 255,
+          (number >>> 8) & 255,
+          number & 255
+        ].join(".");
+      }
+
+
+      function cidrToMask(prefix) {
+
+        if (prefix === 0) {
+          return 0;
+        }
+
+        return (
+          (0xffffffff <<
+            (32 - prefix)) >>> 0
+        );
+      }
+
+
+      function numberToBinary(number) {
+
+        return [
+          ((number >>> 24) & 255)
+            .toString(2)
+            .padStart(8, "0"),
+
+          ((number >>> 16) & 255)
+            .toString(2)
+            .padStart(8, "0"),
+
+          ((number >>> 8) & 255)
+            .toString(2)
+            .padStart(8, "0"),
+
+          (number & 255)
+            .toString(2)
+            .padStart(8, "0")
+        ].join(".");
+      }
+
+
+      function formatNumber(number) {
+
+        return Number(number)
+          .toLocaleString();
+      }
+
+
+      function getType(ip) {
+
+        const parts =
+          ip.split(".").map(Number);
+
+        const first =
+          parts[0];
+
+        const second =
+          parts[1];
+
+
+        if (first === 127) {
+          return "Loopback";
+        }
+
+
+        if (
+          first >= 224 &&
+          first <= 239
+        ) {
+          return "Multicast";
+        }
+
+
+        if (
+          first === 10 ||
+          (
+            first === 172 &&
+            second >= 16 &&
+            second <= 31
+          ) ||
+          (
+            first === 192 &&
+            second === 168
+          )
+        ) {
+          return "Private";
+        }
+
+
+        if (
+          first === 169 &&
+          second === 254
+        ) {
+          return "Link-local";
+        }
+
+
+        if (
+          (
+            first === 192 &&
+            second === 0
+          ) ||
+          (
+            first === 198 &&
+            second === 51
+          ) ||
+          (
+            first === 203 &&
+            second === 0
+          )
+        ) {
+          return "Documentation";
+        }
+
+
+        return "Public";
+      }
+
+
+      function resetResults() {
+
+        networkValue.textContent = "—";
+        broadcastValue.textContent = "—";
+        maskValue.textContent = "—";
+        wildcardValue.textContent = "—";
+        firstHostValue.textContent = "—";
+        lastHostValue.textContent = "—";
+        cidrValue.textContent = "—";
+        totalValue.textContent = "—";
+        usableValue.textContent = "—";
+        typeValue.textContent = "—";
+        binaryValue.textContent = "—";
+        networkCidrValue.textContent = "—";
+
+        statPrefix.textContent = "—";
+        statHostBits.textContent = "—";
+        statNetworkBits.textContent = "—";
+        statAddresses.textContent = "—";
+
+        inputStatus.textContent =
+          "IPv4 / CIDR";
+
+        resultsPanel.classList.remove(
+          "visible"
+        );
+      }
+
+
+      function showSuccess(message) {
+
+        resultBox.classList.remove(
+          "error"
+        );
+
+        resultBox.classList.add(
+          "success"
+        );
+
+        resultIcon.innerHTML =
+          '<i class="fa-solid fa-circle-check"></i>';
+
+        resultTitle.textContent =
+          "تم حساب CIDR بنجاح";
+
+        resultMessage.textContent =
+          message;
+
+        inputStatus.textContent =
+          "Valid";
+      }
+
+
+      function showError(message) {
+
+        resultBox.classList.remove(
+          "success"
+        );
+
+        resultBox.classList.add(
+          "error"
+        );
+
+        resultIcon.innerHTML =
+          '<i class="fa-solid fa-circle-xmark"></i>';
+
+        resultTitle.textContent =
+          "تعذر حساب CIDR";
+
+        resultMessage.textContent =
+          message;
+
+        inputStatus.textContent =
+          "Invalid";
+
+        resultsPanel.classList.remove(
+          "visible"
+        );
+
+        resetResults();
+      }
+
+
+      function showReady() {
+
+        resultBox.classList.remove(
+          "success",
+          "error"
+        );
+
+        resultIcon.innerHTML =
+          '<i class="fa-solid fa-circle-question"></i>';
+
+        resultTitle.textContent =
+          "جاهز للحساب";
+
+        resultMessage.textContent =
+          "أدخل عنوان IPv4 وPrefix Length ثم اضغط على حساب CIDR.";
+
+        inputStatus.textContent =
+          "IPv4 / CIDR";
+      }
+
+
+      function calculate() {
+
+        const ip =
+          ipInput.value.trim();
+
+        const prefix =
+          Number(prefixInput.value);
+
+
+        if (!ip) {
+
+          showError(
+            "أدخل عنوان IPv4 أولاً."
+          );
+
+          return;
+        }
+
+
+        if (
+          !Number.isInteger(prefix) ||
+          prefix < 0 ||
+          prefix > 32
+        ) {
+
+          showError(
+            "Prefix Length يجب أن يكون رقماً صحيحاً بين 0 و32."
+          );
+
+          return;
+        }
+
+
+        const ipNumber =
+          ipToNumber(ip);
+
+
+        if (ipNumber === null) {
+
+          showError(
+            "عنوان IPv4 غير صالح. استخدم الصيغة مثل 192.168.1.0."
+          );
+
+          return;
+        }
+
+
+        const start =
+          performance.now();
+
+
+        const mask =
+          cidrToMask(prefix);
+
+
+        const wildcard =
+          (~mask) >>> 0;
+
+
+        const network =
+          (ipNumber & mask) >>> 0;
+
+
+        const broadcast =
+          (network | wildcard) >>> 0;
+
+
+        const hostBits =
+          32 - prefix;
+
+
+        const total =
+          2 ** hostBits;
+
+
+        let firstHost;
+        let lastHost;
+        let usable;
+
+
+        if (prefix === 32) {
+
+          firstHost =
+            network;
+
+          lastHost =
+            network;
+
+          usable =
+            1;
+
+        } else if (prefix === 31) {
+
+          firstHost =
+            network;
+
+          lastHost =
+            broadcast;
+
+          usable =
+            2;
+
+        } else {
+
+          firstHost =
+            (network + 1) >>> 0;
+
+          lastHost =
+            (broadcast - 1) >>> 0;
+
+          usable =
+            Math.max(
+              0,
+              total - 2
+            );
+        }
+
+
+        const networkIp =
+          numberToIp(network);
+
+        const broadcastIp =
+          numberToIp(broadcast);
+
+        const maskIp =
+          numberToIp(mask);
+
+        const wildcardIp =
+          numberToIp(wildcard);
+
+        const firstHostIp =
+          numberToIp(firstHost);
+
+        const lastHostIp =
+          numberToIp(lastHost);
+
+
+        networkValue.textContent =
+          networkIp;
+
+        broadcastValue.textContent =
+          broadcastIp;
+
+        maskValue.textContent =
+          maskIp;
+
+        wildcardValue.textContent =
+          wildcardIp;
+
+        firstHostValue.textContent =
+          firstHostIp;
+
+        lastHostValue.textContent =
+          lastHostIp;
+
+        cidrValue.textContent =
+          `/${prefix}`;
+
+        totalValue.textContent =
+          formatNumber(total);
+
+        usableValue.textContent =
+          formatNumber(usable);
+
+        typeValue.textContent =
+          getType(ip);
+
+        binaryValue.textContent =
+          numberToBinary(ipNumber);
+
+        networkCidrValue.textContent =
+          `${networkIp}/${prefix}`;
+
+
+        statPrefix.textContent =
+          `/${prefix}`;
+
+        statHostBits.textContent =
+          hostBits.toString();
+
+        statNetworkBits.textContent =
+          prefix.toString();
+
+        statAddresses.textContent =
+          formatNumber(total);
+
+
+        resultsPanel.classList.add(
+          "visible"
+        );
+
+
+        const elapsed =
+          performance.now() - start;
+
+
+        showSuccess(
+          `تم حساب معلومات الشبكة خلال ${elapsed.toFixed(2)} ms.`
+        );
+      }
+
+
+      function loadExample() {
+
+        ipInput.value =
+          "192.168.10.64";
+
+        prefixInput.value =
+          "26";
+
+        calculate();
+      }
+
+
+      function clearAll() {
+
+        ipInput.value = "";
+
+        prefixInput.value =
+          "24";
+
+        resetResults();
+
+        showReady();
+
+        ipInput.focus();
+      }
+
+
+      async function copyText(text) {
+
+        if (!text || text === "—") {
+          return false;
+        }
+
+
+        try {
+
+          await navigator.clipboard.writeText(
+            text
+          );
+
+          return true;
+
+        } catch {
+
+          const area =
+            document.createElement("textarea");
+
+          area.value =
+            text;
+
+          area.style.position =
+            "fixed";
+
+          area.style.opacity =
+            "0";
+
+          document.body.appendChild(
+            area
+          );
+
+          area.select();
+
+          const success =
+            document.execCommand("copy");
+
+          area.remove();
+
+          return success;
+        }
+      }
+
+
+      async function copyAll() {
+
+        if (
+          !resultsPanel.classList.contains(
+            "visible"
+          )
+        ) {
+
+          showError(
+            "احسب CIDR أولاً ثم انسخ النتائج."
+          );
+
+          return;
+        }
+
+
+        const text = [
+          `Network Address: ${networkValue.textContent}`,
+          `Broadcast Address: ${broadcastValue.textContent}`,
+          `Subnet Mask: ${maskValue.textContent}`,
+          `Wildcard Mask: ${wildcardValue.textContent}`,
+          `First Host: ${firstHostValue.textContent}`,
+          `Last Host: ${lastHostValue.textContent}`,
+          `CIDR: ${cidrValue.textContent}`,
+          `Total Addresses: ${totalValue.textContent}`,
+          `Usable Hosts: ${usableValue.textContent}`,
+          `Network Type: ${typeValue.textContent}`,
+          `Binary: ${binaryValue.textContent}`,
+          `Network / CIDR: ${networkCidrValue.textContent}`
+        ].join("\n");
+
+
+        const success =
+          await copyText(text);
+
+
+        if (success) {
+
+          const original =
+            copyBtn.innerHTML;
+
+          copyBtn.innerHTML =
+            '<i class="fa-solid fa-check"></i> تم النسخ';
+
+          setTimeout(() => {
+
+            copyBtn.innerHTML =
+              original;
+
+          }, 1600);
+        }
+      }
+
+
+      async function copyMini(button) {
+
+        const id =
+          button.dataset.copy;
+
+        const element =
+          document.getElementById(id);
+
+        if (!element) {
+          return;
+        }
+
+
+        const text =
+          element.textContent.trim();
+
+
+        const success =
+          await copyText(text);
+
+
+        if (success) {
+
+          const original =
+            button.innerHTML;
+
+          button.innerHTML =
+            '<i class="fa-solid fa-check"></i>';
+
+          setTimeout(() => {
+
+            button.innerHTML =
+              original;
+
+          }, 1200);
+        }
+      }
+
+
+      ipInput.addEventListener(
+        "input",
+        () => {
+
+          if (
+            resultsPanel.classList.contains(
+              "visible"
+            )
+          ) {
+            calculate();
+          }
+
+        }
+      );
+
+
+      prefixInput.addEventListener(
+        "input",
+        () => {
+
+          if (
+            resultsPanel.classList.contains(
+              "visible"
+            )
+          ) {
+            calculate();
+          }
+
+        }
+      );
+
+
+      ipInput.addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key === "Enter"
+          ) {
+
+            event.preventDefault();
+
+            calculate();
+          }
+
+        }
+      );
+
+
+      prefixInput.addEventListener(
+        "keydown",
+        event => {
+
+          if (
+            event.key === "Enter"
+          ) {
+
+            event.preventDefault();
+
+            calculate();
+          }
+
+        }
+      );
+
+
+      calculateBtn.addEventListener(
+        "click",
+        calculate
+      );
+
+
+      exampleBtn.addEventListener(
+        "click",
+        loadExample
+      );
+
+
+      clearBtn.addEventListener(
+        "click",
+        clearAll
+      );
+
+
+      copyBtn.addEventListener(
+        "click",
+        copyAll
+      );
+
+
+      document
+        .querySelectorAll(".quick-btn")
+        .forEach(button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              ipInput.value =
+                button.dataset.ip;
+
+              prefixInput.value =
+                button.dataset.prefix;
+
+              calculate();
+            }
+          );
+
+        });
+
+
+      document
+        .querySelectorAll(".mini-copy")
+        .forEach(button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              copyMini(button);
+            }
+          );
+
+        });
+
+
+      resetResults();
+
+      showReady();
+
+    })();
   </script>
+
+
+  <style>
+
+    :root {
+
+      --bg: #f7fafc;
+      --surface: #ffffff;
+      --surface-2: #f8fafc;
+
+      --text: #172033;
+      --muted: #718096;
+
+      --border:
+        rgba(15, 23, 42, 0.09);
+
+      --primary: #0891b2;
+      --primary-dark: #0e7490;
+      --secondary: #22d3ee;
+
+      --success: #16a34a;
+      --danger: #dc2626;
+
+      --shadow:
+        0 25px 70px
+        rgba(15, 23, 42, 0.10);
+    }
+
+
+    html.dark-mode {
+
+      --bg: #070b10;
+      --surface: #0d141a;
+      --surface-2: #121b23;
+
+      --text: #f8fafc;
+      --muted: #94a3b8;
+
+      --border:
+        rgba(148, 163, 184, 0.13);
+
+      --primary: #22d3ee;
+      --primary-dark: #06b6d4;
+      --secondary: #67e8f9;
+
+      --shadow:
+        0 30px 80px
+        rgba(0, 0, 0, 0.45);
+    }
+
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    body {
+
+      margin: 0;
+
+      background:
+        var(--bg);
+
+      color:
+        var(--text);
+
+      font-family:
+        "Cairo",
+        sans-serif;
+    }
+
+
+    .container {
+
+      width:
+        min(
+          1180px,
+          calc(100% - 32px)
+        );
+
+      margin:
+        auto;
+    }
+
+
+    /* HERO */
+
+    .hero {
+
+      padding:
+        38px 0 55px;
+
+      background:
+        radial-gradient(
+          circle at 10% 20%,
+          rgba(8, 145, 178, 0.13),
+          transparent 35%
+        ),
+        var(--bg);
+    }
+
+
+    .breadcrumb {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        10px;
+
+      flex-wrap:
+        wrap;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+      margin-bottom:
+        38px;
+    }
+
+
+    .breadcrumb a {
+
+      color:
+        var(--muted);
+
+      text-decoration:
+        none;
+    }
+
+
+    .breadcrumb i {
+
+      font-size:
+        9px;
+    }
+
+
+    .hero-content {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        28px;
+    }
+
+
+    .hero-icon {
+
+      width:
+        112px;
+
+      height:
+        112px;
+
+      flex:
+        0 0 112px;
+
+      border-radius:
+        30px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      flex-direction:
+        column;
+
+      gap:
+        4px;
+
+      background:
+        rgba(8, 145, 178, 0.12);
+
+      color:
+        var(--primary);
+
+      box-shadow:
+        inset 0 0 0 1px
+        rgba(8, 145, 178, 0.10);
+    }
+
+
+    .hero-icon i {
+
+      font-size:
+        40px;
+    }
+
+
+    .hero-icon span {
+
+      font:
+        700 13px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .badge {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      padding:
+        7px 13px;
+
+      border-radius:
+        999px;
+
+      background:
+        rgba(8, 145, 178, 0.10);
+
+      color:
+        var(--primary);
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+    }
+
+
+    h1 {
+
+      margin:
+        12px 0 8px;
+
+      font-size:
+        clamp(
+          32px,
+          5vw,
+          52px
+        );
+
+      line-height:
+        1.1;
+    }
+
+
+    .hero-text p {
+
+      margin:
+        0;
+
+      max-width:
+        700px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        16px;
+
+      line-height:
+        1.9;
+    }
+
+
+    .tags {
+
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        8px;
+
+      margin-top:
+        17px;
+    }
+
+
+    .tags span {
+
+      padding:
+        5px 10px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        8px;
+
+      color:
+        var(--muted);
+
+      background:
+        var(--surface);
+
+      font:
+        500 11px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    /* TOOL */
+
+    .tool-section {
+
+      padding-bottom:
+        70px;
+    }
+
+
+    .cidr-card {
+
+      overflow:
+        hidden;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        22px;
+
+      box-shadow:
+        var(--shadow);
+    }
+
+
+    .card-topbar {
+
+      min-height:
+        55px;
+
+      padding:
+        0 20px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .window-dots {
+
+      display:
+        flex;
+
+      gap:
+        6px;
+    }
+
+
+    .window-dots span {
+
+      width:
+        9px;
+
+      height:
+        9px;
+
+      border-radius:
+        50%;
+
+      background:
+        var(--border);
+    }
+
+
+    .tool-name {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      color:
+        var(--text);
+
+      font:
+        600 13px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .tool-name i {
+
+      color:
+        var(--primary);
+    }
+
+
+    .secure {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        6px;
+
+      color:
+        var(--success);
+
+      font-size:
+        11px;
+
+      font-weight:
+        700;
+    }
+
+
+    /* ACTIONS */
+
+    .actionbar {
+
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        9px;
+
+      padding:
+        15px 18px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+    }
+
+
+    .btn {
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        10px;
+
+      padding:
+        10px 15px;
+
+      font-family:
+        "Cairo",
+        sans-serif;
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+
+      cursor:
+        pointer;
+
+      transition:
+        0.2s;
+    }
+
+
+    .btn:hover {
+
+      transform:
+        translateY(-1px);
+    }
+
+
+    .btn i {
+
+      margin-left:
+        6px;
+    }
+
+
+    .btn-secondary {
+
+      color:
+        var(--text);
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .btn-primary {
+
+      color:
+        white;
+
+      background:
+        var(--primary);
+
+      border-color:
+        var(--primary);
+    }
+
+
+    .btn-primary:hover {
+
+      background:
+        var(--primary-dark);
+    }
+
+
+    /* INPUT */
+
+    .input-section {
+
+      margin:
+        20px;
+
+      overflow:
+        hidden;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        15px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .editor-header {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      padding:
+        11px 14px;
+
+      border-bottom:
+        1px solid
+        var(--border);
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+    }
+
+
+    .editor-header div {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      color:
+        var(--text);
+    }
+
+
+    .editor-header i {
+
+      color:
+        var(--primary);
+    }
+
+
+    .editor-header span {
+
+      font:
+        10px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .cidr-input-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr 42px 180px;
+
+      align-items:
+        end;
+
+      gap:
+        12px;
+
+      padding:
+        18px;
+    }
+
+
+    .field-box {
+
+      min-width:
+        0;
+    }
+
+
+    .field-box label {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        7px;
+
+      margin-bottom:
+        8px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+
+      font-weight:
+        700;
+    }
+
+
+    .field-box label i {
+
+      color:
+        var(--primary);
+    }
+
+
+    .field-box input {
+
+      width:
+        100%;
+
+      height:
+        48px;
+
+      padding:
+        0 13px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        11px;
+
+      outline:
+        none;
+
+      background:
+        var(--surface);
+
+      color:
+        var(--text);
+
+      direction:
+        ltr;
+
+      text-align:
+        left;
+
+      font:
+        500 14px
+        "JetBrains Mono",
+        monospace;
+
+      transition:
+        0.2s;
+    }
+
+
+    .field-box input:focus {
+
+      border-color:
+        var(--primary);
+
+      box-shadow:
+        0 0 0 3px
+        rgba(8, 145, 178, 0.10);
+    }
+
+
+    .prefix-field input {
+
+      text-align:
+        center;
+    }
+
+
+    .slash-box {
+
+      height:
+        48px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      color:
+        var(--primary);
+
+      font:
+        700 24px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    /* QUICK */
+
+    .quick-section {
+
+      padding:
+        0 18px 18px;
+    }
+
+
+    .quick-title {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        7px;
+
+      margin-bottom:
+        9px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        10px;
+
+      font-weight:
+        700;
+    }
+
+
+    .quick-title i {
+
+      color:
+        var(--primary);
+    }
+
+
+    .quick-list {
+
+      display:
+        flex;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        7px;
+    }
+
+
+    .quick-btn {
+
+      padding:
+        7px 10px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        8px;
+
+      background:
+        var(--surface);
+
+      color:
+        var(--muted);
+
+      cursor:
+        pointer;
+
+      font:
+        500 10px
+        "JetBrains Mono",
+        monospace;
+
+      transition:
+        0.2s;
+    }
+
+
+    .quick-btn:hover {
+
+      color:
+        var(--primary);
+
+      border-color:
+        var(--primary);
+
+      transform:
+        translateY(-1px);
+    }
+
+
+    /* RESULT */
+
+    .result-box {
+
+      margin:
+        0 20px 15px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        14px;
+
+      padding:
+        15px 17px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        14px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .result-icon {
+
+      width:
+        42px;
+
+      height:
+        42px;
+
+      flex:
+        0 0 42px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        11px;
+
+      background:
+        rgba(8, 145, 178, 0.10);
+
+      color:
+        var(--primary);
+
+      font-size:
+        17px;
+    }
+
+
+    .result-box strong {
+
+      display:
+        block;
+
+      font-size:
+        13px;
+    }
+
+
+    .result-box p {
+
+      margin:
+        3px 0 0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+
+      line-height:
+        1.7;
+    }
+
+
+    .result-box.success {
+
+      border-color:
+        rgba(22, 163, 74, 0.25);
+    }
+
+
+    .result-box.success .result-icon {
+
+      color:
+        var(--success);
+
+      background:
+        rgba(22, 163, 74, 0.10);
+    }
+
+
+    .result-box.error {
+
+      border-color:
+        rgba(220, 38, 38, 0.25);
+    }
+
+
+    .result-box.error .result-icon {
+
+      color:
+        var(--danger);
+
+      background:
+        rgba(220, 38, 38, 0.10);
+    }
+
+
+    /* RESULTS */
+
+    .results-panel {
+
+      display:
+        none;
+
+      margin:
+        0 20px 15px;
+
+      padding:
+        18px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        15px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .results-panel.visible {
+
+      display:
+        block;
+    }
+
+
+    .panel-title {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      margin-bottom:
+        15px;
+
+      font-size:
+        13px;
+
+      font-weight:
+        800;
+    }
+
+
+    .panel-title i {
+
+      color:
+        var(--primary);
+    }
+
+
+    .results-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap:
+        10px;
+    }
+
+
+    .result-item {
+
+      position:
+        relative;
+
+      min-width:
+        0;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        10px;
+
+      padding:
+        13px;
+
+      padding-left:
+        42px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        11px;
+
+      background:
+        var(--surface);
+    }
+
+
+    .result-item.full {
+
+      grid-column:
+        1 / -1;
+    }
+
+
+    .result-item-icon {
+
+      width:
+        36px;
+
+      height:
+        36px;
+
+      flex:
+        0 0 36px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        9px;
+
+      color:
+        var(--primary);
+
+      background:
+        rgba(8, 145, 178, 0.10);
+    }
+
+
+    .result-item-content {
+
+      min-width:
+        0;
+    }
+
+
+    .result-item-content span {
+
+      display:
+        block;
+
+      color:
+        var(--muted);
+
+      font:
+        9px
+        "JetBrains Mono",
+        monospace;
+
+      margin-bottom:
+        3px;
+    }
+
+
+    .result-item-content strong {
+
+      display:
+        block;
+
+      overflow:
+        hidden;
+
+      color:
+        var(--text);
+
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
+
+      direction:
+        ltr;
+
+      text-align:
+        left;
+
+      font:
+        500 11px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    .mini-copy {
+
+      position:
+        absolute;
+
+      left:
+        9px;
+
+      top:
+        50%;
+
+      transform:
+        translateY(-50%);
+
+      width:
+        27px;
+
+      height:
+        27px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        7px;
+
+      color:
+        var(--muted);
+
+      background:
+        var(--surface-2);
+
+      cursor:
+        pointer;
+
+      transition:
+        0.2s;
+    }
+
+
+    .mini-copy:hover {
+
+      color:
+        var(--primary);
+
+      border-color:
+        var(--primary);
+    }
+
+
+    /* STATS */
+
+    .stats-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(4, 1fr);
+
+      gap:
+        12px;
+
+      padding:
+        0 20px 20px;
+    }
+
+
+    .stat {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        11px;
+
+      min-width:
+        0;
+
+      padding:
+        14px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        13px;
+
+      background:
+        var(--surface-2);
+    }
+
+
+    .stat-icon {
+
+      width:
+        36px;
+
+      height:
+        36px;
+
+      flex:
+        0 0 36px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        9px;
+
+      color:
+        var(--primary);
+
+      background:
+        rgba(8, 145, 178, 0.10);
+    }
+
+
+    .stat span {
+
+      display:
+        block;
+
+      color:
+        var(--muted);
+
+      font-size:
+        9px;
+    }
+
+
+    .stat strong {
+
+      display:
+        block;
+
+      max-width:
+        150px;
+
+      overflow:
+        hidden;
+
+      margin-top:
+        2px;
+
+      color:
+        var(--text);
+
+      text-overflow:
+        ellipsis;
+
+      white-space:
+        nowrap;
+
+      font:
+        600 11px
+        "JetBrains Mono",
+        monospace;
+    }
+
+
+    /* SECTIONS */
+
+    .info-section,
+    .how-section,
+    .faq-section {
+
+      padding:
+        70px 0;
+    }
+
+
+    .info-section {
+
+      background:
+        var(--surface-2);
+
+      border-top:
+        1px solid
+        var(--border);
+
+      border-bottom:
+        1px solid
+        var(--border);
+    }
+
+
+    .section-heading {
+
+      max-width:
+        700px;
+
+      margin:
+        0 auto 35px;
+
+      text-align:
+        center;
+    }
+
+
+    .section-heading > span {
+
+      color:
+        var(--primary);
+
+      font:
+        700 11px
+        "JetBrains Mono",
+        monospace;
+
+      letter-spacing:
+        1px;
+    }
+
+
+    .section-heading h2 {
+
+      margin:
+        8px 0;
+
+      font-size:
+        clamp(
+          25px,
+          4vw,
+          34px
+        );
+    }
+
+
+    .section-heading p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      line-height:
+        1.9;
+
+      font-size:
+        14px;
+    }
+
+
+    .info-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap:
+        18px;
+    }
+
+
+    .info-card {
+
+      padding:
+        25px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        17px;
+
+      background:
+        var(--surface);
+    }
+
+
+    .info-icon {
+
+      width:
+        48px;
+
+      height:
+        48px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      margin-bottom:
+        17px;
+
+      border-radius:
+        13px;
+
+      color:
+        var(--primary);
+
+      background:
+        rgba(8, 145, 178, 0.10);
+    }
+
+
+    .info-card h3 {
+
+      margin:
+        0 0 7px;
+
+      font-size:
+        16px;
+    }
+
+
+    .info-card p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        13px;
+
+      line-height:
+        1.9;
+    }
+
+
+    /* STEPS */
+
+    .steps {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap:
+        18px;
+    }
+
+
+    .step {
+
+      display:
+        flex;
+
+      gap:
+        15px;
+
+      padding:
+        22px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        16px;
+
+      background:
+        var(--surface);
+    }
+
+
+    .step-number {
+
+      width:
+        38px;
+
+      height:
+        38px;
+
+      flex:
+        0 0 38px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border-radius:
+        10px;
+
+      color:
+        white;
+
+      background:
+        var(--primary);
+
+      font-weight:
+        800;
+    }
+
+
+    .step h3 {
+
+      margin:
+        0 0 5px;
+
+      font-size:
+        14px;
+    }
+
+
+    .step p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.8;
+    }
+
+
+    /* FAQ */
+
+    .faq-list {
+
+      max-width:
+        850px;
+
+      margin:
+        auto;
+    }
+
+
+    details {
+
+      margin-bottom:
+        10px;
+
+      border:
+        1px solid
+        var(--border);
+
+      border-radius:
+        13px;
+
+      background:
+        var(--surface);
+
+      overflow:
+        hidden;
+    }
+
+
+    summary {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      padding:
+        17px 19px;
+
+      cursor:
+        pointer;
+
+      font-size:
+        13px;
+
+      font-weight:
+        700;
+
+      list-style:
+        none;
+    }
+
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+
+    summary i {
+
+      color:
+        var(--primary);
+
+      transition:
+        transform 0.2s;
+    }
+
+
+    details[open] summary i {
+
+      transform:
+        rotate(180deg);
+    }
+
+
+    details p {
+
+      margin:
+        0;
+
+      padding:
+        0 19px 18px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        12px;
+
+      line-height:
+        1.9;
+    }
+
+
+    /* RESPONSIVE */
+
+    @media (max-width: 900px) {
+
+      .results-grid {
+
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+
+
+      .info-grid,
+      .steps {
+
+        grid-template-columns:
+          1fr;
+      }
+    }
+
+
+    @media (max-width: 700px) {
+
+      .cidr-input-grid {
+
+        grid-template-columns:
+          1fr;
+
+        gap:
+          10px;
+      }
+
+
+      .slash-box {
+
+        display:
+          none;
+      }
+
+
+      .results-grid {
+
+        grid-template-columns:
+          1fr 1fr;
+      }
+
+
+      .stats-grid {
+
+        grid-template-columns:
+          repeat(2, 1fr);
+      }
+    }
+
+
+    @media (max-width: 600px) {
+
+      .container {
+
+        width:
+          min(
+            100% - 22px,
+            1180px
+          );
+      }
+
+
+      .hero {
+
+        padding-top:
+          25px;
+      }
+
+
+      .hero-content {
+
+        align-items:
+          flex-start;
+
+        flex-direction:
+          column;
+      }
+
+
+      .hero-icon {
+
+        width:
+          88px;
+
+        height:
+          88px;
+
+        flex-basis:
+          88px;
+
+        border-radius:
+          23px;
+      }
+
+
+      .hero-icon i {
+
+        font-size:
+          31px;
+      }
+
+
+      .card-topbar {
+
+        padding:
+          0 13px;
+      }
+
+
+      .actionbar {
+
+        padding:
+          12px;
+      }
+
+
+      .btn {
+
+        flex:
+          1 1
+          calc(50% - 8px);
+
+        padding:
+          9px 8px;
+      }
+
+
+      .input-section {
+
+        margin:
+          12px;
+      }
+
+
+      .cidr-input-grid {
+
+        padding:
+          13px;
+      }
+
+
+      .quick-section {
+
+        padding:
+          0 13px 13px;
+      }
+
+
+      .field-box input {
+
+        height:
+          44px;
+
+        font-size:
+          12px;
+      }
+
+
+      .result-box {
+
+        margin:
+          0 12px 12px;
+      }
+
+
+      .results-panel {
+
+        margin:
+          0 12px 12px;
+
+        padding:
+          13px;
+      }
+
+
+      .results-grid {
+
+        grid-template-columns:
+          1fr;
+
+        gap:
+          8px;
+      }
+
+
+      .result-item.full {
+
+        grid-column:
+          auto;
+      }
+
+
+      .result-item {
+
+        padding:
+          10px;
+
+        padding-left:
+          40px;
+      }
+
+
+      .result-item-icon {
+
+        width:
+          31px;
+
+        height:
+          31px;
+
+        flex-basis:
+          31px;
+      }
+
+
+      .result-item-content strong {
+
+        font-size:
+          9px;
+      }
+
+
+      .stats-grid {
+
+        padding:
+          0 12px 12px;
+
+        gap:
+          8px;
+      }
+
+
+      .stat {
+
+        padding:
+          11px 9px;
+      }
+
+
+      .stat-icon {
+
+        width:
+          31px;
+
+        height:
+          31px;
+
+        flex-basis:
+          31px;
+      }
+
+
+      .stat span {
+
+        font-size:
+          8px;
+      }
+
+
+      .stat strong {
+
+        max-width:
+          95px;
+
+        font-size:
+          9px;
+      }
+
+
+      .info-section,
+      .how-section,
+      .faq-section {
+
+        padding:
+          50px 0;
+      }
+
+    }
+
+  </style>
+
 </body>
 </html>
