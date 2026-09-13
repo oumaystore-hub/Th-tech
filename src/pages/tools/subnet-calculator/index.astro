@@ -1,0 +1,2100 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Subnet Calculator - حاسبة الشبكات الفرعية أونلاين مجاناً | Th.Tech";
+
+const description =
+  "Subnet Calculator مجانية لحساب Network Address وBroadcast وSubnet Mask ونطاق الأجهزة وعدد العناوين والشبكات الفرعية مباشرة من المتصفح.";
+
+const faqs = [
+  {
+    q: "ما هي أداة Subnet Calculator؟",
+    a: "Subnet Calculator تساعدك على تقسيم شبكة IPv4 إلى شبكات فرعية وحساب عنوان الشبكة والـBroadcast والـSubnet Mask ونطاق عناوين الأجهزة وعدد العناوين."
+  },
+  {
+    q: "ما الفرق بين Subnet Calculator وCIDR Calculator؟",
+    a: "CIDR Calculator تركز على تحليل شبكة محددة باستخدام Prefix، بينما Subnet Calculator تضيف إمكانية تحديد عدد الشبكات الفرعية أو عدد الأجهزة المطلوبة وحساب الـPrefix المناسب."
+  },
+  {
+    q: "هل الحسابات تتم على الخادم؟",
+    a: "لا. جميع الحسابات تتم داخل المتصفح باستخدام JavaScript ولا يتم إرسال عناوين IP أو البيانات إلى خادم خارجي."
+  },
+  {
+    q: "هل يمكن استخدام الأداة لتقسيم شبكة كبيرة؟",
+    a: "نعم. يمكنك إدخال شبكة أساسية وتحديد عدد الـSubnet Bits أو Prefix الجديد للحصول على معلومات الشبكات الفرعية الناتجة."
+  }
+];
+---
+
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <link
+      rel="canonical"
+      href={`https://oumaystore-hub.github.io${base}/tools/subnet-calculator/`}
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const theme = localStorage.getItem("theme");
+          if (theme === "light") {
+            document.documentElement.setAttribute("data-theme", "light");
+          } else {
+            document.documentElement.classList.add("dark-mode");
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
+      <section class="hero">
+        <div class="container">
+          <div class="breadcrumb">
+            <a href={`${base}/`}>الرئيسية</a>
+            <i class="fa-solid fa-chevron-left"></i>
+            <a href={`${base}/tools/`}>الأدوات</a>
+            <i class="fa-solid fa-chevron-left"></i>
+            <span>Subnet Calculator</span>
+          </div>
+
+          <div class="hero-content">
+            <div class="hero-icon">
+              <i class="fa-solid fa-network-wired"></i>
+            </div>
+
+            <div class="hero-text">
+              <div class="tool-badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                Network & Subnetting
+              </div>
+
+              <h1>Subnet Calculator</h1>
+
+              <p>
+                حاسبة احترافية للشبكات الفرعية لحساب Network Address وBroadcast
+                وSubnet Mask ونطاق الأجهزة وعدد العناوين بسرعة ودقة.
+              </p>
+
+              <div class="tags">
+                <span>IPv4</span>
+                <span>Subnetting</span>
+                <span>Network</span>
+                <span>CIDR</span>
+                <span>Local</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-section">
+        <div class="container">
+          <div class="tool-card">
+            <div class="tool-topbar">
+              <div class="window-dots">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+
+              <div class="tool-name">
+                <i class="fa-solid fa-network-wired"></i>
+                Subnet Calculator
+              </div>
+
+              <div class="secure">
+                <i class="fa-solid fa-lock"></i>
+                معالجة محلية
+              </div>
+            </div>
+
+            <div class="actionbar">
+              <button class="action-btn" id="exampleBtn">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                مثال
+              </button>
+
+              <button class="action-btn" id="clearBtn">
+                <i class="fa-solid fa-rotate-left"></i>
+                مسح
+              </button>
+
+              <button class="action-btn" id="copyBtn">
+                <i class="fa-regular fa-copy"></i>
+                نسخ النتائج
+              </button>
+
+              <button class="action-btn primary" id="calculateBtn">
+                <i class="fa-solid fa-calculator"></i>
+                احسب
+              </button>
+            </div>
+
+            <div class="editor-section">
+              <div class="editor-header">
+                <div>
+                  <i class="fa-solid fa-sliders"></i>
+                  إعدادات الشبكة
+                </div>
+
+                <span>IPv4 / CIDR</span>
+              </div>
+
+              <div class="input-grid">
+                <div class="field">
+                  <label for="networkInput">
+                    <i class="fa-solid fa-globe"></i>
+                    عنوان الشبكة
+                  </label>
+
+                  <input
+                    id="networkInput"
+                    type="text"
+                    value="192.168.1.0"
+                    placeholder="192.168.1.0"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+
+                  <small>أدخل عنوان IPv4 مثل 192.168.1.0</small>
+                </div>
+
+                <div class="field">
+                  <label for="prefixInput">
+                    <i class="fa-solid fa-slash"></i>
+                    Prefix Length
+                  </label>
+
+                  <div class="prefix-wrap">
+                    <span>/</span>
+                    <input
+                      id="prefixInput"
+                      type="number"
+                      min="0"
+                      max="32"
+                      value="24"
+                      inputmode="numeric"
+                    />
+                  </div>
+
+                  <small>من /0 إلى /32</small>
+                </div>
+
+                <div class="field">
+                  <label for="subnetPrefixInput">
+                    <i class="fa-solid fa-code-branch"></i>
+                    Prefix الجديد
+                  </label>
+
+                  <div class="prefix-wrap">
+                    <span>/</span>
+                    <input
+                      id="subnetPrefixInput"
+                      type="number"
+                      min="0"
+                      max="32"
+                      value="26"
+                      inputmode="numeric"
+                    />
+                  </div>
+
+                  <small>يجب أن يكون أكبر أو يساوي Prefix الأصلي</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="examples">
+              <div class="examples-title">
+                <i class="fa-solid fa-bolt"></i>
+                أمثلة سريعة
+              </div>
+
+              <div class="example-list">
+                <button data-example="192.168.1.0|24|26">
+                  192.168.1.0/24 → /26
+                </button>
+
+                <button data-example="10.0.0.0|8|16">
+                  10.0.0.0/8 → /16
+                </button>
+
+                <button data-example="172.16.0.0|16|24">
+                  172.16.0.0/16 → /24
+                </button>
+
+                <button data-example="192.168.10.0|24|27">
+                  192.168.10.0/24 → /27
+                </button>
+
+                <button data-example="10.10.0.0|16|20">
+                  10.10.0.0/16 → /20
+                </button>
+              </div>
+            </div>
+
+            <div class="status-box ready" id="statusBox">
+              <div class="status-icon">
+                <i class="fa-solid fa-circle-info"></i>
+              </div>
+
+              <div>
+                <strong id="statusTitle">جاهز للحساب</strong>
+                <p id="statusText">
+                  أدخل بيانات الشبكة ثم اضغط على احسب.
+                </p>
+              </div>
+            </div>
+
+            <div class="results" id="results">
+              <div class="results-header">
+                <div>
+                  <i class="fa-solid fa-chart-network"></i>
+                  نتائج الحساب
+                </div>
+
+                <span id="networkLabel">192.168.1.0/24</span>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-card highlight">
+                  <div class="result-card-icon">
+                    <i class="fa-solid fa-diagram-project"></i>
+                  </div>
+
+                  <div class="result-card-content">
+                    <span>Network Address</span>
+                    <strong id="networkAddress">—</strong>
+                  </div>
+
+                  <button class="mini-copy" data-copy="networkAddress">
+                    <i class="fa-regular fa-copy"></i>
+                  </button>
+                </div>
+
+                <div class="result-card">
+                  <div class="result-card-icon">
+                    <i class="fa-solid fa-bullseye"></i>
+                  </div>
+
+                  <div class="result-card-content">
+                    <span>Broadcast Address</span>
+                    <strong id="broadcastAddress">—</strong>
+                  </div>
+
+                  <button class="mini-copy" data-copy="broadcastAddress">
+                    <i class="fa-regular fa-copy"></i>
+                  </button>
+                </div>
+
+                <div class="result-card">
+                  <div class="result-card-icon">
+                    <i class="fa-solid fa-mask-face"></i>
+                  </div>
+
+                  <div class="result-card-content">
+                    <span>Subnet Mask</span>
+                    <strong id="subnetMask">—</strong>
+                  </div>
+
+                  <button class="mini-copy" data-copy="subnetMask">
+                    <i class="fa-regular fa-copy"></i>
+                  </button>
+                </div>
+
+                <div class="result-card">
+                  <div class="result-card-icon">
+                    <i class="fa-solid fa-eraser"></i>
+                  </div>
+
+                  <div class="result-card-content">
+                    <span>Wildcard Mask</span>
+                    <strong id="wildcardMask">—</strong>
+                  </div>
+
+                  <button class="mini-copy" data-copy="wildcardMask">
+                    <i class="fa-regular fa-copy"></i>
+                  </button>
+                </div>
+
+                <div class="result-card">
+                  <div class="result-card-icon">
+                    <i class="fa-solid fa-arrow-right"></i>
+                  </div>
+
+                  <div class="result-card-content">
+                    <span>First Host</span>
+                    <strong id="firstHost">—</strong>
+                  </div>
+
+                  <button class="mini-copy" data-copy="firstHost">
+                    <i class="fa-regular fa-copy"></i>
+                  </button>
+                </div>
+
+                <div class="result-card">
+                  <div class="result-card-icon">
+                    <i class="fa-solid fa-arrow-left"></i>
+                  </div>
+
+                  <div class="result-card-content">
+                    <span>Last Host</span>
+                    <strong id="lastHost">—</strong>
+                  </div>
+
+                  <button class="mini-copy" data-copy="lastHost">
+                    <i class="fa-regular fa-copy"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="subnet-summary">
+                <div class="summary-title">
+                  <i class="fa-solid fa-network-wired"></i>
+                  معلومات الشبكات الفرعية
+                </div>
+
+                <div class="summary-grid">
+                  <div class="summary-item">
+                    <span>Prefix الأصلي</span>
+                    <strong id="originalPrefix">—</strong>
+                  </div>
+
+                  <div class="summary-item">
+                    <span>Prefix الجديد</span>
+                    <strong id="newPrefix">—</strong>
+                  </div>
+
+                  <div class="summary-item">
+                    <span>Subnet Bits</span>
+                    <strong id="subnetBits">—</strong>
+                  </div>
+
+                  <div class="summary-item">
+                    <span>Host Bits</span>
+                    <strong id="hostBits">—</strong>
+                  </div>
+
+                  <div class="summary-item">
+                    <span>عدد Subnets</span>
+                    <strong id="subnetCount">—</strong>
+                  </div>
+
+                  <div class="summary-item">
+                    <span>العناوين لكل Subnet</span>
+                    <strong id="addressesPerSubnet">—</strong>
+                  </div>
+
+                  <div class="summary-item">
+                    <span>Usable Hosts</span>
+                    <strong id="usableHosts">—</strong>
+                  </div>
+
+                  <div class="summary-item">
+                    <span>نوع الشبكة</span>
+                    <strong id="networkType">—</strong>
+                  </div>
+                </div>
+              </div>
+
+              <div class="subnets-panel">
+                <div class="subnets-header">
+                  <div>
+                    <i class="fa-solid fa-table-list"></i>
+                    الشبكات الفرعية
+                  </div>
+
+                  <span id="subnetsCountLabel">0 شبكات</span>
+                </div>
+
+                <div class="subnets-table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Network</th>
+                        <th>First Host</th>
+                        <th>Last Host</th>
+                        <th>Broadcast</th>
+                      </tr>
+                    </thead>
+
+                    <tbody id="subnetsBody"></tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="stats-grid">
+                <div class="stat">
+                  <span>Prefix الأصلي</span>
+                  <strong id="statOriginalPrefix">/24</strong>
+                </div>
+
+                <div class="stat">
+                  <span>Prefix الجديد</span>
+                  <strong id="statNewPrefix">/26</strong>
+                </div>
+
+                <div class="stat">
+                  <span>Subnet Bits</span>
+                  <strong id="statSubnetBits">2</strong>
+                </div>
+
+                <div class="stat">
+                  <span>Host Bits</span>
+                  <strong id="statHostBits">6</strong>
+                </div>
+
+                <div class="stat">
+                  <span>عدد Subnets</span>
+                  <strong id="statSubnetCount">4</strong>
+                </div>
+
+                <div class="stat">
+                  <span>Hosts / Subnet</span>
+                  <strong id="statHosts">62</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="info-section">
+        <div class="container">
+          <div class="section-heading">
+            <span>لماذا Subnet Calculator؟</span>
+            <h2>كل ما تحتاجه لتقسيم الشبكات</h2>
+            <p>
+              احسب الشبكات الفرعية بسرعة دون الحاجة إلى أدوات خارجية أو إرسال
+              بياناتك إلى أي خادم.
+            </p>
+          </div>
+
+          <div class="info-grid">
+            <article class="info-card">
+              <div class="info-icon">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+
+              <h3>حساب فوري</h3>
+
+              <p>
+                تظهر النتائج مباشرة أثناء تعديل عنوان الشبكة والـPrefix.
+              </p>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon">
+                <i class="fa-solid fa-lock"></i>
+              </div>
+
+              <h3>خصوصية كاملة</h3>
+
+              <p>
+                جميع العمليات تتم داخل المتصفح ولا يتم إرسال عناوين الشبكات
+                إلى خادم خارجي.
+              </p>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon">
+                <i class="fa-solid fa-table-cells-large"></i>
+              </div>
+
+              <h3>عرض الشبكات</h3>
+
+              <p>
+                شاهد Network وFirst Host وLast Host وBroadcast لكل Subnet في
+                جدول واضح.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="how-section">
+        <div class="container">
+          <div class="section-heading">
+            <span>طريقة الاستخدام</span>
+            <h2>احسب الشبكات في 3 خطوات</h2>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-number">1</div>
+
+              <div>
+                <h3>أدخل الشبكة</h3>
+                <p>
+                  اكتب عنوان IPv4 الأساسي وحدد Prefix مثل
+                  <code>192.168.1.0/24</code>.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">2</div>
+
+              <div>
+                <h3>حدد Prefix الجديد</h3>
+                <p>
+                  اختر Prefix أكبر لتقسيم الشبكة إلى عدد أكبر من الشبكات
+                  الفرعية.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">3</div>
+
+              <div>
+                <h3>راجع النتائج</h3>
+                <p>
+                  ستظهر جميع الشبكات الفرعية مع عناوين Network وHosts وBroadcast.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="faq-section">
+        <div class="container">
+          <div class="section-heading">
+            <span>الأسئلة الشائعة</span>
+            <h2>Subnet Calculator FAQ</h2>
+          </div>
+
+          <div class="faq-list">
+            {faqs.map((faq) => (
+              <details>
+                <summary>
+                  <span>{faq.q}</span>
+                  <i class="fa-solid fa-chevron-down"></i>
+                </summary>
+
+                <p>{faq.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+
+    <script is:inline>
+      const networkInput = document.getElementById("networkInput");
+      const prefixInput = document.getElementById("prefixInput");
+      const subnetPrefixInput = document.getElementById("subnetPrefixInput");
+
+      const calculateBtn = document.getElementById("calculateBtn");
+      const exampleBtn = document.getElementById("exampleBtn");
+      const clearBtn = document.getElementById("clearBtn");
+      const copyBtn = document.getElementById("copyBtn");
+
+      const statusBox = document.getElementById("statusBox");
+      const statusTitle = document.getElementById("statusTitle");
+      const statusText = document.getElementById("statusText");
+
+      const results = document.getElementById("results");
+
+      const networkAddress = document.getElementById("networkAddress");
+      const broadcastAddress = document.getElementById("broadcastAddress");
+      const subnetMask = document.getElementById("subnetMask");
+      const wildcardMask = document.getElementById("wildcardMask");
+      const firstHost = document.getElementById("firstHost");
+      const lastHost = document.getElementById("lastHost");
+
+      const originalPrefix = document.getElementById("originalPrefix");
+      const newPrefix = document.getElementById("newPrefix");
+      const subnetBits = document.getElementById("subnetBits");
+      const hostBits = document.getElementById("hostBits");
+      const subnetCount = document.getElementById("subnetCount");
+      const addressesPerSubnet = document.getElementById("addressesPerSubnet");
+      const usableHosts = document.getElementById("usableHosts");
+      const networkType = document.getElementById("networkType");
+
+      const networkLabel = document.getElementById("networkLabel");
+      const subnetsBody = document.getElementById("subnetsBody");
+      const subnetsCountLabel = document.getElementById("subnetsCountLabel");
+
+      const statOriginalPrefix = document.getElementById("statOriginalPrefix");
+      const statNewPrefix = document.getElementById("statNewPrefix");
+      const statSubnetBits = document.getElementById("statSubnetBits");
+      const statHostBits = document.getElementById("statHostBits");
+      const statSubnetCount = document.getElementById("statSubnetCount");
+      const statHosts = document.getElementById("statHosts");
+
+      let hasResults = false;
+
+      function ipToNumber(ip) {
+        const parts = ip.trim().split(".");
+
+        if (parts.length !== 4) return null;
+
+        const nums = parts.map(Number);
+
+        if (
+          nums.some(
+            (n, i) =>
+              !Number.isInteger(n) ||
+              n < 0 ||
+              n > 255 ||
+              parts[i] === ""
+          )
+        ) {
+          return null;
+        }
+
+        return (
+          (((nums[0] * 256 + nums[1]) * 256 + nums[2]) * 256 + nums[3]) >>> 0
+        );
+      }
+
+      function numberToIp(number) {
+        number = number >>> 0;
+
+        return [
+          (number >>> 24) & 255,
+          (number >>> 16) & 255,
+          (number >>> 8) & 255,
+          number & 255
+        ].join(".");
+      }
+
+      function cidrToMask(prefix) {
+        if (prefix === 0) return 0;
+
+        return (0xffffffff << (32 - prefix)) >>> 0;
+      }
+
+      function wildcardFromMask(mask) {
+        return (~mask) >>> 0;
+      }
+
+      function formatNumber(number) {
+        return new Intl.NumberFormat("en-US").format(number);
+      }
+
+      function getNetworkType(ip) {
+        const n = ipToNumber(ip);
+
+        if (n === null) return "Unknown";
+
+        const first = (n >>> 24) & 255;
+
+        if (n === 0) return "Unspecified";
+        if (first === 10) return "Private";
+        if (first === 127) return "Loopback";
+        if (first === 169 && ((n >>> 16) & 255) === 254) {
+          return "Link-local";
+        }
+
+        if (
+          first === 172 &&
+          ((n >>> 16) & 255) >= 16 &&
+          ((n >>> 16) & 255) <= 31
+        ) {
+          return "Private";
+        }
+
+        if (first === 192 && ((n >>> 16) & 255) === 168) {
+          return "Private";
+        }
+
+        if (first >= 224 && first <= 239) {
+          return "Multicast";
+        }
+
+        if (
+          first === 192 &&
+          ((n >>> 16) & 255) === 0 &&
+          ((n >>> 8) & 255) === 2
+        ) {
+          return "Documentation";
+        }
+
+        if (
+          first === 198 &&
+          ((n >>> 16) & 255) === 51 &&
+          ((n >>> 8) & 255) === 100
+        ) {
+          return "Documentation";
+        }
+
+        if (
+          first === 203 &&
+          ((n >>> 16) & 255) === 0 &&
+          ((n >>> 8) & 255) === 113
+        ) {
+          return "Documentation";
+        }
+
+        return "Public";
+      }
+
+      function showStatus(type, title, text) {
+        statusBox.className = `status-box ${type}`;
+        statusTitle.textContent = title;
+        statusText.textContent = text;
+      }
+
+      function showReady() {
+        showStatus(
+          "ready",
+          "جاهز للحساب",
+          "أدخل بيانات الشبكة ثم اضغط على احسب."
+        );
+      }
+
+      function showSuccess(text) {
+        showStatus("success", "تم الحساب بنجاح", text);
+      }
+
+      function showError(text) {
+        showStatus("error", "بيانات غير صحيحة", text);
+      }
+
+      function resetResults() {
+        results.style.display = "none";
+        hasResults = false;
+
+        networkAddress.textContent = "—";
+        broadcastAddress.textContent = "—";
+        subnetMask.textContent = "—";
+        wildcardMask.textContent = "—";
+        firstHost.textContent = "—";
+        lastHost.textContent = "—";
+
+        originalPrefix.textContent = "—";
+        newPrefix.textContent = "—";
+        subnetBits.textContent = "—";
+        hostBits.textContent = "—";
+        subnetCount.textContent = "—";
+        addressesPerSubnet.textContent = "—";
+        usableHosts.textContent = "—";
+        networkType.textContent = "—";
+
+        subnetsBody.innerHTML = "";
+      }
+
+      function calculate() {
+        const ip = networkInput.value.trim();
+
+        let oldPrefix = Number(prefixInput.value);
+        let newPrefixValue = Number(subnetPrefixInput.value);
+
+        const ipNumber = ipToNumber(ip);
+
+        if (ipNumber === null) {
+          resetResults();
+          showError("يرجى إدخال عنوان IPv4 صحيح مثل 192.168.1.0.");
+          return;
+        }
+
+        if (
+          !Number.isInteger(oldPrefix) ||
+          oldPrefix < 0 ||
+          oldPrefix > 32
+        ) {
+          resetResults();
+          showError("Prefix الأصلي يجب أن يكون بين /0 و /32.");
+          return;
+        }
+
+        if (
+          !Number.isInteger(newPrefixValue) ||
+          newPrefixValue < 0 ||
+          newPrefixValue > 32
+        ) {
+          resetResults();
+          showError("Prefix الجديد يجب أن يكون بين /0 و /32.");
+          return;
+        }
+
+        if (newPrefixValue < oldPrefix) {
+          resetResults();
+          showError(
+            "Prefix الجديد يجب أن يكون أكبر من أو يساوي Prefix الأصلي."
+          );
+          return;
+        }
+
+        /*
+         * Limit extremely large subnet lists so the browser stays responsive.
+         * The calculator still computes the exact count, but displays up to 256
+         * subnet rows.
+         */
+        const bitsAdded = newPrefixValue - oldPrefix;
+        const totalSubnets = Math.pow(2, bitsAdded);
+
+        const mask = cidrToMask(oldPrefix);
+        const network = (ipNumber & mask) >>> 0;
+        const broadcast = (network | wildcardFromMask(mask)) >>> 0;
+
+        const newMask = cidrToMask(newPrefixValue);
+        const newWildcard = wildcardFromMask(newMask);
+
+        const totalAddressesPerSubnet = Math.pow(
+          2,
+          32 - newPrefixValue
+        );
+
+        let usablePerSubnet;
+
+        if (newPrefixValue === 32) {
+          usablePerSubnet = 1;
+        } else if (newPrefixValue === 31) {
+          usablePerSubnet = 2;
+        } else {
+          usablePerSubnet = Math.max(totalAddressesPerSubnet - 2, 0);
+        }
+
+        const subnetBitsValue = bitsAdded;
+        const hostBitsValue = 32 - newPrefixValue;
+
+        const subnetNetwork = network;
+        const subnetBroadcast = broadcast;
+
+        let first;
+        let last;
+
+        if (oldPrefix === 32) {
+          first = subnetNetwork;
+          last = subnetNetwork;
+        } else if (oldPrefix === 31) {
+          first = subnetNetwork;
+          last = subnetBroadcast;
+        } else if (oldPrefix === 0) {
+          first = subnetNetwork + 1;
+          last = subnetBroadcast - 1;
+        } else {
+          first = subnetNetwork + 1;
+          last = subnetBroadcast - 1;
+        }
+
+        networkAddress.textContent = numberToIp(subnetNetwork);
+        broadcastAddress.textContent = numberToIp(subnetBroadcast);
+        subnetMask.textContent = numberToIp(newMask);
+        wildcardMask.textContent = numberToIp(newWildcard);
+
+        firstHost.textContent =
+          first <= subnetBroadcast ? numberToIp(first) : "N/A";
+
+        lastHost.textContent =
+          last >= subnetNetwork ? numberToIp(last) : "N/A";
+
+        originalPrefix.textContent = `/${oldPrefix}`;
+        newPrefix.textContent = `/${newPrefixValue}`;
+        subnetBits.textContent = subnetBitsValue;
+        hostBits.textContent = hostBitsValue;
+        subnetCount.textContent = formatNumber(totalSubnets);
+        addressesPerSubnet.textContent =
+          formatNumber(totalAddressesPerSubnet);
+        usableHosts.textContent = formatNumber(usablePerSubnet);
+        networkType.textContent = getNetworkType(numberToIp(network));
+
+        networkLabel.textContent =
+          `${numberToIp(network)}/${oldPrefix}`;
+
+        statOriginalPrefix.textContent = `/${oldPrefix}`;
+        statNewPrefix.textContent = `/${newPrefixValue}`;
+        statSubnetBits.textContent = subnetBitsValue;
+        statHostBits.textContent = hostBitsValue;
+        statSubnetCount.textContent = formatNumber(totalSubnets);
+        statHosts.textContent = formatNumber(usablePerSubnet);
+
+        subnetsBody.innerHTML = "";
+
+        const maxRows = Math.min(totalSubnets, 256);
+
+        for (let i = 0; i < maxRows; i++) {
+          const currentNetwork =
+            (network + i * totalAddressesPerSubnet) >>> 0;
+
+          const currentBroadcast =
+            (
+              currentNetwork +
+              totalAddressesPerSubnet -
+              1
+            ) >>> 0;
+
+          let currentFirst;
+          let currentLast;
+
+          if (newPrefixValue === 32) {
+            currentFirst = currentNetwork;
+            currentLast = currentNetwork;
+          } else if (newPrefixValue === 31) {
+            currentFirst = currentNetwork;
+            currentLast = currentBroadcast;
+          } else {
+            currentFirst = currentNetwork + 1;
+            currentLast = currentBroadcast - 1;
+          }
+
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td>${i + 1}</td>
+            <td><code>${numberToIp(currentNetwork)}/${newPrefixValue}</code></td>
+            <td><code>${numberToIp(currentFirst)}</code></td>
+            <td><code>${numberToIp(currentLast)}</code></td>
+            <td><code>${numberToIp(currentBroadcast)}</code></td>
+          `;
+
+          subnetsBody.appendChild(row);
+        }
+
+        if (totalSubnets > maxRows) {
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td colspan="5" class="more-row">
+              يتم عرض أول ${formatNumber(maxRows)} شبكة فقط من أصل
+              ${formatNumber(totalSubnets)} شبكة للحفاظ على سرعة المتصفح.
+            </td>
+          `;
+
+          subnetsBody.appendChild(row);
+        }
+
+        subnetsCountLabel.textContent =
+          `${formatNumber(totalSubnets)} ${totalSubnets === 1 ? "شبكة" : "شبكات"}`;
+
+        results.style.display = "block";
+        hasResults = true;
+
+        showSuccess(
+          `تم تقسيم ${numberToIp(network)}/${oldPrefix} إلى ${formatNumber(
+            totalSubnets
+          )} شبكة فرعية باستخدام /${newPrefixValue}.`
+        );
+      }
+
+      function clearAll() {
+        networkInput.value = "";
+        prefixInput.value = "24";
+        subnetPrefixInput.value = "26";
+
+        resetResults();
+        showReady();
+        networkInput.focus();
+      }
+
+      function loadExample() {
+        networkInput.value = "192.168.1.0";
+        prefixInput.value = "24";
+        subnetPrefixInput.value = "26";
+
+        calculate();
+      }
+
+      async function copyText(text, button) {
+        if (!text || text === "—") return;
+
+        try {
+          await navigator.clipboard.writeText(text);
+
+          const oldHTML = button.innerHTML;
+
+          button.innerHTML =
+            '<i class="fa-solid fa-check"></i>';
+
+          setTimeout(() => {
+            button.innerHTML = oldHTML;
+          }, 1200);
+        } catch {
+          showError("تعذر نسخ النتيجة إلى الحافظة.");
+        }
+      }
+
+      async function copyAll() {
+        if (!hasResults) {
+          showError("قم بالحساب أولاً ثم حاول نسخ النتائج.");
+          return;
+        }
+
+        const text = [
+          `Network Address: ${networkAddress.textContent}`,
+          `Broadcast Address: ${broadcastAddress.textContent}`,
+          `Subnet Mask: ${subnetMask.textContent}`,
+          `Wildcard Mask: ${wildcardMask.textContent}`,
+          `First Host: ${firstHost.textContent}`,
+          `Last Host: ${lastHost.textContent}`,
+          `Original Prefix: ${originalPrefix.textContent}`,
+          `New Prefix: ${newPrefix.textContent}`,
+          `Subnet Bits: ${subnetBits.textContent}`,
+          `Host Bits: ${hostBits.textContent}`,
+          `Subnet Count: ${subnetCount.textContent}`,
+          `Addresses / Subnet: ${addressesPerSubnet.textContent}`,
+          `Usable Hosts: ${usableHosts.textContent}`,
+          `Network Type: ${networkType.textContent}`
+        ].join("\n");
+
+        try {
+          await navigator.clipboard.writeText(text);
+
+          const oldHTML = copyBtn.innerHTML;
+
+          copyBtn.innerHTML =
+            '<i class="fa-solid fa-check"></i> تم النسخ';
+
+          setTimeout(() => {
+            copyBtn.innerHTML = oldHTML;
+          }, 1400);
+        } catch {
+          showError("تعذر نسخ النتائج إلى الحافظة.");
+        }
+      }
+
+      calculateBtn.addEventListener("click", calculate);
+      exampleBtn.addEventListener("click", loadExample);
+      clearBtn.addEventListener("click", clearAll);
+      copyBtn.addEventListener("click", copyAll);
+
+      [networkInput, prefixInput, subnetPrefixInput].forEach((input) => {
+        input.addEventListener("input", () => {
+          if (hasResults) calculate();
+        });
+
+        input.addEventListener("keydown", (event) => {
+          if (event.key === "Enter") {
+            calculate();
+          }
+        });
+      });
+
+      document.querySelectorAll("[data-example]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const [ip, oldPrefix, newPrefixValue] =
+            button.dataset.example.split("|");
+
+          networkInput.value = ip;
+          prefixInput.value = oldPrefix;
+          subnetPrefixInput.value = newPrefixValue;
+
+          calculate();
+        });
+      });
+
+      document.querySelectorAll("[data-copy]").forEach((button) => {
+        button.addEventListener("click", () => {
+          const target = document.getElementById(
+            button.dataset.copy
+          );
+
+          copyText(target?.textContent?.trim(), button);
+        });
+      });
+
+      resetResults();
+      showReady();
+    </script>
+
+    <style>
+      :root {
+        --bg: #f4f9fc;
+        --surface: #ffffff;
+        --surface-2: #f7fbfd;
+        --border: #dceaf1;
+        --text: #10212b;
+        --muted: #667985;
+        --primary: #08a6c7;
+        --primary-2: #087ea0;
+        --primary-soft: rgba(8, 166, 199, 0.1);
+        --success: #0b9b72;
+        --danger: #e5484d;
+        --shadow: 0 20px 60px rgba(15, 60, 80, 0.1);
+        --radius: 20px;
+      }
+
+      html.dark-mode {
+        --bg: #071218;
+        --surface: #0c1b23;
+        --surface-2: #10242e;
+        --border: #1d3743;
+        --text: #eaf7fb;
+        --muted: #91a8b2;
+        --primary: #19c5e7;
+        --primary-2: #56d7ef;
+        --primary-soft: rgba(25, 197, 231, 0.1);
+        --success: #20c997;
+        --danger: #ff6b70;
+        --shadow: 0 20px 70px rgba(0, 0, 0, 0.3);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(
+            circle at 10% 0%,
+            rgba(8, 166, 199, 0.08),
+            transparent 28%
+          ),
+          var(--bg);
+        color: var(--text);
+        font-family: "Cairo", sans-serif;
+      }
+
+      button,
+      input {
+        font: inherit;
+      }
+
+      button {
+        cursor: pointer;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 32px));
+        margin-inline: auto;
+      }
+
+      .hero {
+        padding: 42px 0 30px;
+      }
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 28px;
+        flex-wrap: wrap;
+      }
+
+      .breadcrumb a {
+        color: var(--primary);
+        text-decoration: none;
+      }
+
+      .breadcrumb i {
+        font-size: 9px;
+      }
+
+      .hero-content {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .hero-icon {
+        width: 82px;
+        height: 82px;
+        flex: 0 0 82px;
+        border-radius: 24px;
+        display: grid;
+        place-items: center;
+        color: white;
+        font-size: 32px;
+        background:
+          linear-gradient(
+            145deg,
+            var(--primary),
+            var(--primary-2)
+          );
+        box-shadow:
+          0 15px 35px rgba(8, 166, 199, 0.24);
+      }
+
+      .tool-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 12px;
+        border-radius: 999px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(30px, 5vw, 46px);
+        line-height: 1.15;
+        letter-spacing: -1px;
+      }
+
+      .hero-text p {
+        margin: 0;
+        color: var(--muted);
+        max-width: 760px;
+        line-height: 1.9;
+        font-size: 15px;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .tags span {
+        padding: 6px 11px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        color: var(--muted);
+        background: var(--surface);
+        font-size: 11px;
+      }
+
+      .tool-section {
+        padding: 20px 0 70px;
+      }
+
+      .tool-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        overflow: hidden;
+        box-shadow: var(--shadow);
+      }
+
+      .tool-topbar {
+        min-height: 62px;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        border-bottom: 1px solid var(--border);
+        background: var(--surface-2);
+      }
+
+      .window-dots {
+        display: flex;
+        gap: 7px;
+      }
+
+      .window-dots span {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--border);
+      }
+
+      .tool-name {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-weight: 800;
+        font-size: 14px;
+      }
+
+      .tool-name i {
+        color: var(--primary);
+      }
+
+      .secure {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--success);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .actionbar {
+        display: flex;
+        gap: 9px;
+        flex-wrap: wrap;
+        padding: 15px 20px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .action-btn {
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+        border-radius: 11px;
+        padding: 9px 13px;
+        font-size: 12px;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        transition: 0.2s ease;
+      }
+
+      .action-btn:hover {
+        transform: translateY(-1px);
+        border-color: var(--primary);
+        color: var(--primary);
+      }
+
+      .action-btn.primary {
+        margin-right: auto;
+        color: white;
+        border-color: transparent;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-2)
+        );
+      }
+
+      .action-btn.primary:hover {
+        color: white;
+        box-shadow: 0 8px 22px rgba(8, 166, 199, 0.22);
+      }
+
+      .editor-section {
+        padding: 24px 24px 10px;
+      }
+
+      .editor-header,
+      .results-header,
+      .subnets-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .editor-header > div,
+      .results-header > div,
+      .subnets-header > div {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        font-weight: 800;
+      }
+
+      .editor-header i,
+      .results-header i,
+      .subnets-header i {
+        color: var(--primary);
+      }
+
+      .editor-header span,
+      .results-header span,
+      .subnets-header span {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .input-grid {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr;
+        gap: 14px;
+      }
+
+      .field label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .field label i {
+        color: var(--primary);
+        margin-left: 5px;
+      }
+
+      .field input {
+        width: 100%;
+        height: 48px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--surface-2);
+        color: var(--text);
+        outline: none;
+        padding: 0 14px;
+        direction: ltr;
+        font-family: "JetBrains Mono", monospace;
+        transition: 0.2s ease;
+      }
+
+      .field input:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 4px var(--primary-soft);
+      }
+
+      .field small {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        margin-top: 7px;
+      }
+
+      .prefix-wrap {
+        display: flex;
+        direction: ltr;
+        align-items: center;
+        height: 48px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--surface-2);
+        overflow: hidden;
+      }
+
+      .prefix-wrap span {
+        padding-left: 14px;
+        color: var(--primary);
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+      }
+
+      .prefix-wrap input {
+        border: 0;
+        background: transparent;
+        box-shadow: none;
+      }
+
+      .examples {
+        padding: 18px 24px 22px;
+      }
+
+      .examples-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 800;
+        margin-bottom: 10px;
+      }
+
+      .examples-title i {
+        color: var(--primary);
+      }
+
+      .example-list {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .example-list button {
+        border: 1px solid var(--border);
+        background: var(--surface-2);
+        color: var(--muted);
+        border-radius: 9px;
+        padding: 7px 10px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        transition: 0.2s ease;
+      }
+
+      .example-list button:hover {
+        color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .status-box {
+        margin: 0 24px 24px;
+        padding: 15px 16px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        border: 1px solid var(--border);
+      }
+
+      .status-box.ready {
+        background: var(--primary-soft);
+      }
+
+      .status-box.success {
+        background: rgba(11, 155, 114, 0.09);
+        border-color: rgba(11, 155, 114, 0.22);
+      }
+
+      .status-box.error {
+        background: rgba(229, 72, 77, 0.08);
+        border-color: rgba(229, 72, 77, 0.2);
+      }
+
+      .status-icon {
+        width: 36px;
+        height: 36px;
+        flex: 0 0 36px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        background: var(--surface);
+        color: var(--primary);
+      }
+
+      .success .status-icon {
+        color: var(--success);
+      }
+
+      .error .status-icon {
+        color: var(--danger);
+      }
+
+      .status-box strong {
+        display: block;
+        font-size: 12px;
+        margin-bottom: 2px;
+      }
+
+      .status-box p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .results {
+        display: none;
+        padding: 24px;
+        border-top: 1px solid var(--border);
+        background: var(--surface-2);
+      }
+
+      .result-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .result-card {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 16px;
+        border-radius: 15px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        min-width: 0;
+      }
+
+      .result-card.highlight {
+        border-color: rgba(8, 166, 199, 0.35);
+        box-shadow: 0 8px 25px rgba(8, 166, 199, 0.07);
+      }
+
+      .result-card-icon {
+        width: 40px;
+        height: 40px;
+        flex: 0 0 40px;
+        display: grid;
+        place-items: center;
+        border-radius: 11px;
+        background: var(--primary-soft);
+        color: var(--primary);
+      }
+
+      .result-card-content {
+        min-width: 0;
+        padding-left: 26px;
+      }
+
+      .result-card-content span {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        margin-bottom: 4px;
+      }
+
+      .result-card-content strong {
+        display: block;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+        direction: ltr;
+        text-align: right;
+        overflow-wrap: anywhere;
+      }
+
+      .mini-copy {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 29px;
+        height: 29px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--surface-2);
+        color: var(--muted);
+      }
+
+      .mini-copy:hover {
+        color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .subnet-summary {
+        margin-top: 18px;
+        padding: 18px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: var(--surface);
+      }
+
+      .summary-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 800;
+        margin-bottom: 15px;
+      }
+
+      .summary-title i {
+        color: var(--primary);
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+
+      .summary-item {
+        padding: 12px;
+        border-radius: 11px;
+        background: var(--surface-2);
+        border: 1px solid var(--border);
+      }
+
+      .summary-item span {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        margin-bottom: 5px;
+      }
+
+      .summary-item strong {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+      }
+
+      .subnets-panel {
+        margin-top: 18px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: var(--surface);
+        overflow: hidden;
+      }
+
+      .subnets-header {
+        padding: 17px 18px;
+        margin: 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .subnets-table-wrap {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 680px;
+      }
+
+      th,
+      td {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--border);
+        text-align: right;
+        font-size: 11px;
+      }
+
+      th {
+        color: var(--muted);
+        background: var(--surface-2);
+        font-weight: 800;
+      }
+
+      td {
+        color: var(--text);
+      }
+
+      td code {
+        direction: ltr;
+        display: inline-block;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      tbody tr:hover {
+        background: var(--primary-soft);
+      }
+
+      .more-row {
+        text-align: center;
+        color: var(--muted);
+        font-size: 10px;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .stat {
+        padding: 13px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--surface);
+        text-align: center;
+      }
+
+      .stat span {
+        display: block;
+        color: var(--muted);
+        font-size: 10px;
+        margin-bottom: 5px;
+      }
+
+      .stat strong {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+      }
+
+      .info-section,
+      .how-section,
+      .faq-section {
+        padding: 70px 0;
+      }
+
+      .how-section {
+        background: var(--surface-2);
+        border-block: 1px solid var(--border);
+      }
+
+      .section-heading {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto 34px;
+      }
+
+      .section-heading > span {
+        color: var(--primary);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .section-heading h2 {
+        margin: 7px 0 10px;
+        font-size: clamp(24px, 4vw, 32px);
+      }
+
+      .section-heading p {
+        color: var(--muted);
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.9;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .info-card {
+        padding: 25px;
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+      }
+
+      .info-icon {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border-radius: 12px;
+        background: var(--primary-soft);
+        color: var(--primary);
+        margin-bottom: 15px;
+      }
+
+      .info-card h3 {
+        margin: 0 0 8px;
+        font-size: 16px;
+      }
+
+      .info-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .step {
+        display: flex;
+        gap: 15px;
+        padding: 22px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        border-radius: 18px;
+      }
+
+      .step-number {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        border-radius: 11px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-2)
+        );
+        color: white;
+        font-weight: 800;
+      }
+
+      .step h3 {
+        margin: 0 0 6px;
+        font-size: 14px;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.9;
+      }
+
+      .step code {
+        font-family: "JetBrains Mono", monospace;
+        color: var(--primary);
+      }
+
+      .faq-list {
+        max-width: 850px;
+        margin: auto;
+        display: grid;
+        gap: 10px;
+      }
+
+      details {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--surface);
+        overflow: hidden;
+      }
+
+      summary {
+        padding: 17px 18px;
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        font-size: 12px;
+        font-weight: 800;
+        list-style: none;
+      }
+
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      summary i {
+        color: var(--primary);
+        transition: transform 0.2s ease;
+      }
+
+      details[open] summary i {
+        transform: rotate(180deg);
+      }
+
+      details p {
+        padding: 0 18px 18px;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.9;
+        font-size: 11px;
+      }
+
+      @media (max-width: 900px) {
+        .input-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .input-grid .field:first-child {
+          grid-column: 1 / -1;
+        }
+
+        .summary-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+
+        .info-grid,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 700px) {
+        .hero-content {
+          align-items: flex-start;
+        }
+
+        .hero-icon {
+          width: 65px;
+          height: 65px;
+          flex-basis: 65px;
+          border-radius: 18px;
+          font-size: 25px;
+        }
+
+        .tool-topbar {
+          padding: 0 14px;
+        }
+
+        .secure {
+          display: none;
+        }
+
+        .editor-section,
+        .examples,
+        .results {
+          padding-inline: 15px;
+        }
+
+        .status-box {
+          margin-inline: 15px;
+        }
+
+        .result-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .action-btn.primary {
+          margin-right: 0;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          width: min(100% - 20px, 1180px);
+        }
+
+        .hero {
+          padding-top: 25px;
+        }
+
+        .breadcrumb {
+          margin-bottom: 20px;
+        }
+
+        .hero-content {
+          gap: 14px;
+        }
+
+        .hero-icon {
+          display: none;
+        }
+
+        h1 {
+          font-size: 30px;
+        }
+
+        .hero-text p {
+          font-size: 13px;
+        }
+
+        .input-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .input-grid .field:first-child {
+          grid-column: auto;
+        }
+
+        .summary-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .actionbar {
+          padding: 12px 15px;
+        }
+
+        .action-btn {
+          flex: 1;
+          justify-content: center;
+        }
+
+        .action-btn.primary {
+          flex-basis: 100%;
+        }
+
+        .example-list {
+          overflow-x: auto;
+          flex-wrap: nowrap;
+          padding-bottom: 4px;
+        }
+
+        .example-list button {
+          white-space: nowrap;
+        }
+
+        .section-heading h2 {
+          font-size: 25px;
+        }
+
+        .info-section,
+        .how-section,
+        .faq-section {
+          padding: 55px 0;
+        }
+      }
+    </style>
+  </body>
+</html>
