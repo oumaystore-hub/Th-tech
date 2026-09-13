@@ -1,0 +1,1865 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Hex to Decimal | تحويل Hexadecimal إلى Decimal | Th.Tech";
+const description =
+  "أداة Hex to Decimal مجانية لتحويل الأرقام من النظام الست عشري Hexadecimal إلى النظام العشري Decimal بسرعة ودقة داخل المتصفح.";
+const canonical =
+  `https://oumaystore-hub.github.io${base}/tools/hex-to-decimal/`;
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="keywords"
+      content="Hex to Decimal, hexadecimal to decimal, تحويل hex إلى decimal, hex converter, hexadecimal converter, محول الأنظمة العددية"
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem("theme");
+
+          if (saved === "dark") {
+            document.documentElement.classList.add("dark-mode");
+          }
+        } catch {}
+      })();
+    </script>
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="page">
+      <div class="container">
+
+        <!-- Breadcrumb -->
+        <nav class="breadcrumb" aria-label="مسار التنقل">
+          <a href={`${base}/`}>
+            <i class="fa-solid fa-house"></i>
+            الرئيسية
+          </a>
+
+          <i class="fa-solid fa-chevron-left separator"></i>
+
+          <a href={`${base}/tools/`}>
+            الأدوات
+          </a>
+
+          <i class="fa-solid fa-chevron-left separator"></i>
+
+          <span>Hex to Decimal</span>
+        </nav>
+
+        <!-- Hero -->
+        <section class="hero">
+
+          <div class="hero-icon">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+          </div>
+
+          <div class="hero-content">
+
+            <div class="eyebrow">
+              <span class="dot"></span>
+              محول الأنظمة العددية
+            </div>
+
+            <h1>Hex to Decimal</h1>
+
+            <p>
+              حوّل الأرقام من النظام الست عشري Hexadecimal
+              إلى النظام العشري Decimal بسرعة ودقة.
+            </p>
+
+            <div class="tags">
+
+              <span>
+                <i class="fa-solid fa-hashtag"></i>
+                Hexadecimal
+              </span>
+
+              <span>
+                <i class="fa-solid fa-arrow-right"></i>
+                Decimal
+              </span>
+
+              <span>
+                <i class="fa-solid fa-calculator"></i>
+                Converter
+              </span>
+
+              <span>
+                <i class="fa-solid fa-lock"></i>
+                Local
+              </span>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- Main Tool -->
+        <section class="tool-card">
+
+          <div class="tool-header">
+
+            <div>
+              <h2>
+                <i class="fa-solid fa-calculator"></i>
+                محول Hex إلى Decimal
+              </h2>
+
+              <p>
+                أدخل قيمة Hexadecimal وسيتم تحويلها إلى Decimal مباشرة.
+              </p>
+            </div>
+
+            <div class="live-badge">
+              <span></span>
+              تحويل مباشر
+            </div>
+
+          </div>
+
+          <!-- Settings -->
+          <div class="settings-bar">
+
+            <div class="setting-item">
+              <i class="fa-solid fa-code"></i>
+
+              <div>
+                <strong>النظام المصدر</strong>
+                <span>Base 16</span>
+              </div>
+            </div>
+
+            <div class="setting-arrow">
+              <i class="fa-solid fa-arrow-left"></i>
+            </div>
+
+            <div class="setting-item">
+              <i class="fa-solid fa-hashtag"></i>
+
+              <div>
+                <strong>النظام الناتج</strong>
+                <span>Base 10</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Editors -->
+          <div class="editor-grid">
+
+            <!-- Hex Input -->
+            <div class="panel">
+
+              <div class="panel-header">
+
+                <div>
+                  <i class="fa-solid fa-code"></i>
+                  Hexadecimal
+                </div>
+
+                <span id="hexStats">0 digits</span>
+
+              </div>
+
+              <textarea
+                id="hexInput"
+                dir="ltr"
+                spellcheck="false"
+                placeholder="مثال:
+FF
+
+أو:
+1A3F
+
+أو:
+DE AD BE EF"
+              ></textarea>
+
+              <div class="panel-footer">
+
+                <span>
+                  <i class="fa-solid fa-hashtag"></i>
+                  Base 16
+                </span>
+
+                <span id="hexChars">0 حرف</span>
+
+              </div>
+
+            </div>
+
+            <!-- Arrow -->
+            <div class="conversion-arrow">
+              <div>
+                <i class="fa-solid fa-arrow-left"></i>
+              </div>
+
+              <span>BASE 16 → BASE 10</span>
+            </div>
+
+            <!-- Decimal Output -->
+            <div class="panel output-panel">
+
+              <div class="panel-header">
+
+                <div>
+                  <i class="fa-solid fa-calculator"></i>
+                  Decimal
+                </div>
+
+                <span>Base 10</span>
+
+              </div>
+
+              <textarea
+                id="decimalOutput"
+                dir="ltr"
+                readonly
+                spellcheck="false"
+                placeholder="النتيجة ستظهر هنا..."
+              ></textarea>
+
+              <div class="panel-footer">
+
+                <span>
+                  <i class="fa-solid fa-arrow-down-1-9"></i>
+                  Base 10
+                </span>
+
+                <span id="decimalDigits">0 رقم</span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <!-- Actions -->
+          <div class="actions">
+
+            <button id="sampleBtn" class="btn secondary" type="button">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              مثال
+            </button>
+
+            <button id="convertBtn" class="btn primary-btn" type="button">
+              <i class="fa-solid fa-arrow-right-arrow-left"></i>
+              تحويل
+            </button>
+
+            <button id="copyBtn" class="btn copy-btn" type="button">
+              <i class="fa-regular fa-copy"></i>
+              نسخ النتيجة
+            </button>
+
+            <button id="clearBtn" class="btn danger" type="button">
+              <i class="fa-solid fa-trash"></i>
+              مسح
+            </button>
+
+          </div>
+
+          <div id="status" class="status">
+            <i class="fa-solid fa-circle-info"></i>
+            أدخل قيمة Hexadecimal للبدء.
+          </div>
+
+          <!-- Stats -->
+          <div class="stats-grid">
+
+            <div class="stat-card">
+              <span class="stat-icon blue">
+                <i class="fa-solid fa-hashtag"></i>
+              </span>
+
+              <div>
+                <strong id="statHex">0</strong>
+                <span>Hex digits</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <span class="stat-icon cyan">
+                <i class="fa-solid fa-arrow-down-1-9"></i>
+              </span>
+
+              <div>
+                <strong id="statDecimal">0</strong>
+                <span>Decimal digits</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <span class="stat-icon purple">
+                <i class="fa-solid fa-cubes"></i>
+              </span>
+
+              <div>
+                <strong id="statBytes">0</strong>
+                <span>Bytes</span>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <span class="stat-icon green">
+                <i class="fa-solid fa-circle-check"></i>
+              </span>
+
+              <div>
+                <strong id="statValid">0%</strong>
+                <span>Valid</span>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- Privacy -->
+        <section class="privacy-card">
+
+          <div class="privacy-icon">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+
+          <div>
+            <h3>معالجة محلية وآمنة</h3>
+
+            <p>
+              تتم عملية التحويل بالكامل داخل متصفحك.
+              لا يتم إرسال الأرقام أو البيانات إلى أي خادم خارجي.
+            </p>
+          </div>
+
+        </section>
+
+        <!-- Features -->
+        <section class="info-section">
+
+          <div class="section-title centered">
+
+            <div class="section-title-icon">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+
+            <div>
+              <h2>ما هو Hex to Decimal؟</h2>
+
+              <p>
+                تحويل الأرقام من Base 16 إلى Base 10.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="info-grid">
+
+            <article class="info-card">
+
+              <div class="info-icon blue">
+                <i class="fa-solid fa-code"></i>
+              </div>
+
+              <h3>النظام الست عشري</h3>
+
+              <p>
+                يستخدم النظام الست عشري 16 رمزاً تبدأ من
+                0 إلى 9 ثم A إلى F لتمثيل القيم الرقمية.
+              </p>
+
+            </article>
+
+            <article class="info-card">
+
+              <div class="info-icon cyan">
+                <i class="fa-solid fa-calculator"></i>
+              </div>
+
+              <h3>النظام العشري</h3>
+
+              <p>
+                النظام العشري هو النظام الأساسي المستخدم
+                في الحياة اليومية ويعتمد على الأرقام من 0 إلى 9.
+              </p>
+
+            </article>
+
+            <article class="info-card">
+
+              <div class="info-icon purple">
+                <i class="fa-solid fa-microchip"></i>
+              </div>
+
+              <h3>للمبرمجين</h3>
+
+              <p>
+                مفيد في البرمجة والتعامل مع عناوين الذاكرة
+                والقيم الثنائية والألوان والبيانات منخفضة المستوى.
+              </p>
+
+            </article>
+
+          </div>
+
+        </section>
+
+        <!-- How To -->
+        <section class="how-section">
+
+          <div class="section-title centered">
+
+            <div class="section-title-icon">
+              <i class="fa-solid fa-route"></i>
+            </div>
+
+            <div>
+              <h2>كيفية الاستخدام</h2>
+
+              <p>
+                تحويل Hex إلى Decimal في ثلاث خطوات.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="steps">
+
+            <div class="step">
+
+              <div class="step-number">1</div>
+
+              <div>
+                <h3>أدخل Hexadecimal</h3>
+
+                <p>
+                  اكتب الرقم الست عشري مثل FF أو 1A3F.
+                </p>
+              </div>
+
+            </div>
+
+            <div class="step">
+
+              <div class="step-number">2</div>
+
+              <div>
+                <h3>اضغط تحويل</h3>
+
+                <p>
+                  ستقوم الأداة بالتحقق من القيمة وتحويلها.
+                </p>
+              </div>
+
+            </div>
+
+            <div class="step">
+
+              <div class="step-number">3</div>
+
+              <div>
+                <h3>انسخ النتيجة</h3>
+
+                <p>
+                  انسخ الرقم العشري الناتج واستخدمه في مشروعك.
+                </p>
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- Examples -->
+        <section class="examples-section">
+
+          <div class="section-title centered">
+
+            <div class="section-title-icon">
+              <i class="fa-solid fa-table"></i>
+            </div>
+
+            <div>
+              <h2>أمثلة Hex إلى Decimal</h2>
+
+              <p>
+                بعض التحويلات الشائعة.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="examples-table">
+
+            <div class="example-row header">
+              <span>Hexadecimal</span>
+              <span>Decimal</span>
+            </div>
+
+            <div class="example-row">
+              <code>0</code>
+              <code>0</code>
+            </div>
+
+            <div class="example-row">
+              <code>A</code>
+              <code>10</code>
+            </div>
+
+            <div class="example-row">
+              <code>F</code>
+              <code>15</code>
+            </div>
+
+            <div class="example-row">
+              <code>10</code>
+              <code>16</code>
+            </div>
+
+            <div class="example-row">
+              <code>FF</code>
+              <code>255</code>
+            </div>
+
+            <div class="example-row">
+              <code>100</code>
+              <code>256</code>
+            </div>
+
+            <div class="example-row">
+              <code>1A3F</code>
+              <code>6719</code>
+            </div>
+
+          </div>
+
+        </section>
+
+        <!-- FAQ -->
+        <section class="faq-section">
+
+          <div class="section-title centered">
+
+            <div class="section-title-icon">
+              <i class="fa-solid fa-circle-question"></i>
+            </div>
+
+            <div>
+              <h2>الأسئلة الشائعة</h2>
+
+              <p>
+                معلومات سريعة حول تحويل Hex إلى Decimal.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="faq-list">
+
+            <details>
+
+              <summary>
+                ما هو Hexadecimal؟
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>
+                Hexadecimal أو النظام الست عشري هو نظام عددي
+                يعتمد على 16 رمزاً: الأرقام من 0 إلى 9
+                والحروف من A إلى F.
+              </p>
+
+            </details>
+
+            <details>
+
+              <summary>
+                ما معنى FF بالنظام العشري؟
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>
+                القيمة FF في النظام الست عشري تساوي 255
+                في النظام العشري.
+              </p>
+
+            </details>
+
+            <details>
+
+              <summary>
+                هل يمكن تحويل أرقام Hex كبيرة؟
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>
+                نعم. تستخدم الأداة BigInt في JavaScript
+                لدعم قيم Hex كبيرة تتجاوز حدود الأرقام التقليدية.
+              </p>
+
+            </details>
+
+            <details>
+
+              <summary>
+                ما هي الرموز المسموح بها؟
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>
+                يمكن استخدام الأرقام من 0 إلى 9 والحروف
+                من A إلى F، سواء كانت الحروف كبيرة أو صغيرة.
+                كما يمكن استخدام المسافات لتقسيم القيمة.
+              </p>
+
+            </details>
+
+            <details>
+
+              <summary>
+                هل يتم إرسال البيانات إلى الخادم؟
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>
+                لا. تتم عملية التحويل محلياً داخل المتصفح
+                ولا تحتاج إلى إرسال البيانات إلى خادم خارجي.
+              </p>
+
+            </details>
+
+          </div>
+
+        </section>
+
+      </div>
+    </main>
+
+    <Footer />
+
+    <script is:inline>
+      (() => {
+        const input = document.getElementById("hexInput");
+        const output = document.getElementById("decimalOutput");
+
+        const hexStats = document.getElementById("hexStats");
+        const hexChars = document.getElementById("hexChars");
+        const decimalDigits = document.getElementById("decimalDigits");
+
+        const statHex = document.getElementById("statHex");
+        const statDecimal = document.getElementById("statDecimal");
+        const statBytes = document.getElementById("statBytes");
+        const statValid = document.getElementById("statValid");
+
+        const status = document.getElementById("status");
+
+        const sampleBtn = document.getElementById("sampleBtn");
+        const convertBtn = document.getElementById("convertBtn");
+        const copyBtn = document.getElementById("copyBtn");
+        const clearBtn = document.getElementById("clearBtn");
+
+        if (!input || !output) return;
+
+        function showStatus(message, type = "info") {
+          let icon = "fa-circle-info";
+
+          if (type === "success") {
+            icon = "fa-circle-check";
+          }
+
+          if (type === "error") {
+            icon = "fa-triangle-exclamation";
+          }
+
+          status.innerHTML =
+            '<i class="fa-solid ' +
+            icon +
+            '"></i> ' +
+            message;
+
+          status.className = "status " + type;
+        }
+
+        function cleanHex(value) {
+          return value
+            .replace(/\s+/gu, "")
+            .replace(/^0x/iu, "");
+        }
+
+        function isValidHex(value) {
+          if (!value) return false;
+
+          return /^[0-9a-f]+$/iu.test(value);
+        }
+
+        function updateStats() {
+          const raw = input.value || "";
+          const hex = cleanHex(raw);
+
+          const digits = hex.length;
+          const chars = raw.length;
+
+          hexStats.textContent =
+            digits.toLocaleString("en-US") + " digits";
+
+          hexChars.textContent =
+            chars.toLocaleString("ar") + " حرف";
+
+          statHex.textContent =
+            digits.toLocaleString("en-US");
+
+          const valid = !hex
+            ? 0
+            : isValidHex(hex)
+              ? 100
+              : 0;
+
+          statValid.textContent = valid + "%";
+
+          if (output.value) {
+            const decimalLength = output.value.length;
+
+            decimalDigits.textContent =
+              decimalLength.toLocaleString("ar") + " رقم";
+
+            statDecimal.textContent =
+              decimalLength.toLocaleString("en-US");
+          } else {
+            decimalDigits.textContent = "0 رقم";
+            statDecimal.textContent = "0";
+          }
+
+          if (digits > 0) {
+            statBytes.textContent =
+              Math.ceil(digits / 2).toLocaleString("en-US");
+          } else {
+            statBytes.textContent = "0";
+          }
+        }
+
+        function convert() {
+          const hex = cleanHex(input.value);
+
+          if (!hex) {
+            output.value = "";
+
+            updateStats();
+
+            showStatus(
+              "أدخل قيمة Hexadecimal أولاً.",
+              "error"
+            );
+
+            return;
+          }
+
+          if (!isValidHex(hex)) {
+            output.value = "";
+
+            updateStats();
+
+            showStatus(
+              "القيمة غير صحيحة. استخدم فقط الأرقام 0-9 والحروف A-F.",
+              "error"
+            );
+
+            return;
+          }
+
+          try {
+            const decimal = BigInt("0x" + hex);
+
+            output.value = decimal.toString(10);
+
+            updateStats();
+
+            showStatus(
+              "تم تحويل Hexadecimal إلى Decimal بنجاح.",
+              "success"
+            );
+          } catch {
+            output.value = "";
+
+            updateStats();
+
+            showStatus(
+              "تعذر تحويل القيمة المدخلة.",
+              "error"
+            );
+          }
+        }
+
+        sampleBtn.addEventListener("click", function() {
+          input.value = "1A3F";
+
+          convert();
+
+          input.focus();
+        });
+
+        convertBtn.addEventListener("click", convert);
+
+        clearBtn.addEventListener("click", function() {
+          input.value = "";
+          output.value = "";
+
+          updateStats();
+
+          showStatus(
+            "تم مسح القيمة والنتيجة.",
+            "info"
+          );
+
+          input.focus();
+        });
+
+        copyBtn.addEventListener("click", async function() {
+          const value = output.value;
+
+          if (!value) {
+            showStatus(
+              "لا توجد نتيجة لنسخها. قم بالتحويل أولاً.",
+              "error"
+            );
+
+            return;
+          }
+
+          try {
+            await navigator.clipboard.writeText(value);
+
+            showStatus(
+              "تم نسخ النتيجة بنجاح.",
+              "success"
+            );
+          } catch {
+            output.select();
+            document.execCommand("copy");
+
+            showStatus(
+              "تم نسخ النتيجة بنجاح.",
+              "success"
+            );
+          }
+        });
+
+        input.addEventListener("input", function() {
+          updateStats();
+
+          if (!input.value.trim()) {
+            output.value = "";
+
+            showStatus(
+              "أدخل قيمة Hexadecimal للبدء.",
+              "info"
+            );
+
+            updateStats();
+          }
+        });
+
+        input.addEventListener("keydown", function(event) {
+          if (
+            (event.ctrlKey || event.metaKey) &&
+            event.key === "Enter"
+          ) {
+            convert();
+          }
+        });
+
+        function syncTheme() {
+          try {
+            const saved = localStorage.getItem("theme");
+
+            if (saved === "dark") {
+              document.documentElement.classList.add("dark-mode");
+            } else {
+              document.documentElement.classList.remove("dark-mode");
+            }
+          } catch {}
+        }
+
+        syncTheme();
+
+        window.addEventListener("themeChange", syncTheme);
+
+        document.addEventListener("click", function(event) {
+          const target = event.target;
+
+          if (
+            target &&
+            (
+              target.id === "theme-btn" ||
+              target.closest("#theme-btn")
+            )
+          ) {
+            setTimeout(syncTheme, 0);
+          }
+        });
+
+        updateStats();
+      })();
+    </script>
+
+    <style>
+      :root {
+        --bg: #f5f9ff;
+        --surface: #ffffff;
+        --surface-2: #f8fbff;
+        --text: #102033;
+        --muted: #64748b;
+        --border: #dce7f3;
+        --primary: #2563eb;
+        --cyan: #06b6d4;
+        --danger: #ef4444;
+        --success: #10b981;
+        --purple: #8b5cf6;
+        --code: #eef4fb;
+        --shadow: 0 18px 50px rgba(37, 99, 235, 0.08);
+      }
+
+      html.dark-mode {
+        --bg: #07111f;
+        --surface: #0d1b2a;
+        --surface-2: #101f31;
+        --text: #e8f1fb;
+        --muted: #91a4b9;
+        --border: #20364c;
+        --primary: #60a5fa;
+        --cyan: #22d3ee;
+        --danger: #f87171;
+        --success: #34d399;
+        --purple: #a78bfa;
+        --code: #081522;
+        --shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(
+            circle at top right,
+            rgba(37, 99, 235, 0.08),
+            transparent 32%
+          ),
+          var(--bg);
+        color: var(--text);
+        font-family: "Cairo", sans-serif;
+      }
+
+      button,
+      textarea {
+        font-family: inherit;
+      }
+
+      .page {
+        min-height: 100vh;
+        padding: 28px 16px 70px;
+      }
+
+      .container {
+        width: min(1120px, 100%);
+        margin: auto;
+      }
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        color: var(--muted);
+        font-size: 13px;
+        margin-bottom: 30px;
+      }
+
+      .breadcrumb a {
+        color: var(--muted);
+        text-decoration: none;
+        transition: 0.2s;
+      }
+
+      .breadcrumb a:hover {
+        color: var(--primary);
+      }
+
+      .separator {
+        font-size: 10px;
+        opacity: 0.6;
+      }
+
+      .hero {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        margin-bottom: 28px;
+      }
+
+      .hero-icon {
+        width: 76px;
+        height: 76px;
+        flex: 0 0 76px;
+        display: grid;
+        place-items: center;
+        border-radius: 22px;
+        color: white;
+        font-size: 30px;
+        background:
+          linear-gradient(
+            135deg,
+            #2563eb,
+            #06b6d4
+          );
+        box-shadow:
+          0 15px 35px rgba(37, 99, 235, 0.22);
+      }
+
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--primary);
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 5px;
+      }
+
+      .dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--success);
+        box-shadow:
+          0 0 0 5px rgba(16, 185, 129, 0.1);
+      }
+
+      .hero h1 {
+        margin: 0 0 6px;
+        font-size: clamp(30px, 5vw, 44px);
+        font-weight: 800;
+        letter-spacing: -1px;
+      }
+
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.9;
+      }
+
+      .tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .tags span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 6px 11px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--surface);
+        color: var(--muted);
+        font-size: 11px;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .tool-card,
+      .privacy-card,
+      .info-card,
+      .step {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow);
+      }
+
+      .tool-card {
+        padding: 24px;
+        border-radius: 24px;
+      }
+
+      .tool-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .tool-header h2 {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin: 0 0 4px;
+        font-size: 20px;
+      }
+
+      .tool-header h2 i {
+        color: var(--primary);
+      }
+
+      .tool-header p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .live-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--success);
+        font-size: 12px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .live-badge span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--success);
+      }
+
+      .settings-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        padding: 13px;
+        margin-bottom: 14px;
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: var(--surface-2);
+      }
+
+      .setting-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .setting-item > i {
+        width: 36px;
+        height: 36px;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--primary);
+      }
+
+      .setting-item div {
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+      }
+
+      .setting-item strong {
+        font-size: 12px;
+      }
+
+      .setting-item span {
+        color: var(--muted);
+        font-size: 10px;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .setting-arrow {
+        width: 35px;
+        height: 35px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.08);
+      }
+
+      .editor-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 115px minmax(0, 1fr);
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .panel {
+        min-width: 0;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface-2);
+      }
+
+      .panel-header,
+      .panel-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 12px 15px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .panel-header {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .panel-header div {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--text);
+        font-weight: 700;
+      }
+
+      .panel-header i {
+        color: var(--primary);
+      }
+
+      .panel-footer {
+        border-top: 1px solid var(--border);
+      }
+
+      textarea {
+        display: block;
+        width: 100%;
+        min-height: 340px;
+        resize: vertical;
+        padding: 20px;
+        border: 0;
+        outline: none;
+        background: transparent;
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 15px;
+        line-height: 1.8;
+      }
+
+      textarea::placeholder {
+        color: var(--muted);
+        opacity: 0.75;
+      }
+
+      #decimalOutput {
+        font-weight: 600;
+      }
+
+      .conversion-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 12px;
+        color: var(--primary);
+      }
+
+      .conversion-arrow div {
+        width: 54px;
+        height: 54px;
+        display: grid;
+        place-items: center;
+        border-radius: 50%;
+        background:
+          linear-gradient(
+            135deg,
+            #2563eb,
+            #06b6d4
+          );
+        color: white;
+        font-size: 20px;
+        box-shadow:
+          0 12px 25px rgba(37, 99, 235, 0.18);
+      }
+
+      .conversion-arrow span {
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        color: var(--muted);
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.5px;
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 17px;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 17px;
+        border: 0;
+        border-radius: 13px;
+        cursor: pointer;
+        font-weight: 700;
+        transition: 0.2s;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+      }
+
+      .primary-btn {
+        color: white;
+        background:
+          linear-gradient(
+            135deg,
+            #2563eb,
+            #0891b2
+          );
+        box-shadow:
+          0 10px 25px rgba(37, 99, 235, 0.18);
+      }
+
+      .secondary {
+        color: var(--primary);
+        background: rgba(37, 99, 235, 0.09);
+      }
+
+      .copy-btn {
+        color: var(--success);
+        background: rgba(16, 185, 129, 0.09);
+      }
+
+      .danger {
+        color: var(--danger);
+        background: rgba(239, 68, 68, 0.09);
+      }
+
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 14px;
+        padding: 11px 14px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--surface-2);
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .status i {
+        color: var(--primary);
+      }
+
+      .status.success {
+        border-color: rgba(16, 185, 129, 0.25);
+        color: var(--success);
+      }
+
+      .status.success i {
+        color: var(--success);
+      }
+
+      .status.error {
+        border-color: rgba(239, 68, 68, 0.25);
+        color: var(--danger);
+      }
+
+      .status.error i {
+        color: var(--danger);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 13px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--surface-2);
+      }
+
+      .stat-icon {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        flex: 0 0 38px;
+        border-radius: 11px;
+      }
+
+      .stat-icon.blue {
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--primary);
+      }
+
+      .stat-icon.cyan {
+        background: rgba(6, 182, 212, 0.1);
+        color: var(--cyan);
+      }
+
+      .stat-icon.purple {
+        background: rgba(139, 92, 246, 0.1);
+        color: var(--purple);
+      }
+
+      .stat-icon.green {
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--success);
+      }
+
+      .stat-card div {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .stat-card strong {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .stat-card span:not(.stat-icon) {
+        color: var(--muted);
+        font-size: 9px;
+      }
+
+      .privacy-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 19px;
+        margin-top: 22px;
+        border-radius: 20px;
+        border-color: rgba(16, 185, 129, 0.2);
+      }
+
+      .privacy-icon {
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        flex: 0 0 48px;
+        border-radius: 14px;
+        background: rgba(16, 185, 129, 0.1);
+        color: var(--success);
+        font-size: 20px;
+      }
+
+      .privacy-card h3 {
+        margin: 0 0 4px;
+        font-size: 15px;
+      }
+
+      .privacy-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      .info-section,
+      .how-section,
+      .examples-section,
+      .faq-section {
+        margin-top: 55px;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        margin-bottom: 20px;
+      }
+
+      .section-title.centered {
+        justify-content: center;
+      }
+
+      .section-title-icon {
+        width: 45px;
+        height: 45px;
+        display: grid;
+        place-items: center;
+        flex: 0 0 45px;
+        border-radius: 13px;
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--primary);
+      }
+
+      .section-title h2 {
+        margin: 0 0 2px;
+        font-size: 20px;
+      }
+
+      .section-title p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .info-card {
+        padding: 22px;
+        border-radius: 20px;
+      }
+
+      .info-icon {
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        border-radius: 14px;
+        margin-bottom: 15px;
+        font-size: 20px;
+      }
+
+      .info-icon.blue {
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--primary);
+      }
+
+      .info-icon.cyan {
+        background: rgba(6, 182, 212, 0.1);
+        color: var(--cyan);
+      }
+
+      .info-icon.purple {
+        background: rgba(139, 92, 246, 0.1);
+        color: var(--purple);
+      }
+
+      .info-card h3 {
+        margin: 0 0 7px;
+        font-size: 16px;
+      }
+
+      .info-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.9;
+        font-size: 12px;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .step {
+        display: flex;
+        align-items: flex-start;
+        gap: 13px;
+        padding: 20px;
+        border-radius: 18px;
+      }
+
+      .step-number {
+        width: 38px;
+        height: 38px;
+        display: grid;
+        place-items: center;
+        flex: 0 0 38px;
+        border-radius: 50%;
+        background:
+          linear-gradient(
+            135deg,
+            #2563eb,
+            #06b6d4
+          );
+        color: white;
+        font-weight: 800;
+      }
+
+      .step h3 {
+        margin: 0 0 5px;
+        font-size: 14px;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      .examples-table {
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: var(--surface);
+        box-shadow: var(--shadow);
+      }
+
+      .example-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .example-row:last-child {
+        border-bottom: 0;
+      }
+
+      .example-row span,
+      .example-row code {
+        padding: 13px 17px;
+      }
+
+      .example-row span {
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .example-row.header {
+        background: rgba(37, 99, 235, 0.08);
+      }
+
+      .example-row code {
+        color: var(--primary);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        border-left: 1px solid var(--border);
+      }
+
+      .example-row:not(.header) code:last-child {
+        color: var(--text);
+      }
+
+      .faq-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      details {
+        border: 1px solid var(--border);
+        border-radius: 15px;
+        background: var(--surface);
+        overflow: hidden;
+      }
+
+      summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 17px 18px;
+        cursor: pointer;
+        list-style: none;
+        font-weight: 700;
+        font-size: 13px;
+      }
+
+      summary::-webkit-details-marker {
+        display: none;
+      }
+
+      summary i {
+        color: var(--primary);
+        transition: 0.2s;
+      }
+
+      details[open] summary i {
+        transform: rotate(180deg);
+      }
+
+      details p {
+        margin: 0;
+        padding: 0 18px 18px;
+        color: var(--muted);
+        line-height: 1.9;
+        font-size: 12px;
+      }
+
+      @media (max-width: 950px) {
+        .editor-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .conversion-arrow {
+          flex-direction: row;
+          min-height: 55px;
+        }
+
+        .conversion-arrow span {
+          writing-mode: horizontal-tb;
+          transform: none;
+        }
+
+        .conversion-arrow div {
+          width: 45px;
+          height: 45px;
+        }
+
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 800px) {
+        .info-grid,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .page {
+          padding: 20px 12px 55px;
+        }
+
+        .hero {
+          align-items: flex-start;
+        }
+
+        .hero-icon {
+          width: 62px;
+          height: 62px;
+          flex-basis: 62px;
+          border-radius: 18px;
+          font-size: 25px;
+        }
+
+        .hero h1 {
+          font-size: 30px;
+        }
+
+        .tool-card {
+          padding: 17px;
+          border-radius: 19px;
+        }
+
+        .tool-header {
+          flex-direction: column;
+        }
+
+        .settings-bar {
+          justify-content: space-between;
+          gap: 8px;
+        }
+
+        .setting-item > i {
+          width: 32px;
+          height: 32px;
+        }
+
+        .setting-item strong {
+          font-size: 10px;
+        }
+
+        .setting-arrow {
+          width: 30px;
+          height: 30px;
+        }
+
+        textarea {
+          min-height: 300px;
+          font-size: 13px;
+        }
+
+        .actions {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .actions .primary-btn {
+          grid-column: span 2;
+          order: -1;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .privacy-card {
+          align-items: flex-start;
+        }
+
+        .section-title.centered {
+          justify-content: flex-start;
+        }
+      }
+
+      @media (max-width: 390px) {
+        .actions {
+          grid-template-columns: 1fr;
+        }
+
+        .actions .primary-btn {
+          grid-column: auto;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .setting-item span {
+          display: none;
+        }
+      }
+    </style>
+  </body>
+</html>
