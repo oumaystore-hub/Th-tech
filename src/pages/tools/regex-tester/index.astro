@@ -1,0 +1,1748 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Regex Tester | اختبار Regular Expressions | Th.Tech";
+const description =
+  "أداة Regex Tester مجانية لاختبار Regular Expressions مباشرة، مع دعم Flags وMatches وGroups وReplace ومعالجة محلية داخل المتصفح.";
+const canonical =
+  `https://oumaystore-hub.github.io${base}/tools/regex-tester/`;
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href={canonical} />
+
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <script is:inline>
+    (() => {
+      try {
+        if (localStorage.getItem("theme") === "light") {
+          document.documentElement.setAttribute("data-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark-mode");
+        }
+      } catch {}
+    })();
+  </script>
+
+  <style>
+    :root {
+      --bg: #f5f9ff;
+      --surface: #ffffff;
+      --surface-2: #f8fbff;
+      --text: #102033;
+      --muted: #64748b;
+      --border: #dce7f3;
+      --primary: #2563eb;
+      --primary-2: #3b82f6;
+      --cyan: #06b6d4;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --code: #eef4fb;
+      --match: rgba(37, 99, 235, 0.15);
+      --shadow: 0 18px 50px rgba(37, 99, 235, 0.08);
+    }
+
+    html.dark-mode,
+    html:not([data-theme="light"]).dark-mode {
+      --bg: #07111f;
+      --surface: #0d1b2a;
+      --surface-2: #101f31;
+      --text: #e8f1fb;
+      --muted: #91a4b9;
+      --border: #20364c;
+      --primary: #60a5fa;
+      --primary-2: #3b82f6;
+      --cyan: #22d3ee;
+      --success: #34d399;
+      --danger: #f87171;
+      --warning: #fbbf24;
+      --code: #081522;
+      --match: rgba(96, 165, 250, 0.18);
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    html[data-theme="light"] {
+      --bg: #f5f9ff;
+      --surface: #ffffff;
+      --surface-2: #f8fbff;
+      --text: #102033;
+      --muted: #64748b;
+      --border: #dce7f3;
+      --primary: #2563eb;
+      --primary-2: #3b82f6;
+      --cyan: #06b6d4;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --code: #eef4fb;
+      --match: rgba(37, 99, 235, 0.15);
+      --shadow: 0 18px 50px rgba(37, 99, 235, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(37, 99, 235, 0.08), transparent 28%),
+        radial-gradient(circle at 90% 10%, rgba(6, 182, 212, 0.07), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Cairo", sans-serif;
+      line-height: 1.7;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    button,
+    textarea,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 34px 18px 70px;
+    }
+
+    .container {
+      width: min(1120px, 100%);
+      margin: 0 auto;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 22px;
+    }
+
+    .breadcrumb a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .breadcrumb i {
+      font-size: 0.7rem;
+      opacity: 0.7;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 26px 10px 34px;
+    }
+
+    .hero-icon {
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      color: #fff;
+      font-size: 1.75rem;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      box-shadow: 0 18px 38px rgba(37, 99, 235, 0.23);
+      animation: floatIcon 4s ease-in-out infinite;
+    }
+
+    @keyframes floatIcon {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .eyebrow {
+      color: var(--primary);
+      font-size: 0.88rem;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.25rem);
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: -0.7px;
+    }
+
+    .hero p {
+      max-width: 780px;
+      margin: 14px auto 0;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+
+    .tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      padding: 6px 11px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.77rem;
+      font-weight: 700;
+    }
+
+    .tool-card,
+    .info-section,
+    .how-card,
+    .faq-section,
+    .privacy-card {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .tool-card {
+      padding: 24px;
+      overflow: hidden;
+    }
+
+    .tool-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 18px;
+    }
+
+    .tool-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tool-title-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+    }
+
+    .tool-title h2 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .tool-title p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(16, 185, 129, 0.09);
+      color: var(--success);
+      font-size: 0.75rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      50% {
+        opacity: 0.35;
+        transform: scale(0.8);
+      }
+    }
+
+    .pattern-box {
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+
+    .field-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 11px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .field-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
+
+    .field-title i {
+      color: var(--primary);
+    }
+
+    .regex-preview {
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.72rem;
+    }
+
+    .pattern-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      padding: 13px;
+    }
+
+    .regex-input {
+      min-width: 0;
+      height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      background: var(--surface);
+      color: var(--text);
+      padding: 0 14px;
+      direction: ltr;
+      text-align: left;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.95rem;
+    }
+
+    .regex-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .flags {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+    }
+
+    .flag-label {
+      width: 37px;
+      height: 37px;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 800;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .flag-label input {
+      display: none;
+    }
+
+    .flag-label:has(input:checked) {
+      background: rgba(37, 99, 235, 0.12);
+      color: var(--primary);
+    }
+
+    .test-box {
+      margin-top: 15px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+
+    .test-box textarea {
+      width: 100%;
+      min-height: 210px;
+      display: block;
+      resize: vertical;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      color: var(--text);
+      padding: 17px;
+      direction: ltr;
+      text-align: left;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.91rem;
+      line-height: 1.8;
+    }
+
+    textarea::placeholder,
+    input::placeholder {
+      color: var(--muted);
+      opacity: 0.7;
+    }
+
+    .field-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 13px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.72rem;
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .btn {
+      min-height: 45px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 800;
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+    .btn-primary {
+      border-color: transparent;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-primary:hover {
+      border-color: transparent;
+      box-shadow: 0 13px 30px rgba(37, 99, 235, 0.28);
+    }
+
+    .btn i {
+      margin-left: 6px;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 47px;
+      margin-top: 13px;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 0.81rem;
+    }
+
+    .status.success {
+      color: var(--success);
+      border-color: rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.06);
+    }
+
+    .status.error {
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.25);
+      background: rgba(239, 68, 68, 0.06);
+    }
+
+    .status.warning {
+      color: var(--warning);
+      border-color: rgba(245, 158, 11, 0.25);
+      background: rgba(245, 158, 11, 0.06);
+    }
+
+    .results {
+      margin-top: 17px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      background: var(--surface-2);
+    }
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 13px 15px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .results-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
+
+    .results-title i {
+      color: var(--primary);
+    }
+
+    .match-count {
+      min-width: 30px;
+      height: 28px;
+      padding: 0 8px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 9px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    .matches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 14px;
+      min-height: 58px;
+    }
+
+    .match {
+      padding: 6px 9px;
+      border-radius: 8px;
+      background: var(--match);
+      border: 1px solid rgba(37, 99, 235, 0.18);
+      color: var(--primary);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.76rem;
+      direction: ltr;
+    }
+
+    .empty-matches {
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .groups-box {
+      margin-top: 12px;
+      padding: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .groups-title {
+      margin-bottom: 9px;
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    .group-list {
+      display: grid;
+      gap: 7px;
+    }
+
+    .group-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 10px;
+      border-radius: 9px;
+      background: var(--surface);
+      font-size: 0.74rem;
+    }
+
+    .group-name {
+      color: var(--muted);
+    }
+
+    .group-value {
+      max-width: 70%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--primary);
+      direction: ltr;
+      font-family: "JetBrains Mono", monospace;
+    }
+
+    .replace-section {
+      margin-top: 15px;
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--surface-2);
+    }
+
+    .replace-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      font-size: 0.86rem;
+      font-weight: 800;
+    }
+
+    .replace-title i {
+      color: var(--primary);
+    }
+
+    .replace-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .replace-input {
+      width: 100%;
+      height: 43px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      outline: 0;
+      padding: 0 11px;
+      background: var(--surface);
+      color: var(--text);
+      direction: ltr;
+      text-align: left;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+    }
+
+    .replace-input:focus {
+      border-color: var(--primary);
+    }
+
+    .replace-output {
+      width: 100%;
+      min-height: 110px;
+      margin-top: 10px;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--surface);
+      color: var(--text);
+      direction: ltr;
+      text-align: left;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.78rem;
+      line-height: 1.7;
+      resize: vertical;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .stat {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface-2);
+      text-align: center;
+    }
+
+    .stat-value {
+      display: block;
+      color: var(--primary);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 1.05rem;
+      font-weight: 800;
+      direction: ltr;
+    }
+
+    .stat-label {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.7rem;
+    }
+
+    .privacy-card {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 17px 20px;
+      margin-top: 18px;
+    }
+
+    .privacy-icon {
+      flex: 0 0 auto;
+      width: 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .privacy-card strong {
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    .privacy-card span {
+      color: var(--muted);
+      font-size: 0.77rem;
+    }
+
+    .info-section,
+    .how-card,
+    .faq-section {
+      padding: 27px;
+      margin-top: 20px;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 1.45rem;
+    }
+
+    .section-heading p {
+      max-width: 700px;
+      margin: 7px auto 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .info-grid,
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 13px;
+    }
+
+    .info-box,
+    .step {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface-2);
+    }
+
+    .info-box-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+    }
+
+    .info-box h3,
+    .step h3 {
+      margin: 0 0 5px;
+      font-size: 0.96rem;
+    }
+
+    .info-box p,
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .step-number {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 11px;
+      border-radius: 10px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 800;
+    }
+
+    .faq-list {
+      display: grid;
+      gap: 10px;
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    details {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 15px 17px;
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "+";
+      float: left;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    details[open] summary::after {
+      content: "−";
+    }
+
+    details p {
+      margin: 0;
+      padding: 0 17px 16px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 850px) {
+      .actions {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .info-grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .tool-header {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 650px) {
+      .pattern-row {
+        grid-template-columns: 1fr;
+      }
+
+      .flags {
+        justify-content: center;
+      }
+
+      .replace-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 22px 11px 45px;
+      }
+
+      .hero {
+        padding: 18px 5px 25px;
+      }
+
+      .hero-icon {
+        width: 62px;
+        height: 62px;
+        border-radius: 18px;
+        font-size: 1.45rem;
+      }
+
+      .hero p {
+        font-size: 0.9rem;
+      }
+
+      .tool-card,
+      .info-section,
+      .how-card,
+      .faq-section,
+      .privacy-card {
+        padding: 17px;
+        border-radius: 18px;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .privacy-card {
+        align-items: flex-start;
+      }
+
+      .test-box textarea {
+        min-height: 190px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .tool-header {
+        flex-direction: column;
+      }
+
+      .live-badge {
+        align-self: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <Header />
+
+  <main class="page">
+    <div class="container">
+
+      <nav class="breadcrumb" aria-label="مسار التنقل">
+        <a href={`${base}/`}>الرئيسية</a>
+        <i class="fa-solid fa-chevron-left"></i>
+        <a href={`${base}/tools/`}>الأدوات</a>
+        <i class="fa-solid fa-chevron-left"></i>
+        <span>Regex Tester</span>
+      </nav>
+
+      <section class="hero">
+        <div class="hero-icon">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+
+        <div class="eyebrow">أداة المطورين</div>
+
+        <h1>Regex Tester</h1>
+
+        <p>
+          اختبر Regular Expressions مباشرة، شاهد جميع التطابقات والمجموعات،
+          واستخدم Flags وReplace بسهولة مع معالجة كاملة داخل المتصفح.
+        </p>
+
+        <div class="tags">
+          <span class="tag">Regex</span>
+          <span class="tag">Regular Expression</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Matches</span>
+          <span class="tag">Replace</span>
+        </div>
+      </section>
+
+      <section class="tool-card">
+
+        <div class="tool-header">
+          <div class="tool-title">
+            <div class="tool-title-icon">
+              <i class="fa-solid fa-code"></i>
+            </div>
+
+            <div>
+              <h2>اختبار Regular Expression</h2>
+              <p>النتائج تتحدث تلقائيًا أثناء الكتابة</p>
+            </div>
+          </div>
+
+          <div class="live-badge">
+            <span class="live-dot"></span>
+            اختبار فوري
+          </div>
+        </div>
+
+        <div class="pattern-box">
+          <div class="field-header">
+            <div class="field-title">
+              <i class="fa-solid fa-terminal"></i>
+              <span>Regex Pattern</span>
+            </div>
+
+            <span class="regex-preview" id="regexPreview">/pattern/</span>
+          </div>
+
+          <div class="pattern-row">
+            <input
+              id="pattern"
+              class="regex-input"
+              type="text"
+              spellcheck="false"
+              autocomplete="off"
+              placeholder="مثال: \b[A-Z][a-z]+\b"
+              aria-label="Regex Pattern"
+            />
+
+            <div class="flags" aria-label="Regex Flags">
+              <label class="flag-label" title="global">
+                <input id="flagG" type="checkbox" checked />
+                g
+              </label>
+
+              <label class="flag-label" title="ignore case">
+                <input id="flagI" type="checkbox" />
+                i
+              </label>
+
+              <label class="flag-label" title="multiline">
+                <input id="flagM" type="checkbox" />
+                m
+              </label>
+
+              <label class="flag-label" title="dot all">
+                <input id="flagS" type="checkbox" />
+                s
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="test-box">
+          <div class="field-header">
+            <div class="field-title">
+              <i class="fa-solid fa-file-lines"></i>
+              <span>Test String</span>
+            </div>
+
+            <span id="textLength">0 حرف</span>
+          </div>
+
+          <textarea
+            id="testString"
+            spellcheck="false"
+            placeholder="اكتب النص الذي تريد اختباره هنا..."
+            aria-label="Test String"
+          ></textarea>
+
+          <div class="field-footer">
+            <span>يمكنك إدخال نص متعدد الأسطر</span>
+            <span id="lineCount">0 سطر</span>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="testBtn" class="btn btn-primary" type="button">
+            <i class="fa-solid fa-bolt"></i>
+            اختبار الآن
+          </button>
+
+          <button id="exampleBtn" class="btn" type="button">
+            <i class="fa-solid fa-flask"></i>
+            مثال
+          </button>
+
+          <button id="clearBtn" class="btn" type="button">
+            <i class="fa-solid fa-eraser"></i>
+            مسح
+          </button>
+
+          <button id="copyBtn" class="btn" type="button">
+            <i class="fa-regular fa-copy"></i>
+            نسخ Regex
+          </button>
+        </div>
+
+        <div id="status" class="status" aria-live="polite">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>أدخل Regex ونصًا للبدء. ستظهر النتائج تلقائيًا.</span>
+        </div>
+
+        <div class="results">
+          <div class="results-header">
+            <div class="results-title">
+              <i class="fa-solid fa-list-check"></i>
+              <span>Matches</span>
+            </div>
+
+            <span id="matchCount" class="match-count">0</span>
+          </div>
+
+          <div id="matches" class="matches">
+            <span class="empty-matches">لا توجد نتائج بعد.</span>
+          </div>
+
+          <div id="groupsBox" class="groups-box" hidden>
+            <div class="groups-title">
+              Capturing Groups
+            </div>
+
+            <div id="groups" class="group-list"></div>
+          </div>
+        </div>
+
+        <div class="replace-section">
+          <div class="replace-title">
+            <i class="fa-solid fa-right-left"></i>
+            <span>Replace</span>
+          </div>
+
+          <div class="replace-grid">
+            <input
+              id="replaceFrom"
+              class="replace-input"
+              type="text"
+              placeholder="النص البديل..."
+              aria-label="Replacement"
+            />
+
+            <input
+              id="replaceWith"
+              class="replace-input"
+              type="text"
+              placeholder="استبدال بـ..."
+              aria-label="Replace With"
+            />
+          </div>
+
+          <textarea
+            id="replaceOutput"
+            class="replace-output"
+            readonly
+            placeholder="ستظهر نتيجة Replace هنا..."
+            aria-label="Replace Result"
+          ></textarea>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat">
+            <span id="statMatches" class="stat-value">0</span>
+            <span class="stat-label">Matches</span>
+          </div>
+
+          <div class="stat">
+            <span id="statGroups" class="stat-value">0</span>
+            <span class="stat-label">Groups</span>
+          </div>
+
+          <div class="stat">
+            <span id="statChars" class="stat-value">0</span>
+            <span class="stat-label">Characters</span>
+          </div>
+
+          <div class="stat">
+            <span id="statLines" class="stat-value">0</span>
+            <span class="stat-label">Lines</span>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="privacy-card">
+        <div class="privacy-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div>
+          <strong>اختبار محلي وآمن</strong>
+          <span>
+            يتم تشغيل Regex ومعالجة النص بالكامل داخل متصفحك، ولا يتم إرسال المحتوى إلى خادم خارجي.
+          </span>
+        </div>
+      </div>
+
+      <section class="info-section">
+        <div class="section-heading">
+          <h2>ما هو Regex Tester؟</h2>
+          <p>
+            أداة تساعد المطورين على إنشاء واختبار Regular Expressions
+            والتحقق من تطابقها مع النصوص بسرعة.
+          </p>
+        </div>
+
+        <div class="info-grid">
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <h3>Pattern Matching</h3>
+
+            <p>
+              ابحث عن أنماط محددة داخل النص واعرض جميع التطابقات التي يعثر عليها Regex.
+            </p>
+          </article>
+
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-sliders"></i>
+            </div>
+
+            <h3>Regex Flags</h3>
+
+            <p>
+              استخدم g و i و m و s لتغيير طريقة عمل التعبير النمطي حسب احتياجك.
+            </p>
+          </article>
+
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+
+            <h3>Groups & Replace</h3>
+
+            <p>
+              اعرض Capturing Groups واختبر استبدال النص باستخدام التعبير النمطي.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="how-card">
+        <div class="section-heading">
+          <h2>كيفية استخدام Regex Tester</h2>
+          <p>اختبر التعبير النمطي في ثلاث خطوات.</p>
+        </div>
+
+        <div class="steps">
+          <article class="step">
+            <div class="step-number">01</div>
+            <h3>اكتب Regex</h3>
+            <p>
+              أدخل Regular Expression الذي تريد اختباره في حقل Pattern.
+            </p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">02</div>
+            <h3>أدخل النص</h3>
+            <p>
+              ضع النص المستهدف في Test String، وستبدأ عملية الاختبار تلقائيًا.
+            </p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">03</div>
+            <h3>راجع النتائج</h3>
+            <p>
+              شاهد عدد التطابقات والمجموعات واستخدم Replace إذا أردت تجربة الاستبدال.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="faq-section">
+        <div class="section-heading">
+          <h2>الأسئلة الشائعة</h2>
+          <p>إجابات سريعة حول اختبار Regular Expressions.</p>
+        </div>
+
+        <div class="faq-list">
+          <details>
+            <summary>ما هو Regex؟</summary>
+            <p>
+              Regex أو Regular Expression هو نمط يستخدم للبحث عن نصوص أو التحقق
+              من صيغ معينة واستخراج أجزاء من النص.
+            </p>
+          </details>
+
+          <details>
+            <summary>ما وظيفة الحرف g؟</summary>
+            <p>
+              Flag g تعني Global وتسمح بالبحث عن جميع التطابقات بدل التوقف عند أول تطابق.
+            </p>
+          </details>
+
+          <details>
+            <summary>ما وظيفة i؟</summary>
+            <p>
+              Flag i تجعل المطابقة غير حساسة لحالة الأحرف، لذلك A و a يمكن أن يتطابقا.
+            </p>
+          </details>
+
+          <details>
+            <summary>هل النص الذي أختبره يتم رفعه إلى الخادم؟</summary>
+            <p>
+              لا. الأداة تستخدم JavaScript داخل المتصفح وتنفذ عملية الاختبار محليًا.
+            </p>
+          </details>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+
+  <script is:inline>
+    (() => {
+      const pattern = document.getElementById("pattern");
+      const testString = document.getElementById("testString");
+
+      const flagG = document.getElementById("flagG");
+      const flagI = document.getElementById("flagI");
+      const flagM = document.getElementById("flagM");
+      const flagS = document.getElementById("flagS");
+
+      const regexPreview = document.getElementById("regexPreview");
+      const textLength = document.getElementById("textLength");
+      const lineCount = document.getElementById("lineCount");
+
+      const testBtn = document.getElementById("testBtn");
+      const exampleBtn = document.getElementById("exampleBtn");
+      const clearBtn = document.getElementById("clearBtn");
+      const copyBtn = document.getElementById("copyBtn");
+
+      const status = document.getElementById("status");
+
+      const matches = document.getElementById("matches");
+      const matchCount = document.getElementById("matchCount");
+
+      const groupsBox = document.getElementById("groupsBox");
+      const groups = document.getElementById("groups");
+
+      const replaceFrom = document.getElementById("replaceFrom");
+      const replaceWith = document.getElementById("replaceWith");
+      const replaceOutput = document.getElementById("replaceOutput");
+
+      const statMatches = document.getElementById("statMatches");
+      const statGroups = document.getElementById("statGroups");
+      const statChars = document.getElementById("statChars");
+      const statLines = document.getElementById("statLines");
+
+      function getFlags() {
+        let flags = "";
+
+        if (flagG.checked) flags += "g";
+        if (flagI.checked) flags += "i";
+        if (flagM.checked) flags += "m";
+        if (flagS.checked) flags += "s";
+
+        return flags;
+      }
+
+      function setStatus(type, message) {
+        status.className = "status";
+
+        if (type === "success") {
+          status.classList.add("success");
+        }
+
+        if (type === "error") {
+          status.classList.add("error");
+        }
+
+        if (type === "warning") {
+          status.classList.add("warning");
+        }
+
+        const icon = status.querySelector("i");
+        const text = status.querySelector("span");
+
+        if (type === "success") {
+          icon.className = "fa-solid fa-circle-check";
+        } else if (type === "error") {
+          icon.className = "fa-solid fa-circle-exclamation";
+        } else if (type === "warning") {
+          icon.className = "fa-solid fa-triangle-exclamation";
+        } else {
+          icon.className = "fa-solid fa-circle-info";
+        }
+
+        text.textContent = message;
+      }
+
+      function updateTextStats() {
+        const text = testString.value;
+
+        textLength.textContent =
+          `${text.length.toLocaleString("ar")} حرف`;
+
+        const lines = text ? text.split(/\r?\n/u).length : 0;
+
+        lineCount.textContent =
+          `${lines.toLocaleString("ar")} سطر`;
+
+        statChars.textContent =
+          text.length.toLocaleString("ar");
+
+        statLines.textContent =
+          lines.toLocaleString("ar");
+      }
+
+      function updatePreview() {
+        const source = pattern.value;
+
+        if (!source) {
+          regexPreview.textContent = "/pattern/";
+          return;
+        }
+
+        regexPreview.textContent =
+          `/${source}/${getFlags()}`;
+      }
+
+      function clearResults() {
+        matches.innerHTML =
+          '<span class="empty-matches">لا توجد نتائج بعد.</span>';
+
+        matchCount.textContent = "0";
+
+        groups.innerHTML = "";
+        groupsBox.hidden = true;
+
+        replaceOutput.value = "";
+
+        statMatches.textContent = "0";
+        statGroups.textContent = "0";
+      }
+
+      function createRegex() {
+        return new RegExp(pattern.value, getFlags());
+      }
+
+      function runTest() {
+        updatePreview();
+        updateTextStats();
+
+        const source = pattern.value;
+
+        if (!source) {
+          clearResults();
+          setStatus("info", "أدخل Regex Pattern لبدء الاختبار.");
+          return;
+        }
+
+        try {
+          const regex = createRegex();
+          const text = testString.value;
+
+          clearResults();
+
+          if (!text) {
+            setStatus(
+              "warning",
+              "تم إنشاء Regex بنجاح. أضف نصًا للاختبار."
+            );
+            return;
+          }
+
+          const found = [];
+
+          if (regex.global) {
+            let match;
+
+            while ((match = regex.exec(text)) !== null) {
+              found.push(match);
+
+              if (match[0] === "") {
+                regex.lastIndex++;
+              }
+            }
+          } else {
+            const single = regex.exec(text);
+
+            if (single) {
+              found.push(single);
+            }
+          }
+
+          matchCount.textContent =
+            found.length.toLocaleString("ar");
+
+          statMatches.textContent =
+            found.length.toLocaleString("ar");
+
+          if (found.length === 0) {
+            matches.innerHTML =
+              '<span class="empty-matches">لم يتم العثور على أي تطابق.</span>';
+
+            setStatus(
+              "warning",
+              "Regex صالح، لكن لم يتم العثور على تطابق في النص."
+            );
+
+            updateReplace(regex);
+            return;
+          }
+
+          found.forEach((match) => {
+            const item = document.createElement("span");
+
+            item.className = "match";
+            item.textContent =
+              match[0] === "" ? "(empty)" : match[0];
+
+            item.title =
+              `Position: ${match.index}`;
+
+            matches.appendChild(item);
+          });
+
+          const firstMatch = found[0];
+
+          if (firstMatch && firstMatch.length > 1) {
+            const groupCount = firstMatch.length - 1;
+
+            statGroups.textContent =
+              groupCount.toLocaleString("ar");
+
+            groupsBox.hidden = false;
+
+            for (let index = 1; index < firstMatch.length; index++) {
+              const row = document.createElement("div");
+
+              row.className = "group-item";
+
+              const name = document.createElement("span");
+              name.className = "group-name";
+              name.textContent = `Group ${index}`;
+
+              const value = document.createElement("span");
+              value.className = "group-value";
+              value.textContent =
+                firstMatch[index] ?? "(undefined)";
+
+              row.appendChild(name);
+              row.appendChild(value);
+
+              groups.appendChild(row);
+            }
+          }
+
+          updateReplace(regex);
+
+          setStatus(
+            "success",
+            `تم العثور على ${found.length.toLocaleString("ar")} تطابق.`
+          );
+
+        } catch (error) {
+          clearResults();
+
+          const message =
+            error instanceof Error
+              ? error.message
+              : "Regex غير صالح.";
+
+          setStatus(
+            "error",
+            `Regex غير صالح: ${message}`
+          );
+        }
+      }
+
+      function updateReplace(regex) {
+        const replacement = replaceWith.value;
+
+        if (!replaceFrom.value && !replacement) {
+          replaceOutput.value = "";
+          return;
+        }
+
+        try {
+          const result = testString.value.replace(
+            regex,
+            replacement
+          );
+
+          replaceOutput.value = result;
+        } catch {
+          replaceOutput.value = "";
+        }
+      }
+
+      function loadExample() {
+        pattern.value = String.raw`\b[A-Za-z]+\b`;
+
+        testString.value =
+          "Hello world! This is a Regex Tester example. Regex makes text matching easier.";
+
+        replaceFrom.value = "";
+        replaceWith.value = "";
+
+        flagG.checked = true;
+        flagI.checked = false;
+        flagM.checked = false;
+        flagS.checked = false;
+
+        runTest();
+      }
+
+      function clearAll() {
+        pattern.value = "";
+        testString.value = "";
+        replaceFrom.value = "";
+        replaceWith.value = "";
+
+        clearResults();
+        updatePreview();
+        updateTextStats();
+
+        setStatus(
+          "info",
+          "تم مسح الأداة. أدخل Regex ونصًا جديدًا."
+        );
+
+        pattern.focus();
+      }
+
+      async function copyRegex() {
+        if (!pattern.value) {
+          setStatus("info", "لا يوجد Regex لنسخه.");
+          return;
+        }
+
+        const value =
+          `/${pattern.value}/${getFlags()}`;
+
+        try {
+          if (navigator.clipboard) {
+            await navigator.clipboard.writeText(value);
+          } else {
+            const temp = document.createElement("textarea");
+            temp.value = value;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand("copy");
+            temp.remove();
+          }
+
+          setStatus(
+            "success",
+            "تم نسخ Regex إلى الحافظة."
+          );
+        } catch {
+          setStatus(
+            "error",
+            "تعذر النسخ تلقائيًا."
+          );
+        }
+      }
+
+      function updateReplaceLive() {
+        if (!pattern.value) {
+          replaceOutput.value = "";
+          return;
+        }
+
+        try {
+          const regex = createRegex();
+
+          updateReplace(regex);
+        } catch {
+          replaceOutput.value = "";
+        }
+      }
+
+      pattern.addEventListener("input", runTest);
+      testString.addEventListener("input", runTest);
+
+      replaceFrom.addEventListener(
+        "input",
+        updateReplaceLive
+      );
+
+      replaceWith.addEventListener(
+        "input",
+        updateReplaceLive
+      );
+
+      [
+        flagG,
+        flagI,
+        flagM,
+        flagS
+      ].forEach((flag) => {
+        flag.addEventListener("change", runTest);
+      });
+
+      testBtn.addEventListener("click", runTest);
+      exampleBtn.addEventListener("click", loadExample);
+      clearBtn.addEventListener("click", clearAll);
+      copyBtn.addEventListener("click", copyRegex);
+
+      pattern.addEventListener("keydown", (event) => {
+        if (
+          (event.ctrlKey || event.metaKey) &&
+          event.key === "Enter"
+        ) {
+          event.preventDefault();
+          runTest();
+        }
+      });
+
+      testString.addEventListener("keydown", (event) => {
+        if (
+          (event.ctrlKey || event.metaKey) &&
+          event.key === "Enter"
+        ) {
+          event.preventDefault();
+          runTest();
+        }
+      });
+
+      updatePreview();
+      updateTextStats();
+      clearResults();
+    })();
+  </script>
+</body>
+</html>
