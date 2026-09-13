@@ -1,0 +1,1622 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const canonical = `${base}/tools/decimal-to-binary/`;
+
+const title = 'Decimal to Binary | تحويل Decimal إلى Binary';
+const description =
+  'أداة مجانية لتحويل الأرقام العشرية Decimal إلى النظام الثنائي Binary بسرعة، مع عرض خطوات التحويل والمعالجة محليًا داخل المتصفح.';
+const keywords =
+  'Decimal to Binary, Decimal Binary Converter, تحويل decimal إلى binary, decimal converter, binary converter';
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <link rel="canonical" href={canonical} />
+
+    <meta name="theme-color" content="#0ea5e9" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="tool-page">
+      <section class="hero">
+        <div class="hero-glow glow-one"></div>
+        <div class="hero-glow glow-two"></div>
+
+        <div class="container hero-inner">
+          <div class="breadcrumb">
+            <a href={`${base}/`}>
+              <i class="fa-solid fa-house"></i>
+              الرئيسية
+            </a>
+
+            <i class="fa-solid fa-chevron-left separator"></i>
+
+            <a href={`${base}/tools/`}>الأدوات</a>
+
+            <i class="fa-solid fa-chevron-left separator"></i>
+
+            <span>Decimal to Binary</span>
+          </div>
+
+          <div class="hero-icon">
+            <i class="fa-solid fa-arrow-right-arrow-left"></i>
+          </div>
+
+          <h1>Decimal <span>to Binary</span></h1>
+
+          <p>
+            حوّل الأرقام من النظام العشري Decimal إلى النظام الثنائي Binary
+            بسهولة وسرعة، مع معالجة البيانات مباشرة داخل متصفحك.
+          </p>
+
+          <div class="hero-tags">
+            <span>
+              <i class="fa-solid fa-hashtag"></i>
+              Decimal
+            </span>
+
+            <span>
+              <i class="fa-solid fa-0"></i>
+              Binary
+            </span>
+
+            <span>
+              <i class="fa-solid fa-arrows-rotate"></i>
+              Converter
+            </span>
+
+            <span>
+              <i class="fa-solid fa-shield-halved"></i>
+              Local
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <section class="tool-section">
+        <div class="container">
+          <div class="tool-card">
+            <div class="tool-header">
+              <div>
+                <div class="tool-title">
+                  <i class="fa-solid fa-calculator"></i>
+                  <h2>Decimal to Binary Converter</h2>
+                </div>
+
+                <p>
+                  أدخل رقمًا عشريًا وسيتم تحويله إلى Binary بشكل فوري.
+                </p>
+              </div>
+
+              <div class="status">
+                <span class="status-dot"></span>
+                يعمل محليًا
+              </div>
+            </div>
+
+            <div class="settings-bar">
+              <div class="setting-item">
+                <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                <span>Decimal</span>
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Binary</span>
+              </div>
+
+              <div class="setting-item">
+                <i class="fa-solid fa-bolt"></i>
+                <span>تحويل مباشر</span>
+              </div>
+
+              <div class="setting-item">
+                <i class="fa-solid fa-lock"></i>
+                <span>خصوصية كاملة</span>
+              </div>
+            </div>
+
+            <div class="editor-grid">
+              <div class="editor-box">
+                <div class="editor-head">
+                  <div class="editor-label">
+                    <span class="label-icon decimal-icon">
+                      <i class="fa-solid fa-hashtag"></i>
+                    </span>
+
+                    <div>
+                      <strong>Decimal</strong>
+                      <small>الرقم العشري</small>
+                    </div>
+                  </div>
+
+                  <button class="mini-btn" id="example-btn-top" type="button">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                    مثال
+                  </button>
+                </div>
+
+                <textarea
+                  id="decimalInput"
+                  dir="ltr"
+                  spellcheck="false"
+                  autocomplete="off"
+                  inputmode="numeric"
+                  placeholder="مثال: 255"
+                ></textarea>
+
+                <div class="editor-footer">
+                  <span id="decimalStats">0 digits</span>
+
+                  <button class="clear-btn" id="clear-input" type="button">
+                    <i class="fa-solid fa-xmark"></i>
+                    مسح
+                  </button>
+                </div>
+              </div>
+
+              <div class="conversion-arrow">
+                <button id="convert-btn" type="button" title="تحويل">
+                  <i class="fa-solid fa-arrow-left"></i>
+                </button>
+              </div>
+
+              <div class="editor-box output-box">
+                <div class="editor-head">
+                  <div class="editor-label">
+                    <span class="label-icon binary-icon">
+                      <i class="fa-solid fa-0"></i>
+                    </span>
+
+                    <div>
+                      <strong>Binary</strong>
+                      <small>النظام الثنائي</small>
+                    </div>
+                  </div>
+
+                  <button class="mini-btn" id="copy-btn" type="button">
+                    <i class="fa-regular fa-copy"></i>
+                    نسخ
+                  </button>
+                </div>
+
+                <textarea
+                  id="binaryOutput"
+                  dir="ltr"
+                  readonly
+                  spellcheck="false"
+                  placeholder="سيظهر Binary هنا..."
+                ></textarea>
+
+                <div class="editor-footer">
+                  <span id="binaryStats">0 bits</span>
+
+                  <button class="clear-btn" id="download-btn" type="button">
+                    <i class="fa-solid fa-download"></i>
+                    تنزيل
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="action-bar">
+              <button class="action secondary" id="example-btn" type="button">
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                مثال
+              </button>
+
+              <button class="action primary" id="main-convert" type="button">
+                <i class="fa-solid fa-bolt"></i>
+                تحويل إلى Binary
+              </button>
+
+              <button class="action secondary" id="reset-btn" type="button">
+                <i class="fa-solid fa-rotate-right"></i>
+                إعادة ضبط
+              </button>
+            </div>
+
+            <div class="message" id="message" aria-live="polite"></div>
+
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fa-solid fa-hashtag"></i>
+                </div>
+
+                <div>
+                  <strong id="stat-decimal">0</strong>
+                  <span>Decimal</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fa-solid fa-layer-group"></i>
+                </div>
+
+                <div>
+                  <strong id="stat-bits">0</strong>
+                  <span>Bits</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fa-solid fa-0"></i>
+                </div>
+
+                <div>
+                  <strong id="stat-binary">0</strong>
+                  <span>Binary Length</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fa-solid fa-check"></i>
+                </div>
+
+                <div>
+                  <strong id="stat-valid">0%</strong>
+                  <span>Valid</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="privacy-card">
+            <div class="privacy-icon">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <div>
+              <h3>بياناتك تبقى خاصة</h3>
+
+              <p>
+                تتم عملية التحويل بالكامل داخل متصفحك، ولا يتم إرسال الأرقام
+                التي تدخلها إلى أي خادم خارجي.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="info-section">
+        <div class="container">
+          <div class="section-heading">
+            <span>معلومات الأداة</span>
+
+            <h2>تحويل Decimal إلى Binary بسهولة</h2>
+
+            <p>
+              أداة عملية للمبرمجين والطلاب وكل من يتعامل مع الأنظمة العددية.
+            </p>
+          </div>
+
+          <div class="info-grid">
+            <article class="info-card">
+              <div class="info-icon">
+                <i class="fa-solid fa-calculator"></i>
+              </div>
+
+              <h3>تحويل دقيق</h3>
+
+              <p>
+                حوّل الأرقام العشرية الصحيحة إلى تمثيلها الثنائي بسرعة وبدقة.
+              </p>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon">
+                <i class="fa-solid fa-bolt"></i>
+              </div>
+
+              <h3>نتائج فورية</h3>
+
+              <p>
+                يتم تحديث النتيجة مباشرة أثناء إدخال الرقم دون الحاجة إلى
+                إعادة تحميل الصفحة.
+              </p>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon">
+                <i class="fa-solid fa-code"></i>
+              </div>
+
+              <h3>مفيد للمبرمجين</h3>
+
+              <p>
+                مناسب لفهم الأنظمة العددية والعمل مع Binary والـ Bits والـ
+                Bytes.
+              </p>
+            </article>
+
+            <article class="info-card">
+              <div class="info-icon">
+                <i class="fa-solid fa-shield"></i>
+              </div>
+
+              <h3>بدون خادم</h3>
+
+              <p>
+                تتم جميع العمليات محليًا داخل المتصفح، بدون رفع البيانات إلى
+                الإنترنت.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="how-section">
+        <div class="container">
+          <div class="section-heading">
+            <span>طريقة الاستخدام</span>
+
+            <h2>كيف تحول Decimal إلى Binary؟</h2>
+          </div>
+
+          <div class="steps">
+            <div class="step">
+              <div class="step-number">01</div>
+
+              <div>
+                <h3>أدخل الرقم</h3>
+
+                <p>
+                  اكتب رقمًا صحيحًا في خانة Decimal، مثل 10 أو 255.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">02</div>
+
+              <div>
+                <h3>ابدأ التحويل</h3>
+
+                <p>
+                  اضغط على «تحويل إلى Binary» للحصول على النتيجة.
+                </p>
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step-number">03</div>
+
+              <div>
+                <h3>انسخ النتيجة</h3>
+
+                <p>
+                  انسخ Binary الناتج أو قم بتنزيله كملف نصي.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="faq-section">
+        <div class="container">
+          <div class="section-heading">
+            <span>الأسئلة الشائعة</span>
+
+            <h2>أسئلة حول Decimal to Binary</h2>
+          </div>
+
+          <div class="faq-list">
+            <details>
+              <summary>
+                ما هو النظام العشري Decimal؟
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>
+                النظام العشري هو النظام العددي الذي نستخدمه في حياتنا اليومية
+                ويعتمد على عشرة أرقام من 0 إلى 9.
+              </p>
+            </details>
+
+            <details>
+              <summary>
+                ما هو النظام الثنائي Binary؟
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>
+                النظام الثنائي هو نظام عددي يعتمد على رقمين فقط، 0 و1،
+                ويستخدمه الحاسوب لتمثيل البيانات.
+              </p>
+            </details>
+
+            <details>
+              <summary>
+                كيف يتم تحويل Decimal إلى Binary؟
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>
+                يتم عادةً تحويل العدد العشري عبر القسمة المتكررة على 2
+                وتسجيل البواقي، ثم قراءة البواقي من الأسفل إلى الأعلى.
+              </p>
+            </details>
+
+            <details>
+              <summary>
+                هل يمكن تحويل الأرقام السالبة؟
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>
+                نعم، تدعم الأداة الأرقام الصحيحة السالبة وتعرض القيمة
+                الثنائية مع إشارة السالب.
+              </p>
+            </details>
+
+            <details>
+              <summary>
+                هل تتم معالجة البيانات محليًا؟
+                <i class="fa-solid fa-chevron-down"></i>
+              </summary>
+
+              <p>
+                نعم. عملية التحويل تتم بالكامل داخل متصفحك ولا يتم إرسال
+                الرقم إلى خادم خارجي.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+
+    <style>
+      :global(*) {
+        box-sizing: border-box;
+      }
+
+      :global(html) {
+        scroll-behavior: smooth;
+      }
+
+      :global(body) {
+        margin: 0;
+        font-family: 'Cairo', sans-serif;
+        background: #f8fbff;
+        color: #0f172a;
+      }
+
+      :global(body.dark-mode) {
+        background: #07111f;
+        color: #e5eef9;
+      }
+
+      :global(button),
+      :global(textarea) {
+        font-family: inherit;
+      }
+
+      .tool-page {
+        min-height: 100vh;
+        overflow: hidden;
+      }
+
+      .container {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .hero {
+        position: relative;
+        padding: 55px 0 80px;
+        background:
+          radial-gradient(
+            circle at 15% 25%,
+            rgba(14, 165, 233, 0.15),
+            transparent 32%
+          ),
+          radial-gradient(
+            circle at 85% 75%,
+            rgba(59, 130, 246, 0.13),
+            transparent 30%
+          ),
+          linear-gradient(135deg, #eff8ff, #f8fbff);
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      :global(body.dark-mode) .hero {
+        background:
+          radial-gradient(
+            circle at 15% 25%,
+            rgba(14, 165, 233, 0.12),
+            transparent 32%
+          ),
+          radial-gradient(
+            circle at 85% 75%,
+            rgba(59, 130, 246, 0.12),
+            transparent 30%
+          ),
+          linear-gradient(135deg, #081522, #07111f);
+        border-color: #17283b;
+      }
+
+      .hero-glow {
+        position: absolute;
+        width: 280px;
+        height: 280px;
+        border-radius: 50%;
+        filter: blur(70px);
+        opacity: 0.3;
+        pointer-events: none;
+      }
+
+      .glow-one {
+        top: -130px;
+        right: -80px;
+        background: #38bdf8;
+      }
+
+      .glow-two {
+        bottom: -150px;
+        left: -100px;
+        background: #2563eb;
+      }
+
+      .hero-inner {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+      }
+
+      .breadcrumb {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 32px;
+        color: #64748b;
+        font-size: 13px;
+      }
+
+      .breadcrumb a {
+        color: #64748b;
+        text-decoration: none;
+        transition: 0.2s;
+      }
+
+      .breadcrumb a:hover {
+        color: #0284c7;
+      }
+
+      .breadcrumb i {
+        font-size: 10px;
+      }
+
+      .breadcrumb .separator {
+        color: #94a3b8;
+      }
+
+      .hero-icon {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 22px;
+        display: grid;
+        place-items: center;
+        border-radius: 22px;
+        background: linear-gradient(135deg, #0284c7, #2563eb);
+        color: white;
+        font-size: 29px;
+        box-shadow: 0 18px 45px rgba(14, 165, 233, 0.28);
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(34px, 5vw, 54px);
+        line-height: 1.2;
+        font-weight: 800;
+        letter-spacing: -1px;
+      }
+
+      .hero h1 span {
+        color: #0284c7;
+      }
+
+      .hero p {
+        max-width: 720px;
+        margin: 18px auto 0;
+        color: #64748b;
+        font-size: 16px;
+        line-height: 2;
+      }
+
+      :global(body.dark-mode) .hero p,
+      :global(body.dark-mode) .breadcrumb {
+        color: #94a3b8;
+      }
+
+      .hero-tags {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 25px;
+      }
+
+      .hero-tags span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 13px;
+        border: 1px solid #dbeafe;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.72);
+        color: #475569;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .hero-tags i {
+        color: #0284c7;
+      }
+
+      :global(body.dark-mode) .hero-tags span {
+        background: rgba(15, 31, 49, 0.8);
+        border-color: #1e3a56;
+        color: #cbd5e1;
+      }
+
+      .tool-section {
+        padding: 55px 0 30px;
+      }
+
+      .tool-card {
+        padding: 25px;
+        border: 1px solid #e2e8f0;
+        border-radius: 24px;
+        background: #fff;
+        box-shadow: 0 20px 60px rgba(15, 23, 42, 0.07);
+      }
+
+      :global(body.dark-mode) .tool-card {
+        background: #0b1726;
+        border-color: #1c3046;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.22);
+      }
+
+      .tool-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+        padding-bottom: 22px;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      :global(body.dark-mode) .tool-header {
+        border-color: #1c3046;
+      }
+
+      .tool-title {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+      }
+
+      .tool-title > i {
+        color: #0284c7;
+        font-size: 19px;
+      }
+
+      .tool-title h2 {
+        margin: 0;
+        font-size: 19px;
+      }
+
+      .tool-header p {
+        margin: 6px 0 0;
+        color: #64748b;
+        font-size: 13px;
+      }
+
+      .status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 11px;
+        border-radius: 999px;
+        background: #f0fdf4;
+        color: #15803d;
+        font-size: 11px;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.12);
+      }
+
+      :global(body.dark-mode) .status {
+        background: rgba(34, 197, 94, 0.1);
+      }
+
+      .settings-bar {
+        display: flex;
+        align-items: center;
+        gap: 22px;
+        flex-wrap: wrap;
+        padding: 16px 0;
+        color: #64748b;
+        font-size: 12px;
+      }
+
+      .setting-item {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+
+      .setting-item i {
+        color: #0284c7;
+      }
+
+      .editor-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 54px minmax(0, 1fr);
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .editor-box {
+        overflow: hidden;
+        border: 1px solid #dbe4ee;
+        border-radius: 17px;
+        background: #f8fafc;
+      }
+
+      :global(body.dark-mode) .editor-box {
+        border-color: #21374e;
+        background: #081421;
+      }
+
+      .editor-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 12px 14px;
+        border-bottom: 1px solid #dbe4ee;
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      :global(body.dark-mode) .editor-head {
+        border-color: #21374e;
+        background: #0c1a2a;
+      }
+
+      .editor-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .editor-label strong,
+      .editor-label small {
+        display: block;
+      }
+
+      .editor-label strong {
+        font-size: 13px;
+      }
+
+      .editor-label small {
+        margin-top: 2px;
+        color: #94a3b8;
+        font-size: 10px;
+      }
+
+      .label-icon {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        border-radius: 10px;
+        font-size: 14px;
+      }
+
+      .decimal-icon {
+        background: #e0f2fe;
+        color: #0284c7;
+      }
+
+      .binary-icon {
+        background: #dbeafe;
+        color: #2563eb;
+      }
+
+      :global(body.dark-mode) .decimal-icon,
+      :global(body.dark-mode) .binary-icon {
+        background: #102a40;
+      }
+
+      .mini-btn,
+      .clear-btn {
+        border: 0;
+        cursor: pointer;
+        transition: 0.2s;
+      }
+
+      .mini-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 10px;
+        border-radius: 8px;
+        background: #e8f4fb;
+        color: #0369a1;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .mini-btn:hover {
+        background: #d7eefb;
+        transform: translateY(-1px);
+      }
+
+      :global(body.dark-mode) .mini-btn {
+        background: #102a40;
+        color: #7dd3fc;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 310px;
+        display: block;
+        resize: vertical;
+        border: 0;
+        outline: 0;
+        padding: 18px;
+        background: transparent;
+        color: #0f172a;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+        line-height: 1.9;
+      }
+
+      :global(body.dark-mode) textarea {
+        color: #e2e8f0;
+      }
+
+      textarea::placeholder {
+        color: #94a3b8;
+      }
+
+      .output-box textarea {
+        background: rgba(255, 255, 255, 0.35);
+      }
+
+      :global(body.dark-mode) .output-box textarea {
+        background: rgba(15, 31, 49, 0.25);
+      }
+
+      .editor-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 9px 14px;
+        border-top: 1px solid #dbe4ee;
+        color: #94a3b8;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 10px;
+      }
+
+      :global(body.dark-mode) .editor-footer {
+        border-color: #21374e;
+      }
+
+      .clear-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: transparent;
+        color: #64748b;
+        font-size: 11px;
+      }
+
+      .clear-btn:hover {
+        color: #ef4444;
+      }
+
+      .conversion-arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .conversion-arrow button {
+        width: 44px;
+        height: 44px;
+        display: grid;
+        place-items: center;
+        border: 0;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #0284c7, #2563eb);
+        color: white;
+        cursor: pointer;
+        box-shadow: 0 10px 25px rgba(14, 165, 233, 0.25);
+        transition: 0.25s;
+      }
+
+      .conversion-arrow button:hover {
+        transform: scale(1.08);
+        box-shadow: 0 13px 30px rgba(14, 165, 233, 0.35);
+      }
+
+      .action-bar {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .action {
+        min-width: 145px;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        padding: 11px 17px;
+        border-radius: 11px;
+        border: 1px solid #dbe4ee;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 700;
+        transition: 0.2s;
+      }
+
+      .action:hover {
+        transform: translateY(-2px);
+      }
+
+      .action.primary {
+        border-color: transparent;
+        background: linear-gradient(135deg, #0284c7, #2563eb);
+        color: white;
+        box-shadow: 0 9px 22px rgba(14, 165, 233, 0.22);
+      }
+
+      .action.secondary {
+        background: #f8fafc;
+        color: #475569;
+      }
+
+      .action.secondary:hover {
+        border-color: #bae6fd;
+        color: #0284c7;
+      }
+
+      :global(body.dark-mode) .action.secondary {
+        background: #0d1d2e;
+        border-color: #21374e;
+        color: #cbd5e1;
+      }
+
+      .message {
+        min-height: 22px;
+        margin-top: 10px;
+        text-align: center;
+        font-size: 12px;
+        color: #0284c7;
+      }
+
+      .message.error {
+        color: #ef4444;
+      }
+
+      .message.success {
+        color: #16a34a;
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+        padding: 13px;
+        border: 1px solid #e2e8f0;
+        border-radius: 13px;
+        background: #f8fafc;
+      }
+
+      :global(body.dark-mode) .stat-card {
+        border-color: #1c3046;
+        background: #0c1a2a;
+      }
+
+      .stat-icon {
+        width: 34px;
+        height: 34px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border-radius: 9px;
+        background: #e0f2fe;
+        color: #0284c7;
+        font-size: 13px;
+      }
+
+      :global(body.dark-mode) .stat-icon {
+        background: #102a40;
+      }
+
+      .stat-card strong,
+      .stat-card span {
+        display: block;
+      }
+
+      .stat-card strong {
+        max-width: 120px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 14px;
+      }
+
+      .stat-card span {
+        margin-top: 2px;
+        color: #94a3b8;
+        font-size: 10px;
+      }
+
+      .privacy-card {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-top: 18px;
+        padding: 18px 20px;
+        border: 1px solid #bae6fd;
+        border-radius: 17px;
+        background: #f0f9ff;
+      }
+
+      :global(body.dark-mode) .privacy-card {
+        border-color: #164e63;
+        background: #082331;
+      }
+
+      .privacy-icon {
+        width: 45px;
+        height: 45px;
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        border-radius: 13px;
+        background: #dbeafe;
+        color: #0284c7;
+      }
+
+      :global(body.dark-mode) .privacy-icon {
+        background: #10354a;
+      }
+
+      .privacy-card h3 {
+        margin: 0 0 4px;
+        font-size: 14px;
+      }
+
+      .privacy-card p {
+        margin: 0;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      .info-section,
+      .how-section,
+      .faq-section {
+        padding: 75px 0;
+      }
+
+      .info-section {
+        background: #f8fafc;
+      }
+
+      :global(body.dark-mode) .info-section {
+        background: #081421;
+      }
+
+      .section-heading {
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .section-heading > span {
+        color: #0284c7;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .section-heading h2 {
+        margin: 7px 0;
+        font-size: clamp(24px, 4vw, 34px);
+      }
+
+      .section-heading p {
+        margin: 0;
+        color: #64748b;
+        font-size: 13px;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+
+      .info-card {
+        padding: 24px;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        background: white;
+        transition: 0.25s;
+      }
+
+      .info-card:hover {
+        transform: translateY(-5px);
+        border-color: #bae6fd;
+        box-shadow: 0 15px 35px rgba(15, 23, 42, 0.06);
+      }
+
+      :global(body.dark-mode) .info-card {
+        background: #0b1726;
+        border-color: #1c3046;
+      }
+
+      .info-icon {
+        width: 45px;
+        height: 45px;
+        display: grid;
+        place-items: center;
+        margin-bottom: 16px;
+        border-radius: 12px;
+        background: #e0f2fe;
+        color: #0284c7;
+      }
+
+      :global(body.dark-mode) .info-icon {
+        background: #102a40;
+      }
+
+      .info-card h3 {
+        margin: 0 0 7px;
+        font-size: 15px;
+      }
+
+      .info-card p {
+        margin: 0;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+      }
+
+      .step {
+        position: relative;
+        display: flex;
+        gap: 15px;
+        padding: 23px;
+        border: 1px solid #e2e8f0;
+        border-radius: 18px;
+        background: white;
+      }
+
+      :global(body.dark-mode) .step {
+        background: #0b1726;
+        border-color: #1c3046;
+      }
+
+      .step-number {
+        font-family: 'JetBrains Mono', monospace;
+        color: #0284c7;
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      .step h3 {
+        margin: 0 0 6px;
+        font-size: 14px;
+      }
+
+      .step p {
+        margin: 0;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      .faq-section {
+        background: #f8fafc;
+      }
+
+      :global(body.dark-mode) .faq-section {
+        background: #081421;
+      }
+
+      .faq-list {
+        max-width: 850px;
+        margin: auto;
+        display: grid;
+        gap: 10px;
+      }
+
+      .faq-list details {
+        padding: 0 18px;
+        border: 1px solid #e2e8f0;
+        border-radius: 14px;
+        background: white;
+      }
+
+      :global(body.dark-mode) .faq-list details {
+        background: #0b1726;
+        border-color: #1c3046;
+      }
+
+      .faq-list summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        padding: 17px 0;
+        cursor: pointer;
+        list-style: none;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .faq-list summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq-list summary i {
+        color: #0284c7;
+        font-size: 11px;
+        transition: 0.2s;
+      }
+
+      .faq-list details[open] summary i {
+        transform: rotate(180deg);
+      }
+
+      .faq-list p {
+        margin: 0;
+        padding: 0 0 17px;
+        color: #64748b;
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      @media (max-width: 900px) {
+        .editor-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .conversion-arrow {
+          transform: rotate(-90deg);
+          height: 45px;
+        }
+
+        .stats-grid,
+        .info-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .steps {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 600px) {
+        .container {
+          width: min(100% - 20px, 1180px);
+        }
+
+        .hero {
+          padding: 35px 0 55px;
+        }
+
+        .tool-section {
+          padding-top: 30px;
+        }
+
+        .tool-card {
+          padding: 14px;
+          border-radius: 18px;
+        }
+
+        .tool-header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .settings-bar {
+          gap: 12px;
+        }
+
+        textarea {
+          min-height: 240px;
+        }
+
+        .stats-grid,
+        .info-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .action {
+          flex: 1 1 100%;
+        }
+
+        .privacy-card {
+          align-items: flex-start;
+        }
+
+        .info-section,
+        .how-section,
+        .faq-section {
+          padding: 50px 0;
+        }
+      }
+    </style>
+
+    <script is:inline>
+      const decimalInput = document.getElementById('decimalInput');
+      const binaryOutput = document.getElementById('binaryOutput');
+
+      const convertBtn = document.getElementById('convert-btn');
+      const mainConvert = document.getElementById('main-convert');
+
+      const exampleBtn = document.getElementById('example-btn');
+      const exampleBtnTop = document.getElementById('example-btn-top');
+
+      const resetBtn = document.getElementById('reset-btn');
+      const clearInput = document.getElementById('clear-input');
+      const copyBtn = document.getElementById('copy-btn');
+      const downloadBtn = document.getElementById('download-btn');
+
+      const decimalStats = document.getElementById('decimalStats');
+      const binaryStats = document.getElementById('binaryStats');
+
+      const statDecimal = document.getElementById('stat-decimal');
+      const statBits = document.getElementById('stat-bits');
+      const statBinary = document.getElementById('stat-binary');
+      const statValid = document.getElementById('stat-valid');
+
+      const message = document.getElementById('message');
+
+      function showMessage(text, type = '') {
+        message.textContent = text;
+        message.className = `message ${type}`;
+
+        if (text) {
+          setTimeout(() => {
+            if (message.textContent === text) {
+              message.textContent = '';
+              message.className = 'message';
+            }
+          }, 3000);
+        }
+      }
+
+      function updateStats(decimalValue, binaryValue, valid = 0) {
+        const decimalLength = decimalValue ? decimalValue.length : 0;
+        const binaryLength = binaryValue ? binaryValue.length : 0;
+
+        decimalStats.textContent = `${decimalLength} digits`;
+        binaryStats.textContent = `${binaryLength} bits`;
+
+        statDecimal.textContent = decimalValue || '0';
+        statBits.textContent = binaryLength.toLocaleString();
+        statBinary.textContent = binaryLength.toLocaleString();
+        statValid.textContent = `${valid}%`;
+      }
+
+      function convertDecimalToBinary() {
+        const raw = decimalInput.value.trim();
+
+        if (!raw) {
+          binaryOutput.value = '';
+          updateStats('', '', 0);
+          showMessage('');
+          return;
+        }
+
+        /*
+         * يسمح بأعداد صحيحة موجبة أو سالبة.
+         * لا يتم قبول الكسور لأن التحويل هنا مخصص للأعداد الصحيحة.
+         */
+        if (!/^-?\d+$/.test(raw)) {
+          binaryOutput.value = '';
+          updateStats(raw, '', 0);
+          showMessage(
+            'أدخل عددًا صحيحًا صالحًا، مثل 10 أو 255 أو -25.',
+            'error'
+          );
+          return;
+        }
+
+        try {
+          const decimal = BigInt(raw);
+
+          let binary;
+
+          if (decimal < 0n) {
+            binary = '-' + (-decimal).toString(2);
+          } else {
+            binary = decimal.toString(2);
+          }
+
+          binaryOutput.value = binary;
+
+          updateStats(raw, binary, 100);
+
+          showMessage('تم تحويل Decimal إلى Binary بنجاح.', 'success');
+        } catch {
+          binaryOutput.value = '';
+          updateStats(raw, '', 0);
+
+          showMessage('تعذر تحويل الرقم. تحقق من القيمة المدخلة.', 'error');
+        }
+      }
+
+      async function copyOutput() {
+        if (!binaryOutput.value) {
+          showMessage('لا توجد نتيجة لنسخها.', 'error');
+          return;
+        }
+
+        try {
+          await navigator.clipboard.writeText(binaryOutput.value);
+          showMessage('تم نسخ Binary إلى الحافظة.', 'success');
+        } catch {
+          binaryOutput.select();
+          document.execCommand('copy');
+          showMessage('تم نسخ Binary.', 'success');
+        }
+      }
+
+      function downloadBinary() {
+        if (!binaryOutput.value) {
+          showMessage('لا توجد نتيجة لتنزيلها.', 'error');
+          return;
+        }
+
+        const blob = new Blob([binaryOutput.value], {
+          type: 'text/plain;charset=utf-8'
+        });
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+
+        link.href = url;
+        link.download = 'decimal-to-binary.txt';
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        URL.revokeObjectURL(url);
+
+        showMessage('تم تنزيل الملف بنجاح.', 'success');
+      }
+
+      function loadExample() {
+        decimalInput.value = '255';
+        convertDecimalToBinary();
+        decimalInput.focus();
+      }
+
+      function resetTool() {
+        decimalInput.value = '';
+        binaryOutput.value = '';
+
+        updateStats('', '', 0);
+        showMessage('');
+
+        decimalInput.focus();
+      }
+
+      convertBtn.addEventListener('click', convertDecimalToBinary);
+      mainConvert.addEventListener('click', convertDecimalToBinary);
+
+      exampleBtn.addEventListener('click', loadExample);
+      exampleBtnTop.addEventListener('click', loadExample);
+
+      resetBtn.addEventListener('click', resetTool);
+      clearInput.addEventListener('click', resetTool);
+
+      copyBtn.addEventListener('click', copyOutput);
+      downloadBtn.addEventListener('click', downloadBinary);
+
+      decimalInput.addEventListener('input', () => {
+        decimalStats.textContent =
+          `${decimalInput.value.trim().length} digits`;
+
+        if (!decimalInput.value.trim()) {
+          binaryOutput.value = '';
+          updateStats('', '', 0);
+          return;
+        }
+
+        convertDecimalToBinary();
+      });
+
+      decimalInput.addEventListener('keydown', (event) => {
+        if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+          event.preventDefault();
+          convertDecimalToBinary();
+        }
+      });
+
+      function syncTheme() {
+        const isDark =
+          document.documentElement.classList.contains('dark-mode') ||
+          document.body.classList.contains('dark-mode');
+
+        document.body.classList.toggle('dark-mode', isDark);
+      }
+
+      syncTheme();
+
+      window.addEventListener('storage', syncTheme);
+
+      const observer = new MutationObserver(syncTheme);
+
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class']
+      });
+
+      observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class']
+      });
+    </script>
+  </body>
+</html>
