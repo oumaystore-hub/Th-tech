@@ -1,0 +1,1424 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const title = "Email Validator | مدقق البريد الإلكتروني | Th.Tech";
+const description =
+  "أداة مجانية للتحقق من صحة عناوين البريد الإلكتروني بسرعة، مع فحص الصيغة والنطاق والرموز غير الصالحة.";
+const canonical =
+  `https://oumaystore-hub.github.io${base}/tools/email-validator/`;
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href={canonical} />
+
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+
+  <script is:inline>
+    (() => {
+      try {
+        if (localStorage.getItem("theme") === "light") {
+          document.documentElement.setAttribute("data-theme", "light");
+        } else {
+          document.documentElement.classList.add("dark-mode");
+        }
+      } catch {}
+    })();
+  </script>
+
+  <style>
+    :root {
+      --bg: #f5f9ff;
+      --surface: #ffffff;
+      --surface-2: #f8fbff;
+      --text: #102033;
+      --muted: #64748b;
+      --border: #dce7f3;
+      --primary: #2563eb;
+      --primary-2: #3b82f6;
+      --cyan: #06b6d4;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --code: #eef4fb;
+      --shadow: 0 18px 50px rgba(37, 99, 235, 0.08);
+    }
+
+    html.dark-mode,
+    html:not([data-theme="light"]).dark-mode {
+      --bg: #07111f;
+      --surface: #0d1b2a;
+      --surface-2: #101f31;
+      --text: #e8f1fb;
+      --muted: #91a4b9;
+      --border: #20364c;
+      --primary: #60a5fa;
+      --primary-2: #3b82f6;
+      --cyan: #22d3ee;
+      --success: #34d399;
+      --danger: #f87171;
+      --warning: #fbbf24;
+      --code: #081522;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.25);
+    }
+
+    html[data-theme="light"] {
+      --bg: #f5f9ff;
+      --surface: #ffffff;
+      --surface-2: #f8fbff;
+      --text: #102033;
+      --muted: #64748b;
+      --border: #dce7f3;
+      --primary: #2563eb;
+      --primary-2: #3b82f6;
+      --cyan: #06b6d4;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --code: #eef4fb;
+      --shadow: 0 18px 50px rgba(37, 99, 235, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(37, 99, 235, 0.08), transparent 28%),
+        radial-gradient(circle at 90% 10%, rgba(6, 182, 212, 0.07), transparent 25%),
+        var(--bg);
+      color: var(--text);
+      font-family: "Cairo", sans-serif;
+      line-height: 1.7;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    .page {
+      min-height: 100vh;
+      padding: 34px 18px 70px;
+    }
+
+    .container {
+      width: min(1100px, 100%);
+      margin: 0 auto;
+    }
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 22px;
+    }
+
+    .breadcrumb a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .breadcrumb i {
+      font-size: 0.7rem;
+      opacity: 0.7;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 25px 10px 35px;
+    }
+
+    .hero-icon {
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      color: #fff;
+      font-size: 1.75rem;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      box-shadow: 0 18px 38px rgba(37, 99, 235, 0.23);
+      animation: floatIcon 4s ease-in-out infinite;
+    }
+
+    @keyframes floatIcon {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+
+    .eyebrow {
+      color: var(--primary);
+      font-size: 0.87rem;
+      font-weight: 800;
+      margin-bottom: 7px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.2;
+      font-weight: 800;
+      letter-spacing: -0.7px;
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 14px auto 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .tags {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 18px;
+    }
+
+    .tag {
+      padding: 6px 11px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+    }
+
+    .tool-card,
+    .info-section,
+    .how-card,
+    .faq-section,
+    .privacy-card {
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .tool-card {
+      padding: 24px;
+    }
+
+    .tool-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+
+    .tool-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .tool-title-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+    }
+
+    .tool-title h2 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .tool-title p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .live-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      color: var(--success);
+      background: rgba(16, 185, 129, 0.09);
+      font-size: 0.75rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      50% {
+        opacity: 0.35;
+        transform: scale(0.8);
+      }
+    }
+
+    .validator-grid {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 16px;
+    }
+
+    .panel {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 13px 15px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .panel-title i {
+      color: var(--primary);
+    }
+
+    .panel-badge {
+      padding: 4px 8px;
+      border-radius: 7px;
+      background: var(--code);
+      color: var(--muted);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.67rem;
+    }
+
+    .input-area {
+      padding: 15px;
+    }
+
+    .email-input {
+      width: 100%;
+      min-height: 58px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      outline: 0;
+      padding: 0 16px;
+      background: var(--surface);
+      color: var(--text);
+      direction: ltr;
+      text-align: left;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 0.95rem;
+      transition: 0.2s ease;
+    }
+
+    .email-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+    }
+
+    .email-input.valid {
+      border-color: var(--success);
+      box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.08);
+    }
+
+    .email-input.invalid {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.08);
+    }
+
+    .hint {
+      margin-top: 9px;
+      color: var(--muted);
+      font-size: 0.74rem;
+    }
+
+    .result {
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .result-icon {
+      width: 65px;
+      height: 65px;
+      display: grid;
+      place-items: center;
+      border-radius: 19px;
+      margin-bottom: 12px;
+      background: rgba(37, 99, 235, 0.09);
+      color: var(--primary);
+      font-size: 1.55rem;
+      transition: 0.25s ease;
+    }
+
+    .result.valid .result-icon {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .result.invalid .result-icon {
+      background: rgba(239, 68, 68, 0.1);
+      color: var(--danger);
+    }
+
+    .result h3 {
+      margin: 0;
+      font-size: 1.15rem;
+    }
+
+    .result p {
+      max-width: 400px;
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .checks {
+      display: grid;
+      gap: 8px;
+      padding: 15px;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--surface);
+      font-size: 0.77rem;
+    }
+
+    .check-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+    }
+
+    .check-name i {
+      width: 17px;
+      text-align: center;
+    }
+
+    .check-status {
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .check-status.ok {
+      color: var(--success);
+    }
+
+    .check-status.bad {
+      color: var(--danger);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .btn {
+      min-height: 46px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface);
+      color: var(--text);
+      font-weight: 800;
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
+    }
+
+    .btn-primary {
+      border-color: transparent;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--primary-2));
+      box-shadow: 0 10px 25px rgba(37, 99, 235, 0.2);
+    }
+
+    .btn-primary:hover {
+      border-color: transparent;
+      box-shadow: 0 13px 30px rgba(37, 99, 235, 0.28);
+    }
+
+    .btn i {
+      margin-left: 6px;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      min-height: 47px;
+      margin-top: 13px;
+      padding: 11px 14px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 0.81rem;
+    }
+
+    .status.success {
+      color: var(--success);
+      border-color: rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.06);
+    }
+
+    .status.error {
+      color: var(--danger);
+      border-color: rgba(239, 68, 68, 0.25);
+      background: rgba(239, 68, 68, 0.06);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .stat {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: var(--surface-2);
+      text-align: center;
+    }
+
+    .stat-value {
+      display: block;
+      color: var(--primary);
+      font-family: "JetBrains Mono", monospace;
+      font-size: 1rem;
+      font-weight: 800;
+      direction: ltr;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .stat-label {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 0.7rem;
+    }
+
+    .privacy-card {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 17px 20px;
+      margin-top: 18px;
+    }
+
+    .privacy-icon {
+      flex: 0 0 auto;
+      width: 43px;
+      height: 43px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--success);
+    }
+
+    .privacy-card strong {
+      display: block;
+      font-size: 0.9rem;
+    }
+
+    .privacy-card span {
+      color: var(--muted);
+      font-size: 0.77rem;
+    }
+
+    .info-section,
+    .how-card,
+    .faq-section {
+      padding: 27px;
+      margin-top: 20px;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 22px;
+    }
+
+    .section-heading h2 {
+      margin: 0;
+      font-size: 1.45rem;
+    }
+
+    .section-heading p {
+      max-width: 700px;
+      margin: 7px auto 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .info-grid,
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 13px;
+    }
+
+    .info-box,
+    .step {
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface-2);
+    }
+
+    .info-box-icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 12px;
+      border-radius: 12px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+    }
+
+    .info-box h3,
+    .step h3 {
+      margin: 0 0 5px;
+      font-size: 0.96rem;
+    }
+
+    .info-box p,
+    .step p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .step-number {
+      width: 34px;
+      height: 34px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 11px;
+      border-radius: 10px;
+      color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 800;
+    }
+
+    .faq-list {
+      display: grid;
+      gap: 10px;
+      max-width: 850px;
+      margin: 0 auto;
+    }
+
+    details {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-2);
+      overflow: hidden;
+    }
+
+    summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 15px 17px;
+      font-size: 0.88rem;
+      font-weight: 800;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "+";
+      float: left;
+      color: var(--primary);
+      font-size: 1.1rem;
+    }
+
+    details[open] summary::after {
+      content: "−";
+    }
+
+    details p {
+      margin: 0;
+      padding: 0 17px 16px;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 850px) {
+      .validator-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .info-grid,
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .page {
+        padding: 22px 11px 45px;
+      }
+
+      .hero {
+        padding: 18px 5px 25px;
+      }
+
+      .hero-icon {
+        width: 62px;
+        height: 62px;
+        border-radius: 18px;
+        font-size: 1.45rem;
+      }
+
+      .hero p {
+        font-size: 0.9rem;
+      }
+
+      .tool-card,
+      .info-section,
+      .how-card,
+      .faq-section,
+      .privacy-card {
+        padding: 17px;
+        border-radius: 18px;
+      }
+
+      .tool-header {
+        align-items: flex-start;
+      }
+
+      .actions {
+        grid-template-columns: 1fr;
+      }
+
+      .privacy-card {
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .tool-header {
+        flex-direction: column;
+      }
+
+      .live-badge {
+        align-self: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <Header />
+
+  <main class="page">
+    <div class="container">
+
+      <nav class="breadcrumb" aria-label="مسار التنقل">
+        <a href={`${base}/`}>الرئيسية</a>
+        <i class="fa-solid fa-chevron-left"></i>
+        <a href={`${base}/tools/`}>الأدوات</a>
+        <i class="fa-solid fa-chevron-left"></i>
+        <span>Email Validator</span>
+      </nav>
+
+      <section class="hero">
+        <div class="hero-icon">
+          <i class="fa-solid fa-envelope-circle-check"></i>
+        </div>
+
+        <div class="eyebrow">أداة المطورين</div>
+
+        <h1>Email Validator</h1>
+
+        <p>
+          تحقق من صحة عنوان البريد الإلكتروني فورًا مع فحص الصيغة
+          والبنية والنطاق والرموز غير الصالحة.
+        </p>
+
+        <div class="tags">
+          <span class="tag">Email</span>
+          <span class="tag">Validator</span>
+          <span class="tag">Regex</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag">Developer Tool</span>
+        </div>
+      </section>
+
+      <section class="tool-card">
+
+        <div class="tool-header">
+          <div class="tool-title">
+            <div class="tool-title-icon">
+              <i class="fa-solid fa-envelope-circle-check"></i>
+            </div>
+
+            <div>
+              <h2>مدقق البريد الإلكتروني</h2>
+              <p>التحقق يتم مباشرة أثناء الكتابة</p>
+            </div>
+          </div>
+
+          <div class="live-badge">
+            <span class="live-dot"></span>
+            فحص فوري
+          </div>
+        </div>
+
+        <div class="validator-grid">
+
+          <div class="panel">
+
+            <div class="panel-header">
+              <div class="panel-title">
+                <i class="fa-solid fa-at"></i>
+                <span>عنوان البريد</span>
+              </div>
+
+              <span class="panel-badge">EMAIL</span>
+            </div>
+
+            <div class="input-area">
+              <input
+                id="emailInput"
+                class="email-input"
+                type="email"
+                inputmode="email"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="example@email.com"
+                aria-label="Email address"
+              />
+
+              <div class="hint">
+                اكتب عنوان البريد الإلكتروني وسيتم التحقق منه تلقائيًا.
+              </div>
+            </div>
+
+            <div id="result" class="result">
+              <div id="resultIcon" class="result-icon">
+                <i class="fa-solid fa-envelope"></i>
+              </div>
+
+              <h3 id="resultTitle">بانتظار البريد الإلكتروني</h3>
+
+              <p id="resultText">
+                أدخل عنوان بريد لفحصه.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="panel">
+
+            <div class="panel-header">
+              <div class="panel-title">
+                <i class="fa-solid fa-list-check"></i>
+                <span>نتائج الفحص</span>
+              </div>
+
+              <span class="panel-badge">CHECKS</span>
+            </div>
+
+            <div class="checks">
+
+              <div class="check-row">
+                <span class="check-name">
+                  <i class="fa-solid fa-at"></i>
+                  البنية الأساسية
+                </span>
+
+                <span id="checkStructure" class="check-status">—</span>
+              </div>
+
+              <div class="check-row">
+                <span class="check-name">
+                  <i class="fa-solid fa-user"></i>
+                  اسم المستخدم
+                </span>
+
+                <span id="checkLocal" class="check-status">—</span>
+              </div>
+
+              <div class="check-row">
+                <span class="check-name">
+                  <i class="fa-solid fa-globe"></i>
+                  النطاق Domain
+                </span>
+
+                <span id="checkDomain" class="check-status">—</span>
+              </div>
+
+              <div class="check-row">
+                <span class="check-name">
+                  <i class="fa-solid fa-circle-dot"></i>
+                  النقطة النهائية
+                </span>
+
+                <span id="checkTld" class="check-status">—</span>
+              </div>
+
+              <div class="check-row">
+                <span class="check-name">
+                  <i class="fa-solid fa-ban"></i>
+                  رموز غير صالحة
+                </span>
+
+                <span id="checkChars" class="check-status">—</span>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="actions">
+          <button id="validateBtn" class="btn btn-primary" type="button">
+            <i class="fa-solid fa-circle-check"></i>
+            تحقق الآن
+          </button>
+
+          <button id="exampleBtn" class="btn" type="button">
+            <i class="fa-solid fa-flask"></i>
+            مثال صالح
+          </button>
+
+          <button id="clearBtn" class="btn" type="button">
+            <i class="fa-solid fa-eraser"></i>
+            مسح
+          </button>
+        </div>
+
+        <div id="status" class="status" aria-live="polite">
+          <i class="fa-solid fa-circle-info"></i>
+          <span>أدخل بريدًا إلكترونيًا لبدء الفحص.</span>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat">
+            <span id="statLength" class="stat-value">0</span>
+            <span class="stat-label">Characters</span>
+          </div>
+
+          <div class="stat">
+            <span id="statLocal" class="stat-value">—</span>
+            <span class="stat-label">Local Part</span>
+          </div>
+
+          <div class="stat">
+            <span id="statDomain" class="stat-value">—</span>
+            <span class="stat-label">Domain</span>
+          </div>
+
+          <div class="stat">
+            <span id="statStatus" class="stat-value">—</span>
+            <span class="stat-label">Status</span>
+          </div>
+        </div>
+
+      </section>
+
+      <div class="privacy-card">
+        <div class="privacy-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <div>
+          <strong>خصوصيتك محفوظة</strong>
+          <span>
+            تتم عملية التحقق بالكامل داخل المتصفح ولا يتم إرسال عنوان البريد إلى أي خادم.
+          </span>
+        </div>
+      </div>
+
+      <section class="info-section">
+        <div class="section-heading">
+          <h2>ماذا تفحص الأداة؟</h2>
+          <p>
+            مجموعة من الاختبارات الأساسية للتأكد من أن البريد مكتوب بصيغة صحيحة.
+          </p>
+        </div>
+
+        <div class="info-grid">
+
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-at"></i>
+            </div>
+
+            <h3>البنية</h3>
+
+            <p>
+              تتحقق الأداة من وجود اسم مستخدم ورمز @ ونطاق صالح.
+            </p>
+          </article>
+
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-globe"></i>
+            </div>
+
+            <h3>النطاق</h3>
+
+            <p>
+              يتم فحص بنية Domain وامتداد النطاق بعد الرمز @.
+            </p>
+          </article>
+
+          <article class="info-box">
+            <div class="info-box-icon">
+              <i class="fa-solid fa-code"></i>
+            </div>
+
+            <h3>الرموز</h3>
+
+            <p>
+              يتم اكتشاف المسافات وبعض الرموز غير المسموح بها في العنوان.
+            </p>
+          </article>
+
+        </div>
+      </section>
+
+      <section class="how-card">
+        <div class="section-heading">
+          <h2>كيفية الاستخدام</h2>
+          <p>تحقق من البريد في ثوانٍ.</p>
+        </div>
+
+        <div class="steps">
+
+          <article class="step">
+            <div class="step-number">01</div>
+
+            <h3>أدخل البريد</h3>
+
+            <p>
+              اكتب عنوان البريد الإلكتروني في حقل الإدخال.
+            </p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">02</div>
+
+            <h3>الفحص الفوري</h3>
+
+            <p>
+              ستقوم الأداة بتحليل العنوان تلقائيًا أثناء الكتابة.
+            </p>
+          </article>
+
+          <article class="step">
+            <div class="step-number">03</div>
+
+            <h3>راجع النتيجة</h3>
+
+            <p>
+              ستظهر لك حالة البريد وتفاصيل الاختبارات التي تم اجتيازها.
+            </p>
+          </article>
+
+        </div>
+      </section>
+
+      <section class="faq-section">
+        <div class="section-heading">
+          <h2>الأسئلة الشائعة</h2>
+          <p>معلومات مهمة حول التحقق من البريد الإلكتروني.</p>
+        </div>
+
+        <div class="faq-list">
+
+          <details>
+            <summary>هل الأداة تتأكد من أن البريد موجود فعلًا؟</summary>
+            <p>
+              لا. الأداة تتحقق من صحة الصيغة والبنية فقط. لا يتم إرسال رسالة
+              اختبار ولا يتم الاتصال بخادم البريد للتأكد من وجود الحساب.
+            </p>
+          </details>
+
+          <details>
+            <summary>هل يتم حفظ البريد الذي أدخله؟</summary>
+            <p>
+              لا. عملية التحقق تتم محليًا داخل المتصفح ولا يتم إرسال عنوان
+              البريد إلى خادم خارجي.
+            </p>
+          </details>
+
+          <details>
+            <summary>هل يمكن استخدام الأداة للتحقق من عدة عناوين؟</summary>
+            <p>
+              هذه الصفحة مخصصة للتحقق من عنوان واحد في كل مرة. يمكنك مسح
+              الحقل وإدخال عنوان آخر بسرعة.
+            </p>
+          </details>
+
+          <details>
+            <summary>هل كل بريد يمر بالفحص يعتبر صالحًا بنسبة 100%؟</summary>
+            <p>
+              اجتياز الفحص يعني أن العنوان يتوافق مع القواعد الأساسية للصيغة.
+              لكنه لا يثبت أن صندوق البريد موجود أو يستقبل الرسائل.
+            </p>
+          </details>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+
+  <script is:inline>
+    (() => {
+      const emailInput = document.getElementById("emailInput");
+
+      const result = document.getElementById("result");
+      const resultIcon = document.getElementById("resultIcon");
+      const resultTitle = document.getElementById("resultTitle");
+      const resultText = document.getElementById("resultText");
+
+      const checkStructure = document.getElementById("checkStructure");
+      const checkLocal = document.getElementById("checkLocal");
+      const checkDomain = document.getElementById("checkDomain");
+      const checkTld = document.getElementById("checkTld");
+      const checkChars = document.getElementById("checkChars");
+
+      const validateBtn = document.getElementById("validateBtn");
+      const exampleBtn = document.getElementById("exampleBtn");
+      const clearBtn = document.getElementById("clearBtn");
+
+      const status = document.getElementById("status");
+
+      const statLength = document.getElementById("statLength");
+      const statLocal = document.getElementById("statLocal");
+      const statDomain = document.getElementById("statDomain");
+      const statStatus = document.getElementById("statStatus");
+
+      function setStatus(message, type = "info") {
+        status.className = "status";
+
+        if (type === "success") {
+          status.classList.add("success");
+        }
+
+        if (type === "error") {
+          status.classList.add("error");
+        }
+
+        const icon = status.querySelector("i");
+        const text = status.querySelector("span");
+
+        if (type === "success") {
+          icon.className = "fa-solid fa-circle-check";
+        } else if (type === "error") {
+          icon.className = "fa-solid fa-circle-xmark";
+        } else {
+          icon.className = "fa-solid fa-circle-info";
+        }
+
+        text.textContent = message;
+      }
+
+      function setCheck(element, state) {
+        element.className = "check-status";
+
+        if (state === true) {
+          element.classList.add("ok");
+          element.textContent = "✓";
+        } else if (state === false) {
+          element.classList.add("bad");
+          element.textContent = "✕";
+        } else {
+          element.textContent = "—";
+        }
+      }
+
+      function resetChecks() {
+        [
+          checkStructure,
+          checkLocal,
+          checkDomain,
+          checkTld,
+          checkChars
+        ].forEach((element) => setCheck(element, null));
+      }
+
+      function validateEmail() {
+        const value = emailInput.value.trim();
+
+        statLength.textContent =
+          value.length.toLocaleString("ar");
+
+        emailInput.classList.remove("valid", "invalid");
+
+        if (!value) {
+          result.className = "result";
+
+          resultIcon.className = "result-icon";
+          resultIcon.innerHTML =
+            '<i class="fa-solid fa-envelope"></i>';
+
+          resultTitle.textContent =
+            "بانتظار البريد الإلكتروني";
+
+          resultText.textContent =
+            "أدخل عنوان بريد لفحصه.";
+
+          statLocal.textContent = "—";
+          statDomain.textContent = "—";
+          statStatus.textContent = "—";
+
+          resetChecks();
+
+          setStatus(
+            "أدخل بريدًا إلكترونيًا لبدء الفحص.",
+            "info"
+          );
+
+          return;
+        }
+
+        const structure =
+          /^[^\s@]+@[^\s@]+$/.test(value);
+
+        const parts = value.split("@");
+
+        const local =
+          parts.length === 2 &&
+          parts[0].length > 0 &&
+          parts[0].length <= 64 &&
+          !/\s/.test(parts[0]) &&
+          !/^[.]/.test(parts[0]) &&
+          !/[.]$/.test(parts[0]) &&
+          !/[.]{2,}/.test(parts[0]);
+
+        const domain =
+          parts.length === 2 &&
+          parts[1].length > 0 &&
+          parts[1].length <= 253 &&
+          /^[A-Za-z0-9.-]+$/.test(parts[1]) &&
+          !/^-/.test(parts[1]) &&
+          !/-$/.test(parts[1]) &&
+          !/\.\./.test(parts[1]);
+
+        const tld =
+          parts.length === 2 &&
+          /^[A-Za-z0-9.-]+\.[A-Za-z]{2,63}$/.test(parts[1]);
+
+        const invalidChars =
+          /[\s<>()[\]\\,;:"]/g.test(value);
+
+        const finalValid =
+          structure &&
+          local &&
+          domain &&
+          tld &&
+          !invalidChars &&
+          value.length <= 254;
+
+        setCheck(checkStructure, structure);
+        setCheck(checkLocal, local);
+        setCheck(checkDomain, domain);
+        setCheck(checkTld, tld);
+        setCheck(checkChars, !invalidChars);
+
+        statLocal.textContent =
+          parts.length === 2 && parts[0]
+            ? parts[0]
+            : "—";
+
+        statDomain.textContent =
+          parts.length === 2 && parts[1]
+            ? parts[1]
+            : "—";
+
+        if (finalValid) {
+          emailInput.classList.add("valid");
+
+          result.className = "result valid";
+
+          resultIcon.className =
+            "result-icon";
+
+          resultIcon.innerHTML =
+            '<i class="fa-solid fa-circle-check"></i>';
+
+          resultTitle.textContent =
+            "البريد صالح";
+
+          resultText.textContent =
+            "صيغة عنوان البريد الإلكتروني تبدو صحيحة.";
+
+          statStatus.textContent = "VALID";
+
+          setStatus(
+            "تم اجتياز جميع الاختبارات الأساسية.",
+            "success"
+          );
+        } else {
+          emailInput.classList.add("invalid");
+
+          result.className = "result invalid";
+
+          resultIcon.className =
+            "result-icon";
+
+          resultIcon.innerHTML =
+            '<i class="fa-solid fa-circle-xmark"></i>';
+
+          resultTitle.textContent =
+            "البريد غير صالح";
+
+          resultText.textContent =
+            "تحقق من صيغة العنوان والمجال والرموز المستخدمة.";
+
+          statStatus.textContent = "INVALID";
+
+          setStatus(
+            "فشل البريد في واحد أو أكثر من الاختبارات الأساسية.",
+            "error"
+          );
+        }
+      }
+
+      function loadExample() {
+        emailInput.value = "developer@example.com";
+        validateEmail();
+        emailInput.focus();
+      }
+
+      function clearEmail() {
+        emailInput.value = "";
+        validateEmail();
+        emailInput.focus();
+      }
+
+      emailInput.addEventListener(
+        "input",
+        validateEmail
+      );
+
+      validateBtn.addEventListener(
+        "click",
+        validateEmail
+      );
+
+      exampleBtn.addEventListener(
+        "click",
+        loadExample
+      );
+
+      clearBtn.addEventListener(
+        "click",
+        clearEmail
+      );
+
+      emailInput.addEventListener(
+        "keydown",
+        (event) => {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            validateEmail();
+          }
+        }
+      );
+
+      validateEmail();
+    })();
+  </script>
+</body>
+</html>
