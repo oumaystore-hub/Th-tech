@@ -6,1889 +6,1069 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generator/`;
 ---
 
+<!doctype html>
 <html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>Barcode Generator | مولد الباركود | Th.Tech</title>
+    <title>Barcode Generator | مولد الباركود | Th.Tech</title>
 
-  <meta
-    name="description"
-    content="مولد باركود مجاني لإنشاء باركود احترافي بصيغ متعددة مع إمكانية التحميل بصيغة PNG أو SVG."
-  />
+    <meta
+      name="description"
+      content="مولد باركود مجاني لإنشاء باركود احترافي بصيغ متعددة مع إمكانية التحميل بصيغة PNG أو SVG."
+    />
 
-  <link rel="canonical" href={canonical} />
+    <link rel="canonical" href={canonical} />
 
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
 
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-  />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
 
-  <!-- مكتبة JsBarcode -->
-  <script
-    is:inline
-    src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"
-  ></script>
-</head>
+    <script
+      is:inline
+      src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"
+    ></script>
+  </head>
 
-<body>
-  <Header />
+  <body>
+    <Header />
 
-  <main class="page">
+    <main class="page">
 
-    <!-- ===================================================== -->
-    <!-- Hero -->
-    <!-- ===================================================== -->
-
-    <section class="hero">
-
-      <div class="hero-icon">
-        <i class="fa-solid fa-barcode"></i>
-      </div>
-
-      <div class="breadcrumb">
-        <a href={`${base}/`}>الرئيسية</a>
-
-        <i class="fa-solid fa-chevron-left"></i>
-
-        <a href={`${base}/tools/`}>الأدوات</a>
-
-        <i class="fa-solid fa-chevron-left"></i>
-
-        <span>Barcode Generator</span>
-      </div>
-
-      <h1>
-        مولد <span>Barcode</span> احترافي
-      </h1>
-
-      <p>
-        أنشئ باركود بسرعة وسهولة، واختر النوع والحجم واللون ثم حمّله بصيغة
-        PNG أو SVG.
-      </p>
-
-      <div class="tags">
-        <span>
-          <i class="fa-solid fa-bolt"></i>
-          فوري
-        </span>
-
-        <span>
-          <i class="fa-solid fa-shield-halved"></i>
-          آمن
-        </span>
-
-        <span>
-          <i class="fa-solid fa-cloud-arrow-down"></i>
-          بدون رفع
-        </span>
-      </div>
-
-    </section>
-
-
-    <!-- ===================================================== -->
-    <!-- Tool -->
-    <!-- ===================================================== -->
-
-    <section class="tool-card">
-
-      <div class="tool-header">
-
-        <div class="section-icon">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-icon">
           <i class="fa-solid fa-barcode"></i>
+        </div>
+
+        <div class="breadcrumb">
+          <a href={`${base}/`}>الرئيسية</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <a href={`${base}/tools/`}>الأدوات</a>
+          <i class="fa-solid fa-chevron-left"></i>
+          <span>مولد الباركود</span>
+        </div>
+
+        <h1>
+          مولد <span>Barcode</span> احترافي
+        </h1>
+
+        <p>
+          أنشئ باركود احترافي بسرعة وسهولة، مع دعم عدة أنواع وإمكانية
+          تخصيص الحجم والألوان وتحميل النتيجة بصيغة PNG أو SVG.
+        </p>
+
+        <div class="hero-tags">
+          <span><i class="fa-solid fa-bolt"></i> سريع</span>
+          <span><i class="fa-solid fa-shield-halved"></i> آمن</span>
+          <span><i class="fa-solid fa-cloud"></i> بدون رفع</span>
+          <span><i class="fa-solid fa-gift"></i> مجاني</span>
+        </div>
+      </section>
+
+
+      <!-- TOOL -->
+      <section class="tool-wrapper">
+
+        <div class="tool-card">
+
+          <!-- TYPE -->
+          <div class="field">
+            <label for="barcodeType">
+              <span class="label-icon">
+                <i class="fa-solid fa-layer-group"></i>
+              </span>
+              نوع الباركود
+            </label>
+
+            <div class="select-wrap">
+              <select id="barcodeType">
+                <option value="CODE128">CODE 128</option>
+                <option value="CODE39">CODE 39</option>
+                <option value="EAN13">EAN-13</option>
+                <option value="EAN8">EAN-8</option>
+                <option value="UPC">UPC</option>
+                <option value="ITF14">ITF-14</option>
+              </select>
+
+              <i class="fa-solid fa-chevron-down select-arrow"></i>
+            </div>
+          </div>
+
+
+          <!-- VALUE -->
+          <div class="field">
+            <label for="barcodeValue">
+              <span class="label-icon">
+                <i class="fa-solid fa-hashtag"></i>
+              </span>
+              القيمة
+            </label>
+
+            <div class="input-wrap">
+              <input
+                id="barcodeValue"
+                type="text"
+                value="123456789012"
+                autocomplete="off"
+                spellcheck="false"
+                placeholder="أدخل الرقم أو النص..."
+              />
+
+              <button
+                id="clearBtn"
+                class="clear-btn"
+                type="button"
+                aria-label="مسح القيمة"
+                title="مسح"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            <div class="field-hint">
+              <i class="fa-solid fa-circle-info"></i>
+              أدخل القيمة التي تريد تحويلها إلى باركود
+            </div>
+          </div>
+
+
+          <!-- OPTIONS GRID -->
+          <div class="options-grid">
+
+            <!-- SETTINGS -->
+            <section class="options-card settings-card">
+
+              <div class="section-heading">
+                <div class="section-icon settings-icon">
+                  <i class="fa-solid fa-sliders"></i>
+                </div>
+
+                <div>
+                  <h3>إعدادات الباركود</h3>
+                  <span>تخصيص الشكل والحجم</span>
+                </div>
+              </div>
+
+
+              <div class="settings-grid">
+
+                <div class="mini-field">
+                  <label for="barWidth">
+                    عرض الخط
+                  </label>
+
+                  <div class="mini-select">
+                    <select id="barWidth">
+                      <option value="1">1</option>
+                      <option value="2" selected>2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                    </select>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </div>
+                </div>
+
+
+                <div class="mini-field">
+                  <label for="barHeight">
+                    الارتفاع
+                  </label>
+
+                  <div class="mini-select">
+                    <select id="barHeight">
+                      <option value="50">50</option>
+                      <option value="70" selected>70</option>
+                      <option value="90">90</option>
+                      <option value="110">110</option>
+                      <option value="130">130</option>
+                    </select>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </div>
+                </div>
+
+
+                <div class="mini-field">
+                  <label for="displayValue">
+                    إظهار الرقم
+                  </label>
+
+                  <div class="mini-select">
+                    <select id="displayValue">
+                      <option value="true" selected>نعم</option>
+                      <option value="false">لا</option>
+                    </select>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </div>
+                </div>
+
+
+                <div class="mini-field">
+                  <label for="fontSize">
+                    حجم الخط
+                  </label>
+
+                  <div class="mini-select">
+                    <select id="fontSize">
+                      <option value="12">12</option>
+                      <option value="16" selected>16</option>
+                      <option value="20">20</option>
+                      <option value="24">24</option>
+                    </select>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+                  </div>
+                </div>
+
+              </div>
+
+
+              <!-- COLORS -->
+              <div class="colors-grid">
+
+                <div class="color-box">
+                  <label for="lineColor">
+                    <span>لون الباركود</span>
+                  </label>
+
+                  <div class="color-control">
+                    <input
+                      id="lineColor"
+                      type="color"
+                      value="#111827"
+                    />
+
+                    <span id="lineColorText">#111827</span>
+                  </div>
+                </div>
+
+
+                <div class="color-box">
+                  <label for="backgroundColor">
+                    <span>لون الخلفية</span>
+                  </label>
+
+                  <div class="color-control">
+                    <input
+                      id="backgroundColor"
+                      type="color"
+                      value="#ffffff"
+                    />
+
+                    <span id="backgroundColorText">#FFFFFF</span>
+                  </div>
+                </div>
+
+              </div>
+
+            </section>
+
+
+            <!-- EXPORT -->
+            <section class="options-card export-card">
+
+              <div class="section-heading">
+                <div class="section-icon export-icon">
+                  <i class="fa-solid fa-share-nodes"></i>
+                </div>
+
+                <div>
+                  <h3>تصدير الباركود</h3>
+                  <span>حفظ أو نسخ النتيجة</span>
+                </div>
+              </div>
+
+
+              <div class="download-grid">
+
+                <button
+                  id="downloadPng"
+                  type="button"
+                  class="export-btn png-btn"
+                >
+                  <span class="export-btn-icon">
+                    <i class="fa-solid fa-image"></i>
+                  </span>
+
+                  <span class="export-btn-content">
+                    <strong>PNG</strong>
+                    <small>صورة</small>
+                  </span>
+                </button>
+
+
+                <button
+                  id="downloadSvg"
+                  type="button"
+                  class="export-btn svg-btn"
+                >
+                  <span class="export-btn-icon">
+                    <i class="fa-solid fa-code"></i>
+                  </span>
+
+                  <span class="export-btn-content">
+                    <strong>SVG</strong>
+                    <small>متجه</small>
+                  </span>
+                </button>
+
+
+                <button
+                  id="copyValue"
+                  type="button"
+                  class="export-btn copy-btn"
+                >
+                  <span class="export-btn-icon">
+                    <i class="fa-regular fa-copy"></i>
+                  </span>
+
+                  <span class="export-btn-content">
+                    <strong>نسخ</strong>
+                    <small>القيمة</small>
+                  </span>
+                </button>
+
+
+                <button
+                  id="resetBtn"
+                  type="button"
+                  class="export-btn reset-export-btn"
+                >
+                  <span class="export-btn-icon">
+                    <i class="fa-solid fa-rotate-left"></i>
+                  </span>
+
+                  <span class="export-btn-content">
+                    <strong>إعادة</strong>
+                    <small>الضبط</small>
+                  </span>
+                </button>
+
+              </div>
+
+              <div class="export-tip">
+                <i class="fa-solid fa-lock"></i>
+                <span>يتم إنشاء الملف داخل متصفحك دون رفع بياناتك.</span>
+              </div>
+
+            </section>
+
+          </div>
+
+
+          <!-- MAIN ACTION -->
+          <div class="main-actions">
+
+            <button id="generateBtn" type="button" class="generate-btn">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              إنشاء الباركود
+            </button>
+
+            <button id="resetBtnMain" type="button" class="reset-btn">
+              <i class="fa-solid fa-arrow-rotate-left"></i>
+              إعادة ضبط
+            </button>
+
+          </div>
+
+
+          <!-- STATUS -->
+          <div id="status" class="status" aria-live="polite">
+            <i class="fa-solid fa-circle-check"></i>
+            جاهز لإنشاء الباركود
+          </div>
+
+
+          <!-- PREVIEW -->
+          <section class="preview-section">
+
+            <div class="preview-heading">
+              <div>
+                <h2>
+                  <i class="fa-solid fa-eye"></i>
+                  المعاينة
+                </h2>
+
+                <p>ستظهر النتيجة هنا بشكل مباشر</p>
+              </div>
+
+              <span id="formatBadge" class="format-badge">
+                CODE128
+              </span>
+            </div>
+
+
+            <div class="preview-box">
+
+              <div id="emptyPreview" class="empty-preview">
+                <div class="empty-icon">
+                  <i class="fa-solid fa-barcode"></i>
+                </div>
+
+                <strong>المعاينة جاهزة</strong>
+                <span>أدخل قيمة لإنشاء الباركود</span>
+              </div>
+
+              <svg
+                id="barcodeSvg"
+                class="barcode-svg"
+                aria-label="Barcode preview"
+              ></svg>
+
+              <canvas
+                id="barcodeCanvas"
+                class="barcode-canvas"
+              ></canvas>
+
+            </div>
+
+
+            <div class="preview-meta">
+              <span>
+                <i class="fa-solid fa-ruler-horizontal"></i>
+                معاينة مباشرة
+              </span>
+
+              <span>
+                <i class="fa-solid fa-shield-halved"></i>
+                معالجة محلية
+              </span>
+
+              <span>
+                <i class="fa-solid fa-download"></i>
+                PNG / SVG
+              </span>
+            </div>
+
+          </section>
+
+        </div>
+      </section>
+
+
+      <!-- PRIVACY -->
+      <section class="info-card">
+
+        <div class="info-icon">
+          <i class="fa-solid fa-shield-halved"></i>
         </div>
 
         <div>
-          <h2>إنشاء الباركود</h2>
-          <p>أدخل القيمة واختر نوع الباركود المناسب.</p>
+          <h2>خصوصيتك أولاً</h2>
+
+          <p>
+            يتم إنشاء الباركود بالكامل داخل متصفحك. لا يتم إرسال القيمة التي
+            تدخلها إلى خادم أو تخزينها في قاعدة بيانات.
+          </p>
         </div>
 
-      </div>
+      </section>
 
 
-      <!-- =================================================== -->
-      <!-- Type -->
-      <!-- =================================================== -->
+      <!-- HOW TO -->
+      <section class="content-section">
 
-      <div class="field">
-
-        <label for="barcodeType">
-          <i class="fa-solid fa-layer-group"></i>
-          نوع الباركود
-        </label>
-
-        <select id="barcodeType">
-          <option value="CODE128">CODE128 — عام</option>
-          <option value="CODE39">CODE39</option>
-          <option value="EAN13">EAN-13</option>
-          <option value="EAN8">EAN-8</option>
-          <option value="UPC">UPC-A</option>
-          <option value="ITF14">ITF-14</option>
-        </select>
-
-        <small id="typeHint">
-          مناسب للنصوص والأرقام ومعظم الاستخدامات.
-        </small>
-
-      </div>
-
-
-      <!-- =================================================== -->
-      <!-- Value -->
-      <!-- =================================================== -->
-
-      <div class="field">
-
-        <label for="barcodeValue">
-          <i class="fa-solid fa-pen"></i>
-          القيمة
-        </label>
-
-        <div class="input-wrap">
-
-          <input
-            id="barcodeValue"
-            type="text"
-            value="123456789012"
-            autocomplete="off"
-            spellcheck="false"
-            placeholder="أدخل الرقم أو النص..."
-          />
-
-          <button
-            id="clearBtn"
-            class="input-clear"
-            type="button"
-            aria-label="مسح"
-          >
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-
-        </div>
-
-        <div class="field-meta">
-          <span id="charCount">12 حرف</span>
-          <span id="validationText">جاهز</span>
-        </div>
-
-      </div>
-
-
-      <!-- =================================================== -->
-      <!-- Actions -->
-      <!-- =================================================== -->
-
-      <div class="actions">
-
-        <button
-          id="generateBtn"
-          class="primary-btn"
-          type="button"
-        >
-          <i class="fa-solid fa-barcode"></i>
-          إنشاء Barcode
-        </button>
-
-        <button
-          id="resetBtn"
-          class="secondary-btn"
-          type="button"
-        >
-          <i class="fa-solid fa-rotate-left"></i>
-          إعادة ضبط
-        </button>
-
-      </div>
-
-
-      <div id="status" class="status ready">
-
-        <i class="fa-solid fa-circle-check"></i>
-
-        <span>
-          أدخل القيمة لإنشاء الباركود
-        </span>
-
-      </div>
-
-
-      <!-- =================================================== -->
-      <!-- Preview -->
-      <!-- =================================================== -->
-
-      <section class="preview-section">
-
-        <div class="preview-header">
+        <div class="content-heading">
+          <span class="content-number">01</span>
 
           <div>
-
-            <h2>
-              <i class="fa-solid fa-eye"></i>
-              المعاينة
-            </h2>
-
-            <p>
-              سيظهر الباركود هنا مباشرة.
-            </p>
-
+            <h2>كيفية إنشاء باركود؟</h2>
+            <p>أنشئ الباركود في ثلاث خطوات بسيطة.</p>
           </div>
-
-          <span
-            id="formatBadge"
-            class="format-badge"
-          >
-            CODE128
-          </span>
-
         </div>
 
 
-        <div
-          id="previewBox"
-          class="preview-box"
-        >
+        <div class="steps">
 
-          <div
-            id="emptyPreview"
-            class="empty-preview"
-          >
+          <div class="step">
+            <div class="step-number">1</div>
 
-            <div class="empty-icon">
-              <i class="fa-solid fa-barcode"></i>
+            <div>
+              <h3>اختر النوع</h3>
+              <p>
+                اختر نوع الباركود المناسب من القائمة مثل CODE128 أو EAN13.
+              </p>
             </div>
-
-            <strong>
-              لا توجد معاينة بعد
-            </strong>
-
-            <span>
-              أدخل قيمة صحيحة لإنشاء الباركود
-            </span>
-
           </div>
 
-          <svg
-            id="barcodeSvg"
-            aria-label="Barcode Preview"
-          ></svg>
 
-          <canvas id="barcodeCanvas"></canvas>
+          <div class="step">
+            <div class="step-number">2</div>
 
-        </div>
+            <div>
+              <h3>أدخل القيمة</h3>
+              <p>
+                أدخل الرقم أو النص الذي تريد تحويله إلى باركود.
+              </p>
+            </div>
+          </div>
 
 
-        <div class="preview-meta">
+          <div class="step">
+            <div class="step-number">3</div>
 
-          <span id="previewInfo">
-            CODE128
-          </span>
-
-          <span id="previewStatus">
-            <i class="fa-solid fa-circle"></i>
-            في انتظار الإدخال
-          </span>
+            <div>
+              <h3>حمّل النتيجة</h3>
+              <p>
+                استخدم PNG للصور أو SVG للحصول على جودة متجهية عالية.
+              </p>
+            </div>
+          </div>
 
         </div>
 
       </section>
 
 
-      <!-- =================================================== -->
-      <!-- Options Grid -->
-      <!-- =================================================== -->
+      <!-- FEATURES -->
+      <section class="content-section">
 
-      <div class="options-grid">
+        <div class="content-heading">
+          <span class="content-number">02</span>
 
-        <!-- =============================================== -->
-        <!-- إعدادات الباركود -->
-        <!-- =============================================== -->
-
-        <section class="options-card">
-
-          <h3>
-            <i class="fa-solid fa-sliders"></i>
-            إعدادات الباركود
-          </h3>
-
-
-          <div class="settings-grid">
-
-            <!-- عرض الخط -->
-            <div class="field">
-
-              <label for="barWidth">
-                <i class="fa-solid fa-arrows-left-right"></i>
-                عرض الخط
-              </label>
-
-              <select id="barWidth">
-
-                <option value="1">
-                  صغير
-                </option>
-
-                <option
-                  value="2"
-                  selected
-                >
-                  متوسط
-                </option>
-
-                <option value="3">
-                  كبير
-                </option>
-
-                <option value="4">
-                  كبير جدًا
-                </option>
-
-              </select>
-
-            </div>
-
-
-            <!-- الارتفاع -->
-            <div class="field">
-
-              <label for="barHeight">
-                <i class="fa-solid fa-arrows-up-down"></i>
-                الارتفاع
-              </label>
-
-              <select id="barHeight">
-
-                <option value="50">
-                  50
-                </option>
-
-                <option
-                  value="70"
-                  selected
-                >
-                  70
-                </option>
-
-                <option value="90">
-                  90
-                </option>
-
-                <option value="110">
-                  110
-                </option>
-
-                <option value="130">
-                  130
-                </option>
-
-              </select>
-
-            </div>
-
-
-            <!-- إظهار الرقم -->
-            <div class="field">
-
-              <label for="displayValue">
-                <i class="fa-solid fa-hashtag"></i>
-                إظهار الرقم
-              </label>
-
-              <select id="displayValue">
-
-                <option
-                  value="true"
-                  selected
-                >
-                  نعم
-                </option>
-
-                <option value="false">
-                  لا
-                </option>
-
-              </select>
-
-            </div>
-
-
-            <!-- حجم الرقم -->
-            <div class="field">
-
-              <label for="fontSize">
-                <i class="fa-solid fa-font"></i>
-                حجم الرقم
-              </label>
-
-              <select id="fontSize">
-
-                <option value="12">
-                  صغير
-                </option>
-
-                <option
-                  value="16"
-                  selected
-                >
-                  متوسط
-                </option>
-
-                <option value="20">
-                  كبير
-                </option>
-
-                <option value="24">
-                  كبير جدًا
-                </option>
-
-              </select>
-
-            </div>
-
+          <div>
+            <h2>مميزات مولد الباركود</h2>
+            <p>أداة بسيطة وسريعة للاستخدام اليومي.</p>
           </div>
+        </div>
 
 
-          <!-- الألوان -->
+        <div class="features-grid">
 
-          <div class="colors-grid">
-
-            <div class="color-field">
-
-              <label for="lineColor">
-                <i class="fa-solid fa-bars-staggered"></i>
-                لون الباركود
-              </label>
-
-              <div class="color-control">
-
-                <input
-                  id="lineColor"
-                  type="color"
-                  value="#111827"
-                />
-
-                <span id="lineColorText">
-                  #111827
-                </span>
-
-              </div>
-
+          <article class="feature">
+            <div class="feature-icon">
+              <i class="fa-solid fa-bolt"></i>
             </div>
 
+            <h3>إنشاء فوري</h3>
+            <p>شاهد الباركود مباشرة أثناء العمل.</p>
+          </article>
 
-            <div class="color-field">
 
-              <label for="backgroundColor">
-                <i class="fa-solid fa-fill-drip"></i>
-                لون الخلفية
-              </label>
-
-              <div class="color-control">
-
-                <input
-                  id="backgroundColor"
-                  type="color"
-                  value="#ffffff"
-                />
-
-                <span id="backgroundColorText">
-                  #FFFFFF
-                </span>
-
-              </div>
-
+          <article class="feature">
+            <div class="feature-icon">
+              <i class="fa-solid fa-palette"></i>
             </div>
 
+            <h3>ألوان مخصصة</h3>
+            <p>اختر لون الباركود والخلفية حسب احتياجك.</p>
+          </article>
+
+
+          <article class="feature">
+            <div class="feature-icon">
+              <i class="fa-solid fa-expand"></i>
+            </div>
+
+            <h3>تحكم بالحجم</h3>
+            <p>تحكم في العرض والارتفاع وحجم النص.</p>
+          </article>
+
+
+          <article class="feature">
+            <div class="feature-icon">
+              <i class="fa-solid fa-file-export"></i>
+            </div>
+
+            <h3>تصدير متعدد</h3>
+            <p>احفظ النتيجة بصيغة PNG أو SVG.</p>
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- FAQ -->
+      <section class="faq-section">
+
+        <div class="content-heading">
+          <span class="content-number">03</span>
+
+          <div>
+            <h2>الأسئلة الشائعة</h2>
+            <p>إجابات عن الأسئلة الأكثر شيوعاً.</p>
           </div>
+        </div>
 
-        </section>
 
+        <div class="faq-list">
 
-        <!-- =============================================== -->
-        <!-- تصدير الباركود -->
-        <!-- =============================================== -->
+          <details>
+            <summary>
+              <span>هل مولد الباركود مجاني؟</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </summary>
 
-        <section class="options-card">
+            <p>
+              نعم، الأداة مجانية ويمكنك إنشاء وتحميل الباركود دون تسجيل.
+            </p>
+          </details>
 
-          <h3>
-            <i class="fa-solid fa-download"></i>
-            تصدير الباركود
-          </h3>
 
+          <details>
+            <summary>
+              <span>هل يتم حفظ البيانات التي أدخلها؟</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </summary>
 
-          <div class="download-grid">
+            <p>
+              لا. يتم إنشاء الباركود محلياً داخل المتصفح ولا يتم رفع القيمة
+              إلى خادم.
+            </p>
+          </details>
 
-            <!-- PNG -->
 
-            <button
-              id="downloadPng"
-              class="download-btn"
-              type="button"
-            >
+          <details>
+            <summary>
+              <span>ما الفرق بين PNG و SVG؟</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </summary>
 
-              <span class="download-icon">
-                <i class="fa-solid fa-image"></i>
-              </span>
+            <p>
+              PNG مناسب للاستخدام كصورة، بينما SVG يحافظ على الجودة عند
+              التكبير والطباعة.
+            </p>
+          </details>
 
-              <strong>
-                PNG
-              </strong>
 
-              <small>
-                صورة
-              </small>
+          <details>
+            <summary>
+              <span>ما أنواع الباركود المدعومة؟</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </summary>
 
-            </button>
+            <p>
+              تدعم الأداة CODE128 وCODE39 وEAN13 وEAN8 وUPC وITF14.
+            </p>
+          </details>
 
+        </div>
 
-            <!-- SVG -->
+      </section>
 
-            <button
-              id="downloadSvg"
-              class="download-btn"
-              type="button"
-            >
+    </main>
 
-              <span class="download-icon">
-                <i class="fa-solid fa-vector-square"></i>
-              </span>
+    <Footer />
 
-              <strong>
-                SVG
-              </strong>
 
-              <small>
-                متجه
-              </small>
-
-            </button>
-
-
-            <!-- Copy -->
-
-            <button
-              id="copyValue"
-              class="download-btn"
-              type="button"
-            >
-
-              <span class="download-icon">
-                <i class="fa-solid fa-copy"></i>
-              </span>
-
-              <strong>
-                نسخ
-              </strong>
-
-              <small>
-                القيمة
-              </small>
-
-            </button>
-
-          </div>
-
-
-          <div class="tip">
-
-            <i class="fa-solid fa-camera"></i>
-
-            <span>
-              للحصول على أفضل نتيجة، استخدم خلفية بيضاء وتباينًا واضحًا بين
-              الباركود والخلفية.
-            </span>
-
-          </div>
-
-        </section>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================== -->
-    <!-- Privacy -->
-    <!-- =================================================== -->
-
-    <section class="info-card">
-
-      <div class="info-icon">
-        <i class="fa-solid fa-shield-halved"></i>
-      </div>
-
-      <div>
-
-        <h3>
-          خصوصيتك مهمة
-        </h3>
-
-        <p>
-          يتم إنشاء الباركود بالكامل داخل متصفحك. لا يتم إرسال القيمة التي
-          تدخلها إلى خوادمنا.
-        </p>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================== -->
-    <!-- How To -->
-    <!-- =================================================== -->
-
-    <section class="info-card">
-
-      <div class="info-icon">
-        <i class="fa-solid fa-list-ol"></i>
-      </div>
-
-      <div class="info-content">
-
-        <h3>
-          طريقة الاستخدام
-        </h3>
-
-        <ol>
-
-          <li>
-            اختر نوع الباركود.
-          </li>
-
-          <li>
-            أدخل الرقم أو النص المطلوب.
-          </li>
-
-          <li>
-            اضبط الحجم والمظهر إذا أردت.
-          </li>
-
-          <li>
-            اضغط على إنشاء Barcode.
-          </li>
-
-          <li>
-            حمّل النتيجة بصيغة PNG أو SVG.
-          </li>
-
-        </ol>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================== -->
-    <!-- Features -->
-    <!-- =================================================== -->
-
-    <section class="features">
-
-      <div class="feature">
-
-        <i class="fa-solid fa-bolt"></i>
-
-        <strong>
-          سريع
-        </strong>
-
-        <span>
-          إنشاء فوري
-        </span>
-
-      </div>
-
-
-      <div class="feature">
-
-        <i class="fa-solid fa-mobile-screen"></i>
-
-        <strong>
-          متجاوب
-        </strong>
-
-        <span>
-          يعمل على الهاتف
-        </span>
-
-      </div>
-
-
-      <div class="feature">
-
-        <i class="fa-solid fa-lock"></i>
-
-        <strong>
-          خاص
-        </strong>
-
-        <span>
-          بدون رفع البيانات
-        </span>
-
-      </div>
-
-
-      <div class="feature">
-
-        <i class="fa-solid fa-download"></i>
-
-        <strong>
-          تحميل
-        </strong>
-
-        <span>
-          PNG و SVG
-        </span>
-
-      </div>
-
-    </section>
-
-
-    <!-- =================================================== -->
-    <!-- FAQ -->
-    <!-- =================================================== -->
-
-    <section class="faq-section">
-
-      <div class="faq-heading">
-
-        <span>
-          الأسئلة الشائعة
-        </span>
-
-        <i class="fa-regular fa-circle-question"></i>
-
-      </div>
-
-
-      <details>
-
-        <summary>
-
-          ما هو أفضل نوع للاستخدام العام؟
-
-          <i class="fa-solid fa-plus"></i>
-
-        </summary>
-
-        <p>
-          CODE128 خيار ممتاز للاستخدام العام لأنه يدعم الأرقام والحروف
-          ويستخدم على نطاق واسع.
-        </p>
-
-      </details>
-
-
-      <details>
-
-        <summary>
-
-          هل يمكن تحميل الباركود كصورة؟
-
-          <i class="fa-solid fa-plus"></i>
-
-        </summary>
-
-        <p>
-          نعم، يمكنك تحميله بصيغة PNG أو SVG من قسم التصدير.
-        </p>
-
-      </details>
-
-
-      <details>
-
-        <summary>
-
-          هل يتم حفظ البيانات؟
-
-          <i class="fa-solid fa-plus"></i>
-
-        </summary>
-
-        <p>
-          لا. يتم إنشاء الباركود داخل المتصفح ولا تحتاج القيمة إلى الرفع
-          إلى خادم خارجي.
-        </p>
-
-      </details>
-
-
-      <details>
-
-        <summary>
-
-          لماذا لا يظهر الباركود أحيانًا؟
-
-          <i class="fa-solid fa-plus"></i>
-
-        </summary>
-
-        <p>
-          بعض الأنواع لها شروط خاصة للقيمة، مثل EAN-13 وEAN-8 وUPC.
-          استخدم القيمة المناسبة لكل نوع.
-        </p>
-
-      </details>
-
-    </section>
-
-  </main>
-
-
-  <Footer />
-
-
-  <!-- ========================================================= -->
-  <!-- JavaScript -->
-  <!-- ========================================================= -->
-
-  <script is:inline>
-    (function () {
-
+    <script is:inline>
       function startBarcodeTool() {
+        const barcodeType = document.getElementById('barcodeType');
+        const barcodeValue = document.getElementById('barcodeValue');
 
-        var type =
-          document.getElementById('barcodeType');
+        const barWidth = document.getElementById('barWidth');
+        const barHeight = document.getElementById('barHeight');
+        const displayValue = document.getElementById('displayValue');
+        const fontSize = document.getElementById('fontSize');
 
-        var value =
-          document.getElementById('barcodeValue');
+        const lineColor = document.getElementById('lineColor');
+        const backgroundColor = document.getElementById('backgroundColor');
 
-        var width =
-          document.getElementById('barWidth');
-
-        var height =
-          document.getElementById('barHeight');
-
-        var displayValue =
-          document.getElementById('displayValue');
-
-        var fontSize =
-          document.getElementById('fontSize');
-
-        var lineColor =
-          document.getElementById('lineColor');
-
-        var backgroundColor =
-          document.getElementById('backgroundColor');
-
-        var lineColorText =
-          document.getElementById('lineColorText');
-
-        var backgroundColorText =
+        const lineColorText = document.getElementById('lineColorText');
+        const backgroundColorText =
           document.getElementById('backgroundColorText');
 
-        var svg =
-          document.getElementById('barcodeSvg');
+        const barcodeSvg = document.getElementById('barcodeSvg');
+        const barcodeCanvas = document.getElementById('barcodeCanvas');
 
-        var canvas =
-          document.getElementById('barcodeCanvas');
+        const emptyPreview = document.getElementById('emptyPreview');
 
-        var emptyPreview =
-          document.getElementById('emptyPreview');
+        const generateBtn = document.getElementById('generateBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const resetBtnMain = document.getElementById('resetBtnMain');
 
-        var generateBtn =
-          document.getElementById('generateBtn');
+        const clearBtn = document.getElementById('clearBtn');
 
-        var resetBtn =
-          document.getElementById('resetBtn');
+        const downloadPng = document.getElementById('downloadPng');
+        const downloadSvg = document.getElementById('downloadSvg');
+        const copyValue = document.getElementById('copyValue');
 
-        var clearBtn =
-          document.getElementById('clearBtn');
+        const status = document.getElementById('status');
+        const formatBadge = document.getElementById('formatBadge');
 
-        var downloadPng =
-          document.getElementById('downloadPng');
+        let currentSvg = '';
 
-        var downloadSvg =
-          document.getElementById('downloadSvg');
+        function setStatus(message, type = 'success') {
+          if (!status) return;
 
-        var copyValue =
-          document.getElementById('copyValue');
-
-        var status =
-          document.getElementById('status');
-
-        var statusText =
-          status.querySelector('span');
-
-        var charCount =
-          document.getElementById('charCount');
-
-        var validationText =
-          document.getElementById('validationText');
-
-        var formatBadge =
-          document.getElementById('formatBadge');
-
-        var previewInfo =
-          document.getElementById('previewInfo');
-
-        var previewStatus =
-          document.getElementById('previewStatus');
-
-        var typeHint =
-          document.getElementById('typeHint');
-
-        var currentSvg = '';
-
-        var hasBarcode = false;
-
-
-        var hints = {
-
-          CODE128:
-            'مناسب للنصوص والأرقام ومعظم الاستخدامات.',
-
-          CODE39:
-            'مناسب للأحرف الإنجليزية والأرقام وبعض الرموز.',
-
-          EAN13:
-            'يحتاج إلى 12 أو 13 رقمًا.',
-
-          EAN8:
-            'يحتاج إلى 7 أو 8 أرقام.',
-
-          UPC:
-            'يحتاج إلى 11 أو 12 رقمًا.',
-
-          ITF14:
-            'يحتاج إلى 13 أو 14 رقمًا.'
-
-        };
-
-
-        function setStatus(message, kind) {
-
-          status.className =
-            'status ' + kind;
-
-          if (kind === 'success') {
-
-            status.querySelector('i').className =
-              'fa-solid fa-circle-check';
-
-          } else if (kind === 'error') {
-
-            status.querySelector('i').className =
-              'fa-solid fa-circle-exclamation';
-
-          } else {
-
-            status.querySelector('i').className =
-              'fa-solid fa-circle-info';
-
-          }
-
-          statusText.textContent =
-            message;
-
-        }
-
-
-        function normalizeValue() {
-
-          var selected =
-            type.value;
-
-          var text =
-            value.value.trim();
-
-
-          if (
-            selected === 'EAN13' ||
-            selected === 'EAN8' ||
-            selected === 'UPC' ||
-            selected === 'ITF14'
-          ) {
-
-            text =
-              text.replace(/[^0-9]/g, '');
-
-          }
-
-
-          return text;
-
-        }
-
-
-        function validate(text) {
-
-          var selected =
-            type.value;
-
-
-          if (!text) {
-
-            return {
-
-              valid: false,
-
-              message:
-                'أدخل قيمة أولاً.'
-
-            };
-
-          }
-
-
-          if (selected === 'EAN13') {
-
-            if (
-              text.length !== 12 &&
-              text.length !== 13
-            ) {
-
-              return {
-
-                valid: false,
-
-                message:
-                  'EAN-13 يحتاج إلى 12 أو 13 رقمًا.'
-
-              };
-
-            }
-
-
-            if (!/^[0-9]+$/.test(text)) {
-
-              return {
-
-                valid: false,
-
-                message:
-                  'EAN-13 يقبل الأرقام فقط.'
-
-              };
-
-            }
-
-          }
-
-
-          if (selected === 'EAN8') {
-
-            if (
-              text.length !== 7 &&
-              text.length !== 8
-            ) {
-
-              return {
-
-                valid: false,
-
-                message:
-                  'EAN-8 يحتاج إلى 7 أو 8 أرقام.'
-
-              };
-
-            }
-
-
-            if (!/^[0-9]+$/.test(text)) {
-
-              return {
-
-                valid: false,
-
-                message:
-                  'EAN-8 يقبل الأرقام فقط.'
-
-              };
-
-            }
-
-          }
-
-
-          if (selected === 'UPC') {
-
-            if (
-              text.length !== 11 &&
-              text.length !== 12
-            ) {
-
-              return {
-
-                valid: false,
-
-                message:
-                  'UPC-A يحتاج إلى 11 أو 12 رقمًا.'
-
-              };
-
-            }
-
-
-            if (!/^[0-9]+$/.test(text)) {
-
-              return {
-
-                valid: false,
-
-                message:
-                  'UPC-A يقبل الأرقام فقط.'
-
-              };
-
-            }
-
-          }
-
-
-          if (selected === 'ITF14') {
-
-            if (
-              text.length !== 13 &&
-              text.length !== 14
-            ) {
-
-              return {
-
-                valid: false,
-
-                message:
-                  'ITF-14 يحتاج إلى 13 أو 14 رقمًا.'
-
-              };
-
-            }
-
-
-            if (!/^[0-9]+$/.test(text)) {
-
-              return {
-
-                valid: false,
-
-                message:
-                  'ITF-14 يقبل الأرقام فقط.'
-
-              };
-
-            }
-
-          }
-
-
-          return {
-
-            valid: true,
-
-            message:
-              'القيمة صحيحة.'
-
+          const icons = {
+            success: 'fa-circle-check',
+            error: 'fa-circle-exclamation',
+            info: 'fa-circle-info'
           };
 
+          status.className = `status ${type}`;
+
+          status.innerHTML = `
+            <i class="fa-solid ${icons[type] || icons.info}"></i>
+            <span>${message}</span>
+          `;
+        }
+
+
+        function normalizeValue(value) {
+          return value.trim();
+        }
+
+
+        function validate(value, type) {
+          if (!value) {
+            return 'الرجاء إدخال قيمة أولاً.';
+          }
+
+          if (type === 'EAN13') {
+            if (!/^\d{12,13}$/.test(value)) {
+              return 'EAN-13 يجب أن يحتوي على 12 أو 13 رقماً.';
+            }
+          }
+
+          if (type === 'EAN8') {
+            if (!/^\d{7,8}$/.test(value)) {
+              return 'EAN-8 يجب أن يحتوي على 7 أو 8 أرقام.';
+            }
+          }
+
+          if (type === 'UPC') {
+            if (!/^\d{11,12}$/.test(value)) {
+              return 'UPC يجب أن يحتوي على 11 أو 12 رقماً.';
+            }
+          }
+
+          if (type === 'ITF14') {
+            if (!/^\d{13,14}$/.test(value)) {
+              return 'ITF-14 يجب أن يحتوي على 13 أو 14 رقماً.';
+            }
+          }
+
+          if (type === 'CODE39') {
+            if (!/^[0-9A-Z .\-$/+%]+$/i.test(value)) {
+              return 'CODE39 يدعم الأرقام والحروف الإنجليزية وبعض الرموز فقط.';
+            }
+          }
+
+          return null;
         }
 
 
         function clearPreview() {
+          barcodeSvg.innerHTML = '';
+          barcodeSvg.style.display = 'none';
 
-          svg.innerHTML = '';
-
-          svg.style.display = 'none';
-
-          canvas.style.display = 'none';
-
-          emptyPreview.style.display =
-            'flex';
+          barcodeCanvas.style.display = 'none';
+          emptyPreview.style.display = 'flex';
 
           currentSvg = '';
-
-          hasBarcode = false;
-
-          previewStatus.innerHTML =
-            '<i class="fa-solid fa-circle"></i> في انتظار الإدخال';
-
         }
 
 
         function generate() {
-
           if (
-            typeof window.JsBarcode !==
-            'function'
+            typeof JsBarcode === 'undefined' ||
+            !barcodeSvg
           ) {
-
             setStatus(
               'تعذر تحميل مكتبة الباركود. تحقق من اتصال الإنترنت.',
               'error'
             );
 
             return;
-
           }
 
+          const value = normalizeValue(barcodeValue.value);
+          const type = barcodeType.value;
 
-          var selected =
-            type.value;
+          const error = validate(value, type);
 
-          var text =
-            normalizeValue();
-
-
-          var result =
-            validate(text);
-
-
-          charCount.textContent =
-            text.length + ' حرف';
-
-
-          validationText.textContent =
-            result.valid
-              ? 'صحيح'
-              : 'غير صحيح';
-
-
-          if (!result.valid) {
-
+          if (error) {
             clearPreview();
-
-            setStatus(
-              result.message,
-              'error'
-            );
-
+            setStatus(error, 'error');
             return;
-
           }
-
 
           try {
+            barcodeSvg.innerHTML = '';
 
-            svg.innerHTML = '';
-
-
-            var options = {
-
-              format: selected,
-
-              width:
-                Number(width.value),
-
-              height:
-                Number(height.value),
-
-              displayValue:
-                displayValue.value ===
-                'true',
-
-              fontSize:
-                Number(fontSize.value),
-
-              lineColor:
-                lineColor.value,
-
-              background:
-                backgroundColor.value,
-
+            JsBarcode(barcodeSvg, value, {
+              format: type,
+              width: Number(barWidth.value),
+              height: Number(barHeight.value),
+              displayValue: displayValue.value === 'true',
+              fontSize: Number(fontSize.value),
+              lineColor: lineColor.value,
+              background: backgroundColor.value,
               margin: 12,
-
-              marginTop: 14,
-
-              marginBottom: 14,
-
-              marginLeft: 14,
-
-              marginRight: 14,
-
               textMargin: 5
+            });
 
-            };
-
-
-            window.JsBarcode(
-              svg,
-              text,
-              options
+            currentSvg = new XMLSerializer().serializeToString(
+              barcodeSvg
             );
 
+            barcodeSvg.style.display = 'block';
+            barcodeCanvas.style.display = 'none';
+            emptyPreview.style.display = 'none';
 
-            svg.style.display =
-              'block';
-
-            canvas.style.display =
-              'none';
-
-            emptyPreview.style.display =
-              'none';
-
-
-            currentSvg =
-              new XMLSerializer()
-                .serializeToString(svg);
-
-
-            hasBarcode = true;
-
-
-            formatBadge.textContent =
-              selected;
-
-
-            previewInfo.textContent =
-              selected +
-              ' • ' +
-              text.length +
-              ' حرف';
-
-
-            previewStatus.innerHTML =
-              '<i class="fa-solid fa-circle-check"></i> تم إنشاء الباركود بنجاح';
-
+            formatBadge.textContent = type;
 
             setStatus(
-              'تم إنشاء Barcode بنجاح.',
+              'تم إنشاء الباركود بنجاح.',
               'success'
             );
 
-
           } catch (error) {
-
             clearPreview();
 
-
             setStatus(
-              'القيمة غير مناسبة لنوع الباركود المحدد.',
+              'تعذر إنشاء الباركود. تحقق من القيمة المدخلة.',
               'error'
             );
-
           }
-
         }
 
 
         function updateInterface() {
+          lineColorText.textContent =
+            lineColor.value.toUpperCase();
 
-          typeHint.textContent =
-            hints[type.value] || '';
+          backgroundColorText.textContent =
+            backgroundColor.value.toUpperCase();
 
-
-          formatBadge.textContent =
-            type.value;
-
-
-          previewInfo.textContent =
-            type.value;
-
-
-          if (type.value === 'EAN13') {
-
-            value.placeholder =
-              'مثال: 5901234123457';
-
-          } else if (
-            type.value === 'EAN8'
-          ) {
-
-            value.placeholder =
-              'مثال: 96385074';
-
-          } else if (
-            type.value === 'UPC'
-          ) {
-
-            value.placeholder =
-              'مثال: 036000291452';
-
-          } else if (
-            type.value === 'ITF14'
-          ) {
-
-            value.placeholder =
-              'مثال: 12345678901231';
-
-          } else if (
-            type.value === 'CODE39'
-          ) {
-
-            value.placeholder =
-              'مثال: ABC-123';
-
-          } else {
-
-            value.placeholder =
-              'أدخل الرقم أو النص...';
-
-          }
-
-
-          generate();
-
+          formatBadge.textContent = barcodeType.value;
         }
 
 
-        function downloadFile(
-          blob,
-          filename
-        ) {
+        function downloadFile(blob, filename) {
+          const url = URL.createObjectURL(blob);
 
-          var url =
-            URL.createObjectURL(blob);
+          const link = document.createElement('a');
 
-          var link =
-            document.createElement('a');
+          link.href = url;
+          link.download = filename;
 
-
-          link.href =
-            url;
-
-          link.download =
-            filename;
-
-
-          document.body.appendChild(
-            link
-          );
-
-
+          document.body.appendChild(link);
           link.click();
-
           link.remove();
 
-
-          setTimeout(
-            function () {
-
-              URL.revokeObjectURL(url);
-
-            },
-            1000
-          );
-
+          setTimeout(() => {
+            URL.revokeObjectURL(url);
+          }, 500);
         }
 
 
         function downloadSVG() {
+          if (!currentSvg) {
+            generate();
 
-          if (
-            !hasBarcode ||
-            !currentSvg
-          ) {
-
-            setStatus(
-              'أنشئ الباركود أولاً.',
-              'error'
-            );
-
-            return;
-
+            if (!currentSvg) return;
           }
 
-
-          var source =
-            '<?xml version="1.0" encoding="UTF-8"?>\n' +
-            currentSvg;
-
-
-          var blob =
-            new Blob(
-              [source],
-              {
-                type:
-                  'image/svg+xml;charset=utf-8'
-              }
-            );
-
+          const svgBlob = new Blob(
+            [currentSvg],
+            {
+              type: 'image/svg+xml;charset=utf-8'
+            }
+          );
 
           downloadFile(
-            blob,
-            'barcode-' +
-              Date.now() +
-              '.svg'
+            svgBlob,
+            `barcode-${Date.now()}.svg`
           );
-
 
           setStatus(
-            'تم تحميل ملف SVG.',
+            'تم تحميل ملف SVG بنجاح.',
             'success'
           );
-
         }
 
 
         function downloadPNG() {
+          if (!currentSvg) {
+            generate();
 
-          if (!hasBarcode) {
-
-            setStatus(
-              'أنشئ الباركود أولاً.',
-              'error'
-            );
-
-            return;
-
+            if (!currentSvg) return;
           }
 
+          const svgBlob = new Blob(
+            [currentSvg],
+            {
+              type: 'image/svg+xml;charset=utf-8'
+            }
+          );
 
-          try {
+          const url = URL.createObjectURL(svgBlob);
 
-            var svgText =
-              new XMLSerializer()
-                .serializeToString(svg);
+          const image = new Image();
 
+          image.onload = () => {
+            const scale = 2;
 
-            var svgBlob =
-              new Blob(
-                [svgText],
-                {
-                  type:
-                    'image/svg+xml;charset=utf-8'
-                }
-              );
+            const width = image.width || 500;
+            const height = image.height || 150;
 
+            barcodeCanvas.width = width * scale;
+            barcodeCanvas.height = height * scale;
 
-            var url =
-              URL.createObjectURL(
-                svgBlob
-              );
+            const context = barcodeCanvas.getContext('2d');
 
+            context.setTransform(
+              scale,
+              0,
+              0,
+              scale,
+              0,
+              0
+            );
 
-            var image =
-              new Image();
+            context.fillStyle =
+              backgroundColor.value || '#ffffff';
 
+            context.fillRect(
+              0,
+              0,
+              width,
+              height
+            );
 
-            image.onload =
-              function () {
+            context.drawImage(
+              image,
+              0,
+              0,
+              width,
+              height
+            );
 
-                var scale = 2;
-
-
-                canvas.width =
-                  image.width * scale;
-
-
-                canvas.height =
-                  image.height * scale;
-
-
-                var ctx =
-                  canvas.getContext(
-                    '2d'
+            barcodeCanvas.toBlob(
+              (blob) => {
+                if (blob) {
+                  downloadFile(
+                    blob,
+                    `barcode-${Date.now()}.png`
                   );
 
+                  setStatus(
+                    'تم تحميل ملف PNG بنجاح.',
+                    'success'
+                  );
+                }
 
-                ctx.fillStyle =
-                  backgroundColor.value;
+                URL.revokeObjectURL(url);
+              },
+              'image/png'
+            );
+          };
 
-
-                ctx.fillRect(
-                  0,
-                  0,
-                  canvas.width,
-                  canvas.height
-                );
-
-
-                ctx.drawImage(
-                  image,
-                  0,
-                  0,
-                  canvas.width,
-                  canvas.height
-                );
-
-
-                canvas.toBlob(
-                  function (blob) {
-
-                    if (blob) {
-
-                      downloadFile(
-                        blob,
-                        'barcode-' +
-                          Date.now() +
-                          '.png'
-                      );
-
-
-                      setStatus(
-                        'تم تحميل ملف PNG.',
-                        'success'
-                      );
-
-                    }
-
-
-                    URL.revokeObjectURL(
-                      url
-                    );
-
-                  },
-                  'image/png'
-                );
-
-              };
-
-
-            image.onerror =
-              function () {
-
-                URL.revokeObjectURL(
-                  url
-                );
-
-
-                setStatus(
-                  'تعذر تجهيز صورة PNG.',
-                  'error'
-                );
-
-              };
-
-
-            image.src =
-              url;
-
-
-          } catch (error) {
+          image.onerror = () => {
+            URL.revokeObjectURL(url);
 
             setStatus(
-              'تعذر تحميل PNG.',
+              'تعذر إنشاء صورة PNG.',
               'error'
             );
+          };
 
-          }
-
+          image.src = url;
         }
 
 
-        function copyBarcodeValue() {
+        async function copyBarcodeValue() {
+          const value = normalizeValue(
+            barcodeValue.value
+          );
 
-          var text =
-            value.value.trim();
-
-
-          if (!text) {
-
+          if (!value) {
             setStatus(
               'لا توجد قيمة لنسخها.',
               'error'
             );
 
             return;
-
           }
-
-
-          if (
-            navigator.clipboard &&
-            navigator.clipboard.writeText
-          ) {
-
-            navigator.clipboard
-              .writeText(text)
-
-              .then(
-                function () {
-
-                  setStatus(
-                    'تم نسخ القيمة بنجاح.',
-                    'success'
-                  );
-
-                }
-              )
-
-              .catch(
-                function () {
-
-                  fallbackCopy(text);
-
-                }
-              );
-
-
-          } else {
-
-            fallbackCopy(text);
-
-          }
-
-        }
-
-
-        function fallbackCopy(text) {
-
-          var temp =
-            document.createElement(
-              'textarea'
-            );
-
-
-          temp.value =
-            text;
-
-          temp.style.position =
-            'fixed';
-
-          temp.style.opacity =
-            '0';
-
-
-          document.body.appendChild(
-            temp
-          );
-
-
-          temp.select();
-
 
           try {
-
-            document.execCommand(
-              'copy'
-            );
-
+            await navigator.clipboard.writeText(value);
 
             setStatus(
-              'تم نسخ القيمة بنجاح.',
+              'تم نسخ قيمة الباركود.',
               'success'
             );
 
+          } catch {
+            fallbackCopy(value);
+          }
+        }
 
-          } catch (error) {
 
+        function fallbackCopy(value) {
+          const textarea =
+            document.createElement('textarea');
+
+          textarea.value = value;
+
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+
+          document.body.appendChild(textarea);
+
+          textarea.focus();
+          textarea.select();
+
+          try {
+            document.execCommand('copy');
+
+            setStatus(
+              'تم نسخ قيمة الباركود.',
+              'success'
+            );
+
+          } catch {
             setStatus(
               'تعذر نسخ القيمة.',
               'error'
             );
-
           }
 
-
-          temp.remove();
-
+          textarea.remove();
         }
 
 
         function reset() {
+          barcodeType.value = 'CODE128';
 
-          type.value =
-            'CODE128';
+          barcodeValue.value = '123456789012';
 
-          value.value =
-            '123456789012';
+          barWidth.value = '2';
+          barHeight.value = '70';
 
+          displayValue.value = 'true';
+          fontSize.value = '16';
 
-          width.value =
-            '2';
-
-          height.value =
-            '70';
-
-          displayValue.value =
-            'true';
-
-          fontSize.value =
-            '16';
-
-
-          lineColor.value =
-            '#111827';
-
-          backgroundColor.value =
-            '#ffffff';
-
-
-          lineColorText.textContent =
-            '#111827';
-
-          backgroundColorText.textContent =
-            '#FFFFFF';
-
+          lineColor.value = '#111827';
+          backgroundColor.value = '#ffffff';
 
           updateInterface();
+          clearPreview();
 
+          setStatus(
+            'تمت إعادة الإعدادات إلى الوضع الافتراضي.',
+            'success'
+          );
+
+          generate();
         }
-
-
-        value.addEventListener(
-          'input',
-          function () {
-
-            var text =
-              normalizeValue();
-
-
-            charCount.textContent =
-              text.length + ' حرف';
-
-
-            generate();
-
-          }
-        );
-
-
-        type.addEventListener(
-          'change',
-          updateInterface
-        );
-
-
-        width.addEventListener(
-          'change',
-          generate
-        );
-
-
-        height.addEventListener(
-          'change',
-          generate
-        );
-
-
-        displayValue.addEventListener(
-          'change',
-          generate
-        );
-
-
-        fontSize.addEventListener(
-          'change',
-          generate
-        );
-
-
-        lineColor.addEventListener(
-          'input',
-          function () {
-
-            lineColorText.textContent =
-              lineColor.value.toUpperCase();
-
-            generate();
-
-          }
-        );
-
-
-        backgroundColor.addEventListener(
-          'input',
-          function () {
-
-            backgroundColorText.textContent =
-              backgroundColor.value.toUpperCase();
-
-            generate();
-
-          }
-        );
 
 
         generateBtn.addEventListener(
@@ -1896,54 +1076,25 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
           generate
         );
 
-
         resetBtn.addEventListener(
           'click',
           reset
         );
 
-
-        clearBtn.addEventListener(
+        resetBtnMain.addEventListener(
           'click',
-          function () {
-
-            value.value =
-              '';
-
-            clearPreview();
-
-
-            charCount.textContent =
-              '0 حرف';
-
-
-            validationText.textContent =
-              'فارغ';
-
-
-            setStatus(
-              'تم مسح القيمة.',
-              'info'
-            );
-
-
-            value.focus();
-
-          }
+          reset
         );
-
 
         downloadPng.addEventListener(
           'click',
           downloadPNG
         );
 
-
         downloadSvg.addEventListener(
           'click',
           downloadSVG
         );
-
 
         copyValue.addEventListener(
           'click',
@@ -1951,2453 +1102,2268 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
         );
 
 
-        updateInterface();
+        clearBtn.addEventListener(
+          'click',
+          () => {
+            barcodeValue.value = '';
 
+            clearPreview();
+
+            setStatus(
+              'تم مسح القيمة.',
+              'info'
+            );
+
+            barcodeValue.focus();
+          }
+        );
+
+
+        barcodeValue.addEventListener(
+          'input',
+          () => {
+            if (barcodeValue.value.trim()) {
+              generate();
+            } else {
+              clearPreview();
+
+              setStatus(
+                'أدخل قيمة لإنشاء الباركود.',
+                'info'
+              );
+            }
+          }
+        );
+
+
+        barcodeType.addEventListener(
+          'change',
+          () => {
+            updateInterface();
+
+            if (barcodeValue.value.trim()) {
+              generate();
+            }
+          }
+        );
+
+
+        [
+          barWidth,
+          barHeight,
+          displayValue,
+          fontSize
+        ].forEach((element) => {
+          element.addEventListener(
+            'change',
+            generate
+          );
+        });
+
+
+        lineColor.addEventListener(
+          'input',
+          () => {
+            updateInterface();
+
+            if (barcodeValue.value.trim()) {
+              generate();
+            }
+          }
+        );
+
+
+        backgroundColor.addEventListener(
+          'input',
+          () => {
+            updateInterface();
+
+            if (barcodeValue.value.trim()) {
+              generate();
+            }
+          }
+        );
+
+
+        updateInterface();
+        generate();
       }
 
 
-      if (
-        document.readyState ===
-        'loading'
-      ) {
-
+      if (document.readyState === 'loading') {
         document.addEventListener(
           'DOMContentLoaded',
           startBarcodeTool
         );
-
       } else {
-
         startBarcodeTool();
+      }
+    </script>
 
+
+    <style>
+      :root {
+        --bg: #f4f8fc;
+        --surface: #ffffff;
+        --surface-2: #f8fbff;
+        --surface-3: #eef6ff;
+
+        --card-bg: #ffffff;
+
+        --text: #0f172a;
+        --muted: #64748b;
+        --muted-2: #94a3b8;
+
+        --border: #dbe6f0;
+        --border-strong: #cbd9e6;
+
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --primary-soft: #eff6ff;
+
+        --success: #16a34a;
+        --danger: #dc2626;
+        --warning: #d97706;
+
+        --shadow:
+          0 12px 35px rgba(15, 23, 42, 0.07);
+
+        --shadow-hover:
+          0 18px 45px rgba(15, 23, 42, 0.11);
+
+        --radius: 22px;
       }
 
-    })();
-  </script>
 
+      html.dark-mode {
+        --bg: #07111f;
+        --surface: #0c1929;
+        --surface-2: #101f32;
+        --surface-3: #12263d;
 
-  <!-- ========================================================= -->
-  <!-- CSS -->
-  <!-- ========================================================= -->
+        --card-bg: #0d1b2b;
 
-  <style>
+        --text: #f1f5f9;
+        --muted: #9fb0c4;
+        --muted-2: #71839a;
 
-    :root {
+        --border: #20344b;
+        --border-strong: #2d4560;
 
-      --bg: #f3f9fc;
+        --primary: #60a5fa;
+        --primary-dark: #3b82f6;
+        --primary-soft: #102846;
 
-      --surface: #ffffff;
+        --success: #4ade80;
+        --danger: #f87171;
+        --warning: #fbbf24;
 
-      --surface-2: #f7fbfd;
+        --shadow:
+          0 18px 45px rgba(0, 0, 0, 0.24);
 
-      --surface-3: #edf7fb;
+        --shadow-hover:
+          0 22px 55px rgba(0, 0, 0, 0.34);
+      }
 
-      --card-bg: #ffffff;
 
-      --text: #102333;
+      * {
+        box-sizing: border-box;
+      }
 
-      --muted: #647786;
 
-      --border: #d8e8ef;
+      html {
+        scroll-behavior: smooth;
+      }
 
-      --primary: #08a9df;
 
-      --primary-dark: #078bc0;
-
-      --success: #159d7c;
-
-      --danger: #e05252;
-
-      --shadow:
-        0 12px 35px rgba(
-          13,
-          91,
-          120,
-          0.09
-        );
-
-    }
-
-
-    html.dark-mode {
-
-      --bg: #07111f;
-
-      --surface: #0d1b2b;
-
-      --surface-2: #101f31;
-
-      --surface-3: #13263a;
-
-      --card-bg: #0d1b2b;
-
-      --text: #edf7fc;
-
-      --muted: #91a6b7;
-
-      --border: #203b50;
-
-      --primary: #17b9ed;
-
-      --primary-dark: #0b9dcc;
-
-      --success: #25b993;
-
-      --danger: #ff6b6b;
-
-      --shadow:
-        0 18px 45px rgba(
-          0,
-          0,
-          0,
-          0.24
-        );
-
-    }
-
-
-    html[data-theme="light"] {
-
-      --bg: #f3f9fc;
-
-      --surface: #ffffff;
-
-      --surface-2: #f7fbfd;
-
-      --surface-3: #edf7fb;
-
-      --card-bg: #ffffff;
-
-      --text: #102333;
-
-      --muted: #647786;
-
-      --border: #d8e8ef;
-
-      --primary: #08a9df;
-
-      --primary-dark: #078bc0;
-
-      --success: #159d7c;
-
-      --danger: #e05252;
-
-      --shadow:
-        0 12px 35px rgba(
-          13,
-          91,
-          120,
-          0.09
-        );
-
-    }
-
-
-    html,
-    body {
-
-      margin: 0;
-
-      padding: 0;
-
-      background:
-        var(--bg);
-
-      color:
-        var(--text);
-
-      transition:
-        background-color 0.25s ease,
-        color 0.25s ease;
-
-    }
-
-
-    body {
-
-      font-family:
-        "Cairo",
-        sans-serif;
-
-      min-height:
-        100vh;
-
-    }
-
-
-    *,
-    *::before,
-    *::after {
-
-      box-sizing:
-        border-box;
-
-    }
-
-
-    button,
-    input,
-    select {
-
-      font: inherit;
-
-    }
-
-
-    .page {
-
-      width:
-        min(
-          1080px,
-          calc(100% - 28px)
-        );
-
-      margin:
-        0 auto;
-
-      padding:
-        28px 0 70px;
-
-    }
-
-
-    /* ===================================================== */
-    /* Hero */
-    /* ===================================================== */
-
-    .hero {
-
-      text-align:
-        center;
-
-      padding:
-        20px 10px 32px;
-
-    }
-
-
-    .hero-icon {
-
-      width:
-        76px;
-
-      height:
-        76px;
-
-      margin:
-        0 auto 18px;
-
-      display:
-        grid;
-
-      place-items:
-        center;
-
-      border-radius:
-        24px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(
-            8,
-            169,
-            223,
-            0.16
+      body {
+        margin: 0;
+        background:
+          radial-gradient(
+            circle at 15% 5%,
+            rgba(37, 99, 235, 0.08),
+            transparent 28%
           ),
-          rgba(
-            8,
-            169,
-            223,
-            0.05
-          )
-        );
+          var(--bg);
 
-      border:
-        1px solid
-        rgba(
-          8,
-          169,
-          223,
-          0.25
-        );
+        color: var(--text);
 
-      color:
-        var(--primary);
+        font-family:
+          "Cairo",
+          system-ui,
+          sans-serif;
 
-      font-size:
-        32px;
-
-      box-shadow:
-        var(--shadow);
-
-    }
-
-
-    .breadcrumb {
-
-      display:
-        flex;
-
-      justify-content:
-        center;
-
-      align-items:
-        center;
-
-      gap:
-        9px;
-
-      flex-wrap:
-        wrap;
-
-      color:
-        var(--muted);
-
-      font-size:
-        13px;
-
-      margin-bottom:
-        16px;
-
-    }
-
-
-    .breadcrumb a {
-
-      color:
-        var(--primary);
-
-      text-decoration:
-        none;
-
-    }
-
-
-    .breadcrumb i {
-
-      font-size:
-        9px;
-
-      opacity:
-        0.7;
-
-    }
-
-
-    .hero h1 {
-
-      margin:
-        0;
-
-      font-size:
-        clamp(
-          28px,
-          5vw,
-          44px
-        );
-
-      line-height:
-        1.4;
-
-      font-weight:
-        800;
-
-      color:
-        var(--text);
-
-    }
-
-
-    .hero h1 span {
-
-      color:
-        var(--primary);
-
-    }
-
-
-    .hero p {
-
-      max-width:
-        690px;
-
-      margin:
-        12px auto 18px;
-
-      color:
-        var(--muted);
-
-      font-size:
-        15px;
-
-      line-height:
-        2;
-
-    }
-
-
-    .tags {
-
-      display:
-        flex;
-
-      justify-content:
-        center;
-
-      gap:
-        8px;
-
-      flex-wrap:
-        wrap;
-
-    }
-
-
-    .tags span {
-
-      padding:
-        7px 12px;
-
-      border-radius:
-        30px;
-
-      background:
-        var(--surface);
-
-      border:
-        1px solid
-        var(--border);
-
-      color:
-        var(--muted);
-
-      font-size:
-        12px;
-
-    }
-
-
-    .tags i {
-
-      color:
-        var(--primary);
-
-      margin-left:
-        4px;
-
-    }
-
-
-    /* ===================================================== */
-    /* Tool Card */
-    /* ===================================================== */
-
-    .tool-card {
-
-      background:
-        var(--surface);
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        26px;
-
-      overflow:
-        hidden;
-
-      box-shadow:
-        var(--shadow);
-
-    }
-
-
-    .tool-header {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        16px;
-
-      padding:
-        25px;
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--surface-2),
-          var(--surface)
-        );
-
-      border-bottom:
-        1px solid
-        var(--border);
-
-    }
-
-
-    .section-icon {
-
-      width:
-        58px;
-
-      height:
-        58px;
-
-      flex:
-        0 0 58px;
-
-      display:
-        grid;
-
-      place-items:
-        center;
-
-      border-radius:
-        17px;
-
-      background:
-        rgba(
-          8,
-          169,
-          223,
-          0.12
-        );
-
-      color:
-        var(--primary);
-
-      font-size:
-        23px;
-
-    }
-
-
-    .tool-header h2 {
-
-      margin:
-        0 0 4px;
-
-      font-size:
-        21px;
-
-    }
-
-
-    .tool-header p {
-
-      margin:
-        0;
-
-      color:
-        var(--muted);
-
-      font-size:
-        13px;
-
-    }
-
-
-    /* ===================================================== */
-    /* Fields */
-    /* ===================================================== */
-
-    .field {
-
-      padding:
-        20px 25px 0;
-
-    }
-
-
-    .field label,
-    .color-field label {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        8px;
-
-      margin-bottom:
-        9px;
-
-      color:
-        var(--text);
-
-      font-size:
-        14px;
-
-      font-weight:
-        700;
-
-    }
-
-
-    .field label i,
-    .color-field label i {
-
-      color:
-        var(--primary);
-
-    }
-
-
-    select,
-    input[type="text"] {
-
-      width:
-        100%;
-
-      height:
-        52px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        14px;
-
-      outline:
-        none;
-
-      background:
-        var(--surface-2);
-
-      color:
-        var(--text);
-
-      padding:
-        0 15px;
-
-      transition:
-        0.2s ease;
-
-    }
-
-
-    select:focus,
-    input[type="text"]:focus {
-
-      border-color:
-        var(--primary);
-
-      box-shadow:
-        0 0 0 4px
-        rgba(
-          8,
-          169,
-          223,
-          0.1
-        );
-
-    }
-
-
-    .field small {
-
-      display:
-        block;
-
-      margin-top:
-        8px;
-
-      color:
-        var(--muted);
-
-      font-size:
-        11px;
-
-    }
-
-
-    .input-wrap {
-
-      position:
-        relative;
-
-    }
-
-
-    .input-wrap input {
-
-      padding-left:
-        50px;
-
-      direction:
-        ltr;
-
-      text-align:
-        left;
-
-      font-family:
-        "JetBrains Mono",
-        monospace;
-
-      font-size:
-        15px;
-
-    }
-
-
-    .input-clear {
-
-      position:
-        absolute;
-
-      left:
-        8px;
-
-      top:
-        8px;
-
-      width:
-        36px;
-
-      height:
-        36px;
-
-      border:
-        0;
-
-      border-radius:
-        10px;
-
-      background:
-        var(--surface-3);
-
-      color:
-        var(--muted);
-
-      cursor:
-        pointer;
-
-    }
-
-
-    .field-meta {
-
-      display:
-        flex;
-
-      justify-content:
-        space-between;
-
-      margin-top:
-        8px;
-
-      color:
-        var(--muted);
-
-      font-size:
-        11px;
-
-    }
-
-
-    /* ===================================================== */
-    /* Actions */
-    /* ===================================================== */
-
-    .actions {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        1fr 1fr;
-
-      gap:
-        12px;
-
-      padding:
-        25px;
-
-    }
-
-
-    .primary-btn,
-    .secondary-btn {
-
-      min-height:
-        56px;
-
-      border-radius:
-        15px;
-
-      border:
-        0;
-
-      cursor:
-        pointer;
-
-      font-weight:
-        800;
-
-      transition:
-        transform 0.2s ease,
-        box-shadow 0.2s ease;
-
-    }
-
-
-    .primary-btn {
-
-      color:
-        white;
-
-      background:
-        linear-gradient(
-          135deg,
-          var(--primary),
-          var(--primary-dark)
-        );
-
-      box-shadow:
-        0 10px 25px
-        rgba(
-          8,
-          169,
-          223,
-          0.22
-        );
-
-    }
-
-
-    .secondary-btn {
-
-      color:
-        var(--text);
-
-      background:
-        var(--surface-3);
-
-      border:
-        1px solid
-        var(--border);
-
-    }
-
-
-    .primary-btn:hover,
-    .secondary-btn:hover,
-    .download-btn:hover {
-
-      transform:
-        translateY(-2px);
-
-    }
-
-
-    .primary-btn i,
-    .secondary-btn i {
-
-      margin-left:
-        7px;
-
-    }
-
-
-    /* ===================================================== */
-    /* Status */
-    /* ===================================================== */
-
-    .status {
-
-      margin:
-        0 25px 25px;
-
-      padding:
-        13px 15px;
-
-      border-radius:
-        13px;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        9px;
-
-      font-size:
-        13px;
-
-    }
-
-
-    .status.ready,
-    .status.info {
-
-      background:
-        var(--surface-3);
-
-      color:
-        var(--muted);
-
-    }
-
-
-    .status.success {
-
-      background:
-        rgba(
-          21,
-          157,
-          124,
-          0.1
-        );
-
-      color:
-        var(--success);
-
-    }
-
-
-    .status.error {
-
-      background:
-        rgba(
-          224,
-          82,
-          82,
-          0.1
-        );
-
-      color:
-        var(--danger);
-
-    }
-
-
-    /* ===================================================== */
-    /* Preview */
-    /* ===================================================== */
-
-    .preview-section {
-
-      border-top:
-        1px solid
-        var(--border);
-
-      padding:
-        26px 25px 30px;
-
-      background:
-        var(--surface-2);
-
-    }
-
-
-    .preview-header {
-
-      display:
-        flex;
-
-      justify-content:
-        space-between;
-
-      align-items:
-        center;
-
-      gap:
-        15px;
-
-      margin-bottom:
-        18px;
-
-    }
-
-
-    .preview-header h2 {
-
-      margin:
-        0 0 3px;
-
-      font-size:
-        20px;
-
-    }
-
-
-    .preview-header h2 i {
-
-      color:
-        var(--primary);
-
-      margin-left:
-        6px;
-
-    }
-
-
-    .preview-header p {
-
-      margin:
-        0;
-
-      color:
-        var(--muted);
-
-      font-size:
-        12px;
-
-    }
-
-
-    .format-badge {
-
-      padding:
-        7px 11px;
-
-      border-radius:
-        9px;
-
-      background:
-        rgba(
-          8,
-          169,
-          223,
-          0.11
-        );
-
-      color:
-        var(--primary);
-
-      font-family:
-        "JetBrains Mono",
-        monospace;
-
-      font-size:
-        11px;
-
-      font-weight:
-        700;
-
-    }
-
-
-    .preview-box {
-
-      min-height:
-        285px;
-
-      width:
-        100%;
-
-      border:
-        2px dashed
-        #bcd8e4;
-
-      border-radius:
-        25px;
-
-      background:
-        #ffffff;
-
-      display:
-        flex;
-
-      justify-content:
-        center;
-
-      align-items:
-        center;
-
-      padding:
-        25px;
-
-      overflow:
-        hidden;
-
-    }
-
-
-    html.dark-mode .preview-box {
-
-      background:
-        #ffffff;
-
-      border-color:
-        #527487;
-
-    }
-
-
-    #barcodeSvg {
-
-      display:
-        none;
-
-      width:
-        min(
-          100%,
-          720px
-        );
-
-      height:
-        auto;
-
-      max-height:
-        230px;
-
-    }
-
-
-    #barcodeCanvas {
-
-      display:
-        none;
-
-      max-width:
-        100%;
-
-      height:
-        auto;
-
-    }
-
-
-    .empty-preview {
-
-      display:
-        flex;
-
-      flex-direction:
-        column;
-
-      align-items:
-        center;
-
-      justify-content:
-        center;
-
-      text-align:
-        center;
-
-      gap:
-        8px;
-
-      color:
-        #78909c;
-
-    }
-
-
-    .empty-icon {
-
-      width:
-        65px;
-
-      height:
-        65px;
-
-      display:
-        grid;
-
-      place-items:
-        center;
-
-      border-radius:
-        18px;
-
-      background:
-        #edf7fb;
-
-      color:
-        #08a9df;
-
-      font-size:
-        27px;
-
-      margin-bottom:
-        4px;
-
-    }
-
-
-    .empty-preview strong {
-
-      color:
-        #516b78;
-
-      font-size:
-        14px;
-
-    }
-
-
-    .empty-preview span {
-
-      font-size:
-        11px;
-
-    }
-
-
-    .preview-meta {
-
-      display:
-        flex;
-
-      justify-content:
-        space-between;
-
-      gap:
-        10px;
-
-      margin:
-        13px 2px 0;
-
-      color:
-        var(--muted);
-
-      font-size:
-        11px;
-
-    }
-
-
-    .preview-meta #previewInfo {
-
-      font-family:
-        "JetBrains Mono",
-        monospace;
-
-    }
-
-
-    .preview-status i {
-
-      font-size:
-        7px;
-
-      margin-left:
-        4px;
-
-    }
-
-
-    /* ===================================================== */
-    /* NEW OPTIONS GRID */
-    /* ===================================================== */
-
-    .options-grid {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        repeat(
-          2,
-          minmax(
-            0,
-            1fr
-          )
-        );
-
-      gap:
-        18px;
-
-      margin-top:
-        22px;
-
-      padding:
-        0 25px 30px;
-
-      background:
-        var(--surface-2);
-
-    }
-
-
-    .options-card {
-
-      min-width:
-        0;
-
-      padding:
-        22px;
-
-      border-radius:
-        22px;
-
-      background:
-        var(--card-bg);
-
-      border:
-        1px solid
-        var(--border);
-
-      box-shadow:
-        var(--shadow);
-
-    }
-
-
-    .options-card h3 {
-
-      margin:
-        0 0 18px;
-
-      font-size:
-        1.15rem;
-
-      color:
-        var(--text);
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        8px;
-
-    }
-
-
-    .options-card h3 i {
-
-      color:
-        var(--primary);
-
-      font-size:
-        16px;
-
-    }
-
-
-    /* ===================================================== */
-    /* Settings inside options card */
-    /* ===================================================== */
-
-    .settings-grid {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        1fr 1fr;
-
-      gap:
-        12px;
-
-    }
-
-
-    .settings-grid .field {
-
-      padding:
-        0;
-
-    }
-
-
-    .colors-grid {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        1fr 1fr;
-
-      gap:
-        12px;
-
-      padding:
-        15px 0 0;
-
-    }
-
-
-    .color-field {
-
-      background:
-        var(--surface-2);
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        15px;
-
-      padding:
-        14px;
-
-    }
-
-
-    .color-control {
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      gap:
-        10px;
-
-    }
-
-
-    .color-control input {
-
-      width:
-        50px;
-
-      height:
-        40px;
-
-      padding:
-        3px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        10px;
-
-      background:
-        var(--surface);
-
-      cursor:
-        pointer;
-
-    }
-
-
-    .color-control span {
-
-      direction:
-        ltr;
-
-      font-family:
-        "JetBrains Mono",
-        monospace;
-
-      color:
-        var(--muted);
-
-      font-size:
-        12px;
-
-    }
-
-
-    /* ===================================================== */
-    /* Download */
-    /* ===================================================== */
-
-    .download-grid {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        repeat(
-          3,
-          1fr
-        );
-
-      gap:
-        10px;
-
-    }
-
-
-    .download-btn {
-
-      min-height:
-        105px;
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        17px;
-
-      background:
-        var(--surface-2);
-
-      color:
-        var(--text);
-
-      cursor:
-        pointer;
-
-      display:
-        flex;
-
-      flex-direction:
-        column;
-
-      justify-content:
-        center;
-
-      align-items:
-        center;
-
-      gap:
-        5px;
-
-      transition:
-        0.2s ease;
-
-    }
-
-
-    .download-icon {
-
-      width:
-        43px;
-
-      height:
-        43px;
-
-      display:
-        grid;
-
-      place-items:
-        center;
-
-      border-radius:
-        12px;
-
-      background:
-        rgba(
-          8,
-          169,
-          223,
-          0.1
-        );
-
-      color:
-        var(--primary);
-
-      font-size:
-        18px;
-
-      margin-bottom:
-        2px;
-
-    }
-
-
-    .download-btn strong {
-
-      font-size:
-        13px;
-
-    }
-
-
-    .download-btn small {
-
-      color:
-        var(--muted);
-
-      font-size:
-        10px;
-
-    }
-
-
-    .tip {
-
-      display:
-        flex;
-
-      align-items:
-        flex-start;
-
-      gap:
-        10px;
-
-      margin-top:
-        18px;
-
-      padding:
-        14px;
-
-      border-radius:
-        14px;
-
-      background:
-        rgba(
-          8,
-          169,
-          223,
-          0.08
-        );
-
-      border:
-        1px solid
-        rgba(
-          8,
-          169,
-          223,
-          0.17
-        );
-
-      color:
-        var(--muted);
-
-      font-size:
-        11px;
-
-      line-height:
-        1.9;
-
-    }
-
-
-    .tip i {
-
-      color:
-        var(--primary);
-
-      margin-top:
-        4px;
-
-    }
-
-
-    /* ===================================================== */
-    /* Info */
-    /* ===================================================== */
-
-    .info-card {
-
-      display:
-        flex;
-
-      align-items:
-        flex-start;
-
-      gap:
-        15px;
-
-      margin-top:
-        18px;
-
-      padding:
-        22px;
-
-      border-radius:
-        21px;
-
-      background:
-        var(--surface);
-
-      border:
-        1px solid
-        var(--border);
-
-      box-shadow:
-        var(--shadow);
-
-    }
-
-
-    .info-icon {
-
-      width:
-        48px;
-
-      height:
-        48px;
-
-      flex:
-        0 0 48px;
-
-      display:
-        grid;
-
-      place-items:
-        center;
-
-      border-radius:
-        14px;
-
-      background:
-        rgba(
-          8,
-          169,
-          223,
-          0.1
-        );
-
-      color:
-        var(--primary);
-
-    }
-
-
-    .info-card h3 {
-
-      margin:
-        0 0 5px;
-
-      font-size:
-        16px;
-
-    }
-
-
-    .info-card p {
-
-      margin:
-        0;
-
-      color:
-        var(--muted);
-
-      font-size:
-        12px;
-
-      line-height:
-        1.9;
-
-    }
-
-
-    .info-content ol {
-
-      margin:
-        10px 0 0;
-
-      padding-right:
-        20px;
-
-      color:
-        var(--muted);
-
-      font-size:
-        12px;
-
-      line-height:
-        2.2;
-
-    }
-
-
-    /* ===================================================== */
-    /* Features */
-    /* ===================================================== */
-
-    .features {
-
-      display:
-        grid;
-
-      grid-template-columns:
-        repeat(
-          4,
-          1fr
-        );
-
-      gap:
-        12px;
-
-      margin-top:
-        18px;
-
-    }
-
-
-    .feature {
-
-      display:
-        flex;
-
-      flex-direction:
-        column;
-
-      align-items:
-        center;
-
-      text-align:
-        center;
-
-      gap:
-        5px;
-
-      padding:
-        19px 10px;
-
-      border-radius:
-        18px;
-
-      background:
-        var(--surface);
-
-      border:
-        1px solid
-        var(--border);
-
-    }
-
-
-    .feature i {
-
-      color:
-        var(--primary);
-
-      font-size:
-        19px;
-
-      margin-bottom:
-        3px;
-
-    }
-
-
-    .feature strong {
-
-      font-size:
-        12px;
-
-    }
-
-
-    .feature span {
-
-      color:
-        var(--muted);
-
-      font-size:
-        10px;
-
-    }
-
-
-    /* ===================================================== */
-    /* FAQ */
-    /* ===================================================== */
-
-    .faq-section {
-
-      margin-top:
-        34px;
-
-    }
-
-
-    .faq-heading {
-
-      display:
-        flex;
-
-      justify-content:
-        space-between;
-
-      align-items:
-        center;
-
-      margin-bottom:
-        12px;
-
-      font-size:
-        21px;
-
-      font-weight:
-        800;
-
-    }
-
-
-    .faq-heading i {
-
-      color:
-        var(--primary);
-
-    }
-
-
-    details {
-
-      background:
-        var(--surface);
-
-      border:
-        1px solid
-        var(--border);
-
-      border-radius:
-        14px;
-
-      margin-bottom:
-        9px;
-
-      overflow:
-        hidden;
-
-    }
-
-
-    summary {
-
-      min-height:
-        54px;
-
-      padding:
-        14px 16px;
-
-      display:
-        flex;
-
-      align-items:
-        center;
-
-      justify-content:
-        space-between;
-
-      gap:
-        12px;
-
-      cursor:
-        pointer;
-
-      color:
-        var(--text);
-
-      font-size:
-        12px;
-
-      font-weight:
-        700;
-
-      list-style:
-        none;
-
-    }
-
-
-    summary::-webkit-details-marker {
-
-      display:
-        none;
-
-    }
-
-
-    summary i {
-
-      color:
-        var(--primary);
-
-      transition:
-        transform 0.2s ease;
-
-    }
-
-
-    details[open] summary i {
-
-      transform:
-        rotate(45deg);
-
-    }
-
-
-    details p {
-
-      margin:
-        0;
-
-      padding:
-        0 16px 17px;
-
-      color:
-        var(--muted);
-
-      font-size:
-        11px;
-
-      line-height:
-        1.9;
-
-    }
-
-
-    /* ===================================================== */
-    /* Responsive */
-    /* ===================================================== */
-
-    @media (max-width: 800px) {
-
-      .features {
-
-        grid-template-columns:
-          1fr 1fr;
-
-      }
-
-    }
-
-
-    @media (max-width: 700px) {
-
-      .options-grid {
-
-        grid-template-columns:
-          repeat(
-            2,
-            minmax(
-              0,
-              1fr
-            )
-          );
-
-        gap:
-          10px;
-
+        line-height: 1.7;
       }
 
 
-      .options-card {
-
-        padding:
-          14px;
-
-        border-radius:
-          17px;
-
+      button,
+      input,
+      select {
+        font: inherit;
       }
 
 
-      .options-card h3 {
-
-        font-size:
-          .95rem;
-
-        margin-bottom:
-          14px;
-
+      button {
+        cursor: pointer;
       }
 
-
-      .settings-grid {
-
-        grid-template-columns:
-          1fr;
-
-        gap:
-          10px;
-
-      }
-
-
-      .colors-grid {
-
-        grid-template-columns:
-          1fr;
-
-        gap:
-          10px;
-
-      }
-
-
-      .download-grid {
-
-        grid-template-columns:
-          1fr;
-
-        gap:
-          8px;
-
-      }
-
-
-      .download-btn {
-
-        min-height:
-          82px;
-
-      }
-
-
-      .tip {
-
-        font-size:
-          10px;
-
-      }
-
-    }
-
-
-    @media (max-width: 560px) {
 
       .page {
-
-        width:
-          min(
-            100% - 18px,
-            1080px
-          );
-
-        padding-top:
-          15px;
-
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 38px 0 70px;
       }
 
 
+      /* HERO */
+
       .hero {
-
-        padding:
-          14px 5px 24px;
-
+        text-align: center;
+        margin-bottom: 30px;
       }
 
 
       .hero-icon {
+        width: 68px;
+        height: 68px;
 
-        width:
-          68px;
+        margin: 0 auto 16px;
 
-        height:
-          68px;
+        display: grid;
+        place-items: center;
 
-        border-radius:
-          20px;
+        border-radius: 20px;
 
+        color: #ffffff;
+
+        font-size: 27px;
+
+        background:
+          linear-gradient(
+            135deg,
+            #2563eb,
+            #38bdf8
+          );
+
+        box-shadow:
+          0 14px 30px rgba(37, 99, 235, 0.22);
+      }
+
+
+      .breadcrumb {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 9px;
+
+        color: var(--muted);
+
+        font-size: 0.82rem;
+
+        margin-bottom: 12px;
+      }
+
+
+      .breadcrumb a {
+        color: var(--muted);
+        text-decoration: none;
+      }
+
+
+      .breadcrumb a:hover {
+        color: var(--primary);
+      }
+
+
+      .breadcrumb i {
+        font-size: 0.65rem;
       }
 
 
       .hero h1 {
+        margin: 0;
 
-        font-size:
-          27px;
+        font-size: clamp(1.8rem, 4vw, 2.8rem);
 
+        line-height: 1.3;
+
+        letter-spacing: -0.5px;
       }
 
 
-      .hero p {
+      .hero h1 span {
+        color: var(--primary);
+      }
 
-        font-size:
-          12px;
 
-        line-height:
-          1.9;
+      .hero > p {
+        width: min(700px, 100%);
 
+        margin: 12px auto 17px;
+
+        color: var(--muted);
+
+        font-size: 0.98rem;
+      }
+
+
+      .hero-tags {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+
+      .hero-tags span {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+
+        padding: 6px 11px;
+
+        border-radius: 999px;
+
+        background: var(--surface);
+
+        border: 1px solid var(--border);
+
+        color: var(--muted);
+
+        font-size: 0.75rem;
+      }
+
+
+      .hero-tags i {
+        color: var(--primary);
+      }
+
+
+      /* TOOL */
+
+      .tool-wrapper {
+        width: 100%;
       }
 
 
       .tool-card {
+        padding: 26px;
 
-        border-radius:
-          20px;
+        border-radius: 28px;
 
-      }
+        background: var(--surface);
 
+        border: 1px solid var(--border);
 
-      .tool-header {
-
-        padding:
-          19px 16px;
-
-        gap:
-          12px;
-
-      }
-
-
-      .section-icon {
-
-        width:
-          48px;
-
-        height:
-          48px;
-
-        flex-basis:
-          48px;
-
-        border-radius:
-          14px;
-
-        font-size:
-          19px;
-
-      }
-
-
-      .tool-header h2 {
-
-        font-size:
-          17px;
-
-      }
-
-
-      .tool-header p {
-
-        font-size:
-          11px;
-
+        box-shadow: var(--shadow);
       }
 
 
       .field {
-
-        padding:
-          17px 15px 0;
-
-      }
-
-
-      .field label,
-      .color-field label {
-
-        font-size:
-          13px;
-
-      }
-
-
-      .actions {
-
-        grid-template-columns:
-          1fr;
-
-        padding:
-          20px 15px;
-
-      }
-
-
-      .status {
-
-        margin:
-          0 15px 20px;
-
-      }
-
-
-      .preview-section {
-
-        padding:
-          20px 15px 23px;
-
-      }
-
-
-      .preview-header h2 {
-
-        font-size:
-          17px;
-
-      }
-
-
-      .preview-box {
-
-        min-height:
-          240px;
-
-        padding:
-          18px 10px;
-
-        border-radius:
-          19px;
-
-      }
-
-
-      #barcodeSvg {
-
-        max-height:
-          180px;
-
-      }
-
-
-      .info-card {
-
-        padding:
-          17px;
-
-        border-radius:
-          18px;
-
-      }
-
-
-      .features {
-
-        gap:
-          8px;
-
-      }
-
-
-      .feature {
-
-        padding:
-          16px 7px;
-
-      }
-
-
-      .feature strong {
-
-        font-size:
-          11px;
-
-      }
-
-
-      .faq-heading {
-
-        font-size:
-          19px;
-
-      }
-
-    }
-
-
-    @media (max-width: 360px) {
-
-      .options-grid {
-
-        gap:
-          7px;
-
-      }
-
-
-      .options-card {
-
-        padding:
-          11px;
-
-      }
-
-
-      .options-card h3 {
-
-        font-size:
-          .86rem;
-
-      }
-
-
-      .settings-grid {
-
-        gap:
-          8px;
-
-      }
-
-
-      .settings-grid select {
-
-        height:
-          46px;
-
-        padding:
-          0 9px;
-
-        font-size:
-          11px;
-
+        padding: 0 4px;
+        margin-bottom: 19px;
       }
 
 
       .field label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
 
-        font-size:
-          11px;
+        margin-bottom: 8px;
 
+        font-size: 0.86rem;
+        font-weight: 700;
       }
 
 
-      .color-field {
+      .label-icon {
+        color: var(--primary);
+      }
+
+
+      .select-wrap,
+      .input-wrap {
+        position: relative;
+      }
+
+
+      select,
+      input[type="text"] {
+        width: 100%;
+
+        height: 50px;
+
+        border: 1px solid var(--border-strong);
+
+        border-radius: 14px;
+
+        background: var(--surface-2);
+
+        color: var(--text);
+
+        outline: none;
+
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease,
+          background 0.2s ease;
+      }
+
+
+      select {
+        appearance: none;
 
         padding:
+          0
+          42px
+          0
+          15px;
+      }
+
+
+      input[type="text"] {
+        padding:
+          0
+          48px
+          0
+          15px;
+
+        direction: ltr;
+        text-align: left;
+
+        font-family:
+          "JetBrains Mono",
+          monospace;
+
+        font-size: 0.88rem;
+      }
+
+
+      select:focus,
+      input[type="text"]:focus {
+        border-color: var(--primary);
+
+        box-shadow:
+          0 0 0 4px
+          rgba(37, 99, 235, 0.10);
+
+        background: var(--surface);
+      }
+
+
+      .select-arrow {
+        position: absolute;
+
+        top: 50%;
+        right: 16px;
+
+        transform: translateY(-50%);
+
+        pointer-events: none;
+
+        color: var(--muted);
+
+        font-size: 0.75rem;
+      }
+
+
+      .clear-btn {
+        position: absolute;
+
+        top: 50%;
+        right: 9px;
+
+        width: 32px;
+        height: 32px;
+
+        transform: translateY(-50%);
+
+        border: 0;
+
+        border-radius: 10px;
+
+        display: grid;
+        place-items: center;
+
+        color: var(--muted);
+
+        background: transparent;
+      }
+
+
+      .clear-btn:hover {
+        color: var(--danger);
+        background: rgba(220, 38, 38, 0.08);
+      }
+
+
+      .field-hint {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+
+        margin-top: 7px;
+
+        color: var(--muted);
+
+        font-size: 0.7rem;
+      }
+
+
+      .field-hint i {
+        color: var(--primary);
+      }
+
+
+      /* OPTIONS */
+
+      .options-grid {
+        display: grid;
+
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+
+        gap: 18px;
+
+        margin: 22px 4px 20px;
+      }
+
+
+      .options-card {
+        min-width: 0;
+
+        padding: 21px;
+
+        border-radius: 22px;
+
+        background: var(--card-bg);
+
+        border: 1px solid var(--border);
+
+        box-shadow:
+          0 7px 22px
+          rgba(15, 23, 42, 0.045);
+
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+
+      .options-card:hover {
+        transform: translateY(-2px);
+
+        box-shadow: var(--shadow-hover);
+
+        border-color: var(--border-strong);
+      }
+
+
+      .section-heading {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+
+        margin-bottom: 18px;
+      }
+
+
+      .section-icon {
+        flex: 0 0 auto;
+
+        width: 42px;
+        height: 42px;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 13px;
+
+        font-size: 16px;
+      }
+
+
+      .settings-icon {
+        color: var(--primary);
+
+        background:
+          rgba(37, 99, 235, 0.10);
+      }
+
+
+      .export-icon {
+        color: #0891b2;
+
+        background:
+          rgba(8, 145, 178, 0.10);
+      }
+
+
+      .section-heading h3 {
+        margin: 0;
+
+        color: var(--text);
+
+        font-size: 1.02rem;
+
+        line-height: 1.35;
+      }
+
+
+      .section-heading span {
+        display: block;
+
+        margin-top: 2px;
+
+        color: var(--muted);
+
+        font-size: 0.68rem;
+      }
+
+
+      .settings-grid {
+        display: grid;
+
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+      }
+
+
+      .mini-field {
+        min-width: 0;
+      }
+
+
+      .mini-field label {
+        display: block;
+
+        margin-bottom: 6px;
+
+        color: var(--muted);
+
+        font-size: 0.68rem;
+        font-weight: 700;
+      }
+
+
+      .mini-select {
+        position: relative;
+      }
+
+
+      .mini-select select {
+        height: 43px;
+
+        padding:
+          0
+          30px
+          0
           9px;
 
+        border-radius: 11px;
+
+        font-size: 0.76rem;
+      }
+
+
+      .mini-select i {
+        position: absolute;
+
+        top: 50%;
+        right: 10px;
+
+        transform: translateY(-50%);
+
+        color: var(--muted);
+
+        font-size: 0.58rem;
+
+        pointer-events: none;
+      }
+
+
+      .colors-grid {
+        display: grid;
+
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+
+        margin-top: 12px;
+      }
+
+
+      .color-box {
+        min-width: 0;
+
+        padding: 9px;
+
+        border-radius: 12px;
+
+        background: var(--surface-2);
+
+        border: 1px solid var(--border);
+      }
+
+
+      .color-box label {
+        display: block;
+
+        margin-bottom: 6px;
+
+        color: var(--muted);
+
+        font-size: 0.64rem;
+        font-weight: 700;
+      }
+
+
+      .color-control {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+
+        min-width: 0;
+      }
+
+
+      .color-control input[type="color"] {
+        flex: 0 0 auto;
+
+        width: 30px;
+        height: 30px;
+
+        padding: 2px;
+
+        border: 1px solid var(--border-strong);
+
+        border-radius: 8px;
+
+        background: var(--surface);
+
+        cursor: pointer;
       }
 
 
       .color-control span {
+        min-width: 0;
 
-        font-size:
-          9px;
+        overflow: hidden;
 
+        text-overflow: ellipsis;
+
+        direction: ltr;
+
+        font-family:
+          "JetBrains Mono",
+          monospace;
+
+        color: var(--muted);
+
+        font-size: 0.62rem;
       }
 
 
-      .download-btn {
+      /* EXPORT */
 
-        min-height:
-          72px;
-
-      }
-
-
-      .download-icon {
-
-        width:
-          34px;
-
-        height:
-          34px;
-
-        font-size:
-          14px;
-
-      }
-
-
-      .download-btn strong {
-
-        font-size:
-          11px;
-
-      }
-
-
-      .download-btn small {
-
-        font-size:
-          9px;
-
-      }
-
-
-      .features {
+      .download-grid {
+        display: grid;
 
         grid-template-columns:
-          1fr 1fr;
+          repeat(2, minmax(0, 1fr));
+
+        gap: 10px;
+      }
+
+
+      .export-btn {
+        min-width: 0;
+
+        min-height: 72px;
+
+        display: flex;
+
+        align-items: center;
+
+        gap: 9px;
+
+        padding: 10px;
+
+        border-radius: 14px;
+
+        border: 1px solid var(--border);
+
+        background: var(--surface-2);
+
+        color: var(--text);
+
+        text-align: right;
+
+        transition:
+          transform 0.18s ease,
+          border-color 0.18s ease,
+          background 0.18s ease,
+          box-shadow 0.18s ease;
+      }
+
+
+      .export-btn:hover {
+        transform: translateY(-2px);
+
+        background: var(--surface);
+
+        box-shadow:
+          0 8px 18px
+          rgba(15, 23, 42, 0.08);
+      }
+
+
+      .export-btn:active {
+        transform: translateY(0);
+      }
+
+
+      .export-btn-icon {
+        flex: 0 0 auto;
+
+        width: 34px;
+        height: 34px;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 10px;
+
+        font-size: 13px;
+      }
+
+
+      .export-btn-content {
+        min-width: 0;
+      }
+
+
+      .export-btn-content strong {
+        display: block;
+
+        font-size: 0.78rem;
+
+        line-height: 1.3;
+      }
+
+
+      .export-btn-content small {
+        display: block;
+
+        margin-top: 2px;
+
+        color: var(--muted);
+
+        font-size: 0.6rem;
+      }
+
+
+      .png-btn .export-btn-icon {
+        color: #16a34a;
+        background: rgba(22, 163, 74, 0.10);
+      }
+
+
+      .svg-btn .export-btn-icon {
+        color: #7c3aed;
+        background: rgba(124, 58, 237, 0.10);
+      }
+
+
+      .copy-btn .export-btn-icon {
+        color: #0891b2;
+        background: rgba(8, 145, 178, 0.10);
+      }
+
+
+      .reset-export-btn .export-btn-icon {
+        color: #d97706;
+        background: rgba(217, 119, 6, 0.10);
+      }
+
+
+      .export-tip {
+        display: flex;
+
+        align-items: center;
+
+        gap: 6px;
+
+        margin-top: 11px;
+
+        color: var(--muted);
+
+        font-size: 0.62rem;
+      }
+
+
+      .export-tip i {
+        color: var(--success);
+      }
+
+
+      /* MAIN ACTIONS */
+
+      .main-actions {
+        display: grid;
+
+        grid-template-columns:
+          minmax(0, 2fr)
+          minmax(130px, 1fr);
+
+        gap: 11px;
+
+        margin: 20px 4px 10px;
+      }
+
+
+      .generate-btn,
+      .reset-btn {
+        min-height: 51px;
+
+        border-radius: 14px;
+
+        font-weight: 800;
+
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease,
+          background 0.2s ease;
+      }
+
+
+      .generate-btn {
+        border: 0;
+
+        color: #ffffff;
+
+        background:
+          linear-gradient(
+            135deg,
+            #2563eb,
+            #0284c7
+          );
+
+        box-shadow:
+          0 10px 24px
+          rgba(37, 99, 235, 0.20);
+      }
+
+
+      .generate-btn:hover {
+        transform: translateY(-2px);
+
+        box-shadow:
+          0 14px 28px
+          rgba(37, 99, 235, 0.28);
+      }
+
+
+      .generate-btn i {
+        margin-left: 7px;
+      }
+
+
+      .reset-btn {
+        border: 1px solid var(--border);
+
+        color: var(--muted);
+
+        background: var(--surface-2);
+      }
+
+
+      .reset-btn:hover {
+        color: var(--text);
+
+        border-color: var(--border-strong);
+
+        background: var(--surface-3);
+      }
+
+
+      /* STATUS */
+
+      .status {
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 7px;
+
+        min-height: 36px;
+
+        margin: 5px 4px 20px;
+
+        border-radius: 10px;
+
+        font-size: 0.75rem;
+
+        color: var(--muted);
+      }
+
+
+      .status.success {
+        color: var(--success);
+      }
+
+
+      .status.error {
+        color: var(--danger);
+
+        background:
+          rgba(220, 38, 38, 0.06);
+      }
+
+
+      .status.info {
+        color: var(--primary);
+
+        background:
+          rgba(37, 99, 235, 0.05);
+      }
+
+
+      /* PREVIEW */
+
+      .preview-section {
+        padding: 20px;
+
+        border-radius: 20px;
+
+        background: var(--surface-2);
+
+        border: 1px solid var(--border);
+      }
+
+
+      .preview-heading {
+        display: flex;
+
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 15px;
+
+        margin-bottom: 15px;
+      }
+
+
+      .preview-heading h2 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        margin: 0;
+
+        font-size: 1rem;
+      }
+
+
+      .preview-heading h2 i {
+        color: var(--primary);
+      }
+
+
+      .preview-heading p {
+        margin: 2px 0 0;
+
+        color: var(--muted);
+
+        font-size: 0.68rem;
+      }
+
+
+      .format-badge {
+        padding: 6px 10px;
+
+        border-radius: 999px;
+
+        color: var(--primary);
+
+        background: var(--primary-soft);
+
+        border: 1px solid
+          rgba(37, 99, 235, 0.14);
+
+        font-family:
+          "JetBrains Mono",
+          monospace;
+
+        font-size: 0.65rem;
+        font-weight: 600;
+      }
+
+
+      .preview-box {
+        position: relative;
+
+        min-height: 245px;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        overflow: hidden;
+
+        padding: 30px;
+
+        border-radius: 18px;
+
+        background: #ffffff;
+
+        border: 1px solid #dce5ec;
+
+        box-shadow:
+          inset 0 0 0 1px
+          rgba(255, 255, 255, 0.6);
+      }
+
+
+      html.dark-mode .preview-box {
+        background: #ffffff;
+
+        border-color: #527487;
+      }
+
+
+      .empty-preview {
+        display: flex;
+
+        flex-direction: column;
+
+        align-items: center;
+
+        justify-content: center;
+
+        gap: 5px;
+
+        color: #64748b;
+
+        text-align: center;
+      }
+
+
+      .empty-icon {
+        width: 58px;
+        height: 58px;
+
+        display: grid;
+        place-items: center;
+
+        margin-bottom: 5px;
+
+        border-radius: 17px;
+
+        color: #2563eb;
+
+        background: #eff6ff;
+
+        font-size: 24px;
+      }
+
+
+      .empty-preview strong {
+        font-size: 0.82rem;
+      }
+
+
+      .empty-preview span {
+        font-size: 0.68rem;
+      }
+
+
+      .barcode-svg {
+        display: none;
+
+        max-width: 100%;
+
+        height: auto;
+      }
+
+
+      .barcode-canvas {
+        display: none;
+
+        max-width: 100%;
+
+        height: auto;
+      }
+
+
+      .preview-meta {
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        flex-wrap: wrap;
+
+        gap: 8px 18px;
+
+        margin-top: 13px;
+
+        color: var(--muted);
+
+        font-size: 0.65rem;
+      }
+
+
+      .preview-meta span {
+        display: inline-flex;
+
+        align-items: center;
+
+        gap: 5px;
+      }
+
+
+      .preview-meta i {
+        color: var(--primary);
+      }
+
+
+      /* INFO */
+
+      .info-card {
+        display: flex;
+
+        align-items: flex-start;
+
+        gap: 16px;
+
+        margin-top: 22px;
+
+        padding: 22px;
+
+        border-radius: 20px;
+
+        background:
+          linear-gradient(
+            135deg,
+            var(--primary-soft),
+            var(--surface)
+          );
+
+        border: 1px solid
+          rgba(37, 99, 235, 0.13);
+      }
+
+
+      .info-icon {
+        flex: 0 0 auto;
+
+        width: 45px;
+        height: 45px;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 13px;
+
+        color: var(--primary);
+
+        background: var(--surface);
+
+        box-shadow:
+          0 6px 16px
+          rgba(37, 99, 235, 0.08);
+      }
+
+
+      .info-card h2 {
+        margin: 0 0 4px;
+
+        font-size: 1rem;
+      }
+
+
+      .info-card p {
+        margin: 0;
+
+        color: var(--muted);
+
+        font-size: 0.78rem;
+      }
+
+
+      /* CONTENT */
+
+      .content-section,
+      .faq-section {
+        margin-top: 48px;
+      }
+
+
+      .content-heading {
+        display: flex;
+
+        align-items: center;
+
+        gap: 13px;
+
+        margin-bottom: 20px;
+      }
+
+
+      .content-number {
+        width: 42px;
+        height: 42px;
+
+        flex: 0 0 auto;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 13px;
+
+        color: var(--primary);
+
+        background: var(--primary-soft);
+
+        font-family:
+          "JetBrains Mono",
+          monospace;
+
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+
+
+      .content-heading h2 {
+        margin: 0;
+
+        font-size: 1.25rem;
+      }
+
+
+      .content-heading p {
+        margin: 2px 0 0;
+
+        color: var(--muted);
+
+        font-size: 0.72rem;
+      }
+
+
+      .steps {
+        display: grid;
+
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
+
+        gap: 14px;
+      }
+
+
+      .step {
+        display: flex;
+
+        align-items: flex-start;
+
+        gap: 11px;
+
+        padding: 17px;
+
+        border-radius: 17px;
+
+        background: var(--surface);
+
+        border: 1px solid var(--border);
+
+        box-shadow:
+          0 6px 20px
+          rgba(15, 23, 42, 0.035);
+      }
+
+
+      .step-number {
+        width: 31px;
+        height: 31px;
+
+        flex: 0 0 auto;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 9px;
+
+        color: #ffffff;
+
+        background: var(--primary);
+
+        font-size: 0.72rem;
+        font-weight: 800;
+      }
+
+
+      .step h3 {
+        margin: 0 0 3px;
+
+        font-size: 0.82rem;
+      }
+
+
+      .step p {
+        margin: 0;
+
+        color: var(--muted);
+
+        font-size: 0.67rem;
+      }
+
+
+      /* FEATURES */
+
+      .features-grid {
+        display: grid;
+
+        grid-template-columns:
+          repeat(4, minmax(0, 1fr));
+
+        gap: 13px;
+      }
+
+
+      .feature {
+        padding: 20px 16px;
+
+        border-radius: 18px;
+
+        background: var(--surface);
+
+        border: 1px solid var(--border);
+
+        text-align: center;
+
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+
+      .feature:hover {
+        transform: translateY(-3px);
+
+        box-shadow: var(--shadow);
+      }
+
+
+      .feature-icon {
+        width: 44px;
+        height: 44px;
+
+        display: grid;
+        place-items: center;
+
+        margin: 0 auto 11px;
+
+        border-radius: 13px;
+
+        color: var(--primary);
+
+        background: var(--primary-soft);
+      }
+
+
+      .feature h3 {
+        margin: 0 0 4px;
+
+        font-size: 0.82rem;
+      }
+
+
+      .feature p {
+        margin: 0;
+
+        color: var(--muted);
+
+        font-size: 0.65rem;
+      }
+
+
+      /* FAQ */
+
+      .faq-list {
+        display: grid;
+
+        gap: 10px;
+      }
+
+
+      .faq-list details {
+        overflow: hidden;
+
+        border: 1px solid var(--border);
+
+        border-radius: 15px;
+
+        background: var(--surface);
+
+        transition:
+          border-color 0.2s ease,
+          background 0.2s ease;
+      }
+
+
+      .faq-list details[open] {
+        border-color:
+          rgba(37, 99, 235, 0.30);
+
+        background: var(--surface-2);
+      }
+
+
+      .faq-list summary {
+        display: flex;
+
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 15px;
+
+        padding: 15px 17px;
+
+        cursor: pointer;
+
+        list-style: none;
+
+        font-size: 0.78rem;
+        font-weight: 700;
+      }
+
+
+      .faq-list summary::-webkit-details-marker {
+        display: none;
+      }
+
+
+      .faq-list summary i {
+        color: var(--muted);
+
+        font-size: 0.65rem;
+
+        transition: transform 0.2s ease;
+      }
+
+
+      .faq-list details[open] summary i {
+        transform: rotate(180deg);
+
+        color: var(--primary);
+      }
+
+
+      .faq-list details p {
+        margin: 0;
+
+        padding:
+          0
+          17px
+          17px;
+
+        color: var(--muted);
+
+        font-size: 0.72rem;
+      }
+
+
+      /* TABLET */
+
+      @media (max-width: 850px) {
+
+        .page {
+          width: min(100% - 24px, 720px);
+
+          padding-top: 28px;
+        }
+
+
+        .tool-card {
+          padding: 20px;
+        }
+
+
+        .steps {
+          grid-template-columns:
+            1fr;
+        }
+
+
+        .features-grid {
+          grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+        }
 
       }
 
-    }
 
-  </style>
+      /* MOBILE */
 
-</body>
+      @media (max-width: 700px) {
+
+        .page {
+          width: calc(100% - 14px);
+
+          padding:
+            20px
+            0
+            45px;
+        }
+
+
+        .hero {
+          margin-bottom: 20px;
+        }
+
+
+        .hero-icon {
+          width: 57px;
+          height: 57px;
+
+          border-radius: 17px;
+
+          font-size: 23px;
+        }
+
+
+        .breadcrumb {
+          font-size: 0.68rem;
+
+          gap: 6px;
+        }
+
+
+        .hero h1 {
+          font-size: 1.65rem;
+        }
+
+
+        .hero > p {
+          font-size: 0.76rem;
+
+          line-height: 1.8;
+        }
+
+
+        .hero-tags {
+          gap: 5px;
+        }
+
+
+        .hero-tags span {
+          padding: 5px 8px;
+
+          font-size: 0.62rem;
+        }
+
+
+        .tool-card {
+          padding: 12px;
+
+          border-radius: 21px;
+        }
+
+
+        .field {
+          margin-bottom: 14px;
+        }
+
+
+        .field label {
+          font-size: 0.75rem;
+
+          margin-bottom: 6px;
+        }
+
+
+        select,
+        input[type="text"] {
+          height: 46px;
+
+          border-radius: 12px;
+
+          font-size: 0.78rem;
+        }
+
+
+        .options-grid {
+          grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+          gap: 8px;
+
+          margin:
+            16px 0
+            12px;
+        }
+
+
+        .options-card {
+          padding: 11px;
+
+          border-radius: 16px;
+        }
+
+
+        .options-card:hover {
+          transform: none;
+        }
+
+
+        .section-heading {
+          gap: 7px;
+
+          margin-bottom: 12px;
+        }
+
+
+        .section-icon {
+          width: 31px;
+          height: 31px;
+
+          border-radius: 9px;
+
+          font-size: 11px;
+        }
+
+
+        .section-heading h3 {
+          font-size: 0.72rem;
+
+          line-height: 1.25;
+        }
+
+
+        .section-heading span {
+          margin-top: 1px;
+
+          font-size: 0.52rem;
+        }
+
+
+        .settings-grid {
+          grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+          gap: 7px;
+        }
+
+
+        .mini-field label {
+          margin-bottom: 4px;
+
+          font-size: 0.54rem;
+        }
+
+
+        .mini-select select {
+          height: 34px;
+
+          padding:
+            0
+            22px
+            0
+            6px;
+
+          border-radius: 8px;
+
+          font-size: 0.61rem;
+        }
+
+
+        .mini-select i {
+          right: 7px;
+
+          font-size: 0.45rem;
+        }
+
+
+        .colors-grid {
+          grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+          gap: 7px;
+
+          margin-top: 8px;
+        }
+
+
+        .color-box {
+          padding: 6px;
+
+          border-radius: 8px;
+        }
+
+
+        .color-box label {
+          margin-bottom: 4px;
+
+          font-size: 0.49rem;
+        }
+
+
+        .color-control {
+          gap: 4px;
+        }
+
+
+        .color-control input[type="color"] {
+          width: 22px;
+          height: 22px;
+
+          border-radius: 6px;
+        }
+
+
+        .color-control span {
+          font-size: 0.46rem;
+        }
+
+
+        .download-grid {
+          grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+          gap: 7px;
+        }
+
+
+        .export-btn {
+          min-height: 55px;
+
+          gap: 5px;
+
+          padding: 7px;
+
+          border-radius: 10px;
+        }
+
+
+        .export-btn-icon {
+          width: 27px;
+          height: 27px;
+
+          border-radius: 8px;
+
+          font-size: 10px;
+        }
+
+
+        .export-btn-content strong {
+          font-size: 0.59rem;
+        }
+
+
+        .export-btn-content small {
+          font-size: 0.46rem;
+        }
+
+
+        .export-tip {
+          align-items: flex-start;
+
+          gap: 4px;
+
+          margin-top: 7px;
+
+          font-size: 0.48rem;
+
+          line-height: 1.5;
+        }
+
+
+        .main-actions {
+          grid-template-columns:
+            minmax(0, 1.6fr)
+            minmax(80px, 1fr);
+
+          gap: 7px;
+
+          margin:
+            14px 0
+            7px;
+        }
+
+
+        .generate-btn,
+        .reset-btn {
+          min-height: 45px;
+
+          border-radius: 11px;
+
+          font-size: 0.7rem;
+        }
+
+
+        .generate-btn i,
+        .reset-btn i {
+          margin-left: 3px;
+        }
+
+
+        .status {
+          min-height: 30px;
+
+          margin:
+            3px 0
+            12px;
+
+          font-size: 0.62rem;
+        }
+
+
+        .preview-section {
+          padding: 11px;
+
+          border-radius: 15px;
+        }
+
+
+        .preview-heading {
+          margin-bottom: 10px;
+        }
+
+
+        .preview-heading h2 {
+          font-size: 0.76rem;
+        }
+
+
+        .preview-heading p {
+          font-size: 0.54rem;
+        }
+
+
+        .format-badge {
+          padding: 4px 7px;
+
+          font-size: 0.5rem;
+        }
+
+
+        .preview-box {
+          min-height: 190px;
+
+          padding: 17px;
+
+          border-radius: 13px;
+        }
+
+
+        .empty-icon {
+          width: 46px;
+          height: 46px;
+
+          border-radius: 13px;
+
+          font-size: 19px;
+        }
+
+
+        .empty-preview strong {
+          font-size: 0.68rem;
+        }
+
+
+        .empty-preview span {
+          font-size: 0.55rem;
+        }
+
+
+        .preview-meta {
+          gap: 5px 9px;
+
+          margin-top: 8px;
+
+          font-size: 0.49rem;
+        }
+
+
+        .info-card {
+          gap: 10px;
+
+          margin-top: 13px;
+
+          padding: 14px;
+
+          border-radius: 15px;
+        }
+
+
+        .info-icon {
+          width: 34px;
+          height: 34px;
+
+          border-radius: 9px;
+
+          font-size: 12px;
+        }
+
+
+        .info-card h2 {
+          font-size: 0.76rem;
+        }
+
+
+        .info-card p {
+          font-size: 0.6rem;
+
+          line-height: 1.7;
+        }
+
+
+        .content-section,
+        .faq-section {
+          margin-top: 33px;
+        }
+
+
+        .content-heading {
+          gap: 9px;
+
+          margin-bottom: 13px;
+        }
+
+
+        .content-number {
+          width: 34px;
+          height: 34px;
+
+          border-radius: 9px;
+
+          font-size: 0.59rem;
+        }
+
+
+        .content-heading h2 {
+          font-size: 0.92rem;
+        }
+
+
+        .content-heading p {
+          font-size: 0.57rem;
+        }
+
+
+        .step {
+          padding: 12px;
+
+          border-radius: 13px;
+        }
+
+
+        .step-number {
+          width: 27px;
+          height: 27px;
+
+          border-radius: 8px;
+
+          font-size: 0.61rem;
+        }
+
+
+        .step h3 {
+          font-size: 0.7rem;
+        }
+
+
+        .step p {
+          font-size: 0.57rem;
+
+          line-height: 1.7;
+        }
+
+
+        .features-grid {
+          grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+          gap: 8px;
+        }
+
+
+        .feature {
+          padding: 14px 9px;
+
+          border-radius: 13px;
+        }
+
+
+        .feature-icon {
+          width: 35px;
+          height: 35px;
+
+          margin-bottom: 7px;
+
+          border-radius: 9px;
+
+          font-size: 12px;
+        }
+
+
+        .feature h3 {
+          font-size: 0.68rem;
+        }
+
+
+        .feature p {
+          font-size: 0.52rem;
+
+          line-height: 1.6;
+        }
+
+
+        .faq-list {
+          gap: 7px;
+        }
+
+
+        .faq-list summary {
+          padding: 12px;
+
+          font-size: 0.65rem;
+        }
+
+
+        .faq-list details p {
+          padding:
+            0
+            12px
+            12px;
+
+          font-size: 0.59rem;
+
+          line-height: 1.8;
+        }
+
+      }
+
+
+      /* VERY SMALL PHONES
+         Keep both cards and all buttons 2×2,
+         but reduce internal spacing only. */
+
+      @media (max-width: 380px) {
+
+        .page {
+          width: calc(100% - 8px);
+        }
+
+
+        .tool-card {
+          padding: 9px;
+        }
+
+
+        .options-grid {
+          gap: 6px;
+        }
+
+
+        .options-card {
+          padding: 8px;
+
+          border-radius: 14px;
+        }
+
+
+        .section-heading {
+          gap: 5px;
+        }
+
+
+        .section-icon {
+          width: 27px;
+          height: 27px;
+
+          font-size: 9px;
+        }
+
+
+        .section-heading h3 {
+          font-size: 0.63rem;
+        }
+
+
+        .section-heading span {
+          display: none;
+        }
+
+
+        .settings-grid,
+        .colors-grid,
+        .download-grid {
+          gap: 5px;
+        }
+
+
+        .mini-field label {
+          font-size: 0.48rem;
+        }
+
+
+        .mini-select select {
+          font-size: 0.55rem;
+        }
+
+
+        .export-btn {
+          min-height: 50px;
+
+          padding: 5px;
+
+          gap: 4px;
+        }
+
+
+        .export-btn-icon {
+          width: 23px;
+          height: 23px;
+
+          font-size: 8px;
+        }
+
+
+        .export-btn-content strong {
+          font-size: 0.53rem;
+        }
+
+
+        .export-btn-content small {
+          font-size: 0.42rem;
+        }
+
+
+        .color-box {
+          padding: 5px;
+        }
+
+
+        .color-control input[type="color"] {
+          width: 19px;
+          height: 19px;
+        }
+
+
+        .color-control span {
+          font-size: 0.4rem;
+        }
+
+      }
+    </style>
+  </body>
 </html>
