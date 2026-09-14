@@ -1,0 +1,1293 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const canonical = `https://oumaystore-hub.github.io${base}/tools/ascii-table/`;
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>ASCII Table | جدول ASCII | Th.Tech</title>
+
+    <meta
+      name="description"
+      content="جدول ASCII تفاعلي لعرض رموز ASCII والقيم العشرية والثنائية والسداسية عشرية مع البحث والنسخ السريع."
+    />
+
+    <link rel="canonical" href={canonical} />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+
+    <style>
+      :global(html),
+      :global(body) {
+        margin: 0;
+        padding: 0;
+        min-height: 100%;
+      }
+
+      :global(body) {
+        font-family: "Cairo", sans-serif;
+        transition:
+          background-color 0.25s ease,
+          color 0.25s ease;
+      }
+
+      :global(body.ascii-dark-theme) {
+        background: #0b1120 !important;
+        color: #e5edf8 !important;
+        color-scheme: dark;
+      }
+
+      :global(body.ascii-light-theme) {
+        background: #f5f9ff !important;
+        color: #172033 !important;
+        color-scheme: light;
+      }
+
+      .ascii-page {
+        --page-bg: #0b1120;
+        --page-text: #e5edf8;
+        --muted: #9aa9bd;
+        --muted-2: #7d8da3;
+
+        --card: #111827;
+        --card-2: #172033;
+        --input: #172033;
+
+        --border: #263449;
+        --border-strong: #34445b;
+
+        --primary: #38bdf8;
+        --primary-2: #0ea5e9;
+
+        --success: #22c55e;
+
+        --shadow: 0 16px 45px rgba(0, 0, 0, 0.25);
+
+        width: 100%;
+        min-height: calc(100vh - 80px);
+        box-sizing: border-box;
+
+        background: var(--page-bg);
+        color: var(--page-text);
+
+        padding: 28px 16px 55px;
+
+        transition:
+          background-color 0.25s ease,
+          color 0.25s ease;
+      }
+
+      .ascii-page.force-light {
+        --page-bg: #f5f9ff;
+        --page-text: #172033;
+        --muted: #667085;
+        --muted-2: #7a8799;
+
+        --card: #ffffff;
+        --card-2: #f7faff;
+        --input: #ffffff;
+
+        --border: #dbe5f0;
+        --border-strong: #c6d4e4;
+
+        --primary: #0284c7;
+        --primary-2: #0369a1;
+
+        --shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+      }
+
+      .ascii-page.force-dark {
+        --page-bg: #0b1120;
+        --page-text: #e5edf8;
+        --muted: #9aa9bd;
+        --muted-2: #7d8da3;
+
+        --card: #111827;
+        --card-2: #172033;
+        --input: #172033;
+
+        --border: #263449;
+        --border-strong: #34445b;
+
+        --primary: #38bdf8;
+        --primary-2: #0ea5e9;
+
+        --shadow: 0 16px 45px rgba(0, 0, 0, 0.25);
+      }
+
+      .ascii-container {
+        width: min(1150px, 100%);
+        margin: 0 auto;
+      }
+
+      /* =========================
+         HEADING
+      ========================= */
+
+      .tool-heading {
+        text-align: center;
+        margin: 5px auto 27px;
+      }
+
+      .tool-icon {
+        width: 64px;
+        height: 64px;
+        margin: 0 auto 13px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 18px;
+
+        background:
+          linear-gradient(
+            135deg,
+            var(--primary),
+            var(--primary-2)
+          );
+
+        color: #fff;
+        font-size: 27px;
+
+        box-shadow:
+          0 10px 28px rgba(14, 165, 233, 0.22);
+      }
+
+      .tool-heading h1 {
+        margin: 0;
+
+        color: var(--page-text);
+
+        font-size: clamp(25px, 5vw, 36px);
+        font-weight: 800;
+      }
+
+      .tool-heading p {
+        max-width: 700px;
+        margin: 8px auto 0;
+
+        color: var(--muted);
+
+        font-size: 15px;
+        line-height: 1.9;
+      }
+
+      /* =========================
+         TOOL CARD
+      ========================= */
+
+      .tool-card {
+        background: var(--card);
+
+        border: 1px solid var(--border);
+        border-radius: 20px;
+
+        box-shadow: var(--shadow);
+
+        overflow: hidden;
+
+        transition:
+          background-color 0.25s ease,
+          border-color 0.25s ease;
+      }
+
+      /* =========================
+         CONTROLS
+      ========================= */
+
+      .controls {
+        padding: 20px;
+
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 220px;
+
+        gap: 14px;
+
+        border-bottom: 1px solid var(--border);
+      }
+
+      .search-box {
+        position: relative;
+      }
+
+      .search-box i {
+        position: absolute;
+
+        top: 50%;
+        right: 15px;
+
+        transform: translateY(-50%);
+
+        color: var(--muted);
+        pointer-events: none;
+      }
+
+      .search-box input,
+      .type-select {
+        width: 100%;
+        height: 48px;
+
+        box-sizing: border-box;
+
+        border: 1px solid var(--border);
+        border-radius: 12px;
+
+        background: var(--input);
+        color: var(--page-text);
+
+        font-family: "Cairo", sans-serif;
+        font-size: 14px;
+
+        outline: none;
+
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .search-box input {
+        padding: 0 43px 0 14px;
+      }
+
+      .search-box input:focus,
+      .type-select:focus {
+        border-color: var(--primary);
+
+        box-shadow:
+          0 0 0 3px rgba(14, 165, 233, 0.13);
+      }
+
+      .type-select {
+        padding: 0 13px;
+        cursor: pointer;
+      }
+
+      /* =========================
+         STATS
+      ========================= */
+
+      .stats {
+        display: flex;
+        flex-wrap: wrap;
+
+        gap: 9px;
+
+        padding: 15px 20px;
+
+        border-bottom: 1px solid var(--border);
+      }
+
+      .stat {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+
+        padding: 7px 11px;
+
+        border-radius: 999px;
+
+        background: var(--card-2);
+
+        color: var(--muted);
+
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .stat strong {
+        color: var(--page-text);
+      }
+
+      .stat i {
+        color: var(--primary);
+      }
+
+      /* =========================
+         TABLE
+      ========================= */
+
+      .table-wrap {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      table {
+        width: 100%;
+        min-width: 650px;
+
+        border-collapse: collapse;
+      }
+
+      thead {
+        background: var(--card-2);
+      }
+
+      th {
+        padding: 14px 12px;
+
+        color: var(--page-text);
+
+        font-size: 13px;
+        font-weight: 800;
+
+        white-space: nowrap;
+
+        border-bottom: 1px solid var(--border);
+      }
+
+      td {
+        padding: 12px;
+
+        color: var(--muted);
+
+        font-size: 13px;
+        text-align: center;
+
+        border-bottom: 1px solid var(--border);
+
+        white-space: nowrap;
+      }
+
+      tbody tr {
+        transition:
+          background-color 0.15s ease,
+          transform 0.15s ease;
+      }
+
+      tbody tr:hover {
+        background: var(--card-2);
+      }
+
+      tbody tr:last-child td {
+        border-bottom: 0;
+      }
+
+      .char-cell {
+        width: 80px;
+      }
+
+      .char {
+        width: 42px;
+        height: 42px;
+
+        margin: auto;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 11px;
+
+        background: var(--card-2);
+
+        color: var(--primary);
+
+        font-family:
+          "Courier New",
+          monospace;
+
+        font-size: 18px;
+        font-weight: 800;
+      }
+
+      .char.control {
+        font-size: 11px;
+        color: var(--muted-2);
+      }
+
+      .code {
+        color: var(--page-text);
+
+        font-family:
+          "Courier New",
+          monospace;
+
+        font-weight: 700;
+      }
+
+      .hex {
+        color: var(--primary);
+
+        font-family:
+          "Courier New",
+          monospace;
+
+        font-weight: 700;
+      }
+
+      .binary {
+        font-family:
+          "Courier New",
+          monospace;
+
+        color: var(--muted);
+        direction: ltr;
+      }
+
+      .copy-row {
+        min-width: 72px;
+      }
+
+      .copy-btn {
+        width: 36px;
+        height: 36px;
+
+        border: 1px solid var(--border);
+        border-radius: 9px;
+
+        background: var(--card-2);
+        color: var(--muted);
+
+        cursor: pointer;
+
+        transition:
+          color 0.18s ease,
+          background-color 0.18s ease,
+          border-color 0.18s ease;
+      }
+
+      .copy-btn:hover {
+        color: var(--primary);
+        border-color: var(--primary);
+      }
+
+      .copy-btn.copied {
+        color: var(--success);
+        border-color: rgba(34, 197, 94, 0.4);
+      }
+
+      /* =========================
+         EMPTY
+      ========================= */
+
+      .empty {
+        display: none;
+
+        padding: 50px 20px;
+
+        text-align: center;
+        color: var(--muted);
+      }
+
+      .empty i {
+        margin-bottom: 12px;
+
+        font-size: 36px;
+
+        color: var(--muted-2);
+      }
+
+      .empty div {
+        font-size: 14px;
+        font-weight: 700;
+      }
+
+      /* =========================
+         INFO
+      ========================= */
+
+      .info-grid {
+        display: grid;
+
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
+
+        gap: 14px;
+
+        margin-top: 18px;
+      }
+
+      .info-card {
+        padding: 17px;
+
+        background: var(--card);
+
+        border: 1px solid var(--border);
+        border-radius: 16px;
+
+        box-shadow: var(--shadow);
+      }
+
+      .info-card h3 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        margin: 0 0 8px;
+
+        color: var(--page-text);
+
+        font-size: 14px;
+      }
+
+      .info-card h3 i {
+        color: var(--primary);
+      }
+
+      .info-card p {
+        margin: 0;
+
+        color: var(--muted);
+
+        font-size: 12px;
+        line-height: 1.8;
+      }
+
+      /* =========================
+         RESPONSIVE
+      ========================= */
+
+      @media (max-width: 760px) {
+        .ascii-page {
+          padding: 23px 12px 45px;
+        }
+
+        .controls {
+          grid-template-columns: 1fr;
+        }
+
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .ascii-page {
+          padding: 20px 9px 38px;
+        }
+
+        .tool-heading {
+          margin-bottom: 21px;
+        }
+
+        .tool-icon {
+          width: 58px;
+          height: 58px;
+
+          border-radius: 16px;
+
+          font-size: 24px;
+        }
+
+        .tool-heading h1 {
+          font-size: 25px;
+        }
+
+        .tool-heading p {
+          font-size: 13px;
+        }
+
+        .tool-card {
+          border-radius: 17px;
+        }
+
+        .controls {
+          padding: 14px;
+          gap: 10px;
+        }
+
+        .search-box input,
+        .type-select {
+          height: 46px;
+          font-size: 13px;
+        }
+
+        .stats {
+          padding: 12px 14px;
+          gap: 7px;
+        }
+
+        .stat {
+          font-size: 11px;
+          padding: 6px 9px;
+        }
+
+        th {
+          padding: 12px 9px;
+          font-size: 12px;
+        }
+
+        td {
+          padding: 10px 8px;
+          font-size: 12px;
+        }
+
+        .char {
+          width: 38px;
+          height: 38px;
+          font-size: 16px;
+        }
+
+        .copy-btn {
+          width: 34px;
+          height: 34px;
+        }
+
+        .info-card {
+          padding: 15px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+
+    <main class="ascii-page force-dark" id="asciiPage">
+      <div class="ascii-container">
+
+        <section class="tool-heading">
+          <div class="tool-icon">
+            <i class="fa-solid fa-table"></i>
+          </div>
+
+          <h1>ASCII Table</h1>
+
+          <p>
+            جدول ASCII تفاعلي يعرض الرموز والقيم العشرية
+            والثنائية والسداسية عشرية مع البحث والنسخ السريع.
+          </p>
+        </section>
+
+        <section class="tool-card">
+
+          <div class="controls">
+
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+
+              <input
+                id="searchInput"
+                type="search"
+                placeholder="ابحث برقم ASCII أو الحرف أو HEX..."
+                autocomplete="off"
+                spellcheck="false"
+              />
+            </div>
+
+            <select
+              id="typeSelect"
+              class="type-select"
+              aria-label="نوع رموز ASCII"
+            >
+              <option value="all">كل الرموز</option>
+              <option value="control">رموز التحكم</option>
+              <option value="printable">الرموز القابلة للطباعة</option>
+              <option value="letters">الحروف</option>
+              <option value="numbers">الأرقام</option>
+              <option value="symbols">الرموز</option>
+            </select>
+
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <i class="fa-solid fa-list-ol"></i>
+              إجمالي:
+              <strong id="totalCount">128</strong>
+            </div>
+
+            <div class="stat">
+              <i class="fa-solid fa-filter"></i>
+              النتائج:
+              <strong id="resultCount">128</strong>
+            </div>
+
+            <div class="stat">
+              <i class="fa-solid fa-code"></i>
+              الترميز:
+              <strong>ASCII</strong>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>الحرف</th>
+                  <th>Decimal</th>
+                  <th>Hex</th>
+                  <th>Binary</th>
+                  <th>الاسم</th>
+                  <th>نسخ</th>
+                </tr>
+              </thead>
+
+              <tbody id="asciiBody"></tbody>
+            </table>
+
+            <div
+              class="empty"
+              id="emptyState"
+            >
+              <i class="fa-solid fa-magnifying-glass"></i>
+
+              <div>
+                لم يتم العثور على نتائج مطابقة.
+              </div>
+            </div>
+          </div>
+
+        </section>
+
+        <section class="info-grid">
+
+          <article class="info-card">
+            <h3>
+              <i class="fa-solid fa-circle-info"></i>
+              ما هو ASCII؟
+            </h3>
+
+            <p>
+              ASCII هو معيار لترميز الأحرف باستخدام قيم رقمية،
+              ويضم 128 قيمة من 0 إلى 127.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <h3>
+              <i class="fa-solid fa-terminal"></i>
+              Decimal
+            </h3>
+
+            <p>
+              القيمة العشرية هي الرقم المستخدم لتمثيل الحرف
+              في نظام ASCII.
+            </p>
+          </article>
+
+          <article class="info-card">
+            <h3>
+              <i class="fa-solid fa-hashtag"></i>
+              Hex & Binary
+            </h3>
+
+            <p>
+              يمكنك استخدام القيمة السداسية عشرية أو الثنائية
+              عند التعامل مع البرمجة والأنظمة منخفضة المستوى.
+            </p>
+          </article>
+
+        </section>
+
+      </div>
+    </main>
+
+    <Footer />
+
+    <script is:inline>
+      (() => {
+        /* =====================================================
+           THEME SYNC
+        ===================================================== */
+
+        function getThemeState() {
+          let stored = null;
+
+          try {
+            stored = localStorage.getItem("theme");
+          } catch (e) {}
+
+          const html = document.documentElement;
+          const body = document.body;
+
+          const htmlTheme =
+            html.getAttribute("data-theme");
+
+          const bodyTheme =
+            body.getAttribute("data-theme");
+
+          const htmlLight =
+            htmlTheme === "light" ||
+            html.classList.contains("light") ||
+            html.classList.contains("light-theme");
+
+          const bodyLight =
+            bodyTheme === "light" ||
+            body.classList.contains("light") ||
+            body.classList.contains("light-theme");
+
+          if (stored === "light") return "light";
+          if (stored === "dark") return "dark";
+
+          if (htmlLight || bodyLight) {
+            return "light";
+          }
+
+          if (
+            html.classList.contains("dark") ||
+            html.classList.contains("dark-theme") ||
+            body.classList.contains("dark") ||
+            body.classList.contains("dark-theme")
+          ) {
+            return "dark";
+          }
+
+          return "dark";
+        }
+
+        function syncAsciiTheme() {
+          const page =
+            document.getElementById("asciiPage");
+
+          if (!page) return;
+
+          const light =
+            getThemeState() === "light";
+
+          page.classList.toggle(
+            "force-light",
+            light
+          );
+
+          page.classList.toggle(
+            "force-dark",
+            !light
+          );
+
+          document.body.classList.toggle(
+            "ascii-light-theme",
+            light
+          );
+
+          document.body.classList.toggle(
+            "ascii-dark-theme",
+            !light
+          );
+        }
+
+        function watchTheme() {
+          syncAsciiTheme();
+
+          window.addEventListener(
+            "storage",
+            syncAsciiTheme
+          );
+
+          const observer =
+            new MutationObserver(() => {
+              syncAsciiTheme();
+            });
+
+          observer.observe(
+            document.documentElement,
+            {
+              attributes: true,
+              attributeFilter: [
+                "class",
+                "data-theme"
+              ]
+            }
+          );
+
+          observer.observe(
+            document.body,
+            {
+              attributes: true,
+              attributeFilter: [
+                "class",
+                "data-theme"
+              ]
+            }
+          );
+        }
+
+        /* =====================================================
+           ASCII DATA
+        ===================================================== */
+
+        const controlNames = {
+          0: "NUL",
+          1: "SOH",
+          2: "STX",
+          3: "ETX",
+          4: "EOT",
+          5: "ENQ",
+          6: "ACK",
+          7: "BEL",
+          8: "BS",
+          9: "TAB",
+          10: "LF",
+          11: "VT",
+          12: "FF",
+          13: "CR",
+          14: "SO",
+          15: "SI",
+          16: "DLE",
+          17: "DC1",
+          18: "DC2",
+          19: "DC3",
+          20: "DC4",
+          21: "NAK",
+          22: "SYN",
+          23: "ETB",
+          24: "CAN",
+          25: "EM",
+          26: "SUB",
+          27: "ESC",
+          28: "FS",
+          29: "GS",
+          30: "RS",
+          31: "US",
+          127: "DEL"
+        };
+
+        const asciiData = [];
+
+        for (let code = 0; code <= 127; code++) {
+          const isControl =
+            code < 32 || code === 127;
+
+          const isUpper =
+            code >= 65 && code <= 90;
+
+          const isLower =
+            code >= 97 && code <= 122;
+
+          const isNumber =
+            code >= 48 && code <= 57;
+
+          let character = "";
+
+          if (!isControl) {
+            character =
+              String.fromCharCode(code);
+          }
+
+          let name = "";
+
+          if (isControl) {
+            name =
+              controlNames[code] ||
+              "Control";
+          } else if (code === 32) {
+            name = "SPACE";
+          } else if (isUpper) {
+            name = "Uppercase Letter";
+          } else if (isLower) {
+            name = "Lowercase Letter";
+          } else if (isNumber) {
+            name = "Digit";
+          } else {
+            name = "Symbol";
+          }
+
+          let type = "symbols";
+
+          if (isControl) {
+            type = "control";
+          } else if (isUpper || isLower) {
+            type = "letters";
+          } else if (isNumber) {
+            type = "numbers";
+          }
+
+          asciiData.push({
+            code,
+            character,
+            hex: code
+              .toString(16)
+              .toUpperCase()
+              .padStart(2, "0"),
+            binary: code
+              .toString(2)
+              .padStart(8, "0"),
+            name,
+            type,
+            isControl
+          });
+        }
+
+        /* =====================================================
+           TOOL
+        ===================================================== */
+
+        function startAsciiTool() {
+          const body =
+            document.getElementById("asciiBody");
+
+          const searchInput =
+            document.getElementById("searchInput");
+
+          const typeSelect =
+            document.getElementById("typeSelect");
+
+          const resultCount =
+            document.getElementById("resultCount");
+
+          const emptyState =
+            document.getElementById("emptyState");
+
+          function escapeHTML(value) {
+            return value
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;")
+              .replace(/"/g, "&quot;")
+              .replace(/'/g, "&#039;");
+          }
+
+          function getCharacter(data) {
+            if (data.code === 32) {
+              return "␠";
+            }
+
+            if (data.isControl) {
+              return data.name;
+            }
+
+            return data.character;
+          }
+
+          function matchesSearch(item, query) {
+            if (!query) return true;
+
+            const q =
+              query.toLowerCase().trim();
+
+            const decimal =
+              String(item.code);
+
+            const hex =
+              item.hex.toLowerCase();
+
+            const hexWithPrefix =
+              `0x${hex}`;
+
+            const binary =
+              item.binary;
+
+            const character =
+              item.character.toLowerCase();
+
+            const name =
+              item.name.toLowerCase();
+
+            return (
+              decimal.includes(q) ||
+              hex.includes(q) ||
+              hexWithPrefix.includes(q) ||
+              binary.includes(q) ||
+              character.includes(q) ||
+              name.includes(q)
+            );
+          }
+
+          function matchesType(item, type) {
+            if (type === "all") {
+              return true;
+            }
+
+            if (type === "printable") {
+              return !item.isControl;
+            }
+
+            return item.type === type;
+          }
+
+          function render() {
+            const query =
+              searchInput.value;
+
+            const type =
+              typeSelect.value;
+
+            const filtered =
+              asciiData.filter((item) => {
+                return (
+                  matchesSearch(
+                    item,
+                    query
+                  ) &&
+                  matchesType(
+                    item,
+                    type
+                  )
+                );
+              });
+
+            resultCount.textContent =
+              filtered.length;
+
+            if (!filtered.length) {
+              body.innerHTML = "";
+              emptyState.style.display =
+                "block";
+              return;
+            }
+
+            emptyState.style.display =
+              "none";
+
+            body.innerHTML =
+              filtered.map((item) => {
+                const display =
+                  getCharacter(item);
+
+                const safeDisplay =
+                  escapeHTML(display);
+
+                const safeName =
+                  escapeHTML(item.name);
+
+                const controlClass =
+                  item.isControl
+                    ? " control"
+                    : "";
+
+                return `
+                  <tr>
+                    <td class="char-cell">
+                      <div class="char${controlClass}">
+                        ${safeDisplay}
+                      </div>
+                    </td>
+
+                    <td class="code">
+                      ${item.code}
+                    </td>
+
+                    <td class="hex">
+                      0x${item.hex}
+                    </td>
+
+                    <td class="binary">
+                      ${item.binary}
+                    </td>
+
+                    <td>
+                      ${safeName}
+                    </td>
+
+                    <td class="copy-row">
+                      <button
+                        type="button"
+                        class="copy-btn"
+                        data-copy="${item.code}"
+                        title="نسخ القيمة"
+                        aria-label="نسخ القيمة ${item.code}"
+                      >
+                        <i class="fa-regular fa-copy"></i>
+                      </button>
+                    </td>
+                  </tr>
+                `;
+              }).join("");
+          }
+
+          async function copyText(text, button) {
+            try {
+              await navigator.clipboard.writeText(
+                text
+              );
+            } catch {
+              const textarea =
+                document.createElement("textarea");
+
+              textarea.value = text;
+
+              textarea.style.position =
+                "fixed";
+
+              textarea.style.opacity = "0";
+
+              document.body.appendChild(
+                textarea
+              );
+
+              textarea.select();
+
+              document.execCommand("copy");
+
+              textarea.remove();
+            }
+
+            if (button) {
+              button.classList.add("copied");
+
+              button.innerHTML =
+                '<i class="fa-solid fa-check"></i>';
+
+              setTimeout(() => {
+                button.classList.remove(
+                  "copied"
+                );
+
+                button.innerHTML =
+                  '<i class="fa-regular fa-copy"></i>';
+              }, 1000);
+            }
+          }
+
+          body.addEventListener(
+            "click",
+            (event) => {
+              const button =
+                event.target.closest(
+                  ".copy-btn"
+                );
+
+              if (!button) return;
+
+              const value =
+                button.dataset.copy;
+
+              copyText(
+                value,
+                button
+              );
+            }
+          );
+
+          searchInput.addEventListener(
+            "input",
+            render
+          );
+
+          typeSelect.addEventListener(
+            "change",
+            render
+          );
+
+          render();
+        }
+
+        function init() {
+          watchTheme();
+
+          if (
+            document.readyState ===
+            "loading"
+          ) {
+            document.addEventListener(
+              "DOMContentLoaded",
+              startAsciiTool,
+              { once: true }
+            );
+          } else {
+            startAsciiTool();
+          }
+        }
+
+        init();
+      })();
+    </script>
+  </body>
+</html>
