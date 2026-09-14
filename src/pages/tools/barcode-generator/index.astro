@@ -90,7 +90,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
   <!-- TOOL -->
   <section class="tool-card">
 
-    <!-- TYPE -->
     <div class="field">
 
       <label for="barcodeType">
@@ -110,7 +109,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     </div>
 
 
-    <!-- VALUE -->
     <div class="field">
 
       <label for="barcodeValue">
@@ -134,7 +132,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     </div>
 
 
-    <!-- MAIN BUTTONS -->
     <div class="main-actions">
 
       <button
@@ -158,10 +155,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     </div>
 
 
-    <!-- ==================================================
-         OPTIONS
-    =================================================== -->
-
+    <!-- OPTIONS -->
     <div class="options-grid">
 
       <!-- SETTINGS -->
@@ -251,8 +245,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
         </div>
 
-
-        <!-- COLORS -->
 
         <div class="colors-grid">
 
@@ -511,31 +503,96 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 <style>
 
 /* =====================================================
-   BASE
+   THEME VARIABLES
+   لا يتم تغيير تصميم الأداة، فقط الألوان
+===================================================== */
+
+.barcode-page {
+  --page-bg: #f5f9ff;
+  --page-text: #0f172a;
+
+  --card-bg: #ffffff;
+  --card-bg-soft: #f8fafc;
+
+  --input-bg: #f8fafc;
+
+  --border: #dbe5f0;
+
+  --text: #0f172a;
+  --muted: #64748b;
+  --muted-2: #94a3b8;
+
+  --blue: #2563eb;
+  --blue-light: #38bdf8;
+
+  --icon-bg: rgba(37,99,235,.10);
+
+  --shadow:
+    0 15px 40px
+    rgba(15,23,42,.07);
+}
+
+
+/* =====================================================
+   DARK MODE
+   متوافق مع data-theme="dark"
+===================================================== */
+
+html[data-theme="dark"] .barcode-page,
+body.dark .barcode-page,
+body.dark-theme .barcode-page {
+
+  --page-bg: #0b1120;
+  --page-text: #e5edf8;
+
+  --card-bg: #111827;
+  --card-bg-soft: #172033;
+
+  --input-bg: #172033;
+
+  --border: #263449;
+
+  --text: #e5edf8;
+  --muted: #9aa9bd;
+  --muted-2: #7d8da3;
+
+  --icon-bg: rgba(59,130,246,.16);
+
+  --shadow:
+    0 15px 40px
+    rgba(0,0,0,.28);
+}
+
+
+/* =====================================================
+   GLOBAL
 ===================================================== */
 
 :global(*) {
   box-sizing: border-box;
 }
 
+:global(html) {
+  background: #f5f9ff;
+}
+
+:global(html[data-theme="dark"]) {
+  background: #0b1120;
+}
+
 :global(body) {
   margin: 0;
+
   font-family: "Cairo", sans-serif;
 
-  background:
-    radial-gradient(
-      circle at 50% -10%,
-      rgba(37,99,235,.10),
-      transparent 35%
-    ),
-    var(--page-bg, #f5f9ff);
+  background: transparent;
 
-  color: var(--page-text, #0f172a);
+  color: var(--page-text);
 }
 
 
 /* =====================================================
-   PAGE
+   PAGE BACKGROUND
 ===================================================== */
 
 .barcode-page {
@@ -547,6 +604,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     30px
     0
     70px;
+
+  color: var(--text);
 }
 
 
@@ -562,10 +621,12 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
 .breadcrumb {
   display: flex;
+
   justify-content: center;
+
   gap: 7px;
 
-  color: #64748b;
+  color: var(--muted);
 
   font-size: 13px;
 
@@ -574,7 +635,12 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
 .breadcrumb a {
   color: #2563eb;
+
   text-decoration: none;
+}
+
+.breadcrumb strong {
+  color: var(--text);
 }
 
 .hero-icon {
@@ -584,6 +650,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
   margin: auto;
 
   display: flex;
+
   align-items: center;
   justify-content: center;
 
@@ -611,6 +678,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     0
     7px;
 
+  color: var(--text);
+
   font-size: 32px;
 
   font-weight: 800;
@@ -621,7 +690,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   max-width: 650px;
 
-  color: #64748b;
+  color: var(--muted);
 
   font-size: 14px;
 
@@ -630,6 +699,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
 .hero-tags {
   display: flex;
+
   justify-content: center;
 
   gap: 7px;
@@ -640,13 +710,13 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 .hero-tags span {
   padding: 6px 11px;
 
-  border: 1px solid #dbe5f0;
+  border: 1px solid var(--border);
 
   border-radius: 999px;
 
-  background: white;
+  background: var(--card-bg);
 
-  color: #64748b;
+  color: var(--muted);
 
   font-size: 11px;
 }
@@ -663,15 +733,13 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 .tool-card {
   padding: 25px;
 
-  border: 1px solid #dbe5f0;
+  border: 1px solid var(--border);
 
   border-radius: 24px;
 
-  background: white;
+  background: var(--card-bg);
 
-  box-shadow:
-    0 15px 40px
-    rgba(15,23,42,.07);
+  box-shadow: var(--shadow);
 }
 
 
@@ -692,6 +760,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   margin-bottom: 8px;
 
+  color: var(--text);
+
   font-size: 15px;
 
   font-weight: 700;
@@ -709,19 +779,23 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   padding: 0 15px;
 
-  border: 1px solid #dbe5f0;
+  border: 1px solid var(--border);
 
   border-radius: 13px;
 
-  background: #f8fafc;
+  background: var(--input-bg);
 
-  color: #0f172a;
+  color: var(--text);
 
   outline: none;
 
   font-family: inherit;
 
   font-size: 15px;
+}
+
+.field input::placeholder {
+  color: var(--muted-2);
 }
 
 .field input:focus,
@@ -738,14 +812,14 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   margin-top: 6px;
 
-  color: #64748b;
+  color: var(--muted);
 
   font-size: 11px;
 }
 
 
 /* =====================================================
-   MAIN ACTIONS
+   MAIN BUTTONS
 ===================================================== */
 
 .main-actions {
@@ -787,11 +861,11 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 }
 
 .clear-btn {
-  border: 1px solid #dbe5f0;
+  border: 1px solid var(--border);
 
-  background: #f8fafc;
+  background: var(--card-bg-soft);
 
-  color: #0f172a;
+  color: var(--text);
 }
 
 
@@ -813,7 +887,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 .options-card {
   padding: 20px;
 
-  border: 1px solid #dbe5f0;
+  border: 1px solid var(--border);
 
   border-radius: 18px;
 
@@ -846,7 +920,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   border-radius: 11px;
 
-  background: rgba(37,99,235,.10);
+  background: var(--icon-bg);
 
   color: #2563eb;
 }
@@ -854,11 +928,14 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 .export-title {
   color: #0284c7;
 
-  background: rgba(56,189,248,.12);
+  background:
+    rgba(56,189,248,.12);
 }
 
 .card-title h2 {
   margin: 0;
+
+  color: var(--text);
 
   font-size: 16px;
 }
@@ -866,7 +943,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 .card-title p {
   margin: 3px 0 0;
 
-  color: #64748b;
+  color: var(--muted);
 
   font-size: 11px;
 }
@@ -891,6 +968,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   margin-bottom: 6px;
 
+  color: var(--text);
+
   font-size: 12px;
 
   font-weight: 700;
@@ -903,13 +982,13 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   padding: 0 10px;
 
-  border: 1px solid #dbe5f0;
+  border: 1px solid var(--border);
 
   border-radius: 10px;
 
-  background: #f8fafc;
+  background: var(--input-bg);
 
-  color: #0f172a;
+  color: var(--text);
 
   font-family: inherit;
 
@@ -935,11 +1014,11 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 .color-field {
   padding: 10px;
 
-  border: 1px solid #dbe5f0;
+  border: 1px solid var(--border);
 
   border-radius: 11px;
 
-  background: #f8fafc;
+  background: var(--input-bg);
 }
 
 .color-control {
@@ -964,7 +1043,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 .color-control span {
   direction: ltr;
 
-  color: #64748b;
+  color: var(--muted);
 
   font-size: 11px;
 }
@@ -994,13 +1073,13 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   padding: 10px;
 
-  border: 1px solid #dbe5f0;
+  border: 1px solid var(--border);
 
   border-radius: 12px;
 
-  background: #f8fafc;
+  background: var(--input-bg);
 
-  color: #0f172a;
+  color: var(--text);
 
   font-family: inherit;
 
@@ -1022,7 +1101,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   border-radius: 9px;
 
-  background: rgba(37,99,235,.10);
+  background: var(--icon-bg);
 
   color: #2563eb;
 }
@@ -1034,6 +1113,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 .export-button strong {
   display: block;
 
+  color: var(--text);
+
   font-size: 12px;
 }
 
@@ -1042,7 +1123,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   margin-top: 2px;
 
-  color: #64748b;
+  color: var(--muted);
 
   font-size: 10px;
 }
@@ -1069,6 +1150,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 .preview-header h2 {
   margin: 0;
 
+  color: var(--text);
+
   font-size: 17px;
 }
 
@@ -1079,7 +1162,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 .preview-header p {
   margin: 3px 0 0;
 
-  color: #64748b;
+  color: var(--muted);
 
   font-size: 11px;
 }
@@ -1089,7 +1172,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   border-radius: 999px;
 
-  background: rgba(37,99,235,.10);
+  background: var(--icon-bg);
 
   color: #2563eb;
 
@@ -1112,11 +1195,15 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   overflow: hidden;
 
-  border: 1px solid #dbe5f0;
+  border: 1px solid var(--border);
 
   border-radius: 17px;
 
-  background: white;
+  /*
+   * المعاينة نفسها تبقى بيضاء عمدًا
+   * حتى يكون الباركود واضحًا وقابلًا للطباعة.
+   */
+  background: #ffffff;
 }
 
 #barcodeSvg {
@@ -1140,7 +1227,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   gap: 8px;
 
-  color: #64748b;
+  color: var(--muted);
 }
 
 .empty-icon {
@@ -1154,18 +1241,22 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   border-radius: 16px;
 
-  background: #f1f5f9;
+  background: var(--card-bg-soft);
 
-  color: #94a3b8;
+  color: var(--muted-2);
 
   font-size: 24px;
 }
 
 .empty-preview strong {
+  color: var(--text);
+
   font-size: 14px;
 }
 
 .empty-preview span {
+  color: var(--muted);
+
   font-size: 11px;
 }
 
@@ -1181,13 +1272,13 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   margin-top: 13px;
 
-  border: 1px solid #dbe5f0;
+  border: 1px solid var(--border);
 
   border-radius: 12px;
 
   background: transparent;
 
-  color: #64748b;
+  color: var(--muted);
 
   font-family: inherit;
 
@@ -1217,11 +1308,11 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 .info-card {
   padding: 20px;
 
-  border: 1px solid #dbe5f0;
+  border: 1px solid var(--border);
 
   border-radius: 18px;
 
-  background: white;
+  background: var(--card-bg);
 }
 
 .info-icon {
@@ -1235,7 +1326,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
   border-radius: 11px;
 
-  background: rgba(37,99,235,.10);
+  background: var(--icon-bg);
 
   color: #2563eb;
 }
@@ -1243,13 +1334,15 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 .info-card h2 {
   margin: 10px 0 5px;
 
+  color: var(--text);
+
   font-size: 15px;
 }
 
 .info-card p {
   margin: 0;
 
-  color: #64748b;
+  color: var(--muted);
 
   font-size: 12px;
 
@@ -1258,7 +1351,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
 
 
 /* =====================================================
-   MOBILE V3
+   MOBILE
+   التصميم نفسه دون تغيير
 ===================================================== */
 
 @media (max-width:700px) {
@@ -1272,16 +1366,13 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
       45px;
   }
 
-
   .hero {
     margin-bottom: 15px;
   }
 
-
   .breadcrumb {
     font-size: 11px;
   }
-
 
   .hero-icon {
     width: 56px;
@@ -1290,11 +1381,9 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     font-size: 22px;
   }
 
-
   .hero h1 {
     font-size: 25px;
   }
-
 
   .hero > p {
     font-size: 13px;
@@ -1304,15 +1393,11 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     padding: 0 5px;
   }
 
-
   .hero-tags span {
     font-size: 10px;
 
     padding: 5px 8px;
   }
-
-
-  /* TOOL */
 
   .tool-card {
     padding: 12px;
@@ -1320,15 +1405,11 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     border-radius: 20px;
   }
 
-
-  /* BIG MOBILE TEXT */
-
   .field label {
     font-size: 16px;
 
     margin-bottom: 8px;
   }
-
 
   .field input,
   .field select {
@@ -1339,13 +1420,9 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     border-radius: 12px;
   }
 
-
   .field small {
     font-size: 11px;
   }
-
-
-  /* MAIN BUTTONS */
 
   .main-actions {
     gap: 8px;
@@ -1355,7 +1432,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
       0;
   }
 
-
   .generate-btn,
   .clear-btn {
     height: 54px;
@@ -1364,9 +1440,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
   }
 
 
-  /* =================================================
-     STACK OPTIONS
-  ================================================= */
+  /* الإعدادات فوق التصدير */
 
   .options-grid {
     display: flex !important;
@@ -1378,7 +1452,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     gap: 12px !important;
   }
 
-
   .options-card {
     width: 100% !important;
 
@@ -1387,15 +1460,9 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     border-radius: 17px;
   }
 
-
-  /* SETTINGS FIRST */
-
   .options-card:first-child {
     order: 1;
   }
-
-
-  /* EXPORT SECOND */
 
   .options-card:last-child {
     order: 2;
@@ -1406,7 +1473,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     margin-bottom: 15px;
   }
 
-
   .title-icon {
     width: 40px;
     height: 40px;
@@ -1414,18 +1480,14 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     flex: 0 0 40px;
   }
 
-
   .card-title h2 {
     font-size: 16px;
   }
-
 
   .card-title p {
     font-size: 11px;
   }
 
-
-  /* SETTINGS 2x2 */
 
   .settings-grid {
     display: grid !important;
@@ -1436,11 +1498,9 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     gap: 10px !important;
   }
 
-
   .setting label {
     font-size: 12px;
   }
-
 
   .setting select {
     height: 46px;
@@ -1448,8 +1508,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     font-size: 14px;
   }
 
-
-  /* COLORS */
 
   .colors-grid {
     display: grid !important;
@@ -1462,23 +1520,18 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     margin-top: 11px;
   }
 
-
   .color-field {
     padding: 9px;
   }
-
 
   .color-field label {
     font-size: 11px;
   }
 
-
   .color-control span {
     font-size: 10px;
   }
 
-
-  /* EXPORT 2x2 */
 
   .export-grid {
     display: grid !important;
@@ -1489,7 +1542,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     gap: 9px !important;
   }
 
-
   .export-button {
     min-height: 72px;
 
@@ -1498,7 +1550,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     gap: 9px;
   }
 
-
   .export-button > i {
     width: 34px;
     height: 34px;
@@ -1506,38 +1557,30 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     flex-basis: 34px;
   }
 
-
   .export-button strong {
     font-size: 12px;
   }
-
 
   .export-button small {
     font-size: 10px;
   }
 
 
-  /* PREVIEW */
-
   .preview-section {
     margin-top: 18px;
   }
-
 
   .preview-header h2 {
     font-size: 16px;
   }
 
-
   .preview-header p {
     font-size: 10px;
   }
 
-
   #formatBadge {
     font-size: 10px;
   }
-
 
   .preview-box {
     min-height: 235px;
@@ -1547,7 +1590,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
       5px;
   }
 
-
   #barcodeSvg {
     max-width: 100%;
 
@@ -1556,16 +1598,13 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     height: auto;
   }
 
-
   .empty-preview strong {
     font-size: 14px;
   }
 
-
   .empty-preview span {
     font-size: 11px;
   }
-
 
   .reset-button {
     height: 50px;
@@ -1573,8 +1612,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     font-size: 13px;
   }
 
-
-  /* INFO */
 
   .info-grid {
     grid-template-columns: 1fr;
@@ -1584,16 +1621,13 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     margin-top: 15px;
   }
 
-
   .info-card {
     padding: 16px;
   }
 
-
   .info-card h2 {
     font-size: 15px;
   }
-
 
   .info-card p {
     font-size: 12px;
@@ -1612,16 +1646,13 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     width: calc(100% - 8px);
   }
 
-
   .tool-card {
     padding: 9px;
   }
 
-
   .options-card {
     padding: 13px !important;
   }
-
 
   .settings-grid,
   .colors-grid,
@@ -1630,11 +1661,9 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
       repeat(2,minmax(0,1fr)) !important;
   }
 
-
   .setting select {
     font-size: 13px;
   }
-
 
   .export-button {
     min-height: 68px;
@@ -1644,7 +1673,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     gap: 6px;
   }
 
-
   .export-button > i {
     width: 30px;
     height: 30px;
@@ -1652,11 +1680,9 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/barcode-generat
     flex-basis: 30px;
   }
 
-
   .export-button strong {
     font-size: 11px;
   }
-
 
   .export-button small {
     font-size: 9px;
@@ -1733,9 +1759,7 @@ function startBarcodeTool() {
 
 
     if (!v) {
-
       return 'يرجى إدخال قيمة الباركود.';
-
     }
 
 
@@ -1743,9 +1767,7 @@ function startBarcodeTool() {
       t === 'EAN13' &&
       !/^\d{12,13}$/.test(v)
     ) {
-
       return 'EAN13 يحتاج إلى 12 أو 13 رقمًا.';
-
     }
 
 
@@ -1753,9 +1775,7 @@ function startBarcodeTool() {
       t === 'EAN8' &&
       !/^\d{7,8}$/.test(v)
     ) {
-
       return 'EAN8 يحتاج إلى 7 أو 8 أرقام.';
-
     }
 
 
@@ -1763,9 +1783,7 @@ function startBarcodeTool() {
       t === 'UPC' &&
       !/^\d{11,12}$/.test(v)
     ) {
-
       return 'UPC يحتاج إلى 11 أو 12 رقمًا.';
-
     }
 
 
@@ -1773,9 +1791,7 @@ function startBarcodeTool() {
       t === 'ITF14' &&
       !/^\d{13,14}$/.test(v)
     ) {
-
       return 'ITF14 يحتاج إلى 13 أو 14 رقمًا.';
-
     }
 
 
@@ -1783,9 +1799,7 @@ function startBarcodeTool() {
       t === 'CODE39' &&
       !/^[0-9A-Z .\-$\/+%]+$/.test(v)
     ) {
-
       return 'قيمة CODE39 غير صالحة.';
-
     }
 
 
@@ -1841,6 +1855,7 @@ function startBarcodeTool() {
     try {
 
       svg.innerHTML = '';
+
 
       window.JsBarcode(
         svg,
@@ -1918,17 +1933,12 @@ function startBarcodeTool() {
   }
 
 
-  /*
-   * تجهيز SVG للتصدير
-   */
   function getSVGString() {
 
     if (
       !svg.innerHTML.trim()
     ) {
-
       return null;
-
     }
 
 
@@ -2029,9 +2039,6 @@ function startBarcodeTool() {
   }
 
 
-  /*
-   * تحميل ملف
-   */
   function saveBlob(
     blob,
     filename
@@ -2070,9 +2077,6 @@ function startBarcodeTool() {
   }
 
 
-  /*
-   * SVG DOWNLOAD
-   */
   function exportSVG() {
 
     if (!generate()) {
@@ -2119,11 +2123,6 @@ function startBarcodeTool() {
   }
 
 
-  /*
-   * PNG DOWNLOAD
-   *
-   * طريقة مستقلة عن canvas الموجود في الصفحة.
-   */
   function exportPNG() {
 
     if (!generate()) {
@@ -2277,9 +2276,6 @@ function startBarcodeTool() {
   }
 
 
-  /*
-   * COPY
-   */
   async function copyValue() {
 
     const text =
@@ -2351,9 +2347,6 @@ function startBarcodeTool() {
   }
 
 
-  /*
-   * RESET
-   */
   function reset() {
 
     type.value =
@@ -2385,10 +2378,6 @@ function startBarcodeTool() {
 
   }
 
-
-  /*
-   * EVENTS
-   */
 
   document
     .getElementById('generateBtn')
