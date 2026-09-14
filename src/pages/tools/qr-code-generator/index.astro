@@ -11,10 +11,11 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/qr-code-generat
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QR Code Generator | Th.Tech</title>
+
+  <title>مولد QR Code احترافي | Th.Tech</title>
   <meta
     name="description"
-    content="مولد QR Code احترافي لإنشاء رموز QR للنصوص والروابط والبريد الإلكتروني والهاتف وشبكات Wi-Fi."
+    content="مولد QR Code مجاني وسريع لإنشاء رموز QR للنصوص والروابط والبريد الإلكتروني والهاتف وشبكات Wi-Fi."
   />
   <link rel="canonical" href={canonical} />
 
@@ -24,494 +25,1396 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/qr-code-generat
     href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
     rel="stylesheet"
   />
+
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
   />
 
+  <!-- QRCode.js -->
   <script
+    is:inline
     src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"
-    defer
   ></script>
 </head>
 
 <body>
   <Header />
 
-  <main>
+  <main class="page">
+    <!-- HERO -->
     <section class="hero">
-      <div class="hero-inner">
-        <div class="breadcrumb">
-          <a href={`${base}/`}>الرئيسية</a>
-          <i class="fa-solid fa-chevron-left"></i>
-          <a href={`${base}/tools/`}>الأدوات</a>
-          <i class="fa-solid fa-chevron-left"></i>
-          <span>QR Code Generator</span>
-        </div>
+      <div class="hero-icon">
+        <i class="fa-solid fa-qrcode"></i>
+      </div>
 
-        <div class="hero-content">
-          <div class="hero-icon">
-            <i class="fa-solid fa-qrcode"></i>
-          </div>
+      <div class="breadcrumb">
+        <a href={`${base}/`}>الرئيسية</a>
+        <i class="fa-solid fa-chevron-left"></i>
+        <a href={`${base}/tools/`}>الأدوات</a>
+        <i class="fa-solid fa-chevron-left"></i>
+        <span>مولد QR Code</span>
+      </div>
 
-          <div>
-            <span class="eyebrow">
-              <i class="fa-solid fa-wand-magic-sparkles"></i>
-              أدوات الترميز
-            </span>
+      <span class="eyebrow">أداة مجانية وسريعة</span>
 
-            <h1>مولد <span>QR Code</span> احترافي</h1>
+      <h1>مولد <span>QR Code</span> احترافي</h1>
 
-            <p>
-              أنشئ رموز QR للنصوص والروابط والبريد الإلكتروني وأرقام الهاتف
-              وشبكات Wi-Fi مع معاينة مباشرة وتنزيل PNG أو SVG.
-            </p>
+      <p class="hero-description">
+        أنشئ رمز QR مخصصاً للنصوص والروابط وأرقام الهاتف والبريد الإلكتروني
+        وشبكات Wi-Fi بسهولة وفورياً.
+      </p>
 
-            <div class="tags">
-              <span>
-                <i class="fa-solid fa-bolt"></i>
-                مباشر
-              </span>
-              <span>
-                <i class="fa-solid fa-shield-halved"></i>
-                محلي
-              </span>
-              <span>
-                <i class="fa-solid fa-download"></i>
-                PNG / SVG
-              </span>
-            </div>
-          </div>
-        </div>
+      <div class="hero-tags">
+        <span><i class="fa-solid fa-bolt"></i> فوري</span>
+        <span><i class="fa-solid fa-shield-halved"></i> آمن</span>
+        <span><i class="fa-solid fa-mobile-screen"></i> متجاوب</span>
       </div>
     </section>
 
-    <section class="tool-section">
-      <div class="tool-card">
-        <div class="tool-header">
-          <div>
-            <div class="tool-code">
-              <span>QR</span>
-              <span>GENERATOR</span>
-            </div>
+    <!-- TOOL -->
+    <section class="tool-card">
 
-            <h2>أنشئ رمز QR الخاص بك</h2>
+      <div class="tool-header">
+        <div>
+          <span class="section-label">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            مولد QR
+          </span>
 
-            <p>أدخل البيانات وسيتم تحديث الرمز مباشرة.</p>
-          </div>
+          <h2>أنشئ رمز QR الخاص بك</h2>
 
-          <div class="live">
-            <span></span>
-            مباشر
-          </div>
+          <p>
+            أدخل البيانات وسيتم إنشاء الرمز تلقائياً.
+          </p>
         </div>
 
-        <div class="workspace">
-          <div class="settings-panel">
-            <div class="section-title">
-              <b>01</b>
-              <div>
-                <strong>المحتوى</strong>
-                <small>اختر نوع البيانات وأدخلها</small>
-              </div>
+        <div class="live-status" id="status">
+          <span class="status-dot"></span>
+          جاهز
+        </div>
+      </div>
+
+      <!-- TYPES -->
+      <div class="types">
+        <button class="type-btn active" type="button" data-type="text">
+          <i class="fa-solid fa-font"></i>
+          <span>نص</span>
+        </button>
+
+        <button class="type-btn" type="button" data-type="url">
+          <i class="fa-solid fa-link"></i>
+          <span>رابط</span>
+        </button>
+
+        <button class="type-btn" type="button" data-type="email">
+          <i class="fa-solid fa-envelope"></i>
+          <span>بريد</span>
+        </button>
+
+        <button class="type-btn" type="button" data-type="phone">
+          <i class="fa-solid fa-phone"></i>
+          <span>هاتف</span>
+        </button>
+
+        <button class="type-btn" type="button" data-type="wifi">
+          <i class="fa-solid fa-wifi"></i>
+          <span>Wi-Fi</span>
+        </button>
+      </div>
+
+      <!-- INPUT AREA -->
+      <div class="workspace">
+
+        <div class="input-panel">
+
+          <div class="panel-title">
+            <div class="panel-title-icon">
+              <i class="fa-solid fa-pen"></i>
             </div>
 
-            <div class="field">
-              <label>نوع QR Code</label>
-
-              <div class="type-grid">
-                <button class="type-btn active" data-type="text" type="button">
-                  <i class="fa-solid fa-font"></i>
-                  <span>نص</span>
-                </button>
-
-                <button class="type-btn" data-type="url" type="button">
-                  <i class="fa-solid fa-link"></i>
-                  <span>رابط</span>
-                </button>
-
-                <button class="type-btn" data-type="email" type="button">
-                  <i class="fa-solid fa-envelope"></i>
-                  <span>بريد</span>
-                </button>
-
-                <button class="type-btn" data-type="phone" type="button">
-                  <i class="fa-solid fa-phone"></i>
-                  <span>هاتف</span>
-                </button>
-
-                <button class="type-btn" data-type="wifi" type="button">
-                  <i class="fa-solid fa-wifi"></i>
-                  <span>Wi-Fi</span>
-                </button>
-              </div>
+            <div>
+              <h3 id="inputTitle">النص</h3>
+              <p id="inputHint">اكتب النص الذي تريد تحويله إلى QR Code</p>
             </div>
+          </div>
 
-            <div id="dynamicFields"></div>
+          <!-- TEXT -->
+          <div class="field-group" id="textFields">
+            <label for="mainInput">
+              المحتوى
+              <span>*</span>
+            </label>
 
-            <div class="divider"></div>
+            <textarea
+              id="mainInput"
+              rows="7"
+              placeholder="اكتب النص هنا..."
+              autocomplete="off"
+            ></textarea>
 
-            <div class="section-title">
-              <b>02</b>
-              <div>
-                <strong>الإعدادات</strong>
-                <small>تخصيص حجم ودقة الرمز</small>
-              </div>
+            <div class="field-footer">
+              <span id="charCount">0 حرف</span>
+              <span>يدعم العربية وجميع اللغات</span>
+            </div>
+          </div>
+
+          <!-- URL -->
+          <div class="field-group hidden" id="urlFields">
+            <label for="urlInput">
+              رابط الموقع
+              <span>*</span>
+            </label>
+
+            <input
+              id="urlInput"
+              type="url"
+              placeholder="https://example.com"
+              autocomplete="off"
+            />
+
+            <small>
+              مثال:
+              https://oumaystore-hub.github.io/Th-tech/
+            </small>
+          </div>
+
+          <!-- EMAIL -->
+          <div class="field-group hidden" id="emailFields">
+            <label for="emailInput">
+              البريد الإلكتروني
+              <span>*</span>
+            </label>
+
+            <input
+              id="emailInput"
+              type="email"
+              placeholder="example@email.com"
+              autocomplete="off"
+            />
+
+            <label for="emailSubject">
+              موضوع الرسالة
+            </label>
+
+            <input
+              id="emailSubject"
+              type="text"
+              placeholder="موضوع اختياري"
+              autocomplete="off"
+            />
+
+            <label for="emailBody">
+              نص الرسالة
+            </label>
+
+            <textarea
+              id="emailBody"
+              rows="4"
+              placeholder="نص الرسالة الاختياري..."
+            ></textarea>
+          </div>
+
+          <!-- PHONE -->
+          <div class="field-group hidden" id="phoneFields">
+            <label for="phoneInput">
+              رقم الهاتف
+              <span>*</span>
+            </label>
+
+            <input
+              id="phoneInput"
+              type="tel"
+              placeholder="+212600000000"
+              autocomplete="off"
+            />
+
+            <small>
+              أدخل الرقم مع رمز الدولة للحصول على أفضل نتيجة.
+            </small>
+          </div>
+
+          <!-- WIFI -->
+          <div class="field-group hidden" id="wifiFields">
+            <label for="wifiName">
+              اسم الشبكة SSID
+              <span>*</span>
+            </label>
+
+            <input
+              id="wifiName"
+              type="text"
+              placeholder="اسم شبكة Wi-Fi"
+              autocomplete="off"
+            />
+
+            <label for="wifiPassword">
+              كلمة المرور
+            </label>
+
+            <input
+              id="wifiPassword"
+              type="text"
+              placeholder="كلمة المرور"
+              autocomplete="off"
+            />
+
+            <label for="wifiSecurity">
+              نوع الحماية
+            </label>
+
+            <select id="wifiSecurity">
+              <option value="WPA">WPA / WPA2 / WPA3</option>
+              <option value="WEP">WEP</option>
+              <option value="nopass">بدون كلمة مرور</option>
+            </select>
+
+            <label class="check-row">
+              <input type="checkbox" id="wifiHidden" />
+              <span>الشبكة مخفية</span>
+            </label>
+          </div>
+
+          <!-- SETTINGS -->
+          <div class="settings">
+
+            <div class="settings-title">
+              <i class="fa-solid fa-sliders"></i>
+              الإعدادات
             </div>
 
             <div class="settings-grid">
-              <div class="field">
-                <label for="size">الحجم</label>
 
-                <select id="size">
-                  <option value="180">180 × 180</option>
-                  <option value="220" selected>220 × 220</option>
-                  <option value="280">280 × 280</option>
-                  <option value="360">360 × 360</option>
-                  <option value="500">500 × 500</option>
+              <div class="setting">
+                <label for="sizeSelect">الحجم</label>
+
+                <select id="sizeSelect">
+                  <option value="180">صغير</option>
+                  <option value="240" selected>متوسط</option>
+                  <option value="320">كبير</option>
+                  <option value="420">كبير جداً</option>
                 </select>
               </div>
 
-              <div class="field">
-                <label for="margin">الهامش</label>
+              <div class="setting">
+                <label for="marginSelect">الهامش</label>
 
-                <select id="margin">
+                <select id="marginSelect">
                   <option value="1">صغير</option>
                   <option value="2" selected>متوسط</option>
                   <option value="4">كبير</option>
-                  <option value="6">واسع</option>
+                  <option value="6">كبير جداً</option>
                 </select>
               </div>
-            </div>
 
-            <div class="field">
-              <label for="errorLevel">تصحيح الأخطاء</label>
+              <div class="setting">
+                <label for="errorSelect">تصحيح الخطأ</label>
 
-              <select id="errorLevel">
-                <option value="L">L — منخفض</option>
-                <option value="M" selected>M — متوسط</option>
-                <option value="Q">Q — مرتفع</option>
-                <option value="H">H — عالٍ جداً</option>
-              </select>
-            </div>
+                <select id="errorSelect">
+                  <option value="L">منخفض</option>
+                  <option value="M" selected>متوسط</option>
+                  <option value="Q">مرتفع</option>
+                  <option value="H">أقصى</option>
+                </select>
+              </div>
 
-            <div class="actions">
-              <button id="resetBtn" class="btn secondary" type="button">
-                <i class="fa-solid fa-rotate-left"></i>
-                إعادة ضبط
-              </button>
-
-              <button id="copyBtn" class="btn primary" type="button">
-                <i class="fa-regular fa-copy"></i>
-                نسخ البيانات
-              </button>
-            </div>
-
-            <div id="status" class="status">
-              <i class="fa-solid fa-circle-check"></i>
-              جاهز لإنشاء رمز QR
             </div>
           </div>
 
-          <div class="preview-panel">
-            <div class="section-title">
-              <b>03</b>
-              <div>
-                <strong>المعاينة</strong>
-                <small>الرمز الناتج يظهر هنا مباشرة</small>
-              </div>
+          <!-- ACTIONS -->
+          <div class="actions">
+            <button class="btn secondary" type="button" id="resetBtn">
+              <i class="fa-solid fa-rotate-left"></i>
+              إعادة ضبط
+            </button>
+
+            <button class="btn primary" type="button" id="generateBtn">
+              <i class="fa-solid fa-qrcode"></i>
+              إنشاء QR Code
+            </button>
+          </div>
+
+          <div class="message" id="message"></div>
+        </div>
+
+        <!-- PREVIEW -->
+        <div class="preview-panel">
+
+          <div class="preview-head">
+            <div>
+              <span class="section-label small">
+                <i class="fa-solid fa-eye"></i>
+                المعاينة
+              </span>
+
+              <h3>رمز QR الخاص بك</h3>
             </div>
 
-            <div class="qr-stage">
-              <div class="qr-box">
-                <canvas id="qrCanvas" width="220" height="220"></canvas>
-              </div>
+            <span class="preview-state" id="previewState">
+              في انتظار البيانات
+            </span>
+          </div>
 
-              <div id="emptyState" class="empty-state">
+          <div class="qr-stage" id="qrStage">
+            <div class="empty-preview" id="emptyPreview">
+              <div class="empty-icon">
                 <i class="fa-solid fa-qrcode"></i>
-                <span>أدخل البيانات لإنشاء QR Code</span>
               </div>
+
+              <strong>سيظهر QR Code هنا</strong>
+
+              <span>
+                أدخل المحتوى في الحقول لبدء التوليد
+              </span>
             </div>
 
-            <div class="preview-info">
-              <div>
-                <span>الحالة</span>
-                <strong id="qrState">جاهز</strong>
-              </div>
-
-              <div>
-                <span>الحجم</span>
-                <strong id="qrSize">220 px</strong>
-              </div>
-
-              <div>
-                <span>النوع</span>
-                <strong id="qrType">نص</strong>
-              </div>
-            </div>
-
-            <div class="download-actions">
-              <button id="pngBtn" class="download-btn" type="button">
-                <i class="fa-solid fa-image"></i>
-
-                <span>
-                  <strong>تنزيل PNG</strong>
-                  <small>صورة عالية الجودة</small>
-                </span>
-
-                <i class="fa-solid fa-arrow-down"></i>
-              </button>
-
-              <button id="svgBtn" class="download-btn" type="button">
-                <i class="fa-solid fa-file-code"></i>
-
-                <span>
-                  <strong>تنزيل SVG</strong>
-                  <small>صيغة متجهة قابلة للتكبير</small>
-                </span>
-
-                <i class="fa-solid fa-arrow-down"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="privacy">
-          <div class="privacy-icon">
-            <i class="fa-solid fa-shield-halved"></i>
+            <canvas id="qrCanvas" hidden></canvas>
           </div>
 
-          <div>
-            <strong>خصوصيتك محفوظة</strong>
-            <p>
-              يتم إنشاء رمز QR داخل متصفحك ولا يتم إرسال البيانات إلى خادم.
-            </p>
+          <div class="preview-info">
+            <span>
+              <i class="fa-solid fa-circle-check"></i>
+              يتم التوليد محلياً في المتصفح
+            </span>
+
+            <span id="dataTypeInfo">
+              النوع: نص
+            </span>
           </div>
+
+          <!-- DOWNLOAD ACTIONS -->
+          <div class="download-actions">
+
+            <button
+              class="download-btn"
+              type="button"
+              id="pngBtn"
+              disabled
+            >
+              <i class="fa-solid fa-image"></i>
+              <span>
+                <strong>PNG</strong>
+                <small>صورة</small>
+              </span>
+            </button>
+
+            <button
+              class="download-btn"
+              type="button"
+              id="svgBtn"
+              disabled
+            >
+              <i class="fa-solid fa-vector-square"></i>
+              <span>
+                <strong>SVG</strong>
+                <small>متجه</small>
+              </span>
+            </button>
+
+            <button
+              class="download-btn"
+              type="button"
+              id="copyBtn"
+              disabled
+            >
+              <i class="fa-solid fa-copy"></i>
+              <span>
+                <strong>نسخ</strong>
+                <small>المحتوى</small>
+              </span>
+            </button>
+
+          </div>
+
         </div>
       </div>
     </section>
 
-    <section class="info-section">
-      <div class="info-grid">
-        <article class="info-card">
-          <div class="info-icon">
-            <i class="fa-solid fa-circle-info"></i>
-          </div>
+    <!-- STATS -->
+    <section class="stats-grid">
 
-          <h3>ما هو QR Code؟</h3>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <div>
+          <strong>فوري</strong>
+          <span>توليد مباشر</span>
+        </div>
+      </div>
 
-          <p>
-            رمز QR هو رمز ثنائي الأبعاد يمكن للهواتف والكاميرات قراءته للوصول
-            بسرعة إلى معلومات مثل الروابط والنصوص وبيانات الاتصال وشبكات Wi-Fi.
-          </p>
-        </article>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div>
+          <strong>100%</strong>
+          <span>محلي وآمن</span>
+        </div>
+      </div>
 
-        <article class="info-card">
-          <div class="info-icon">
-            <i class="fa-solid fa-list-check"></i>
-          </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fa-solid fa-download"></i>
+        </div>
+        <div>
+          <strong>3</strong>
+          <span>طرق للتصدير</span>
+        </div>
+      </div>
 
-          <h3>طريقة الاستخدام</h3>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <i class="fa-solid fa-layer-group"></i>
+        </div>
+        <div>
+          <strong>5</strong>
+          <span>أنواع مختلفة</span>
+        </div>
+      </div>
 
-          <ol>
-            <li>اختر نوع البيانات.</li>
-            <li>أدخل المحتوى المطلوب.</li>
-            <li>خصص الحجم ودقة التصحيح.</li>
-            <li>حمّل PNG أو SVG.</li>
-          </ol>
-        </article>
+    </section>
 
-        <article class="info-card">
-          <div class="info-icon">
-            <i class="fa-solid fa-lightbulb"></i>
-          </div>
+    <!-- PRIVACY -->
+    <section class="info-card privacy-card">
+      <div class="info-icon">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
 
-          <h3>نصيحة</h3>
+      <div>
+        <h2>خصوصيتك أولاً</h2>
 
-          <p>
-            إذا كان الرمز سيُطبع أو سيُستخدم في ظروف صعبة، اختر مستوى تصحيح
-            أخطاء أعلى وحافظ على مساحة بيضاء حول الرمز.
-          </p>
-        </article>
+        <p>
+          يتم إنشاء رمز QR داخل متصفحك مباشرة. لا يتم إرسال النصوص أو
+          الروابط أو البيانات التي تدخلها إلى خادم خارجي من طرف هذه الأداة.
+        </p>
       </div>
     </section>
 
-    <section class="faq-section">
-      <div class="section-heading">
-        <span>FAQ</span>
+    <!-- HOW TO -->
+    <section class="info-card">
+
+      <div class="info-icon">
+        <i class="fa-solid fa-list-check"></i>
+      </div>
+
+      <div class="info-content">
+        <h2>طريقة الاستخدام</h2>
+
+        <ol class="steps">
+          <li>
+            <span>1</span>
+            <div>
+              <strong>اختر نوع البيانات</strong>
+              <p>نص، رابط، بريد إلكتروني، هاتف أو Wi-Fi.</p>
+            </div>
+          </li>
+
+          <li>
+            <span>2</span>
+            <div>
+              <strong>أدخل المحتوى</strong>
+              <p>اكتب البيانات المطلوبة وسيتم إنشاء الرمز تلقائياً.</p>
+            </div>
+          </li>
+
+          <li>
+            <span>3</span>
+            <div>
+              <strong>خصص الرمز</strong>
+              <p>اختر الحجم والهامش ومستوى تصحيح الخطأ.</p>
+            </div>
+          </li>
+
+          <li>
+            <span>4</span>
+            <div>
+              <strong>حمّل النتيجة</strong>
+              <p>يمكنك حفظ QR بصيغة PNG أو SVG أو نسخ المحتوى.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+    </section>
+
+    <!-- NOTE -->
+    <section class="info-card note-card">
+
+      <div class="info-icon">
+        <i class="fa-solid fa-lightbulb"></i>
+      </div>
+
+      <div>
+        <h2>نصيحة</h2>
+
+        <p>
+          عند طباعة QR Code، يفضل استخدام حجم مناسب وترك هامش واضح حول
+          الرمز لضمان سهولة قراءته بواسطة كاميرات الهواتف.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- FAQ -->
+    <section class="faq">
+
+      <div class="faq-heading">
+        <span>أسئلة شائعة</span>
         <h2>الأسئلة الشائعة</h2>
       </div>
 
-      <div class="faq">
-        <details>
-          <summary>
-            هل يتم إرسال البيانات إلى الإنترنت؟
-            <i class="fa-solid fa-plus"></i>
-          </summary>
+      <details>
+        <summary>
+          هل مولد QR Code مجاني؟
+          <i class="fa-solid fa-plus"></i>
+        </summary>
 
-          <p>
-            لا. عملية إنشاء الرمز تتم محلياً داخل متصفحك.
-          </p>
-        </details>
+        <p>
+          نعم، الأداة مجانية ويمكن استخدامها لإنشاء رموز QR دون الحاجة إلى
+          تسجيل حساب.
+        </p>
+      </details>
 
-        <details>
-          <summary>
-            هل يمكن تنزيل الرمز بجودة عالية؟
-            <i class="fa-solid fa-plus"></i>
-          </summary>
+      <details>
+        <summary>
+          هل يتم حفظ البيانات التي أدخلها؟
+          <i class="fa-solid fa-plus"></i>
+        </summary>
 
-          <p>
-            نعم، يمكنك تنزيله بصيغة PNG أو SVG. صيغة SVG مناسبة للطباعة
-            والتكبير.
-          </p>
-        </details>
+        <p>
+          لا. عملية إنشاء الرمز تتم داخل المتصفح مباشرة.
+        </p>
+      </details>
 
-        <details>
-          <summary>
-            هل يدعم شبكات Wi-Fi؟
-            <i class="fa-solid fa-plus"></i>
-          </summary>
+      <details>
+        <summary>
+          ما أنواع البيانات المدعومة؟
+          <i class="fa-solid fa-plus"></i>
+        </summary>
 
-          <p>
-            نعم. اختر Wi-Fi وأدخل اسم الشبكة وكلمة المرور ونوع الحماية.
-          </p>
-        </details>
+        <p>
+          النصوص والروابط والبريد الإلكتروني وأرقام الهاتف وبيانات شبكات
+          Wi-Fi.
+        </p>
+      </details>
 
-        <details>
-          <summary>
-            ما مستوى تصحيح الأخطاء المناسب؟
-            <i class="fa-solid fa-plus"></i>
-          </summary>
+      <details>
+        <summary>
+          هل يمكن تحميل QR Code كصورة؟
+          <i class="fa-solid fa-plus"></i>
+        </summary>
 
-          <p>
-            المستوى M مناسب لمعظم الاستخدامات، بينما H مناسب للطباعة
-            والاستخدامات التي قد يتعرض فيها الرمز للتلف.
-          </p>
-        </details>
-      </div>
+        <p>
+          نعم، يمكنك تحميله بصيغة PNG أو SVG.
+        </p>
+      </details>
+
     </section>
+
   </main>
 
   <Footer />
 
+  <!-- ========================================================= -->
+  <!-- QR CODE LOGIC -->
+  <!-- ========================================================= -->
+
+  <script is:inline>
+    (function () {
+      function startQRTool() {
+        var mainInput = document.getElementById('mainInput');
+        var urlInput = document.getElementById('urlInput');
+        var emailInput = document.getElementById('emailInput');
+        var emailSubject = document.getElementById('emailSubject');
+        var emailBody = document.getElementById('emailBody');
+        var phoneInput = document.getElementById('phoneInput');
+        var wifiName = document.getElementById('wifiName');
+        var wifiPassword = document.getElementById('wifiPassword');
+        var wifiSecurity = document.getElementById('wifiSecurity');
+        var wifiHidden = document.getElementById('wifiHidden');
+
+        var qrCanvas = document.getElementById('qrCanvas');
+        var emptyPreview = document.getElementById('emptyPreview');
+
+        var generateBtn = document.getElementById('generateBtn');
+        var resetBtn = document.getElementById('resetBtn');
+        var pngBtn = document.getElementById('pngBtn');
+        var svgBtn = document.getElementById('svgBtn');
+        var copyBtn = document.getElementById('copyBtn');
+
+        var message = document.getElementById('message');
+        var status = document.getElementById('status');
+        var previewState = document.getElementById('previewState');
+        var charCount = document.getElementById('charCount');
+        var dataTypeInfo = document.getElementById('dataTypeInfo');
+
+        var inputTitle = document.getElementById('inputTitle');
+        var inputHint = document.getElementById('inputHint');
+
+        var typeButtons = document.querySelectorAll('.type-btn');
+
+        var textFields = document.getElementById('textFields');
+        var urlFields = document.getElementById('urlFields');
+        var emailFields = document.getElementById('emailFields');
+        var phoneFields = document.getElementById('phoneFields');
+        var wifiFields = document.getElementById('wifiFields');
+
+        var sizeSelect = document.getElementById('sizeSelect');
+        var marginSelect = document.getElementById('marginSelect');
+        var errorSelect = document.getElementById('errorSelect');
+
+        var currentType = 'text';
+        var currentPayload = '';
+        var hasQR = false;
+
+        var titles = {
+          text: 'النص',
+          url: 'الرابط',
+          email: 'البريد الإلكتروني',
+          phone: 'رقم الهاتف',
+          wifi: 'شبكة Wi-Fi'
+        };
+
+        var hints = {
+          text: 'اكتب النص الذي تريد تحويله إلى QR Code',
+          url: 'أدخل رابط الموقع أو الصفحة',
+          email: 'أدخل بيانات البريد الإلكتروني',
+          phone: 'أدخل رقم الهاتف',
+          wifi: 'أدخل بيانات شبكة Wi-Fi'
+        };
+
+        var typeNames = {
+          text: 'نص',
+          url: 'رابط',
+          email: 'بريد إلكتروني',
+          phone: 'هاتف',
+          wifi: 'Wi-Fi'
+        };
+
+        function showOnly(element) {
+          textFields.classList.add('hidden');
+          urlFields.classList.add('hidden');
+          emailFields.classList.add('hidden');
+          phoneFields.classList.add('hidden');
+          wifiFields.classList.add('hidden');
+
+          element.classList.remove('hidden');
+        }
+
+        function setMessage(text, kind) {
+          message.textContent = text || '';
+          message.className = 'message';
+
+          if (kind) {
+            message.classList.add(kind);
+          }
+        }
+
+        function setStatus(text, active) {
+          status.innerHTML =
+            '<span class="status-dot"></span>' + text;
+
+          if (active) {
+            status.classList.add('working');
+          } else {
+            status.classList.remove('working');
+          }
+        }
+
+        function setPreviewEmpty() {
+          qrCanvas.hidden = true;
+          emptyPreview.hidden = false;
+          previewState.textContent = 'في انتظار البيانات';
+          pngBtn.disabled = true;
+          svgBtn.disabled = true;
+          copyBtn.disabled = true;
+          hasQR = false;
+        }
+
+        function buildPayload() {
+          if (currentType === 'text') {
+            return mainInput.value.trim();
+          }
+
+          if (currentType === 'url') {
+            var url = urlInput.value.trim();
+
+            if (!url) {
+              return '';
+            }
+
+            try {
+              var parsed = new URL(url);
+
+              if (
+                parsed.protocol !== 'http:' &&
+                parsed.protocol !== 'https:'
+              ) {
+                return '';
+              }
+
+              return url;
+            } catch (error) {
+              return '';
+            }
+          }
+
+          if (currentType === 'email') {
+            var email = emailInput.value.trim();
+
+            if (!email) {
+              return '';
+            }
+
+            var subject = emailSubject.value.trim();
+            var body = emailBody.value.trim();
+
+            var result = 'mailto:' + email;
+
+            var query = [];
+
+            if (subject) {
+              query.push(
+                'subject=' + encodeURIComponent(subject)
+              );
+            }
+
+            if (body) {
+              query.push(
+                'body=' + encodeURIComponent(body)
+              );
+            }
+
+            if (query.length > 0) {
+              result += '?' + query.join('&');
+            }
+
+            return result;
+          }
+
+          if (currentType === 'phone') {
+            var phone = phoneInput.value.trim();
+
+            if (!phone) {
+              return '';
+            }
+
+            return 'tel:' + phone;
+          }
+
+          if (currentType === 'wifi') {
+            var name = wifiName.value.trim();
+
+            if (!name) {
+              return '';
+            }
+
+            var password = wifiPassword.value;
+
+            var security = wifiSecurity.value;
+
+            var hidden = wifiHidden.checked ? 'true' : 'false';
+
+            var slash = String.fromCharCode(92);
+
+            function escapeWifi(value) {
+              return value
+                .split(slash)
+                .join(slash + slash)
+                .split(';')
+                .join(slash + ';')
+                .split(',')
+                .join(slash + ',')
+                .split(':')
+                .join(slash + ':');
+            }
+
+            return (
+              'WIFI:T:' +
+              security +
+              ';S:' +
+              escapeWifi(name) +
+              ';P:' +
+              escapeWifi(password) +
+              ';H:' +
+              hidden +
+              ';;'
+            );
+          }
+
+          return '';
+        }
+
+        function validatePayload(payload) {
+          if (!payload) {
+            setMessage('يرجى إدخال البيانات أولاً.', 'error');
+            return false;
+          }
+
+          if (currentType === 'url') {
+            try {
+              var parsed = new URL(payload);
+
+              if (
+                parsed.protocol !== 'http:' &&
+                parsed.protocol !== 'https:'
+              ) {
+                setMessage(
+                  'يرجى إدخال رابط يبدأ بـ http:// أو https://',
+                  'error'
+                );
+
+                return false;
+              }
+            } catch (error) {
+              setMessage(
+                'الرابط غير صالح. مثال: https://example.com',
+                'error'
+              );
+
+              return false;
+            }
+          }
+
+          if (currentType === 'email') {
+            var email = emailInput.value.trim();
+            var atPosition = email.indexOf('@');
+            var dotPosition = email.lastIndexOf('.');
+
+            if (
+              atPosition < 1 ||
+              dotPosition < atPosition + 2 ||
+              dotPosition >= email.length - 1
+            ) {
+              setMessage(
+                'يرجى إدخال بريد إلكتروني صالح.',
+                'error'
+              );
+
+              return false;
+            }
+          }
+
+          return true;
+        }
+
+        function generateQR() {
+          if (
+            !window.QRCode ||
+            typeof window.QRCode.toCanvas !== 'function'
+          ) {
+            setMessage(
+              'تعذر تحميل مكتبة QR Code. تحقق من اتصال الإنترنت ثم أعد تحميل الصفحة.',
+              'error'
+            );
+
+            setStatus('خطأ', false);
+            return;
+          }
+
+          var payload = buildPayload();
+
+          if (!validatePayload(payload)) {
+            setPreviewEmpty();
+            return;
+          }
+
+          currentPayload = payload;
+
+          setMessage('', '');
+          setStatus('جارٍ الإنشاء...', true);
+          previewState.textContent = 'جارٍ إنشاء الرمز...';
+
+          var size = Number(sizeSelect.value);
+          var margin = Number(marginSelect.value);
+          var errorLevel = errorSelect.value;
+
+          window.QRCode.toCanvas(
+            qrCanvas,
+            payload,
+            {
+              width: size,
+              margin: margin,
+              errorCorrectionLevel: errorLevel,
+              color: {
+                dark: '#07111f',
+                light: '#ffffff'
+              }
+            },
+            function (error) {
+              if (error) {
+                console.error(error);
+
+                setPreviewEmpty();
+
+                setMessage(
+                  'حدث خطأ أثناء إنشاء QR Code.',
+                  'error'
+                );
+
+                setStatus('خطأ', false);
+                return;
+              }
+
+              emptyPreview.hidden = true;
+              qrCanvas.hidden = false;
+
+              previewState.textContent = 'تم الإنشاء';
+              dataTypeInfo.textContent =
+                'النوع: ' + typeNames[currentType];
+
+              pngBtn.disabled = false;
+              svgBtn.disabled = false;
+              copyBtn.disabled = false;
+
+              hasQR = true;
+
+              setStatus('جاهز', false);
+
+              if (currentType === 'text') {
+                setMessage('تم إنشاء QR Code بنجاح.', 'success');
+              } else {
+                setMessage(
+                  'تم إنشاء رمز QR بنجاح.',
+                  'success'
+                );
+              }
+            }
+          );
+        }
+
+        function updateCharacterCount() {
+          var length = mainInput.value.length;
+          charCount.textContent = length + ' حرف';
+        }
+
+        function updateInterface() {
+          inputTitle.textContent = titles[currentType];
+          inputHint.textContent = hints[currentType];
+
+          dataTypeInfo.textContent =
+            'النوع: ' + typeNames[currentType];
+
+          if (currentType === 'text') {
+            showOnly(textFields);
+          }
+
+          if (currentType === 'url') {
+            showOnly(urlFields);
+          }
+
+          if (currentType === 'email') {
+            showOnly(emailFields);
+          }
+
+          if (currentType === 'phone') {
+            showOnly(phoneFields);
+          }
+
+          if (currentType === 'wifi') {
+            showOnly(wifiFields);
+          }
+
+          typeButtons.forEach(function (button) {
+            if (button.dataset.type === currentType) {
+              button.classList.add('active');
+            } else {
+              button.classList.remove('active');
+            }
+          });
+
+          setPreviewEmpty();
+          setMessage('', '');
+          setStatus('جاهز', false);
+        }
+
+        function selectType(type) {
+          currentType = type;
+          updateInterface();
+        }
+
+        typeButtons.forEach(function (button) {
+          button.addEventListener('click', function () {
+            selectType(button.dataset.type);
+          });
+        });
+
+        [
+          mainInput,
+          urlInput,
+          emailInput,
+          emailSubject,
+          emailBody,
+          phoneInput,
+          wifiName,
+          wifiPassword,
+          wifiSecurity,
+          wifiHidden,
+          sizeSelect,
+          marginSelect,
+          errorSelect
+        ].forEach(function (element) {
+          if (!element) {
+            return;
+          }
+
+          element.addEventListener('input', function () {
+            if (element === mainInput) {
+              updateCharacterCount();
+            }
+
+            if (hasQR) {
+              generateQR();
+            } else {
+              var payload = buildPayload();
+
+              if (payload) {
+                generateQR();
+              }
+            }
+          });
+
+          element.addEventListener('change', function () {
+            if (hasQR || buildPayload()) {
+              generateQR();
+            }
+          });
+        });
+
+        generateBtn.addEventListener('click', function () {
+          generateQR();
+        });
+
+        resetBtn.addEventListener('click', function () {
+          mainInput.value = '';
+          urlInput.value = '';
+          emailInput.value = '';
+          emailSubject.value = '';
+          emailBody.value = '';
+          phoneInput.value = '';
+          wifiName.value = '';
+          wifiPassword.value = '';
+          wifiSecurity.value = 'WPA';
+          wifiHidden.checked = false;
+
+          sizeSelect.value = '240';
+          marginSelect.value = '2';
+          errorSelect.value = 'M';
+
+          currentType = 'text';
+          currentPayload = '';
+
+          updateCharacterCount();
+          updateInterface();
+
+          setMessage('تمت إعادة ضبط الأداة.', 'success');
+        });
+
+        pngBtn.addEventListener('click', function () {
+          if (!hasQR) {
+            return;
+          }
+
+          var link = document.createElement('a');
+
+          link.download = 'qr-code.png';
+
+          link.href = qrCanvas.toDataURL('image/png');
+
+          document.body.appendChild(link);
+          link.click();
+          link.remove();
+
+          setMessage(
+            'تم تجهيز ملف PNG.',
+            'success'
+          );
+        });
+
+        svgBtn.addEventListener('click', function () {
+          if (!hasQR || !window.QRCode) {
+            return;
+          }
+
+          var size = Number(sizeSelect.value);
+          var margin = Number(marginSelect.value);
+          var errorLevel = errorSelect.value;
+
+          window.QRCode.toString(
+            currentPayload,
+            {
+              type: 'svg',
+              width: size,
+              margin: margin,
+              errorCorrectionLevel: errorLevel,
+              color: {
+                dark: '#07111f',
+                light: '#ffffff'
+              }
+            },
+            function (error, svg) {
+              if (error) {
+                setMessage(
+                  'تعذر إنشاء ملف SVG.',
+                  'error'
+                );
+                return;
+              }
+
+              var blob = new Blob(
+                [svg],
+                {
+                  type: 'image/svg+xml;charset=utf-8'
+                }
+              );
+
+              var url = URL.createObjectURL(blob);
+
+              var link = document.createElement('a');
+
+              link.href = url;
+              link.download = 'qr-code.svg';
+
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+
+              setTimeout(function () {
+                URL.revokeObjectURL(url);
+              }, 1000);
+
+              setMessage(
+                'تم تجهيز ملف SVG.',
+                'success'
+              );
+            }
+          );
+        });
+
+        copyBtn.addEventListener('click', function () {
+          if (!hasQR || !currentPayload) {
+            return;
+          }
+
+          if (
+            navigator.clipboard &&
+            typeof navigator.clipboard.writeText === 'function'
+          ) {
+            navigator.clipboard
+              .writeText(currentPayload)
+              .then(function () {
+                setMessage(
+                  'تم نسخ محتوى QR إلى الحافظة.',
+                  'success'
+                );
+              })
+              .catch(function () {
+                fallbackCopy();
+              });
+          } else {
+            fallbackCopy();
+          }
+        });
+
+        function fallbackCopy() {
+          var temp = document.createElement('textarea');
+
+          temp.value = currentPayload;
+          temp.style.position = 'fixed';
+          temp.style.opacity = '0';
+
+          document.body.appendChild(temp);
+
+          temp.focus();
+          temp.select();
+
+          try {
+            document.execCommand('copy');
+
+            setMessage(
+              'تم نسخ المحتوى.',
+              'success'
+            );
+          } catch (error) {
+            setMessage(
+              'تعذر النسخ تلقائياً.',
+              'error'
+            );
+          }
+
+          temp.remove();
+        }
+
+        updateCharacterCount();
+        updateInterface();
+
+        setStatus('جاهز', false);
+
+        /*
+         * فحص بسيط للتأكد من تحميل مكتبة QR.
+         */
+        if (
+          window.QRCode &&
+          typeof window.QRCode.toCanvas === 'function'
+        ) {
+          setStatus('جاهز', false);
+        } else {
+          setStatus('انتظار المكتبة...', true);
+
+          var attempts = 0;
+
+          var libraryTimer = setInterval(function () {
+            attempts++;
+
+            if (
+              window.QRCode &&
+              typeof window.QRCode.toCanvas === 'function'
+            ) {
+              clearInterval(libraryTimer);
+
+              setStatus('جاهز', false);
+            }
+
+            if (attempts > 50) {
+              clearInterval(libraryTimer);
+
+              setStatus('خطأ', false);
+
+              setMessage(
+                'لم يتم تحميل مكتبة QR Code.',
+                'error'
+              );
+            }
+          }, 100);
+        }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener(
+          'DOMContentLoaded',
+          startQRTool
+        );
+      } else {
+        startQRTool();
+      }
+    })();
+  </script>
+
   <style>
-    :root {
+    :global(html) {
       --bg: #07111f;
-      --bg2: #0b1728;
-      --card: #0e1b2d;
-      --card2: #111f33;
-      --text: #f2f7ff;
-      --muted: #91a4bc;
-      --border: rgba(148, 190, 230, 0.14);
-      --primary: #38bdf8;
-      --primary2: #0ea5e9;
-      --input: #081525;
-      --shadow: 0 22px 70px rgba(0, 0, 0, 0.25);
+      --bg-2: #0b1728;
+      --card: #0d1b2d;
+      --card-2: #101f32;
+      --border: rgba(74, 183, 255, 0.14);
+      --border-strong: rgba(74, 183, 255, 0.28);
+      --text: #f3f8ff;
+      --muted: #8ea3ba;
+      --muted-2: #6e8299;
+      --primary: #28b8f2;
+      --primary-2: #138bd0;
+      --success: #28d7a0;
+      --danger: #ff657c;
+      --input: #091625;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
     }
 
-    :global(html[data-theme="light"]) {
-      --bg: #f4f9ff;
-      --bg2: #ffffff;
+    :global(html[data-theme="light"]),
+    :global(html:not(.dark-mode)) {
+      --bg: #f3f9fd;
+      --bg-2: #ffffff;
       --card: #ffffff;
-      --card2: #f7fbff;
-      --text: #102033;
-      --muted: #62758b;
-      --border: rgba(23, 73, 116, 0.13);
-      --primary: #0284c7;
-      --primary2: #0369a1;
-      --input: #f5f9fd;
-      --shadow: 0 18px 55px rgba(30, 70, 110, 0.1);
+      --card-2: #f7fbfe;
+      --border: rgba(19, 139, 208, 0.14);
+      --border-strong: rgba(19, 139, 208, 0.28);
+      --text: #102236;
+      --muted: #63778c;
+      --muted-2: #7e91a4;
+      --primary: #079ddd;
+      --primary-2: #087ac0;
+      --success: #08a878;
+      --danger: #e64b63;
+      --input: #f4f8fb;
+      --shadow: 0 18px 50px rgba(24, 83, 120, 0.1);
     }
 
     :global(html.dark-mode) {
       --bg: #07111f;
-      --bg2: #0b1728;
-      --card: #0e1b2d;
-      --card2: #111f33;
-      --text: #f2f7ff;
-      --muted: #91a4bc;
-      --border: rgba(148, 190, 230, 0.14);
-      --primary: #38bdf8;
-      --primary2: #0ea5e9;
-      --input: #081525;
-      --shadow: 0 22px 70px rgba(0, 0, 0, 0.25);
+      --bg-2: #0b1728;
+      --card: #0d1b2d;
+      --card-2: #101f32;
+      --border: rgba(74, 183, 255, 0.14);
+      --border-strong: rgba(74, 183, 255, 0.28);
+      --text: #f3f8ff;
+      --muted: #8ea3ba;
+      --muted-2: #6e8299;
+      --primary: #28b8f2;
+      --primary-2: #138bd0;
+      --success: #28d7a0;
+      --danger: #ff657c;
+      --input: #091625;
+      --shadow: 0 18px 50px rgba(0, 0, 0, 0.24);
     }
 
-    :global(html:not(.dark-mode):not([data-theme="dark"])) {
-      --bg: #f4f9ff;
-      --bg2: #ffffff;
-      --card: #ffffff;
-      --card2: #f7fbff;
-      --text: #102033;
-      --muted: #62758b;
-      --border: rgba(23, 73, 116, 0.13);
-      --primary: #0284c7;
-      --primary2: #0369a1;
-      --input: #f5f9fd;
-      --shadow: 0 18px 55px rgba(30, 70, 110, 0.1);
-    }
-
-    * {
+    :global(*) {
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
+    :global(body) {
       margin: 0;
-      color: var(--text);
       background:
         radial-gradient(
-          circle at 85% 5%,
-          rgba(14, 165, 233, 0.1),
-          transparent 28rem
-        ),
-        radial-gradient(
-          circle at 10% 45%,
-          rgba(56, 189, 248, 0.06),
-          transparent 25rem
+          circle at 80% 5%,
+          rgba(32, 169, 235, 0.08),
+          transparent 30%
         ),
         var(--bg);
+      color: var(--text);
       font-family: "Cairo", sans-serif;
       transition:
         background 0.25s ease,
         color 0.25s ease;
     }
 
-    button,
-    input,
-    textarea,
-    select {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
+    .page {
+      width: min(1120px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 28px 0 70px;
     }
 
     .hero {
-      padding: 48px 20px 35px;
-      border-bottom: 1px solid var(--border);
+      text-align: center;
+      padding: 24px 10px 34px;
     }
 
-    .hero-inner,
-    .tool-section,
-    .info-section,
-    .faq-section {
-      width: min(1180px, calc(100% - 32px));
-      margin-inline: auto;
+    .hero-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 20px;
+      color: var(--primary);
+      background: linear-gradient(
+        145deg,
+        rgba(40, 184, 242, 0.17),
+        rgba(19, 139, 208, 0.05)
+      );
+      border: 1px solid var(--border-strong);
+      box-shadow: 0 15px 40px rgba(18, 151, 211, 0.08);
+      font-size: 28px;
     }
 
     .breadcrumb {
       display: flex;
+      justify-content: center;
       align-items: center;
-      gap: 9px;
       flex-wrap: wrap;
-      margin-bottom: 32px;
-      color: var(--muted);
-      font-size: 12px;
+      gap: 8px;
+      color: var(--muted-2);
+      font-size: 11px;
+      margin-bottom: 18px;
     }
 
     .breadcrumb a {
@@ -519,594 +1422,716 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/qr-code-generat
       text-decoration: none;
     }
 
-    .breadcrumb a:hover {
-      color: var(--primary);
-    }
-
     .breadcrumb i {
-      font-size: 9px;
-    }
-
-    .hero-content {
-      display: grid;
-      grid-template-columns: 108px 1fr;
-      gap: 25px;
-      align-items: center;
-    }
-
-    .hero-icon {
-      width: 108px;
-      height: 108px;
-      display: grid;
-      place-items: center;
-      border-radius: 28px;
-      color: var(--primary);
-      background:
-        linear-gradient(
-          145deg,
-          rgba(56, 189, 248, 0.18),
-          rgba(14, 165, 233, 0.04)
-        );
-      border: 1px solid rgba(56, 189, 248, 0.24);
-      box-shadow: 0 18px 55px rgba(14, 165, 233, 0.1);
-      font-size: 48px;
+      font-size: 8px;
     }
 
     .eyebrow {
       display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      margin-bottom: 8px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: rgba(40, 184, 242, 0.09);
+      border: 1px solid var(--border);
       color: var(--primary);
-      font-size: 12px;
-      font-weight: 800;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 10px;
     }
 
     h1 {
       margin: 0;
-      font-size: clamp(30px, 5vw, 48px);
-      line-height: 1.2;
+      font-size: clamp(27px, 5vw, 43px);
+      line-height: 1.35;
       font-weight: 800;
+      letter-spacing: -0.5px;
     }
 
     h1 span {
       color: var(--primary);
     }
 
-    .hero-content p {
-      max-width: 760px;
-      margin: 12px 0 16px;
+    .hero-description {
+      width: min(650px, 100%);
+      margin: 13px auto 17px;
       color: var(--muted);
-      font-size: 15px;
-      line-height: 1.9;
-    }
-
-    .tags {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .tags span {
-      padding: 6px 11px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: var(--card);
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .tags i {
-      margin-left: 4px;
-      color: var(--primary);
-    }
-
-    .tool-section {
-      padding: 35px 0;
-    }
-
-    .tool-card {
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 25px;
-      background: var(--card);
-      box-shadow: var(--shadow);
-    }
-
-    .tool-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 25px 28px;
-      border-bottom: 1px solid var(--border);
-      background: linear-gradient(
-        180deg,
-        rgba(56, 189, 248, 0.05),
-        transparent
-      );
-    }
-
-    .tool-code {
-      display: flex;
-      gap: 7px;
-      margin-bottom: 7px;
-      color: var(--primary);
-      font: 600 10px "JetBrains Mono", monospace;
-      letter-spacing: 1.2px;
-    }
-
-    .tool-header h2 {
-      margin: 0;
-      font-size: 22px;
-    }
-
-    .tool-header p {
-      margin: 4px 0 0;
-      color: var(--muted);
+      line-height: 2;
       font-size: 13px;
     }
 
-    .live {
+    .hero-tags {
       display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .hero-tags span {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .hero-tags i {
+      color: var(--primary);
+    }
+
+    .tool-card,
+    .info-card,
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    .tool-card {
+      border-radius: 24px;
+      overflow: hidden;
+    }
+
+    .tool-header {
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .tool-header h2 {
+      margin: 7px 0 4px;
+      font-size: 20px;
+    }
+
+    .tool-header p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .section-label {
+      color: var(--primary);
+      font-size: 10px;
+      font-weight: 800;
+      display: inline-flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .section-label.small {
+      font-size: 9px;
+    }
+
+    .live-status {
+      flex-shrink: 0;
+      display: inline-flex;
       align-items: center;
       gap: 7px;
-      padding: 7px 12px;
-      border: 1px solid rgba(34, 197, 94, 0.18);
+      padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(34, 197, 94, 0.08);
-      color: #22c55e;
-      font-size: 11px;
+      color: var(--success);
+      background: rgba(40, 215, 160, 0.07);
+      border: 1px solid rgba(40, 215, 160, 0.14);
+      font-size: 10px;
       white-space: nowrap;
     }
 
-    .live span {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
-      animation: pulse 1.7s infinite;
+    .live-status.working {
+      color: var(--primary);
+      background: rgba(40, 184, 242, 0.07);
     }
 
-    @keyframes pulse {
-      50% {
-        opacity: 0.35;
-      }
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 10px currentColor;
+    }
+
+    .types {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .type-btn {
+      min-height: 58px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--card-2);
+      color: var(--muted);
+      cursor: pointer;
+      font-family: inherit;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      font-size: 11px;
+      transition: 0.2s ease;
+    }
+
+    .type-btn i {
+      color: var(--primary);
+    }
+
+    .type-btn:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    .type-btn.active {
+      background: linear-gradient(
+        135deg,
+        rgba(40, 184, 242, 0.15),
+        rgba(19, 139, 208, 0.08)
+      );
+      color: var(--text);
+      border-color: rgba(40, 184, 242, 0.42);
+      box-shadow: 0 8px 25px rgba(40, 184, 242, 0.06);
     }
 
     .workspace {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: minmax(0, 1.05fr) minmax(350px, 0.95fr);
+      gap: 0;
     }
 
-    .settings-panel,
+    .input-panel,
     .preview-panel {
-      padding: 28px;
+      padding: 24px;
     }
 
-    .settings-panel {
+    .input-panel {
       border-left: 1px solid var(--border);
     }
 
-    .section-title {
+    .panel-title {
       display: flex;
       align-items: center;
       gap: 12px;
       margin-bottom: 22px;
     }
 
-    .section-title b {
-      width: 36px;
-      height: 36px;
+    .panel-title-icon,
+    .info-icon,
+    .stat-icon {
+      flex-shrink: 0;
       display: grid;
       place-items: center;
-      border: 1px solid rgba(56, 189, 248, 0.14);
-      border-radius: 10px;
-      background: rgba(56, 189, 248, 0.09);
       color: var(--primary);
-      font: 600 11px "JetBrains Mono", monospace;
+      background: rgba(40, 184, 242, 0.09);
+      border: 1px solid var(--border);
     }
 
-    .section-title strong {
-      display: block;
-      font-size: 16px;
+    .panel-title-icon {
+      width: 39px;
+      height: 39px;
+      border-radius: 11px;
     }
 
-    .section-title small {
+    .panel-title h3 {
+      margin: 0 0 2px;
+      font-size: 14px;
+    }
+
+    .panel-title p {
+      margin: 0;
       color: var(--muted);
-      font-size: 11px;
+      font-size: 9px;
     }
 
-    .field {
-      margin-bottom: 16px;
-    }
-
-    .field label {
-      display: block;
-      margin-bottom: 8px;
-      color: var(--text);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .type-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 7px;
-    }
-
-    .type-btn {
-      min-height: 68px;
+    .field-group {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--input);
-      color: var(--muted);
-      font-size: 11px;
-      transition: 0.2s ease;
+      gap: 8px;
     }
 
-    .type-btn i {
-      font-size: 17px;
+    .field-group label {
+      color: var(--text);
+      font-size: 10px;
+      font-weight: 700;
+      margin-top: 3px;
     }
 
-    .type-btn:hover,
-    .type-btn.active {
-      border-color: rgba(56, 189, 248, 0.45);
-      background: rgba(56, 189, 248, 0.08);
-      color: var(--primary);
-      transform: translateY(-1px);
+    .field-group label span {
+      color: var(--danger);
     }
 
-    input,
     textarea,
+    input,
     select {
       width: 100%;
-      min-height: 47px;
-      padding: 11px 13px;
-      outline: none;
       border: 1px solid var(--border);
       border-radius: 11px;
       background: var(--input);
       color: var(--text);
+      outline: none;
+      font-family: "Cairo", sans-serif;
       transition: 0.2s ease;
     }
 
-    textarea {
-      min-height: 125px;
-      resize: vertical;
-      line-height: 1.8;
+    textarea,
+    input {
+      padding: 11px 12px;
+      font-size: 11px;
     }
 
-    input:focus,
+    select {
+      padding: 10px 11px;
+      font-size: 10px;
+      cursor: pointer;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 125px;
+      line-height: 1.9;
+    }
+
     textarea:focus,
+    input:focus,
     select:focus {
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.08);
+      box-shadow: 0 0 0 3px rgba(40, 184, 242, 0.08);
     }
 
-    .input-hint {
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 10px;
+    textarea::placeholder,
+    input::placeholder {
+      color: var(--muted-2);
+    }
+
+    .field-footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--muted-2);
+      font-size: 8px;
+      margin-top: -2px;
+    }
+
+    .field-group small {
+      color: var(--muted-2);
+      font-size: 8px;
+      line-height: 1.7;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .settings {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .settings-title {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--text);
+      font-size: 11px;
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+
+    .settings-title i {
+      color: var(--primary);
     }
 
     .settings-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
     }
 
-    .divider {
-      height: 1px;
-      margin: 22px 0;
-      background: var(--border);
+    .setting label {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--muted);
+      font-size: 9px;
+    }
+
+    .check-row {
+      display: flex !important;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      margin-top: 5px !important;
+    }
+
+    .check-row input {
+      width: auto;
+      accent-color: var(--primary);
     }
 
     .actions {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 9px;
+      grid-template-columns: 1fr 1.6fr;
+      gap: 8px;
       margin-top: 20px;
     }
 
     .btn {
-      min-height: 46px;
-      border: 0;
+      min-height: 44px;
       border-radius: 11px;
-      font-size: 12px;
-      font-weight: 700;
+      border: 1px solid var(--border);
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
       transition: 0.2s ease;
+    }
+
+    .btn.primary {
+      color: #ffffff;
+      border-color: transparent;
+      background: linear-gradient(
+        135deg,
+        var(--primary),
+        var(--primary-2)
+      );
+      box-shadow: 0 10px 25px rgba(20, 157, 215, 0.2);
+    }
+
+    .btn.secondary {
+      color: var(--text);
+      background: var(--card-2);
     }
 
     .btn:hover {
       transform: translateY(-1px);
     }
 
-    .btn i {
-      margin-left: 5px;
+    .message {
+      min-height: 18px;
+      margin-top: 10px;
+      text-align: center;
+      font-size: 9px;
     }
 
-    .btn.primary {
-      background: linear-gradient(135deg, var(--primary), var(--primary2));
-      color: #fff;
-      box-shadow: 0 9px 25px rgba(14, 165, 233, 0.2);
+    .message.success {
+      color: var(--success);
     }
 
-    .btn.secondary {
-      border: 1px solid var(--border);
-      background: var(--input);
-      color: var(--text);
+    .message.error {
+      color: var(--danger);
     }
 
-    .status {
-      margin-top: 12px;
-      padding: 10px 12px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--input);
-      color: var(--muted);
-      font-size: 11px;
+    .preview-panel {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(40, 184, 242, 0.035),
+          transparent 50%
+        ),
+        var(--card-2);
     }
 
-    .status i {
-      margin-left: 5px;
-      color: #22c55e;
+    .preview-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .preview-head h3 {
+      margin: 7px 0 0;
+      font-size: 15px;
+    }
+
+    .preview-state {
+      color: var(--muted-2);
+      font-size: 8px;
+      padding-top: 3px;
     }
 
     .qr-stage {
-      position: relative;
-      min-height: 345px;
+      min-height: 320px;
+      margin-top: 18px;
+      padding: 18px;
       display: grid;
       place-items: center;
-      padding: 28px;
-      border: 1px dashed var(--border);
       border-radius: 18px;
+      border: 1px dashed var(--border-strong);
       background:
-        linear-gradient(
-          45deg,
-          rgba(128, 150, 170, 0.035) 25%,
-          transparent 25%
+        radial-gradient(
+          circle at center,
+          rgba(40, 184, 242, 0.06),
+          transparent 65%
         ),
-        linear-gradient(
-          -45deg,
-          rgba(128, 150, 170, 0.035) 25%,
-          transparent 25%
-        ),
-        var(--input);
-      background-size: 24px 24px;
+        var(--bg);
     }
 
-    .qr-box {
-      padding: 14px;
-      border-radius: 14px;
-      background: #fff;
-      box-shadow: 0 15px 45px rgba(0, 0, 0, 0.18);
-      line-height: 0;
+    .empty-preview {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+    }
+
+    .empty-preview strong {
+      color: var(--text);
+      font-size: 11px;
+    }
+
+    .empty-preview span {
+      color: var(--muted-2);
+      font-size: 8px;
+    }
+
+    .empty-icon {
+      width: 65px;
+      height: 65px;
+      display: grid;
+      place-items: center;
+      border-radius: 17px;
+      color: var(--primary);
+      background: rgba(40, 184, 242, 0.08);
+      border: 1px solid var(--border);
+      font-size: 25px;
     }
 
     #qrCanvas {
       display: block;
       max-width: 100%;
       height: auto;
-    }
-
-    .empty-state {
-      position: absolute;
-      inset: 0;
-      display: none;
-      place-items: center;
-      align-content: center;
-      gap: 8px;
-      background: var(--input);
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .empty-state i {
-      color: var(--primary);
-      font-size: 42px;
+      padding: 8px;
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
     }
 
     .preview-info {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
       gap: 8px;
       margin-top: 12px;
+      color: var(--muted-2);
+      font-size: 8px;
     }
 
-    .preview-info div {
-      padding: 11px;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: var(--input);
-      text-align: center;
-    }
-
-    .preview-info span {
-      display: block;
-      margin-bottom: 3px;
-      color: var(--muted);
-      font-size: 9px;
-    }
-
-    .preview-info strong {
-      font-size: 11px;
+    .preview-info i {
+      color: var(--success);
     }
 
     .download-actions {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 9px;
-      margin-top: 12px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 16px;
     }
 
     .download-btn {
-      min-height: 66px;
-      display: grid;
-      grid-template-columns: 35px 1fr 18px;
+      min-height: 55px;
+      display: flex;
       align-items: center;
-      padding: 9px 12px;
+      justify-content: center;
+      gap: 8px;
       border: 1px solid var(--border);
       border-radius: 12px;
-      background: var(--input);
+      background: var(--card);
       color: var(--text);
-      text-align: right;
+      cursor: pointer;
+      font-family: inherit;
       transition: 0.2s ease;
     }
 
-    .download-btn:hover {
-      border-color: var(--primary);
-      transform: translateY(-1px);
-    }
-
-    .download-btn > i:first-child {
+    .download-btn i {
       color: var(--primary);
-      font-size: 18px;
-      text-align: center;
-    }
-
-    .download-btn > i:last-child {
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .download-btn span strong {
-      display: block;
-      font-size: 12px;
-    }
-
-    .download-btn span small {
-      color: var(--muted);
-      font-size: 9px;
-    }
-
-    .privacy {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin: 0 28px 28px;
-      padding: 16px;
-      border: 1px solid rgba(56, 189, 248, 0.12);
-      border-radius: 14px;
-      background: rgba(56, 189, 248, 0.055);
-    }
-
-    .privacy-icon {
-      width: 42px;
-      height: 42px;
-      flex: 0 0 42px;
-      display: grid;
-      place-items: center;
-      border-radius: 11px;
-      background: rgba(56, 189, 248, 0.1);
-      color: var(--primary);
-    }
-
-    .privacy strong {
-      font-size: 12px;
-    }
-
-    .privacy p {
-      margin: 2px 0 0;
-      color: var(--muted);
-      font-size: 10px;
-    }
-
-    .info-section {
-      padding: 5px 0 35px;
-    }
-
-    .info-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-    }
-
-    .info-card {
-      padding: 22px;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: var(--card);
-    }
-
-    .info-icon {
-      width: 42px;
-      height: 42px;
-      display: grid;
-      place-items: center;
-      margin-bottom: 13px;
-      border-radius: 11px;
-      background: rgba(56, 189, 248, 0.08);
-      color: var(--primary);
-    }
-
-    .info-card h3 {
-      margin: 0 0 7px;
       font-size: 15px;
     }
 
-    .info-card p,
-    .info-card li {
-      color: var(--muted);
+    .download-btn span {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0;
+    }
+
+    .download-btn strong {
+      font-size: 9px;
+    }
+
+    .download-btn small {
+      color: var(--muted-2);
+      font-size: 7px;
+    }
+
+    .download-btn:hover:not(:disabled) {
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    .download-btn:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .stat-card {
+      min-height: 80px;
+      padding: 14px;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .stat-icon {
+      width: 37px;
+      height: 37px;
+      border-radius: 10px;
+    }
+
+    .stat-card strong,
+    .stat-card span {
+      display: block;
+    }
+
+    .stat-card strong {
       font-size: 12px;
-      line-height: 1.9;
+    }
+
+    .stat-card span {
+      color: var(--muted);
+      font-size: 8px;
+      margin-top: 2px;
+    }
+
+    .info-card {
+      margin-top: 16px;
+      padding: 20px;
+      border-radius: 18px;
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    .info-icon {
+      width: 43px;
+      height: 43px;
+      border-radius: 12px;
+    }
+
+    .info-card h2 {
+      margin: 1px 0 7px;
+      font-size: 14px;
     }
 
     .info-card p {
       margin: 0;
+      color: var(--muted);
+      line-height: 2;
+      font-size: 10px;
     }
 
-    .info-card ol {
-      margin: 0;
-      padding-right: 19px;
+    .steps {
+      list-style: none;
+      margin: 16px 0 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
     }
 
-    .faq-section {
-      padding: 5px 0 65px;
+    .steps li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
     }
 
-    .section-heading {
-      margin-bottom: 22px;
-      text-align: center;
-    }
-
-    .section-heading span {
+    .steps li > span {
+      width: 27px;
+      height: 27px;
+      flex-shrink: 0;
+      display: grid;
+      place-items: center;
+      border-radius: 8px;
       color: var(--primary);
-      font: 600 10px "JetBrains Mono", monospace;
-      letter-spacing: 2px;
+      background: rgba(40, 184, 242, 0.08);
+      border: 1px solid var(--border);
+      font-size: 9px;
+      font-weight: 800;
     }
 
-    .section-heading h2 {
-      margin: 4px 0 0;
-      font-size: 25px;
+    .steps strong {
+      font-size: 10px;
+    }
+
+    .steps p {
+      margin-top: 2px;
+      font-size: 8px;
+    }
+
+    .note-card {
+      background:
+        linear-gradient(
+          145deg,
+          rgba(40, 184, 242, 0.06),
+          transparent
+        ),
+        var(--card);
     }
 
     .faq {
-      display: grid;
-      gap: 9px;
+      margin-top: 45px;
+    }
+
+    .faq-heading {
+      text-align: center;
+      margin-bottom: 17px;
+    }
+
+    .faq-heading span {
+      color: var(--primary);
+      font-size: 9px;
+      font-weight: 800;
+    }
+
+    .faq-heading h2 {
+      margin: 5px 0 0;
+      font-size: 20px;
     }
 
     details {
-      overflow: hidden;
+      margin-bottom: 8px;
       border: 1px solid var(--border);
-      border-radius: 13px;
+      border-radius: 12px;
       background: var(--card);
+      overflow: hidden;
     }
 
     summary {
+      min-height: 48px;
+      padding: 12px 15px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      padding: 16px 18px;
+      align-items: center;
+      gap: 10px;
       cursor: pointer;
       list-style: none;
-      font-size: 12px;
+      font-size: 10px;
       font-weight: 700;
     }
 
@@ -1116,7 +2141,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/qr-code-generat
 
     summary i {
       color: var(--primary);
-      transition: 0.2s;
+      font-size: 9px;
+      transition: transform 0.2s ease;
     }
 
     details[open] summary i {
@@ -1125,659 +2151,175 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/qr-code-generat
 
     details p {
       margin: 0;
-      padding: 0 18px 17px;
+      padding: 0 15px 15px;
       color: var(--muted);
-      font-size: 11px;
-      line-height: 1.8;
+      font-size: 9px;
+      line-height: 2;
     }
 
-    @media (max-width: 900px) {
+    @media (max-width: 850px) {
       .workspace {
         grid-template-columns: 1fr;
       }
 
-      .settings-panel {
+      .input-panel {
         border-left: 0;
         border-bottom: 1px solid var(--border);
       }
 
-      .info-grid {
-        grid-template-columns: 1fr;
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
-    @media (max-width: 650px) {
-      .hero {
-        padding-top: 30px;
+    @media (max-width: 620px) {
+      .page {
+        width: min(100% - 18px, 540px);
+        padding-top: 15px;
       }
 
-      .hero-content {
-        grid-template-columns: 1fr;
-        gap: 17px;
+      .hero {
+        padding: 15px 5px 24px;
       }
 
       .hero-icon {
-        width: 78px;
-        height: 78px;
-        border-radius: 20px;
-        font-size: 32px;
+        width: 58px;
+        height: 58px;
+        border-radius: 17px;
+        font-size: 23px;
       }
 
-      .hero-content p {
-        font-size: 13px;
+      .hero-description {
+        font-size: 11px;
+        line-height: 1.9;
+      }
+
+      .tool-card {
+        border-radius: 18px;
       }
 
       .tool-header {
-        align-items: flex-start;
-        padding: 20px;
+        padding: 17px;
       }
 
       .tool-header h2 {
-        font-size: 19px;
+        font-size: 16px;
       }
 
-      .settings-panel,
+      .types {
+        grid-template-columns: repeat(3, 1fr);
+        padding: 13px;
+      }
+
+      .type-btn {
+        min-height: 48px;
+        flex-direction: column;
+        gap: 3px;
+        font-size: 8px;
+      }
+
+      .type-btn i {
+        font-size: 12px;
+      }
+
+      .input-panel,
       .preview-panel {
-        padding: 20px;
+        padding: 16px;
       }
 
-      .type-grid {
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .qr-stage {
+        min-height: 270px;
+      }
+
+      .stats-grid {
+        gap: 7px;
+      }
+
+      .stat-card {
+        min-height: 70px;
+        padding: 10px;
+      }
+
+      .stat-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 11px;
+      }
+
+      .stat-card strong {
+        font-size: 10px;
+      }
+
+      .stat-card span {
+        font-size: 7px;
+      }
+
+      .download-actions {
+        gap: 6px;
+      }
+
+      .download-btn {
+        min-height: 50px;
+        gap: 5px;
+      }
+
+      .download-btn span {
+        display: none;
+      }
+
+      .download-btn i {
+        font-size: 14px;
+      }
+
+      .info-card {
+        padding: 15px;
+        gap: 10px;
+      }
+
+      .info-icon {
+        width: 37px;
+        height: 37px;
+        font-size: 12px;
+      }
+
+      .info-card p {
+        font-size: 9px;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .types {
         grid-template-columns: repeat(3, 1fr);
       }
 
-      .settings-grid,
-      .download-actions,
+      .type-btn {
+        min-height: 44px;
+      }
+
+      .tool-header {
+        flex-direction: column;
+      }
+
+      .live-status {
+        align-self: flex-start;
+      }
+
       .actions {
         grid-template-columns: 1fr;
       }
 
-      .privacy {
-        margin: 0 20px 20px;
-      }
-
       .qr-stage {
-        min-height: 300px;
-      }
-    }
-
-    @media (max-width: 400px) {
-      .hero-inner,
-      .tool-section,
-      .info-section,
-      .faq-section {
-        width: calc(100% - 20px);
-      }
-
-      .hero {
-        padding-inline: 10px;
-      }
-
-      .breadcrumb {
-        font-size: 10px;
-      }
-
-      h1 {
-        font-size: 27px;
-      }
-
-      .type-btn {
-        min-height: 62px;
-      }
-
-      .type-btn i {
-        font-size: 15px;
-      }
-
-      .type-btn span {
-        font-size: 10px;
+        min-height: 240px;
       }
     }
   </style>
-
-  <script>
-    (() => {
-      const typeButtons = document.querySelectorAll('.type-btn');
-      const dynamicFields = document.getElementById('dynamicFields');
-      const canvas = document.getElementById('qrCanvas');
-      const sizeSelect = document.getElementById('size');
-      const marginSelect = document.getElementById('margin');
-      const errorSelect = document.getElementById('errorLevel');
-      const pngButton = document.getElementById('pngBtn');
-      const svgButton = document.getElementById('svgBtn');
-      const copyButton = document.getElementById('copyBtn');
-      const resetButton = document.getElementById('resetBtn');
-      const statusBox = document.getElementById('status');
-      const qrState = document.getElementById('qrState');
-      const qrSize = document.getElementById('qrSize');
-      const qrType = document.getElementById('qrType');
-      const emptyState = document.getElementById('emptyState');
-
-      let currentType = 'text';
-      let currentPayload = '';
-      let timer = null;
-
-      const typeNames = {
-        text: 'نص',
-        url: 'رابط',
-        email: 'بريد',
-        phone: 'هاتف',
-        wifi: 'Wi-Fi'
-      };
-
-      function setStatus(message, success) {
-        const icon = success === false
-          ? 'fa-circle-exclamation'
-          : 'fa-circle-check';
-
-        statusBox.innerHTML =
-          '<i class="fa-solid ' + icon + '"></i> ' + message;
-
-        statusBox.style.color = success === false ? '#f87171' : '';
-      }
-
-      function createInput(id, label, placeholder, type) {
-        const inputType = type || 'text';
-
-        return (
-          '<div class="field">' +
-            '<label for="' + id + '">' + label + '</label>' +
-            '<input id="' + id + '" type="' + inputType + '" placeholder="' +
-            placeholder + '" autocomplete="off">' +
-          '</div>'
-        );
-      }
-
-      function escapeWifi(value) {
-        return String(value)
-          .split('\\').join('\\\\')
-          .split(';').join('\\;')
-          .split(',').join('\\,')
-          .split(':').join('\\:');
-      }
-
-      function renderFields() {
-        if (currentType === 'text') {
-          dynamicFields.innerHTML =
-            '<div class="field">' +
-              '<label for="textValue">النص</label>' +
-              '<textarea id="textValue" placeholder="اكتب النص الذي تريد تحويله إلى QR Code..."></textarea>' +
-              '<div class="input-hint">يمكنك إدخال نص عربي أو إنجليزي أو أي محتوى نصي.</div>' +
-            '</div>';
-        }
-
-        if (currentType === 'url') {
-          dynamicFields.innerHTML = createInput(
-            'urlValue',
-            'الرابط',
-            'https://example.com',
-            'url'
-          );
-        }
-
-        if (currentType === 'email') {
-          dynamicFields.innerHTML =
-            createInput(
-              'emailValue',
-              'البريد الإلكتروني',
-              'name@example.com',
-              'email'
-            ) +
-            createInput(
-              'emailSubject',
-              'الموضوع',
-              'موضوع الرسالة',
-              'text'
-            );
-        }
-
-        if (currentType === 'phone') {
-          dynamicFields.innerHTML = createInput(
-            'phoneValue',
-            'رقم الهاتف',
-            '+212600000000',
-            'tel'
-          );
-        }
-
-        if (currentType === 'wifi') {
-          dynamicFields.innerHTML =
-            createInput(
-              'wifiSsid',
-              'اسم الشبكة SSID',
-              'My WiFi',
-              'text'
-            ) +
-            '<div class="settings-grid">' +
-              '<div class="field">' +
-                '<label for="wifiSecurity">نوع الحماية</label>' +
-                '<select id="wifiSecurity">' +
-                  '<option value="WPA" selected>WPA / WPA2</option>' +
-                  '<option value="WEP">WEP</option>' +
-                  '<option value="nopass">بدون كلمة مرور</option>' +
-                '</select>' +
-              '</div>' +
-              '<div class="field">' +
-                '<label for="wifiHidden">الشبكة مخفية؟</label>' +
-                '<select id="wifiHidden">' +
-                  '<option value="false" selected>لا</option>' +
-                  '<option value="true">نعم</option>' +
-                '</select>' +
-              '</div>' +
-            '</div>' +
-            '<div class="field" id="wifiPasswordField">' +
-              '<label for="wifiPassword">كلمة المرور</label>' +
-              '<input id="wifiPassword" type="text" placeholder="كلمة مرور الشبكة" autocomplete="off">' +
-            '</div>';
-        }
-
-        const fields = dynamicFields.querySelectorAll(
-          'input, textarea, select'
-        );
-
-        fields.forEach((field) => {
-          field.addEventListener('input', scheduleRender);
-          field.addEventListener('change', scheduleRender);
-        });
-
-        const security = document.getElementById('wifiSecurity');
-
-        if (security) {
-          security.addEventListener('change', () => {
-            const passwordField =
-              document.getElementById('wifiPasswordField');
-
-            if (passwordField) {
-              passwordField.style.display =
-                security.value === 'nopass' ? 'none' : 'block';
-            }
-
-            scheduleRender();
-          });
-        }
-
-        scheduleRender();
-      }
-
-      function getPayload() {
-        if (currentType === 'text') {
-          const field = document.getElementById('textValue');
-          return field ? field.value.trim() : '';
-        }
-
-        if (currentType === 'url') {
-          const field = document.getElementById('urlValue');
-          const value = field ? field.value.trim() : '';
-
-          if (!value) {
-            return '';
-          }
-
-          if (
-            value.indexOf('http://') !== 0 &&
-            value.indexOf('https://') !== 0
-          ) {
-            throw new Error(
-              'يجب أن يبدأ الرابط بـ http:// أو https://'
-            );
-          }
-
-          return value;
-        }
-
-        if (currentType === 'email') {
-          const emailField = document.getElementById('emailValue');
-          const subjectField = document.getElementById('emailSubject');
-
-          const email = emailField
-            ? emailField.value.trim()
-            : '';
-
-          const subject = subjectField
-            ? subjectField.value.trim()
-            : '';
-
-          if (!email) {
-            return '';
-          }
-
-          if (
-            email.indexOf('@') === -1 ||
-            email.indexOf('.') === -1
-          ) {
-            throw new Error('أدخل بريداً إلكترونياً صحيحاً.');
-          }
-
-          if (subject) {
-            return (
-              'mailto:' +
-              email +
-              '?subject=' +
-              encodeURIComponent(subject)
-            );
-          }
-
-          return 'mailto:' + email;
-        }
-
-        if (currentType === 'phone') {
-          const field = document.getElementById('phoneValue');
-          const value = field ? field.value.trim() : '';
-
-          if (!value) {
-            return '';
-          }
-
-          return 'tel:' + value;
-        }
-
-        if (currentType === 'wifi') {
-          const ssidField = document.getElementById('wifiSsid');
-          const securityField = document.getElementById('wifiSecurity');
-          const passwordField = document.getElementById('wifiPassword');
-          const hiddenField = document.getElementById('wifiHidden');
-
-          const ssid = ssidField ? ssidField.value : '';
-          const security = securityField
-            ? securityField.value
-            : 'WPA';
-
-          const password = passwordField
-            ? passwordField.value
-            : '';
-
-          const hidden = hiddenField
-            ? hiddenField.value
-            : 'false';
-
-          if (!ssid) {
-            return '';
-          }
-
-          return (
-            'WIFI:T:' +
-            security +
-            ';S:' +
-            escapeWifi(ssid) +
-            ';P:' +
-            escapeWifi(password) +
-            ';H:' +
-            hidden +
-            ';;'
-          );
-        }
-
-        return '';
-      }
-
-      function waitForLibrary(callback, attempts) {
-        const count = attempts || 0;
-
-        if (window.QRCode) {
-          callback();
-          return;
-        }
-
-        if (count >= 60) {
-          setStatus(
-            'تعذر تحميل محرك QR Code. تحقق من اتصال الإنترنت.',
-            false
-          );
-          return;
-        }
-
-        window.setTimeout(() => {
-          waitForLibrary(callback, count + 1);
-        }, 100);
-      }
-
-      function renderQr() {
-        let payload = '';
-
-        try {
-          payload = getPayload();
-        } catch (error) {
-          currentPayload = '';
-          emptyState.style.display = 'grid';
-          qrState.textContent = 'خطأ';
-
-          setStatus(
-            error && error.message
-              ? error.message
-              : 'بيانات غير صحيحة.',
-            false
-          );
-
-          return;
-        }
-
-        currentPayload = payload;
-
-        qrType.textContent = typeNames[currentType];
-        qrSize.textContent = sizeSelect.value + ' px';
-
-        if (!payload) {
-          emptyState.style.display = 'grid';
-          qrState.textContent = 'بانتظار البيانات';
-          setStatus('أدخل البيانات لإنشاء رمز QR.');
-          return;
-        }
-
-        emptyState.style.display = 'none';
-        qrState.textContent = 'جاري الإنشاء...';
-
-        waitForLibrary(() => {
-          const levels = {
-            L: window.QRCode.CorrectLevel.L,
-            M: window.QRCode.CorrectLevel.M,
-            Q: window.QRCode.CorrectLevel.Q,
-            H: window.QRCode.CorrectLevel.H
-          };
-
-          const dimension = Number(sizeSelect.value);
-          const selectedLevel =
-            levels[errorSelect.value] ||
-            window.QRCode.CorrectLevel.M;
-
-          window.QRCode.toCanvas(
-            canvas,
-            payload,
-            {
-              width: dimension,
-              margin: Number(marginSelect.value),
-              errorCorrectionLevel: selectedLevel,
-              color: {
-                dark: '#000000',
-                light: '#ffffff'
-              }
-            },
-            (error) => {
-              if (error) {
-                qrState.textContent = 'خطأ';
-                setStatus(
-                  'تعذر إنشاء رمز QR.',
-                  false
-                );
-                return;
-              }
-
-              qrState.textContent = 'تم الإنشاء';
-              setStatus(
-                'تم إنشاء رمز QR بنجاح.',
-                true
-              );
-            }
-          );
-        });
-      }
-
-      function scheduleRender() {
-        window.clearTimeout(timer);
-
-        timer = window.setTimeout(() => {
-          renderQr();
-        }, 100);
-      }
-
-      typeButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-          typeButtons.forEach((item) => {
-            item.classList.remove('active');
-          });
-
-          button.classList.add('active');
-
-          currentType = button.getAttribute('data-type') || 'text';
-
-          renderFields();
-        });
-      });
-
-      sizeSelect.addEventListener('change', scheduleRender);
-      marginSelect.addEventListener('change', scheduleRender);
-      errorSelect.addEventListener('change', scheduleRender);
-
-      pngButton.addEventListener('click', () => {
-        if (!currentPayload) {
-          setStatus(
-            'أدخل البيانات أولاً.',
-            false
-          );
-          return;
-        }
-
-        canvas.toBlob((blob) => {
-          if (!blob) {
-            setStatus(
-              'تعذر إنشاء ملف PNG.',
-              false
-            );
-            return;
-          }
-
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-
-          link.href = url;
-          link.download = 'th-tech-qr-code.png';
-
-          document.body.appendChild(link);
-          link.click();
-          link.remove();
-
-          URL.revokeObjectURL(url);
-
-          setStatus(
-            'تم تنزيل ملف PNG.',
-            true
-          );
-        }, 'image/png');
-      });
-
-      svgButton.addEventListener('click', () => {
-        if (!currentPayload) {
-          setStatus(
-            'أدخل البيانات أولاً.',
-            false
-          );
-          return;
-        }
-
-        waitForLibrary(() => {
-          window.QRCode.toString(
-            currentPayload,
-            {
-              type: 'svg',
-              width: Number(sizeSelect.value),
-              margin: Number(marginSelect.value),
-              errorCorrectionLevel: errorSelect.value
-            },
-            (error, svg) => {
-              if (error) {
-                setStatus(
-                  'تعذر إنشاء ملف SVG.',
-                  false
-                );
-                return;
-              }
-
-              const blob = new Blob(
-                [svg],
-                {
-                  type: 'image/svg+xml;charset=utf-8'
-                }
-              );
-
-              const url = URL.createObjectURL(blob);
-              const link = document.createElement('a');
-
-              link.href = url;
-              link.download = 'th-tech-qr-code.svg';
-
-              document.body.appendChild(link);
-              link.click();
-              link.remove();
-
-              URL.revokeObjectURL(url);
-
-              setStatus(
-                'تم تنزيل ملف SVG.',
-                true
-              );
-            }
-          );
-        });
-      });
-
-      copyButton.addEventListener('click', async () => {
-        if (!currentPayload) {
-          setStatus(
-            'لا توجد بيانات لنسخها.',
-            false
-          );
-          return;
-        }
-
-        try {
-          await navigator.clipboard.writeText(
-            currentPayload
-          );
-
-          setStatus(
-            'تم نسخ البيانات إلى الحافظة.',
-            true
-          );
-        } catch {
-          setStatus(
-            'تعذر النسخ تلقائياً.',
-            false
-          );
-        }
-      });
-
-      resetButton.addEventListener('click', () => {
-        currentType = 'text';
-
-        typeButtons.forEach((button) => {
-          const isText =
-            button.getAttribute('data-type') === 'text';
-
-          button.classList.toggle('active', isText);
-        });
-
-        sizeSelect.value = '220';
-        marginSelect.value = '2';
-        errorSelect.value = 'M';
-
-        renderFields();
-
-        setStatus(
-          'تمت إعادة ضبط الأداة.',
-          true
-        );
-      });
-
-      renderFields();
-    })();
-  </script>
 </body>
 </html>
