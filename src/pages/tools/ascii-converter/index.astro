@@ -1,1217 +1,1582 @@
 ---
+
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const canonical = `https://oumaystore-hub.github.io${base}/tools/ascii-converter/`;
-
-const title = 'ASCII Converter | محول ASCII | Th.Tech';
-const description =
-  'محول ASCII احترافي لتحويل النصوص إلى أكواد ASCII والعكس، مع دعم Decimal وHex وBinary.';
----
+const base = import.meta.env.BASE_URL.replace(//$/, '');
+const canonical = "https://oumaystore-hub.github.io${base}/tools/ascii-converter/";
 
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>ASCII Converter | محول ASCII | Th.Tech</title>
 
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={canonical} />
+<meta
+  name="description"
+  content="محول ASCII احترافي لتحويل النص إلى أكواد ASCII والعكس."
+/>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
+<link rel="canonical" href={canonical} />
 
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-  </head>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
+/>
 
-  <body>
-    <Header />
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+/>
 
-    <main class="ascii-page">
-      <section class="hero">
-        <div class="hero-icon">
-          <i class="fa-solid fa-code"></i>
-        </div>
+  </head>  <body>
+    <Header /><main class="ascii-tool">
 
-        <div class="hero-content">
-          <span class="badge">
-            <i class="fa-solid fa-bolt"></i>
-            أداة مجانية
-          </span>
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-icon">
+      <i class="fa-solid fa-code"></i>
+    </div>
 
-          <h1>ASCII Converter</h1>
+    <div>
+      <span class="eyebrow">
+        <i class="fa-solid fa-bolt"></i>
+        أداة مجانية
+      </span>
 
-          <p>
-            محول ASCII احترافي لتحويل النصوص إلى أكواد ASCII والعكس بسهولة
+      <h1>ASCII Converter</h1>
+
+      <p>
+        تحويل النصوص إلى ASCII والعكس بسرعة وسهولة
+      </p>
+    </div>
+  </section>
+
+
+  <!-- TOOL -->
+  <section class="tool-card">
+
+    <!-- MODE -->
+    <div class="mode-tabs">
+      <button
+        type="button"
+        class="mode active"
+        id="textMode"
+      >
+        <i class="fa-solid fa-font"></i>
+        نص → ASCII
+      </button>
+
+      <button
+        type="button"
+        class="mode"
+        id="asciiMode"
+      >
+        <i class="fa-solid fa-terminal"></i>
+        ASCII → نص
+      </button>
+    </div>
+
+
+    <!-- INPUT -->
+    <div class="panel">
+
+      <div class="panel-header">
+        <div>
+          <h2 id="inputTitle">النص</h2>
+          <p id="inputHelp">
+            اكتب النص الذي تريد تحويله
           </p>
         </div>
-      </section>
 
-      <section class="converter-card">
-        <div class="mode-switch">
-          <button class="mode-btn active" data-mode="text-to-ascii">
-            <i class="fa-solid fa-font"></i>
-            <span>Text → ASCII</span>
-          </button>
+        <span class="counter" id="counter">
+          0 حرف
+        </span>
+      </div>
 
-          <button class="mode-btn" data-mode="ascii-to-text">
-            <i class="fa-solid fa-terminal"></i>
-            <span>ASCII → Text</span>
-          </button>
+      <textarea
+        id="input"
+        placeholder="اكتب النص هنا..."
+        spellcheck="false"
+      ></textarea>
+
+      <div class="buttons">
+        <button type="button" class="small-btn" id="paste">
+          <i class="fa-solid fa-paste"></i>
+          لصق
+        </button>
+
+        <button type="button" class="small-btn danger" id="clear">
+          <i class="fa-solid fa-trash"></i>
+          مسح
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- CONVERT -->
+    <div class="convert-row">
+
+      <button
+        type="button"
+        class="convert"
+        id="convert"
+      >
+        <i class="fa-solid fa-arrow-down"></i>
+        <span id="convertLabel">تحويل إلى ASCII</span>
+      </button>
+
+      <button
+        type="button"
+        class="swap"
+        id="swap"
+        title="تبديل الاتجاه"
+      >
+        <i class="fa-solid fa-right-left"></i>
+      </button>
+
+    </div>
+
+
+    <!-- OUTPUT -->
+    <div class="panel">
+
+      <div class="panel-header">
+
+        <div>
+          <h2 id="outputTitle">ASCII</h2>
+          <p id="outputHelp">
+            النتيجة ستظهر هنا
+          </p>
         </div>
 
-        <div class="input-section">
-          <div class="section-heading">
-            <div>
-              <h2 id="inputTitle">النص</h2>
-              <p id="inputDescription">
-                أدخل النص الذي تريد تحويله إلى ASCII
-              </p>
-            </div>
+        <button
+          type="button"
+          class="copy"
+          id="copy"
+        >
+          <i class="fa-regular fa-copy"></i>
+          نسخ
+        </button>
 
-            <span class="char-count" id="charCount">0 حرف</span>
-          </div>
+      </div>
 
-          <textarea
-            id="inputText"
-            dir="auto"
-            spellcheck="false"
-            placeholder="اكتب النص هنا..."
-          ></textarea>
+      <textarea
+        id="output"
+        readonly
+        placeholder="النتيجة..."
+        spellcheck="false"
+      ></textarea>
 
-          <div class="input-actions">
-            <button class="action-btn secondary" id="pasteBtn">
-              <i class="fa-solid fa-paste"></i>
-              لصق
-            </button>
+    </div>
 
-            <button class="action-btn danger" id="clearBtn">
-              <i class="fa-solid fa-trash-can"></i>
-              مسح
-            </button>
-          </div>
+
+    <!-- REPRESENTATIONS -->
+    <div class="representations">
+
+      <div class="representation">
+        <div class="representation-icon">
+          <i class="fa-solid fa-hashtag"></i>
         </div>
 
-        <div class="convert-area">
-          <button class="convert-btn" id="convertBtn">
-            <i class="fa-solid fa-arrow-down"></i>
-            <span id="convertText">تحويل إلى ASCII</span>
-          </button>
+        <div>
+          <span>Decimal</span>
+          <strong id="decimal">—</strong>
+        </div>
+      </div>
 
-          <button class="swap-btn" id="swapBtn" title="تبديل الاتجاه">
-            <i class="fa-solid fa-right-left"></i>
-          </button>
+
+      <div class="representation">
+        <div class="representation-icon">
+          <i class="fa-solid fa-xmark"></i>
         </div>
 
-        <div class="output-section">
-          <div class="section-heading">
-            <div>
-              <h2 id="outputTitle">ASCII</h2>
-              <p id="outputDescription">
-                النتيجة ستظهر هنا
-              </p>
-            </div>
+        <div>
+          <span>Hexadecimal</span>
+          <strong id="hex">—</strong>
+        </div>
+      </div>
 
-            <button class="copy-btn" id="copyBtn">
-              <i class="fa-regular fa-copy"></i>
-              نسخ
-            </button>
-          </div>
 
-          <textarea
-            id="outputText"
-            dir="ltr"
-            readonly
-            spellcheck="false"
-            placeholder="النتيجة..."
-          ></textarea>
+      <div class="representation">
+        <div class="representation-icon">
+          <i class="fa-solid fa-1"></i>
         </div>
 
-        <div class="formats" id="formatsBox">
-          <div class="format-card">
-            <div class="format-icon decimal">
-              <i class="fa-solid fa-hashtag"></i>
-            </div>
-
-            <div>
-              <span>Decimal</span>
-              <strong id="decimalOutput">—</strong>
-            </div>
-          </div>
-
-          <div class="format-card">
-            <div class="format-icon hex">
-              <i class="fa-solid fa-x"></i>
-            </div>
-
-            <div>
-              <span>Hexadecimal</span>
-              <strong id="hexOutput">—</strong>
-            </div>
-          </div>
-
-          <div class="format-card">
-            <div class="format-icon binary">
-              <i class="fa-solid fa-1"></i>
-            </div>
-
-            <div>
-              <span>Binary</span>
-              <strong id="binaryOutput">—</strong>
-            </div>
-          </div>
+        <div>
+          <span>Binary</span>
+          <strong id="binary">—</strong>
         </div>
+      </div>
 
-        <div class="status" id="status"></div>
-      </section>
+    </div>
 
-      <section class="info-grid">
-        <div class="info-card">
-          <div class="info-icon">
-            <i class="fa-solid fa-circle-info"></i>
-          </div>
 
-          <div>
-            <h3>ما هو ASCII؟</h3>
-            <p>
-              ASCII هو معيار لترميز الأحرف باستخدام أرقام من 0 إلى 127، ويستخدم
-              لتمثيل الأحرف الإنجليزية والأرقام والرموز الأساسية.
-            </p>
-          </div>
-        </div>
+    <div id="message" class="message"></div>
 
-        <div class="info-card">
-          <div class="info-icon">
-            <i class="fa-solid fa-shield-halved"></i>
-          </div>
+  </section>
 
-          <div>
-            <h3>معالجة محلية</h3>
-            <p>
-              تتم عملية التحويل مباشرة داخل المتصفح ولا يتم إرسال النصوص إلى
-              خادم خارجي.
-            </p>
-          </div>
-        </div>
 
-        <div class="info-card">
-          <div class="info-icon">
-            <i class="fa-solid fa-arrows-rotate"></i>
-          </div>
+  <!-- INFORMATION -->
+  <section class="information">
 
-          <div>
-            <h3>تحويل ثنائي الاتجاه</h3>
-            <p>
-              يمكنك التحويل من النص إلى ASCII أو من أكواد ASCII إلى النص بسهولة.
-            </p>
-          </div>
-        </div>
-      </section>
-    </main>
+    <article>
+      <div class="info-icon">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
 
-    <Footer />
+      <div>
+        <h3>ما هو ASCII؟</h3>
+        <p>
+          معيار لترميز الأحرف باستخدام قيم رقمية من 0 إلى 127،
+          ويشمل الأحرف الإنجليزية والأرقام والرموز الأساسية.
+        </p>
+      </div>
+    </article>
 
-    <script>
-      const inputText = document.getElementById('inputText');
-      const outputText = document.getElementById('outputText');
-      const convertBtn = document.getElementById('convertBtn');
-      const convertText = document.getElementById('convertText');
-      const clearBtn = document.getElementById('clearBtn');
-      const pasteBtn = document.getElementById('pasteBtn');
-      const copyBtn = document.getElementById('copyBtn');
-      const swapBtn = document.getElementById('swapBtn');
-      const charCount = document.getElementById('charCount');
-      const status = document.getElementById('status');
 
-      const inputTitle = document.getElementById('inputTitle');
-      const inputDescription = document.getElementById('inputDescription');
-      const outputTitle = document.getElementById('outputTitle');
-      const outputDescription = document.getElementById('outputDescription');
+    <article>
+      <div class="info-icon">
+        <i class="fa-solid fa-lock"></i>
+      </div>
 
-      const decimalOutput = document.getElementById('decimalOutput');
-      const hexOutput = document.getElementById('hexOutput');
-      const binaryOutput = document.getElementById('binaryOutput');
-      const formatsBox = document.getElementById('formatsBox');
+      <div>
+        <h3>خصوصية كاملة</h3>
+        <p>
+          تتم عملية التحويل داخل متصفحك مباشرة ولا يتم إرسال
+          البيانات إلى أي خادم.
+        </p>
+      </div>
+    </article>
 
-      const modeButtons = document.querySelectorAll('.mode-btn');
 
-      let currentMode = 'text-to-ascii';
+    <article>
+      <div class="info-icon">
+        <i class="fa-solid fa-repeat"></i>
+      </div>
 
-      function showStatus(message, type = 'success') {
-        status.textContent = message;
-        status.className = `status show ${type}`;
+      <div>
+        <h3>تحويل ثنائي الاتجاه</h3>
+        <p>
+          يمكنك التحويل من النص إلى ASCII أو من ASCII إلى نص
+          بضغطة واحدة.
+        </p>
+      </div>
+    </article>
+
+  </section>
+
+</main>
+
+<Footer />
+
+
+<script>
+  const input = document.getElementById('input');
+  const output = document.getElementById('output');
+
+  const convertButton = document.getElementById('convert');
+  const swapButton = document.getElementById('swap');
+
+  const clearButton = document.getElementById('clear');
+  const pasteButton = document.getElementById('paste');
+  const copyButton = document.getElementById('copy');
+
+  const textModeButton = document.getElementById('textMode');
+  const asciiModeButton = document.getElementById('asciiMode');
+
+  const inputTitle = document.getElementById('inputTitle');
+  const inputHelp = document.getElementById('inputHelp');
+
+  const outputTitle = document.getElementById('outputTitle');
+  const outputHelp = document.getElementById('outputHelp');
+
+  const convertLabel = document.getElementById('convertLabel');
+  const counter = document.getElementById('counter');
+
+  const decimal = document.getElementById('decimal');
+  const hex = document.getElementById('hex');
+  const binary = document.getElementById('binary');
+
+  const message = document.getElementById('message');
+
+  let mode = 'text';
+
+
+  function setMessage(text, type = '') {
+    message.textContent = text;
+    message.className = 'message';
+
+    if (text) {
+      message.classList.add('visible');
+
+      if (type) {
+        message.classList.add(type);
+      }
+    }
+  }
+
+
+  function clearResults() {
+    output.value = '';
+
+    decimal.textContent = '—';
+    hex.textContent = '—';
+    binary.textContent = '—';
+
+    setMessage('');
+  }
+
+
+  function updateCounter() {
+    const length = input.value.length;
+
+    counter.textContent =
+      `${length} ${length === 1 ? 'حرف' : 'أحرف'}`;
+  }
+
+
+  function textToAscii() {
+    const text = input.value;
+
+    if (!text) {
+      clearResults();
+      setMessage('اكتب نصًا أولًا.', 'error');
+      return;
+    }
+
+    const codes = [];
+
+    for (const character of text) {
+      const code = character.charCodeAt(0);
+
+      if (code > 127) {
+        clearResults();
+
+        setMessage(
+          `الحرف "${character}" غير مدعوم في ASCII القياسي.`,
+          'error'
+        );
+
+        return;
+      }
+
+      codes.push(code);
+    }
+
+    output.value = codes.join(' ');
+
+    decimal.textContent = codes.join(' ');
+
+    hex.textContent = codes
+      .map(code =>
+        code
+          .toString(16)
+          .toUpperCase()
+          .padStart(2, '0')
+      )
+      .join(' ');
+
+    binary.textContent = codes
+      .map(code =>
+        code
+          .toString(2)
+          .padStart(8, '0')
+      )
+      .join(' ');
+
+    setMessage('تم التحويل بنجاح.', 'success');
+  }
+
+
+  function asciiToText() {
+    const value = input.value.trim();
+
+    if (!value) {
+      clearResults();
+      setMessage('أدخل أكواد ASCII أولًا.', 'error');
+      return;
+    }
+
+    const parts = value
+      .replace(/[,;]+/g, ' ')
+      .split(/\s+/)
+      .filter(Boolean);
+
+    const codes = [];
+
+    for (const part of parts) {
+
+      if (!/^\d+$/.test(part)) {
+        clearResults();
+
+        setMessage(
+          `"${part}" ليست قيمة ASCII صحيحة.`,
+          'error'
+        );
+
+        return;
+      }
+
+      const code = Number(part);
+
+      if (code < 0 || code > 127) {
+        clearResults();
+
+        setMessage(
+          `القيمة ${code} خارج نطاق ASCII (0–127).`,
+          'error'
+        );
+
+        return;
+      }
+
+      codes.push(code);
+    }
+
+    output.value = String.fromCharCode(...codes);
+
+    decimal.textContent = codes.join(' ');
+
+    hex.textContent = codes
+      .map(code =>
+        code
+          .toString(16)
+          .toUpperCase()
+          .padStart(2, '0')
+      )
+      .join(' ');
+
+    binary.textContent = codes
+      .map(code =>
+        code
+          .toString(2)
+          .padStart(8, '0')
+      )
+      .join(' ');
+
+    setMessage('تم التحويل بنجاح.', 'success');
+  }
+
+
+  function convert() {
+    if (mode === 'text') {
+      textToAscii();
+    } else {
+      asciiToText();
+    }
+  }
+
+
+  function setMode(newMode) {
+
+    mode = newMode;
+
+    textModeButton.classList.toggle(
+      'active',
+      mode === 'text'
+    );
+
+    asciiModeButton.classList.toggle(
+      'active',
+      mode === 'ascii'
+    );
+
+
+    if (mode === 'text') {
+
+      inputTitle.textContent = 'النص';
+
+      inputHelp.textContent =
+        'اكتب النص الذي تريد تحويله';
+
+      outputTitle.textContent = 'ASCII';
+
+      outputHelp.textContent =
+        'الأكواد الرقمية الناتجة';
+
+      input.placeholder =
+        'اكتب النص هنا...';
+
+      output.placeholder =
+        'مثال: 72 101 108 108 111';
+
+      convertLabel.textContent =
+        'تحويل إلى ASCII';
+
+      input.dir = 'auto';
+      output.dir = 'ltr';
+
+    } else {
+
+      inputTitle.textContent = 'ASCII';
+
+      inputHelp.textContent =
+        'أدخل الأكواد مفصولة بمسافات';
+
+      outputTitle.textContent = 'النص';
+
+      outputHelp.textContent =
+        'النص الناتج من الأكواد';
+
+      input.placeholder =
+        'مثال: 72 101 108 108 111';
+
+      output.placeholder =
+        'Hello';
+
+      convertLabel.textContent =
+        'تحويل إلى نص';
+
+      input.dir = 'ltr';
+      output.dir = 'auto';
+    }
+
+    input.value = '';
+    output.value = '';
+
+    updateCounter();
+    clearResults();
+  }
+
+
+  textModeButton.addEventListener(
+    'click',
+    () => setMode('text')
+  );
+
+
+  asciiModeButton.addEventListener(
+    'click',
+    () => setMode('ascii')
+  );
+
+
+  swapButton.addEventListener(
+    'click',
+    () => {
+      setMode(
+        mode === 'text'
+          ? 'ascii'
+          : 'text'
+      );
+    }
+  );
+
+
+  convertButton.addEventListener(
+    'click',
+    convert
+  );
+
+
+  input.addEventListener(
+    'input',
+    updateCounter
+  );
+
+
+  clearButton.addEventListener(
+    'click',
+    () => {
+      input.value = '';
+      output.value = '';
+
+      updateCounter();
+      clearResults();
+
+      input.focus();
+    }
+  );
+
+
+  pasteButton.addEventListener(
+    'click',
+    async () => {
+
+      try {
+
+        const text =
+          await navigator.clipboard.readText();
+
+        if (!text) {
+          setMessage(
+            'الحافظة فارغة.',
+            'error'
+          );
+          return;
+        }
+
+        input.value = text;
+
+        updateCounter();
+
+        input.focus();
+
+        setMessage(
+          'تم اللصق بنجاح.',
+          'success'
+        );
+
+      } catch {
+
+        setMessage(
+          'تعذر الوصول إلى الحافظة.',
+          'error'
+        );
+      }
+    }
+  );
+
+
+  copyButton.addEventListener(
+    'click',
+    async () => {
+
+      if (!output.value) {
+        setMessage(
+          'لا توجد نتيجة لنسخها.',
+          'error'
+        );
+        return;
+      }
+
+      try {
+
+        await navigator.clipboard.writeText(
+          output.value
+        );
+
+        copyButton.innerHTML =
+          '<i class="fa-solid fa-check"></i> تم النسخ';
 
         setTimeout(() => {
-          status.className = 'status';
-        }, 2500);
-      }
+          copyButton.innerHTML =
+            '<i class="fa-regular fa-copy"></i> نسخ';
+        }, 1500);
 
-      function updateCount() {
-        const value = inputText.value;
-        charCount.textContent = `${value.length} ${
-          value.length === 1 ? 'حرف' : 'أحرف'
-        }`;
-      }
-
-      function resetFormats() {
-        decimalOutput.textContent = '—';
-        hexOutput.textContent = '—';
-        binaryOutput.textContent = '—';
-      }
-
-      function textToAscii(text) {
-        const values = [];
-
-        for (const char of text) {
-          const code = char.charCodeAt(0);
-
-          if (code > 127) {
-            return {
-              error: `الحرف "${char}" غير مدعوم في ASCII القياسي. استخدم أحرفًا من 0 إلى 127.`,
-            };
-          }
-
-          values.push(code);
-        }
-
-        return { values };
-      }
-
-      function asciiToText(value) {
-        const cleaned = value
-          .trim()
-          .replace(/[,;]+/g, ' ')
-          .replace(/\s+/g, ' ');
-
-        if (!cleaned) {
-          return { text: '', values: [] };
-        }
-
-        const tokens = cleaned.split(' ');
-        const values = [];
-
-        for (const token of tokens) {
-          if (!/^\d+$/.test(token)) {
-            return {
-              error: `القيمة "${token}" ليست رقم ASCII صالحًا.`,
-            };
-          }
-
-          const number = Number(token);
-
-          if (number < 0 || number > 127) {
-            return {
-              error: `القيمة ${number} خارج نطاق ASCII القياسي (0–127).`,
-            };
-          }
-
-          values.push(number);
-        }
-
-        return {
-          text: String.fromCharCode(...values),
-          values,
-        };
-      }
-
-      function updateFormats(values) {
-        if (!values.length) {
-          resetFormats();
-          return;
-        }
-
-        decimalOutput.textContent = values.join(' ');
-
-        hexOutput.textContent = values
-          .map((value) => value.toString(16).toUpperCase().padStart(2, '0'))
-          .join(' ');
-
-        binaryOutput.textContent = values
-          .map((value) => value.toString(2).padStart(8, '0'))
-          .join(' ');
-      }
-
-      function convert() {
-        const value = inputText.value;
-
-        if (!value.trim()) {
-          outputText.value = '';
-          resetFormats();
-          showStatus('أدخل قيمة أولًا.', 'error');
-          return;
-        }
-
-        if (currentMode === 'text-to-ascii') {
-          const result = textToAscii(value);
-
-          if (result.error) {
-            outputText.value = '';
-            resetFormats();
-            showStatus(result.error, 'error');
-            return;
-          }
-
-          outputText.value = result.values.join(' ');
-          updateFormats(result.values);
-          showStatus('تم تحويل النص إلى ASCII بنجاح.');
-        } else {
-          const result = asciiToText(value);
-
-          if (result.error) {
-            outputText.value = '';
-            resetFormats();
-            showStatus(result.error, 'error');
-            return;
-          }
-
-          outputText.value = result.text;
-          updateFormats(result.values);
-          showStatus('تم تحويل ASCII إلى نص بنجاح.');
-        }
-      }
-
-      function setMode(mode) {
-        currentMode = mode;
-
-        modeButtons.forEach((button) => {
-          button.classList.toggle(
-            'active',
-            button.dataset.mode === currentMode
-          );
-        });
-
-        if (currentMode === 'text-to-ascii') {
-          inputTitle.textContent = 'النص';
-          inputDescription.textContent =
-            'أدخل النص الذي تريد تحويله إلى ASCII';
-
-          outputTitle.textContent = 'ASCII';
-          outputDescription.textContent =
-            'الأكواد الرقمية الناتجة عن النص';
-
-          inputText.placeholder = 'اكتب النص هنا...';
-          outputText.placeholder = 'مثال: 72 101 108 108 111';
-
-          convertText.textContent = 'تحويل إلى ASCII';
-
-          inputText.dir = 'auto';
-          outputText.dir = 'ltr';
-        } else {
-          inputTitle.textContent = 'ASCII';
-          inputDescription.textContent =
-            'أدخل أكواد ASCII مفصولة بمسافات';
-
-          outputTitle.textContent = 'النص';
-          outputDescription.textContent =
-            'النص الناتج من أكواد ASCII';
-
-          inputText.placeholder = 'مثال: 72 101 108 108 111';
-          outputText.placeholder = 'Hello';
-
-          convertText.textContent = 'تحويل إلى نص';
-
-          inputText.dir = 'ltr';
-          outputText.dir = 'auto';
-        }
-
-        inputText.value = '';
-        outputText.value = '';
-        updateCount();
-        resetFormats();
-        status.className = 'status';
-      }
-
-      modeButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-          setMode(button.dataset.mode);
-        });
-      });
-
-      convertBtn.addEventListener('click', convert);
-
-      inputText.addEventListener('input', updateCount);
-
-      inputText.addEventListener('keydown', (event) => {
-        if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
-          convert();
-        }
-      });
-
-      clearBtn.addEventListener('click', () => {
-        inputText.value = '';
-        outputText.value = '';
-        updateCount();
-        resetFormats();
-        status.className = 'status';
-        inputText.focus();
-      });
-
-      pasteBtn.addEventListener('click', async () => {
-        try {
-          const text = await navigator.clipboard.readText();
-
-          if (!text) {
-            showStatus('الحافظة فارغة.', 'error');
-            return;
-          }
-
-          inputText.value = text;
-          updateCount();
-          inputText.focus();
-          showStatus('تم لصق النص بنجاح.');
-        } catch {
-          showStatus('تعذر الوصول إلى الحافظة.', 'error');
-        }
-      });
-
-      copyBtn.addEventListener('click', async () => {
-        const value = outputText.value;
-
-        if (!value) {
-          showStatus('لا توجد نتيجة لنسخها.', 'error');
-          return;
-        }
-
-        try {
-          await navigator.clipboard.writeText(value);
-
-          copyBtn.innerHTML =
-            '<i class="fa-solid fa-check"></i> تم النسخ';
-
-          setTimeout(() => {
-            copyBtn.innerHTML =
-              '<i class="fa-regular fa-copy"></i> نسخ';
-          }, 1800);
-
-          showStatus('تم نسخ النتيجة.');
-        } catch {
-          outputText.select();
-          document.execCommand('copy');
-          showStatus('تم نسخ النتيجة.');
-        }
-      });
-
-      swapBtn.addEventListener('click', () => {
-        setMode(
-          currentMode === 'text-to-ascii'
-            ? 'ascii-to-text'
-            : 'text-to-ascii'
-        );
-      });
-
-      /* -------------------------
-         Theme synchronization
-      ------------------------- */
-
-      function getThemeState() {
-        const html = document.documentElement;
-        const body = document.body;
-
-        const storedTheme = localStorage.getItem('theme');
-
-        if (
-          storedTheme === 'light' ||
-          html.dataset.theme === 'light' ||
-          body.dataset.theme === 'light' ||
-          html.classList.contains('light') ||
-          body.classList.contains('light') ||
-          html.classList.contains('light-theme') ||
-          body.classList.contains('light-theme')
-        ) {
-          return 'light';
-        }
-
-        if (
-          storedTheme === 'dark' ||
-          html.dataset.theme === 'dark' ||
-          body.dataset.theme === 'dark' ||
-          html.classList.contains('dark') ||
-          body.classList.contains('dark') ||
-          html.classList.contains('dark-theme') ||
-          body.classList.contains('dark-theme')
-        ) {
-          return 'dark';
-        }
-
-        return 'dark';
-      }
-
-      function syncTheme() {
-        const theme = getThemeState();
-
-        document.body.classList.remove(
-          'ascii-light-theme',
-          'ascii-dark-theme'
+        setMessage(
+          'تم نسخ النتيجة.',
+          'success'
         );
 
-        document.body.classList.add(
-          theme === 'light'
-            ? 'ascii-light-theme'
-            : 'ascii-dark-theme'
+      } catch {
+
+        output.select();
+
+        document.execCommand('copy');
+
+        setMessage(
+          'تم نسخ النتيجة.',
+          'success'
         );
       }
+    }
+  );
+
 
-      syncTheme();
+  input.addEventListener(
+    'keydown',
+    event => {
+
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        event.key === 'Enter'
+      ) {
+        convert();
+      }
+    }
+  );
 
-      const themeObserver = new MutationObserver(() => {
-        syncTheme();
-      });
+
+  /* Theme */
 
-      themeObserver.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['class', 'data-theme'],
-      });
+  function syncTheme() {
 
-      themeObserver.observe(document.body, {
-        attributes: true,
-        attributeFilter: ['class', 'data-theme'],
-      });
+    const html = document.documentElement;
+    const body = document.body;
 
-      window.addEventListener('storage', syncTheme);
+    const saved =
+      localStorage.getItem('theme');
 
-      updateCount();
-    </script>
+    const light =
+      saved === 'light' ||
+      html.dataset.theme === 'light' ||
+      body.dataset.theme === 'light' ||
+      html.classList.contains('light') ||
+      body.classList.contains('light') ||
+      html.classList.contains('light-theme') ||
+      body.classList.contains('light-theme');
 
-    <style>
-      :global(*) {
-        box-sizing: border-box;
-      }
+    body.classList.toggle(
+      'ascii-light',
+      light
+    );
 
-      :global(html) {
-        scroll-behavior: smooth;
-      }
+    body.classList.toggle(
+      'ascii-dark',
+      !light
+    );
+  }
 
-      :global(body) {
-        margin: 0;
-        font-family: 'Cairo', sans-serif;
-        transition:
-          background-color 0.3s ease,
-          color 0.3s ease;
-      }
 
-      :global(body.ascii-dark-theme) {
-        background: #07111f;
-        color: #eaf2ff;
-      }
+  syncTheme();
 
-      :global(body.ascii-light-theme) {
-        background: #f4f8fc;
-        color: #172033;
-      }
 
-      .ascii-page {
-        width: min(1100px, calc(100% - 28px));
-        margin: 0 auto;
-        padding: 42px 0 70px;
-      }
+  const observer =
+    new MutationObserver(syncTheme);
 
-      .hero {
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 22px;
-        padding: 34px;
-        margin-bottom: 25px;
-        border: 1px solid rgba(96, 165, 250, 0.22);
-        border-radius: 24px;
-        overflow: hidden;
-        background:
-          radial-gradient(
-            circle at 85% 20%,
-            rgba(56, 189, 248, 0.14),
-            transparent 34%
-          ),
-          linear-gradient(
-            135deg,
-            rgba(30, 64, 175, 0.18),
-            rgba(14, 165, 233, 0.06)
-          );
-      }
+  observer.observe(
+    document.documentElement,
+    {
+      attributes: true,
+      attributeFilter: [
+        'class',
+        'data-theme'
+      ]
+    }
+  );
 
-      .hero::after {
-        content: '';
-        position: absolute;
-        width: 180px;
-        height: 180px;
-        left: -70px;
-        bottom: -100px;
-        border-radius: 50%;
-        background: rgba(56, 189, 248, 0.1);
-        filter: blur(15px);
-      }
+  observer.observe(
+    document.body,
+    {
+      attributes: true,
+      attributeFilter: [
+        'class',
+        'data-theme'
+      ]
+    }
+  );
 
-      .hero-icon {
-        flex: 0 0 78px;
-        width: 78px;
-        height: 78px;
-        display: grid;
-        place-items: center;
-        border-radius: 21px;
-        font-size: 31px;
-        color: #fff;
-        background: linear-gradient(135deg, #2563eb, #06b6d4);
-        box-shadow: 0 14px 35px rgba(37, 99, 235, 0.28);
-      }
+  window.addEventListener(
+    'storage',
+    syncTheme
+  );
+</script>
 
-      .hero-content {
-        position: relative;
-        z-index: 1;
-      }
 
-      .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        margin-bottom: 7px;
-        color: #38bdf8;
-        font-size: 13px;
-        font-weight: 700;
-      }
+<style>
 
-      .hero h1 {
-        margin: 0;
-        font-size: clamp(27px, 5vw, 42px);
-        line-height: 1.2;
-        font-weight: 800;
-        letter-spacing: -0.7px;
-      }
+  :global(*) {
+    box-sizing: border-box;
+  }
 
-      .hero p {
-        margin: 9px 0 0;
-        color: #91a4bd;
-        font-size: 15px;
-        line-height: 1.8;
-      }
+  :global(body) {
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    transition:
+      background .3s ease,
+      color .3s ease;
+  }
 
-      .ascii-light-theme .hero p {
-        color: #5d6c80;
-      }
 
-      .converter-card {
-        padding: 25px;
-        border-radius: 24px;
-        border: 1px solid rgba(148, 163, 184, 0.16);
-        background: rgba(10, 24, 42, 0.82);
-        box-shadow: 0 20px 55px rgba(0, 0, 0, 0.18);
-        backdrop-filter: blur(15px);
-      }
+  /* =========================
+     DARK THEME
+  ========================= */
 
-      .ascii-light-theme .converter-card {
-        background: #fff;
-        border-color: #dbe5ef;
-        box-shadow: 0 18px 45px rgba(31, 55, 82, 0.08);
-      }
+  :global(body.ascii-dark) {
+    background: #07111f;
+    color: #e8f1fb;
+  }
 
-      .mode-switch {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-bottom: 27px;
-        padding: 6px;
-        border-radius: 15px;
-        background: rgba(15, 35, 58, 0.8);
-      }
 
-      .ascii-light-theme .mode-switch {
-        background: #edf4fa;
-      }
+  /* =========================
+     LIGHT THEME
+  ========================= */
 
-      .mode-btn {
-        min-height: 48px;
-        border: 0;
-        border-radius: 11px;
-        background: transparent;
-        color: #8fa2ba;
-        font-family: inherit;
-        font-size: 14px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: 0.25s ease;
-      }
+  :global(body.ascii-light) {
+    background: #f4f8fc;
+    color: #172033;
+  }
 
-      .mode-btn:hover {
-        color: #dcecff;
-      }
 
-      .mode-btn.active {
-        color: #fff;
-        background: linear-gradient(135deg, #2563eb, #0891b2);
-        box-shadow: 0 7px 18px rgba(37, 99, 235, 0.24);
-      }
+  .ascii-tool {
+    width: min(1080px, calc(100% - 28px));
+    margin: auto;
+    padding: 42px 0 70px;
+  }
 
-      .ascii-light-theme .mode-btn {
-        color: #607087;
-      }
 
-      .ascii-light-theme .mode-btn:hover {
-        color: #1e3a5f;
-      }
+  /* HERO */
 
-      .ascii-light-theme .mode-btn.active {
-        color: #fff;
-      }
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 
-      .mode-btn i {
-        margin-left: 7px;
-      }
+    padding: 30px;
 
-      .section-heading {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 15px;
-        margin-bottom: 11px;
-      }
+    margin-bottom: 22px;
 
-      .section-heading h2 {
-        margin: 0;
-        font-size: 18px;
-        font-weight: 800;
-      }
+    border-radius: 22px;
 
-      .section-heading p {
-        margin: 3px 0 0;
-        color: #8296ae;
-        font-size: 12px;
-      }
+    border: 1px solid rgba(56,189,248,.18);
 
-      .ascii-light-theme .section-heading p {
-        color: #708096;
-      }
+    background:
+      radial-gradient(
+        circle at 90% 20%,
+        rgba(14,165,233,.14),
+        transparent 35%
+      ),
+      linear-gradient(
+        135deg,
+        rgba(37,99,235,.16),
+        rgba(8,145,178,.06)
+      );
+  }
 
-      .char-count {
-        padding: 5px 10px;
-        border-radius: 8px;
-        color: #65c9f6;
-        background: rgba(56, 189, 248, 0.09);
-        font-size: 11px;
-        white-space: nowrap;
-      }
 
-      textarea {
-        width: 100%;
-        min-height: 165px;
-        padding: 17px;
-        resize: vertical;
-        border: 1px solid #263d58;
-        border-radius: 15px;
-        outline: none;
-        background: #071524;
-        color: #e8f1fb;
-        font-family: 'Cairo', sans-serif;
-        font-size: 15px;
-        line-height: 1.8;
-        transition: 0.25s ease;
-      }
+  .hero-icon {
+    width: 72px;
+    height: 72px;
 
-      textarea:focus {
-        border-color: #2496e8;
-        box-shadow: 0 0 0 3px rgba(36, 150, 232, 0.1);
-      }
+    flex: 0 0 72px;
 
-      #outputText {
-        direction: ltr;
-        text-align: left;
-        font-family: Consolas, 'Courier New', monospace;
-      }
+    display: grid;
+    place-items: center;
 
-      .ascii-light-theme textarea {
-        border-color: #d6e0eb;
-        background: #f8fbfe;
-        color: #172033;
-      }
+    border-radius: 19px;
 
-      .ascii-light-theme textarea:focus {
-        border-color: #2496e8;
-      }
+    color: white;
 
-      textarea::placeholder {
-        color: #566b82;
-      }
+    font-size: 28px;
 
-      .ascii-light-theme textarea::placeholder {
-        color: #91a0b1;
-      }
+    background:
+      linear-gradient(
+        135deg,
+        #2563eb,
+        #0891b2
+      );
 
-      .input-actions {
-        display: flex;
-        justify-content: flex-start;
-        gap: 9px;
-        margin-top: 10px;
-      }
+    box-shadow:
+      0 12px 30px rgba(37,99,235,.25);
+  }
 
-      .action-btn,
-      .copy-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 7px;
-        min-height: 40px;
-        padding: 0 15px;
-        border: 0;
-        border-radius: 10px;
-        font-family: inherit;
-        font-size: 12px;
-        font-weight: 700;
-        cursor: pointer;
-        transition: 0.22s ease;
-      }
 
-      .action-btn.secondary {
-        color: #9fc4e5;
-        background: #10263e;
-      }
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
 
-      .ascii-light-theme .action-btn.secondary {
-        color: #315b82;
-        background: #e8f1f8;
-      }
+    color: #38bdf8;
 
-      .action-btn.danger {
-        color: #f7a5ad;
-        background: rgba(239, 68, 68, 0.09);
-      }
+    font-size: 12px;
+    font-weight: 700;
+  }
 
-      .action-btn:hover,
-      .copy-btn:hover {
-        transform: translateY(-1px);
-      }
 
-      .convert-area {
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
-        margin: 25px 0;
-      }
+  .hero h1 {
+    margin: 5px 0 5px;
 
-      .convert-btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 9px;
-        min-height: 49px;
-        padding: 0 27px;
-        border: 0;
-        border-radius: 13px;
-        color: #fff;
-        background: linear-gradient(135deg, #2563eb, #0891b2);
-        font-family: inherit;
-        font-size: 14px;
-        font-weight: 800;
-        cursor: pointer;
-        box-shadow: 0 10px 24px rgba(37, 99, 235, 0.2);
-        transition: 0.25s ease;
-      }
+    font-size: clamp(26px,5vw,40px);
 
-      .convert-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 14px 28px rgba(37, 99, 235, 0.3);
-      }
+    line-height: 1.2;
 
-      .swap-btn {
-        width: 49px;
-        height: 49px;
-        border: 1px solid #2b435e;
-        border-radius: 13px;
-        color: #76bde5;
-        background: #0d2136;
-        cursor: pointer;
-        transition: 0.25s ease;
-      }
+    font-weight: 800;
+  }
 
-      .swap-btn:hover {
-        color: #fff;
-        border-color: #2496e8;
-        transform: rotate(180deg);
-      }
 
-      .ascii-light-theme .swap-btn {
-        border-color: #d2dfeb;
-        color: #2570a5;
-        background: #f0f6fb;
-      }
+  .hero p {
+    margin: 0;
 
-      .copy-btn {
-        min-height: 37px;
-        color: #69c7f3;
-        background: rgba(56, 189, 248, 0.1);
-      }
+    color: #91a4b9;
 
-      .formats {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 11px;
-        margin-top: 18px;
-      }
+    font-size: 14px;
+  }
 
-      .format-card {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        min-width: 0;
-        padding: 14px;
-        border: 1px solid rgba(100, 140, 175, 0.14);
-        border-radius: 14px;
-        background: rgba(17, 39, 63, 0.5);
-      }
 
-      .ascii-light-theme .format-card {
-        border-color: #e0e8f0;
-        background: #f7fafc;
-      }
+  body.ascii-light .hero p {
+    color: #64748b;
+  }
 
-      .format-icon {
-        flex: 0 0 38px;
-        width: 38px;
-        height: 38px;
-        display: grid;
-        place-items: center;
-        border-radius: 10px;
-        font-size: 13px;
-        color: #fff;
-      }
 
-      .format-icon.decimal {
-        background: linear-gradient(135deg, #2563eb, #3b82f6);
-      }
+  /* TOOL CARD */
 
-      .format-icon.hex {
-        background: linear-gradient(135deg, #0891b2, #06b6d4);
-      }
+  .tool-card {
+    padding: 24px;
 
-      .format-icon.binary {
-        background: linear-gradient(135deg, #7c3aed, #a855f7);
-      }
+    border-radius: 22px;
 
-      .format-card span {
-        display: block;
-        margin-bottom: 3px;
-        color: #7f94ab;
-        font-size: 10px;
-      }
+    border: 1px solid rgba(148,163,184,.15);
 
-      .ascii-light-theme .format-card span {
-        color: #77879a;
-      }
+    background: #0b1b2d;
 
-      .format-card strong {
-        display: block;
-        overflow: hidden;
-        color: #dcecff;
-        font-family: Consolas, 'Courier New', monospace;
-        font-size: 12px;
-        font-weight: 600;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        direction: ltr;
-        text-align: left;
-      }
+    box-shadow:
+      0 20px 50px rgba(0,0,0,.16);
+  }
 
-      .ascii-light-theme .format-card strong {
-        color: #263d58;
-      }
 
-      .status {
-        min-height: 0;
-        margin-top: 13px;
-        text-align: center;
-        font-size: 12px;
-        opacity: 0;
-        transform: translateY(-4px);
-        transition: 0.25s ease;
-      }
+  body.ascii-light .tool-card {
+    background: white;
 
-      .status.show {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    border-color: #dce6ef;
 
-      .status.success {
-        color: #4ade80;
-      }
+    box-shadow:
+      0 18px 45px rgba(31,55,82,.08);
+  }
 
-      .status.error {
-        color: #fb7185;
-      }
 
-      .info-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 13px;
-        margin-top: 20px;
-      }
+  /* MODE */
 
-      .info-card {
-        display: flex;
-        gap: 13px;
-        padding: 19px;
-        border: 1px solid rgba(148, 163, 184, 0.14);
-        border-radius: 17px;
-        background: rgba(11, 28, 47, 0.7);
-      }
+  .mode-tabs {
+    display: grid;
 
-      .ascii-light-theme .info-card {
-        border-color: #dfe8f0;
-        background: #fff;
-      }
+    grid-template-columns: 1fr 1fr;
 
-      .info-icon {
-        flex: 0 0 39px;
-        width: 39px;
-        height: 39px;
-        display: grid;
-        place-items: center;
-        border-radius: 10px;
-        color: #50c5f5;
-        background: rgba(56, 189, 248, 0.1);
-      }
+    gap: 8px;
 
-      .info-card h3 {
-        margin: 0 0 5px;
-        font-size: 13px;
-      }
+    padding: 5px;
 
-      .info-card p {
-        margin: 0;
-        color: #8094ab;
-        font-size: 11px;
-        line-height: 1.8;
-      }
+    margin-bottom: 25px;
 
-      .ascii-light-theme .info-card p {
-        color: #68788d;
-      }
+    border-radius: 13px;
 
-      @media (max-width: 800px) {
-        .info-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .formats {
-          grid-template-columns: 1fr;
-        }
-
-        .format-card strong {
-          white-space: normal;
-          word-break: break-all;
-        }
-      }
+    background: #071524;
+  }
 
-      @media (max-width: 600px) {
-        .ascii-page {
-          width: min(100% - 18px, 1100px);
-          padding-top: 25px;
-        }
-
-        .hero {
-          padding: 24px 19px;
-          border-radius: 20px;
-          gap: 15px;
-        }
-
-        .hero-icon {
-          flex-basis: 58px;
-          width: 58px;
-          height: 58px;
-          border-radius: 16px;
-          font-size: 23px;
-        }
-
-        .hero h1 {
-          font-size: 25px;
-        }
-
-        .hero p {
-          font-size: 12px;
-        }
-
-        .converter-card {
-          padding: 17px;
-          border-radius: 19px;
-        }
-
-        .mode-btn {
-          min-height: 45px;
-          font-size: 11px;
-        }
-
-        .mode-btn i {
-          margin-left: 4px;
-        }
-
-        textarea {
-          min-height: 145px;
-          padding: 14px;
-          font-size: 13px;
-        }
-
-        .section-heading h2 {
-          font-size: 16px;
-        }
-
-        .section-heading p {
-          font-size: 10px;
-        }
-
-        .convert-area {
-          margin: 21px 0;
-        }
-
-        .convert-btn {
-          flex: 1;
-          min-height: 47px;
-          padding: 0 12px;
-          font-size: 12px;
-        }
-
-        .swap-btn {
-          flex: 0 0 47px;
-        }
-
-        .info-card {
-          padding: 16px;
-        }
-      }
 
-      @media (max-width: 390px) {
-        .hero {
-          align-items: flex-start;
-        }
-
-        .hero-icon {
-          flex-basis: 52px;
-          width: 52px;
-          height: 52px;
-        }
-
-        .mode-switch {
-          gap: 5px;
-        }
-
-        .mode-btn span {
-          font-size: 10px;
-        }
-
-        .action-btn,
-        .copy-btn {
-          padding: 0 11px;
-          font-size: 11px;
-        }
-      }
-    </style>
+  body.ascii-light .mode-tabs {
+    background: #edf4f9;
+  }
+
+
+  .mode {
+    min-height: 46px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    color: #8195aa;
+
+    background: transparent;
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s;
+  }
+
+
+  .mode.active {
+    color: white;
+
+    background:
+      linear-gradient(
+        135deg,
+        #2563eb,
+        #0891b2
+      );
+
+    box-shadow:
+      0 7px 18px rgba(37,99,235,.22);
+  }
+
+
+  body.ascii-light .mode {
+    color: #64748b;
+  }
+
+
+  body.ascii-light .mode.active {
+    color: white;
+  }
+
+
+  /* PANELS */
+
+  .panel-header {
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 12px;
+
+    margin-bottom: 9px;
+  }
+
+
+  .panel-header h2 {
+    margin: 0;
+
+    font-size: 17px;
+
+    font-weight: 800;
+  }
+
+
+  .panel-header p {
+    margin: 2px 0 0;
+
+    color: #8195aa;
+
+    font-size: 11px;
+  }
+
+
+  body.ascii-light .panel-header p {
+    color: #718096;
+  }
+
+
+  .counter {
+    padding: 4px 9px;
+
+    border-radius: 7px;
+
+    color: #5cc7f4;
+
+    background: rgba(56,189,248,.09);
+
+    font-size: 10px;
+  }
+
+
+  textarea {
+    width: 100%;
+
+    min-height: 165px;
+
+    display: block;
+
+    padding: 16px;
+
+    resize: vertical;
+
+    border: 1px solid #29415b;
+
+    border-radius: 14px;
+
+    outline: none;
+
+    background: #071524;
+
+    color: #e9f3ff;
+
+    font-family:
+      'Cairo',
+      sans-serif;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+
+    transition: .2s;
+  }
+
+
+  body.ascii-light textarea {
+    border-color: #d5e0ea;
+
+    background: #f8fbfd;
+
+    color: #172033;
+  }
+
+
+  textarea:focus {
+    border-color: #2196e0;
+
+    box-shadow:
+      0 0 0 3px rgba(33,150,224,.1);
+  }
+
+
+  #output {
+    direction: ltr;
+
+    text-align: left;
+
+    font-family:
+      Consolas,
+      'Courier New',
+      monospace;
+  }
+
+
+  /* BUTTONS */
+
+  .buttons {
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 9px;
+  }
+
+
+  .small-btn,
+  .copy {
+    min-height: 38px;
+
+    padding: 0 14px;
+
+    border: 0;
+
+    border-radius: 9px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 7px;
+
+    color: #a7c8e3;
+
+    background: #10273f;
+
+    font-family: inherit;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s;
+  }
+
+
+  body.ascii-light .small-btn {
+    color: #315a7e;
+
+    background: #eaf2f8;
+  }
+
+
+  .small-btn.danger {
+    color: #fb8d9b;
+
+    background: rgba(239,68,68,.08);
+  }
+
+
+  .copy {
+    color: #57c4f2;
+
+    background: rgba(56,189,248,.1);
+  }
+
+
+  .small-btn:hover,
+  .copy:hover {
+    transform: translateY(-1px);
+  }
+
+
+  /* CONVERT */
+
+  .convert-row {
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 9px;
+
+    margin: 23px 0;
+  }
+
+
+  .convert {
+    min-height: 48px;
+
+    padding: 0 25px;
+
+    border: 0;
+
+    border-radius: 12px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    color: white;
+
+    background:
+      linear-gradient(
+        135deg,
+        #2563eb,
+        #0891b2
+      );
+
+    font-family: inherit;
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+      0 9px 22px rgba(37,99,235,.2);
+
+    transition: .2s;
+  }
+
+
+  .convert:hover {
+    transform: translateY(-2px);
+  }
+
+
+  .swap {
+    width: 48px;
+    height: 48px;
+
+    border: 1px solid #2a435d;
+
+    border-radius: 12px;
+
+    color: #62bce9;
+
+    background: #0d2136;
+
+    cursor: pointer;
+
+    transition: .25s;
+  }
+
+
+  .swap:hover {
+    transform: rotate(180deg);
+
+    border-color: #2196e0;
+  }
+
+
+  body.ascii-light .swap {
+    border-color: #d2dfe9;
+
+    background: #f0f6fa;
+
+    color: #2571a4;
+  }
+
+
+  /* REPRESENTATIONS */
+
+  .representations {
+    display: grid;
+
+    grid-template-columns:
+      repeat(3,1fr);
+
+    gap: 10px;
+
+    margin-top: 17px;
+  }
+
+
+  .representation {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    min-width: 0;
+
+    padding: 13px;
+
+    border-radius: 13px;
+
+    border: 1px solid rgba(148,163,184,.12);
+
+    background: rgba(16,39,63,.5);
+  }
+
+
+  body.ascii-light .representation {
+    border-color: #e1e9f0;
+
+    background: #f8fafc;
+  }
+
+
+  .representation-icon {
+    width: 37px;
+    height: 37px;
+
+    flex: 0 0 37px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 9px;
+
+    color: white;
+
+    background:
+      linear-gradient(
+        135deg,
+        #2563eb,
+        #0891b2
+      );
+  }
+
+
+  .representation span {
+    display: block;
+
+    color: #8094aa;
+
+    font-size: 9px;
+  }
+
+
+  .representation strong {
+    display: block;
+
+    margin-top: 2px;
+
+    max-width: 100%;
+
+    overflow: hidden;
+
+    direction: ltr;
+
+    text-align: left;
+
+    color: #dcecff;
+
+    font-family:
+      Consolas,
+      monospace;
+
+    font-size: 11px;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+  }
+
+
+  body.ascii-light .representation strong {
+    color: #263d58;
+  }
+
+
+  /* MESSAGE */
+
+  .message {
+    min-height: 20px;
+
+    margin-top: 12px;
+
+    text-align: center;
+
+    font-size: 11px;
+
+    opacity: 0;
+  }
+
+
+  .message.visible {
+    opacity: 1;
+  }
+
+
+  .message.success {
+    color: #4ade80;
+  }
+
+
+  .message.error {
+    color: #fb7185;
+  }
+
+
+  /* INFORMATION */
+
+  .information {
+    display: grid;
+
+    grid-template-columns:
+      repeat(3,1fr);
+
+    gap: 12px;
+
+    margin-top: 18px;
+  }
+
+
+  .information article {
+    display: flex;
+
+    gap: 11px;
+
+    padding: 17px;
+
+    border-radius: 15px;
+
+    border: 1px solid rgba(148,163,184,.13);
+
+    background: #0b1b2d;
+  }
+
+
+  body.ascii-light .information article {
+    background: white;
+
+    border-color: #dfe7ef;
+  }
+
+
+  .info-icon {
+    width: 38px;
+    height: 38px;
+
+    flex: 0 0 38px;
+
+    display: grid;
+
+    place-items: center;
+
+    border-radius: 10px;
+
+    color: #4fc5f2;
+
+    background: rgba(56,189,248,.1);
+  }
+
+
+  .information h3 {
+    margin: 0 0 4px;
+
+    font-size: 12px;
+  }
+
+
+  .information p {
+    margin: 0;
+
+    color: #7f93a9;
+
+    font-size: 10px;
+
+    line-height: 1.8;
+  }
+
+
+  body.ascii-light .information p {
+    color: #697a8e;
+  }
+
+
+  /* MOBILE */
+
+  @media (max-width: 760px) {
+
+    .representations,
+    .information {
+      grid-template-columns: 1fr;
+    }
+
+  }
+
+
+  @media (max-width: 560px) {
+
+    .ascii-tool {
+      width: calc(100% - 18px);
+
+      padding-top: 25px;
+    }
+
+
+    .hero {
+      padding: 22px 18px;
+
+      border-radius: 18px;
+
+      gap: 13px;
+    }
+
+
+    .hero-icon {
+      width: 56px;
+      height: 56px;
+
+      flex-basis: 56px;
+
+      border-radius: 15px;
+
+      font-size: 22px;
+    }
+
+
+    .hero h1 {
+      font-size: 24px;
+    }
+
+
+    .hero p {
+      font-size: 11px;
+    }
+
+
+    .tool-card {
+      padding: 16px;
+
+      border-radius: 18px;
+    }
+
+
+    .mode {
+      min-height: 43px;
+
+      font-size: 11px;
+    }
+
+
+    textarea {
+      min-height: 145px;
+
+      padding: 13px;
+
+      font-size: 13px;
+    }
+
+
+    .convert {
+      flex: 1;
+
+      padding: 0 10px;
+
+      font-size: 11px;
+    }
+
+
+    .swap {
+      flex: 0 0 47px;
+    }
+
+
+    .representation {
+      padding: 12px;
+    }
+
+  }
+
+</style>
+
   </body>
 </html>
