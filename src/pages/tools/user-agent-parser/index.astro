@@ -1,0 +1,1788 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const canonical = `https://oumaystore-hub.github.io${base}/tools/user-agent-parser/`;
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>User Agent Parser | محلل User Agent | Th.Tech</title>
+
+    <meta
+      name="description"
+      content="أداة مجانية لتحليل User Agent واستخراج المتصفح ونظام التشغيل والجهاز والمنصة ونوع الجهاز من User-Agent."
+    />
+
+    <link rel="canonical" href={canonical} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+
+  <body class="ua-dark">
+    <Header />
+
+    <main class="ua-page">
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-icon">
+          <i class="fa-solid fa-fingerprint"></i>
+        </div>
+
+        <span class="badge">
+          <i class="fa-solid fa-code"></i>
+          أداة المطورين 110
+        </span>
+
+        <h1>User Agent Parser</h1>
+
+        <p>
+          حلّل User-Agent بسرعة واكتشف المتصفح ونظام التشغيل والجهاز
+          والمنصة ونوع الجهاز دون الحاجة إلى مكتبات خارجية.
+        </p>
+      </section>
+
+      <!-- TOOL -->
+      <section class="tool-card">
+
+        <div class="section-title">
+          <div class="title-icon">
+            <i class="fa-solid fa-fingerprint"></i>
+          </div>
+
+          <div>
+            <h2>تحليل User Agent</h2>
+            <p>أدخل User-Agent الذي تريد تحليله</p>
+          </div>
+        </div>
+
+        <div class="input-box">
+          <textarea
+            id="uaInput"
+            maxlength="10000"
+            spellcheck="false"
+            placeholder="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120.0.0.0 Safari/537.36"
+          ></textarea>
+
+          <div class="input-actions">
+            <button id="parseBtn" class="primary-btn">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              تحليل
+            </button>
+
+            <button id="pasteBtn" class="secondary-btn">
+              <i class="fa-regular fa-clipboard"></i>
+              لصق
+            </button>
+
+            <button id="currentBtn" class="secondary-btn">
+              <i class="fa-solid fa-desktop"></i>
+              جهازي
+            </button>
+
+            <button id="sampleBtn" class="secondary-btn">
+              <i class="fa-solid fa-flask"></i>
+              مثال
+            </button>
+
+            <button id="clearBtn" class="danger-btn">
+              <i class="fa-solid fa-trash"></i>
+              مسح
+            </button>
+          </div>
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="summary-grid">
+
+          <div class="summary-card">
+            <div class="summary-icon browser-icon">
+              <i class="fa-solid fa-globe"></i>
+            </div>
+
+            <div>
+              <span>المتصفح</span>
+              <strong id="browserName">—</strong>
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <div class="summary-icon os-icon">
+              <i class="fa-solid fa-laptop"></i>
+            </div>
+
+            <div>
+              <span>نظام التشغيل</span>
+              <strong id="osName">—</strong>
+            </div>
+          </div>
+
+          <div class="summary-card">
+            <div class="summary-icon device-icon">
+              <i class="fa-solid fa-mobile-screen"></i>
+            </div>
+
+            <div>
+              <span>الجهاز</span>
+              <strong id="deviceName">—</strong>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- DETAILS -->
+        <div class="details-grid">
+
+          <div class="detail-card">
+            <div class="detail-title">
+              <i class="fa-solid fa-window-maximize"></i>
+              المتصفح
+            </div>
+
+            <div class="detail-value" id="browserValue">—</div>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-title">
+              <i class="fa-solid fa-code-branch"></i>
+              إصدار المتصفح
+            </div>
+
+            <div class="detail-value" id="browserVersion">—</div>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-title">
+              <i class="fa-solid fa-desktop"></i>
+              نظام التشغيل
+            </div>
+
+            <div class="detail-value" id="osValue">—</div>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-title">
+              <i class="fa-solid fa-hashtag"></i>
+              إصدار النظام
+            </div>
+
+            <div class="detail-value" id="osVersion">—</div>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-title">
+              <i class="fa-solid fa-mobile-screen-button"></i>
+              نوع الجهاز
+            </div>
+
+            <div class="detail-value" id="deviceType">—</div>
+          </div>
+
+          <div class="detail-card">
+            <div class="detail-title">
+              <i class="fa-solid fa-layer-group"></i>
+              المنصة
+            </div>
+
+            <div class="detail-value" id="platformValue">—</div>
+          </div>
+
+        </div>
+
+        <!-- ENGINE -->
+        <div class="engine-card">
+
+          <div class="engine-header">
+            <span>
+              <i class="fa-solid fa-gears"></i>
+              محرك العرض
+            </span>
+
+            <span id="engineValue" class="engine-badge">—</span>
+          </div>
+
+          <div class="engine-row">
+            <span>محرك التخطيط</span>
+            <strong id="engineVersion">—</strong>
+          </div>
+
+        </div>
+
+        <!-- RAW -->
+        <div class="raw-card">
+
+          <div class="raw-header">
+            <span>
+              <i class="fa-solid fa-terminal"></i>
+              User-Agent الأصلي
+            </span>
+
+            <button id="copyBtn" class="copy-btn">
+              <i class="fa-regular fa-copy"></i>
+              نسخ
+            </button>
+          </div>
+
+          <pre id="rawOutput">لا توجد بيانات</pre>
+
+        </div>
+
+        <div id="message" class="message"></div>
+
+      </section>
+
+      <!-- FEATURES -->
+      <section class="features-section">
+
+        <div class="section-heading">
+          <span>المميزات</span>
+          <h2>تحليل سريع ومباشر</h2>
+        </div>
+
+        <div class="features-grid">
+
+          <article class="feature-card">
+            <div class="feature-icon">
+              <i class="fa-solid fa-globe"></i>
+            </div>
+
+            <h3>اكتشاف المتصفح</h3>
+
+            <p>
+              التعرف على Chrome و Firefox و Edge و Safari و Opera
+              وغيرها من المتصفحات الشائعة.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">
+              <i class="fa-solid fa-laptop"></i>
+            </div>
+
+            <h3>نظام التشغيل</h3>
+
+            <p>
+              اكتشاف Windows و macOS و Linux و Android و iOS
+              وغيرها من الأنظمة.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">
+              <i class="fa-solid fa-mobile-screen"></i>
+            </div>
+
+            <h3>نوع الجهاز</h3>
+
+            <p>
+              تحديد ما إذا كان User-Agent مرتبطًا بهاتف أو جهاز لوحي
+              أو حاسوب أو جهاز آخر.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+
+            <h3>معالجة محلية</h3>
+
+            <p>
+              يتم تحليل النص داخل المتصفح مباشرة دون إرسال User-Agent
+              إلى خادم خارجي.
+            </p>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- INFO -->
+      <section class="info-section">
+
+        <div class="info-card">
+
+          <div class="info-icon">
+            <i class="fa-solid fa-circle-info"></i>
+          </div>
+
+          <div>
+            <h2>ما هو User-Agent؟</h2>
+
+            <p>
+              User-Agent هو نص يرسله المتصفح عادةً إلى الخادم للتعريف
+              بالمتصفح ونظام التشغيل وبعض معلومات المنصة.
+            </p>
+
+            <div class="code-example">
+              <code>
+                Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+              </code>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="info-card">
+
+          <div class="info-icon">
+            <i class="fa-solid fa-lightbulb"></i>
+          </div>
+
+          <div>
+            <h2>لماذا يستخدمه المطورون؟</h2>
+
+            <p>
+              يمكن استخدام User-Agent لفهم نوع العميل الذي يطلب صفحة
+              أو خدمة، مثل تحديد المتصفح ونظام التشغيل والمنصة.
+            </p>
+
+            <p>
+              ومع ذلك، لا ينبغي اعتباره وسيلة موثوقة وحدها لتحديد هوية
+              المستخدم أو الجهاز بشكل دقيق.
+            </p>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- HOW TO -->
+      <section class="how-section">
+
+        <div class="section-heading">
+          <span>طريقة الاستخدام</span>
+          <h2>كيف تستخدم الأداة؟</h2>
+        </div>
+
+        <div class="steps">
+
+          <div class="step">
+            <span>1</span>
+
+            <div>
+              <h3>أدخل User-Agent</h3>
+
+              <p>
+                الصق User-Agent في مربع الإدخال.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <span>2</span>
+
+            <div>
+              <h3>ابدأ التحليل</h3>
+
+              <p>
+                اضغط على تحليل لاستخراج المعلومات.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <span>3</span>
+
+            <div>
+              <h3>راجع النتائج</h3>
+
+              <p>
+                ستظهر معلومات المتصفح والنظام والجهاز والمنصة.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <span>4</span>
+
+            <div>
+              <h3>انسخ النص</h3>
+
+              <p>
+                يمكنك نسخ User-Agent الأصلي بضغطة واحدة.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq-section">
+
+        <div class="section-heading">
+          <span>FAQ</span>
+          <h2>الأسئلة الشائعة</h2>
+        </div>
+
+        <details>
+          <summary>
+            هل تعمل الأداة بدون مكتبات خارجية؟
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            نعم. التحليل يتم بواسطة JavaScript داخل المتصفح
+            باستخدام قواعد تحليل User-Agent مدمجة في الأداة.
+          </p>
+        </details>
+
+        <details>
+          <summary>
+            هل يمكن تحليل User-Agent الخاص بجهازي؟
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            نعم. اضغط على زر "جهازي" لإدخال User-Agent الحالي
+            للمتصفح ثم اضغط على تحليل.
+          </p>
+        </details>
+
+        <details>
+          <summary>
+            هل يمكن الاعتماد على User-Agent لمعرفة الجهاز بدقة؟
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            ليس دائمًا. User-Agent يوفر معلومات محدودة، وقد تقوم
+            المتصفحات الحديثة بتقليل بعض المعلومات أو تغييرها.
+          </p>
+        </details>
+
+        <details>
+          <summary>
+            هل يتم إرسال User-Agent إلى الخادم؟
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            لا. عملية التحليل في هذه الأداة تتم محليًا داخل المتصفح.
+          </p>
+        </details>
+
+      </section>
+
+    </main>
+
+    <Footer />
+
+    <script>
+      (() => {
+        const uaInput = document.getElementById('uaInput');
+
+        const parseBtn = document.getElementById('parseBtn');
+        const pasteBtn = document.getElementById('pasteBtn');
+        const currentBtn = document.getElementById('currentBtn');
+        const sampleBtn = document.getElementById('sampleBtn');
+        const clearBtn = document.getElementById('clearBtn');
+
+        const browserName = document.getElementById('browserName');
+        const osName = document.getElementById('osName');
+        const deviceName = document.getElementById('deviceName');
+
+        const browserValue = document.getElementById('browserValue');
+        const browserVersion = document.getElementById('browserVersion');
+        const osValue = document.getElementById('osValue');
+        const osVersion = document.getElementById('osVersion');
+        const deviceType = document.getElementById('deviceType');
+        const platformValue = document.getElementById('platformValue');
+
+        const engineValue = document.getElementById('engineValue');
+        const engineVersion = document.getElementById('engineVersion');
+
+        const rawOutput = document.getElementById('rawOutput');
+        const copyBtn = document.getElementById('copyBtn');
+
+        const message = document.getElementById('message');
+
+        function getThemeState() {
+          const html = document.documentElement;
+          const stored = localStorage.getItem('theme');
+
+          if (stored === 'light') return 'light';
+          if (stored === 'dark') return 'dark';
+
+          if (html.dataset.theme === 'light') return 'light';
+          if (html.dataset.theme === 'dark') return 'dark';
+
+          if (html.classList.contains('light')) return 'light';
+          if (html.classList.contains('dark')) return 'dark';
+
+          return 'dark';
+        }
+
+        function syncTheme() {
+          const theme = getThemeState();
+          const light = theme === 'light';
+
+          document.body.classList.toggle('ua-light', light);
+          document.body.classList.toggle('ua-dark', !light);
+        }
+
+        syncTheme();
+
+        const themeObserver = new MutationObserver(() => syncTheme());
+
+        themeObserver.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ['class', 'data-theme']
+        });
+
+        function showMessage(text, type = 'success') {
+          message.textContent = text;
+          message.className = `message ${type}`;
+
+          clearTimeout(showMessage.timer);
+
+          showMessage.timer = setTimeout(() => {
+            message.textContent = '';
+            message.className = 'message';
+          }, 2500);
+        }
+
+        function setText(element, value) {
+          element.textContent = value || 'غير معروف';
+        }
+
+        function getVersion(match) {
+          return match && match[1] ? match[1].replace(/_/g, '.') : '';
+        }
+
+        function detectBrowser(ua) {
+          let name = 'غير معروف';
+          let version = '';
+
+          let match;
+
+          if ((match = ua.match(/EdgA?\/([\d.]+)/i))) {
+            name = 'Microsoft Edge';
+            version = match[1];
+          } else if ((match = ua.match(/OPR\/([\d.]+)/i))) {
+            name = 'Opera';
+            version = match[1];
+          } else if ((match = ua.match(/Opera\/([\d.]+)/i))) {
+            name = 'Opera';
+            version = match[1];
+          } else if ((match = ua.match(/SamsungBrowser\/([\d.]+)/i))) {
+            name = 'Samsung Internet';
+            version = match[1];
+          } else if ((match = ua.match(/Firefox\/([\d.]+)/i))) {
+            name = 'Firefox';
+            version = match[1];
+          } else if ((match = ua.match(/FxiOS\/([\d.]+)/i))) {
+            name = 'Firefox iOS';
+            version = match[1];
+          } else if ((match = ua.match(/CriOS\/([\d.]+)/i))) {
+            name = 'Chrome iOS';
+            version = match[1];
+          } else if ((match = ua.match(/Chrome\/([\d.]+)/i))) {
+            name = 'Google Chrome';
+            version = match[1];
+          } else if ((match = ua.match(/Chromium\/([\d.]+)/i))) {
+            name = 'Chromium';
+            version = match[1];
+          } else if ((match = ua.match(/Version\/([\d.]+).*Safari\//i))) {
+            name = 'Safari';
+            version = match[1];
+          } else if ((match = ua.match(/MSIE\s([\d.]+)/i))) {
+            name = 'Internet Explorer';
+            version = match[1];
+          } else if (/Trident\/.*rv:([\d.]+)/i.test(ua)) {
+            name = 'Internet Explorer';
+            version = ua.match(/rv:([\d.]+)/i)?.[1] || '';
+          }
+
+          return {
+            name,
+            version
+          };
+        }
+
+        function detectOS(ua) {
+          let name = 'غير معروف';
+          let version = '';
+
+          let match;
+
+          if (/Windows Phone/i.test(ua)) {
+            name = 'Windows Phone';
+
+            match =
+              ua.match(/Windows Phone(?: OS)?[ /]([\d.]+)/i);
+
+            version = match ? match[1] : '';
+          } else if (/Windows NT 10\.0/i.test(ua)) {
+            name = 'Windows';
+            version = '10 / 11';
+          } else if (/Windows NT 6\.4/i.test(ua)) {
+            name = 'Windows';
+            version = '10 / 11';
+          } else if (/Windows NT 6\.3/i.test(ua)) {
+            name = 'Windows';
+            version = '8.1';
+          } else if (/Windows NT 6\.2/i.test(ua)) {
+            name = 'Windows';
+            version = '8';
+          } else if (/Windows NT 6\.1/i.test(ua)) {
+            name = 'Windows';
+            version = '7';
+          } else if (/Windows NT 6\.0/i.test(ua)) {
+            name = 'Windows';
+            version = 'Vista';
+          } else if (/Windows NT 5\.1|Windows XP/i.test(ua)) {
+            name = 'Windows';
+            version = 'XP';
+          } else if (/Android/i.test(ua)) {
+            name = 'Android';
+
+            match = ua.match(/Android[ /-]?([\d._]+)/i);
+            version = getVersion(match);
+          } else if (
+            /iPhone|iPad|iPod/i.test(ua) &&
+            /OS [\d_]+/i.test(ua)
+          ) {
+            name = 'iOS';
+
+            match = ua.match(/OS ([\d_]+)/i);
+            version = getVersion(match);
+          } else if (/Mac OS X/i.test(ua)) {
+            name = 'macOS';
+
+            match = ua.match(/Mac OS X[ /]?([\d_\.]+)/i);
+            version = getVersion(match);
+          } else if (/CrOS/i.test(ua)) {
+            name = 'ChromeOS';
+
+            match = ua.match(/CrOS [^;]+ ([\d.]+)/i);
+            version = match ? match[1] : '';
+          } else if (/Linux/i.test(ua)) {
+            name = 'Linux';
+          } else if (/Ubuntu/i.test(ua)) {
+            name = 'Ubuntu';
+          }
+
+          return {
+            name,
+            version
+          };
+        }
+
+        function detectDevice(ua, os) {
+          if (/iPad/i.test(ua)) {
+            return {
+              type: 'جهاز لوحي',
+              name: 'iPad'
+            };
+          }
+
+          if (/iPhone/i.test(ua)) {
+            return {
+              type: 'هاتف',
+              name: 'iPhone'
+            };
+          }
+
+          if (/iPod/i.test(ua)) {
+            return {
+              type: 'هاتف',
+              name: 'iPod'
+            };
+          }
+
+          if (/Android/i.test(ua)) {
+            if (/Mobile/i.test(ua)) {
+              return {
+                type: 'هاتف',
+                name: 'Android Phone'
+              };
+            }
+
+            return {
+              type: 'جهاز لوحي',
+              name: 'Android Tablet'
+            };
+          }
+
+          if (/Windows Phone/i.test(ua)) {
+            return {
+              type: 'هاتف',
+              name: 'Windows Phone'
+            };
+          }
+
+          if (/Smart-TV|SmartTV|HbbTV|Tizen.*TV/i.test(ua)) {
+            return {
+              type: 'تلفاز ذكي',
+              name: 'Smart TV'
+            };
+          }
+
+          if (/bot|crawler|spider|slurp|bingpreview/i.test(ua)) {
+            return {
+              type: 'روبوت',
+              name: 'Bot / Crawler'
+            };
+          }
+
+          if (
+            os.name === 'Windows' ||
+            os.name === 'macOS' ||
+            os.name === 'Linux' ||
+            os.name === 'Ubuntu' ||
+            os.name === 'ChromeOS'
+          ) {
+            return {
+              type: 'حاسوب',
+              name: 'Desktop / Laptop'
+            };
+          }
+
+          return {
+            type: 'غير معروف',
+            name: 'غير معروف'
+          };
+        }
+
+        function detectPlatform(ua, os, device) {
+          if (/x86_64|Win64|WOW64|amd64/i.test(ua)) {
+            return 'Windows 64-bit / x64';
+          }
+
+          if (/aarch64|arm64/i.test(ua)) {
+            return 'ARM64';
+          }
+
+          if (/iPhone|iPad|iPod/i.test(ua)) {
+            return 'Apple Mobile';
+          }
+
+          if (/Android/i.test(ua)) {
+            return 'Android';
+          }
+
+          if (/Macintosh|Mac OS X/i.test(ua)) {
+            return 'Apple Mac';
+          }
+
+          if (/CrOS/i.test(ua)) {
+            return 'ChromeOS';
+          }
+
+          if (/Linux/i.test(ua)) {
+            return 'Linux';
+          }
+
+          if (/Windows/i.test(ua)) {
+            return 'Windows';
+          }
+
+          return device.name !== 'غير معروف'
+            ? device.name
+            : 'غير معروف';
+        }
+
+        function detectEngine(ua) {
+          let name = 'غير معروف';
+          let version = '';
+
+          let match;
+
+          if ((match = ua.match(/AppleWebKit\/([\d.]+)/i))) {
+            name = 'WebKit';
+            version = match[1];
+          }
+
+          if ((match = ua.match(/Gecko\/([\d.]+)/i))) {
+            name = 'Gecko';
+            version = match[1];
+          }
+
+          if ((match = ua.match(/Trident\/([\d.]+)/i))) {
+            name = 'Trident';
+            version = match[1];
+          }
+
+          if (/Chrome|Chromium|Edg|OPR/i.test(ua)) {
+            if ((match = ua.match(/AppleWebKit\/([\d.]+)/i))) {
+              name = 'Blink';
+              version = match[1];
+            }
+          }
+
+          return {
+            name,
+            version
+          };
+        }
+
+        function parseUserAgent() {
+          const ua = uaInput.value.trim();
+
+          if (!ua) {
+            showMessage('أدخل User-Agent أولاً.', 'error');
+            return;
+          }
+
+          if (ua.length > 10000) {
+            showMessage('User-Agent كبير جدًا.', 'error');
+            return;
+          }
+
+          const browser = detectBrowser(ua);
+          const os = detectOS(ua);
+          const device = detectDevice(ua, os);
+          const platform = detectPlatform(
+            ua,
+            os,
+            device
+          );
+          const engine = detectEngine(ua);
+
+          setText(browserName, browser.name);
+          setText(browserValue, browser.name);
+
+          setText(
+            browserVersion,
+            browser.version || 'غير معروف'
+          );
+
+          setText(osName, os.name);
+          setText(osValue, os.name);
+
+          setText(
+            osVersion,
+            os.version || 'غير معروف'
+          );
+
+          setText(deviceName, device.name);
+          setText(deviceType, device.type);
+
+          setText(platformValue, platform);
+
+          setText(engineValue, engine.name);
+          setText(
+            engineVersion,
+            engine.version || 'غير معروف'
+          );
+
+          rawOutput.textContent = ua;
+
+          showMessage('تم تحليل User-Agent بنجاح.', 'success');
+        }
+
+        async function pasteUserAgent() {
+          try {
+            const text = await navigator.clipboard.readText();
+
+            if (!text) {
+              showMessage('الحافظة فارغة.', 'error');
+              return;
+            }
+
+            uaInput.value = text;
+            parseUserAgent();
+          } catch {
+            showMessage(
+              'تعذر الوصول إلى الحافظة. الصق النص يدويًا.',
+              'error'
+            );
+          }
+        }
+
+        function loadCurrentUserAgent() {
+          uaInput.value = navigator.userAgent;
+          parseUserAgent();
+        }
+
+        function loadSample() {
+          uaInput.value =
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+
+          parseUserAgent();
+        }
+
+        function clearAll() {
+          uaInput.value = '';
+
+          browserName.textContent = '—';
+          osName.textContent = '—';
+          deviceName.textContent = '—';
+
+          browserValue.textContent = '—';
+          browserVersion.textContent = '—';
+          osValue.textContent = '—';
+          osVersion.textContent = '—';
+          deviceType.textContent = '—';
+          platformValue.textContent = '—';
+
+          engineValue.textContent = '—';
+          engineVersion.textContent = '—';
+
+          rawOutput.textContent = 'لا توجد بيانات';
+
+          showMessage('تم مسح البيانات.', 'success');
+        }
+
+        async function copyUserAgent() {
+          const text = rawOutput.textContent;
+
+          if (!text || text === 'لا توجد بيانات') {
+            showMessage('لا توجد بيانات لنسخها.', 'error');
+            return;
+          }
+
+          try {
+            await navigator.clipboard.writeText(text);
+
+            showMessage(
+              'تم نسخ User-Agent بنجاح.',
+              'success'
+            );
+          } catch {
+            const area = document.createElement('textarea');
+
+            area.value = text;
+            area.style.position = 'fixed';
+            area.style.opacity = '0';
+
+            document.body.appendChild(area);
+
+            area.focus();
+            area.select();
+
+            try {
+              document.execCommand('copy');
+
+              showMessage(
+                'تم نسخ User-Agent بنجاح.',
+                'success'
+              );
+            } catch {
+              showMessage(
+                'تعذر نسخ User-Agent.',
+                'error'
+              );
+            }
+
+            area.remove();
+          }
+        }
+
+        parseBtn.addEventListener(
+          'click',
+          parseUserAgent
+        );
+
+        pasteBtn.addEventListener(
+          'click',
+          pasteUserAgent
+        );
+
+        currentBtn.addEventListener(
+          'click',
+          loadCurrentUserAgent
+        );
+
+        sampleBtn.addEventListener(
+          'click',
+          loadSample
+        );
+
+        clearBtn.addEventListener(
+          'click',
+          clearAll
+        );
+
+        copyBtn.addEventListener(
+          'click',
+          copyUserAgent
+        );
+
+        uaInput.addEventListener('keydown', event => {
+          if (
+            (event.ctrlKey || event.metaKey) &&
+            event.key === 'Enter'
+          ) {
+            event.preventDefault();
+            parseUserAgent();
+          }
+        });
+
+        uaInput.addEventListener('input', () => {
+          if (uaInput.value.trim().length > 20) {
+            clearTimeout(uaInput.parseTimer);
+
+            uaInput.parseTimer = setTimeout(() => {
+              parseUserAgent();
+            }, 500);
+          }
+        });
+
+        loadCurrentUserAgent();
+      })();
+    </script>
+
+    <style>
+      :global(html) {
+        --page-bg: #07111f;
+        --page-bg-2: #0b1728;
+        --card-bg: rgba(13, 28, 47, 0.88);
+        --card-bg-2: rgba(17, 35, 58, 0.9);
+        --input-bg: #071321;
+        --border: rgba(116, 166, 219, 0.18);
+        --border-strong: rgba(82, 157, 235, 0.36);
+        --text: #edf6ff;
+        --muted: #91a8bf;
+        --blue: #2196f3;
+        --blue-2: #42a5f5;
+        --danger: #ef5350;
+        --success: #43d17c;
+        --shadow: 0 25px 70px rgba(0, 0, 0, 0.28);
+      }
+
+      :global(html[data-theme="light"]),
+      :global(body.ua-light) {
+        --page-bg: #f4f9ff;
+        --page-bg-2: #eaf4ff;
+        --card-bg: rgba(255, 255, 255, 0.94);
+        --card-bg-2: #ffffff;
+        --input-bg: #f7fbff;
+        --border: rgba(42, 106, 166, 0.14);
+        --border-strong: rgba(33, 150, 243, 0.34);
+        --text: #14283d;
+        --muted: #60758a;
+        --shadow: 0 22px 60px rgba(42, 93, 135, 0.1);
+      }
+
+      :global(html.dark-mode),
+      :global(body.ua-dark) {
+        --page-bg: #07111f;
+        --page-bg-2: #0b1728;
+        --card-bg: rgba(13, 28, 47, 0.88);
+        --card-bg-2: rgba(17, 35, 58, 0.9);
+        --input-bg: #071321;
+        --border: rgba(116, 166, 219, 0.18);
+        --border-strong: rgba(82, 157, 235, 0.36);
+        --text: #edf6ff;
+        --muted: #91a8bf;
+        --shadow: 0 25px 70px rgba(0, 0, 0, 0.28);
+      }
+
+      :global(body) {
+        margin: 0;
+        background:
+          radial-gradient(
+            circle at 10% 5%,
+            rgba(33, 150, 243, 0.13),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at 90% 20%,
+            rgba(66, 165, 245, 0.08),
+            transparent 26%
+          ),
+          var(--page-bg);
+        color: var(--text);
+        font-family: "Cairo", sans-serif;
+        transition:
+          background 0.25s ease,
+          color 0.25s ease;
+      }
+
+      .ua-page {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 65px 0 90px;
+      }
+
+      .hero {
+        max-width: 850px;
+        margin: 0 auto 42px;
+        text-align: center;
+      }
+
+      .hero-icon {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 24px;
+        background: linear-gradient(
+          135deg,
+          rgba(33, 150, 243, 0.2),
+          rgba(66, 165, 245, 0.07)
+        );
+        border: 1px solid var(--border-strong);
+        color: var(--blue-2);
+        font-size: 30px;
+        box-shadow:
+          0 15px 45px rgba(33, 150, 243, 0.1);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        background: rgba(33, 150, 243, 0.1);
+        color: var(--blue-2);
+        border: 1px solid rgba(33, 150, 243, 0.18);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .hero h1 {
+        margin: 16px 0 10px;
+        font-size: clamp(31px, 5vw, 52px);
+        line-height: 1.15;
+        letter-spacing: -1px;
+      }
+
+      .hero p {
+        margin: 0 auto;
+        max-width: 720px;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 2;
+      }
+
+      .tool-card {
+        padding: 28px;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+
+      .section-title h2 {
+        margin: 0;
+        font-size: 19px;
+      }
+
+      .section-title p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .title-icon {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: rgba(33, 150, 243, 0.12);
+        color: var(--blue-2);
+        border: 1px solid rgba(33, 150, 243, 0.2);
+      }
+
+      .input-box {
+        padding: 14px;
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+        border-radius: 19px;
+      }
+
+      #uaInput {
+        width: 100%;
+        min-height: 145px;
+        box-sizing: border-box;
+        resize: vertical;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        line-height: 1.8;
+        direction: ltr;
+        text-align: left;
+      }
+
+      #uaInput::placeholder {
+        color: var(--muted);
+        opacity: 0.65;
+      }
+
+      .input-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 13px;
+      }
+
+      button {
+        font-family: inherit;
+        cursor: pointer;
+        border: 0;
+        transition:
+          transform 0.18s ease,
+          opacity 0.18s ease,
+          box-shadow 0.18s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      .primary-btn,
+      .secondary-btn,
+      .danger-btn,
+      .copy-btn {
+        min-height: 42px;
+        padding: 0 15px;
+        border-radius: 11px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .primary-btn {
+        background: linear-gradient(
+          135deg,
+          #168cf0,
+          #42a5f5
+        );
+        color: white;
+        box-shadow:
+          0 8px 24px rgba(33, 150, 243, 0.2);
+      }
+
+      .secondary-btn {
+        background: rgba(87, 132, 171, 0.1);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+
+      .danger-btn {
+        background: rgba(239, 83, 80, 0.1);
+        color: #ff7774;
+        border: 1px solid rgba(239, 83, 80, 0.2);
+      }
+
+      .summary-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .summary-card {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        padding: 17px;
+        border-radius: 16px;
+        background: var(--card-bg-2);
+        border: 1px solid var(--border);
+      }
+
+      .summary-icon {
+        width: 43px;
+        height: 43px;
+        flex: 0 0 43px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: rgba(33, 150, 243, 0.1);
+        color: var(--blue-2);
+        font-size: 17px;
+      }
+
+      .summary-card span {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .summary-card strong {
+        display: block;
+        margin-top: 2px;
+        font-size: 15px;
+      }
+
+      .details-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 14px;
+      }
+
+      .detail-card {
+        padding: 17px;
+        border-radius: 15px;
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+      }
+
+      .detail-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 11px;
+        margin-bottom: 10px;
+      }
+
+      .detail-title i {
+        color: var(--blue-2);
+      }
+
+      .detail-value {
+        direction: ltr;
+        text-align: left;
+        overflow-wrap: anywhere;
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .engine-card {
+        margin-top: 14px;
+        padding: 17px;
+        border-radius: 16px;
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+      }
+
+      .engine-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .engine-header > span:first-child {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .engine-header i {
+        color: var(--blue-2);
+      }
+
+      .engine-badge {
+        padding: 5px 10px;
+        border-radius: 999px;
+        background: rgba(33, 150, 243, 0.1);
+        color: var(--blue-2);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+      }
+
+      .engine-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        padding-top: 12px;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .engine-row strong {
+        direction: ltr;
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .raw-card {
+        margin-top: 14px;
+        overflow: hidden;
+        border-radius: 17px;
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+      }
+
+      .raw-header {
+        min-height: 54px;
+        box-sizing: border-box;
+        padding: 9px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .raw-header > span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .raw-header i {
+        color: var(--blue-2);
+      }
+
+      .copy-btn {
+        min-height: 34px;
+        padding: 0 11px;
+        background: rgba(33, 150, 243, 0.09);
+        color: var(--blue-2);
+        border: 1px solid rgba(33, 150, 243, 0.15);
+        font-size: 11px;
+      }
+
+      pre {
+        min-height: 70px;
+        max-height: 220px;
+        overflow: auto;
+        margin: 0;
+        padding: 16px;
+        box-sizing: border-box;
+        white-space: pre-wrap;
+        word-break: break-word;
+        direction: ltr;
+        text-align: left;
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 11px;
+        line-height: 1.8;
+      }
+
+      .message {
+        min-height: 24px;
+        margin-top: 12px;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .message.success {
+        color: var(--success);
+      }
+
+      .message.error {
+        color: #ff7774;
+      }
+
+      .features-section,
+      .info-section,
+      .how-section,
+      .faq-section {
+        margin-top: 70px;
+      }
+
+      .section-heading {
+        margin-bottom: 24px;
+        text-align: center;
+      }
+
+      .section-heading span {
+        color: var(--blue-2);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .section-heading h2 {
+        margin: 6px 0 0;
+        font-size: clamp(23px, 4vw, 30px);
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+
+      .feature-card {
+        padding: 22px 18px;
+        border-radius: 18px;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+      }
+
+      .feature-icon {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 15px;
+        border-radius: 13px;
+        background: rgba(33, 150, 243, 0.1);
+        color: var(--blue-2);
+      }
+
+      .feature-card h3 {
+        margin: 0 0 7px;
+        font-size: 15px;
+      }
+
+      .feature-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      .info-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .info-card {
+        display: flex;
+        gap: 15px;
+        padding: 22px;
+        border-radius: 18px;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+      }
+
+      .info-icon {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: rgba(33, 150, 243, 0.1);
+        color: var(--blue-2);
+      }
+
+      .info-card h2 {
+        margin: 0 0 8px;
+        font-size: 17px;
+      }
+
+      .info-card p {
+        margin: 0 0 10px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 2;
+      }
+
+      .code-example {
+        direction: ltr;
+        text-align: left;
+        overflow-x: auto;
+        padding: 11px 13px;
+        margin: 10px 0;
+        border-radius: 10px;
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+        color: var(--blue-2);
+        font-size: 11px;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+
+      .step {
+        display: flex;
+        gap: 12px;
+        padding: 19px;
+        border-radius: 17px;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+      }
+
+      .step > span {
+        width: 32px;
+        height: 32px;
+        flex: 0 0 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(33, 150, 243, 0.12);
+        color: var(--blue-2);
+        font-weight: 800;
+        font-size: 12px;
+      }
+
+      .step h3 {
+        margin: 0 0 4px;
+        font-size: 14px;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.8;
+      }
+
+      .faq-section details {
+        margin-bottom: 10px;
+        padding: 0 18px;
+        border-radius: 15px;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+      }
+
+      .faq-section summary {
+        min-height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        cursor: pointer;
+        list-style: none;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .faq-section summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq-section summary i {
+        color: var(--blue-2);
+        transition: transform 0.2s ease;
+      }
+
+      .faq-section details[open] summary i {
+        transform: rotate(180deg);
+      }
+
+      .faq-section details p {
+        margin: 0;
+        padding: 0 0 17px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 2;
+      }
+
+      @media (max-width: 900px) {
+        .features-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .details-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .steps {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 700px) {
+        .ua-page {
+          width: min(100% - 20px, 1120px);
+          padding-top: 42px;
+        }
+
+        .tool-card {
+          padding: 17px;
+          border-radius: 20px;
+        }
+
+        .summary-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .details-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .info-section {
+          grid-template-columns: 1fr;
+        }
+
+        .input-actions button {
+          flex: 1;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero h1 {
+          font-size: 30px;
+        }
+
+        .hero p {
+          font-size: 13px;
+        }
+
+        .features-grid,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+
+        .engine-header,
+        .engine-row {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .input-actions button {
+          min-width: calc(50% - 5px);
+        }
+      }
+
+      @media (max-width: 380px) {
+        .ua-page {
+          width: calc(100% - 14px);
+        }
+
+        .tool-card {
+          padding: 13px;
+        }
+
+        .primary-btn,
+        .secondary-btn,
+        .danger-btn {
+          padding: 0 9px;
+          font-size: 11px;
+        }
+      }
+    </style>
+  </body>
+</html>
