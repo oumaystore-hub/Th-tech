@@ -1,0 +1,1752 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const canonical = `https://oumaystore-hub.github.io${base}/tools/query-string-parser/`;
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Query String Parser | محلل Query String | Th.Tech</title>
+
+    <meta
+      name="description"
+      content="أداة احترافية لتحليل Query String واستخراج المعاملات والقيم، تعديلها، حذفها، إنشاء Query String جديد وتحويل البيانات إلى JSON."
+    />
+
+    <link rel="canonical" href={canonical} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+  </head>
+
+  <body class="query-dark">
+    <Header />
+
+    <main class="query-page">
+
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-icon">
+          <i class="fa-solid fa-link"></i>
+        </div>
+
+        <span class="badge">
+          <i class="fa-solid fa-code"></i>
+          أداة المطورين 109
+        </span>
+
+        <h1>Query String Parser</h1>
+
+        <p>
+          حلّل معاملات URL بسهولة، عدّل القيم وأضف أو احذف المعاملات
+          ثم أنشئ Query String جديدًا أو حوّل البيانات إلى JSON.
+        </p>
+      </section>
+
+      <!-- TOOL -->
+      <section class="tool-card">
+
+        <!-- INPUT -->
+        <div class="section-title">
+          <div class="title-icon">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </div>
+
+          <div>
+            <h2>تحليل Query String</h2>
+            <p>أدخل Query String أو رابط URL كامل</p>
+          </div>
+        </div>
+
+        <div class="input-box">
+          <textarea
+            id="queryInput"
+            maxlength="20000"
+            spellcheck="false"
+            placeholder="?name=John&age=25&city=Rabat"
+          ></textarea>
+
+          <div class="input-actions">
+            <button id="parseBtn" class="primary-btn">
+              <i class="fa-solid fa-wand-magic-sparkles"></i>
+              تحليل
+            </button>
+
+            <button id="pasteBtn" class="secondary-btn">
+              <i class="fa-regular fa-clipboard"></i>
+              لصق
+            </button>
+
+            <button id="sampleBtn" class="secondary-btn">
+              <i class="fa-solid fa-flask"></i>
+              مثال
+            </button>
+
+            <button id="clearBtn" class="danger-btn">
+              <i class="fa-solid fa-trash"></i>
+              مسح
+            </button>
+          </div>
+        </div>
+
+        <!-- STATS -->
+        <div class="stats-grid">
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fa-solid fa-list"></i>
+            </div>
+            <div>
+              <span>المعاملات</span>
+              <strong id="paramCount">0</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <div>
+              <span>المفاتيح الفريدة</span>
+              <strong id="uniqueCount">0</strong>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fa-solid fa-text-width"></i>
+            </div>
+            <div>
+              <span>الأحرف</span>
+              <strong id="charCount">0</strong>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- PARAMETERS -->
+        <div class="editor-header">
+          <div class="section-title small">
+            <div class="title-icon">
+              <i class="fa-solid fa-sliders"></i>
+            </div>
+
+            <div>
+              <h2>المعاملات</h2>
+              <p>عدّل المفاتيح والقيم كما تريد</p>
+            </div>
+          </div>
+
+          <div class="editor-actions">
+            <button id="sortBtn" class="secondary-btn">
+              <i class="fa-solid fa-arrow-down-a-z"></i>
+              ترتيب المفاتيح
+            </button>
+
+            <button id="addBtn" class="primary-btn">
+              <i class="fa-solid fa-plus"></i>
+              إضافة معامل
+            </button>
+          </div>
+        </div>
+
+        <div id="paramsList" class="params-list"></div>
+
+        <div id="emptyParams" class="empty-state">
+          <div class="empty-icon">
+            <i class="fa-solid fa-table-list"></i>
+          </div>
+
+          <h3>لا توجد معاملات</h3>
+
+          <p>
+            أدخل Query String ثم اضغط على تحليل،
+            أو أضف معاملًا جديدًا يدويًا.
+          </p>
+
+          <button id="emptyAddBtn" class="primary-btn">
+            <i class="fa-solid fa-plus"></i>
+            إضافة معامل
+          </button>
+        </div>
+
+        <!-- OUTPUTS -->
+        <div class="outputs-grid">
+
+          <!-- QUERY OUTPUT -->
+          <div class="output-card">
+
+            <div class="output-header">
+              <div>
+                <span class="output-label">
+                  <i class="fa-solid fa-link"></i>
+                  Query String الناتج
+                </span>
+              </div>
+
+              <button id="copyQueryBtn" class="copy-btn">
+                <i class="fa-regular fa-copy"></i>
+                نسخ
+              </button>
+            </div>
+
+            <pre id="generatedQuery">لا توجد بيانات</pre>
+          </div>
+
+          <!-- JSON OUTPUT -->
+          <div class="output-card">
+
+            <div class="output-header">
+              <div>
+                <span class="output-label">
+                  <i class="fa-solid fa-brackets-curly"></i>
+                  JSON
+                </span>
+              </div>
+
+              <button id="copyJsonBtn" class="copy-btn">
+                <i class="fa-regular fa-copy"></i>
+                نسخ
+              </button>
+            </div>
+
+            <pre id="jsonOutput">لا توجد بيانات</pre>
+          </div>
+
+        </div>
+
+        <div id="message" class="message"></div>
+
+      </section>
+
+      <!-- FEATURES -->
+      <section class="features-section">
+
+        <div class="section-heading">
+          <span>المميزات</span>
+          <h2>أداة متكاملة للتعامل مع Query String</h2>
+        </div>
+
+        <div class="features-grid">
+
+          <article class="feature-card">
+            <div class="feature-icon">
+              <i class="fa-solid fa-magnifying-glass-chart"></i>
+            </div>
+            <h3>تحليل تلقائي</h3>
+            <p>
+              استخراج المفاتيح والقيم من Query String أو من رابط URL كامل.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">
+              <i class="fa-solid fa-pen-to-square"></i>
+            </div>
+            <h3>تعديل مباشر</h3>
+            <p>
+              عدّل أي مفتاح أو قيمة، وأضف أو احذف المعاملات بسهولة.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">
+              <i class="fa-solid fa-language"></i>
+            </div>
+            <h3>دعم Unicode</h3>
+            <p>
+              التعامل مع العربية والمسافات والرموز والإيموجي بشكل صحيح.
+            </p>
+          </article>
+
+          <article class="feature-card">
+            <div class="feature-icon">
+              <i class="fa-solid fa-code"></i>
+            </div>
+            <h3>تحويل إلى JSON</h3>
+            <p>
+              تحويل المعاملات مباشرة إلى JSON جاهز للاستخدام في البرمجة.
+            </p>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- INFO -->
+      <section class="info-section">
+
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fa-solid fa-circle-info"></i>
+          </div>
+
+          <div>
+            <h2>ما هو Query String؟</h2>
+
+            <p>
+              Query String هو الجزء الموجود في عنوان URL بعد علامة
+              <code>?</code>، ويُستخدم عادةً لتمرير بيانات إلى صفحات الويب
+              أو التطبيقات.
+            </p>
+
+            <div class="code-example">
+              <code>
+                ?name=John&amp;age=25&amp;city=Rabat
+              </code>
+            </div>
+
+            <p>
+              في المثال السابق توجد ثلاثة معاملات:
+              <strong>name</strong> و<strong>age</strong> و<strong>city</strong>.
+            </p>
+          </div>
+        </div>
+
+        <div class="info-card">
+          <div class="info-icon">
+            <i class="fa-solid fa-lightbulb"></i>
+          </div>
+
+          <div>
+            <h2>نصيحة</h2>
+
+            <p>
+              يمكن للأداة التعامل مع المفاتيح المتكررة، مثل:
+            </p>
+
+            <div class="code-example">
+              <code>
+                ?tag=javascript&amp;tag=astro&amp;tag=web
+              </code>
+            </div>
+
+            <p>
+              وسيتم الحفاظ على جميع القيم عند إنشاء Query String أو تحويله
+              إلى JSON.
+            </p>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- HOW TO -->
+      <section class="how-section">
+
+        <div class="section-heading">
+          <span>طريقة الاستخدام</span>
+          <h2>كيف تستخدم الأداة؟</h2>
+        </div>
+
+        <div class="steps">
+
+          <div class="step">
+            <span>1</span>
+            <div>
+              <h3>أدخل البيانات</h3>
+              <p>
+                الصق Query String أو رابط URL كامل في مربع الإدخال.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <span>2</span>
+            <div>
+              <h3>حلّل البيانات</h3>
+              <p>
+                اضغط على زر تحليل لاستخراج جميع المعاملات.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <span>3</span>
+            <div>
+              <h3>عدّل المعاملات</h3>
+              <p>
+                غيّر المفاتيح والقيم أو أضف واحذف أي معامل.
+              </p>
+            </div>
+          </div>
+
+          <div class="step">
+            <span>4</span>
+            <div>
+              <h3>انسخ النتيجة</h3>
+              <p>
+                انسخ Query String الناتج أو نسخة JSON بضغطة واحدة.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq-section">
+
+        <div class="section-heading">
+          <span>FAQ</span>
+          <h2>الأسئلة الشائعة</h2>
+        </div>
+
+        <details>
+          <summary>
+            هل يمكن إدخال رابط URL كامل؟
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            نعم. يمكنك إدخال رابط كامل مثل
+            https://example.com/page?name=John&amp;age=25
+            وستستخرج الأداة الجزء الخاص بـ Query String تلقائيًا.
+          </p>
+        </details>
+
+        <details>
+          <summary>
+            هل يتم فك ترميز القيم تلقائيًا؟
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            نعم. تعتمد الأداة على URLSearchParams لفك ترميز القيم،
+            بما في ذلك المسافات والعربية والرموز الخاصة.
+          </p>
+        </details>
+
+        <details>
+          <summary>
+            هل تدعم الأداة المفاتيح المتكررة؟
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            نعم. يمكن أن يحتوي Query String على أكثر من قيمة للمفتاح نفسه،
+            ويتم الحفاظ على جميع هذه القيم.
+          </p>
+        </details>
+
+        <details>
+          <summary>
+            هل يتم إرسال البيانات إلى خادم؟
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            لا. تتم معالجة البيانات داخل المتصفح مباشرة، ولا تحتاج الأداة
+            إلى خادم خارجي لمعالجة Query String.
+          </p>
+        </details>
+
+      </section>
+
+    </main>
+
+    <Footer />
+
+    <script>
+      (() => {
+        const queryInput = document.getElementById('queryInput');
+        const parseBtn = document.getElementById('parseBtn');
+        const pasteBtn = document.getElementById('pasteBtn');
+        const sampleBtn = document.getElementById('sampleBtn');
+        const clearBtn = document.getElementById('clearBtn');
+
+        const addBtn = document.getElementById('addBtn');
+        const emptyAddBtn = document.getElementById('emptyAddBtn');
+        const sortBtn = document.getElementById('sortBtn');
+
+        const paramsList = document.getElementById('paramsList');
+        const emptyParams = document.getElementById('emptyParams');
+
+        const paramCount = document.getElementById('paramCount');
+        const uniqueCount = document.getElementById('uniqueCount');
+        const charCount = document.getElementById('charCount');
+
+        const generatedQuery = document.getElementById('generatedQuery');
+        const jsonOutput = document.getElementById('jsonOutput');
+
+        const copyQueryBtn = document.getElementById('copyQueryBtn');
+        const copyJsonBtn = document.getElementById('copyJsonBtn');
+
+        const message = document.getElementById('message');
+
+        let rows = [];
+        let nextId = 1;
+        let parseTimer = null;
+
+        function getThemeState() {
+          const html = document.documentElement;
+          const stored = localStorage.getItem('theme');
+
+          if (stored === 'light') return 'light';
+          if (stored === 'dark') return 'dark';
+
+          if (html.dataset.theme === 'light') return 'light';
+          if (html.dataset.theme === 'dark') return 'dark';
+
+          if (html.classList.contains('light')) return 'light';
+          if (html.classList.contains('dark')) return 'dark';
+
+          return 'dark';
+        }
+
+        function syncTheme() {
+          const theme = getThemeState();
+          const light = theme === 'light';
+
+          document.body.classList.toggle('query-light', light);
+          document.body.classList.toggle('query-dark', !light);
+        }
+
+        syncTheme();
+
+        const themeObserver = new MutationObserver(() => syncTheme());
+
+        themeObserver.observe(document.documentElement, {
+          attributes: true,
+          attributeFilter: ['class', 'data-theme']
+        });
+
+        function showMessage(text, type = 'success') {
+          message.textContent = text;
+          message.className = `message ${type}`;
+
+          clearTimeout(showMessage.timer);
+
+          showMessage.timer = setTimeout(() => {
+            message.textContent = '';
+            message.className = 'message';
+          }, 2500);
+        }
+
+        function extractQuery(value) {
+          let input = String(value || '').trim();
+
+          if (!input) return '';
+
+          const hashIndex = input.indexOf('#');
+
+          if (hashIndex !== -1) {
+            input = input.slice(0, hashIndex);
+          }
+
+          const questionIndex = input.indexOf('?');
+
+          if (questionIndex !== -1) {
+            return input.slice(questionIndex + 1);
+          }
+
+          return input.replace(/^\?/, '');
+        }
+
+        function parseQuery() {
+          const raw = extractQuery(queryInput.value);
+
+          if (!raw) {
+            rows = [];
+            renderRows();
+            updateOutputs();
+            showMessage('أدخل Query String أولاً.', 'error');
+            return;
+          }
+
+          if (raw.length > 20000) {
+            showMessage('حجم Query String كبير جدًا.', 'error');
+            return;
+          }
+
+          try {
+            const params = new URLSearchParams(raw);
+
+            rows = [];
+
+            params.forEach((value, key) => {
+              rows.push({
+                id: nextId++,
+                key,
+                value
+              });
+            });
+
+            renderRows();
+            updateOutputs();
+
+            showMessage(
+              `تم تحليل ${rows.length} معامل بنجاح.`,
+              'success'
+            );
+          } catch (error) {
+            showMessage('تعذر تحليل Query String.', 'error');
+          }
+        }
+
+        function addRow(key = '', value = '') {
+          rows.push({
+            id: nextId++,
+            key,
+            value
+          });
+
+          renderRows();
+          updateOutputs();
+
+          const lastRow = paramsList.lastElementChild;
+
+          if (lastRow) {
+            const input = lastRow.querySelector('.key-input');
+
+            if (input) {
+              input.focus();
+            }
+          }
+        }
+
+        function deleteRow(id) {
+          rows = rows.filter(row => row.id !== id);
+
+          renderRows();
+          updateOutputs();
+
+          showMessage('تم حذف المعامل.', 'success');
+        }
+
+        function renderRows() {
+          paramsList.innerHTML = '';
+
+          if (!rows.length) {
+            paramsList.style.display = 'none';
+            emptyParams.style.display = 'flex';
+            return;
+          }
+
+          paramsList.style.display = 'flex';
+          emptyParams.style.display = 'none';
+
+          rows.forEach((row, index) => {
+            const rowElement = document.createElement('div');
+            rowElement.className = 'param-row';
+
+            const number = document.createElement('div');
+            number.className = 'row-number';
+            number.textContent = String(index + 1);
+
+            const keyBox = document.createElement('div');
+            keyBox.className = 'field-box';
+
+            const keyLabel = document.createElement('label');
+            keyLabel.textContent = 'المفتاح';
+
+            const keyInput = document.createElement('input');
+            keyInput.type = 'text';
+            keyInput.className = 'code-input key-input';
+            keyInput.value = row.key;
+            keyInput.placeholder = 'name';
+            keyInput.spellcheck = false;
+
+            keyInput.addEventListener('input', () => {
+              row.key = keyInput.value;
+              updateOutputs();
+            });
+
+            keyBox.appendChild(keyLabel);
+            keyBox.appendChild(keyInput);
+
+            const valueBox = document.createElement('div');
+            valueBox.className = 'field-box';
+
+            const valueLabel = document.createElement('label');
+            valueLabel.textContent = 'القيمة';
+
+            const valueInput = document.createElement('input');
+            valueInput.type = 'text';
+            valueInput.className = 'code-input value-input';
+            valueInput.value = row.value;
+            valueInput.placeholder = 'John';
+            valueInput.spellcheck = false;
+
+            valueInput.addEventListener('input', () => {
+              row.value = valueInput.value;
+              updateOutputs();
+            });
+
+            valueBox.appendChild(valueLabel);
+            valueBox.appendChild(valueInput);
+
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'delete-btn';
+            deleteButton.type = 'button';
+            deleteButton.title = 'حذف المعامل';
+            deleteButton.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+
+            deleteButton.addEventListener('click', () => {
+              deleteRow(row.id);
+            });
+
+            rowElement.appendChild(number);
+            rowElement.appendChild(keyBox);
+            rowElement.appendChild(valueBox);
+            rowElement.appendChild(deleteButton);
+
+            paramsList.appendChild(rowElement);
+          });
+        }
+
+        function buildQuery() {
+          const params = new URLSearchParams();
+
+          rows.forEach(row => {
+            params.append(row.key, row.value);
+          });
+
+          const result = params.toString();
+
+          return result ? `?${result}` : '';
+        }
+
+        function buildJSON() {
+          if (!rows.length) {
+            return '';
+          }
+
+          const object = Object.create(null);
+
+          rows.forEach(row => {
+            const key = row.key;
+            const value = row.value;
+
+            if (Object.prototype.hasOwnProperty.call(object, key)) {
+              if (Array.isArray(object[key])) {
+                object[key].push(value);
+              } else {
+                object[key] = [object[key], value];
+              }
+            } else {
+              object[key] = value;
+            }
+          });
+
+          return JSON.stringify(object, null, 2);
+        }
+
+        function updateOutputs() {
+          const query = buildQuery();
+          const json = buildJSON();
+
+          paramCount.textContent = String(rows.length);
+
+          uniqueCount.textContent = String(
+            new Set(rows.map(row => row.key)).size
+          );
+
+          charCount.textContent = String(
+            rows.reduce(
+              (total, row) => total + row.key.length + row.value.length,
+              0
+            )
+          );
+
+          generatedQuery.textContent = query || 'لا توجد بيانات';
+          jsonOutput.textContent = json || 'لا توجد بيانات';
+        }
+
+        function sortRows() {
+          rows.sort((a, b) => {
+            return a.key.localeCompare(b.key, undefined, {
+              numeric: true,
+              sensitivity: 'base'
+            });
+          });
+
+          renderRows();
+          updateOutputs();
+
+          showMessage('تم ترتيب المفاتيح.', 'success');
+        }
+
+        async function copyText(text, successText) {
+          if (!text) {
+            showMessage('لا توجد بيانات لنسخها.', 'error');
+            return;
+          }
+
+          try {
+            await navigator.clipboard.writeText(text);
+            showMessage(successText, 'success');
+          } catch (error) {
+            const area = document.createElement('textarea');
+
+            area.value = text;
+            area.style.position = 'fixed';
+            area.style.opacity = '0';
+
+            document.body.appendChild(area);
+
+            area.focus();
+            area.select();
+
+            try {
+              document.execCommand('copy');
+              showMessage(successText, 'success');
+            } catch {
+              showMessage('تعذر نسخ البيانات.', 'error');
+            }
+
+            area.remove();
+          }
+        }
+
+        async function pasteQuery() {
+          try {
+            const text = await navigator.clipboard.readText();
+
+            if (!text) {
+              showMessage('الحافظة فارغة.', 'error');
+              return;
+            }
+
+            queryInput.value = text;
+            parseQuery();
+          } catch (error) {
+            showMessage(
+              'تعذر الوصول إلى الحافظة. الصق النص يدويًا.',
+              'error'
+            );
+          }
+        }
+
+        function loadSample() {
+          queryInput.value =
+            '?name=John&age=25&city=Rabat&language=العربية&tag=javascript&tag=astro';
+
+          parseQuery();
+        }
+
+        function clearAll() {
+          queryInput.value = '';
+          rows = [];
+
+          renderRows();
+          updateOutputs();
+
+          showMessage('تم مسح جميع البيانات.', 'success');
+        }
+
+        parseBtn.addEventListener('click', parseQuery);
+
+        pasteBtn.addEventListener('click', pasteQuery);
+
+        sampleBtn.addEventListener('click', loadSample);
+
+        clearBtn.addEventListener('click', clearAll);
+
+        addBtn.addEventListener('click', () => addRow());
+
+        emptyAddBtn.addEventListener('click', () => addRow());
+
+        sortBtn.addEventListener('click', sortRows);
+
+        copyQueryBtn.addEventListener('click', () => {
+          copyText(
+            buildQuery(),
+            'تم نسخ Query String بنجاح.'
+          );
+        });
+
+        copyJsonBtn.addEventListener('click', () => {
+          copyText(
+            buildJSON(),
+            'تم نسخ JSON بنجاح.'
+          );
+        });
+
+        queryInput.addEventListener('input', () => {
+          clearTimeout(parseTimer);
+
+          const value = queryInput.value.trim();
+
+          if (!value) {
+            rows = [];
+            renderRows();
+            updateOutputs();
+            return;
+          }
+
+          const raw = extractQuery(value);
+
+          if (
+            raw.includes('=') ||
+            raw.includes('&')
+          ) {
+            parseTimer = setTimeout(() => {
+              try {
+                const params = new URLSearchParams(raw);
+
+                rows = [];
+
+                params.forEach((value, key) => {
+                  rows.push({
+                    id: nextId++,
+                    key,
+                    value
+                  });
+                });
+
+                renderRows();
+                updateOutputs();
+              } catch {
+                // يتم التعامل مع الإدخال النهائي عبر زر التحليل.
+              }
+            }, 450);
+          }
+        });
+
+        queryInput.addEventListener('keydown', event => {
+          if (
+            (event.ctrlKey || event.metaKey) &&
+            event.key === 'Enter'
+          ) {
+            event.preventDefault();
+            parseQuery();
+          }
+        });
+
+        renderRows();
+        updateOutputs();
+      })();
+    </script>
+
+    <style>
+      :global(html) {
+        --page-bg: #07111f;
+        --page-bg-2: #0b1728;
+        --card-bg: rgba(13, 28, 47, 0.88);
+        --card-bg-2: rgba(17, 35, 58, 0.9);
+        --input-bg: #071321;
+        --border: rgba(116, 166, 219, 0.18);
+        --border-strong: rgba(82, 157, 235, 0.36);
+        --text: #edf6ff;
+        --muted: #91a8bf;
+        --blue: #2196f3;
+        --blue-2: #42a5f5;
+        --danger: #ef5350;
+        --success: #43d17c;
+        --shadow: 0 25px 70px rgba(0, 0, 0, 0.28);
+      }
+
+      :global(html[data-theme="light"]),
+      :global(body.query-light) {
+        --page-bg: #f4f9ff;
+        --page-bg-2: #eaf4ff;
+        --card-bg: rgba(255, 255, 255, 0.92);
+        --card-bg-2: #ffffff;
+        --input-bg: #f7fbff;
+        --border: rgba(42, 106, 166, 0.14);
+        --border-strong: rgba(33, 150, 243, 0.34);
+        --text: #14283d;
+        --muted: #60758a;
+        --shadow: 0 22px 60px rgba(42, 93, 135, 0.1);
+      }
+
+      :global(html.dark-mode),
+      :global(body.query-dark) {
+        --page-bg: #07111f;
+        --page-bg-2: #0b1728;
+        --card-bg: rgba(13, 28, 47, 0.88);
+        --card-bg-2: rgba(17, 35, 58, 0.9);
+        --input-bg: #071321;
+        --border: rgba(116, 166, 219, 0.18);
+        --border-strong: rgba(82, 157, 235, 0.36);
+        --text: #edf6ff;
+        --muted: #91a8bf;
+        --shadow: 0 25px 70px rgba(0, 0, 0, 0.28);
+      }
+
+      :global(body) {
+        margin: 0;
+        background:
+          radial-gradient(
+            circle at 10% 5%,
+            rgba(33, 150, 243, 0.13),
+            transparent 28%
+          ),
+          radial-gradient(
+            circle at 90% 20%,
+            rgba(66, 165, 245, 0.08),
+            transparent 26%
+          ),
+          var(--page-bg);
+        color: var(--text);
+        font-family: "Cairo", sans-serif;
+        transition:
+          background 0.25s ease,
+          color 0.25s ease;
+      }
+
+      .query-page {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+        padding: 65px 0 90px;
+      }
+
+      .hero {
+        text-align: center;
+        max-width: 850px;
+        margin: 0 auto 42px;
+      }
+
+      .hero-icon {
+        width: 76px;
+        height: 76px;
+        margin: 0 auto 18px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 24px;
+        background: linear-gradient(
+          135deg,
+          rgba(33, 150, 243, 0.2),
+          rgba(66, 165, 245, 0.07)
+        );
+        border: 1px solid var(--border-strong);
+        color: var(--blue-2);
+        font-size: 30px;
+        box-shadow: 0 15px 45px rgba(33, 150, 243, 0.1);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 14px;
+        border-radius: 999px;
+        background: rgba(33, 150, 243, 0.1);
+        color: var(--blue-2);
+        border: 1px solid rgba(33, 150, 243, 0.18);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .hero h1 {
+        margin: 16px 0 10px;
+        font-size: clamp(31px, 5vw, 52px);
+        line-height: 1.15;
+        letter-spacing: -1px;
+      }
+
+      .hero p {
+        margin: 0 auto;
+        max-width: 720px;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 2;
+      }
+
+      .tool-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+        border-radius: 26px;
+        padding: 28px;
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 20px;
+      }
+
+      .section-title.small {
+        margin-bottom: 0;
+      }
+
+      .section-title h2 {
+        margin: 0;
+        font-size: 19px;
+      }
+
+      .section-title p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .title-icon {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+        border-radius: 13px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(33, 150, 243, 0.12);
+        color: var(--blue-2);
+        border: 1px solid rgba(33, 150, 243, 0.2);
+      }
+
+      .input-box {
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+        border-radius: 19px;
+        padding: 14px;
+      }
+
+      #queryInput {
+        width: 100%;
+        min-height: 145px;
+        resize: vertical;
+        box-sizing: border-box;
+        border: 0;
+        outline: 0;
+        background: transparent;
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 14px;
+        line-height: 1.8;
+        direction: ltr;
+        text-align: left;
+      }
+
+      #queryInput::placeholder {
+        color: var(--muted);
+        opacity: 0.65;
+      }
+
+      .input-actions,
+      .editor-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 9px;
+        margin-top: 13px;
+      }
+
+      .editor-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        margin-top: 34px;
+        margin-bottom: 16px;
+      }
+
+      .editor-actions {
+        margin-top: 0;
+        justify-content: flex-end;
+      }
+
+      button {
+        font-family: inherit;
+        cursor: pointer;
+        border: 0;
+        transition:
+          transform 0.18s ease,
+          opacity 0.18s ease,
+          box-shadow 0.18s ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+      }
+
+      button:active {
+        transform: translateY(0);
+      }
+
+      .primary-btn,
+      .secondary-btn,
+      .danger-btn,
+      .copy-btn {
+        min-height: 42px;
+        padding: 0 15px;
+        border-radius: 11px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .primary-btn {
+        background: linear-gradient(
+          135deg,
+          #168cf0,
+          #42a5f5
+        );
+        color: white;
+        box-shadow: 0 8px 24px rgba(33, 150, 243, 0.2);
+      }
+
+      .secondary-btn {
+        background: rgba(87, 132, 171, 0.1);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+
+      .danger-btn {
+        background: rgba(239, 83, 80, 0.1);
+        color: #ff7774;
+        border: 1px solid rgba(239, 83, 80, 0.2);
+      }
+
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-top: 16px;
+      }
+
+      .stat-card {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 15px;
+        background: var(--card-bg-2);
+        border: 1px solid var(--border);
+        border-radius: 15px;
+      }
+
+      .stat-icon {
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 11px;
+        background: rgba(33, 150, 243, 0.1);
+        color: var(--blue-2);
+      }
+
+      .stat-card span {
+        display: block;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .stat-card strong {
+        display: block;
+        margin-top: 1px;
+        font-size: 19px;
+      }
+
+      .params-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .param-row {
+        display: grid;
+        grid-template-columns: 36px minmax(0, 1fr) minmax(0, 1.4fr) 42px;
+        gap: 10px;
+        align-items: end;
+        padding: 12px;
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+        border-radius: 15px;
+      }
+
+      .row-number {
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 10px;
+        background: rgba(33, 150, 243, 0.08);
+        color: var(--blue-2);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .field-box label {
+        display: block;
+        margin-bottom: 5px;
+        color: var(--muted);
+        font-size: 10px;
+        font-weight: 700;
+      }
+
+      .code-input {
+        width: 100%;
+        height: 42px;
+        box-sizing: border-box;
+        padding: 0 11px;
+        outline: none;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        background: var(--card-bg-2);
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 13px;
+        direction: ltr;
+        text-align: left;
+        transition: border-color 0.18s ease;
+      }
+
+      .code-input:focus {
+        border-color: var(--blue);
+      }
+
+      .delete-btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: rgba(239, 83, 80, 0.08);
+        color: #ff706d;
+        border: 1px solid rgba(239, 83, 80, 0.16);
+        font-size: 14px;
+      }
+
+      .empty-state {
+        min-height: 190px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 25px;
+        border-radius: 18px;
+        border: 1px dashed var(--border-strong);
+        background: rgba(33, 150, 243, 0.025);
+      }
+
+      .empty-icon {
+        width: 54px;
+        height: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 16px;
+        background: rgba(33, 150, 243, 0.09);
+        color: var(--blue-2);
+        font-size: 21px;
+        margin-bottom: 12px;
+      }
+
+      .empty-state h3 {
+        margin: 0;
+        font-size: 16px;
+      }
+
+      .empty-state p {
+        max-width: 440px;
+        margin: 7px 0 14px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      .outputs-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        margin-top: 22px;
+      }
+
+      .output-card {
+        overflow: hidden;
+        border-radius: 17px;
+        border: 1px solid var(--border);
+        background: var(--input-bg);
+      }
+
+      .output-header {
+        min-height: 54px;
+        box-sizing: border-box;
+        padding: 9px 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .output-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .output-label i {
+        color: var(--blue-2);
+      }
+
+      .copy-btn {
+        min-height: 34px;
+        padding: 0 11px;
+        background: rgba(33, 150, 243, 0.09);
+        color: var(--blue-2);
+        border: 1px solid rgba(33, 150, 243, 0.15);
+        font-size: 11px;
+      }
+
+      pre {
+        margin: 0;
+        padding: 16px;
+        min-height: 100px;
+        max-height: 300px;
+        overflow: auto;
+        box-sizing: border-box;
+        white-space: pre-wrap;
+        word-break: break-word;
+        color: var(--text);
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        line-height: 1.8;
+        direction: ltr;
+        text-align: left;
+      }
+
+      #generatedQuery {
+        color: var(--blue-2);
+      }
+
+      .message {
+        min-height: 24px;
+        margin-top: 12px;
+        text-align: center;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .message.success {
+        color: var(--success);
+      }
+
+      .message.error {
+        color: #ff7774;
+      }
+
+      .features-section,
+      .info-section,
+      .how-section,
+      .faq-section {
+        margin-top: 70px;
+      }
+
+      .section-heading {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .section-heading span {
+        color: var(--blue-2);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .section-heading h2 {
+        margin: 6px 0 0;
+        font-size: clamp(23px, 4vw, 30px);
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+
+      .feature-card {
+        padding: 22px 18px;
+        border-radius: 18px;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+      }
+
+      .feature-icon {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 13px;
+        background: rgba(33, 150, 243, 0.1);
+        color: var(--blue-2);
+        margin-bottom: 15px;
+      }
+
+      .feature-card h3 {
+        margin: 0 0 7px;
+        font-size: 15px;
+      }
+
+      .feature-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.9;
+      }
+
+      .info-section {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .info-card {
+        display: flex;
+        gap: 15px;
+        padding: 22px;
+        border-radius: 18px;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+      }
+
+      .info-icon {
+        width: 44px;
+        height: 44px;
+        flex: 0 0 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        background: rgba(33, 150, 243, 0.1);
+        color: var(--blue-2);
+      }
+
+      .info-card h2 {
+        margin: 0 0 8px;
+        font-size: 17px;
+      }
+
+      .info-card p {
+        margin: 0 0 10px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 2;
+      }
+
+      code {
+        font-family: "JetBrains Mono", monospace;
+      }
+
+      .code-example {
+        direction: ltr;
+        text-align: left;
+        overflow-x: auto;
+        padding: 11px 13px;
+        margin: 10px 0;
+        border-radius: 10px;
+        background: var(--input-bg);
+        border: 1px solid var(--border);
+        color: var(--blue-2);
+        font-size: 11px;
+      }
+
+      .steps {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+      }
+
+      .step {
+        display: flex;
+        gap: 12px;
+        padding: 19px;
+        border-radius: 17px;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+      }
+
+      .step > span {
+        width: 32px;
+        height: 32px;
+        flex: 0 0 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        background: rgba(33, 150, 243, 0.12);
+        color: var(--blue-2);
+        font-weight: 800;
+        font-size: 12px;
+      }
+
+      .step h3 {
+        margin: 0 0 4px;
+        font-size: 14px;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 11px;
+        line-height: 1.8;
+      }
+
+      .faq-section details {
+        margin-bottom: 10px;
+        padding: 0 18px;
+        border-radius: 15px;
+        background: var(--card-bg);
+        border: 1px solid var(--border);
+      }
+
+      .faq-section summary {
+        min-height: 55px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+        cursor: pointer;
+        list-style: none;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .faq-section summary::-webkit-details-marker {
+        display: none;
+      }
+
+      .faq-section summary i {
+        color: var(--blue-2);
+        transition: transform 0.2s ease;
+      }
+
+      .faq-section details[open] summary i {
+        transform: rotate(180deg);
+      }
+
+      .faq-section details p {
+        margin: 0;
+        padding: 0 0 17px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 2;
+      }
+
+      @media (max-width: 850px) {
+        .features-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .steps {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .info-section {
+          grid-template-columns: 1fr;
+        }
+
+        .editor-header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .editor-actions {
+          width: 100%;
+          justify-content: flex-start;
+        }
+      }
+
+      @media (max-width: 650px) {
+        .query-page {
+          width: min(100% - 20px, 1120px);
+          padding-top: 42px;
+        }
+
+        .tool-card {
+          padding: 17px;
+          border-radius: 20px;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .outputs-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .param-row {
+          grid-template-columns: 32px 1fr 40px;
+        }
+
+        .param-row .field-box:nth-child(3) {
+          grid-column: 2 / 4;
+        }
+
+        .delete-btn {
+          grid-column: 3;
+          grid-row: 1;
+        }
+
+        .row-number {
+          width: 32px;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero h1 {
+          font-size: 30px;
+        }
+
+        .hero p {
+          font-size: 13px;
+        }
+
+        .features-grid,
+        .steps {
+          grid-template-columns: 1fr;
+        }
+
+        .input-actions button,
+        .editor-actions button {
+          flex: 1;
+        }
+
+        .section-title h2 {
+          font-size: 16px;
+        }
+
+        .param-row {
+          padding: 10px;
+        }
+      }
+
+      @media (max-width: 380px) {
+        .query-page {
+          width: calc(100% - 14px);
+        }
+
+        .tool-card {
+          padding: 13px;
+        }
+
+        .primary-btn,
+        .secondary-btn,
+        .danger-btn {
+          padding: 0 10px;
+          font-size: 11px;
+        }
+      }
+    </style>
+  </body>
+</html>
