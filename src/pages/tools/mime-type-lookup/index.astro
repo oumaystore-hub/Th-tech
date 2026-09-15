@@ -1,0 +1,875 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const canonical = `https://oumaystore-hub.github.io${base}/tools/mime-type-lookup/`;
+
+const mimeTypes = [
+  { ext: '.html', mime: 'text/html', name: 'HTML', category: 'Web' },
+  { ext: '.htm', mime: 'text/html', name: 'HTML', category: 'Web' },
+  { ext: '.css', mime: 'text/css', name: 'CSS', category: 'Web' },
+  { ext: '.js', mime: 'text/javascript', name: 'JavaScript', category: 'Web' },
+  { ext: '.mjs', mime: 'text/javascript', name: 'JavaScript Module', category: 'Web' },
+  { ext: '.json', mime: 'application/json', name: 'JSON', category: 'Data' },
+  { ext: '.xml', mime: 'application/xml', name: 'XML', category: 'Data' },
+  { ext: '.csv', mime: 'text/csv', name: 'CSV', category: 'Data' },
+  { ext: '.txt', mime: 'text/plain', name: 'Plain Text', category: 'Text' },
+  { ext: '.md', mime: 'text/markdown', name: 'Markdown', category: 'Text' },
+  { ext: '.rtf', mime: 'application/rtf', name: 'Rich Text Format', category: 'Text' },
+
+  { ext: '.pdf', mime: 'application/pdf', name: 'PDF', category: 'Document' },
+  { ext: '.doc', mime: 'application/msword', name: 'Microsoft Word', category: 'Document' },
+  { ext: '.docx', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', name: 'Word Document', category: 'Document' },
+  { ext: '.xls', mime: 'application/vnd.ms-excel', name: 'Microsoft Excel', category: 'Document' },
+  { ext: '.xlsx', mime: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', name: 'Excel Spreadsheet', category: 'Document' },
+  { ext: '.ppt', mime: 'application/vnd.ms-powerpoint', name: 'PowerPoint', category: 'Document' },
+  { ext: '.pptx', mime: 'application/vnd.openxmlformats-officedocument.presentationml.presentation', name: 'PowerPoint Presentation', category: 'Document' },
+  { ext: '.odt', mime: 'application/vnd.oasis.opendocument.text', name: 'OpenDocument Text', category: 'Document' },
+  { ext: '.ods', mime: 'application/vnd.oasis.opendocument.spreadsheet', name: 'OpenDocument Spreadsheet', category: 'Document' },
+  { ext: '.odp', mime: 'application/vnd.oasis.opendocument.presentation', name: 'OpenDocument Presentation', category: 'Document' },
+
+  { ext: '.jpg', mime: 'image/jpeg', name: 'JPEG Image', category: 'Image' },
+  { ext: '.jpeg', mime: 'image/jpeg', name: 'JPEG Image', category: 'Image' },
+  { ext: '.png', mime: 'image/png', name: 'PNG Image', category: 'Image' },
+  { ext: '.gif', mime: 'image/gif', name: 'GIF Image', category: 'Image' },
+  { ext: '.webp', mime: 'image/webp', name: 'WebP Image', category: 'Image' },
+  { ext: '.svg', mime: 'image/svg+xml', name: 'SVG Image', category: 'Image' },
+  { ext: '.ico', mime: 'image/x-icon', name: 'Icon', category: 'Image' },
+  { ext: '.bmp', mime: 'image/bmp', name: 'Bitmap Image', category: 'Image' },
+  { ext: '.avif', mime: 'image/avif', name: 'AVIF Image', category: 'Image' },
+  { ext: '.tif', mime: 'image/tiff', name: 'TIFF Image', category: 'Image' },
+  { ext: '.tiff', mime: 'image/tiff', name: 'TIFF Image', category: 'Image' },
+
+  { ext: '.mp3', mime: 'audio/mpeg', name: 'MP3 Audio', category: 'Audio' },
+  { ext: '.wav', mime: 'audio/wav', name: 'WAV Audio', category: 'Audio' },
+  { ext: '.ogg', mime: 'audio/ogg', name: 'Ogg Audio', category: 'Audio' },
+  { ext: '.oga', mime: 'audio/ogg', name: 'Ogg Audio', category: 'Audio' },
+  { ext: '.m4a', mime: 'audio/mp4', name: 'MPEG-4 Audio', category: 'Audio' },
+  { ext: '.aac', mime: 'audio/aac', name: 'AAC Audio', category: 'Audio' },
+  { ext: '.flac', mime: 'audio/flac', name: 'FLAC Audio', category: 'Audio' },
+  { ext: '.opus', mime: 'audio/opus', name: 'Opus Audio', category: 'Audio' },
+  { ext: '.weba', mime: 'audio/webm', name: 'WebM Audio', category: 'Audio' },
+
+  { ext: '.mp4', mime: 'video/mp4', name: 'MPEG-4 Video', category: 'Video' },
+  { ext: '.webm', mime: 'video/webm', name: 'WebM Video', category: 'Video' },
+  { ext: '.avi', mime: 'video/x-msvideo', name: 'AVI Video', category: 'Video' },
+  { ext: '.mpeg', mime: 'video/mpeg', name: 'MPEG Video', category: 'Video' },
+  { ext: '.mpg', mime: 'video/mpeg', name: 'MPEG Video', category: 'Video' },
+  { ext: '.mov', mime: 'video/quicktime', name: 'QuickTime Video', category: 'Video' },
+  { ext: '.mkv', mime: 'video/x-matroska', name: 'Matroska Video', category: 'Video' },
+  { ext: '.ogv', mime: 'video/ogg', name: 'Ogg Video', category: 'Video' },
+
+  { ext: '.zip', mime: 'application/zip', name: 'ZIP Archive', category: 'Archive' },
+  { ext: '.rar', mime: 'application/vnd.rar', name: 'RAR Archive', category: 'Archive' },
+  { ext: '.7z', mime: 'application/x-7z-compressed', name: '7-Zip Archive', category: 'Archive' },
+  { ext: '.tar', mime: 'application/x-tar', name: 'TAR Archive', category: 'Archive' },
+  { ext: '.gz', mime: 'application/gzip', name: 'GZIP Archive', category: 'Archive' },
+  { ext: '.bz', mime: 'application/x-bzip', name: 'BZIP Archive', category: 'Archive' },
+  { ext: '.bz2', mime: 'application/x-bzip2', name: 'BZIP2 Archive', category: 'Archive' },
+  { ext: '.xz', mime: 'application/x-xz', name: 'XZ Archive', category: 'Archive' },
+
+  { ext: '.wasm', mime: 'application/wasm', name: 'WebAssembly', category: 'Application' },
+  { ext: '.bin', mime: 'application/octet-stream', name: 'Binary File', category: 'Application' },
+  { ext: '.exe', mime: 'application/vnd.microsoft.portable-executable', name: 'Windows Executable', category: 'Application' },
+  { ext: '.apk', mime: 'application/vnd.android.package-archive', name: 'Android Package', category: 'Application' },
+  { ext: '.jar', mime: 'application/java-archive', name: 'Java Archive', category: 'Application' },
+  { ext: '.swf', mime: 'application/x-shockwave-flash', name: 'Flash', category: 'Application' },
+  { ext: '.sql', mime: 'application/sql', name: 'SQL', category: 'Application' },
+  { ext: '.graphql', mime: 'application/graphql', name: 'GraphQL', category: 'Application' },
+
+  { ext: '.woff', mime: 'font/woff', name: 'WOFF Font', category: 'Font' },
+  { ext: '.woff2', mime: 'font/woff2', name: 'WOFF2 Font', category: 'Font' },
+  { ext: '.ttf', mime: 'font/ttf', name: 'TrueType Font', category: 'Font' },
+  { ext: '.otf', mime: 'font/otf', name: 'OpenType Font', category: 'Font' },
+
+  { ext: '.webmanifest', mime: 'application/manifest+json', name: 'Web App Manifest', category: 'Web' },
+  { ext: '.map', mime: 'application/json', name: 'Source Map', category: 'Web' },
+  { ext: '.wasm', mime: 'application/wasm', name: 'WebAssembly', category: 'Web' },
+  { ext: '.rss', mime: 'application/rss+xml', name: 'RSS', category: 'Data' },
+  { ext: '.atom', mime: 'application/atom+xml', name: 'Atom Feed', category: 'Data' },
+
+  { ext: '.sh', mime: 'application/x-sh', name: 'Shell Script', category: 'Code' },
+  { ext: '.php', mime: 'application/x-httpd-php', name: 'PHP', category: 'Code' },
+  { ext: '.py', mime: 'text/x-python', name: 'Python', category: 'Code' },
+  { ext: '.java', mime: 'text/x-java-source', name: 'Java', category: 'Code' },
+  { ext: '.c', mime: 'text/x-c', name: 'C Source', category: 'Code' },
+  { ext: '.cpp', mime: 'text/x-c', name: 'C++ Source', category: 'Code' },
+  { ext: '.h', mime: 'text/x-c', name: 'C Header', category: 'Code' },
+  { ext: '.ts', mime: 'video/mp2t', name: 'TypeScript', category: 'Code' }
+];
+
+const categories = [
+  { id: 'all', label: 'الكل' },
+  { id: 'Web', label: 'Web' },
+  { id: 'Data', label: 'Data' },
+  { id: 'Document', label: 'Documents' },
+  { id: 'Image', label: 'Images' },
+  { id: 'Audio', label: 'Audio' },
+  { id: 'Video', label: 'Video' },
+  { id: 'Archive', label: 'Archives' },
+  { id: 'Application', label: 'Applications' },
+  { id: 'Font', label: 'Fonts' },
+  { id: 'Code', label: 'Code' }
+];
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>MIME Type Lookup | البحث عن MIME Types - Th.Tech</title>
+
+  <meta
+    name="description"
+    content="أداة MIME Type Lookup للبحث عن MIME Type حسب امتداد الملف أو نوع المحتوى مع نسخ النتائج بسهولة."
+  />
+
+  <link rel="canonical" href={canonical} />
+  <meta name="theme-color" content="#08111f" />
+
+  <style is:global>
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Cairo, Arial, sans-serif;
+      background: #08111f;
+      color: #e8eef8;
+    }
+
+    .mime-page {
+      min-height: 100vh;
+      padding: 32px 14px 70px;
+      background:
+        radial-gradient(circle at 8% 5%, rgba(14, 165, 233, .15), transparent 27%),
+        radial-gradient(circle at 92% 25%, rgba(59, 130, 246, .12), transparent 30%),
+        #08111f;
+      transition: .25s ease;
+    }
+
+    .mime-page.light {
+      background:
+        radial-gradient(circle at 8% 5%, rgba(14, 165, 233, .09), transparent 27%),
+        #f4f8fc;
+      color: #172033;
+    }
+
+    .container {
+      width: min(1120px, 100%);
+      margin: auto;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 27px;
+    }
+
+    .icon-box {
+      width: 76px;
+      height: 76px;
+      margin: 0 auto 17px;
+      border-radius: 22px;
+      display: grid;
+      place-items: center;
+      background: rgba(14, 165, 233, .12);
+      border: 1px solid rgba(14, 165, 233, .35);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, .22);
+    }
+
+    .icon-box svg {
+      width: 42px;
+      height: 42px;
+      stroke: #06b6d4;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(28px, 5vw, 42px);
+      font-weight: 900;
+      letter-spacing: -.6px;
+    }
+
+    .subtitle {
+      margin: 0 auto;
+      max-width: 720px;
+      color: #8190a5;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .mime-page.light .subtitle {
+      color: #64748b;
+    }
+
+    .lookup-box {
+      padding: 18px;
+      margin-bottom: 18px;
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, .17);
+      background: rgba(17, 30, 49, .84);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .17);
+      backdrop-filter: blur(12px);
+    }
+
+    .mime-page.light .lookup-box {
+      background: rgba(255,255,255,.9);
+      border-color: #dbe4ee;
+      box-shadow: 0 15px 35px rgba(15, 23, 42, .07);
+    }
+
+    .search-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-wrap svg {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 21px;
+      height: 21px;
+      stroke: #718096;
+      pointer-events: none;
+    }
+
+    #searchInput {
+      width: 100%;
+      height: 56px;
+      padding: 0 50px 0 18px;
+      border-radius: 15px;
+      border: 1px solid #33445c;
+      background: #0c1829;
+      color: #f8fafc;
+      outline: none;
+      font-family: inherit;
+      font-size: 15px;
+      direction: rtl;
+      transition: .2s;
+    }
+
+    #searchInput:focus {
+      border-color: #06b6d4;
+      box-shadow: 0 0 0 3px rgba(6, 182, 212, .1);
+    }
+
+    .mime-page.light #searchInput {
+      background: #f8fafc;
+      color: #172033;
+      border-color: #cbd5e1;
+    }
+
+    .clear-btn {
+      height: 56px;
+      padding: 0 18px;
+      border-radius: 15px;
+      border: 1px solid #33445c;
+      background: #122238;
+      color: #b7c3d4;
+      font-family: inherit;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .clear-btn:hover {
+      border-color: #06b6d4;
+      color: #fff;
+    }
+
+    .mime-page.light .clear-btn {
+      background: #fff;
+      color: #475569;
+      border-color: #d2dce8;
+    }
+
+    .categories {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 13px;
+    }
+
+    .category-btn {
+      border: 1px solid #33445c;
+      background: #101e31;
+      color: #91a0b5;
+      padding: 9px 13px;
+      border-radius: 11px;
+      font-family: inherit;
+      font-size: 12px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .category-btn:hover {
+      border-color: #06b6d4;
+      color: #e2e8f0;
+    }
+
+    .category-btn.active {
+      background: #0891b2;
+      border-color: #22d3ee;
+      color: #fff;
+    }
+
+    .mime-page.light .category-btn {
+      background: #fff;
+      color: #64748b;
+      border-color: #d6e0eb;
+    }
+
+    .mime-page.light .category-btn.active {
+      background: #0891b2;
+      color: #fff;
+      border-color: #0891b2;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 13px;
+      color: #748298;
+      font-size: 12px;
+    }
+
+    .table-box {
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, .17);
+      border-radius: 22px;
+      background: rgba(17, 30, 49, .82);
+      box-shadow: 0 18px 45px rgba(0,0,0,.14);
+    }
+
+    .mime-page.light .table-box {
+      background: #fff;
+      border-color: #dbe4ee;
+    }
+
+    .table-head,
+    .mime-row {
+      display: grid;
+      grid-template-columns: 1.1fr 2.4fr 1.4fr 1fr;
+      gap: 12px;
+      align-items: center;
+      padding: 15px 18px;
+    }
+
+    .table-head {
+      background: rgba(14, 165, 233, .07);
+      border-bottom: 1px solid rgba(148, 163, 184, .15);
+      color: #94a3b8;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .mime-row {
+      position: relative;
+      border-bottom: 1px solid rgba(148, 163, 184, .1);
+      transition: .18s;
+    }
+
+    .mime-row:last-child {
+      border-bottom: 0;
+    }
+
+    .mime-row:hover {
+      background: rgba(14, 165, 233, .045);
+    }
+
+    .mime-page.light .mime-row:hover {
+      background: #f8fbfe;
+    }
+
+    .extension {
+      direction: ltr;
+      text-align: right;
+      font-family: "JetBrains Mono", "Courier New", monospace;
+      font-weight: 800;
+      color: #38bdf8;
+      font-size: 14px;
+    }
+
+    .mime-value {
+      direction: ltr;
+      text-align: right;
+      font-family: "JetBrains Mono", "Courier New", monospace;
+      color: #cbd5e1;
+      font-size: 12px;
+      word-break: break-all;
+    }
+
+    .mime-page.light .mime-value {
+      color: #334155;
+    }
+
+    .file-name {
+      color: #e2e8f0;
+      font-size: 13px;
+    }
+
+    .mime-page.light .file-name {
+      color: #334155;
+    }
+
+    .type-badge {
+      display: inline-block;
+      width: max-content;
+      padding: 5px 9px;
+      border-radius: 8px;
+      background: rgba(14, 165, 233, .09);
+      color: #67e8f9;
+      border: 1px solid rgba(34, 211, 238, .17);
+      font-size: 10px;
+    }
+
+    .mime-page.light .type-badge {
+      color: #0e7490;
+      background: #ecfeff;
+      border-color: #a5f3fc;
+    }
+
+    .copy-btn {
+      width: 33px;
+      height: 33px;
+      margin-inline-start: auto;
+      border: 1px solid rgba(148, 163, 184, .18);
+      border-radius: 9px;
+      background: rgba(100, 116, 139, .08);
+      color: #94a3b8;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      transition: .2s;
+    }
+
+    .copy-btn:hover {
+      color: #22d3ee;
+      border-color: #22d3ee;
+    }
+
+    .copy-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .empty {
+      display: none;
+      text-align: center;
+      padding: 55px 20px;
+      color: #718096;
+    }
+
+    .empty svg {
+      width: 45px;
+      height: 45px;
+      margin-bottom: 9px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      margin-top: 35px;
+    }
+
+    .info-card {
+      padding: 21px;
+      border-radius: 20px;
+      border: 1px solid rgba(148, 163, 184, .15);
+      background: rgba(17, 30, 49, .65);
+    }
+
+    .mime-page.light .info-card {
+      background: #fff;
+      border-color: #dbe4ee;
+    }
+
+    .info-card h2 {
+      margin: 0 0 9px;
+      font-size: 17px;
+    }
+
+    .info-card p {
+      margin: 0;
+      color: #8290a4;
+      font-size: 13px;
+      line-height: 1.85;
+    }
+
+    .mime-page.light .info-card p {
+      color: #64748b;
+    }
+
+    @media (max-width: 760px) {
+      .table-head {
+        display: none;
+      }
+
+      .mime-row {
+        grid-template-columns: 90px 1fr auto;
+        gap: 10px;
+        padding: 16px 14px;
+      }
+
+      .mime-row .file-name {
+        grid-column: 2;
+        grid-row: 2;
+        font-size: 12px;
+      }
+
+      .mime-row .type-badge {
+        grid-column: 1;
+        grid-row: 2;
+      }
+
+      .mime-row .copy-btn {
+        grid-column: 3;
+        grid-row: 1 / span 2;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .mime-page {
+        padding: 24px 10px 55px;
+      }
+
+      .search-row {
+        grid-template-columns: 1fr;
+      }
+
+      .clear-btn {
+        width: 100%;
+      }
+
+      .categories {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .category-btn {
+        width: 100%;
+      }
+
+      .category-btn:first-child {
+        grid-column: span 2;
+      }
+
+      .stats {
+        font-size: 11px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <Header />
+
+  <main class="mime-page" id="mimePage">
+    <div class="container">
+
+      <section class="hero">
+        <div class="icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+            <path d="M6 3h8l5 5v13H6z"/>
+            <path d="M14 3v6h5"/>
+            <path d="M9 13h6M9 17h5"/>
+          </svg>
+        </div>
+
+        <h1>MIME Type Lookup</h1>
+
+        <p class="subtitle">
+          ابحث عن MIME Type لأي امتداد ملف واعرف نوع المحتوى المناسب له بسرعة
+        </p>
+      </section>
+
+      <section class="lookup-box">
+
+        <div class="search-row">
+          <div class="search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <circle cx="11" cy="11" r="7"/>
+              <path d="m20 20-4-4"/>
+            </svg>
+
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="ابحث مثل: .json أو image/png أو PDF..."
+              autocomplete="off"
+              spellcheck="false"
+            />
+          </div>
+
+          <button class="clear-btn" id="clearBtn" type="button">
+            مسح البحث
+          </button>
+        </div>
+
+        <div class="categories">
+          {categories.map(category => (
+            <button
+              class:list={['category-btn', category.id === 'all' && 'active']}
+              data-category={category.id}
+              type="button"
+            >
+              {category.label}
+            </button>
+          ))}
+        </div>
+
+        <div class="stats">
+          <span id="resultText">عرض {mimeTypes.length} نوع</span>
+          <span>MIME Type Reference</span>
+        </div>
+
+      </section>
+
+      <section class="table-box">
+
+        <div class="table-head">
+          <div>الامتداد</div>
+          <div>MIME Type</div>
+          <div>الاسم</div>
+          <div>الفئة</div>
+        </div>
+
+        <div id="mimeList">
+          {mimeTypes.map(item => (
+            <div
+              class="mime-row"
+              data-category={item.category}
+              data-search={`${item.ext} ${item.mime} ${item.name} ${item.category}`.toLowerCase()}
+            >
+              <div class="extension">{item.ext}</div>
+
+              <div class="mime-value">{item.mime}</div>
+
+              <div class="file-name">{item.name}</div>
+
+              <div>
+                <span class="type-badge">{item.category}</span>
+              </div>
+
+              <button
+                class="copy-btn"
+                type="button"
+                data-copy={item.mime}
+                title="نسخ MIME Type"
+                aria-label={`نسخ ${item.mime}`}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="11" height="11" rx="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+              </button>
+            </div>
+          ))}
+        </div>
+
+      </section>
+
+      <div class="empty" id="emptyState">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="m20 20-4-4M8.5 8.5l5 5M13.5 8.5l-5 5"/>
+        </svg>
+
+        <div>لم يتم العثور على MIME Type مطابق</div>
+      </div>
+
+      <section class="info-grid">
+
+        <article class="info-card">
+          <h2>ما هو MIME Type؟</h2>
+          <p>
+            MIME Type هو نوع يحدد طبيعة المحتوى الذي يتم نقله عبر الإنترنت.
+            يستخدمه المتصفح والخادم لمعرفة كيفية التعامل مع الملف أو البيانات.
+          </p>
+        </article>
+
+        <article class="info-card">
+          <h2>أمثلة شائعة</h2>
+          <p>
+            HTML يستخدم text/html، وCSS يستخدم text/css،
+            وJSON يستخدم application/json، بينما الصور تستخدم أنواعاً
+            مثل image/png وimage/jpeg.
+          </p>
+        </article>
+
+        <article class="info-card">
+          <h2>أين يتم استخدامه؟</h2>
+          <p>
+            يظهر MIME Type بشكل أساسي في ترويسة HTTP Content-Type،
+            كما يستخدم عند رفع الملفات وتنزيلها ومعالجة الموارد في الويب.
+          </p>
+        </article>
+
+      </section>
+
+    </div>
+  </main>
+
+  <Footer />
+
+  <script is:inline>
+    const mimePage = document.getElementById('mimePage');
+    const searchInput = document.getElementById('searchInput');
+    const clearBtn = document.getElementById('clearBtn');
+    const rows = [...document.querySelectorAll('.mime-row')];
+    const categoryButtons = [...document.querySelectorAll('.category-btn')];
+    const resultText = document.getElementById('resultText');
+    const emptyState = document.getElementById('emptyState');
+
+    let activeCategory = 'all';
+
+    function syncTheme() {
+      const root = document.documentElement;
+
+      const isLight =
+        root.dataset.theme === 'light' ||
+        root.classList.contains('light');
+
+      mimePage?.classList.toggle('light', isLight);
+    }
+
+    syncTheme();
+
+    const themeObserver = new MutationObserver(syncTheme);
+
+    themeObserver.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['class', 'data-theme']
+    });
+
+    function applyFilter() {
+      const query = searchInput.value.trim().toLowerCase();
+
+      let visible = 0;
+
+      rows.forEach(row => {
+        const text = row.dataset.search || '';
+        const category = row.dataset.category || '';
+
+        const matchesSearch =
+          !query || text.includes(query);
+
+        const matchesCategory =
+          activeCategory === 'all' ||
+          category === activeCategory;
+
+        const show =
+          matchesSearch &&
+          matchesCategory;
+
+        row.style.display = show ? 'grid' : 'none';
+
+        if (show) {
+          visible++;
+        }
+      });
+
+      resultText.textContent =
+        `عرض ${visible} نوع`;
+
+      emptyState.style.display =
+        visible === 0 ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', applyFilter);
+
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      activeCategory = 'all';
+
+      categoryButtons.forEach(button => {
+        button.classList.toggle(
+          'active',
+          button.dataset.category === 'all'
+        );
+      });
+
+      searchInput.focus();
+      applyFilter();
+    });
+
+    categoryButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        activeCategory =
+          button.dataset.category || 'all';
+
+        categoryButtons.forEach(item => {
+          item.classList.toggle(
+            'active',
+            item === button
+          );
+        });
+
+        applyFilter();
+      });
+    });
+
+    document.querySelectorAll('.copy-btn').forEach(button => {
+      button.addEventListener('click', async () => {
+        const value = button.dataset.copy || '';
+
+        try {
+          await navigator.clipboard.writeText(value);
+
+          const oldHTML = button.innerHTML;
+
+          button.innerHTML = `
+            <svg viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2">
+              <path d="m5 12 4 4L19 6"/>
+            </svg>
+          `;
+
+          setTimeout(() => {
+            button.innerHTML = oldHTML;
+          }, 1100);
+
+        } catch {
+          const textarea =
+            document.createElement('textarea');
+
+          textarea.value = value;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
+
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+
+          try {
+            document.execCommand('copy');
+          } catch {}
+
+          textarea.remove();
+        }
+      });
+    });
+
+    applyFilter();
+  </script>
+</body>
+</html>
