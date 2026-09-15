@@ -12,802 +12,472 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/ascii-converter
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>محول ASCII | Th.Tech</title>
+    <title>ASCII Converter | محول ASCII | Th.Tech</title>
 
     <meta
       name="description"
-      content="محول ASCII احترافي لتحويل النص إلى أكواد ASCII والعكس بسرعة وسهولة."
+      content="محول ASCII احترافي لتحويل النص إلى رموز ASCII والعكس مع دعم Decimal وHex وBinary."
     />
 
     <link rel="canonical" href={canonical} />
-
-    <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
 
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
     <style>
-      /* =========================================================
-         BASE
-      ========================================================= */
+      * {
+        box-sizing: border-box;
+      }
 
-      :global(html),
-      :global(body) {
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
         margin: 0;
-        padding: 0;
-        min-height: 100%;
-      }
-
-      :global(body) {
         font-family: "Cairo", sans-serif;
-        transition:
-          background-color 0.25s ease,
-          color 0.25s ease;
+        transition: background-color 0.25s ease, color 0.25s ease;
       }
-
-      :global(body.ascii-dark-theme) {
-        background: #0b1120 !important;
-        color: #e5edf8 !important;
-        color-scheme: dark;
-      }
-
-      :global(body.ascii-light-theme) {
-        background: #f5f9ff !important;
-        color: #172033 !important;
-        color-scheme: light;
-      }
-
-      /* =========================================================
-         PAGE
-      ========================================================= */
 
       .ascii-page {
-        --page-bg: #0b1120;
-        --page-text: #e5edf8;
-        --muted: #9aa9bd;
-        --muted-2: #7d8da3;
-
-        --card: #111827;
-        --card-2: #172033;
-        --input: #172033;
-        --input-text: #f3f7fc;
-
-        --border: #263449;
-        --border-strong: #34445b;
-
+        --bg: #07111f;
+        --card: #0d1b2d;
+        --card-2: #101f33;
+        --border: rgba(96, 165, 250, 0.18);
+        --text: #f1f5f9;
+        --muted: #94a3b8;
         --primary: #38bdf8;
-        --primary-2: #0ea5e9;
+        --primary-2: #2563eb;
+        --input: #081522;
+        --output: #071522;
+        --shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 
-        --success: #22c55e;
-        --danger: #ef4444;
-
-        --shadow: 0 16px 45px rgba(0, 0, 0, 0.25);
-
-        min-height: calc(100vh - 80px);
-        width: 100%;
-        box-sizing: border-box;
-
-        background: var(--page-bg);
-        color: var(--page-text);
-
-        padding: 28px 16px 50px;
-
+        min-height: calc(100vh - 100px);
+        padding: 45px 18px 70px;
+        background: var(--bg);
+        color: var(--text);
         transition:
-          background-color 0.25s ease,
+          background 0.25s ease,
           color 0.25s ease;
       }
 
       .ascii-page.force-light {
-        --page-bg: #f5f9ff;
-        --page-text: #172033;
-        --muted: #667085;
-        --muted-2: #7a8799;
-
+        --bg: #f5f9ff;
         --card: #ffffff;
-        --card-2: #f7faff;
-        --input: #ffffff;
-        --input-text: #172033;
-
-        --border: #dbe5f0;
-        --border-strong: #c6d4e4;
-
+        --card-2: #f8fbff;
+        --border: rgba(37, 99, 235, 0.15);
+        --text: #0f172a;
+        --muted: #64748b;
         --primary: #0284c7;
-        --primary-2: #0369a1;
-
-        --shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+        --primary-2: #2563eb;
+        --input: #f8fafc;
+        --output: #f1f7ff;
+        --shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
       }
 
       .ascii-page.force-dark {
-        --page-bg: #0b1120;
-        --page-text: #e5edf8;
-        --muted: #9aa9bd;
-        --muted-2: #7d8da3;
-
-        --card: #111827;
-        --card-2: #172033;
-        --input: #172033;
-        --input-text: #f3f7fc;
-
-        --border: #263449;
-        --border-strong: #34445b;
-
+        --bg: #07111f;
+        --card: #0d1b2d;
+        --card-2: #101f33;
+        --border: rgba(96, 165, 250, 0.18);
+        --text: #f1f5f9;
+        --muted: #94a3b8;
         --primary: #38bdf8;
-        --primary-2: #0ea5e9;
-
-        --shadow: 0 16px 45px rgba(0, 0, 0, 0.25);
+        --primary-2: #2563eb;
+        --input: #081522;
+        --output: #071522;
+        --shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
       }
 
-      .ascii-container {
-        width: min(1100px, 100%);
+      :global(body.ascii-dark-theme) {
+        background: #07111f !important;
+        color: #f1f5f9;
+      }
+
+      :global(body.ascii-light-theme) {
+        background: #f5f9ff !important;
+        color: #0f172a;
+      }
+
+      .tool-container {
+        max-width: 1180px;
         margin: 0 auto;
       }
 
-      /* =========================================================
-         HEADING
-      ========================================================= */
-
       .tool-heading {
         text-align: center;
-        margin: 5px auto 28px;
+        margin-bottom: 32px;
       }
 
       .tool-icon {
-        width: 64px;
-        height: 64px;
-        margin: 0 auto 13px;
-
+        width: 72px;
+        height: 72px;
+        margin: 0 auto 18px;
+        border-radius: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-
-        border-radius: 18px;
-
-        background: linear-gradient(
-          135deg,
-          var(--primary),
-          var(--primary-2)
-        );
-
-        color: #fff;
-        font-size: 27px;
-
-        box-shadow:
-          0 10px 25px rgba(14, 165, 233, 0.22);
+        background: linear-gradient(135deg, #0ea5e9, #2563eb);
+        color: white;
+        font-size: 30px;
+        box-shadow: 0 15px 35px rgba(37, 99, 235, 0.3);
       }
 
       .tool-heading h1 {
-        margin: 0;
-        font-size: clamp(25px, 5vw, 36px);
+        margin: 0 0 10px;
+        font-size: clamp(28px, 5vw, 42px);
         font-weight: 800;
-        color: var(--page-text);
+        background: linear-gradient(90deg, #38bdf8, #60a5fa);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
       }
 
       .tool-heading p {
-        margin: 8px auto 0;
-        max-width: 680px;
-
+        max-width: 700px;
+        margin: 0 auto;
         color: var(--muted);
         font-size: 15px;
         line-height: 1.9;
       }
 
-      /* =========================================================
-         MAIN GRID
-      ========================================================= */
-
       .tool-grid {
         display: grid;
-        grid-template-columns:
-          minmax(0, 1.15fr)
-          minmax(0, 0.85fr);
-
-        gap: 20px;
+        grid-template-columns: 1fr 1fr;
+        gap: 22px;
         align-items: start;
       }
 
-      .converter-card,
-      .formats-card,
-      .info-card {
+      .card {
         background: var(--card);
-
         border: 1px solid var(--border);
         border-radius: 20px;
-
+        padding: 22px;
         box-shadow: var(--shadow);
-
         transition:
-          background-color 0.25s ease,
-          border-color 0.25s ease,
-          color 0.25s ease;
-      }
-
-      .converter-card {
-        padding: 22px;
-      }
-
-      .side-column {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-      }
-
-      .formats-card,
-      .info-card {
-        padding: 22px;
+          background 0.25s ease,
+          border-color 0.25s ease;
       }
 
       .card-title {
         display: flex;
         align-items: center;
         gap: 10px;
-
-        margin-bottom: 20px;
-
+        margin-bottom: 18px;
         font-size: 18px;
         font-weight: 800;
-
-        color: var(--page-text);
       }
 
       .card-title i {
         color: var(--primary);
       }
 
-      /* =========================================================
-         MODE
-      ========================================================= */
-
       .mode-buttons {
         display: grid;
-
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-
+        grid-template-columns: 1fr 1fr;
         gap: 10px;
-
-        margin-bottom: 20px;
+        margin-bottom: 18px;
       }
 
       .mode-btn {
-        min-height: 50px;
-
         border: 1px solid var(--border);
-        border-radius: 12px;
-
         background: var(--card-2);
         color: var(--muted);
-
-        font-family: "Cairo", sans-serif;
-        font-size: 13px;
-        font-weight: 800;
-
+        border-radius: 12px;
+        padding: 12px 10px;
         cursor: pointer;
-
-        transition:
-          transform 0.18s ease,
-          background-color 0.2s ease,
-          color 0.2s ease,
-          border-color 0.2s ease;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+        transition: 0.2s ease;
       }
 
       .mode-btn:hover {
-        transform: translateY(-1px);
+        border-color: var(--primary);
+        color: var(--text);
       }
 
       .mode-btn.active {
-        background: linear-gradient(
-          135deg,
-          var(--primary),
-          var(--primary-2)
-        );
-
-        color: #fff;
-
+        background: linear-gradient(135deg, #0284c7, #2563eb);
         border-color: transparent;
+        color: white;
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
       }
 
-      .mode-btn i {
-        margin-left: 7px;
-      }
-
-      /* =========================================================
-         EDITORS
-      ========================================================= */
-
-      .editor-box {
-        margin-top: 16px;
-      }
-
-      .editor-header {
+      .field-label {
         display: flex;
-        align-items: center;
         justify-content: space-between;
-
+        align-items: center;
         gap: 10px;
-
-        margin-bottom: 8px;
-      }
-
-      .editor-title {
-        display: flex;
-        flex-direction: column;
-        gap: 1px;
-      }
-
-      .editor-title strong {
-        font-size: 15px;
-        font-weight: 800;
-      }
-
-      .editor-title span {
-        color: var(--muted);
-        font-size: 11px;
+        margin-bottom: 9px;
+        color: var(--text);
+        font-size: 14px;
+        font-weight: 700;
       }
 
       .counter {
-        flex: 0 0 auto;
-
-        padding: 5px 9px;
-
-        border-radius: 8px;
-
-        background: rgba(56, 189, 248, 0.1);
-        color: var(--primary);
-
-        font-size: 10px;
-        font-weight: 700;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 500;
       }
 
       textarea {
         width: 100%;
-        min-height: 190px;
-
-        box-sizing: border-box;
-
-        display: block;
-
-        padding: 14px;
-
+        min-height: 265px;
         resize: vertical;
-
         border: 1px solid var(--border);
         border-radius: 14px;
-
         outline: none;
-
+        padding: 16px;
         background: var(--input);
-        color: var(--input-text);
-
-        font-family:
-          Consolas,
-          "Courier New",
-          monospace;
-
-        font-size: 14px;
+        color: var(--text);
+        font-family: "Cairo", sans-serif;
+        font-size: 15px;
         line-height: 1.8;
-
         transition:
           border-color 0.2s ease,
           box-shadow 0.2s ease,
-          background-color 0.2s ease;
+          background 0.25s ease;
       }
 
       textarea:focus {
         border-color: var(--primary);
-
-        box-shadow:
-          0 0 0 3px rgba(14, 165, 233, 0.13);
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1);
       }
 
-      #input {
-        direction: auto;
-        text-align: start;
-      }
-
-      #output {
+      textarea.ltr {
         direction: ltr;
         text-align: left;
+        font-family: "Courier New", monospace;
       }
 
-      /* =========================================================
-         EDITOR ACTIONS
-      ========================================================= */
-
-      .editor-actions {
+      .action-row {
         display: grid;
-
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-
+        grid-template-columns: repeat(4, 1fr);
         gap: 9px;
-
-        margin-top: 9px;
+        margin-top: 14px;
       }
 
-      .small-btn {
-        min-height: 43px;
-
-        border: 1px solid var(--border);
+      .btn {
+        min-height: 44px;
+        border: 0;
         border-radius: 11px;
-
-        background: var(--card-2);
-        color: var(--page-text);
-
-        font-family: "Cairo", sans-serif;
-        font-size: 12px;
-        font-weight: 800;
-
+        padding: 10px 12px;
         cursor: pointer;
-
+        font-family: inherit;
+        font-size: 13px;
+        font-weight: 700;
         transition:
-          transform 0.18s ease,
-          border-color 0.2s ease,
-          background-color 0.2s ease;
+          transform 0.15s ease,
+          opacity 0.2s ease,
+          background 0.2s ease;
       }
 
-      .small-btn:hover {
+      .btn:hover {
         transform: translateY(-1px);
-        border-color: var(--primary);
       }
 
-      .small-btn.danger {
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn-primary {
+        color: white;
+        background: linear-gradient(135deg, #0284c7, #2563eb);
+      }
+
+      .btn-secondary {
+        background: var(--card-2);
+        border: 1px solid var(--border);
+        color: var(--text);
+      }
+
+      .btn-danger {
+        background: rgba(239, 68, 68, 0.1);
+        border: 1px solid rgba(239, 68, 68, 0.2);
+        color: #f87171;
+      }
+
+      .status {
+        min-height: 24px;
+        margin-top: 13px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .status.success {
+        color: #22c55e;
+      }
+
+      .status.error {
         color: #ef4444;
       }
 
-      .small-btn i {
-        margin-left: 6px;
-      }
-
-      /* =========================================================
-         MAIN ACTION
-      ========================================================= */
-
-      .main-actions {
-        display: grid;
-
-        grid-template-columns:
-          minmax(0, 1fr)
-          54px;
-
-        gap: 10px;
-
-        margin-top: 20px;
-      }
-
-      .convert-btn {
-        min-height: 50px;
-
-        border: 0;
-        border-radius: 12px;
-
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-
-        gap: 8px;
-
-        background: linear-gradient(
-          135deg,
-          var(--primary),
-          var(--primary-2)
-        );
-
-        color: #fff;
-
-        font-family: "Cairo", sans-serif;
-        font-size: 14px;
-        font-weight: 800;
-
-        cursor: pointer;
-
-        box-shadow:
-          0 9px 22px rgba(14, 165, 233, 0.2);
-
-        transition:
-          transform 0.18s ease,
-          opacity 0.18s ease;
-      }
-
-      .convert-btn:hover {
-        transform: translateY(-1px);
-      }
-
-      .swap-btn {
-        min-height: 50px;
-
+      .output-box {
+        width: 100%;
+        min-height: 145px;
+        max-height: 280px;
+        overflow: auto;
+        padding: 16px;
+        border-radius: 14px;
         border: 1px solid var(--border);
-        border-radius: 12px;
-
-        background: var(--card-2);
-        color: var(--primary);
-
-        cursor: pointer;
-
-        transition:
-          transform 0.25s ease,
-          border-color 0.2s ease;
+        background: var(--output);
+        color: var(--text);
+        direction: ltr;
+        text-align: left;
+        white-space: pre-wrap;
+        word-break: break-word;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        line-height: 1.7;
       }
 
-      .swap-btn:hover {
-        transform: rotate(180deg);
-        border-color: var(--primary);
-      }
-
-      /* =========================================================
-         COPY
-      ========================================================= */
-
-      .copy-btn {
-        min-height: 40px;
-
-        padding: 0 13px;
-
-        border: 1px solid rgba(56, 189, 248, 0.2);
-        border-radius: 9px;
-
-        background: rgba(56, 189, 248, 0.1);
-        color: var(--primary);
-
+      .output-empty {
+        color: var(--muted);
         font-family: "Cairo", sans-serif;
-        font-size: 11px;
-        font-weight: 800;
-
-        cursor: pointer;
-
-        transition:
-          transform 0.18s ease,
-          background-color 0.2s ease;
+        text-align: center;
+        direction: rtl;
+        padding-top: 25px;
       }
 
-      .copy-btn:hover {
-        transform: translateY(-1px);
-      }
-
-      /* =========================================================
-         FORMATS
-      ========================================================= */
-
-      .formats-grid {
+      .formats {
         display: grid;
-
-        grid-template-columns:
-          repeat(3, minmax(0, 1fr));
-
+        grid-template-columns: repeat(3, 1fr);
         gap: 10px;
+        margin-top: 18px;
       }
 
       .format-box {
         min-width: 0;
-
-        padding: 14px;
-
-        border: 1px solid var(--border);
+        padding: 13px;
         border-radius: 13px;
-
         background: var(--card-2);
+        border: 1px solid var(--border);
       }
 
-      .format-icon {
-        width: 36px;
-        height: 36px;
-
-        margin-bottom: 9px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 9px;
-
-        background: linear-gradient(
-          135deg,
-          var(--primary),
-          var(--primary-2)
-        );
-
-        color: #fff;
-
-        font-size: 13px;
-      }
-
-      .format-box span {
-        display: block;
-
-        margin-bottom: 4px;
-
+      .format-name {
         color: var(--muted);
-
-        font-size: 10px;
-        font-weight: 600;
+        font-size: 11px;
+        font-weight: 700;
+        margin-bottom: 7px;
       }
 
-      .format-box strong {
-        display: block;
-
-        overflow: hidden;
-
+      .format-value {
         direction: ltr;
         text-align: left;
-
-        color: var(--page-text);
-
-        font-family:
-          Consolas,
-          "Courier New",
-          monospace;
-
-        font-size: 11px;
-
+        overflow: auto;
         white-space: nowrap;
-        text-overflow: ellipsis;
-      }
-
-      /* =========================================================
-         STATUS
-      ========================================================= */
-
-      .status {
-        min-height: 22px;
-
-        margin-top: 12px;
-
-        text-align: center;
-
+        font-family: "Courier New", monospace;
         font-size: 12px;
-        font-weight: 700;
-
-        color: var(--muted);
+        color: var(--text);
       }
 
-      .status.success {
-        color: var(--success);
+      .info-card {
+        margin-top: 22px;
       }
-
-      .status.error {
-        color: var(--danger);
-      }
-
-      /* =========================================================
-         INFO
-      ========================================================= */
 
       .info-list {
-        display: flex;
-        flex-direction: column;
-        gap: 13px;
+        display: grid;
+        gap: 10px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
       }
 
-      .info-item {
+      .info-list li {
         display: flex;
         align-items: flex-start;
-
-        gap: 11px;
-      }
-
-      .info-icon {
-        width: 38px;
-        height: 38px;
-
-        flex: 0 0 38px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        border-radius: 10px;
-
-        background: rgba(56, 189, 248, 0.1);
-        color: var(--primary);
-      }
-
-      .info-item h3 {
-        margin: 0 0 3px;
-
-        font-size: 12px;
-        font-weight: 800;
-      }
-
-      .info-item p {
-        margin: 0;
-
+        gap: 10px;
         color: var(--muted);
-
-        font-size: 10px;
+        font-size: 13px;
         line-height: 1.8;
       }
 
-      /* =========================================================
-         RESPONSIVE
-      ========================================================= */
+      .info-list i {
+        color: var(--primary);
+        margin-top: 5px;
+      }
+
+      .keyboard {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px 7px;
+        border-radius: 6px;
+        background: var(--card-2);
+        border: 1px solid var(--border);
+        color: var(--text);
+        direction: ltr;
+        font-family: monospace;
+        font-size: 11px;
+      }
 
       @media (max-width: 850px) {
         .ascii-page {
-          padding: 24px 13px 45px;
+          padding: 32px 14px 55px;
         }
 
         .tool-grid {
           grid-template-columns: 1fr;
         }
 
-        .side-column {
-          order: 2;
-        }
-
-        .converter-card {
-          order: 1;
+        .action-row {
+          grid-template-columns: repeat(2, 1fr);
         }
       }
 
       @media (max-width: 560px) {
         .ascii-page {
-          padding: 20px 10px 38px;
+          padding: 26px 10px 45px;
         }
 
-        .tool-heading {
-          margin-bottom: 22px;
+        .card {
+          padding: 16px;
+          border-radius: 16px;
         }
 
         .tool-icon {
-          width: 58px;
-          height: 58px;
-
-          border-radius: 16px;
-
-          font-size: 24px;
-        }
-
-        .tool-heading h1 {
+          width: 62px;
+          height: 62px;
           font-size: 25px;
-        }
-
-        .tool-heading p {
-          font-size: 13px;
-        }
-
-        .converter-card,
-        .formats-card,
-        .info-card {
-          padding: 16px;
           border-radius: 17px;
         }
 
-        .card-title {
-          font-size: 16px;
-          margin-bottom: 16px;
+        .tool-heading {
+          margin-bottom: 24px;
         }
 
-        .mode-btn {
-          min-height: 46px;
-          font-size: 11px;
+        .tool-heading h1 {
+          font-size: 29px;
         }
 
         textarea {
-          min-height: 155px;
-          padding: 12px;
-          font-size: 13px;
+          min-height: 220px;
+          font-size: 14px;
         }
 
-        .convert-btn {
-          font-size: 12px;
-        }
-
-        .formats-grid {
+        .formats {
           grid-template-columns: 1fr;
+        }
+
+        .action-row {
+          grid-template-columns: 1fr 1fr;
         }
       }
 
       @media (max-width: 380px) {
-        .mode-btn {
-          font-size: 10px;
+        .mode-buttons {
+          grid-template-columns: 1fr;
         }
 
-        .convert-btn {
-          font-size: 11px;
+        .action-row {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -816,18 +486,10 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/ascii-converter
   <body>
     <Header />
 
-    <main
-      class="ascii-page force-dark"
-      id="asciiPage"
-    >
-      <div class="ascii-container">
-
-        <!-- =====================================================
-             HEADING
-        ====================================================== -->
+    <main class="ascii-page force-dark" id="asciiPage">
+      <div class="tool-container">
 
         <section class="tool-heading">
-
           <div class="tool-icon">
             <i class="fa-solid fa-code"></i>
           </div>
@@ -835,353 +497,157 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/ascii-converter
           <h1>محول ASCII</h1>
 
           <p>
-            حوّل النص إلى أكواد ASCII والعكس بسرعة وسهولة،
-            مع عرض القيم العشرية والسداسية عشرية والثنائية.
+            حوّل النص إلى رموز ASCII والعكس بسهولة، مع عرض القيم العشرية
+            والسداسية عشرية والثنائية.
           </p>
-
         </section>
-
-
-        <!-- =====================================================
-             MAIN
-        ====================================================== -->
 
         <section class="tool-grid">
 
-          <!-- ===================================================
-               CONVERTER
-          ==================================================== -->
-
-          <div class="converter-card">
-
+          <!-- Input -->
+          <div class="card">
             <div class="card-title">
-              <i class="fa-solid fa-arrows-left-right"></i>
-              المحول
+              <i class="fa-solid fa-arrow-right-arrow-left"></i>
+              <span>المحول</span>
             </div>
 
-
-            <!-- MODE -->
-
             <div class="mode-buttons">
-
               <button
                 type="button"
                 class="mode-btn active"
-                id="textModeBtn"
+                id="textMode"
               >
                 <i class="fa-solid fa-font"></i>
-                نص → ASCII
+                النص → ASCII
               </button>
 
               <button
                 type="button"
                 class="mode-btn"
-                id="asciiModeBtn"
+                id="asciiMode"
               >
-                <i class="fa-solid fa-terminal"></i>
-                ASCII → نص
+                <i class="fa-solid fa-hashtag"></i>
+                ASCII → النص
               </button>
-
             </div>
 
+            <label class="field-label" for="inputText">
+              <span id="inputLabel">النص</span>
+              <span class="counter" id="counter">0 حرف</span>
+            </label>
 
-            <!-- INPUT -->
+            <textarea
+              id="inputText"
+              placeholder="اكتب النص هنا..."
+              autocomplete="off"
+              spellcheck="false"
+            ></textarea>
 
-            <div class="editor-box">
-
-              <div class="editor-header">
-
-                <div class="editor-title">
-
-                  <strong id="inputTitle">
-                    النص
-                  </strong>
-
-                  <span id="inputHint">
-                    أدخل النص الذي تريد تحويله
-                  </span>
-
-                </div>
-
-                <span
-                  class="counter"
-                  id="counter"
-                >
-                  0 حرف
-                </span>
-
-              </div>
-
-
-              <textarea
-                id="input"
-                spellcheck="false"
-                autocomplete="off"
-                placeholder="اكتب النص هنا..."
-              ></textarea>
-
-
-              <div class="editor-actions">
-
-                <button
-                  type="button"
-                  class="small-btn"
-                  id="pasteBtn"
-                >
-                  <i class="fa-solid fa-paste"></i>
-                  لصق
-                </button>
-
-                <button
-                  type="button"
-                  class="small-btn danger"
-                  id="clearBtn"
-                >
-                  <i class="fa-solid fa-trash"></i>
-                  مسح
-                </button>
-
-              </div>
-
-            </div>
-
-
-            <!-- MAIN ACTION -->
-
-            <div class="main-actions">
-
-              <button
-                type="button"
-                class="convert-btn"
-                id="convertBtn"
-              >
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-
-                <span id="convertLabel">
-                  تحويل إلى ASCII
-                </span>
-
+            <div class="action-row">
+              <button type="button" class="btn btn-primary" id="convertBtn">
+                <i class="fa-solid fa-bolt"></i>
+                تحويل
               </button>
 
+              <button type="button" class="btn btn-secondary" id="pasteBtn">
+                <i class="fa-solid fa-paste"></i>
+                لصق
+              </button>
 
-              <button
-                type="button"
-                class="swap-btn"
-                id="swapBtn"
-                title="تبديل الاتجاه"
-                aria-label="تبديل الاتجاه"
-              >
+              <button type="button" class="btn btn-secondary" id="swapBtn">
                 <i class="fa-solid fa-right-left"></i>
+                تبديل
               </button>
 
+              <button type="button" class="btn btn-danger" id="clearBtn">
+                <i class="fa-solid fa-trash"></i>
+                مسح
+              </button>
             </div>
 
-
-            <!-- OUTPUT -->
-
-            <div class="editor-box">
-
-              <div class="editor-header">
-
-                <div class="editor-title">
-
-                  <strong id="outputTitle">
-                    ASCII
-                  </strong>
-
-                  <span id="outputHint">
-                    النتيجة ستظهر هنا
-                  </span>
-
-                </div>
-
-
-                <button
-                  type="button"
-                  class="copy-btn"
-                  id="copyBtn"
-                >
-                  <i class="fa-regular fa-copy"></i>
-                  نسخ
-                </button>
-
-              </div>
-
-
-              <textarea
-                id="output"
-                readonly
-                spellcheck="false"
-                placeholder="النتيجة..."
-              ></textarea>
-
-            </div>
-
-
-            <div
-              class="status"
-              id="status"
-            ></div>
-
+            <div class="status" id="status"></div>
           </div>
 
-
-          <!-- ===================================================
-               SIDE
-          ==================================================== -->
-
-          <div class="side-column">
-
-            <!-- FORMATS -->
-
-            <div class="formats-card">
-
-              <div class="card-title">
-                <i class="fa-solid fa-layer-group"></i>
-                صيغ ASCII
-              </div>
-
-
-              <div class="formats-grid">
-
-                <div class="format-box">
-
-                  <div class="format-icon">
-                    <i class="fa-solid fa-hashtag"></i>
-                  </div>
-
-                  <span>
-                    Decimal
-                  </span>
-
-                  <strong id="decimal">
-                    —
-                  </strong>
-
-                </div>
-
-
-                <div class="format-box">
-
-                  <div class="format-icon">
-                    <i class="fa-solid fa-x"></i>
-                  </div>
-
-                  <span>
-                    Hexadecimal
-                  </span>
-
-                  <strong id="hex">
-                    —
-                  </strong>
-
-                </div>
-
-
-                <div class="format-box">
-
-                  <div class="format-icon">
-                    <i class="fa-solid fa-1"></i>
-                  </div>
-
-                  <span>
-                    Binary
-                  </span>
-
-                  <strong id="binary">
-                    —
-                  </strong>
-
-                </div>
-
-              </div>
-
+          <!-- Output -->
+          <div class="card">
+            <div class="card-title">
+              <i class="fa-solid fa-terminal"></i>
+              <span>النتيجة</span>
             </div>
 
-
-            <!-- INFO -->
-
-            <div class="info-card">
-
-              <div class="card-title">
-                <i class="fa-solid fa-circle-info"></i>
-                معلومات
+            <div class="output-box" id="output">
+              <div class="output-empty">
+                ستظهر النتيجة هنا بعد التحويل
               </div>
-
-
-              <div class="info-list">
-
-                <div class="info-item">
-
-                  <div class="info-icon">
-                    <i class="fa-solid fa-code"></i>
-                  </div>
-
-                  <div>
-
-                    <h3>
-                      ما هو ASCII؟
-                    </h3>
-
-                    <p>
-                      نظام ترميز يستخدم القيم من 0 إلى 127
-                      لتمثيل الأحرف والأرقام والرموز الأساسية.
-                    </p>
-
-                  </div>
-
-                </div>
-
-
-                <div class="info-item">
-
-                  <div class="info-icon">
-                    <i class="fa-solid fa-shield-halved"></i>
-                  </div>
-
-                  <div>
-
-                    <h3>
-                      آمن وخصوصي
-                    </h3>
-
-                    <p>
-                      تتم جميع عمليات التحويل داخل المتصفح
-                      ولا يتم إرسال البيانات إلى أي خادم.
-                    </p>
-
-                  </div>
-
-                </div>
-
-
-                <div class="info-item">
-
-                  <div class="info-icon">
-                    <i class="fa-solid fa-right-left"></i>
-                  </div>
-
-                  <div>
-
-                    <h3>
-                      تحويل في الاتجاهين
-                    </h3>
-
-                    <p>
-                      يمكنك التحويل من النص إلى ASCII
-                      أو من أكواد ASCII إلى النص.
-                    </p>
-
-                  </div>
-
-                </div>
-
-              </div>
-
             </div>
 
+            <div class="action-row" style="margin-top: 14px;">
+              <button type="button" class="btn btn-primary" id="copyBtn">
+                <i class="fa-solid fa-copy"></i>
+                نسخ النتيجة
+              </button>
+            </div>
+
+            <div class="formats">
+              <div class="format-box">
+                <div class="format-name">DECIMAL</div>
+                <div class="format-value" id="decimalOutput">—</div>
+              </div>
+
+              <div class="format-box">
+                <div class="format-name">HEX</div>
+                <div class="format-value" id="hexOutput">—</div>
+              </div>
+
+              <div class="format-box">
+                <div class="format-name">BINARY</div>
+                <div class="format-value" id="binaryOutput">—</div>
+              </div>
+            </div>
           </div>
 
+        </section>
+
+        <section class="card info-card">
+          <div class="card-title">
+            <i class="fa-solid fa-circle-info"></i>
+            <span>معلومات عن ASCII</span>
+          </div>
+
+          <ul class="info-list">
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span>
+                معيار ASCII الأساسي يستخدم القيم من 0 إلى 127.
+              </span>
+            </li>
+
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span>
+                مثال: الحرف <strong>A</strong> يساوي
+                <strong>65</strong> بالعشري و
+                <strong>41</strong> بالـ Hex.
+              </span>
+            </li>
+
+            <li>
+              <i class="fa-solid fa-check"></i>
+              <span>
+                يمكنك في وضع ASCII إدخال الأرقام مفصولة بمسافات أو فواصل.
+              </span>
+            </li>
+
+            <li>
+              <i class="fa-solid fa-keyboard"></i>
+              <span>
+                للتحويل بسرعة استخدم
+                <span class="keyboard">Ctrl + Enter</span>
+                أو
+                <span class="keyboard">⌘ + Enter</span>.
+              </span>
+            </li>
+          </ul>
         </section>
 
       </div>
@@ -1189,67 +655,31 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/ascii-converter
 
     <Footer />
 
-
-    <!-- =========================================================
-         JAVASCRIPT
-    ========================================================== -->
-
     <script is:inline>
       (() => {
-
-        /* =====================================================
-           THEME
-           نفس فكرة أداة 105
-           بدون مراقبة body بشكل يسبب loop
-        ===================================================== */
-
         function getThemeState() {
+          const html = document.documentElement;
+          const body = document.body;
 
-          let stored = null;
+          const stored = localStorage.getItem("theme");
 
-          try {
-            stored = localStorage.getItem("theme");
-          } catch (e) {}
+          if (stored === "light") return "light";
+          if (stored === "dark") return "dark";
 
-          const html =
-            document.documentElement;
-
-          const body =
-            document.body;
-
-          const htmlTheme =
-            html.getAttribute("data-theme");
-
-          const bodyTheme =
-            body.getAttribute("data-theme");
-
-          const htmlLight =
-            htmlTheme === "light" ||
+          if (
+            html.dataset.theme === "light" ||
+            body.dataset.theme === "light" ||
             html.classList.contains("light") ||
-            html.classList.contains("light-theme");
-
-          const bodyLight =
-            bodyTheme === "light" ||
-            body.classList.contains("light") ||
-            body.classList.contains("light-theme");
-
-          if (stored === "light") {
-            return "light";
-          }
-
-          if (stored === "dark") {
-            return "dark";
-          }
-
-          if (htmlLight || bodyLight) {
+            body.classList.contains("light")
+          ) {
             return "light";
           }
 
           if (
+            html.dataset.theme === "dark" ||
+            body.dataset.theme === "dark" ||
             html.classList.contains("dark") ||
-            html.classList.contains("dark-theme") ||
-            body.classList.contains("dark") ||
-            body.classList.contains("dark-theme")
+            body.classList.contains("dark")
           ) {
             return "dark";
           }
@@ -1257,879 +687,361 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/ascii-converter
           return "dark";
         }
 
-
         function syncAsciiTheme() {
+          const page = document.getElementById("asciiPage");
 
-          const page =
-            document.getElementById("asciiPage");
+          if (!page) return;
 
-          if (!page) {
-            return;
-          }
-
-          const theme =
-            getThemeState();
-
-          const light =
-            theme === "light";
-
-          page.classList.toggle(
-            "force-light",
-            light
-          );
-
-          page.classList.toggle(
-            "force-dark",
-            !light
-          );
+          const theme = getThemeState();
+          const light = theme === "light";
 
           /*
            * مهم:
-           * لا نقوم بإزالة وإضافة class في كل Mutation.
-           * نغيّر body فقط إذا كانت الحالة مختلفة.
+           * نستخدم toggle مع القيمة الثانية حتى لا ندخل
+           * في حلقة لا نهائية مع MutationObserver.
            */
+          page.classList.toggle("force-light", light);
+          page.classList.toggle("force-dark", !light);
 
-          const desiredClass =
-            light
-              ? "ascii-light-theme"
-              : "ascii-dark-theme";
-
-          const unwantedClass =
-            light
-              ? "ascii-dark-theme"
-              : "ascii-light-theme";
-
-          if (
-            !document.body.classList.contains(
-              desiredClass
-            )
-          ) {
-            document.body.classList.add(
-              desiredClass
-            );
-          }
-
-          if (
-            document.body.classList.contains(
-              unwantedClass
-            )
-          ) {
-            document.body.classList.remove(
-              unwantedClass
-            );
-          }
+          document.body.classList.toggle("ascii-light-theme", light);
+          document.body.classList.toggle("ascii-dark-theme", !light);
         }
-
 
         function watchTheme() {
-
           syncAsciiTheme();
 
-          window.addEventListener(
-            "storage",
-            syncAsciiTheme
-          );
-
-          /*
-           * نراقب html فقط.
-           * لا نراقب body لأننا نحن من نغيّر classes الخاصة به.
-           */
-
-          const observer =
-            new MutationObserver(() => {
+          window.addEventListener("storage", (event) => {
+            if (event.key === "theme") {
               syncAsciiTheme();
-            });
-
-          observer.observe(
-            document.documentElement,
-            {
-              attributes: true,
-              attributeFilter: [
-                "class",
-                "data-theme"
-              ]
             }
-          );
+          });
+
+          const observer = new MutationObserver(() => {
+            syncAsciiTheme();
+          });
+
+          observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ["class", "data-theme"]
+          });
+
+          observer.observe(document.body, {
+            attributes: true,
+            attributeFilter: ["class", "data-theme"]
+          });
         }
 
-
-        /* =====================================================
-           ASCII TOOL
-        ===================================================== */
-
         function startAsciiTool() {
+          const input = document.getElementById("inputText");
+          const output = document.getElementById("output");
 
-          const input =
-            document.getElementById("input");
+          const textMode = document.getElementById("textMode");
+          const asciiMode = document.getElementById("asciiMode");
 
-          const output =
-            document.getElementById("output");
+          const convertBtn = document.getElementById("convertBtn");
+          const pasteBtn = document.getElementById("pasteBtn");
+          const swapBtn = document.getElementById("swapBtn");
+          const clearBtn = document.getElementById("clearBtn");
+          const copyBtn = document.getElementById("copyBtn");
 
-          const textModeBtn =
-            document.getElementById(
-              "textModeBtn"
-            );
+          const inputLabel = document.getElementById("inputLabel");
+          const counter = document.getElementById("counter");
+          const status = document.getElementById("status");
 
-          const asciiModeBtn =
-            document.getElementById(
-              "asciiModeBtn"
-            );
+          const decimalOutput = document.getElementById("decimalOutput");
+          const hexOutput = document.getElementById("hexOutput");
+          const binaryOutput = document.getElementById("binaryOutput");
 
-          const convertBtn =
-            document.getElementById(
-              "convertBtn"
-            );
-
-          const swapBtn =
-            document.getElementById(
-              "swapBtn"
-            );
-
-          const pasteBtn =
-            document.getElementById(
-              "pasteBtn"
-            );
-
-          const clearBtn =
-            document.getElementById(
-              "clearBtn"
-            );
-
-          const copyBtn =
-            document.getElementById(
-              "copyBtn"
-            );
-
-          const inputTitle =
-            document.getElementById(
-              "inputTitle"
-            );
-
-          const inputHint =
-            document.getElementById(
-              "inputHint"
-            );
-
-          const outputTitle =
-            document.getElementById(
-              "outputTitle"
-            );
-
-          const outputHint =
-            document.getElementById(
-              "outputHint"
-            );
-
-          const convertLabel =
-            document.getElementById(
-              "convertLabel"
-            );
-
-          const counter =
-            document.getElementById(
-              "counter"
-            );
-
-          const decimal =
-            document.getElementById(
-              "decimal"
-            );
-
-          const hex =
-            document.getElementById(
-              "hex"
-            );
-
-          const binary =
-            document.getElementById(
-              "binary"
-            );
-
-          const status =
-            document.getElementById(
-              "status"
-            );
-
+          if (
+            !input ||
+            !output ||
+            !textMode ||
+            !asciiMode ||
+            !convertBtn
+          ) {
+            return;
+          }
 
           let mode = "text";
 
-
-          /* ===================================================
-             STATUS
-          ==================================================== */
-
-          function setStatus(
-            message,
-            type = ""
-          ) {
-
-            status.textContent =
-              message;
-
-            status.className =
-              "status";
+          function setStatus(message, type = "") {
+            status.textContent = message;
+            status.className = "status";
 
             if (type) {
               status.classList.add(type);
             }
           }
 
-
-          /* ===================================================
-             COUNTER
-          ==================================================== */
-
           function updateCounter() {
+            const length = input.value.length;
 
-            const length =
-              input.value.length;
+            if (mode === "text") {
+              counter.textContent = `${length} حرف`;
+            } else {
+              const count = input.value
+                .trim()
+                .replace(/[,;]+/g, " ")
+                .split(/\s+/)
+                .filter(Boolean).length;
 
-            counter.textContent =
-              length + " حرف";
+              counter.textContent = `${count} قيمة`;
+            }
           }
 
+          function updateMode() {
+            const isText = mode === "text";
 
-          /* ===================================================
-             FORMATS
-          ==================================================== */
+            textMode.classList.toggle("active", isText);
+            asciiMode.classList.toggle("active", !isText);
 
-          function clearFormats() {
-
-            decimal.textContent = "—";
-            hex.textContent = "—";
-            binary.textContent = "—";
-          }
-
-
-          function updateFormats(codes) {
-
-            if (
-              !codes ||
-              codes.length === 0
-            ) {
-
-              clearFormats();
-
-              return;
+            if (isText) {
+              inputLabel.textContent = "النص";
+              input.placeholder = "اكتب النص هنا...";
+              input.classList.remove("ltr");
+            } else {
+              inputLabel.textContent = "رموز ASCII";
+              input.placeholder = "مثال: 72 101 108 108 111";
+              input.classList.add("ltr");
             }
 
-
-            decimal.textContent =
-              codes.join(" ");
-
-
-            hex.textContent =
-              codes
-                .map((code) =>
-                  code
-                    .toString(16)
-                    .toUpperCase()
-                    .padStart(2, "0")
-                )
-                .join(" ");
-
-
-            binary.textContent =
-              codes
-                .map((code) =>
-                  code
-                    .toString(2)
-                    .padStart(8, "0")
-                )
-                .join(" ");
-          }
-
-
-          /* ===================================================
-             CLEAR
-          ==================================================== */
-
-          function clearOutput() {
-
-            output.value = "";
-
-            clearFormats();
-
+            updateCounter();
             setStatus("");
           }
 
-
-          /* ===================================================
-             TEXT → ASCII
-          ==================================================== */
-
-          function textToAscii() {
-
-            const text =
-              input.value;
+          function showResult(text, codes) {
+            output.textContent = text || "";
 
             if (!text) {
-
-              clearOutput();
-
-              setStatus(
-                "أدخل نصًا أولًا.",
-                "error"
-              );
-
-              return;
+              output.innerHTML =
+                '<div class="output-empty">ستظهر النتيجة هنا بعد التحويل</div>';
             }
 
+            const decimal = codes.join(" ");
 
-            const codes = [];
+            const hex = codes
+              .map((code) => code.toString(16).toUpperCase().padStart(2, "0"))
+              .join(" ");
 
+            const binary = codes
+              .map((code) => code.toString(2).padStart(8, "0"))
+              .join(" ");
 
-            for (
-              let i = 0;
-              i < text.length;
-              i++
-            ) {
-
-              const code =
-                text.charCodeAt(i);
-
-
-              /*
-               * ASCII القياسي:
-               * 0 إلى 127
-               */
-
-              if (code > 127) {
-
-                clearOutput();
-
-                setStatus(
-                  'الحرف "' +
-                    text.charAt(i) +
-                    '" غير مدعوم في ASCII القياسي.',
-                  "error"
-                );
-
-                return;
-              }
-
-
-              codes.push(code);
-            }
-
-
-            output.value =
-              codes.join(" ");
-
-
-            updateFormats(codes);
-
-
-            setStatus(
-              "تم التحويل بنجاح.",
-              "success"
-            );
+            decimalOutput.textContent = decimal || "—";
+            hexOutput.textContent = hex || "—";
+            binaryOutput.textContent = binary || "—";
           }
 
-
-          /* ===================================================
-             ASCII → TEXT
-          ==================================================== */
-
-          function asciiToText() {
-
-            const value =
-              input.value.trim();
-
+          function convertTextToAscii() {
+            const value = input.value;
 
             if (!value) {
-
-              clearOutput();
-
-              setStatus(
-                "أدخل أكواد ASCII أولًا.",
-                "error"
-              );
-
+              showResult("", []);
+              setStatus("اكتب نصًا أولًا.", "error");
               return;
             }
 
-
-            /*
-             * السماح بالمسافات
-             * الفواصل
-             * الفواصل المنقوطة
-             */
-
-            const parts =
-              value
-                .replace(/[,;]+/g, " ")
-                .split(/\s+/)
-                .filter(Boolean);
-
-
             const codes = [];
 
+            for (let i = 0; i < value.length; i++) {
+              const code = value.charCodeAt(i);
 
-            for (
-              let i = 0;
-              i < parts.length;
-              i++
-            ) {
-
-              const part =
-                parts[i];
-
-
-              if (
-                !/^\d+$/.test(part)
-              ) {
-
-                clearOutput();
-
+              if (code > 127) {
+                showResult("", []);
                 setStatus(
-                  '"' +
-                    part +
-                    '" ليست قيمة ASCII صحيحة.",
+                  "ASCII الأساسي يدعم الأحرف والقيم من 0 إلى 127 فقط.",
                   "error"
                 );
-
                 return;
               }
-
-
-              const code =
-                Number(part);
-
-
-              if (
-                !Number.isInteger(code) ||
-                code < 0 ||
-                code > 127
-              ) {
-
-                clearOutput();
-
-                setStatus(
-                  "القيمة " +
-                    code +
-                    " خارج نطاق ASCII من 0 إلى 127.",
-                  "error"
-                );
-
-                return;
-              }
-
 
               codes.push(code);
             }
 
+            const result = codes.join(" ");
 
-            let result = "";
-
-            for (
-              let i = 0;
-              i < codes.length;
-              i++
-            ) {
-              result += String.fromCharCode(
-                codes[i]
-              );
-            }
-
-
-            output.value =
-              result;
-
-
-            updateFormats(codes);
-
-
-            setStatus(
-              "تم التحويل بنجاح.",
-              "success"
-            );
+            showResult(result, codes);
+            setStatus("تم تحويل النص بنجاح.", "success");
           }
 
+          function parseAscii(value) {
+            const clean = value
+              .replace(/[,;]+/g, " ")
+              .replace(/\s+/g, " ")
+              .trim();
 
-          /* ===================================================
-             CONVERT
-          ==================================================== */
+            if (!clean) {
+              return [];
+            }
+
+            const parts = clean.split(" ");
+            const codes = [];
+
+            for (let i = 0; i < parts.length; i++) {
+              const part = parts[i];
+
+              if (!/^\d+$/.test(part)) {
+                throw new Error(
+                  `القيمة "${part}" ليست رقم ASCII صالحًا.`
+                );
+              }
+
+              const number = Number(part);
+
+              if (!Number.isInteger(number) || number < 0 || number > 127) {
+                throw new Error(
+                  `القيمة "${part}" يجب أن تكون بين 0 و127.`
+                );
+              }
+
+              codes.push(number);
+            }
+
+            return codes;
+          }
+
+          function convertAsciiToText() {
+            const value = input.value.trim();
+
+            if (!value) {
+              showResult("", []);
+              setStatus("أدخل رموز ASCII أولًا.", "error");
+              return;
+            }
+
+            try {
+              const codes = parseAscii(value);
+
+              let result = "";
+
+              for (let i = 0; i < codes.length; i++) {
+                result += String.fromCharCode(codes[i]);
+              }
+
+              showResult(result, codes);
+              setStatus("تم تحويل ASCII بنجاح.", "success");
+            } catch (error) {
+              showResult("", []);
+              setStatus(error.message, "error");
+            }
+          }
 
           function convert() {
-
             if (mode === "text") {
-
-              textToAscii();
-
+              convertTextToAscii();
             } else {
-
-              asciiToText();
-
+              convertAsciiToText();
             }
           }
 
+          textMode.addEventListener("click", () => {
+            if (mode === "text") return;
 
-          /* ===================================================
-             MODE
-          ==================================================== */
+            mode = "text";
+            input.value = "";
+            showResult("", []);
+            updateMode();
+            input.focus();
+          });
 
-          function setMode(
-            newMode
-          ) {
+          asciiMode.addEventListener("click", () => {
+            if (mode === "ascii") return;
 
-            mode = newMode;
+            mode = "ascii";
+            input.value = "";
+            showResult("", []);
+            updateMode();
+            input.focus();
+          });
 
+          convertBtn.addEventListener("click", convert);
 
-            textModeBtn.classList.toggle(
-              "active",
-              mode === "text"
-            );
+          input.addEventListener("input", updateCounter);
 
-            asciiModeBtn.classList.toggle(
-              "active",
-              mode === "ascii"
-            );
+          input.addEventListener("keydown", (event) => {
+            if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+              event.preventDefault();
+              convert();
+            }
+          });
 
+          clearBtn.addEventListener("click", () => {
+            input.value = "";
+
+            showResult("", []);
+            setStatus("");
+            updateCounter();
+
+            input.focus();
+          });
+
+          swapBtn.addEventListener("click", () => {
+            mode = mode === "text" ? "ascii" : "text";
 
             input.value = "";
 
-            output.value = "";
+            showResult("", []);
+            updateMode();
 
-            clearFormats();
+            input.focus();
+          });
 
-            setStatus("");
+          pasteBtn.addEventListener("click", async () => {
+            try {
+              const text = await navigator.clipboard.readText();
 
-            updateCounter();
-
-
-            if (mode === "text") {
-
-              inputTitle.textContent =
-                "النص";
-
-              inputHint.textContent =
-                "أدخل النص الذي تريد تحويله";
-
-              outputTitle.textContent =
-                "ASCII";
-
-              outputHint.textContent =
-                "الأكواد الرقمية الناتجة";
-
-              input.placeholder =
-                "اكتب النص هنا...";
-
-              output.placeholder =
-                "مثال: 72 101 108 108 111";
-
-              convertLabel.textContent =
-                "تحويل إلى ASCII";
-
-              input.dir = "auto";
-
-              output.dir = "ltr";
-
-            } else {
-
-              inputTitle.textContent =
-                "ASCII";
-
-              inputHint.textContent =
-                "أدخل الأكواد مفصولة بمسافات";
-
-              outputTitle.textContent =
-                "النص";
-
-              outputHint.textContent =
-                "النص الناتج من أكواد ASCII";
-
-              input.placeholder =
-                "مثال: 72 101 108 108 111";
-
-              output.placeholder =
-                "Hello";
-
-              convertLabel.textContent =
-                "تحويل إلى نص";
-
-              input.dir = "ltr";
-
-              output.dir = "auto";
-            }
-          }
-
-
-          /* ===================================================
-             BUTTONS
-          ==================================================== */
-
-          textModeBtn.addEventListener(
-            "click",
-            () => {
-              setMode("text");
-            }
-          );
-
-
-          asciiModeBtn.addEventListener(
-            "click",
-            () => {
-              setMode("ascii");
-            }
-          );
-
-
-          convertBtn.addEventListener(
-            "click",
-            convert
-          );
-
-
-          swapBtn.addEventListener(
-            "click",
-            () => {
-
-              if (mode === "text") {
-
-                setMode("ascii");
-
-              } else {
-
-                setMode("text");
-
-              }
-
-            }
-          );
-
-
-          clearBtn.addEventListener(
-            "click",
-            () => {
-
-              input.value = "";
-
-              output.value = "";
-
-              clearFormats();
-
-              setStatus("");
-
+              input.value = text;
               updateCounter();
 
+              setStatus("تم لصق النص.", "success");
               input.focus();
+            } catch (error) {
+              setStatus(
+                "تعذر الوصول إلى الحافظة. استخدم اللصق من لوحة المفاتيح.",
+                "error"
+              );
             }
-          );
+          });
 
+          copyBtn.addEventListener("click", async () => {
+            const text = output.textContent.trim();
 
-          /* ===================================================
-             PASTE
-          ==================================================== */
-
-          pasteBtn.addEventListener(
-            "click",
-            async () => {
-
-              try {
-
-                if (
-                  !navigator.clipboard ||
-                  !navigator.clipboard.readText
-                ) {
-
-                  setStatus(
-                    "ميزة اللصق غير متاحة في هذا المتصفح.",
-                    "error"
-                  );
-
-                  return;
-                }
-
-
-                const text =
-                  await navigator.clipboard.readText();
-
-
-                if (!text) {
-
-                  setStatus(
-                    "الحافظة فارغة.",
-                    "error"
-                  );
-
-                  return;
-                }
-
-
-                input.value =
-                  text;
-
-                updateCounter();
-
-                input.focus();
-
-                setStatus(
-                  "تم اللصق بنجاح.",
-                  "success"
-                );
-
-              } catch (error) {
-
-                setStatus(
-                  "تعذر الوصول إلى الحافظة. استخدم اللصق اليدوي.",
-                  "error"
-                );
-              }
+            if (
+              !text ||
+              text === "ستظهر النتيجة هنا بعد التحويل"
+            ) {
+              setStatus("لا توجد نتيجة لنسخها.", "error");
+              return;
             }
-          );
 
+            try {
+              await navigator.clipboard.writeText(text);
 
-          /* ===================================================
-             COPY
-          ==================================================== */
-
-          copyBtn.addEventListener(
-            "click",
-            async () => {
-
-              if (!output.value) {
-
-                setStatus(
-                  "لا توجد نتيجة لنسخها.",
-                  "error"
-                );
-
-                return;
-              }
-
-
-              try {
-
-                if (
-                  navigator.clipboard &&
-                  navigator.clipboard.writeText
-                ) {
-
-                  await navigator.clipboard.writeText(
-                    output.value
-                  );
-
-                } else {
-
-                  output.select();
-
-                  document.execCommand(
-                    "copy"
-                  );
-                }
-
-
-                const oldHTML =
-                  copyBtn.innerHTML;
-
-
-                copyBtn.innerHTML =
-                  '<i class="fa-solid fa-check"></i> تم النسخ';
-
-
-                setStatus(
-                  "تم نسخ النتيجة.",
-                  "success"
-                );
-
-
-                setTimeout(
-                  () => {
-
-                    copyBtn.innerHTML =
-                      oldHTML;
-
-                  },
-                  1200
-                );
-
-              } catch (error) {
-
-                setStatus(
-                  "تعذر نسخ النتيجة.",
-                  "error"
-                );
-              }
+              setStatus("تم نسخ النتيجة.", "success");
+            } catch (error) {
+              setStatus(
+                "تعذر النسخ تلقائيًا. حدد النتيجة وانسخها يدويًا.",
+                "error"
+              );
             }
-          );
+          });
 
-
-          /* ===================================================
-             KEYBOARD
-          ==================================================== */
-
-          input.addEventListener(
-            "keydown",
-            (event) => {
-
-              if (
-                (event.ctrlKey ||
-                  event.metaKey) &&
-                event.key === "Enter"
-              ) {
-
-                event.preventDefault();
-
-                convert();
-              }
-            }
-          );
-
-
-          /* ===================================================
-             INPUT COUNTER
-          ==================================================== */
-
-          input.addEventListener(
-            "input",
-            updateCounter
-          );
-
-
-          /* ===================================================
-             INITIAL
-          ==================================================== */
-
-          setMode("text");
-
-          updateCounter();
-
+          updateMode();
+          showResult("", []);
         }
-
-
-        /* =====================================================
-           INIT
-        ===================================================== */
 
         function init() {
-
           watchTheme();
-
-
-          if (
-            document.readyState ===
-            "loading"
-          ) {
-
-            document.addEventListener(
-              "DOMContentLoaded",
-              startAsciiTool,
-              {
-                once: true
-              }
-            );
-
-          } else {
-
-            startAsciiTool();
-
-          }
+          startAsciiTool();
         }
 
-
-        init();
-
+        if (document.readyState === "loading") {
+          document.addEventListener("DOMContentLoaded", init, {
+            once: true
+          });
+        } else {
+          init();
+        }
       })();
     </script>
   </body>
