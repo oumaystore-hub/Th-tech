@@ -1,0 +1,4764 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const canonical = `https://oumaystore-hub.github.io${base}/tools/unicode-converter/`;
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Unicode Converter | محول Unicode | Th.Tech</title>
+
+  <meta
+    name="description"
+    content="محول Unicode احترافي لتحويل النصوص إلى Unicode والعكس، مع دعم U+ و JavaScript و HTML Entity."
+  />
+
+  <link rel="canonical" href={canonical} />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+</head>
+
+<body>
+
+  <Header />
+
+  <main class="unicode-page">
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <div class="hero-badge">
+        <i class="fa-solid fa-language"></i>
+        أداة Unicode
+      </div>
+
+      <h1>
+        محول <span>Unicode</span> احترافي
+      </h1>
+
+      <p>
+        حوّل النصوص إلى رموز Unicode والعكس بسهولة، مع دعم
+        U+ و JavaScript و HTML Entity.
+      </p>
+
+      <div class="hero-points">
+
+        <span>
+          <i class="fa-solid fa-bolt"></i>
+          تحويل فوري
+        </span>
+
+        <span>
+          <i class="fa-solid fa-globe"></i>
+          يدعم العربية
+        </span>
+
+        <span>
+          <i class="fa-solid fa-mobile-screen"></i>
+          يعمل على الهاتف
+        </span>
+
+      </div>
+
+    </section>
+
+
+    <!-- MAIN TOOL -->
+    <section class="tool">
+
+      <div class="tool-top">
+
+        <div>
+
+          <div class="mini-label">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Unicode Converter
+          </div>
+
+          <h2>حوّل النص وUnicode بسهولة</h2>
+
+          <p>
+            اختر اتجاه التحويل وأدخل البيانات ثم اضغط على تحويل.
+          </p>
+
+        </div>
+
+        <div class="status" id="status">
+          <span></span>
+          جاهز
+        </div>
+
+      </div>
+
+
+      <!-- MODE -->
+      <div class="type-area">
+
+        <div class="type-title">
+          اتجاه التحويل
+        </div>
+
+        <div class="types">
+
+          <button
+            class="type active"
+            type="button"
+            data-mode="text"
+            id="textMode"
+          >
+            <i class="fa-solid fa-font"></i>
+            <span>النص → Unicode</span>
+          </button>
+
+          <button
+            class="type"
+            type="button"
+            data-mode="unicode"
+            id="unicodeMode"
+          >
+            <i class="fa-solid fa-code"></i>
+            <span>Unicode → النص</span>
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- WORK AREA -->
+      <div class="work">
+
+        <!-- INPUT -->
+        <div class="editor">
+
+          <div class="block-head">
+
+            <div class="block-icon">
+              <i class="fa-solid fa-pen"></i>
+            </div>
+
+            <div>
+
+              <h3 id="inputTitle">
+                النص
+              </h3>
+
+              <p id="inputHint">
+                اكتب النص الذي تريد تحويله إلى Unicode
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="fields">
+
+            <label for="mainInput">
+              المحتوى
+              <b>*</b>
+            </label>
+
+            <textarea
+              id="mainInput"
+              placeholder="اكتب النص هنا..."
+              spellcheck="false"
+              autocomplete="off"
+            ></textarea>
+
+            <div class="field-meta">
+
+              <span id="charCount">
+                0 حرف
+              </span>
+
+              <span>
+                يدعم العربية واللغات المختلفة
+              </span>
+
+            </div>
+
+          </div>
+
+
+          <!-- FORMAT -->
+          <div class="settings">
+
+            <div class="settings-head">
+              <i class="fa-solid fa-sliders"></i>
+              صيغة Unicode
+            </div>
+
+            <div class="settings-grid">
+
+              <div>
+
+                <label for="formatSelect">
+                  الصيغة
+                </label>
+
+                <select id="formatSelect">
+
+                  <option value="uplus" selected>
+                    U+0041
+                  </option>
+
+                  <option value="javascript">
+                    \u0041
+                  </option>
+
+                  <option value="html-decimal">
+                    &#65;
+                  </option>
+
+                  <option value="html-hex">
+                    &#x41;
+                  </option>
+
+                </select>
+
+              </div>
+
+              <div>
+
+                <label for="separatorSelect">
+                  الفاصل
+                </label>
+
+                <select id="separatorSelect">
+
+                  <option value="space" selected>
+                    مسافة
+                  </option>
+
+                  <option value="comma">
+                    فاصلة
+                  </option>
+
+                  <option value="newline">
+                    سطر جديد
+                  </option>
+
+                </select>
+
+              </div>
+
+              <div>
+
+                <label for="caseSelect">
+                  حالة Hex
+                </label>
+
+                <select id="caseSelect">
+
+                  <option value="upper" selected>
+                    أحرف كبيرة
+                  </option>
+
+                  <option value="lower">
+                    أحرف صغيرة
+                  </option>
+
+                </select>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- ACTIONS -->
+          <div class="main-actions">
+
+            <button
+              class="reset-btn"
+              type="button"
+              id="resetBtn"
+            >
+              <i class="fa-solid fa-rotate-left"></i>
+              إعادة ضبط
+            </button>
+
+            <button
+              class="generate-btn"
+              type="button"
+              id="convertBtn"
+            >
+              <i class="fa-solid fa-bolt"></i>
+              تحويل Unicode
+            </button>
+
+          </div>
+
+
+          <div
+            id="message"
+            class="message"
+          ></div>
+
+        </div>
+
+
+        <!-- OUTPUT -->
+        <div class="preview">
+
+          <div class="block-head preview-head">
+
+            <div class="block-icon">
+              <i class="fa-solid fa-terminal"></i>
+            </div>
+
+            <div>
+
+              <h3>
+                النتيجة
+              </h3>
+
+              <p id="previewState">
+                في انتظار البيانات
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="result-container">
+
+            <div
+              class="result-empty"
+              id="resultEmpty"
+            >
+
+              <div class="empty-icon">
+                <i class="fa-solid fa-code"></i>
+              </div>
+
+              <strong>
+                ستظهر النتيجة هنا
+              </strong>
+
+              <span>
+                أدخل البيانات ثم اضغط تحويل
+              </span>
+
+            </div>
+
+            <pre
+              id="result"
+              class="result"
+            ></pre>
+
+          </div>
+
+
+          <div class="result-meta">
+
+            <span>
+              <i class="fa-solid fa-circle-check"></i>
+              جاهز
+            </span>
+
+            <span id="resultInfo">
+              Unicode
+            </span>
+
+          </div>
+
+
+          <div class="export-title">
+            أدوات النتيجة
+          </div>
+
+
+          <div class="export-grid">
+
+            <button
+              class="export"
+              id="copyBtn"
+              type="button"
+              disabled
+            >
+              <i class="fa-solid fa-copy"></i>
+
+              <span>
+                <strong>نسخ</strong>
+                <small>النتيجة</small>
+              </span>
+            </button>
+
+
+            <button
+              class="export"
+              id="copyCodesBtn"
+              type="button"
+              disabled
+            >
+              <i class="fa-solid fa-code"></i>
+
+              <span>
+                <strong>نسخ الأكواد</strong>
+                <small>Unicode</small>
+              </span>
+            </button>
+
+
+            <button
+              class="export"
+              id="clearBtn"
+              type="button"
+            >
+              <i class="fa-solid fa-trash"></i>
+
+              <span>
+                <strong>مسح</strong>
+                <small>النتيجة</small>
+              </span>
+            </button>
+
+          </div>
+
+
+          <!-- CHARACTER DETAILS -->
+
+          <div class="details-title">
+            تفاصيل الأحرف
+          </div>
+
+          <div
+            id="characterDetails"
+            class="character-details"
+          >
+            <div class="details-empty">
+              ستظهر تفاصيل الأحرف هنا
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FEATURES -->
+    <section class="features">
+
+      <div class="feature">
+
+        <div>
+          <i class="fa-solid fa-language"></i>
+        </div>
+
+        <section>
+
+          <strong>
+            دعم Unicode
+          </strong>
+
+          <span>
+            يدعم الأحرف والرموز المختلفة
+          </span>
+
+        </section>
+
+      </div>
+
+
+      <div class="feature">
+
+        <div>
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <section>
+
+          <strong>
+            خصوصية كاملة
+          </strong>
+
+          <span>
+            تتم المعالجة داخل المتصفح
+          </span>
+
+        </section>
+
+      </div>
+
+
+      <div class="feature">
+
+        <div>
+          <i class="fa-solid fa-copy"></i>
+        </div>
+
+        <section>
+
+          <strong>
+            نسخ سريع
+          </strong>
+
+          <span>
+            انسخ النتيجة بضغطة واحدة
+          </span>
+
+        </section>
+
+      </div>
+
+    </section>
+
+
+    <!-- INFO -->
+    <section class="info">
+
+      <div class="info-icon">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+
+      <div>
+
+        <h2>
+          ما هو Unicode؟
+        </h2>
+
+        <p>
+          Unicode هو معيار عالمي لترميز الأحرف والرموز،
+          ويسمح بتمثيل لغات مختلفة مثل العربية والإنجليزية
+          والفرنسية وغيرها داخل الأنظمة الرقمية.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- HOW TO -->
+    <section class="info">
+
+      <div class="info-icon">
+        <i class="fa-solid fa-list-check"></i>
+      </div>
+
+      <div class="info-body">
+
+        <h2>
+          طريقة الاستخدام
+        </h2>
+
+        <div class="steps">
+
+          <div class="step">
+
+            <span>1</span>
+
+            <div>
+
+              <strong>
+                اختر الاتجاه
+              </strong>
+
+              <p>
+                النص إلى Unicode أو Unicode إلى النص.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <span>2</span>
+
+            <div>
+
+              <strong>
+                أدخل البيانات
+              </strong>
+
+              <p>
+                اكتب النص أو رموز Unicode.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <span>3</span>
+
+            <div>
+
+              <strong>
+                اختر الصيغة
+              </strong>
+
+              <p>
+                U+ أو JavaScript أو HTML Entity.
+              </p>
+
+            </div>
+
+          </div>
+
+
+          <div class="step">
+
+            <span>4</span>
+
+            <div>
+
+              <strong>
+                انسخ النتيجة
+              </strong>
+
+              <p>
+                انسخ النتيجة أو أكواد Unicode.
+              </p>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- TIP -->
+    <section class="tip">
+
+      <div class="tip-icon">
+        <i class="fa-solid fa-lightbulb"></i>
+      </div>
+
+      <div>
+
+        <strong>
+          نصيحة
+        </strong>
+
+        <p>
+          يمكنك استخدام صيغة U+0041 عند التعامل مع Unicode
+          بشكل مباشر، بينما تعد صيغ JavaScript وHTML مفيدة
+          للمطورين داخل الأكواد وصفحات الويب.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="faq">
+
+      <div class="faq-title">
+
+        <span>
+          دليل الأداة
+        </span>
+
+        <h2>
+          الأسئلة الشائعة
+        </h2>
+
+      </div>
+
+
+      <details>
+
+        <summary>
+
+          ما الفرق بين Unicode وASCII؟
+
+          <i class="fa-solid fa-plus"></i>
+
+        </summary>
+
+        <p>
+          ASCII يدعم مجموعة محدودة من الأحرف الأساسية،
+          بينما Unicode يدعم عددًا ضخمًا من الأحرف والرموز
+          واللغات المختلفة.
+        </p>
+
+      </details>
+
+
+      <details>
+
+        <summary>
+
+          ما معنى U+0041؟
+
+          <i class="fa-solid fa-plus"></i>
+
+        </summary>
+
+        <p>
+          U+0041 هو التمثيل الست عشري لنقطة Unicode الخاصة
+          بالحرف A.
+        </p>
+
+      </details>
+
+
+      <details>
+
+        <summary>
+
+          هل الأداة تدعم اللغة العربية؟
+
+          <i class="fa-solid fa-plus"></i>
+
+        </summary>
+
+        <p>
+          نعم. يمكن تحويل الأحرف العربية واللغات الأخرى
+          إلى قيم Unicode.
+        </p>
+
+      </details>
+
+
+      <details>
+
+        <summary>
+
+          هل يتم إرسال النص إلى الخادم؟
+
+          <i class="fa-solid fa-plus"></i>
+
+        </summary>
+
+        <p>
+          لا. تتم عمليات التحويل داخل متصفحك مباشرة.
+        </p>
+
+      </details>
+
+    </section>
+
+  </main>
+
+  <Footer />
+
+
+  <!-- ====================================================== -->
+  <!-- JAVASCRIPT -->
+  <!-- ====================================================== -->
+
+  <script is:inline>
+    (() => {
+
+      function init() {
+
+        const input =
+          document.getElementById('mainInput');
+
+        const result =
+          document.getElementById('result');
+
+        const resultEmpty =
+          document.getElementById('resultEmpty');
+
+        const textMode =
+          document.getElementById('textMode');
+
+        const unicodeMode =
+          document.getElementById('unicodeMode');
+
+        const convertBtn =
+          document.getElementById('convertBtn');
+
+        const resetBtn =
+          document.getElementById('resetBtn');
+
+        const copyBtn =
+          document.getElementById('copyBtn');
+
+        const copyCodesBtn =
+          document.getElementById('copyCodesBtn');
+
+        const clearBtn =
+          document.getElementById('clearBtn');
+
+        const formatSelect =
+          document.getElementById('formatSelect');
+
+        const separatorSelect =
+          document.getElementById('separatorSelect');
+
+        const caseSelect =
+          document.getElementById('caseSelect');
+
+        const inputTitle =
+          document.getElementById('inputTitle');
+
+        const inputHint =
+          document.getElementById('inputHint');
+
+        const charCount =
+          document.getElementById('charCount');
+
+        const status =
+          document.getElementById('status');
+
+        const message =
+          document.getElementById('message');
+
+        const previewState =
+          document.getElementById('previewState');
+
+        const resultInfo =
+          document.getElementById('resultInfo');
+
+        const characterDetails =
+          document.getElementById('characterDetails');
+
+
+        let mode = 'text';
+
+        let lastResult = '';
+
+        let lastCodes = [];
+
+
+        /* =====================================================
+           STATUS
+           ===================================================== */
+
+        function setStatus(
+          text,
+          working = false
+        ) {
+
+          status.innerHTML =
+            '<span></span>' + text;
+
+          status.classList.toggle(
+            'working',
+            working
+          );
+
+        }
+
+
+        function setMessage(
+          text,
+          type = ''
+        ) {
+
+          message.textContent =
+            text;
+
+          message.className =
+            'message';
+
+          if (type) {
+            message.classList.add(type);
+          }
+
+        }
+
+
+        /* =====================================================
+           COUNTER
+           ===================================================== */
+
+        function updateCounter() {
+
+          const length =
+            input.value.length;
+
+          charCount.textContent =
+            `${length} حرف`;
+
+        }
+
+
+        /* =====================================================
+           MODE
+           ===================================================== */
+
+        function updateMode() {
+
+          const text =
+            mode === 'text';
+
+
+          textMode.classList.toggle(
+            'active',
+            text
+          );
+
+          unicodeMode.classList.toggle(
+            'active',
+            !text
+          );
+
+
+          if (text) {
+
+            inputTitle.textContent =
+              'النص';
+
+            inputHint.textContent =
+              'اكتب النص الذي تريد تحويله إلى Unicode';
+
+            input.placeholder =
+              'مثال: مرحبًا بالعالم';
+
+            input.classList.remove(
+              'code-input'
+            );
+
+            convertBtn.innerHTML =
+              '<i class="fa-solid fa-bolt"></i> تحويل Unicode';
+
+          } else {
+
+            inputTitle.textContent =
+              'رموز Unicode';
+
+            inputHint.textContent =
+              'أدخل رموز Unicode مثل U+0041 أو \\u0041 أو &#65;';
+
+            input.placeholder =
+              'مثال: U+0048 U+0065 U+006C U+006C U+006F';
+
+            input.classList.add(
+              'code-input'
+            );
+
+            convertBtn.innerHTML =
+              '<i class="fa-solid fa-bolt"></i> تحويل إلى نص';
+
+          }
+
+
+          updateCounter();
+
+        }
+
+
+        textMode.addEventListener(
+          'click',
+          () => {
+
+            if (mode === 'text') {
+              return;
+            }
+
+            mode = 'text';
+
+            input.value = '';
+
+            clearResult();
+
+            setMessage('');
+
+            updateMode();
+
+            input.focus();
+
+          }
+        );
+
+
+        unicodeMode.addEventListener(
+          'click',
+          () => {
+
+            if (mode === 'unicode') {
+              return;
+            }
+
+            mode = 'unicode';
+
+            input.value = '';
+
+            clearResult();
+
+            setMessage('');
+
+            updateMode();
+
+            input.focus();
+
+          }
+        );
+
+
+        /* =====================================================
+           UNICODE CODE POINTS
+           ===================================================== */
+
+        function getCodePoints(text) {
+
+          const codes = [];
+
+          for (const char of text) {
+
+            codes.push(
+              char.codePointAt(0)
+            );
+
+          }
+
+          return codes;
+
+        }
+
+
+        function hexValue(
+          number
+        ) {
+
+          let value =
+            number.toString(16);
+
+          if (
+            caseSelect.value === 'upper'
+          ) {
+
+            value =
+              value.toUpperCase();
+
+          }
+
+          return value;
+
+        }
+
+
+        /* =====================================================
+           SEPARATOR
+           ===================================================== */
+
+        function getSeparator() {
+
+          if (
+            separatorSelect.value ===
+            'comma'
+          ) {
+
+            return ', ';
+
+          }
+
+          if (
+            separatorSelect.value ===
+            'newline'
+          ) {
+
+            return '\n';
+
+          }
+
+          return ' ';
+
+        }
+
+
+        /* =====================================================
+           TEXT → UNICODE
+           ===================================================== */
+
+        function textToUnicode(
+          text
+        ) {
+
+          const codes =
+            getCodePoints(text);
+
+          const format =
+            formatSelect.value;
+
+          const separator =
+            getSeparator();
+
+          const output =
+            codes.map(
+              code => {
+
+                const hex =
+                  hexValue(code);
+
+
+                if (
+                  format ===
+                  'uplus'
+                ) {
+
+                  return (
+                    'U+' +
+                    hex.padStart(
+                      4,
+                      '0'
+                    )
+                  );
+
+                }
+
+
+                if (
+                  format ===
+                  'javascript'
+                ) {
+
+                  if (code <= 0xFFFF) {
+
+                    return (
+                      '\\u' +
+                      hex.padStart(
+                        4,
+                        '0'
+                      )
+                    );
+
+                  }
+
+                  return (
+                    '\\u{' +
+                    hex +
+                    '}'
+                  );
+
+                }
+
+
+                if (
+                  format ===
+                  'html-decimal'
+                ) {
+
+                  return (
+                    '&#' +
+                    code +
+                    ';'
+                  );
+
+                }
+
+
+                if (
+                  format ===
+                  'html-hex'
+                ) {
+
+                  return (
+                    '&#x' +
+                    hex +
+                    ';'
+                  );
+
+                }
+
+
+                return '';
+
+              }
+            );
+
+
+          return {
+            text:
+              output.join(
+                separator
+              ),
+
+            codes
+
+          };
+
+        }
+
+
+        /* =====================================================
+           PARSE UNICODE
+           ===================================================== */
+
+        function parseUnicode(
+          value
+        ) {
+
+          let text =
+            value.trim();
+
+
+          if (!text) {
+            return [];
+          }
+
+
+          /*
+           * U+0041
+           */
+
+          text =
+            text.replace(
+              /U\+([0-9a-fA-F]{1,6})/g,
+              ' $1 '
+            );
+
+
+          /*
+           * \u0041
+           */
+
+          text =
+            text.replace(
+              /\\u([0-9a-fA-F]{4})/gi,
+              ' $1 '
+            );
+
+
+          /*
+           * \u{1F600}
+           */
+
+          text =
+            text.replace(
+              /\\u\{([0-9a-fA-F]{1,6})\}/gi,
+              ' $1 '
+            );
+
+
+          /*
+           * HTML decimal
+           * &#65;
+           */
+
+          text =
+            text.replace(
+              /&#(\d+);?/g,
+              ' DEC:$1 '
+            );
+
+
+          /*
+           * HTML hexadecimal
+           * &#x41;
+           */
+
+          text =
+            text.replace(
+              /&#x([0-9a-fA-F]+);?/gi,
+              ' HEX:$1 '
+            );
+
+
+          const tokens =
+            text
+              .replace(
+                /[,;]+/g,
+                ' '
+              )
+              .split(
+                /\s+/
+              )
+              .filter(Boolean);
+
+
+          const codes = [];
+
+
+          for (
+            let i = 0;
+            i < tokens.length;
+            i++
+          ) {
+
+            let token =
+              tokens[i];
+
+
+            let number;
+
+
+            if (
+              token.startsWith(
+                'DEC:'
+              )
+            ) {
+
+              number =
+                Number(
+                  token.slice(4)
+                );
+
+            } else if (
+              token.startsWith(
+                'HEX:'
+              )
+            ) {
+
+              number =
+                parseInt(
+                  token.slice(4),
+                  16
+                );
+
+            } else if (
+              /^[0-9a-fA-F]+$/.test(
+                token
+              )
+            ) {
+
+              /*
+               * Raw hexadecimal.
+               */
+
+              number =
+                parseInt(
+                  token,
+                  16
+                );
+
+            } else {
+
+              throw new Error(
+                `القيمة "${token}" غير صالحة.`
+              );
+
+            }
+
+
+            if (
+              !Number.isInteger(
+                number
+              ) ||
+              number < 0 ||
+              number > 0x10FFFF
+            ) {
+
+              throw new Error(
+                `قيمة Unicode خارج النطاق: ${token}`
+              );
+
+            }
+
+
+            /*
+             * Surrogate range is invalid
+             * as an individual Unicode code point.
+             */
+
+            if (
+              number >= 0xD800 &&
+              number <= 0xDFFF
+            ) {
+
+              throw new Error(
+                `قيمة Unicode غير صالحة: ${token}`
+              );
+
+            }
+
+
+            codes.push(
+              number
+            );
+
+          }
+
+
+          return codes;
+
+        }
+
+
+        /* =====================================================
+           UNICODE → TEXT
+           ===================================================== */
+
+        function unicodeToText(
+          value
+        ) {
+
+          const codes =
+            parseUnicode(
+              value
+            );
+
+
+          let output =
+            '';
+
+
+          for (
+            let i = 0;
+            i < codes.length;
+            i++
+          ) {
+
+            output +=
+              String.fromCodePoint(
+                codes[i]
+              );
+
+          }
+
+
+          return {
+            text:
+              output,
+
+            codes
+
+          };
+
+        }
+
+
+        /* =====================================================
+           CHARACTER DETAILS
+           ===================================================== */
+
+        function renderDetails(
+          codes
+        ) {
+
+          if (!codes.length) {
+
+            characterDetails.innerHTML =
+              '<div class="details-empty">ستظهر تفاصيل الأحرف هنا</div>';
+
+            return;
+
+          }
+
+
+          const fragment =
+            document.createDocumentFragment();
+
+
+          const limit =
+            Math.min(
+              codes.length,
+              100
+            );
+
+
+          for (
+            let i = 0;
+            i < limit;
+            i++
+          ) {
+
+            const code =
+              codes[i];
+
+            const item =
+              document.createElement(
+                'div'
+              );
+
+            item.className =
+              'character';
+
+
+            const char =
+              String.fromCodePoint(
+                code
+              );
+
+
+            const display =
+              code === 32
+                ? '␠'
+                : char;
+
+
+            item.innerHTML = `
+              <div class="character-symbol">${escapeHTML(display)}</div>
+              <div class="character-info">
+                <strong>U+${hexValue(code).padStart(4, '0')}</strong>
+                <span>Decimal: ${code}</span>
+              </div>
+            `;
+
+
+            fragment.appendChild(
+              item
+            );
+
+          }
+
+
+          characterDetails.innerHTML =
+            '';
+
+          characterDetails.appendChild(
+            fragment
+          );
+
+
+          if (
+            codes.length > 100
+          ) {
+
+            const more =
+              document.createElement(
+                'div'
+              );
+
+            more.className =
+              'details-more';
+
+            more.textContent =
+              `تم عرض أول 100 حرف من أصل ${codes.length} حرف.`;
+
+            characterDetails.appendChild(
+              more
+            );
+
+          }
+
+        }
+
+
+        function escapeHTML(
+          value
+        ) {
+
+          return value
+            .replace(
+              /&/g,
+              '&amp;'
+            )
+            .replace(
+              /</g,
+              '&lt;'
+            )
+            .replace(
+              />/g,
+              '&gt;'
+            )
+            .replace(
+              /"/g,
+              '&quot;'
+            )
+            .replace(
+              /'/g,
+              '&#039;'
+            );
+
+        }
+
+
+        /* =====================================================
+           DISPLAY RESULT
+           ===================================================== */
+
+        function displayResult(
+          value,
+          codes
+        ) {
+
+          lastResult =
+            value;
+
+          lastCodes =
+            codes.slice();
+
+
+          result.textContent =
+            value;
+
+          resultEmpty.style.display =
+            'none';
+
+          result.classList.add(
+            'visible'
+          );
+
+
+          copyBtn.disabled =
+            !value;
+
+          copyCodesBtn.disabled =
+            !codes.length;
+
+
+          previewState.textContent =
+            'تم إنشاء النتيجة';
+
+          resultInfo.textContent =
+            `${codes.length} قيمة Unicode`;
+
+
+          renderDetails(
+            codes
+          );
+
+        }
+
+
+        /* =====================================================
+           CLEAR
+           ===================================================== */
+
+        function clearResult() {
+
+          lastResult =
+            '';
+
+          lastCodes =
+            [];
+
+
+          result.textContent =
+            '';
+
+          result.classList.remove(
+            'visible'
+          );
+
+
+          resultEmpty.style.display =
+            'flex';
+
+
+          copyBtn.disabled =
+            true;
+
+          copyCodesBtn.disabled =
+            true;
+
+
+          previewState.textContent =
+            'في انتظار البيانات';
+
+          resultInfo.textContent =
+            'Unicode';
+
+
+          renderDetails(
+            []
+          );
+
+        }
+
+
+        clearBtn.addEventListener(
+          'click',
+          () => {
+
+            input.value =
+              '';
+
+            clearResult();
+
+            updateCounter();
+
+            setMessage('');
+
+            setStatus(
+              'جاهز',
+              false
+            );
+
+            input.focus();
+
+          }
+        );
+
+
+        /* =====================================================
+           CONVERT
+           ===================================================== */
+
+        function convert() {
+
+          const value =
+            input.value.trim();
+
+
+          if (!value) {
+
+            clearResult();
+
+            setStatus(
+              'جاهز',
+              false
+            );
+
+            setMessage(
+              'يرجى إدخال البيانات أولًا.',
+              'error'
+            );
+
+            return;
+
+          }
+
+
+          setStatus(
+            'جارٍ التحويل...',
+            true
+          );
+
+
+          try {
+
+            let converted;
+
+
+            if (
+              mode === 'text'
+            ) {
+
+              converted =
+                textToUnicode(
+                  input.value
+                );
+
+            } else {
+
+              converted =
+                unicodeToText(
+                  input.value
+                );
+
+            }
+
+
+            if (
+              !converted.codes.length
+            ) {
+
+              throw new Error(
+                'لم يتم العثور على رموز Unicode صالحة.'
+              );
+
+            }
+
+
+            displayResult(
+              converted.text,
+              converted.codes
+            );
+
+
+            setStatus(
+              'جاهز',
+              false
+            );
+
+
+            setMessage(
+              'تم التحويل بنجاح.',
+              'success'
+            );
+
+
+          } catch (error) {
+
+            clearResult();
+
+            setStatus(
+              'خطأ',
+              false
+            );
+
+
+            setMessage(
+              error.message ||
+              'حدث خطأ أثناء التحويل.',
+              'error'
+            );
+
+          }
+
+        }
+
+
+        convertBtn.addEventListener(
+          'click',
+          convert
+        );
+
+
+        /* =====================================================
+           KEYBOARD
+           ===================================================== */
+
+        input.addEventListener(
+          'keydown',
+          event => {
+
+            if (
+              (event.ctrlKey ||
+               event.metaKey) &&
+              event.key === 'Enter'
+            ) {
+
+              event.preventDefault();
+
+              convert();
+
+            }
+
+          }
+        );
+
+
+        input.addEventListener(
+          'input',
+          updateCounter
+        );
+
+
+        /* =====================================================
+           OPTIONS
+           ===================================================== */
+
+        formatSelect.addEventListener(
+          'change',
+          () => {
+
+            if (
+              mode === 'text' &&
+              input.value
+            ) {
+
+              convert();
+
+            }
+
+          }
+        );
+
+
+        separatorSelect.addEventListener(
+          'change',
+          () => {
+
+            if (
+              mode === 'text' &&
+              input.value
+            ) {
+
+              convert();
+
+            }
+
+          }
+        );
+
+
+        caseSelect.addEventListener(
+          'change',
+          () => {
+
+            if (
+              input.value
+            ) {
+
+              convert();
+
+            }
+
+          }
+        );
+
+
+        /* =====================================================
+           COPY RESULT
+           ===================================================== */
+
+        copyBtn.addEventListener(
+          'click',
+          async () => {
+
+            if (!lastResult) {
+              return;
+            }
+
+
+            try {
+
+              await navigator.clipboard.writeText(
+                lastResult
+              );
+
+
+              setMessage(
+                'تم نسخ النتيجة.',
+                'success'
+              );
+
+
+            } catch (error) {
+
+              fallbackCopy(
+                lastResult
+              );
+
+            }
+
+          }
+        );
+
+
+        /* =====================================================
+           COPY CODES
+           ===================================================== */
+
+        copyCodesBtn.addEventListener(
+          'click',
+          async () => {
+
+            if (!lastCodes.length) {
+              return;
+            }
+
+
+            const codes =
+              lastCodes
+                .map(
+                  code =>
+                    'U+' +
+                    code
+                      .toString(16)
+                      .toUpperCase()
+                      .padStart(
+                        4,
+                        '0'
+                      )
+                )
+                .join(' ');
+
+
+            try {
+
+              await navigator.clipboard.writeText(
+                codes
+              );
+
+
+              setMessage(
+                'تم نسخ أكواد Unicode.',
+                'success'
+              );
+
+
+            } catch (error) {
+
+              fallbackCopy(
+                codes
+              );
+
+            }
+
+          }
+        );
+
+
+        /* =====================================================
+           FALLBACK COPY
+           ===================================================== */
+
+        function fallbackCopy(
+          value
+        ) {
+
+          const area =
+            document.createElement(
+              'textarea'
+            );
+
+
+          area.value =
+            value;
+
+
+          area.style.position =
+            'fixed';
+
+          area.style.left =
+            '-9999px';
+
+          area.style.top =
+            '0';
+
+
+          document.body.appendChild(
+            area
+          );
+
+
+          area.focus();
+
+          area.select();
+
+
+          try {
+
+            document.execCommand(
+              'copy'
+            );
+
+
+            setMessage(
+              'تم النسخ بنجاح.',
+              'success'
+            );
+
+          } catch (error) {
+
+            setMessage(
+              'تعذر النسخ تلقائيًا.',
+              'error'
+            );
+
+          }
+
+
+          area.remove();
+
+        }
+
+
+        /* =====================================================
+           RESET
+           ===================================================== */
+
+        resetBtn.addEventListener(
+          'click',
+          () => {
+
+            input.value =
+              '';
+
+            mode =
+              'text';
+
+
+            formatSelect.value =
+              'uplus';
+
+            separatorSelect.value =
+              'space';
+
+            caseSelect.value =
+              'upper';
+
+
+            clearResult();
+
+            updateMode();
+
+            updateCounter();
+
+
+            setMessage(
+              'تمت إعادة ضبط الأداة.',
+              'success'
+            );
+
+
+            setStatus(
+              'جاهز',
+              false
+            );
+
+
+            input.focus();
+
+          }
+        );
+
+
+        /* =====================================================
+           THEME
+           ===================================================== */
+
+        function getThemeState() {
+
+          const html =
+            document.documentElement;
+
+          const stored =
+            localStorage.getItem(
+              'theme'
+            );
+
+
+          if (
+            stored === 'light'
+          ) {
+
+            return 'light';
+
+          }
+
+
+          if (
+            stored === 'dark'
+          ) {
+
+            return 'dark';
+
+          }
+
+
+          if (
+            html.dataset.theme ===
+            'light'
+          ) {
+
+            return 'light';
+
+          }
+
+
+          if (
+            html.dataset.theme ===
+            'dark'
+          ) {
+
+            return 'dark';
+
+          }
+
+
+          if (
+            html.classList.contains(
+              'light'
+            )
+          ) {
+
+            return 'light';
+
+          }
+
+
+          if (
+            html.classList.contains(
+              'dark'
+            )
+          ) {
+
+            return 'dark';
+
+          }
+
+
+          return 'dark';
+
+        }
+
+
+        function syncTheme() {
+
+          const theme =
+            getThemeState();
+
+          const light =
+            theme === 'light';
+
+
+          document.body.classList.toggle(
+            'unicode-light',
+            light
+          );
+
+
+          document.body.classList.toggle(
+            'unicode-dark',
+            !light
+          );
+
+        }
+
+
+        syncTheme();
+
+
+        window.addEventListener(
+          'storage',
+          event => {
+
+            if (
+              event.key ===
+              'theme'
+            ) {
+
+              syncTheme();
+
+            }
+
+          }
+        );
+
+
+        const themeObserver =
+          new MutationObserver(
+            () => {
+
+              syncTheme();
+
+            }
+          );
+
+
+        themeObserver.observe(
+          document.documentElement,
+          {
+            attributes: true,
+            attributeFilter: [
+              'class',
+              'data-theme'
+            ]
+          }
+        );
+
+
+        /* =====================================================
+           INITIAL
+           ===================================================== */
+
+        updateMode();
+
+        updateCounter();
+
+        clearResult();
+
+        setStatus(
+          'جاهز',
+          false
+        );
+
+      }
+
+
+      if (
+        document.readyState ===
+        'loading'
+      ) {
+
+        document.addEventListener(
+          'DOMContentLoaded',
+          init,
+          {
+            once: true
+          }
+        );
+
+      } else {
+
+        init();
+
+      }
+
+    })();
+  </script>
+
+
+  <!-- ====================================================== -->
+  <!-- STYLE -->
+  <!-- ====================================================== -->
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+
+    :global(html) {
+
+      --page-bg: #071321;
+      --page-bg-soft: #0a192a;
+
+      --surface: #0d1d2e;
+      --surface-2: #102337;
+      --surface-3: #12283d;
+
+      --field: #081624;
+
+      --text: #f5f9fd;
+      --text-soft: #c0cfdd;
+      --muted: #8ca0b4;
+      --muted-2: #6d8297;
+
+      --line: rgba(92,194,246,.15);
+      --line-strong: rgba(92,194,246,.30);
+
+      --blue: #28b8f2;
+      --blue-dark: #0b8dce;
+
+      --success: #2ad5a1;
+      --danger: #ff6178;
+
+      --shadow:
+        0 20px 60px rgba(0,0,0,.20);
+
+    }
+
+
+    :global(html[data-theme="light"]),
+    :global(body.unicode-light) {
+
+      --page-bg: #f2f8fc;
+      --page-bg-soft: #eaf4fa;
+
+      --surface: #ffffff;
+      --surface-2: #f7fbfe;
+      --surface-3: #edf6fb;
+
+      --field: #f5f9fc;
+
+      --text: #13263a;
+      --text-soft: #40576d;
+      --muted: #687f94;
+      --muted-2: #8799a9;
+
+      --line: rgba(12,126,183,.13);
+      --line-strong: rgba(12,126,183,.27);
+
+      --blue: #069fdf;
+      --blue-dark: #087bbd;
+
+      --success: #079f75;
+      --danger: #df4e65;
+
+      --shadow:
+        0 18px 50px rgba(33,91,125,.10);
+
+    }
+
+
+    :global(html.dark-mode),
+    :global(body.unicode-dark) {
+
+      --page-bg: #071321;
+      --page-bg-soft: #0a192a;
+
+      --surface: #0d1d2e;
+      --surface-2: #102337;
+      --surface-3: #12283d;
+
+      --field: #081624;
+
+      --text: #f5f9fd;
+      --text-soft: #c0cfdd;
+      --muted: #8ca0b4;
+      --muted-2: #6d8297;
+
+      --line: rgba(92,194,246,.15);
+      --line-strong: rgba(92,194,246,.30);
+
+      --blue: #28b8f2;
+      --blue-dark: #0b8dce;
+
+      --success: #2ad5a1;
+      --danger: #ff6178;
+
+      --shadow:
+        0 20px 60px rgba(0,0,0,.20);
+
+    }
+
+
+    :global(body) {
+
+      margin: 0;
+
+      background:
+        radial-gradient(
+          circle at 85% 0%,
+          rgba(40,184,242,.08),
+          transparent 32%
+        ),
+        var(--page-bg);
+
+      color:
+        var(--text);
+
+      font-family:
+        "Cairo",
+        sans-serif;
+
+      transition:
+        background .25s ease,
+        color .25s ease;
+
+    }
+
+
+    .unicode-page {
+
+      width:
+        min(1120px,calc(100% - 32px));
+
+      margin:
+        0 auto;
+
+      padding:
+        38px 0 80px;
+
+    }
+
+
+    /* HERO */
+
+    .hero {
+
+      text-align:
+        center;
+
+      padding:
+        12px 10px 38px;
+
+    }
+
+
+    .hero-badge {
+
+      width:
+        fit-content;
+
+      margin:
+        0 auto 16px;
+
+      padding:
+        7px 14px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      color:
+        var(--blue);
+
+      background:
+        rgba(40,184,242,.09);
+
+      border:
+        1px solid var(--line-strong);
+
+      border-radius:
+        999px;
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+
+    }
+
+
+    .hero h1 {
+
+      margin:
+        0;
+
+      font-size:
+        clamp(29px,5vw,46px);
+
+      line-height:
+        1.35;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .hero h1 span {
+      color:
+        var(--blue);
+    }
+
+
+    .hero > p {
+
+      max-width:
+        680px;
+
+      margin:
+        13px auto 20px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        14px;
+
+      line-height:
+        2;
+
+    }
+
+
+    .hero-points {
+
+      display:
+        flex;
+
+      justify-content:
+        center;
+
+      align-items:
+        center;
+
+      flex-wrap:
+        wrap;
+
+      gap:
+        9px;
+
+    }
+
+
+    .hero-points span {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        7px;
+
+      padding:
+        7px 12px;
+
+      color:
+        var(--text-soft);
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        10px;
+
+      font-size:
+        10px;
+
+    }
+
+
+    .hero-points i {
+      color:
+        var(--blue);
+    }
+
+
+    /* TOOL */
+
+    .tool {
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        24px;
+
+      box-shadow:
+        var(--shadow);
+
+      overflow:
+        hidden;
+
+      transition:
+        background .25s ease,
+        border-color .25s ease;
+
+    }
+
+
+    .tool-top {
+
+      padding:
+        26px 28px;
+
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        flex-start;
+
+      gap:
+        20px;
+
+      border-bottom:
+        1px solid var(--line);
+
+    }
+
+
+    .mini-label {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap:
+        7px;
+
+      color:
+        var(--blue);
+
+      font-size:
+        11px;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .tool-top h2 {
+
+      margin:
+        6px 0 3px;
+
+      font-size:
+        21px;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .tool-top p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        11px;
+
+    }
+
+
+    .status {
+
+      flex-shrink:
+        0;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      padding:
+        8px 12px;
+
+      border:
+        1px solid rgba(42,213,161,.20);
+
+      border-radius:
+        999px;
+
+      color:
+        var(--success);
+
+      background:
+        rgba(42,213,161,.07);
+
+      font-size:
+        10px;
+
+      font-weight:
+        700;
+
+    }
+
+
+    .status span {
+
+      width:
+        7px;
+
+      height:
+        7px;
+
+      border-radius:
+        50%;
+
+      background:
+        currentColor;
+
+      box-shadow:
+        0 0 10px currentColor;
+
+    }
+
+
+    .status.working {
+
+      color:
+        var(--blue);
+
+      border-color:
+        var(--line-strong);
+
+      background:
+        rgba(40,184,242,.07);
+
+    }
+
+
+    /* MODE */
+
+    .type-area {
+
+      padding:
+        22px 28px;
+
+      border-bottom:
+        1px solid var(--line);
+
+    }
+
+
+    .type-title {
+
+      margin-bottom:
+        12px;
+
+      color:
+        var(--text-soft);
+
+      font-size:
+        11px;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .types {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(2,1fr);
+
+      gap:
+        10px;
+
+    }
+
+
+    .type {
+
+      min-height:
+        64px;
+
+      padding:
+        8px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      gap:
+        9px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        13px;
+
+      background:
+        var(--surface-2);
+
+      color:
+        var(--muted);
+
+      font-family:
+        inherit;
+
+      font-size:
+        11px;
+
+      font-weight:
+        700;
+
+      cursor:
+        pointer;
+
+      transition:
+        .2s ease;
+
+    }
+
+
+    .type i {
+
+      color:
+        var(--blue);
+
+      font-size:
+        15px;
+
+    }
+
+
+    .type:hover {
+
+      border-color:
+        var(--line-strong);
+
+      transform:
+        translateY(-1px);
+
+    }
+
+
+    .type.active {
+
+      color:
+        var(--text);
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(40,184,242,.15),
+          rgba(40,184,242,.05)
+        );
+
+      border-color:
+        rgba(40,184,242,.45);
+
+    }
+
+
+    /* WORK */
+
+    .work {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+    }
+
+
+    .editor,
+    .preview {
+
+      padding:
+        28px;
+
+    }
+
+
+    .editor {
+
+      border-left:
+        1px solid var(--line);
+
+    }
+
+
+    .preview {
+
+      background:
+        var(--surface-2);
+
+    }
+
+
+    .block-head {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        12px;
+
+      margin-bottom:
+        24px;
+
+    }
+
+
+    .block-icon {
+
+      width:
+        43px;
+
+      height:
+        43px;
+
+      flex-shrink:
+        0;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        12px;
+
+      background:
+        rgba(40,184,242,.08);
+
+      color:
+        var(--blue);
+
+    }
+
+
+    .block-head h3 {
+
+      margin:
+        0 0 3px;
+
+      font-size:
+        15px;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .block-head p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        10px;
+
+      line-height:
+        1.8;
+
+    }
+
+
+    .fields {
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      gap:
+        9px;
+
+    }
+
+
+    .fields label {
+
+      color:
+        var(--text-soft);
+
+      font-size:
+        11px;
+
+      font-weight:
+        700;
+
+    }
+
+
+    .fields label b {
+
+      color:
+        var(--danger);
+
+    }
+
+
+    input,
+    textarea,
+    select {
+
+      width:
+        100%;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        11px;
+
+      background:
+        var(--field);
+
+      color:
+        var(--text);
+
+      font-family:
+        "Cairo",
+        sans-serif;
+
+      outline:
+        none;
+
+      transition:
+        .2s ease;
+
+    }
+
+
+    input,
+    select {
+
+      height:
+        46px;
+
+      padding:
+        0 13px;
+
+      font-size:
+        11px;
+
+    }
+
+
+    textarea {
+
+      min-height:
+        205px;
+
+      padding:
+        13px;
+
+      resize:
+        vertical;
+
+      font-size:
+        13px;
+
+      line-height:
+        2;
+
+    }
+
+
+    textarea.code-input {
+
+      direction:
+        ltr;
+
+      text-align:
+        left;
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size:
+        12px;
+
+    }
+
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+
+      border-color:
+        var(--blue);
+
+      box-shadow:
+        0 0 0 3px rgba(40,184,242,.08);
+
+    }
+
+
+    input::placeholder,
+    textarea::placeholder {
+
+      color:
+        var(--muted-2);
+
+    }
+
+
+    .field-meta {
+
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      gap:
+        10px;
+
+      color:
+        var(--muted-2);
+
+      font-size:
+        9px;
+
+    }
+
+
+    /* SETTINGS */
+
+    .settings {
+
+      margin-top:
+        24px;
+
+      padding-top:
+        22px;
+
+      border-top:
+        1px solid var(--line);
+
+    }
+
+
+    .settings-head {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      margin-bottom:
+        13px;
+
+      font-size:
+        11px;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .settings-head i {
+      color:
+        var(--blue);
+    }
+
+
+    .settings-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3,1fr);
+
+      gap:
+        9px;
+
+    }
+
+
+    .settings-grid label {
+
+      display:
+        block;
+
+      margin-bottom:
+        7px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        9px;
+
+    }
+
+
+    .settings-grid select {
+
+      height:
+        43px;
+
+    }
+
+
+    /* ACTIONS */
+
+    .main-actions {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr 1.6fr;
+
+      gap:
+        10px;
+
+      margin-top:
+        24px;
+
+    }
+
+
+    .main-actions button {
+
+      min-height:
+        48px;
+
+      border-radius:
+        11px;
+
+      font-family:
+        inherit;
+
+      font-size:
+        11px;
+
+      font-weight:
+        800;
+
+      cursor:
+        pointer;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      gap:
+        8px;
+
+      transition:
+        .2s ease;
+
+    }
+
+
+    .reset-btn {
+
+      color:
+        var(--text);
+
+      background:
+        var(--surface-3);
+
+      border:
+        1px solid var(--line);
+
+    }
+
+
+    .generate-btn {
+
+      color:
+        #fff;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--blue),
+          var(--blue-dark)
+        );
+
+      border:
+        0;
+
+    }
+
+
+    .main-actions button:hover {
+
+      transform:
+        translateY(-1px);
+
+    }
+
+
+    .message {
+
+      min-height:
+        19px;
+
+      margin-top:
+        10px;
+
+      text-align:
+        center;
+
+      font-size:
+        10px;
+
+    }
+
+
+    .message.success {
+      color:
+        var(--success);
+    }
+
+
+    .message.error {
+      color:
+        var(--danger);
+    }
+
+
+    /* RESULT */
+
+    .result-container {
+
+      min-height:
+        300px;
+
+      padding:
+        18px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      border:
+        1px dashed var(--line-strong);
+
+      border-radius:
+        18px;
+
+      background:
+        var(--page-bg);
+
+      overflow:
+        hidden;
+
+    }
+
+
+    .result-empty {
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      text-align:
+        center;
+
+    }
+
+
+    .empty-icon {
+
+      width:
+        70px;
+
+      height:
+        70px;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        18px;
+
+      background:
+        rgba(40,184,242,.08);
+
+      color:
+        var(--blue);
+
+      font-size:
+        27px;
+
+      margin-bottom:
+        5px;
+
+    }
+
+
+    .result-empty strong {
+
+      color:
+        var(--text);
+
+      font-size:
+        12px;
+
+    }
+
+
+    .result-empty span {
+
+      color:
+        var(--muted);
+
+      font-size:
+        9px;
+
+    }
+
+
+    .result {
+
+      display:
+        none;
+
+      width:
+        100%;
+
+      max-height:
+        265px;
+
+      margin:
+        0;
+
+      padding:
+        14px;
+
+      overflow:
+        auto;
+
+      white-space:
+        pre-wrap;
+
+      word-break:
+        break-word;
+
+      direction:
+        ltr;
+
+      text-align:
+        left;
+
+      color:
+        var(--text);
+
+      background:
+        var(--field);
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        12px;
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size:
+        12px;
+
+      line-height:
+        1.8;
+
+    }
+
+
+    .result.visible {
+      display:
+        block;
+    }
+
+
+    .result-meta {
+
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      gap:
+        10px;
+
+      margin-top:
+        12px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        9px;
+
+    }
+
+
+    .result-meta i {
+      color:
+        var(--success);
+
+      margin-left:
+        4px;
+
+    }
+
+
+    .export-title {
+
+      margin:
+        22px 0 10px;
+
+      color:
+        var(--text-soft);
+
+      font-size:
+        11px;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .export-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3,1fr);
+
+      gap:
+        9px;
+
+    }
+
+
+    .export {
+
+      min-height:
+        60px;
+
+      padding:
+        8px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      gap:
+        9px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        12px;
+
+      background:
+        var(--surface);
+
+      color:
+        var(--text);
+
+      font-family:
+        inherit;
+
+      cursor:
+        pointer;
+
+      transition:
+        .2s ease;
+
+    }
+
+
+    .export i {
+      color:
+        var(--blue);
+
+      font-size:
+        15px;
+
+    }
+
+
+    .export span {
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      align-items:
+        flex-start;
+
+    }
+
+
+    .export strong {
+      font-size:
+        10px;
+    }
+
+
+    .export small {
+
+      color:
+        var(--muted);
+
+      font-size:
+        8px;
+
+    }
+
+
+    .export:hover:not(:disabled) {
+
+      border-color:
+        var(--line-strong);
+
+      transform:
+        translateY(-1px);
+
+    }
+
+
+    .export:disabled {
+
+      opacity:
+        .35;
+
+      cursor:
+        not-allowed;
+
+    }
+
+
+    /* DETAILS */
+
+    .details-title {
+
+      margin:
+        22px 0 10px;
+
+      color:
+        var(--text-soft);
+
+      font-size:
+        11px;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .character-details {
+
+      max-height:
+        190px;
+
+      overflow:
+        auto;
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(2,1fr);
+
+      gap:
+        7px;
+
+    }
+
+
+    .details-empty {
+
+      grid-column:
+        1 / -1;
+
+      padding:
+        20px;
+
+      text-align:
+        center;
+
+      color:
+        var(--muted);
+
+      font-size:
+        9px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        11px;
+
+    }
+
+
+    .character {
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      min-width:
+        0;
+
+      padding:
+        8px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        10px;
+
+      background:
+        var(--surface);
+
+    }
+
+
+    .character-symbol {
+
+      width:
+        32px;
+
+      height:
+        32px;
+
+      flex-shrink:
+        0;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border-radius:
+        8px;
+
+      background:
+        rgba(40,184,242,.08);
+
+      color:
+        var(--blue);
+
+      font-size:
+        15px;
+
+    }
+
+
+    .character-info {
+
+      min-width:
+        0;
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      direction:
+        ltr;
+
+      text-align:
+        left;
+
+    }
+
+
+    .character-info strong {
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size:
+        9px;
+
+      color:
+        var(--text);
+
+    }
+
+
+    .character-info span {
+
+      color:
+        var(--muted);
+
+      font-size:
+        8px;
+
+    }
+
+
+    .details-more {
+
+      grid-column:
+        1 / -1;
+
+      padding:
+        9px;
+
+      text-align:
+        center;
+
+      color:
+        var(--muted);
+
+      font-size:
+        8px;
+
+    }
+
+
+    /* FEATURES */
+
+    .features {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3,1fr);
+
+      gap:
+        12px;
+
+      margin-top:
+        16px;
+
+    }
+
+
+    .feature {
+
+      padding:
+        17px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        12px;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        15px;
+
+      box-shadow:
+        var(--shadow);
+
+    }
+
+
+    .feature > div {
+
+      width:
+        42px;
+
+      height:
+        42px;
+
+      flex-shrink:
+        0;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border-radius:
+        11px;
+
+      background:
+        rgba(40,184,242,.08);
+
+      color:
+        var(--blue);
+
+    }
+
+
+    .feature strong,
+    .feature span {
+
+      display:
+        block;
+
+    }
+
+
+    .feature strong {
+      font-size:
+        11px;
+    }
+
+
+    .feature span {
+
+      margin-top:
+        3px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        8px;
+
+    }
+
+
+    /* INFO */
+
+    .info {
+
+      margin-top:
+        16px;
+
+      padding:
+        21px;
+
+      display:
+        flex;
+
+      align-items:
+        flex-start;
+
+      gap:
+        14px;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        17px;
+
+      box-shadow:
+        var(--shadow);
+
+    }
+
+
+    .info-icon,
+    .tip-icon {
+
+      width:
+        44px;
+
+      height:
+        44px;
+
+      flex-shrink:
+        0;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border-radius:
+        12px;
+
+      background:
+        rgba(40,184,242,.08);
+
+      border:
+        1px solid var(--line);
+
+      color:
+        var(--blue);
+
+    }
+
+
+    .info h2 {
+
+      margin:
+        0 0 7px;
+
+      font-size:
+        14px;
+
+    }
+
+
+    .info p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        10px;
+
+      line-height:
+        2;
+
+    }
+
+
+    .info-body {
+      width:
+        100%;
+    }
+
+
+    .steps {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(2,1fr);
+
+      gap:
+        14px;
+
+      margin-top:
+        17px;
+
+    }
+
+
+    .step {
+
+      display:
+        flex;
+
+      gap:
+        10px;
+
+    }
+
+
+    .step > span {
+
+      width:
+        29px;
+
+      height:
+        29px;
+
+      flex-shrink:
+        0;
+
+      display:
+        grid;
+
+      place-items:
+        center;
+
+      border-radius:
+        8px;
+
+      color:
+        var(--blue);
+
+      background:
+        rgba(40,184,242,.08);
+
+      border:
+        1px solid var(--line);
+
+      font-size:
+        10px;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .step strong {
+      font-size:
+        10px;
+    }
+
+
+    .step p {
+
+      margin-top:
+        3px;
+
+      font-size:
+        8px;
+
+    }
+
+
+    /* TIP */
+
+    .tip {
+
+      margin-top:
+        16px;
+
+      padding:
+        18px 21px;
+
+      display:
+        flex;
+
+      align-items:
+        flex-start;
+
+      gap:
+        13px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        17px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(40,184,242,.07),
+          var(--surface)
+        );
+
+    }
+
+
+    .tip strong {
+
+      display:
+        block;
+
+      margin:
+        1px 0 4px;
+
+      font-size:
+        12px;
+
+    }
+
+
+    .tip p {
+
+      margin:
+        0;
+
+      color:
+        var(--muted);
+
+      font-size:
+        9px;
+
+      line-height:
+        1.9;
+
+    }
+
+
+    /* FAQ */
+
+    .faq {
+
+      margin-top:
+        48px;
+
+    }
+
+
+    .faq-title {
+
+      text-align:
+        center;
+
+      margin-bottom:
+        18px;
+
+    }
+
+
+    .faq-title span {
+
+      color:
+        var(--blue);
+
+      font-size:
+        10px;
+
+      font-weight:
+        800;
+
+    }
+
+
+    .faq-title h2 {
+
+      margin:
+        5px 0 0;
+
+      font-size:
+        22px;
+
+      font-weight:
+        800;
+
+    }
+
+
+    details {
+
+      margin-bottom:
+        9px;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        13px;
+
+      overflow:
+        hidden;
+
+    }
+
+
+    summary {
+
+      min-height:
+        54px;
+
+      padding:
+        12px 16px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      gap:
+        10px;
+
+      list-style:
+        none;
+
+      cursor:
+        pointer;
+
+      color:
+        var(--text);
+
+      font-size:
+        10px;
+
+      font-weight:
+        700;
+
+    }
+
+
+    summary::-webkit-details-marker {
+      display:
+        none;
+    }
+
+
+    summary i {
+
+      color:
+        var(--blue);
+
+      transition:
+        .2s ease;
+
+    }
+
+
+    details[open] summary i {
+
+      transform:
+        rotate(45deg);
+
+    }
+
+
+    details p {
+
+      margin:
+        0;
+
+      padding:
+        0 16px 16px;
+
+      color:
+        var(--muted);
+
+      font-size:
+        9px;
+
+      line-height:
+        2;
+
+    }
+
+
+    /* TABLET */
+
+    @media (max-width:850px) {
+
+      .work {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .editor {
+
+        border-left:
+          0;
+
+        border-bottom:
+          1px solid var(--line);
+
+      }
+
+
+      .features {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+    }
+
+
+    /* MOBILE */
+
+    @media (max-width:600px) {
+
+      .unicode-page {
+
+        width:
+          calc(100% - 18px);
+
+        padding:
+          22px 0 55px;
+
+      }
+
+
+      .hero {
+
+        padding:
+          5px 5px 25px;
+
+      }
+
+
+      .hero h1 {
+
+        font-size:
+          28px;
+
+      }
+
+
+      .hero > p {
+
+        font-size:
+          11px;
+
+        line-height:
+          1.9;
+
+      }
+
+
+      .hero-points {
+
+        gap:
+          6px;
+
+      }
+
+
+      .hero-points span {
+
+        padding:
+          6px 8px;
+
+        font-size:
+          8px;
+
+      }
+
+
+      .tool {
+
+        border-radius:
+          18px;
+
+      }
+
+
+      .tool-top {
+
+        padding:
+          19px;
+
+      }
+
+
+      .tool-top h2 {
+
+        font-size:
+          17px;
+
+      }
+
+
+      .tool-top p {
+
+        font-size:
+          9px;
+
+      }
+
+
+      .status {
+
+        padding:
+          6px 9px;
+
+        font-size:
+          8px;
+
+      }
+
+
+      .type-area {
+
+        padding:
+          16px;
+
+      }
+
+
+      .types {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .type {
+
+        min-height:
+          53px;
+
+        font-size:
+          9px;
+
+      }
+
+
+      .editor,
+      .preview {
+
+        padding:
+          18px;
+
+      }
+
+
+      textarea {
+
+        min-height:
+          170px;
+
+      }
+
+
+      .settings-grid {
+
+        grid-template-columns:
+          1fr;
+
+        gap:
+          10px;
+
+      }
+
+
+      .main-actions {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .main-actions button {
+
+        min-height:
+          46px;
+
+      }
+
+
+      .result-container {
+
+        min-height:
+          250px;
+
+      }
+
+
+      .character-details {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .export-grid {
+
+        gap:
+          7px;
+
+      }
+
+
+      .export {
+
+        min-height:
+          56px;
+
+        padding:
+          6px;
+
+      }
+
+
+      .export span {
+
+        display:
+          none;
+
+      }
+
+
+      .export i {
+
+        font-size:
+          16px;
+
+      }
+
+
+      .info {
+
+        padding:
+          16px;
+
+      }
+
+
+      .steps {
+
+        grid-template-columns:
+          1fr;
+
+      }
+
+
+      .faq {
+
+        margin-top:
+          38px;
+
+      }
+
+
+      .faq-title h2 {
+
+        font-size:
+          19px;
+
+      }
+
+    }
+
+
+    /* VERY SMALL PHONES */
+
+    @media (max-width:380px) {
+
+      .tool-top {
+
+        flex-direction:
+          column;
+
+      }
+
+
+      .status {
+
+        align-self:
+          flex-start;
+
+      }
+
+
+      .hero h1 {
+
+        font-size:
+          25px;
+
+      }
+
+
+      .result-container {
+
+        min-height:
+          220px;
+
+      }
+
+    }
+
+  </style>
+
+</body>
+</html>
