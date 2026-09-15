@@ -27,13 +27,12 @@ const codes = [
   { code: 302, name: 'Found', ar: 'تم العثور عليه', desc: 'The requested resource is temporarily available at another URL.', cat: '3xx', color: '#2563eb' },
   { code: 303, name: 'See Other', ar: 'راجع موقعاً آخر', desc: 'The response can be found at another URI using GET.', cat: '3xx', color: '#2563eb' },
   { code: 304, name: 'Not Modified', ar: 'لم يتغير', desc: 'The resource has not changed since the last request.', cat: '3xx', color: '#2563eb' },
-  { code: 305, name: 'Use Proxy', ar: 'استخدم البروكسي', desc: 'The requested resource must be accessed through a proxy.', cat: '3xx', color: '#2563eb' },
   { code: 307, name: 'Temporary Redirect', ar: 'إعادة توجيه مؤقتة', desc: 'The request should be repeated at another URL without changing the method.', cat: '3xx', color: '#2563eb' },
   { code: 308, name: 'Permanent Redirect', ar: 'إعادة توجيه دائمة', desc: 'The request should be repeated at another URL permanently.', cat: '3xx', color: '#2563eb' },
 
   { code: 400, name: 'Bad Request', ar: 'طلب غير صالح', desc: 'The server cannot process the request because it is malformed or invalid.', cat: '4xx', color: '#dc2626' },
   { code: 401, name: 'Unauthorized', ar: 'غير مصرح', desc: 'Authentication is required to access the requested resource.', cat: '4xx', color: '#dc2626' },
-  { code: 402, name: 'Payment Required', ar: 'الدفع مطلوب', desc: 'Reserved for future digital payment systems.', cat: '4xx', color: '#dc2626' },
+  { code: 402, name: 'Payment Required', ar: 'الدفع مطلوب', desc: 'Reserved for future use.', cat: '4xx', color: '#dc2626' },
   { code: 403, name: 'Forbidden', ar: 'ممنوع', desc: 'The server understood the request but refuses to authorize it.', cat: '4xx', color: '#dc2626' },
   { code: 404, name: 'Not Found', ar: 'غير موجود', desc: 'The requested resource could not be found.', cat: '4xx', color: '#dc2626' },
   { code: 405, name: 'Method Not Allowed', ar: 'الطريقة غير مسموحة', desc: 'The HTTP method is not supported for the requested resource.', cat: '4xx', color: '#dc2626' },
@@ -49,7 +48,7 @@ const codes = [
   { code: 415, name: 'Unsupported Media Type', ar: 'نوع الوسائط غير مدعوم', desc: 'The request media format is not supported by the server.', cat: '4xx', color: '#dc2626' },
   { code: 416, name: 'Range Not Satisfiable', ar: 'النطاق غير متاح', desc: 'The requested range cannot be satisfied.', cat: '4xx', color: '#dc2626' },
   { code: 417, name: 'Expectation Failed', ar: 'فشل التوقع', desc: 'The server cannot meet the requirements of the Expect header.', cat: '4xx', color: '#dc2626' },
-  { code: 418, name: "I'm a teapot", ar: 'أنا إبريق شاي', desc: 'An April Fools joke status code defined by RFC 2324.', cat: '4xx', color: '#dc2626' },
+  { code: 418, name: "I'm a teapot", ar: 'أنا إبريق شاي', desc: 'A humorous HTTP status code.', cat: '4xx', color: '#dc2626' },
   { code: 422, name: 'Unprocessable Content', ar: 'المحتوى غير قابل للمعالجة', desc: 'The request is syntactically valid but cannot be processed.', cat: '4xx', color: '#dc2626' },
   { code: 423, name: 'Locked', ar: 'مقفل', desc: 'The requested resource is locked.', cat: '4xx', color: '#dc2626' },
   { code: 424, name: 'Failed Dependency', ar: 'فشل الاعتماد', desc: 'The request failed because a dependent request failed.', cat: '4xx', color: '#dc2626' },
@@ -57,29 +56,29 @@ const codes = [
   { code: 426, name: 'Upgrade Required', ar: 'الترقية مطلوبة', desc: 'The client should switch to a different protocol.', cat: '4xx', color: '#dc2626' },
   { code: 428, name: 'Precondition Required', ar: 'شرط مسبق مطلوب', desc: 'The origin server requires the request to be conditional.', cat: '4xx', color: '#dc2626' },
   { code: 429, name: 'Too Many Requests', ar: 'طلبات كثيرة جداً', desc: 'The client has sent too many requests in a given amount of time.', cat: '4xx', color: '#dc2626' },
-  { code: 431, name: 'Request Header Fields Too Large', ar: 'حقول ترويسة الطلب كبيرة', desc: 'The request headers are too large for the server to process.', cat: '4xx', color: '#dc2626' },
+  { code: 431, name: 'Request Header Fields Too Large', ar: 'حقول الترويسة كبيرة', desc: 'The request headers are too large.', cat: '4xx', color: '#dc2626' },
   { code: 451, name: 'Unavailable For Legal Reasons', ar: 'غير متاح لأسباب قانونية', desc: 'The resource is unavailable due to legal demands.', cat: '4xx', color: '#dc2626' },
 
   { code: 500, name: 'Internal Server Error', ar: 'خطأ داخلي في الخادم', desc: 'The server encountered an unexpected condition.', cat: '5xx', color: '#9333ea' },
-  { code: 501, name: 'Not Implemented', ar: 'غير منفذ', desc: 'The server does not support the functionality required to fulfill the request.', cat: '5xx', color: '#9333ea' },
+  { code: 501, name: 'Not Implemented', ar: 'غير منفذ', desc: 'The server does not support the requested functionality.', cat: '5xx', color: '#9333ea' },
   { code: 502, name: 'Bad Gateway', ar: 'بوابة غير صالحة', desc: 'The server received an invalid response from an upstream server.', cat: '5xx', color: '#9333ea' },
   { code: 503, name: 'Service Unavailable', ar: 'الخدمة غير متاحة', desc: 'The server is currently unable to handle the request.', cat: '5xx', color: '#9333ea' },
   { code: 504, name: 'Gateway Timeout', ar: 'انتهت مهلة البوابة', desc: 'The upstream server did not respond in time.', cat: '5xx', color: '#9333ea' },
   { code: 505, name: 'HTTP Version Not Supported', ar: 'إصدار HTTP غير مدعوم', desc: 'The server does not support the HTTP version used in the request.', cat: '5xx', color: '#9333ea' },
-  { code: 506, name: 'Variant Also Negotiates', ar: 'التفاوض على النسخة', desc: 'The server has an internal configuration error during content negotiation.', cat: '5xx', color: '#9333ea' },
-  { code: 507, name: 'Insufficient Storage', ar: 'مساحة تخزين غير كافية', desc: 'The server cannot store the representation needed to complete the request.', cat: '5xx', color: '#9333ea' },
-  { code: 508, name: 'Loop Detected', ar: 'تم اكتشاف حلقة', desc: 'The server detected an infinite loop while processing the request.', cat: '5xx', color: '#9333ea' },
+  { code: 506, name: 'Variant Also Negotiates', ar: 'تفاوض النسخة', desc: 'The server has an internal configuration error.', cat: '5xx', color: '#9333ea' },
+  { code: 507, name: 'Insufficient Storage', ar: 'مساحة تخزين غير كافية', desc: 'The server cannot store the representation needed.', cat: '5xx', color: '#9333ea' },
+  { code: 508, name: 'Loop Detected', ar: 'تم اكتشاف حلقة', desc: 'The server detected an infinite loop.', cat: '5xx', color: '#9333ea' },
   { code: 510, name: 'Not Extended', ar: 'غير موسع', desc: 'Further extensions to the request are required.', cat: '5xx', color: '#9333ea' },
   { code: 511, name: 'Network Authentication Required', ar: 'مصادقة الشبكة مطلوبة', desc: 'The client needs to authenticate to gain network access.', cat: '5xx', color: '#9333ea' }
 ];
 
 const groups = [
-  { id: 'all', label: 'الكل', count: codes.length },
-  { id: '1xx', label: '1xx معلومات', count: codes.filter(c => c.cat === '1xx').length },
-  { id: '2xx', label: '2xx نجاح', count: codes.filter(c => c.cat === '2xx').length },
-  { id: '3xx', label: '3xx إعادة توجيه', count: codes.filter(c => c.cat === '3xx').length },
-  { id: '4xx', label: '4xx أخطاء العميل', count: codes.filter(c => c.cat === '4xx').length },
-  { id: '5xx', label: '5xx أخطاء الخادم', count: codes.filter(c => c.cat === '5xx').length }
+  ['all', 'الكل'],
+  ['1xx', '1xx معلومات'],
+  ['2xx', '2xx نجاح'],
+  ['3xx', '3xx توجيه'],
+  ['4xx', '4xx خطأ العميل'],
+  ['5xx', '5xx خطأ الخادم']
 ];
 ---
 
@@ -89,39 +88,48 @@ const groups = [
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HTTP Status Codes | رموز حالة HTTP - Th.Tech</title>
-  <meta name="description" content="مرجع شامل لرموز حالة HTTP مع البحث والتصنيف وشرح كل كود." />
+  <meta name="description" content="مرجع شامل لرموز حالة HTTP مع البحث والتصنيف وشرح الأكواد." />
   <link rel="canonical" href={canonical} />
-  <meta name="theme-color" content="#0b1220" />
+  <meta name="theme-color" content="#08111f" />
 
   <style is:global>
+    :root {
+      color-scheme: dark;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #08111f;
+      transition: background .25s ease, color .25s ease;
+    }
+
+    html.page-light,
+    html.page-light body,
+    body.page-light {
+      background: #f4f8fc !important;
+      color: #172033;
+    }
+
     * {
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
-    body {
-      margin: 0;
-      font-family: Cairo, Arial, sans-serif;
-      background: #08111f;
-      color: #e5edf8;
-    }
-
     .status-page {
       min-height: 100vh;
+      padding: 34px 14px 70px;
       background:
-        radial-gradient(circle at 10% 5%, rgba(37, 99, 235, .16), transparent 28%),
-        radial-gradient(circle at 90% 20%, rgba(14, 165, 233, .12), transparent 28%),
+        radial-gradient(circle at 10% 5%, rgba(37,99,235,.17), transparent 28%),
+        radial-gradient(circle at 90% 20%, rgba(14,165,233,.12), transparent 30%),
         #08111f;
-      padding: 35px 15px 70px;
-      transition: .25s ease;
+      color: #e5edf8;
+      transition: background .25s ease, color .25s ease;
     }
 
     .status-page.light {
       background:
-        radial-gradient(circle at 10% 5%, rgba(37, 99, 235, .09), transparent 28%),
+        radial-gradient(circle at 10% 5%, rgba(37,99,235,.09), transparent 28%),
         #f4f8fc;
       color: #172033;
     }
@@ -139,13 +147,12 @@ const groups = [
     .icon-box {
       width: 76px;
       height: 76px;
-      margin: 0 auto 18px;
+      margin: auto auto 17px;
       border-radius: 22px;
       display: grid;
       place-items: center;
-      background: rgba(249, 115, 22, .13);
-      border: 1px solid rgba(249, 115, 22, .35);
-      box-shadow: 0 15px 40px rgba(0,0,0,.2);
+      background: rgba(249,115,22,.12);
+      border: 1px solid rgba(249,115,22,.35);
     }
 
     .icon-box svg {
@@ -156,16 +163,15 @@ const groups = [
 
     h1 {
       margin: 0 0 8px;
-      font-size: clamp(27px, 5vw, 42px);
+      font-size: clamp(28px,5vw,42px);
       font-weight: 900;
-      letter-spacing: -.5px;
     }
 
     .subtitle {
-      margin: 0 auto;
+      margin: auto;
+      max-width: 700px;
       color: #8290a5;
       font-size: 15px;
-      max-width: 700px;
     }
 
     .status-page.light .subtitle {
@@ -173,19 +179,19 @@ const groups = [
     }
 
     .search-panel {
-      background: rgba(19, 31, 50, .82);
-      border: 1px solid rgba(148, 163, 184, .18);
-      border-radius: 24px;
       padding: 18px;
       margin-bottom: 18px;
+      border-radius: 24px;
+      background: rgba(19,31,50,.84);
+      border: 1px solid rgba(148,163,184,.18);
       box-shadow: 0 20px 50px rgba(0,0,0,.18);
       backdrop-filter: blur(12px);
     }
 
     .status-page.light .search-panel {
-      background: rgba(255,255,255,.88);
+      background: rgba(255,255,255,.92);
       border-color: #dbe4ef;
-      box-shadow: 0 15px 35px rgba(15,23,42,.08);
+      box-shadow: 0 15px 35px rgba(15,23,42,.07);
     }
 
     .search-wrap {
@@ -194,7 +200,7 @@ const groups = [
 
     .search-wrap svg {
       position: absolute;
-      right: 17px;
+      right: 16px;
       top: 50%;
       transform: translateY(-50%);
       width: 21px;
@@ -205,15 +211,14 @@ const groups = [
     #searchInput {
       width: 100%;
       height: 56px;
-      border-radius: 16px;
+      padding: 0 50px 0 18px;
+      border-radius: 15px;
       border: 1px solid #33445d;
       background: #0d1829;
-      color: #fff;
-      padding: 0 52px 0 18px;
+      color: white;
       outline: none;
       font-family: inherit;
       font-size: 15px;
-      transition: .2s;
     }
 
     #searchInput:focus {
@@ -229,9 +234,9 @@ const groups = [
 
     .filters {
       display: flex;
-      gap: 9px;
       flex-wrap: wrap;
-      margin-top: 14px;
+      gap: 8px;
+      margin-top: 13px;
     }
 
     .filter-btn {
@@ -239,26 +244,20 @@ const groups = [
       background: #101d30;
       color: #94a3b8;
       padding: 9px 14px;
-      border-radius: 12px;
+      border-radius: 11px;
       cursor: pointer;
       font-family: inherit;
-      font-size: 13px;
-      transition: .2s;
-    }
-
-    .filter-btn:hover {
-      border-color: #38bdf8;
-      color: #e2e8f0;
+      font-size: 12px;
     }
 
     .filter-btn.active {
       background: #0284c7;
-      color: white;
       border-color: #38bdf8;
+      color: white;
     }
 
     .status-page.light .filter-btn {
-      background: #fff;
+      background: white;
       color: #64748b;
       border-color: #d5dee9;
     }
@@ -270,38 +269,26 @@ const groups = [
     }
 
     .result-count {
-      margin: 14px 3px 0;
+      margin-top: 13px;
       color: #718096;
-      font-size: 13px;
+      font-size: 12px;
     }
 
     .codes-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3,1fr);
       gap: 14px;
     }
 
     .code-card {
       position: relative;
       overflow: hidden;
-      border: 1px solid rgba(148,163,184,.18);
-      border-radius: 19px;
-      padding: 18px;
-      background: rgba(19,31,50,.82);
       min-height: 190px;
-      transition: transform .2s, border-color .2s, box-shadow .2s;
-    }
-
-    .code-card::before {
-      content: "";
-      position: absolute;
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      background: var(--accent);
-      opacity: .06;
-      top: -65px;
-      right: -35px;
+      padding: 18px;
+      border-radius: 19px;
+      border: 1px solid rgba(148,163,184,.18);
+      background: rgba(19,31,50,.84);
+      transition: .2s;
     }
 
     .code-card:hover {
@@ -311,8 +298,20 @@ const groups = [
     }
 
     .status-page.light .code-card {
-      background: rgba(255,255,255,.92);
+      background: rgba(255,255,255,.94);
       border-color: #dce5ef;
+    }
+
+    .code-card::before {
+      content: "";
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: .06;
+      top: -70px;
+      right: -40px;
     }
 
     .code-top {
@@ -320,28 +319,26 @@ const groups = [
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 10px;
     }
 
     .code-number {
-      font-family: "JetBrains Mono", "Courier New", monospace;
-      font-size: 27px;
-      font-weight: 900;
+      font: 900 27px "JetBrains Mono","Courier New",monospace;
       color: var(--accent);
+      direction: ltr;
     }
 
     .category-badge {
-      font-size: 11px;
       padding: 5px 9px;
-      border-radius: 9px;
-      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      border-radius: 8px;
+      background: rgba(148,163,184,.08);
       color: var(--accent);
-      border: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+      border: 1px solid rgba(148,163,184,.16);
+      font: 11px monospace;
       direction: ltr;
     }
 
     .code-name {
-      margin: 12px 0 3px;
+      margin-top: 12px;
       font-size: 17px;
       font-weight: 800;
       direction: ltr;
@@ -349,20 +346,16 @@ const groups = [
     }
 
     .code-ar {
+      margin-top: 3px;
       color: #94a3b8;
       font-size: 13px;
-      margin-bottom: 10px;
-    }
-
-    .status-page.light .code-ar {
-      color: #64748b;
     }
 
     .code-desc {
+      margin-top: 9px;
       color: #718096;
       font-size: 12px;
       line-height: 1.7;
-      min-height: 42px;
     }
 
     .copy-btn {
@@ -371,19 +364,13 @@ const groups = [
       bottom: 14px;
       width: 34px;
       height: 34px;
-      border: 1px solid rgba(148,163,184,.2);
-      border-radius: 10px;
-      background: rgba(100,116,139,.1);
-      color: #94a3b8;
-      cursor: pointer;
       display: grid;
       place-items: center;
-      transition: .2s;
-    }
-
-    .copy-btn:hover {
-      color: var(--accent);
-      border-color: var(--accent);
+      border: 1px solid rgba(148,163,184,.2);
+      border-radius: 9px;
+      background: rgba(100,116,139,.08);
+      color: #94a3b8;
+      cursor: pointer;
     }
 
     .copy-btn svg {
@@ -394,28 +381,21 @@ const groups = [
     .empty {
       display: none;
       text-align: center;
-      padding: 55px 20px;
+      padding: 55px;
       color: #718096;
     }
 
-    .empty svg {
-      width: 46px;
-      height: 46px;
-      margin-bottom: 10px;
-      stroke: currentColor;
-    }
-
     .info-section {
-      margin-top: 42px;
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3,1fr);
       gap: 15px;
+      margin-top: 35px;
     }
 
     .info-card {
-      border: 1px solid rgba(148,163,184,.16);
+      padding: 21px;
       border-radius: 20px;
-      padding: 22px;
+      border: 1px solid rgba(148,163,184,.16);
       background: rgba(19,31,50,.65);
     }
 
@@ -425,24 +405,20 @@ const groups = [
     }
 
     .info-card h2 {
+      margin: 0 0 9px;
       font-size: 17px;
-      margin: 0 0 10px;
     }
 
     .info-card p {
       margin: 0;
-      color: #8491a5;
-      line-height: 1.8;
+      color: #8290a4;
       font-size: 13px;
+      line-height: 1.8;
     }
 
-    .status-page.light .info-card p {
-      color: #64748b;
-    }
-
-    @media (max-width: 850px) {
+    @media(max-width:850px) {
       .codes-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2,1fr);
       }
 
       .info-section {
@@ -450,27 +426,14 @@ const groups = [
       }
     }
 
-    @media (max-width: 520px) {
-      .status-page {
-        padding: 25px 11px 55px;
-      }
-
+    @media(max-width:520px) {
       .codes-grid {
         grid-template-columns: 1fr;
-        gap: 11px;
-      }
-
-      .code-card {
-        min-height: 175px;
       }
 
       .filters {
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .filter-btn {
-        width: 100%;
+        grid-template-columns: repeat(2,1fr);
       }
 
       .filter-btn:first-child {
@@ -495,6 +458,7 @@ const groups = [
         </div>
 
         <h1>HTTP Status Codes</h1>
+
         <p class="subtitle">
           مرجع سريع وشامل لرموز حالة HTTP مع شرح كل كود وتصنيفه
         </p>
@@ -518,11 +482,11 @@ const groups = [
         <div class="filters">
           {groups.map(group => (
             <button
-              class:list={['filter-btn', group.id === 'all' && 'active']}
-              data-filter={group.id}
+              class:list={['filter-btn', group[0] === 'all' && 'active']}
+              data-filter={group[0]}
               type="button"
             >
-              {group.label}
+              {group[1]}
             </button>
           ))}
         </div>
@@ -532,11 +496,10 @@ const groups = [
         </div>
       </section>
 
-      <section class="codes-grid" id="codesGrid">
+      <section class="codes-grid">
         {codes.map(item => (
           <article
             class="code-card"
-            data-code={item.code}
             data-category={item.cat}
             data-search={`${item.code} ${item.name} ${item.ar} ${item.desc}`.toLowerCase()}
             style={`--accent:${item.color}`}
@@ -550,13 +513,7 @@ const groups = [
             <div class="code-ar">{item.ar}</div>
             <div class="code-desc">{item.desc}</div>
 
-            <button
-              class="copy-btn"
-              type="button"
-              data-copy={item.code}
-              title="نسخ الكود"
-              aria-label={`نسخ HTTP ${item.code}`}
-            >
+            <button class="copy-btn" data-copy={item.code} type="button">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <rect x="9" y="9" width="11" height="11" rx="2"/>
                 <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
@@ -567,37 +524,31 @@ const groups = [
       </section>
 
       <div class="empty" id="emptyState">
-        <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7">
-          <circle cx="11" cy="11" r="7"/>
-          <path d="m20 20-4-4M8.5 8.5l5 5M13.5 8.5l-5 5"/>
-        </svg>
-        <div>لم يتم العثور على أي رمز مطابق</div>
+        لا توجد نتائج مطابقة.
       </div>
 
       <section class="info-section">
-        <div class="info-card">
+        <article class="info-card">
           <h2>ما هي HTTP Status Codes؟</h2>
           <p>
-            هي أرقام يرسلها خادم الويب لتوضيح نتيجة معالجة طلب HTTP.
-            ويتكون الكود عادةً من ثلاثة أرقام.
+            أرقام من ثلاثة أرقام يرسلها خادم الويب لتوضيح نتيجة معالجة طلب HTTP.
           </p>
-        </div>
+        </article>
 
-        <div class="info-card">
-          <h2>تصنيفات الأكواد</h2>
+        <article class="info-card">
+          <h2>التصنيفات</h2>
           <p>
-            1xx للمعلومات، 2xx للنجاح، 3xx لإعادة التوجيه،
-            4xx لأخطاء الطلب أو العميل، و5xx لأخطاء الخادم.
+            1xx معلومات، 2xx نجاح، 3xx إعادة توجيه، 4xx أخطاء العميل،
+            و5xx أخطاء الخادم.
           </p>
-        </div>
+        </article>
 
-        <div class="info-card">
+        <article class="info-card">
           <h2>أكواد شائعة</h2>
           <p>
-            من أكثر الأكواد استخداماً 200 و301 و302 و400 و401 و403
-            و404 و429 و500 و502 و503 و504.
+            200 و301 و302 و400 و401 و403 و404 و429 و500 و502 و503 و504.
           </p>
-        </div>
+        </article>
       </section>
 
     </div>
@@ -607,73 +558,73 @@ const groups = [
 
   <script is:inline>
     const page = document.getElementById('statusPage');
-    const searchInput = document.getElementById('searchInput');
+    const search = document.getElementById('searchInput');
     const cards = [...document.querySelectorAll('.code-card')];
-    const filters = [...document.querySelectorAll('.filter-btn')];
-    const resultCount = document.getElementById('resultCount');
-    const emptyState = document.getElementById('emptyState');
+    const buttons = [...document.querySelectorAll('.filter-btn')];
+    const result = document.getElementById('resultCount');
+    const empty = document.getElementById('emptyState');
 
     let activeFilter = 'all';
 
-    function updateTheme() {
+    function syncTheme() {
       const root = document.documentElement;
+
       const light =
         root.dataset.theme === 'light' ||
         root.classList.contains('light');
 
-      page?.classList.toggle('light', light);
+      root.classList.toggle('page-light', light);
+      document.body.classList.toggle('page-light', light);
+      page.classList.toggle('light', light);
+
+      root.style.colorScheme = light ? 'light' : 'dark';
     }
 
-    updateTheme();
+    syncTheme();
 
-    const themeObserver = new MutationObserver(updateTheme);
-
-    themeObserver.observe(document.documentElement, {
-      attributes: true,
-      attributeFilter: ['class', 'data-theme']
-    });
+    new MutationObserver(syncTheme).observe(
+      document.documentElement,
+      {
+        attributes: true,
+        attributeFilter: ['class', 'data-theme']
+      }
+    );
 
     function filterCards() {
-      const query = searchInput.value.trim().toLowerCase();
+      const query = search.value.trim().toLowerCase();
       let visible = 0;
 
       cards.forEach(card => {
-        const text = card.dataset.search || '';
-        const category = card.dataset.category || '';
+        const matchesSearch =
+          !query || card.dataset.search.includes(query);
 
-        const matchesSearch = !query || text.includes(query);
         const matchesFilter =
-          activeFilter === 'all' || category === activeFilter;
+          activeFilter === 'all' ||
+          card.dataset.category === activeFilter;
 
         const show = matchesSearch && matchesFilter;
 
-        card.style.display = show ? '' : 'block';
-
-        if (!show) {
-          card.style.display = 'none';
-        }
+        card.style.display = show ? '' : 'none';
 
         if (show) visible++;
       });
 
-      resultCount.textContent =
-        `عرض ${visible} رمز${visible !== 1 ? '' : ''}`;
-
-      emptyState.style.display = visible ? 'none' : 'block';
+      result.textContent = `عرض ${visible} رمز`;
+      empty.style.display = visible ? 'none' : 'block';
     }
 
-    searchInput.addEventListener('input', filterCards);
+    search.addEventListener('input', filterCards);
 
-    filters.forEach(button => {
+    buttons.forEach(button => {
       button.addEventListener('click', () => {
-        activeFilter = button.dataset.filter || 'all';
+        activeFilter = button.dataset.filter;
 
-        filters.forEach(btn => {
+        buttons.forEach(btn =>
           btn.classList.toggle(
             'active',
             btn.dataset.filter === activeFilter
-          );
-        });
+          )
+        );
 
         filterCards();
       });
@@ -681,32 +632,31 @@ const groups = [
 
     document.querySelectorAll('.copy-btn').forEach(button => {
       button.addEventListener('click', async () => {
-        const value = button.dataset.copy || '';
+        const value = button.dataset.copy;
 
         try {
           await navigator.clipboard.writeText(value);
-
-          const oldHTML = button.innerHTML;
-
-          button.innerHTML = `
-            <svg viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2">
-              <path d="m5 12 4 4L19 6"/>
-            </svg>
-          `;
-
-          setTimeout(() => {
-            button.innerHTML = oldHTML;
-          }, 1200);
-
         } catch {
-          const area = document.createElement('textarea');
-          area.value = value;
-          document.body.appendChild(area);
-          area.select();
+          const textarea = document.createElement('textarea');
+          textarea.value = value;
+          document.body.appendChild(textarea);
+          textarea.select();
           document.execCommand('copy');
-          area.remove();
+          textarea.remove();
         }
+
+        const old = button.innerHTML;
+
+        button.innerHTML = `
+          <svg viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <path d="m5 12 4 4L19 6"/>
+          </svg>
+        `;
+
+        setTimeout(() => {
+          button.innerHTML = old;
+        }, 1000);
       });
     });
 
