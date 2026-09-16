@@ -36,6 +36,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
   <link
     href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
     rel="stylesheet"
@@ -77,16 +78,18 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       --chmod-red: #ef4444;
       --chmod-red-soft: rgba(239, 68, 68, 0.12);
 
-      --chmod-purple: #a78bfa;
-      --chmod-purple-soft: rgba(167, 139, 250, 0.12);
-
       --chmod-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
       --chmod-radius: 18px;
 
       color-scheme: dark;
-      scroll-behavior: smooth;
     }
 
+    /*
+     * مهم:
+     * Header في مشروع Th.Tech يستخدم data-theme="light".
+     * عندما يكون الثيم Light يتم تبديل المتغيرات التالية فقط.
+     * لا نستخدم MutationObserver.
+     */
     :global(html[data-theme='light']) {
       --chmod-bg: #f1f7fc;
       --chmod-bg-2: #eaf4fb;
@@ -114,9 +117,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       --chmod-red: #dc2626;
       --chmod-red-soft: rgba(220, 38, 38, 0.08);
 
-      --chmod-purple: #7c3aed;
-      --chmod-purple-soft: rgba(124, 58, 237, 0.08);
-
       --chmod-shadow: 0 18px 50px rgba(15, 23, 42, 0.09);
 
       color-scheme: light;
@@ -124,6 +124,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
     :global(body) {
       margin: 0;
+      min-height: 100vh;
       background:
         radial-gradient(
           circle at 10% 10%,
@@ -138,7 +139,9 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
         var(--chmod-bg);
       color: var(--chmod-text);
       font-family: 'Cairo', sans-serif;
-      min-height: 100vh;
+      transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
     }
 
     :global(button),
@@ -162,10 +165,10 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     .hero {
       position: relative;
       overflow: hidden;
+      margin-bottom: 24px;
+      padding: 42px 28px;
       border: 1px solid var(--chmod-border);
       border-radius: 28px;
-      padding: 42px 28px;
-      margin-bottom: 24px;
       background:
         linear-gradient(
           135deg,
@@ -195,18 +198,20 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       position: absolute;
       width: 210px;
       height: 210px;
-      bottom: -120px;
       right: -70px;
+      bottom: -120px;
       border-radius: 50%;
       background: rgba(14, 165, 233, 0.10);
       pointer-events: none;
     }
 
     .hero-icon {
+      position: relative;
+      z-index: 1;
+      display: grid;
       width: 74px;
       height: 74px;
       margin: 0 auto 18px;
-      display: grid;
       place-items: center;
       border-radius: 22px;
       background: linear-gradient(
@@ -214,20 +219,18 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
         var(--chmod-primary-2),
         var(--chmod-primary)
       );
-      color: white;
+      color: #fff;
       font-size: 30px;
       box-shadow: 0 15px 35px rgba(14, 165, 233, 0.25);
-      position: relative;
-      z-index: 1;
     }
 
     .hero h1 {
+      position: relative;
+      z-index: 1;
       margin: 0;
       font-size: clamp(28px, 5vw, 46px);
       line-height: 1.2;
       font-weight: 800;
-      position: relative;
-      z-index: 1;
     }
 
     .hero h1 span {
@@ -239,23 +242,23 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     }
 
     .hero p {
+      position: relative;
+      z-index: 1;
       width: min(700px, 100%);
       margin: 18px auto 0;
       color: var(--chmod-muted);
-      line-height: 1.9;
       font-size: 15px;
-      position: relative;
-      z-index: 1;
+      line-height: 1.9;
     }
 
     .hero-badges {
+      position: relative;
+      z-index: 1;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
       gap: 9px;
       margin-top: 22px;
-      position: relative;
-      z-index: 1;
     }
 
     .hero-badge {
@@ -278,29 +281,29 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     /* TOOL */
 
     .tool-card {
+      overflow: hidden;
       border: 1px solid var(--chmod-border);
       border-radius: var(--chmod-radius);
       background: var(--chmod-surface);
       box-shadow: var(--chmod-shadow);
-      overflow: hidden;
     }
 
     .tool-header {
-      padding: 18px 20px;
-      border-bottom: 1px solid var(--chmod-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
       flex-wrap: wrap;
+      gap: 14px;
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--chmod-border);
     }
 
     .tool-title {
       display: flex;
       align-items: center;
       gap: 11px;
-      font-weight: 800;
       font-size: 17px;
+      font-weight: 800;
     }
 
     .tool-title i {
@@ -356,8 +359,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       display: flex;
       align-items: center;
       gap: 8px;
-      font-weight: 700;
       font-size: 14px;
+      font-weight: 700;
     }
 
     .field-label-main i {
@@ -376,21 +379,20 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     .input-wrap input {
       width: 100%;
       height: 54px;
+      padding: 0 15px;
       border: 1px solid var(--chmod-border);
       border-radius: 13px;
+      outline: none;
       background: var(--chmod-bg);
       color: var(--chmod-text);
-      outline: none;
-      padding: 0 15px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 21px;
       font-weight: 700;
+      text-align: center;
+      direction: ltr;
       transition:
         border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        background 0.2s ease;
-      direction: ltr;
-      text-align: center;
+        box-shadow 0.2s ease;
     }
 
     .input-wrap input:focus {
@@ -415,25 +417,25 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
     .button-row {
       display: flex;
-      gap: 10px;
       flex-wrap: wrap;
+      gap: 10px;
       margin-top: 18px;
     }
 
     .btn {
       min-height: 44px;
-      border: 1px solid var(--chmod-border);
-      border-radius: 12px;
-      padding: 9px 15px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
-      cursor: pointer;
-      color: var(--chmod-soft);
+      padding: 9px 15px;
+      border: 1px solid var(--chmod-border);
+      border-radius: 12px;
       background: var(--chmod-surface-2);
+      color: var(--chmod-soft);
       font-size: 13px;
       font-weight: 700;
+      cursor: pointer;
       transition:
         transform 0.18s ease,
         border-color 0.18s ease,
@@ -451,13 +453,13 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     }
 
     .btn-primary {
-      color: white;
       border-color: transparent;
       background: linear-gradient(
         135deg,
         var(--chmod-primary-2),
         var(--chmod-primary)
       );
+      color: #fff;
     }
 
     .btn-primary:hover {
@@ -486,7 +488,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       font-size: 11px;
     }
 
-    /* RESULT */
+    /* RESULTS */
 
     .result-section {
       margin-top: 22px;
@@ -496,9 +498,9 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       display: flex;
       align-items: center;
       justify-content: space-between;
+      flex-wrap: wrap;
       gap: 12px;
       margin-bottom: 13px;
-      flex-wrap: wrap;
     }
 
     .section-heading h2,
@@ -510,8 +512,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
     .section-heading h2 i,
     .section-heading h3 i {
-      color: var(--chmod-primary);
       margin-left: 7px;
+      color: var(--chmod-primary);
     }
 
     .result-grid {
@@ -533,9 +535,9 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       align-items: center;
       justify-content: space-between;
       gap: 10px;
+      margin-bottom: 10px;
       color: var(--chmod-muted);
       font-size: 11px;
-      margin-bottom: 10px;
     }
 
     .result-value {
@@ -543,12 +545,12 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       display: flex;
       align-items: center;
       justify-content: center;
-      direction: ltr;
-      text-align: center;
       color: var(--chmod-primary);
       font-family: 'JetBrains Mono', monospace;
       font-size: 25px;
       font-weight: 700;
+      text-align: center;
+      direction: ltr;
       word-break: break-all;
     }
 
@@ -567,14 +569,14 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       flex: 1;
       min-width: 0;
       overflow-x: auto;
-      white-space: nowrap;
       padding: 13px;
+      border: 1px solid var(--chmod-border);
       border-radius: 11px;
       background: var(--chmod-bg);
-      border: 1px solid var(--chmod-border);
       color: var(--chmod-green);
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
+      white-space: nowrap;
     }
 
     /* MATRIX */
@@ -584,9 +586,9 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     }
 
     .matrix-wrap {
+      overflow: hidden;
       border: 1px solid var(--chmod-border);
       border-radius: 16px;
-      overflow: hidden;
       background: var(--chmod-surface-2);
     }
 
@@ -608,10 +610,10 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     }
 
     .permission-table th {
+      background: var(--chmod-bg);
       color: var(--chmod-muted);
       font-size: 11px;
       font-weight: 700;
-      background: var(--chmod-bg);
     }
 
     .permission-table td {
@@ -620,8 +622,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     }
 
     .permission-table .role-cell {
-      text-align: right;
       padding-right: 15px;
+      text-align: right;
       font-weight: 800;
     }
 
@@ -647,13 +649,13 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     }
 
     .permission-number {
+      color: var(--chmod-primary);
       font-family: 'JetBrains Mono', monospace;
       font-weight: 700;
-      color: var(--chmod-primary);
       direction: ltr;
     }
 
-    /* FILE COMMAND */
+    /* FILENAME */
 
     .filename-section {
       margin-top: 22px;
@@ -674,15 +676,15 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       flex: 1;
       min-width: 0;
       height: 46px;
+      padding: 0 13px;
       border: 1px solid var(--chmod-border);
       border-radius: 11px;
+      outline: none;
       background: var(--chmod-bg);
       color: var(--chmod-text);
-      padding: 0 13px;
-      outline: none;
       font-family: 'JetBrains Mono', monospace;
-      direction: ltr;
       text-align: left;
+      direction: ltr;
     }
 
     .filename-input input:focus {
@@ -703,13 +705,13 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     }
 
     .preset {
+      padding: 13px 8px;
       border: 1px solid var(--chmod-border);
       border-radius: 13px;
       background: var(--chmod-surface-2);
-      padding: 13px 8px;
-      cursor: pointer;
-      text-align: center;
       color: var(--chmod-text);
+      text-align: center;
+      cursor: pointer;
       transition:
         transform 0.18s ease,
         border-color 0.18s ease,
@@ -724,11 +726,11 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
     .preset-number {
       display: block;
-      direction: ltr;
       color: var(--chmod-primary);
       font-family: 'JetBrains Mono', monospace;
       font-size: 17px;
       font-weight: 800;
+      direction: ltr;
     }
 
     .preset-name {
@@ -738,7 +740,7 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       font-size: 10px;
     }
 
-    /* INFO */
+    /* INFORMATION */
 
     .info-grid {
       display: grid;
@@ -760,8 +762,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     }
 
     .info-card h2 i {
-      color: var(--chmod-primary);
       margin-left: 7px;
+      color: var(--chmod-primary);
     }
 
     .info-card p {
@@ -783,9 +785,9 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       justify-content: space-between;
       gap: 12px;
       padding: 9px 11px;
+      border: 1px solid var(--chmod-border);
       border-radius: 10px;
       background: var(--chmod-surface-2);
-      border: 1px solid var(--chmod-border);
       font-size: 12px;
     }
 
@@ -808,8 +810,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     .step {
       position: relative;
       padding: 11px 42px 11px 11px;
-      border-radius: 11px;
       border: 1px solid var(--chmod-border);
+      border-radius: 11px;
       background: var(--chmod-surface-2);
       color: var(--chmod-soft);
       font-size: 12px;
@@ -820,34 +822,36 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     .step::before {
       content: counter(step);
       position: absolute;
-      right: 11px;
       top: 50%;
-      transform: translateY(-50%);
+      right: 11px;
+      display: grid;
       width: 23px;
       height: 23px;
-      display: grid;
       place-items: center;
       border-radius: 50%;
       background: var(--chmod-primary-soft);
       color: var(--chmod-primary);
       font-family: 'JetBrains Mono', monospace;
       font-weight: 700;
+      transform: translateY(-50%);
     }
 
+    /* WARNING */
+
     .warning {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
       margin-top: 25px;
       padding: 17px;
       border: 1px solid rgba(245, 158, 11, 0.25);
       border-radius: 15px;
       background: var(--chmod-orange-soft);
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
     }
 
     .warning i {
-      color: var(--chmod-orange);
       margin-top: 3px;
+      color: var(--chmod-orange);
     }
 
     .warning strong {
@@ -880,8 +884,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     }
 
     .faq-section h2 i {
-      color: var(--chmod-primary);
       margin-left: 7px;
+      color: var(--chmod-primary);
     }
 
     .faq-list {
@@ -890,26 +894,26 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
     }
 
     .faq-item {
+      overflow: hidden;
       border: 1px solid var(--chmod-border);
       border-radius: 12px;
-      overflow: hidden;
       background: var(--chmod-surface-2);
     }
 
     .faq-question {
       width: 100%;
-      border: 0;
-      background: transparent;
-      color: var(--chmod-text);
-      padding: 14px;
-      text-align: right;
-      cursor: pointer;
-      font-size: 13px;
-      font-weight: 700;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 10px;
+      padding: 14px;
+      border: 0;
+      background: transparent;
+      color: var(--chmod-text);
+      font-size: 13px;
+      font-weight: 700;
+      text-align: right;
+      cursor: pointer;
     }
 
     .faq-question i {
@@ -937,12 +941,9 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
     .toast {
       position: fixed;
+      z-index: 9999;
       left: 50%;
       bottom: 25px;
-      z-index: 9999;
-      transform: translate(-50%, 20px);
-      opacity: 0;
-      pointer-events: none;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -954,6 +955,9 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       box-shadow: var(--chmod-shadow);
       font-size: 12px;
       font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transform: translate(-50%, 20px);
       transition:
         opacity 0.25s ease,
         transform 0.25s ease;
@@ -972,13 +976,11 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       color: var(--chmod-red);
     }
 
-    /* FOOTER ACTIONS */
-
     .bottom-actions {
       display: flex;
       justify-content: center;
-      gap: 10px;
       flex-wrap: wrap;
+      gap: 10px;
       margin-top: 25px;
     }
 
@@ -1206,24 +1208,40 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
           </div>
 
-          <!-- MAIN BUTTONS -->
+          <!-- ACTIONS -->
           <div class="button-row">
-            <button class="btn btn-primary" id="numericToSymbolicBtn" type="button">
+            <button
+              class="btn btn-primary"
+              id="numericToSymbolicBtn"
+              type="button"
+            >
               <i class="fa-solid fa-arrow-left"></i>
               رقمي ← رمزي
             </button>
 
-            <button class="btn btn-primary" id="symbolicToNumericBtn" type="button">
+            <button
+              class="btn btn-primary"
+              id="symbolicToNumericBtn"
+              type="button"
+            >
               <i class="fa-solid fa-arrow-right"></i>
               رمزي ← رقمي
             </button>
 
-            <button class="btn btn-success" id="copyAllBtn" type="button">
+            <button
+              class="btn btn-success"
+              id="copyAllBtn"
+              type="button"
+            >
               <i class="fa-regular fa-copy"></i>
               نسخ الكل
             </button>
 
-            <button class="btn btn-danger" id="resetBtn" type="button">
+            <button
+              class="btn btn-danger"
+              id="resetBtn"
+              type="button"
+            >
               <i class="fa-solid fa-rotate-left"></i>
               إعادة ضبط
             </button>
@@ -1289,12 +1307,11 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
                   class="result-value"
                   style="font-family:'Cairo',sans-serif;font-size:14px;"
                 >
-                  المالك: كامل الصلاحيات
+                  المالك: قراءة + كتابة + تنفيذ
                 </div>
               </div>
 
               <div class="result-card command-card">
-
                 <div class="result-card-label">
                   <span>
                     <i class="fa-solid fa-terminal"></i>
@@ -1314,12 +1331,15 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
                 <div class="command-box">
                   <code id="chmodCommand">chmod 755 filename</code>
 
-                  <button class="btn btn-primary" id="copyCommandBtn" type="button">
+                  <button
+                    class="btn btn-primary"
+                    id="copyCommandBtn"
+                    type="button"
+                  >
                     <i class="fa-regular fa-copy"></i>
                     نسخ الأمر
                   </button>
                 </div>
-
               </div>
 
             </div>
@@ -1334,7 +1354,11 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
                 مصفوفة الصلاحيات
               </h2>
 
-              <button class="btn btn-small" id="clearMatrixBtn" type="button">
+              <button
+                class="btn btn-small"
+                id="clearMatrixBtn"
+                type="button"
+              >
                 <i class="fa-solid fa-eraser"></i>
                 مسح
               </button>
@@ -1367,7 +1391,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
                         type="checkbox"
                         data-role="u"
                         data-value="4"
-                        aria-label="User read"
                       />
                     </td>
 
@@ -1378,7 +1401,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
                         type="checkbox"
                         data-role="u"
                         data-value="2"
-                        aria-label="User write"
                       />
                     </td>
 
@@ -1389,12 +1411,16 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
                         type="checkbox"
                         data-role="u"
                         data-value="1"
-                        aria-label="User execute"
                       />
                     </td>
 
                     <td>
-                      <span id="uNumber" class="permission-number">7</span>
+                      <span
+                        id="uNumber"
+                        class="permission-number"
+                      >
+                        7
+                      </span>
                     </td>
                   </tr>
 
@@ -1411,7 +1437,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
                         type="checkbox"
                         data-role="g"
                         data-value="4"
-                        aria-label="Group read"
                       />
                     </td>
 
@@ -1422,7 +1447,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
                         type="checkbox"
                         data-role="g"
                         data-value="2"
-                        aria-label="Group write"
                       />
                     </td>
 
@@ -1433,12 +1457,16 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
                         type="checkbox"
                         data-role="g"
                         data-value="1"
-                        aria-label="Group execute"
                       />
                     </td>
 
                     <td>
-                      <span id="gNumber" class="permission-number">5</span>
+                      <span
+                        id="gNumber"
+                        class="permission-number"
+                      >
+                        5
+                      </span>
                     </td>
                   </tr>
 
@@ -1455,7 +1483,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
                         type="checkbox"
                         data-role="o"
                         data-value="4"
-                        aria-label="Others read"
                       />
                     </td>
 
@@ -1466,7 +1493,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
                         type="checkbox"
                         data-role="o"
                         data-value="2"
-                        aria-label="Others write"
                       />
                     </td>
 
@@ -1477,12 +1503,16 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
                         type="checkbox"
                         data-role="o"
                         data-value="1"
-                        aria-label="Others execute"
                       />
                     </td>
 
                     <td>
-                      <span id="oNumber" class="permission-number">5</span>
+                      <span
+                        id="oNumber"
+                        class="permission-number"
+                      >
+                        5
+                      </span>
                     </td>
                   </tr>
 
@@ -1512,7 +1542,11 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
                 spellcheck="false"
               />
 
-              <button class="btn btn-primary" id="updateFilenameBtn" type="button">
+              <button
+                class="btn btn-primary"
+                id="updateFilenameBtn"
+                type="button"
+              >
                 <i class="fa-solid fa-check"></i>
                 تحديث الأمر
               </button>
@@ -1532,38 +1566,61 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
             <div class="presets-grid">
 
-              <button class="preset" type="button" data-permission="755">
+              <button
+                class="preset"
+                type="button"
+                data-permission="755"
+              >
                 <span class="preset-number">755</span>
                 <span class="preset-name">تنفيذ شائع</span>
               </button>
 
-              <button class="preset" type="button" data-permission="644">
+              <button
+                class="preset"
+                type="button"
+                data-permission="644"
+              >
                 <span class="preset-number">644</span>
                 <span class="preset-name">ملفات عادية</span>
               </button>
 
-              <button class="preset" type="button" data-permission="700">
+              <button
+                class="preset"
+                type="button"
+                data-permission="700"
+              >
                 <span class="preset-number">700</span>
                 <span class="preset-name">خاص بالمالك</span>
               </button>
 
-              <button class="preset" type="button" data-permission="600">
+              <button
+                class="preset"
+                type="button"
+                data-permission="600"
+              >
                 <span class="preset-number">600</span>
                 <span class="preset-name">خاص جدًا</span>
               </button>
 
-              <button class="preset" type="button" data-permission="775">
+              <button
+                class="preset"
+                type="button"
+                data-permission="775"
+              >
                 <span class="preset-number">775</span>
                 <span class="preset-name">مجموعة كاملة</span>
               </button>
 
-              <button class="preset" type="button" data-permission="777">
+              <button
+                class="preset"
+                type="button"
+                data-permission="777"
+              >
                 <span class="preset-number">777</span>
                 <span class="preset-name">كل الصلاحيات</span>
               </button>
 
             </div>
-
           </section>
 
         </div>
@@ -1584,7 +1641,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
           </p>
 
           <div class="number-list">
-
             <div class="number-item">
               <span>قراءة Read</span>
               <strong>4</strong>
@@ -1604,7 +1660,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
               <span>لا توجد صلاحية</span>
               <strong>0</strong>
             </div>
-
           </div>
         </article>
 
@@ -1615,23 +1670,21 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
           </h2>
 
           <div class="steps">
-
             <div class="step">
               أدخل القيمة الرقمية مثل <strong>755</strong>.
             </div>
 
             <div class="step">
-              سيتم تحويلها إلى الصيغة الرمزية تلقائيًا.
+              سيتم تحويلها إلى الصيغة الرمزية.
             </div>
 
             <div class="step">
-              يمكنك أيضًا تعديل مربعات القراءة والكتابة والتنفيذ.
+              يمكنك تعديل مربعات القراءة والكتابة والتنفيذ.
             </div>
 
             <div class="step">
               أدخل اسم الملف للحصول على أمر chmod جاهز.
             </div>
-
           </div>
         </article>
 
@@ -1639,7 +1692,6 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
       <!-- WARNING -->
       <section class="warning">
-
         <i class="fa-solid fa-triangle-exclamation"></i>
 
         <div>
@@ -1647,11 +1699,9 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
           <p>
             تمنح الصلاحية 777 القراءة والكتابة والتنفيذ للمالك والمجموعة
-            والآخرين. تجنب استخدامها إلا عندما تكون هناك حاجة واضحة،
-            لأن منح الكتابة والتنفيذ للجميع قد يزيد مخاطر الوصول غير المصرح به.
+            والآخرين. استخدمها فقط عندما تكون هناك حاجة واضحة.
           </p>
         </div>
-
       </section>
 
       <!-- FAQ -->
@@ -1696,8 +1746,8 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
             </button>
 
             <div class="faq-answer">
-              لا. عملية التحويل تتم داخل المتصفح باستخدام JavaScript،
-              ولا تحتاج إلى خادم أو API.
+              لا. التحويل يتم داخل المتصفح باستخدام JavaScript ولا يحتاج
+              إلى خادم أو API.
             </div>
           </div>
 
@@ -1709,27 +1759,31 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
             <div class="faq-answer">
               الصيغة الرقمية تستخدم أرقامًا مثل 755 و644، بينما الصيغة
-              الرمزية تستخدم الأحرف r وw وx لتمثيل القراءة والكتابة والتنفيذ.
+              الرمزية تستخدم r وw وx لتمثيل القراءة والكتابة والتنفيذ.
             </div>
           </div>
 
         </div>
-
       </section>
 
-      <!-- BOTTOM ACTIONS -->
       <div class="bottom-actions">
-
-        <button class="btn btn-primary" id="bottomCopyBtn" type="button">
+        <button
+          class="btn btn-primary"
+          id="bottomCopyBtn"
+          type="button"
+        >
           <i class="fa-regular fa-copy"></i>
           نسخ النتيجة
         </button>
 
-        <button class="btn" id="bottomResetBtn" type="button">
+        <button
+          class="btn"
+          id="bottomResetBtn"
+          type="button"
+        >
           <i class="fa-solid fa-rotate-left"></i>
           إعادة ضبط
         </button>
-
       </div>
 
     </div>
@@ -1744,19 +1798,65 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const numericInput = document.getElementById('numericInput');
-      const symbolicInput = document.getElementById('symbolicInput');
 
-      const numericError = document.getElementById('numericError');
-      const symbolicError = document.getElementById('symbolicError');
+      /*
+       * ============================================
+       * TH-TECH THEME
+       * ============================================
+       *
+       * لا نستخدم MutationObserver.
+       *
+       * Header هو المسؤول عن تغيير:
+       * html[data-theme="light"]
+       *
+       * وهذه الصفحة تستخدم نفس الحالة عبر CSS.
+       *
+       * نقرأ theme فقط عند بداية تحميل الصفحة حتى لا
+       * نحصل على أي loop أو تجمد.
+       */
+      const savedTheme = localStorage.getItem('theme');
 
-      const numericResult = document.getElementById('numericResult');
-      const symbolicResult = document.getElementById('symbolicResult');
+      if (savedTheme === 'light') {
+        document.documentElement.setAttribute(
+          'data-theme',
+          'light'
+        );
+      } else {
+        document.documentElement.removeAttribute(
+          'data-theme'
+        );
+      }
+
+      /* ============================================
+       * ELEMENTS
+       * ============================================ */
+
+      const numericInput =
+        document.getElementById('numericInput');
+
+      const symbolicInput =
+        document.getElementById('symbolicInput');
+
+      const numericError =
+        document.getElementById('numericError');
+
+      const symbolicError =
+        document.getElementById('symbolicError');
+
+      const numericResult =
+        document.getElementById('numericResult');
+
+      const symbolicResult =
+        document.getElementById('symbolicResult');
+
       const permissionDescription =
         document.getElementById('permissionDescription');
 
-      const chmodCommand = document.getElementById('chmodCommand');
-      const filenameInput = document.getElementById('filenameInput');
+      const chmodCommand =
+        document.getElementById('chmodCommand');
+
+      const filenameInput =
+        document.getElementById('filenameInput');
 
       const numericToSymbolicBtn =
         document.getElementById('numericToSymbolicBtn');
@@ -1764,8 +1864,11 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       const symbolicToNumericBtn =
         document.getElementById('symbolicToNumericBtn');
 
-      const copyAllBtn = document.getElementById('copyAllBtn');
-      const resetBtn = document.getElementById('resetBtn');
+      const copyAllBtn =
+        document.getElementById('copyAllBtn');
+
+      const resetBtn =
+        document.getElementById('resetBtn');
 
       const copyCommandBtn =
         document.getElementById('copyCommandBtn');
@@ -1782,20 +1885,15 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
       const bottomResetBtn =
         document.getElementById('bottomResetBtn');
 
-      const toast = document.getElementById('toast');
-      const toastText = document.getElementById('toastText');
+      const toast =
+        document.getElementById('toast');
 
-      const matrixIds = [
-        'uRead',
-        'uWrite',
-        'uExecute',
-        'gRead',
-        'gWrite',
-        'gExecute',
-        'oRead',
-        'oWrite',
-        'oExecute'
-      ];
+      const toastText =
+        document.getElementById('toastText');
+
+      /* ============================================
+       * CONVERSION
+       * ============================================ */
 
       function digitToSymbolic(digit) {
         const n = Number(digit);
@@ -1820,9 +1918,10 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
           return null;
         }
 
-        const digits = clean.length === 4
-          ? clean.slice(1)
-          : clean;
+        const digits =
+          clean.length === 4
+            ? clean.slice(1)
+            : clean;
 
         return (
           digitToSymbolic(digits[0]) +
@@ -1836,18 +1935,22 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
           return null;
         }
 
+        const valid =
+          (group[0] === 'r' || group[0] === '-') &&
+          (group[1] === 'w' || group[1] === '-') &&
+          (group[2] === 'x' || group[2] === '-');
+
+        if (!valid) {
+          return null;
+        }
+
         let value = 0;
 
         if (group[0] === 'r') value += 4;
         if (group[1] === 'w') value += 2;
         if (group[2] === 'x') value += 1;
 
-        const valid =
-          (group[0] === 'r' || group[0] === '-') &&
-          (group[1] === 'w' || group[1] === '-') &&
-          (group[2] === 'x' || group[2] === '-');
-
-        return valid ? String(value) : null;
+        return String(value);
       }
 
       function symbolicToNumeric(value) {
@@ -1864,9 +1967,14 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
           return null;
         }
 
-        const user = symbolicToDigit(clean.slice(0, 3));
-        const group = symbolicToDigit(clean.slice(3, 6));
-        const others = symbolicToDigit(clean.slice(6, 9));
+        const user =
+          symbolicToDigit(clean.slice(0, 3));
+
+        const group =
+          symbolicToDigit(clean.slice(3, 6));
+
+        const others =
+          symbolicToDigit(clean.slice(6, 9));
 
         if (
           user === null ||
@@ -1879,6 +1987,10 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
         return user + group + others;
       }
 
+      /* ============================================
+       * DESCRIPTION
+       * ============================================ */
+
       function describePermission(value) {
         const clean = String(value);
 
@@ -1886,55 +1998,48 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
           return '';
         }
 
-        const names = [];
-
         const roles = [
           ['المالك', clean[0]],
           ['المجموعة', clean[1]],
           ['الآخرون', clean[2]]
         ];
 
-        roles.forEach(([name, digit]) => {
-          const n = Number(digit);
-          const parts = [];
+        return roles
+          .map(([name, digit]) => {
+            const n = Number(digit);
+            const parts = [];
 
-          if (n & 4) parts.push('قراءة');
-          if (n & 2) parts.push('كتابة');
-          if (n & 1) parts.push('تنفيذ');
+            if (n & 4) parts.push('قراءة');
+            if (n & 2) parts.push('كتابة');
+            if (n & 1) parts.push('تنفيذ');
 
-          names.push(
-            `${name}: ${parts.length ? parts.join(' + ') : 'لا توجد صلاحيات'}`
-          );
-        });
-
-        return names.join(' • ');
+            return `${name}: ${
+              parts.length
+                ? parts.join(' + ')
+                : 'لا توجد صلاحيات'
+            }`;
+          })
+          .join(' • ');
       }
 
-      function setError(element, message) {
-        if (element) {
-          element.textContent = message || '';
-        }
-      }
-
-      function setStatus(type) {
-        if (type === 'success') {
-          setError(numericError, '');
-          setError(symbolicError, '');
-        }
-      }
+      /* ============================================
+       * COMMAND
+       * ============================================ */
 
       function updateCommand() {
-        const numeric = numericResult.textContent.trim();
+        const numeric =
+          numericResult.textContent.trim();
 
-        let filename = filenameInput.value.trim();
-
-        if (!filename) {
-          filename = 'filename';
-        }
+        const filename =
+          filenameInput.value.trim() || 'filename';
 
         chmodCommand.textContent =
           `chmod ${numeric} ${filename}`;
       }
+
+      /* ============================================
+       * MATRIX
+       * ============================================ */
 
       function updateMatrixFromNumeric(numeric) {
         if (!/^[0-7]{3}$/.test(numeric)) {
@@ -1962,10 +2067,21 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
           const number =
             document.getElementById(`${role}Number`);
 
-          if (read) read.checked = Boolean(n & 4);
-          if (write) write.checked = Boolean(n & 2);
-          if (execute) execute.checked = Boolean(n & 1);
-          if (number) number.textContent = String(n);
+          if (read) {
+            read.checked = Boolean(n & 4);
+          }
+
+          if (write) {
+            write.checked = Boolean(n & 2);
+          }
+
+          if (execute) {
+            execute.checked = Boolean(n & 1);
+          }
+
+          if (number) {
+            number.textContent = String(n);
+          }
         });
       }
 
@@ -1996,8 +2112,53 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
         return value;
       }
 
-      function updateFromNumeric(value, showErrors = true) {
-        let clean = String(value)
+      function updateFromMatrix() {
+        const numeric =
+          String(getMatrixDigit('u')) +
+          String(getMatrixDigit('g')) +
+          String(getMatrixDigit('o'));
+
+        const symbolic =
+          numericToSymbolic(numeric);
+
+        if (!symbolic) {
+          return;
+        }
+
+        numericInput.value = numeric;
+        symbolicInput.value = symbolic;
+
+        numericResult.textContent = numeric;
+        symbolicResult.textContent = symbolic;
+
+        permissionDescription.textContent =
+          describePermission(numeric);
+
+        updateCommand();
+
+        ['u', 'g', 'o'].forEach((role) => {
+          const number =
+            document.getElementById(`${role}Number`);
+
+          if (number) {
+            number.textContent =
+              String(getMatrixDigit(role));
+          }
+        });
+
+        numericError.textContent = '';
+        symbolicError.textContent = '';
+      }
+
+      /* ============================================
+       * UPDATE NUMERIC
+       * ============================================ */
+
+      function updateFromNumeric(
+        value,
+        showErrors = true
+      ) {
+        const clean = String(value)
           .replace(/\D/g, '')
           .slice(0, 4);
 
@@ -2005,23 +2166,22 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
         if (!/^[0-7]{3,4}$/.test(clean)) {
           if (showErrors) {
-            setError(
-              numericError,
-              'أدخل 3 أو 4 أرقام من 0 إلى 7.'
-            );
+            numericError.textContent =
+              'أدخل 3 أو 4 أرقام من 0 إلى 7.';
           }
+
           return false;
         }
 
-        const symbolic = numericToSymbolic(clean);
+        const symbolic =
+          numericToSymbolic(clean);
 
         if (!symbolic) {
           if (showErrors) {
-            setError(
-              numericError,
-              'قيمة CHMOD غير صحيحة.'
-            );
+            numericError.textContent =
+              'قيمة CHMOD غير صحيحة.';
           }
+
           return false;
         }
 
@@ -2041,32 +2201,43 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
         updateMatrixFromNumeric(normalized);
         updateCommand();
 
-        setStatus('success');
+        numericError.textContent = '';
+        symbolicError.textContent = '';
 
         return true;
       }
 
-      function updateFromSymbolic(value, showErrors = true) {
+      /* ============================================
+       * UPDATE SYMBOLIC
+       * ============================================ */
+
+      function updateFromSymbolic(
+        value,
+        showErrors = true
+      ) {
         let clean = String(value)
           .trim()
           .toLowerCase()
           .replace(/\s+/g, '');
 
-        if (clean.length === 10 && /^[d-]/.test(clean)) {
+        if (
+          clean.length === 10 &&
+          /^[d-]/.test(clean)
+        ) {
           clean = clean.slice(1);
         }
 
         symbolicInput.value = clean;
 
-        const numeric = symbolicToNumeric(clean);
+        const numeric =
+          symbolicToNumeric(clean);
 
         if (!numeric) {
           if (showErrors) {
-            setError(
-              symbolicError,
-              'أدخل صيغة مثل rwxr-xr-x.'
-            );
+            symbolicError.textContent =
+              'أدخل صيغة مثل rwxr-xr-x.';
           }
+
           return false;
         }
 
@@ -2081,105 +2252,67 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
         updateMatrixFromNumeric(numeric);
         updateCommand();
 
-        setStatus('success');
+        numericError.textContent = '';
+        symbolicError.textContent = '';
 
         return true;
       }
 
-      function updateFromMatrix() {
-        const numeric =
-          String(getMatrixDigit('u')) +
-          String(getMatrixDigit('g')) +
-          String(getMatrixDigit('o'));
+      /* ============================================
+       * COPY
+       * ============================================ */
 
-        numericInput.value = numeric;
-
-        const symbolic = numericToSymbolic(numeric);
-
-        if (!symbolic) {
-          return;
-        }
-
-        symbolicInput.value = symbolic;
-
-        numericResult.textContent = numeric;
-        symbolicResult.textContent = symbolic;
-
-        permissionDescription.textContent =
-          describePermission(numeric);
-
-        updateCommand();
-
-        const roles = ['u', 'g', 'o'];
-
-        roles.forEach((role) => {
-          const number =
-            document.getElementById(`${role}Number`);
-
-          if (number) {
-            number.textContent =
-              String(getMatrixDigit(role));
-          }
-        });
-
-        setError(numericError, '');
-        setError(symbolicError, '');
-      }
-
-      async function copyText(text, successMessage = 'تم النسخ') {
+      async function copyText(
+        text,
+        successMessage = 'تم النسخ'
+      ) {
         if (!text) {
-          showToast('لا يوجد محتوى للنسخ', 'error');
+          showToast(
+            'لا يوجد محتوى للنسخ',
+            'error'
+          );
+
           return;
         }
 
         try {
           await navigator.clipboard.writeText(text);
-          showToast(successMessage, 'success');
+
+          showToast(
+            successMessage,
+            'success'
+          );
         } catch (error) {
           const textarea =
             document.createElement('textarea');
 
           textarea.value = text;
+
           textarea.style.position = 'fixed';
-          textarea.style.opacity = '0';
+          textarea.style.left = '-9999px';
+          textarea.style.top = '0';
 
           document.body.appendChild(textarea);
+
           textarea.focus();
           textarea.select();
 
           try {
             document.execCommand('copy');
-            showToast(successMessage, 'success');
+
+            showToast(
+              successMessage,
+              'success'
+            );
           } catch (copyError) {
-            showToast('تعذر النسخ تلقائيًا', 'error');
+            showToast(
+              'تعذر النسخ تلقائيًا',
+              'error'
+            );
           }
 
           textarea.remove();
         }
-      }
-
-      function showToast(message, type = 'success') {
-        toastText.textContent = message;
-
-        toast.classList.remove('success', 'error');
-        toast.classList.add(type);
-        toast.classList.add('show');
-
-        window.clearTimeout(showToast.timer);
-
-        showToast.timer = window.setTimeout(() => {
-          toast.classList.remove('show');
-        }, 2200);
-      }
-
-      function resetTool() {
-        numericInput.value = '755';
-        symbolicInput.value = 'rwxr-xr-x';
-        filenameInput.value = 'filename';
-
-        updateFromNumeric('755', false);
-
-        showToast('تمت إعادة الضبط', 'success');
       }
 
       function copyAll() {
@@ -2188,77 +2321,177 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 Symbolic: ${symbolicResult.textContent.trim()}
 Command: ${chmodCommand.textContent.trim()}`;
 
-        copyText(text, 'تم نسخ جميع النتائج');
+        copyText(
+          text,
+          'تم نسخ جميع النتائج'
+        );
       }
+
+      /* ============================================
+       * TOAST
+       * ============================================ */
+
+      let toastTimer = null;
+
+      function showToast(
+        message,
+        type = 'success'
+      ) {
+        toastText.textContent = message;
+
+        toast.classList.remove(
+          'success',
+          'error',
+          'show'
+        );
+
+        toast.classList.add(type);
+
+        requestAnimationFrame(() => {
+          toast.classList.add('show');
+        });
+
+        if (toastTimer) {
+          clearTimeout(toastTimer);
+        }
+
+        toastTimer = setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2200);
+      }
+
+      /* ============================================
+       * RESET
+       * ============================================ */
+
+      function resetTool() {
+        numericInput.value = '755';
+        symbolicInput.value = 'rwxr-xr-x';
+        filenameInput.value = 'filename';
+
+        updateFromNumeric(
+          '755',
+          false
+        );
+
+        showToast(
+          'تمت إعادة الضبط',
+          'success'
+        );
+      }
+
+      /* ============================================
+       * EVENTS
+       * ============================================ */
 
       numericToSymbolicBtn.addEventListener(
         'click',
         () => {
-          updateFromNumeric(numericInput.value, true);
+          updateFromNumeric(
+            numericInput.value,
+            true
+          );
         }
       );
 
       symbolicToNumericBtn.addEventListener(
         'click',
         () => {
-          updateFromSymbolic(symbolicInput.value, true);
+          updateFromSymbolic(
+            symbolicInput.value,
+            true
+          );
         }
       );
 
-      numericInput.addEventListener('input', () => {
-        const value = numericInput.value;
+      numericInput.addEventListener(
+        'input',
+        () => {
+          const value =
+            numericInput.value;
 
-        if (/^[0-7]{3,4}$/.test(value)) {
-          updateFromNumeric(value, false);
-        } else {
-          setError(
-            numericError,
-            'أدخل 3 أو 4 أرقام من 0 إلى 7.'
-          );
+          if (/^[0-7]{3,4}$/.test(value)) {
+            updateFromNumeric(
+              value,
+              false
+            );
+          } else {
+            numericError.textContent =
+              'أدخل 3 أو 4 أرقام من 0 إلى 7.';
+          }
         }
-      });
+      );
 
-      numericInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-          updateFromNumeric(numericInput.value, true);
+      numericInput.addEventListener(
+        'keydown',
+        (event) => {
+          if (event.key === 'Enter') {
+            updateFromNumeric(
+              numericInput.value,
+              true
+            );
+          }
         }
-      });
+      );
 
-      symbolicInput.addEventListener('input', () => {
-        const value = symbolicInput.value;
+      symbolicInput.addEventListener(
+        'input',
+        () => {
+          const value =
+            symbolicInput.value;
 
-        if (symbolicToNumeric(value)) {
-          updateFromSymbolic(value, false);
-        } else if (value.length >= 9) {
-          setError(
-            symbolicError,
-            'الصيغة يجب أن تكون مثل rwxr-xr-x.'
-          );
+          if (symbolicToNumeric(value)) {
+            updateFromSymbolic(
+              value,
+              false
+            );
+          } else if (value.length >= 9) {
+            symbolicError.textContent =
+              'الصيغة يجب أن تكون مثل rwxr-xr-x.';
+          }
         }
-      });
+      );
 
-      symbolicInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-          updateFromSymbolic(symbolicInput.value, true);
+      symbolicInput.addEventListener(
+        'keydown',
+        (event) => {
+          if (event.key === 'Enter') {
+            updateFromSymbolic(
+              symbolicInput.value,
+              true
+            );
+          }
         }
-      });
+      );
 
-      filenameInput.addEventListener('input', () => {
-        updateCommand();
-      });
+      filenameInput.addEventListener(
+        'input',
+        updateCommand
+      );
 
-      filenameInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-          updateCommand();
-          showToast('تم تحديث الأمر', 'success');
+      filenameInput.addEventListener(
+        'keydown',
+        (event) => {
+          if (event.key === 'Enter') {
+            updateCommand();
+
+            showToast(
+              'تم تحديث الأمر',
+              'success'
+            );
+          }
         }
-      });
+      );
 
       updateFilenameBtn.addEventListener(
         'click',
         () => {
           updateCommand();
-          showToast('تم تحديث أمر chmod', 'success');
+
+          showToast(
+            'تم تحديث أمر chmod',
+            'success'
+          );
         }
       );
 
@@ -2295,14 +2528,11 @@ Command: ${chmodCommand.textContent.trim()}`;
       clearMatrixBtn.addEventListener(
         'click',
         () => {
-          matrixIds.forEach((id) => {
-            const checkbox =
-              document.getElementById(id);
-
-            if (checkbox) {
+          document
+            .querySelectorAll('.permission-check')
+            .forEach((checkbox) => {
               checkbox.checked = false;
-            }
-          });
+            });
 
           updateFromMatrix();
 
@@ -2331,7 +2561,10 @@ Command: ${chmodCommand.textContent.trim()}`;
               const value =
                 preset.dataset.permission || '755';
 
-              updateFromNumeric(value, false);
+              updateFromNumeric(
+                value,
+                false
+              );
 
               showToast(
                 `تم اختيار CHMOD ${value}`,
@@ -2365,6 +2598,8 @@ Command: ${chmodCommand.textContent.trim()}`;
           );
         });
 
+      /* FAQ */
+
       document
         .querySelectorAll('.faq-question')
         .forEach((button) => {
@@ -2382,7 +2617,9 @@ Command: ${chmodCommand.textContent.trim()}`;
                 .querySelectorAll('.faq-item.open')
                 .forEach((openItem) => {
                   if (openItem !== item) {
-                    openItem.classList.remove('open');
+                    openItem.classList.remove(
+                      'open'
+                    );
                   }
                 });
 
@@ -2391,8 +2628,15 @@ Command: ${chmodCommand.textContent.trim()}`;
           );
         });
 
-      /* الحالة الابتدائية */
-      updateFromNumeric('755', false);
+      /* ============================================
+       * INITIAL STATE
+       * ============================================ */
+
+      updateFromNumeric(
+        '755',
+        false
+      );
+
     });
   </script>
 </body>
