@@ -4,82 +4,6 @@ import Footer from '../../../components/Footer.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const canonical = `https://oumaystore-hub.github.io${base}/tools/http-status-codes/`;
-
-const codes = [
-  { code: 100, name: 'Continue', ar: 'متابعة', desc: 'The server has received the request headers and the client should continue.', cat: '1xx', color: '#64748b' },
-  { code: 101, name: 'Switching Protocols', ar: 'تبديل البروتوكول', desc: 'The server is switching protocols as requested by the client.', cat: '1xx', color: '#64748b' },
-  { code: 102, name: 'Processing', ar: 'قيد المعالجة', desc: 'The server has received and is processing the request.', cat: '1xx', color: '#64748b' },
-  { code: 103, name: 'Early Hints', ar: 'تلميحات مبكرة', desc: 'Used to return some response headers before the final response.', cat: '1xx', color: '#64748b' },
-
-  { code: 200, name: 'OK', ar: 'نجاح', desc: 'The request has succeeded.', cat: '2xx', color: '#16a34a' },
-  { code: 201, name: 'Created', ar: 'تم الإنشاء', desc: 'The request has succeeded and a new resource has been created.', cat: '2xx', color: '#16a34a' },
-  { code: 202, name: 'Accepted', ar: 'تم القبول', desc: 'The request has been accepted for processing.', cat: '2xx', color: '#16a34a' },
-  { code: 203, name: 'Non-Authoritative Information', ar: 'معلومات غير موثوقة المصدر', desc: 'The response contains modified information from a transforming proxy.', cat: '2xx', color: '#16a34a' },
-  { code: 204, name: 'No Content', ar: 'بدون محتوى', desc: 'The server successfully processed the request but returns no content.', cat: '2xx', color: '#16a34a' },
-  { code: 205, name: 'Reset Content', ar: 'إعادة ضبط المحتوى', desc: 'The server asks the client to reset the document view.', cat: '2xx', color: '#16a34a' },
-  { code: 206, name: 'Partial Content', ar: 'محتوى جزئي', desc: 'The server is delivering only part of the requested resource.', cat: '2xx', color: '#16a34a' },
-  { code: 207, name: 'Multi-Status', ar: 'حالات متعددة', desc: 'Provides status information for multiple independent operations.', cat: '2xx', color: '#16a34a' },
-  { code: 208, name: 'Already Reported', ar: 'تم الإبلاغ مسبقاً', desc: 'The members of a WebDAV binding have already been enumerated.', cat: '2xx', color: '#16a34a' },
-  { code: 226, name: 'IM Used', ar: 'تم استخدام المعالجة', desc: 'The server has fulfilled a GET request and the response is a representation of one or more instance-manipulations.', cat: '2xx', color: '#16a34a' },
-
-  { code: 300, name: 'Multiple Choices', ar: 'خيارات متعددة', desc: 'The request has more than one possible response.', cat: '3xx', color: '#2563eb' },
-  { code: 301, name: 'Moved Permanently', ar: 'تم النقل بشكل دائم', desc: 'The requested resource has been permanently moved to a new URL.', cat: '3xx', color: '#2563eb' },
-  { code: 302, name: 'Found', ar: 'تم العثور عليه', desc: 'The requested resource is temporarily available at another URL.', cat: '3xx', color: '#2563eb' },
-  { code: 303, name: 'See Other', ar: 'راجع موقعاً آخر', desc: 'The response can be found at another URI using GET.', cat: '3xx', color: '#2563eb' },
-  { code: 304, name: 'Not Modified', ar: 'لم يتغير', desc: 'The resource has not changed since the last request.', cat: '3xx', color: '#2563eb' },
-  { code: 307, name: 'Temporary Redirect', ar: 'إعادة توجيه مؤقتة', desc: 'The request should be repeated at another URL without changing the method.', cat: '3xx', color: '#2563eb' },
-  { code: 308, name: 'Permanent Redirect', ar: 'إعادة توجيه دائمة', desc: 'The request should be repeated at another URL permanently.', cat: '3xx', color: '#2563eb' },
-
-  { code: 400, name: 'Bad Request', ar: 'طلب غير صالح', desc: 'The server cannot process the request because it is malformed or invalid.', cat: '4xx', color: '#dc2626' },
-  { code: 401, name: 'Unauthorized', ar: 'غير مصرح', desc: 'Authentication is required to access the requested resource.', cat: '4xx', color: '#dc2626' },
-  { code: 402, name: 'Payment Required', ar: 'الدفع مطلوب', desc: 'Reserved for future use.', cat: '4xx', color: '#dc2626' },
-  { code: 403, name: 'Forbidden', ar: 'ممنوع', desc: 'The server understood the request but refuses to authorize it.', cat: '4xx', color: '#dc2626' },
-  { code: 404, name: 'Not Found', ar: 'غير موجود', desc: 'The requested resource could not be found.', cat: '4xx', color: '#dc2626' },
-  { code: 405, name: 'Method Not Allowed', ar: 'الطريقة غير مسموحة', desc: 'The HTTP method is not supported for the requested resource.', cat: '4xx', color: '#dc2626' },
-  { code: 406, name: 'Not Acceptable', ar: 'غير مقبول', desc: 'The server cannot produce a response matching the request headers.', cat: '4xx', color: '#dc2626' },
-  { code: 407, name: 'Proxy Authentication Required', ar: 'مصادقة البروكسي مطلوبة', desc: 'Authentication with the proxy is required.', cat: '4xx', color: '#dc2626' },
-  { code: 408, name: 'Request Timeout', ar: 'انتهت مهلة الطلب', desc: 'The server timed out waiting for the request.', cat: '4xx', color: '#dc2626' },
-  { code: 409, name: 'Conflict', ar: 'تعارض', desc: 'The request conflicts with the current state of the resource.', cat: '4xx', color: '#dc2626' },
-  { code: 410, name: 'Gone', ar: 'لم يعد موجوداً', desc: 'The requested resource is no longer available.', cat: '4xx', color: '#dc2626' },
-  { code: 411, name: 'Length Required', ar: 'الطول مطلوب', desc: 'The server requires a valid Content-Length header.', cat: '4xx', color: '#dc2626' },
-  { code: 412, name: 'Precondition Failed', ar: 'فشل الشرط المسبق', desc: 'One or more conditions in the request headers were not met.', cat: '4xx', color: '#dc2626' },
-  { code: 413, name: 'Content Too Large', ar: 'المحتوى كبير جداً', desc: 'The request payload is larger than the server is willing to process.', cat: '4xx', color: '#dc2626' },
-  { code: 414, name: 'URI Too Long', ar: 'الرابط طويل جداً', desc: 'The requested URI is longer than the server can interpret.', cat: '4xx', color: '#dc2626' },
-  { code: 415, name: 'Unsupported Media Type', ar: 'نوع الوسائط غير مدعوم', desc: 'The request media format is not supported by the server.', cat: '4xx', color: '#dc2626' },
-  { code: 416, name: 'Range Not Satisfiable', ar: 'النطاق غير متاح', desc: 'The requested range cannot be satisfied.', cat: '4xx', color: '#dc2626' },
-  { code: 417, name: 'Expectation Failed', ar: 'فشل التوقع', desc: 'The server cannot meet the requirements of the Expect header.', cat: '4xx', color: '#dc2626' },
-  { code: 418, name: "I'm a teapot", ar: 'أنا إبريق شاي', desc: 'A humorous HTTP status code.', cat: '4xx', color: '#dc2626' },
-  { code: 422, name: 'Unprocessable Content', ar: 'المحتوى غير قابل للمعالجة', desc: 'The request is syntactically valid but cannot be processed.', cat: '4xx', color: '#dc2626' },
-  { code: 423, name: 'Locked', ar: 'مقفل', desc: 'The requested resource is locked.', cat: '4xx', color: '#dc2626' },
-  { code: 424, name: 'Failed Dependency', ar: 'فشل الاعتماد', desc: 'The request failed because a dependent request failed.', cat: '4xx', color: '#dc2626' },
-  { code: 425, name: 'Too Early', ar: 'مبكر جداً', desc: 'The server is unwilling to risk processing a request that might be replayed.', cat: '4xx', color: '#dc2626' },
-  { code: 426, name: 'Upgrade Required', ar: 'الترقية مطلوبة', desc: 'The client should switch to a different protocol.', cat: '4xx', color: '#dc2626' },
-  { code: 428, name: 'Precondition Required', ar: 'شرط مسبق مطلوب', desc: 'The origin server requires the request to be conditional.', cat: '4xx', color: '#dc2626' },
-  { code: 429, name: 'Too Many Requests', ar: 'طلبات كثيرة جداً', desc: 'The client has sent too many requests in a given amount of time.', cat: '4xx', color: '#dc2626' },
-  { code: 431, name: 'Request Header Fields Too Large', ar: 'حقول الترويسة كبيرة', desc: 'The request headers are too large.', cat: '4xx', color: '#dc2626' },
-  { code: 451, name: 'Unavailable For Legal Reasons', ar: 'غير متاح لأسباب قانونية', desc: 'The resource is unavailable due to legal demands.', cat: '4xx', color: '#dc2626' },
-
-  { code: 500, name: 'Internal Server Error', ar: 'خطأ داخلي في الخادم', desc: 'The server encountered an unexpected condition.', cat: '5xx', color: '#9333ea' },
-  { code: 501, name: 'Not Implemented', ar: 'غير منفذ', desc: 'The server does not support the requested functionality.', cat: '5xx', color: '#9333ea' },
-  { code: 502, name: 'Bad Gateway', ar: 'بوابة غير صالحة', desc: 'The server received an invalid response from an upstream server.', cat: '5xx', color: '#9333ea' },
-  { code: 503, name: 'Service Unavailable', ar: 'الخدمة غير متاحة', desc: 'The server is currently unable to handle the request.', cat: '5xx', color: '#9333ea' },
-  { code: 504, name: 'Gateway Timeout', ar: 'انتهت مهلة البوابة', desc: 'The upstream server did not respond in time.', cat: '5xx', color: '#9333ea' },
-  { code: 505, name: 'HTTP Version Not Supported', ar: 'إصدار HTTP غير مدعوم', desc: 'The server does not support the HTTP version used in the request.', cat: '5xx', color: '#9333ea' },
-  { code: 506, name: 'Variant Also Negotiates', ar: 'تفاوض النسخة', desc: 'The server has an internal configuration error.', cat: '5xx', color: '#9333ea' },
-  { code: 507, name: 'Insufficient Storage', ar: 'مساحة تخزين غير كافية', desc: 'The server cannot store the representation needed.', cat: '5xx', color: '#9333ea' },
-  { code: 508, name: 'Loop Detected', ar: 'تم اكتشاف حلقة', desc: 'The server detected an infinite loop.', cat: '5xx', color: '#9333ea' },
-  { code: 510, name: 'Not Extended', ar: 'غير موسع', desc: 'Further extensions to the request are required.', cat: '5xx', color: '#9333ea' },
-  { code: 511, name: 'Network Authentication Required', ar: 'مصادقة الشبكة مطلوبة', desc: 'The client needs to authenticate to gain network access.', cat: '5xx', color: '#9333ea' }
-];
-
-const groups = [
-  ['all', 'الكل'],
-  ['1xx', '1xx معلومات'],
-  ['2xx', '2xx نجاح'],
-  ['3xx', '3xx توجيه'],
-  ['4xx', '4xx خطأ العميل'],
-  ['5xx', '5xx خطأ الخادم']
-];
 ---
 
 <!doctype html>
@@ -87,580 +11,2441 @@ const groups = [
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>HTTP Status Codes | رموز حالة HTTP - Th.Tech</title>
-  <meta name="description" content="مرجع شامل لرموز حالة HTTP مع البحث والتصنيف وشرح الأكواد." />
+
+  <title>HTTP Status Codes | أكواد حالة HTTP | Th.Tech</title>
+
+  <meta
+    name="description"
+    content="أداة HTTP Status Codes لعرض وفهم أكواد حالة HTTP مثل 200 و404 و500 مع شرح معنى كل كود واستخدامه."
+  />
+
   <link rel="canonical" href={canonical} />
-  <meta name="theme-color" content="#08111f" />
 
-  <style is:global>
-    :root {
-      color-scheme: dark;
-    }
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    html,
-    body {
-      margin: 0;
-      min-height: 100%;
-      background: #08111f;
-      transition: background .25s ease, color .25s ease;
-    }
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
 
-    html.page-light,
-    html.page-light body,
-    body.page-light {
-      background: #f4f8fc !important;
-      color: #172033;
-    }
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+  />
+</head>
+
+<body>
+
+  <Header />
+
+  <main class="status-page">
+
+    <section class="hero">
+
+      <div class="hero-badge">
+        <i class="fa-solid fa-server"></i>
+        أداة HTTP
+      </div>
+
+      <h1>
+        أكواد حالة <span>HTTP</span>
+      </h1>
+
+      <p>
+        ابحث عن أكواد HTTP بسرعة واعرف معنى كل كود،
+        فئته، واستخدامه في تطوير الويب وواجهات API.
+      </p>
+
+      <div class="hero-points">
+
+        <span>
+          <i class="fa-solid fa-magnifying-glass"></i>
+          بحث سريع
+        </span>
+
+        <span>
+          <i class="fa-solid fa-layer-group"></i>
+          جميع الفئات
+        </span>
+
+        <span>
+          <i class="fa-solid fa-mobile-screen"></i>
+          يعمل على الهاتف
+        </span>
+
+      </div>
+
+    </section>
+
+
+    <section class="tool">
+
+      <div class="tool-top">
+
+        <div>
+
+          <div class="mini-label">
+            <i class="fa-solid fa-code"></i>
+            HTTP Status Codes
+          </div>
+
+          <h2>ابحث عن كود HTTP</h2>
+
+          <p>
+            أدخل رقم الكود أو ابحث باسمه أو معناه.
+          </p>
+
+        </div>
+
+        <div class="status" id="status">
+          <span></span>
+          جاهز
+        </div>
+
+      </div>
+
+
+      <div class="search-area">
+
+        <label for="codeInput">
+          كود HTTP
+        </label>
+
+        <div class="search-box">
+
+          <input
+            id="codeInput"
+            type="text"
+            inputmode="numeric"
+            placeholder="مثال: 404 أو Not Found"
+            autocomplete="off"
+          />
+
+          <button
+            id="searchBtn"
+            type="button"
+          >
+            <i class="fa-solid fa-magnifying-glass"></i>
+            بحث
+          </button>
+
+        </div>
+
+        <div class="quick-codes">
+
+          <button type="button" data-code="200">200</button>
+          <button type="button" data-code="201">201</button>
+          <button type="button" data-code="301">301</button>
+          <button type="button" data-code="400">400</button>
+          <button type="button" data-code="401">401</button>
+          <button type="button" data-code="403">403</button>
+          <button type="button" data-code="404">404</button>
+          <button type="button" data-code="500">500</button>
+
+        </div>
+
+      </div>
+
+
+      <div class="categories">
+
+        <button class="category active" data-category="all">
+          <i class="fa-solid fa-border-all"></i>
+          الكل
+        </button>
+
+        <button class="category" data-category="1xx">
+          <i class="fa-solid fa-circle-info"></i>
+          1xx
+        </button>
+
+        <button class="category" data-category="2xx">
+          <i class="fa-solid fa-circle-check"></i>
+          2xx
+        </button>
+
+        <button class="category" data-category="3xx">
+          <i class="fa-solid fa-arrow-right-arrow-left"></i>
+          3xx
+        </button>
+
+        <button class="category" data-category="4xx">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          4xx
+        </button>
+
+        <button class="category" data-category="5xx">
+          <i class="fa-solid fa-circle-xmark"></i>
+          5xx
+        </button>
+
+      </div>
+
+
+      <div class="results-area">
+
+        <div class="results-head">
+
+          <div>
+
+            <h3>
+              النتائج
+            </h3>
+
+            <p id="resultsCount">
+              جميع أكواد HTTP
+            </p>
+
+          </div>
+
+          <button
+            id="clearBtn"
+            type="button"
+            class="clear-btn"
+          >
+            <i class="fa-solid fa-rotate-left"></i>
+            إعادة ضبط
+          </button>
+
+        </div>
+
+        <div
+          id="results"
+          class="codes-grid"
+        ></div>
+
+      </div>
+
+    </section>
+
+
+    <section class="features">
+
+      <div class="feature">
+
+        <div>
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
+
+        <section>
+
+          <strong>بحث سريع</strong>
+
+          <span>
+            ابحث برقم الكود أو اسمه.
+          </span>
+
+        </section>
+
+      </div>
+
+
+      <div class="feature">
+
+        <div>
+          <i class="fa-solid fa-book"></i>
+        </div>
+
+        <section>
+
+          <strong>شرح واضح</strong>
+
+          <span>
+            معنى واستخدام كل كود.
+          </span>
+
+        </section>
+
+      </div>
+
+
+      <div class="feature">
+
+        <div>
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+
+        <section>
+
+          <strong>خصوصية كاملة</strong>
+
+          <span>
+            المعالجة تتم داخل المتصفح.
+          </span>
+
+        </section>
+
+      </div>
+
+    </section>
+
+
+    <section class="info">
+
+      <div class="info-icon">
+        <i class="fa-solid fa-circle-info"></i>
+      </div>
+
+      <div>
+
+        <h2>ما هي أكواد HTTP؟</h2>
+
+        <p>
+          أكواد حالة HTTP هي أرقام يرسلها خادم الويب
+          لإخبار العميل بنتيجة الطلب. وتنقسم عادةً إلى
+          خمس فئات تبدأ من 1xx إلى 5xx.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <section class="info">
+
+      <div class="info-icon">
+        <i class="fa-solid fa-list-check"></i>
+      </div>
+
+      <div class="info-body">
+
+        <h2>فئات أكواد HTTP</h2>
+
+        <div class="steps">
+
+          <div class="step">
+            <span>1</span>
+            <div>
+              <strong>1xx — معلومات</strong>
+              <p>استجابات معلوماتية مرتبطة بمعالجة الطلب.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <span>2</span>
+            <div>
+              <strong>2xx — نجاح</strong>
+              <p>تشير إلى نجاح معالجة الطلب.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <span>3</span>
+            <div>
+              <strong>3xx — إعادة توجيه</strong>
+              <p>تشير إلى الحاجة إلى إجراء إضافي أو إعادة توجيه.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <span>4</span>
+            <div>
+              <strong>4xx — خطأ العميل</strong>
+              <p>ترتبط عادةً بمشكلة في الطلب المرسل من العميل.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <span>5</span>
+            <div>
+              <strong>5xx — خطأ الخادم</strong>
+              <p>تشير إلى مشكلة أثناء معالجة الطلب على الخادم.</p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <section class="tip">
+
+      <div class="tip-icon">
+        <i class="fa-solid fa-lightbulb"></i>
+      </div>
+
+      <div>
+
+        <strong>نصيحة للمطورين</strong>
+
+        <p>
+          عند اختبار API أو موقع ويب، يساعدك كود الحالة
+          على تحديد ما إذا كان الطلب نجح أو تمت إعادة توجيهه
+          أو حدث خطأ في العميل أو الخادم.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <section class="faq">
+
+      <div class="faq-title">
+
+        <span>دليل الأداة</span>
+
+        <h2>الأسئلة الشائعة</h2>
+
+      </div>
+
+
+      <details>
+
+        <summary>
+          ماذا يعني HTTP 200؟
+          <i class="fa-solid fa-plus"></i>
+        </summary>
+
+        <p>
+          يشير HTTP 200 إلى أن الطلب تمت معالجته بنجاح.
+        </p>
+
+      </details>
+
+
+      <details>
+
+        <summary>
+          ماذا يعني HTTP 404؟
+          <i class="fa-solid fa-plus"></i>
+        </summary>
+
+        <p>
+          يشير 404 عادةً إلى أن المورد المطلوب غير موجود
+          على الخادم.
+        </p>
+
+      </details>
+
+
+      <details>
+
+        <summary>
+          ما الفرق بين 4xx و5xx؟
+          <i class="fa-solid fa-plus"></i>
+        </summary>
+
+        <p>
+          أكواد 4xx ترتبط عادةً بمشكلات في الطلب أو العميل،
+          بينما أكواد 5xx تشير إلى أخطاء أثناء معالجة الطلب
+          على الخادم.
+        </p>
+
+      </details>
+
+
+      <details>
+
+        <summary>
+          هل الأداة تحتاج إلى اتصال بالخادم؟
+          <i class="fa-solid fa-plus"></i>
+        </summary>
+
+        <p>
+          لا. قاعدة البيانات الموجودة داخل الأداة يتم التعامل
+          معها محليًا داخل المتصفح.
+        </p>
+
+      </details>
+
+    </section>
+
+  </main>
+
+  <Footer />
+
+
+  <script is:inline>
+    (() => {
+
+      function init() {
+
+        const input =
+          document.getElementById('codeInput');
+
+        const searchBtn =
+          document.getElementById('searchBtn');
+
+        const clearBtn =
+          document.getElementById('clearBtn');
+
+        const results =
+          document.getElementById('results');
+
+        const resultsCount =
+          document.getElementById('resultsCount');
+
+        const status =
+          document.getElementById('status');
+
+        const categories =
+          document.querySelectorAll('.category');
+
+        const quickCodes =
+          document.querySelectorAll('[data-code]');
+
+
+        let currentCategory = 'all';
+
+
+        const codes = [
+
+          [100,'Continue','استمر','معلومات','يتم استخدامه لإخبار العميل أن الجزء الأول من الطلب تم استلامه ويمكن متابعة الطلب.'],
+
+          [101,'Switching Protocols','تبديل البروتوكولات','معلومات','يشير إلى أن الخادم يوافق على تغيير البروتوكول.'],
+
+          [200,'OK','نجاح الطلب','نجاح','تمت معالجة الطلب بنجاح.'],
+
+          [201,'Created','تم الإنشاء','نجاح','تم إنشاء مورد جديد نتيجة للطلب.'],
+
+          [202,'Accepted','تم القبول','نجاح','تم قبول الطلب للمعالجة لكنه لم يكتمل بعد.'],
+
+          [204,'No Content','بدون محتوى','نجاح','تمت معالجة الطلب بنجاح ولا توجد بيانات لإرجاعها.'],
+
+          [206,'Partial Content','محتوى جزئي','نجاح','تم إرسال جزء من المورد المطلوب.'],
+
+          [301,'Moved Permanently','نقل دائم','إعادة توجيه','تم نقل المورد بشكل دائم إلى عنوان آخر.'],
+
+          [302,'Found','تم العثور عليه','إعادة توجيه','يشير إلى إعادة توجيه مؤقتة للمورد.'],
+
+          [303,'See Other','انظر إلى مورد آخر','إعادة توجيه','يطلب من العميل الوصول إلى مورد آخر.'],
+
+          [304,'Not Modified','لم يتغير','إعادة توجيه','لم يتغير المورد منذ آخر طلب ويمكن استخدام النسخة المخزنة.'],
+
+          [307,'Temporary Redirect','إعادة توجيه مؤقتة','إعادة توجيه','إعادة توجيه مؤقتة مع الحفاظ على طريقة الطلب.'],
+
+          [308,'Permanent Redirect','إعادة توجيه دائم','إعادة توجيه','إعادة توجيه دائم مع الحفاظ على طريقة الطلب.'],
+
+          [400,'Bad Request','طلب غير صالح','خطأ العميل','الخادم لم يتمكن من فهم الطلب بسبب صياغة غير صحيحة.'],
+
+          [401,'Unauthorized','غير مصرح','خطأ العميل','يتطلب الطلب مصادقة صالحة.'],
+
+          [402,'Payment Required','الدفع مطلوب','خطأ العميل','رمز محجوز للاستخدامات المستقبلية المرتبطة بالدفع.'],
+
+          [403,'Forbidden','ممنوع','خطأ العميل','الخادم فهم الطلب لكنه يرفض تنفيذه.'],
+
+          [404,'Not Found','غير موجود','خطأ العميل','المورد المطلوب غير موجود.'],
+
+          [405,'Method Not Allowed','الطريقة غير مسموحة','خطأ العميل','طريقة HTTP المستخدمة غير مسموحة للمورد.'],
+
+          [406,'Not Acceptable','غير مقبول','خطأ العميل','لا يستطيع الخادم إنتاج استجابة مقبولة وفق ترويسات الطلب.'],
+
+          [408,'Request Timeout','انتهت مهلة الطلب','خطأ العميل','انتظر الخادم الطلب لفترة أطول من المسموح.'],
+
+          [409,'Conflict','تعارض','خطأ العميل','حدث تعارض أثناء معالجة الطلب.'],
+
+          [410,'Gone','تمت إزالته','خطأ العميل','المورد لم يعد متاحًا بشكل دائم.'],
+
+          [413,'Content Too Large','المحتوى كبير جدًا','خطأ العميل','حجم محتوى الطلب أكبر من الحد المسموح.'],
+
+          [415,'Unsupported Media Type','نوع الوسائط غير مدعوم','خطأ العميل','نوع البيانات المرسل غير مدعوم.'],
+
+          [422,'Unprocessable Content','تعذر معالجة المحتوى','خطأ العميل','صياغة الطلب صحيحة لكن لا يمكن معالجة محتواه.'],
+
+          [429,'Too Many Requests','طلبات كثيرة جدًا','خطأ العميل','تم إرسال عدد كبير من الطلبات خلال فترة زمنية قصيرة.'],
+
+          [500,'Internal Server Error','خطأ داخلي في الخادم','خطأ الخادم','حدث خطأ عام أثناء معالجة الطلب على الخادم.'],
+
+          [501,'Not Implemented','غير مطبق','خطأ الخادم','الخادم لا يدعم الوظيفة المطلوبة.'],
+
+          [502,'Bad Gateway','بوابة غير صالحة','خطأ الخادم','تلقى الخادم الوسيط استجابة غير صالحة من خادم آخر.'],
+
+          [503,'Service Unavailable','الخدمة غير متاحة','خطأ الخادم','الخادم غير قادر حاليًا على معالجة الطلب.'],
+
+          [504,'Gateway Timeout','انتهت مهلة البوابة','خطأ الخادم','لم يحصل الخادم الوسيط على استجابة في الوقت المناسب.'],
+
+          [505,'HTTP Version Not Supported','إصدار HTTP غير مدعوم','خطأ الخادم','إصدار HTTP المستخدم في الطلب غير مدعوم.']
+
+        ];
+
+
+        function setStatus(text, working = false) {
+
+          status.innerHTML =
+            '<span></span>' + text;
+
+          status.classList.toggle(
+            'working',
+            working
+          );
+
+        }
+
+
+        function categoryOf(code) {
+
+          return Math.floor(code / 100) + 'xx';
+
+        }
+
+
+        function render(list) {
+
+          results.innerHTML = '';
+
+          if (!list.length) {
+
+            results.innerHTML = `
+              <div class="empty-result">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <strong>لم يتم العثور على نتيجة</strong>
+                <span>جرّب كودًا آخر أو كلمة بحث مختلفة.</span>
+              </div>
+            `;
+
+            resultsCount.textContent =
+              'لا توجد نتائج';
+
+            return;
+          }
+
+
+          resultsCount.textContent =
+            `${list.length} كود`;
+
+
+          list.forEach(item => {
+
+            const card =
+              document.createElement('article');
+
+            const code = item[0];
+
+            card.className =
+              `code-card code-${Math.floor(code / 100)}`;
+
+            card.innerHTML = `
+              <div class="code-number">${code}</div>
+
+              <div class="code-content">
+                <h3>${escapeHTML(item[1])}</h3>
+                <strong>${escapeHTML(item[2])}</strong>
+                <span>${escapeHTML(item[3])}</span>
+                <p>${escapeHTML(item[4])}</p>
+              </div>
+            `;
+
+            results.appendChild(card);
+
+          });
+
+        }
+
+
+        function search() {
+
+          const query =
+            input.value.trim().toLowerCase();
+
+
+          setStatus(
+            'جارٍ البحث...',
+            true
+          );
+
+
+          setTimeout(() => {
+
+            let list =
+              codes.filter(item => {
+
+                const matchesCategory =
+                  currentCategory === 'all' ||
+                  categoryOf(item[0]) === currentCategory;
+
+                const searchable =
+                  `${item[0]} ${item[1]} ${item[2]} ${item[3]} ${item[4]}`
+                    .toLowerCase();
+
+                const matchesSearch =
+                  !query ||
+                  searchable.includes(query);
+
+                return (
+                  matchesCategory &&
+                  matchesSearch
+                );
+
+              });
+
+
+            render(list);
+
+            setStatus(
+              'جاهز',
+              false
+            );
+
+          }, 100);
+
+        }
+
+
+        categories.forEach(button => {
+
+          button.addEventListener(
+            'click',
+            () => {
+
+              categories.forEach(
+                item =>
+                  item.classList.remove('active')
+              );
+
+              button.classList.add('active');
+
+              currentCategory =
+                button.dataset.category;
+
+              search();
+
+            }
+          );
+
+        });
+
+
+        quickCodes.forEach(button => {
+
+          button.addEventListener(
+            'click',
+            () => {
+
+              input.value =
+                button.dataset.code;
+
+              search();
+
+              input.focus();
+
+            }
+          );
+
+        });
+
+
+        searchBtn.addEventListener(
+          'click',
+          search
+        );
+
+
+        input.addEventListener(
+          'keydown',
+          event => {
+
+            if (event.key === 'Enter') {
+
+              event.preventDefault();
+
+              search();
+
+            }
+
+          }
+        );
+
+
+        clearBtn.addEventListener(
+          'click',
+          () => {
+
+            input.value = '';
+
+            currentCategory = 'all';
+
+            categories.forEach(
+              item =>
+                item.classList.toggle(
+                  'active',
+                  item.dataset.category === 'all'
+                )
+            );
+
+            render(codes);
+
+            setStatus(
+              'جاهز',
+              false
+            );
+
+            input.focus();
+
+          }
+        );
+
+
+        function escapeHTML(value) {
+
+          return value
+            .replace(/&/g,'&amp;')
+            .replace(/</g,'&lt;')
+            .replace(/>/g,'&gt;')
+            .replace(/"/g,'&quot;')
+            .replace(/'/g,'&#039;');
+
+        }
+
+
+        function getThemeState() {
+
+          const html =
+            document.documentElement;
+
+          const stored =
+            localStorage.getItem('theme');
+
+
+          if (stored === 'light') {
+            return 'light';
+          }
+
+          if (stored === 'dark') {
+            return 'dark';
+          }
+
+          if (html.dataset.theme === 'light') {
+            return 'light';
+          }
+
+          if (html.dataset.theme === 'dark') {
+            return 'dark';
+          }
+
+          if (html.classList.contains('light')) {
+            return 'light';
+          }
+
+          if (html.classList.contains('dark')) {
+            return 'dark';
+          }
+
+          return 'dark';
+
+        }
+
+
+        function syncTheme() {
+
+          const light =
+            getThemeState() === 'light';
+
+
+          document.body.classList.toggle(
+            'status-light',
+            light
+          );
+
+
+          document.body.classList.toggle(
+            'status-dark',
+            !light
+          );
+
+        }
+
+
+        syncTheme();
+
+
+        window.addEventListener(
+          'storage',
+          event => {
+
+            if (event.key === 'theme') {
+              syncTheme();
+            }
+
+          }
+        );
+
+
+        const themeObserver =
+          new MutationObserver(() => {
+            syncTheme();
+          });
+
+
+        themeObserver.observe(
+          document.documentElement,
+          {
+            attributes: true,
+            attributeFilter: [
+              'class',
+              'data-theme'
+            ]
+          }
+        );
+
+
+        render(codes);
+
+        setStatus('جاهز', false);
+
+      }
+
+
+      if (document.readyState === 'loading') {
+
+        document.addEventListener(
+          'DOMContentLoaded',
+          init,
+          { once: true }
+        );
+
+      } else {
+
+        init();
+
+      }
+
+    })();
+  </script>
+
+
+  <style>
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
+    :global(html) {
+
+      --page-bg: #071321;
+      --page-bg-soft: #0a192a;
+
+      --surface: #0d1d2e;
+      --surface-2: #102337;
+      --surface-3: #12283d;
+
+      --field: #081624;
+
+      --text: #f5f9fd;
+      --text-soft: #c0cfdd;
+      --muted: #8ca0b4;
+      --muted-2: #6d8297;
+
+      --line: rgba(92,194,246,.15);
+      --line-strong: rgba(92,194,246,.30);
+
+      --blue: #28b8f2;
+      --blue-dark: #0b8dce;
+
+      --success: #2ad5a1;
+      --danger: #ff6178;
+
+      --shadow:
+        0 20px 60px rgba(0,0,0,.20);
+
+    }
+
+
+    :global(html[data-theme="light"]),
+    :global(body.status-light) {
+
+      --page-bg: #f2f8fc;
+      --page-bg-soft: #eaf4fa;
+
+      --surface: #ffffff;
+      --surface-2: #f7fbfe;
+      --surface-3: #edf6fb;
+
+      --field: #f5f9fc;
+
+      --text: #13263a;
+      --text-soft: #40576d;
+      --muted: #687f94;
+      --muted-2: #8799a9;
+
+      --line: rgba(12,126,183,.13);
+      --line-strong: rgba(12,126,183,.27);
+
+      --blue: #069fdf;
+      --blue-dark: #087bbd;
+
+      --success: #079f75;
+      --danger: #df4e65;
+
+      --shadow:
+        0 18px 50px rgba(33,91,125,.10);
+
+    }
+
+
+    :global(html.dark-mode),
+    :global(body.status-dark) {
+
+      --page-bg: #071321;
+      --page-bg-soft: #0a192a;
+
+      --surface: #0d1d2e;
+      --surface-2: #102337;
+      --surface-3: #12283d;
+
+      --field: #081624;
+
+      --text: #f5f9fd;
+      --text-soft: #c0cfdd;
+      --muted: #8ca0b4;
+      --muted-2: #6d8297;
+
+      --line: rgba(92,194,246,.15);
+      --line-strong: rgba(92,194,246,.30);
+
+      --blue: #28b8f2;
+      --blue-dark: #0b8dce;
+
+      --success: #2ad5a1;
+      --danger: #ff6178;
+
+      --shadow:
+        0 20px 60px rgba(0,0,0,.20);
+
+    }
+
+
+    :global(body) {
+
+      margin: 0;
+
+      background:
+        radial-gradient(
+          circle at 85% 0%,
+          rgba(40,184,242,.08),
+          transparent 32%
+        ),
+        var(--page-bg);
+
+      color: var(--text);
+
+      font-family:
+        "Cairo",
+        sans-serif;
+
+      transition:
+        background .25s ease,
+        color .25s ease;
+
+    }
+
+
     .status-page {
-      min-height: 100vh;
-      padding: 34px 14px 70px;
-      background:
-        radial-gradient(circle at 10% 5%, rgba(37,99,235,.17), transparent 28%),
-        radial-gradient(circle at 90% 20%, rgba(14,165,233,.12), transparent 30%),
-        #08111f;
-      color: #e5edf8;
-      transition: background .25s ease, color .25s ease;
+
+      width:
+        min(1120px,calc(100% - 32px));
+
+      margin:
+        0 auto;
+
+      padding:
+        38px 0 80px;
+
     }
 
-    .status-page.light {
-      background:
-        radial-gradient(circle at 10% 5%, rgba(37,99,235,.09), transparent 28%),
-        #f4f8fc;
-      color: #172033;
-    }
-
-    .container {
-      width: min(1120px, 100%);
-      margin: auto;
-    }
 
     .hero {
-      text-align: center;
-      margin-bottom: 28px;
+
+      text-align:
+        center;
+
+      padding:
+        12px 10px 38px;
+
     }
 
-    .icon-box {
-      width: 76px;
-      height: 76px;
-      margin: auto auto 17px;
-      border-radius: 22px;
-      display: grid;
-      place-items: center;
-      background: rgba(249,115,22,.12);
-      border: 1px solid rgba(249,115,22,.35);
+
+    .hero-badge {
+
+      width:
+        fit-content;
+
+      margin:
+        0 auto 16px;
+
+      padding:
+        7px 14px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap:
+        8px;
+
+      color:
+        var(--blue);
+
+      background:
+        rgba(40,184,242,.09);
+
+      border:
+        1px solid var(--line-strong);
+
+      border-radius:
+        999px;
+
+      font-size:
+        12px;
+
+      font-weight:
+        700;
+
     }
 
-    .icon-box svg {
-      width: 42px;
-      height: 42px;
-      stroke: #f97316;
-    }
 
-    h1 {
-      margin: 0 0 8px;
-      font-size: clamp(28px,5vw,42px);
-      font-weight: 900;
-    }
+    .hero h1 {
 
-    .subtitle {
-      margin: auto;
-      max-width: 700px;
-      color: #8290a5;
-      font-size: 15px;
-    }
-
-    .status-page.light .subtitle {
-      color: #64748b;
-    }
-
-    .search-panel {
-      padding: 18px;
-      margin-bottom: 18px;
-      border-radius: 24px;
-      background: rgba(19,31,50,.84);
-      border: 1px solid rgba(148,163,184,.18);
-      box-shadow: 0 20px 50px rgba(0,0,0,.18);
-      backdrop-filter: blur(12px);
-    }
-
-    .status-page.light .search-panel {
-      background: rgba(255,255,255,.92);
-      border-color: #dbe4ef;
-      box-shadow: 0 15px 35px rgba(15,23,42,.07);
-    }
-
-    .search-wrap {
-      position: relative;
-    }
-
-    .search-wrap svg {
-      position: absolute;
-      right: 16px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 21px;
-      height: 21px;
-      stroke: #718096;
-    }
-
-    #searchInput {
-      width: 100%;
-      height: 56px;
-      padding: 0 50px 0 18px;
-      border-radius: 15px;
-      border: 1px solid #33445d;
-      background: #0d1829;
-      color: white;
-      outline: none;
-      font-family: inherit;
-      font-size: 15px;
-    }
-
-    #searchInput:focus {
-      border-color: #38bdf8;
-      box-shadow: 0 0 0 3px rgba(56,189,248,.1);
-    }
-
-    .status-page.light #searchInput {
-      background: #f8fafc;
-      color: #172033;
-      border-color: #cbd5e1;
-    }
-
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 13px;
-    }
-
-    .filter-btn {
-      border: 1px solid #33445d;
-      background: #101d30;
-      color: #94a3b8;
-      padding: 9px 14px;
-      border-radius: 11px;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 12px;
-    }
-
-    .filter-btn.active {
-      background: #0284c7;
-      border-color: #38bdf8;
-      color: white;
-    }
-
-    .status-page.light .filter-btn {
-      background: white;
-      color: #64748b;
-      border-color: #d5dee9;
-    }
-
-    .status-page.light .filter-btn.active {
-      background: #0284c7;
-      color: white;
-      border-color: #0284c7;
-    }
-
-    .result-count {
-      margin-top: 13px;
-      color: #718096;
-      font-size: 12px;
-    }
-
-    .codes-grid {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 14px;
-    }
-
-    .code-card {
-      position: relative;
-      overflow: hidden;
-      min-height: 190px;
-      padding: 18px;
-      border-radius: 19px;
-      border: 1px solid rgba(148,163,184,.18);
-      background: rgba(19,31,50,.84);
-      transition: .2s;
-    }
-
-    .code-card:hover {
-      transform: translateY(-3px);
-      border-color: var(--accent);
-      box-shadow: 0 14px 35px rgba(0,0,0,.18);
-    }
-
-    .status-page.light .code-card {
-      background: rgba(255,255,255,.94);
-      border-color: #dce5ef;
-    }
-
-    .code-card::before {
-      content: "";
-      position: absolute;
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      background: var(--accent);
-      opacity: .06;
-      top: -70px;
-      right: -40px;
-    }
-
-    .code-top {
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .code-number {
-      font: 900 27px "JetBrains Mono","Courier New",monospace;
-      color: var(--accent);
-      direction: ltr;
-    }
-
-    .category-badge {
-      padding: 5px 9px;
-      border-radius: 8px;
-      background: rgba(148,163,184,.08);
-      color: var(--accent);
-      border: 1px solid rgba(148,163,184,.16);
-      font: 11px monospace;
-      direction: ltr;
-    }
-
-    .code-name {
-      margin-top: 12px;
-      font-size: 17px;
-      font-weight: 800;
-      direction: ltr;
-      text-align: right;
-    }
-
-    .code-ar {
-      margin-top: 3px;
-      color: #94a3b8;
-      font-size: 13px;
-    }
-
-    .code-desc {
-      margin-top: 9px;
-      color: #718096;
-      font-size: 12px;
-      line-height: 1.7;
-    }
-
-    .copy-btn {
-      position: absolute;
-      left: 14px;
-      bottom: 14px;
-      width: 34px;
-      height: 34px;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(148,163,184,.2);
-      border-radius: 9px;
-      background: rgba(100,116,139,.08);
-      color: #94a3b8;
-      cursor: pointer;
-    }
-
-    .copy-btn svg {
-      width: 17px;
-      height: 17px;
-    }
-
-    .empty {
-      display: none;
-      text-align: center;
-      padding: 55px;
-      color: #718096;
-    }
-
-    .info-section {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 15px;
-      margin-top: 35px;
-    }
-
-    .info-card {
-      padding: 21px;
-      border-radius: 20px;
-      border: 1px solid rgba(148,163,184,.16);
-      background: rgba(19,31,50,.65);
-    }
-
-    .status-page.light .info-card {
-      background: white;
-      border-color: #dce5ef;
-    }
-
-    .info-card h2 {
-      margin: 0 0 9px;
-      font-size: 17px;
-    }
-
-    .info-card p {
       margin: 0;
-      color: #8290a4;
-      font-size: 13px;
-      line-height: 1.8;
+
+      font-size:
+        clamp(29px,5vw,46px);
+
+      line-height: 1.35;
+
+      font-weight: 800;
+
     }
 
-    @media(max-width:850px) {
-      .codes-grid {
-        grid-template-columns: repeat(2,1fr);
-      }
 
-      .info-section {
-        grid-template-columns: 1fr;
-      }
+    .hero h1 span {
+      color: var(--blue);
     }
 
-    @media(max-width:520px) {
-      .codes-grid {
-        grid-template-columns: 1fr;
-      }
 
-      .filters {
-        display: grid;
-        grid-template-columns: repeat(2,1fr);
-      }
+    .hero > p {
 
-      .filter-btn:first-child {
-        grid-column: span 2;
-      }
-    }
-  </style>
-</head>
+      max-width: 680px;
 
-<body>
-  <Header />
+      margin:
+        13px auto 20px;
 
-  <main class="status-page" id="statusPage">
-    <div class="container">
+      color: var(--muted);
 
-      <section class="hero">
-        <div class="icon-box">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-            <rect x="3" y="4" width="18" height="16" rx="2"/>
-            <path d="M7 8h10M7 12h6M7 16h8"/>
-          </svg>
-        </div>
+      font-size: 14px;
 
-        <h1>HTTP Status Codes</h1>
+      line-height: 2;
 
-        <p class="subtitle">
-          مرجع سريع وشامل لرموز حالة HTTP مع شرح كل كود وتصنيفه
-        </p>
-      </section>
-
-      <section class="search-panel">
-        <div class="search-wrap">
-          <svg viewBox="0 0 24 24" fill="none" stroke-width="2">
-            <circle cx="11" cy="11" r="7"/>
-            <path d="m20 20-4-4"/>
-          </svg>
-
-          <input
-            id="searchInput"
-            type="search"
-            placeholder="ابحث برقم الكود أو الاسم أو الوصف..."
-            autocomplete="off"
-          />
-        </div>
-
-        <div class="filters">
-          {groups.map(group => (
-            <button
-              class:list={['filter-btn', group[0] === 'all' && 'active']}
-              data-filter={group[0]}
-              type="button"
-            >
-              {group[1]}
-            </button>
-          ))}
-        </div>
-
-        <div class="result-count" id="resultCount">
-          عرض {codes.length} رمز
-        </div>
-      </section>
-
-      <section class="codes-grid">
-        {codes.map(item => (
-          <article
-            class="code-card"
-            data-category={item.cat}
-            data-search={`${item.code} ${item.name} ${item.ar} ${item.desc}`.toLowerCase()}
-            style={`--accent:${item.color}`}
-          >
-            <div class="code-top">
-              <div class="code-number">{item.code}</div>
-              <div class="category-badge">{item.cat}</div>
-            </div>
-
-            <div class="code-name">{item.name}</div>
-            <div class="code-ar">{item.ar}</div>
-            <div class="code-desc">{item.desc}</div>
-
-            <button class="copy-btn" data-copy={item.code} type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <rect x="9" y="9" width="11" height="11" rx="2"/>
-                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
-              </svg>
-            </button>
-          </article>
-        ))}
-      </section>
-
-      <div class="empty" id="emptyState">
-        لا توجد نتائج مطابقة.
-      </div>
-
-      <section class="info-section">
-        <article class="info-card">
-          <h2>ما هي HTTP Status Codes؟</h2>
-          <p>
-            أرقام من ثلاثة أرقام يرسلها خادم الويب لتوضيح نتيجة معالجة طلب HTTP.
-          </p>
-        </article>
-
-        <article class="info-card">
-          <h2>التصنيفات</h2>
-          <p>
-            1xx معلومات، 2xx نجاح، 3xx إعادة توجيه، 4xx أخطاء العميل،
-            و5xx أخطاء الخادم.
-          </p>
-        </article>
-
-        <article class="info-card">
-          <h2>أكواد شائعة</h2>
-          <p>
-            200 و301 و302 و400 و401 و403 و404 و429 و500 و502 و503 و504.
-          </p>
-        </article>
-      </section>
-
-    </div>
-  </main>
-
-  <Footer />
-
-  <script is:inline>
-    const page = document.getElementById('statusPage');
-    const search = document.getElementById('searchInput');
-    const cards = [...document.querySelectorAll('.code-card')];
-    const buttons = [...document.querySelectorAll('.filter-btn')];
-    const result = document.getElementById('resultCount');
-    const empty = document.getElementById('emptyState');
-
-    let activeFilter = 'all';
-
-    function syncTheme() {
-      const root = document.documentElement;
-
-      const light =
-        root.dataset.theme === 'light' ||
-        root.classList.contains('light');
-
-      root.classList.toggle('page-light', light);
-      document.body.classList.toggle('page-light', light);
-      page.classList.toggle('light', light);
-
-      root.style.colorScheme = light ? 'light' : 'dark';
     }
 
-    syncTheme();
 
-    new MutationObserver(syncTheme).observe(
-      document.documentElement,
-      {
-        attributes: true,
-        attributeFilter: ['class', 'data-theme']
-      }
-    );
+    .hero-points {
 
-    function filterCards() {
-      const query = search.value.trim().toLowerCase();
-      let visible = 0;
+      display:
+        flex;
 
-      cards.forEach(card => {
-        const matchesSearch =
-          !query || card.dataset.search.includes(query);
+      justify-content:
+        center;
 
-        const matchesFilter =
-          activeFilter === 'all' ||
-          card.dataset.category === activeFilter;
+      flex-wrap:
+        wrap;
 
-        const show = matchesSearch && matchesFilter;
+      gap: 9px;
 
-        card.style.display = show ? '' : 'none';
-
-        if (show) visible++;
-      });
-
-      result.textContent = `عرض ${visible} رمز`;
-      empty.style.display = visible ? 'none' : 'block';
     }
 
-    search.addEventListener('input', filterCards);
 
-    buttons.forEach(button => {
-      button.addEventListener('click', () => {
-        activeFilter = button.dataset.filter;
+    .hero-points span {
 
-        buttons.forEach(btn =>
-          btn.classList.toggle(
-            'active',
-            btn.dataset.filter === activeFilter
-          )
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap: 7px;
+
+      padding:
+        7px 12px;
+
+      color: var(--text-soft);
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius:
+        10px;
+
+      font-size: 10px;
+
+    }
+
+
+    .hero-points i {
+      color: var(--blue);
+    }
+
+
+    .tool {
+
+      background: var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 24px;
+
+      box-shadow:
+        var(--shadow);
+
+      overflow: hidden;
+
+      transition:
+        background .25s ease,
+        border-color .25s ease;
+
+    }
+
+
+    .tool-top {
+
+      padding:
+        26px 28px;
+
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        flex-start;
+
+      gap: 20px;
+
+      border-bottom:
+        1px solid var(--line);
+
+    }
+
+
+    .mini-label {
+
+      display:
+        inline-flex;
+
+      align-items:
+        center;
+
+      gap: 7px;
+
+      color:
+        var(--blue);
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+    }
+
+
+    .tool-top h2 {
+
+      margin:
+        6px 0 3px;
+
+      font-size: 21px;
+
+      font-weight: 800;
+
+    }
+
+
+    .tool-top p {
+
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 11px;
+
+    }
+
+
+    .status {
+
+      flex-shrink: 0;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap: 8px;
+
+      padding:
+        8px 12px;
+
+      border:
+        1px solid rgba(42,213,161,.20);
+
+      border-radius:
+        999px;
+
+      color: var(--success);
+
+      background:
+        rgba(42,213,161,.07);
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+    }
+
+
+    .status span {
+
+      width: 7px;
+      height: 7px;
+
+      border-radius: 50%;
+
+      background: currentColor;
+
+      box-shadow:
+        0 0 10px currentColor;
+
+    }
+
+
+    .status.working {
+
+      color: var(--blue);
+
+      border-color:
+        var(--line-strong);
+
+      background:
+        rgba(40,184,242,.07);
+
+    }
+
+
+    .search-area {
+
+      padding:
+        25px 28px;
+
+      border-bottom:
+        1px solid var(--line);
+
+    }
+
+
+    .search-area label {
+
+      display: block;
+
+      margin-bottom: 9px;
+
+      color: var(--text-soft);
+
+      font-size: 11px;
+
+      font-weight: 700;
+
+    }
+
+
+    .search-box {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        1fr 125px;
+
+      gap: 10px;
+
+    }
+
+
+    .search-box input {
+
+      width: 100%;
+
+      height: 52px;
+
+      padding: 0 15px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 12px;
+
+      background:
+        var(--field);
+
+      color: var(--text);
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      outline: none;
+
+      direction: ltr;
+
+      text-align: left;
+
+      transition: .2s ease;
+
+    }
+
+
+    .search-box input:focus {
+
+      border-color:
+        var(--blue);
+
+      box-shadow:
+        0 0 0 3px rgba(40,184,242,.08);
+
+    }
+
+
+    .search-box button {
+
+      border: 0;
+
+      border-radius: 12px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--blue),
+          var(--blue-dark)
         );
 
-        filterCards();
-      });
-    });
+      color: #fff;
 
-    document.querySelectorAll('.copy-btn').forEach(button => {
-      button.addEventListener('click', async () => {
-        const value = button.dataset.copy;
+      font-family: inherit;
 
-        try {
-          await navigator.clipboard.writeText(value);
-        } catch {
-          const textarea = document.createElement('textarea');
-          textarea.value = value;
-          document.body.appendChild(textarea);
-          textarea.select();
-          document.execCommand('copy');
-          textarea.remove();
-        }
+      font-size: 11px;
 
-        const old = button.innerHTML;
+      font-weight: 800;
 
-        button.innerHTML = `
-          <svg viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2">
-            <path d="m5 12 4 4L19 6"/>
-          </svg>
-        `;
+      cursor: pointer;
 
-        setTimeout(() => {
-          button.innerHTML = old;
-        }, 1000);
-      });
-    });
+    }
 
-    filterCards();
-  </script>
+
+    .quick-codes {
+
+      display:
+        flex;
+
+      flex-wrap: wrap;
+
+      gap: 7px;
+
+      margin-top: 12px;
+
+    }
+
+
+    .quick-codes button {
+
+      padding:
+        6px 10px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 8px;
+
+      background:
+        var(--surface-2);
+
+      color: var(--text-soft);
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size: 9px;
+
+      cursor: pointer;
+
+      transition: .2s ease;
+
+    }
+
+
+    .quick-codes button:hover {
+
+      color: var(--blue);
+
+      border-color:
+        var(--line-strong);
+
+    }
+
+
+    .categories {
+
+      padding:
+        18px 28px;
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(6,1fr);
+
+      gap: 8px;
+
+      border-bottom:
+        1px solid var(--line);
+
+    }
+
+
+    .category {
+
+      min-height: 48px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        center;
+
+      gap: 7px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 10px;
+
+      background:
+        var(--surface-2);
+
+      color: var(--muted);
+
+      font-family: inherit;
+
+      font-size: 9px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition: .2s ease;
+
+    }
+
+
+    .category i {
+      color: var(--blue);
+    }
+
+
+    .category.active {
+
+      color: var(--text);
+
+      border-color:
+        rgba(40,184,242,.45);
+
+      background:
+        rgba(40,184,242,.10);
+
+    }
+
+
+    .results-area {
+
+      padding:
+        28px;
+
+      background:
+        var(--surface-2);
+
+    }
+
+
+    .results-head {
+
+      display:
+        flex;
+
+      justify-content:
+        space-between;
+
+      align-items:
+        center;
+
+      gap: 15px;
+
+      margin-bottom: 16px;
+
+    }
+
+
+    .results-head h3 {
+
+      margin:
+        0 0 3px;
+
+      font-size: 15px;
+
+    }
+
+
+    .results-head p {
+
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 9px;
+
+    }
+
+
+    .clear-btn {
+
+      padding:
+        8px 12px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap: 7px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 9px;
+
+      background:
+        var(--surface);
+
+      color: var(--text-soft);
+
+      font-family: inherit;
+
+      font-size: 9px;
+
+      cursor: pointer;
+
+    }
+
+
+    .codes-grid {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3,1fr);
+
+      gap: 10px;
+
+    }
+
+
+    .code-card {
+
+      min-width: 0;
+
+      padding: 16px;
+
+      display: flex;
+
+      gap: 12px;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 14px;
+
+      transition: .2s ease;
+
+    }
+
+
+    .code-card:hover {
+
+      transform:
+        translateY(-2px);
+
+      border-color:
+        var(--line-strong);
+
+    }
+
+
+    .code-number {
+
+      width: 55px;
+
+      height: 40px;
+
+      flex-shrink: 0;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 10px;
+
+      background:
+        rgba(40,184,242,.10);
+
+      color:
+        var(--blue);
+
+      font-family:
+        "JetBrains Mono",
+        monospace;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+    }
+
+
+    .code-content {
+
+      min-width: 0;
+
+    }
+
+
+    .code-content h3 {
+
+      margin:
+        0 0 3px;
+
+      font-size: 11px;
+
+      font-weight: 800;
+
+    }
+
+
+    .code-content strong {
+
+      display: block;
+
+      color: var(--text-soft);
+
+      font-size: 9px;
+
+    }
+
+
+    .code-content span {
+
+      display: inline-block;
+
+      margin-top: 5px;
+
+      color: var(--blue);
+
+      font-size: 8px;
+
+    }
+
+
+    .code-content p {
+
+      margin:
+        7px 0 0;
+
+      color: var(--muted);
+
+      font-size: 8px;
+
+      line-height: 1.9;
+
+    }
+
+
+    .empty-result {
+
+      grid-column:
+        1 / -1;
+
+      padding: 50px 20px;
+
+      display:
+        flex;
+
+      flex-direction:
+        column;
+
+      align-items:
+        center;
+
+      gap: 9px;
+
+      border:
+        1px dashed var(--line-strong);
+
+      border-radius: 15px;
+
+      color: var(--muted);
+
+    }
+
+
+    .empty-result i {
+
+      color: var(--blue);
+
+      font-size: 28px;
+
+    }
+
+
+    .empty-result strong {
+
+      color: var(--text);
+
+      font-size: 12px;
+
+    }
+
+
+    .empty-result span {
+
+      font-size: 9px;
+
+    }
+
+
+    .features {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(3,1fr);
+
+      gap: 12px;
+
+      margin-top: 16px;
+
+    }
+
+
+    .feature {
+
+      padding: 17px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      gap: 12px;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 15px;
+
+      box-shadow:
+        var(--shadow);
+
+    }
+
+
+    .feature > div {
+
+      width: 42px;
+      height: 42px;
+
+      flex-shrink: 0;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 11px;
+
+      background:
+        rgba(40,184,242,.08);
+
+      color: var(--blue);
+
+    }
+
+
+    .feature strong,
+    .feature span {
+
+      display: block;
+
+    }
+
+
+    .feature strong {
+      font-size: 11px;
+    }
+
+
+    .feature span {
+
+      margin-top: 3px;
+
+      color: var(--muted);
+
+      font-size: 8px;
+
+    }
+
+
+    .info {
+
+      margin-top: 16px;
+
+      padding: 21px;
+
+      display:
+        flex;
+
+      align-items:
+        flex-start;
+
+      gap: 14px;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 17px;
+
+      box-shadow:
+        var(--shadow);
+
+    }
+
+
+    .info-icon,
+    .tip-icon {
+
+      width: 44px;
+      height: 44px;
+
+      flex-shrink: 0;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 12px;
+
+      background:
+        rgba(40,184,242,.08);
+
+      border:
+        1px solid var(--line);
+
+      color: var(--blue);
+
+    }
+
+
+    .info h2 {
+
+      margin:
+        0 0 7px;
+
+      font-size: 14px;
+
+    }
+
+
+    .info p {
+
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 10px;
+
+      line-height: 2;
+
+    }
+
+
+    .info-body {
+      width: 100%;
+    }
+
+
+    .steps {
+
+      display:
+        grid;
+
+      grid-template-columns:
+        repeat(2,1fr);
+
+      gap: 14px;
+
+      margin-top: 17px;
+
+    }
+
+
+    .step {
+
+      display:
+        flex;
+
+      gap: 10px;
+
+    }
+
+
+    .step > span {
+
+      width: 29px;
+      height: 29px;
+
+      flex-shrink: 0;
+
+      display: grid;
+
+      place-items: center;
+
+      border-radius: 8px;
+
+      color: var(--blue);
+
+      background:
+        rgba(40,184,242,.08);
+
+      border:
+        1px solid var(--line);
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+    }
+
+
+    .step strong {
+      font-size: 10px;
+    }
+
+
+    .step p {
+
+      margin-top: 3px;
+
+      font-size: 8px;
+
+    }
+
+
+    .tip {
+
+      margin-top: 16px;
+
+      padding:
+        18px 21px;
+
+      display:
+        flex;
+
+      align-items:
+        flex-start;
+
+      gap: 13px;
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 17px;
+
+      background:
+        linear-gradient(
+          135deg,
+          rgba(40,184,242,.07),
+          var(--surface)
+        );
+
+    }
+
+
+    .tip strong {
+
+      display: block;
+
+      margin:
+        1px 0 4px;
+
+      font-size: 12px;
+
+    }
+
+
+    .tip p {
+
+      margin: 0;
+
+      color: var(--muted);
+
+      font-size: 9px;
+
+      line-height: 1.9;
+
+    }
+
+
+    .faq {
+
+      margin-top: 48px;
+
+    }
+
+
+    .faq-title {
+
+      text-align: center;
+
+      margin-bottom: 18px;
+
+    }
+
+
+    .faq-title span {
+
+      color: var(--blue);
+
+      font-size: 10px;
+
+      font-weight: 800;
+
+    }
+
+
+    .faq-title h2 {
+
+      margin: 5px 0 0;
+
+      font-size: 22px;
+
+      font-weight: 800;
+
+    }
+
+
+    details {
+
+      margin-bottom: 9px;
+
+      background:
+        var(--surface);
+
+      border:
+        1px solid var(--line);
+
+      border-radius: 13px;
+
+      overflow: hidden;
+
+    }
+
+
+    summary {
+
+      min-height: 54px;
+
+      padding:
+        12px 16px;
+
+      display:
+        flex;
+
+      align-items:
+        center;
+
+      justify-content:
+        space-between;
+
+      gap: 10px;
+
+      list-style: none;
+
+      cursor: pointer;
+
+      color: var(--text);
+
+      font-size: 10px;
+
+      font-weight: 700;
+
+    }
+
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+
+    summary i {
+
+      color: var(--blue);
+
+      transition: .2s ease;
+
+    }
+
+
+    details[open] summary i {
+
+      transform:
+        rotate(45deg);
+
+    }
+
+
+    details p {
+
+      margin: 0;
+
+      padding:
+        0 16px 16px;
+
+      color: var(--muted);
+
+      font-size: 9px;
+
+      line-height: 2;
+
+    }
+
+
+    @media (max-width:850px) {
+
+      .codes-grid {
+        grid-template-columns: repeat(2,1fr);
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .categories {
+        grid-template-columns: repeat(3,1fr);
+      }
+
+    }
+
+
+    @media (max-width:600px) {
+
+      .status-page {
+
+        width:
+          calc(100% - 18px);
+
+        padding:
+          22px 0 55px;
+
+      }
+
+
+      .hero {
+
+        padding:
+          5px 5px 25px;
+
+      }
+
+
+      .hero h1 {
+        font-size: 28px;
+      }
+
+
+      .hero > p {
+
+        font-size: 11px;
+
+        line-height: 1.9;
+
+      }
+
+
+      .hero-points {
+        gap: 6px;
+      }
+
+
+      .hero-points span {
+
+        padding:
+          6px 8px;
+
+        font-size: 8px;
+
+      }
+
+
+      .tool {
+        border-radius: 18px;
+      }
+
+
+      .tool-top {
+
+        padding: 19px;
+
+      }
+
+
+      .tool-top h2 {
+        font-size: 17px;
+      }
+
+
+      .tool-top p {
+        font-size: 9px;
+      }
+
+
+      .search-area {
+
+        padding:
+          18px;
+
+      }
+
+
+      .search-box {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .search-box button {
+
+        min-height: 46px;
+
+      }
+
+
+      .categories {
+
+        padding:
+          16px;
+
+        grid-template-columns:
+          repeat(2,1fr);
+
+      }
+
+
+      .results-area {
+
+        padding:
+          18px;
+
+      }
+
+
+      .codes-grid {
+
+        grid-template-columns: 1fr;
+
+      }
+
+
+      .results-head {
+
+        align-items:
+          flex-start;
+
+      }
+
+
+      .info {
+        padding: 16px;
+      }
+
+
+      .steps {
+        grid-template-columns: 1fr;
+      }
+
+
+      .faq {
+        margin-top: 38px;
+      }
+
+
+      .faq-title h2 {
+        font-size: 19px;
+      }
+
+    }
+
+
+    @media (max-width:380px) {
+
+      .tool-top {
+
+        flex-direction:
+          column;
+
+      }
+
+
+      .status {
+
+        align-self:
+          flex-start;
+
+      }
+
+
+      .hero h1 {
+        font-size: 25px;
+      }
+
+    }
+
+  </style>
+
 </body>
 </html>
