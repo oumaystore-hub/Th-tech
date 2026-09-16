@@ -16,19 +16,26 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
   <meta
     name="description"
-    content="محول CHMOD لتحويل صلاحيات Linux بين الصيغة الرقمية والرمزية وإنشاء أوامر chmod بسهولة."
+    content="محول CHMOD مجاني لتحويل صلاحيات Linux بين النظام الرقمي والرمزي، إنشاء أوامر chmod وفحص صلاحيات المستخدم والمجموعة والآخرين."
   />
 
   <meta
     name="keywords"
-    content="chmod converter, chmod calculator, linux permissions, chmod 755, chmod 644, محول chmod, صلاحيات لينكس"
+    content="CHMOD Converter, chmod, Linux permissions, صلاحيات لينكس, محول chmod, 755, 644, chmod calculator"
   />
 
   <link rel="canonical" href={canonical} />
 
+  <meta property="og:title" content="CHMOD Converter | محول صلاحيات Linux" />
+  <meta
+    property="og:description"
+    content="حوّل صلاحيات Linux بسهولة بين Numeric و Symbolic وأنشئ أمر chmod جاهز."
+  />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-
   <link
     href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
     rel="stylesheet"
@@ -36,3416 +43,2357 @@ const canonical = `https://oumaystore-hub.github.io${base}/tools/chmod-converter
 
   <link
     rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
   />
+
+  <style>
+    :global(*) {
+      box-sizing: border-box;
+    }
+
+    :global(html) {
+      --chmod-bg: #07111f;
+      --chmod-bg-2: #0a1628;
+      --chmod-surface: #0d1b2d;
+      --chmod-surface-2: #102238;
+      --chmod-card: #112a43;
+      --chmod-border: rgba(148, 163, 184, 0.15);
+      --chmod-border-strong: rgba(56, 189, 248, 0.28);
+
+      --chmod-text: #f1f5f9;
+      --chmod-soft: #cbd5e1;
+      --chmod-muted: #94a3b8;
+
+      --chmod-primary: #38bdf8;
+      --chmod-primary-2: #0ea5e9;
+      --chmod-primary-soft: rgba(56, 189, 248, 0.12);
+
+      --chmod-green: #22c55e;
+      --chmod-green-soft: rgba(34, 197, 94, 0.12);
+
+      --chmod-orange: #f59e0b;
+      --chmod-orange-soft: rgba(245, 158, 11, 0.12);
+
+      --chmod-red: #ef4444;
+      --chmod-red-soft: rgba(239, 68, 68, 0.12);
+
+      --chmod-purple: #a78bfa;
+      --chmod-purple-soft: rgba(167, 139, 250, 0.12);
+
+      --chmod-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+      --chmod-radius: 18px;
+
+      color-scheme: dark;
+      scroll-behavior: smooth;
+    }
+
+    :global(html[data-theme='light']) {
+      --chmod-bg: #f1f7fc;
+      --chmod-bg-2: #eaf4fb;
+      --chmod-surface: #ffffff;
+      --chmod-surface-2: #f8fbfe;
+      --chmod-card: #ffffff;
+
+      --chmod-border: rgba(15, 23, 42, 0.10);
+      --chmod-border-strong: rgba(14, 165, 233, 0.28);
+
+      --chmod-text: #0f172a;
+      --chmod-soft: #334155;
+      --chmod-muted: #64748b;
+
+      --chmod-primary: #0284c7;
+      --chmod-primary-2: #0ea5e9;
+      --chmod-primary-soft: rgba(14, 165, 233, 0.09);
+
+      --chmod-green: #16a34a;
+      --chmod-green-soft: rgba(22, 163, 74, 0.09);
+
+      --chmod-orange: #d97706;
+      --chmod-orange-soft: rgba(217, 119, 6, 0.09);
+
+      --chmod-red: #dc2626;
+      --chmod-red-soft: rgba(220, 38, 38, 0.08);
+
+      --chmod-purple: #7c3aed;
+      --chmod-purple-soft: rgba(124, 58, 237, 0.08);
+
+      --chmod-shadow: 0 18px 50px rgba(15, 23, 42, 0.09);
+
+      color-scheme: light;
+    }
+
+    :global(body) {
+      margin: 0;
+      background:
+        radial-gradient(
+          circle at 10% 10%,
+          rgba(14, 165, 233, 0.09),
+          transparent 28%
+        ),
+        radial-gradient(
+          circle at 90% 20%,
+          rgba(56, 189, 248, 0.07),
+          transparent 25%
+        ),
+        var(--chmod-bg);
+      color: var(--chmod-text);
+      font-family: 'Cairo', sans-serif;
+      min-height: 100vh;
+    }
+
+    :global(button),
+    :global(input) {
+      font-family: inherit;
+    }
+
+    .chmod-page {
+      width: 100%;
+      min-height: 100vh;
+      padding: 30px 16px 70px;
+    }
+
+    .chmod-container {
+      width: min(1180px, 100%);
+      margin: 0 auto;
+    }
+
+    /* HERO */
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--chmod-border);
+      border-radius: 28px;
+      padding: 42px 28px;
+      margin-bottom: 24px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(14, 165, 233, 0.15),
+          rgba(56, 189, 248, 0.04)
+        ),
+        var(--chmod-surface);
+      box-shadow: var(--chmod-shadow);
+      text-align: center;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      top: -130px;
+      left: -80px;
+      border-radius: 50%;
+      background: rgba(56, 189, 248, 0.12);
+      filter: blur(5px);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 210px;
+      height: 210px;
+      bottom: -120px;
+      right: -70px;
+      border-radius: 50%;
+      background: rgba(14, 165, 233, 0.10);
+      pointer-events: none;
+    }
+
+    .hero-icon {
+      width: 74px;
+      height: 74px;
+      margin: 0 auto 18px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      background: linear-gradient(
+        135deg,
+        var(--chmod-primary-2),
+        var(--chmod-primary)
+      );
+      color: white;
+      font-size: 30px;
+      box-shadow: 0 15px 35px rgba(14, 165, 233, 0.25);
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(28px, 5vw, 46px);
+      line-height: 1.2;
+      font-weight: 800;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 span {
+      display: block;
+      margin-top: 8px;
+      color: var(--chmod-primary);
+      font-size: 0.56em;
+      font-weight: 700;
+    }
+
+    .hero p {
+      width: min(700px, 100%);
+      margin: 18px auto 0;
+      color: var(--chmod-muted);
+      line-height: 1.9;
+      font-size: 15px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badges {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      border: 1px solid var(--chmod-border);
+      border-radius: 999px;
+      background: var(--chmod-primary-soft);
+      color: var(--chmod-soft);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .hero-badge i {
+      color: var(--chmod-primary);
+    }
+
+    /* TOOL */
+
+    .tool-card {
+      border: 1px solid var(--chmod-border);
+      border-radius: var(--chmod-radius);
+      background: var(--chmod-surface);
+      box-shadow: var(--chmod-shadow);
+      overflow: hidden;
+    }
+
+    .tool-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid var(--chmod-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .tool-title {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      font-weight: 800;
+      font-size: 17px;
+    }
+
+    .tool-title i {
+      color: var(--chmod-primary);
+    }
+
+    .tool-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--chmod-green);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .tool-status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--chmod-green);
+      box-shadow: 0 0 0 5px var(--chmod-green-soft);
+    }
+
+    .tool-body {
+      padding: 22px;
+    }
+
+    /* INPUTS */
+
+    .input-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .field-card {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid var(--chmod-border);
+      border-radius: 16px;
+      background: var(--chmod-surface-2);
+    }
+
+    .field-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 11px;
+    }
+
+    .field-label-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .field-label-main i {
+      color: var(--chmod-primary);
+    }
+
+    .field-hint {
+      color: var(--chmod-muted);
+      font-size: 11px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap input {
+      width: 100%;
+      height: 54px;
+      border: 1px solid var(--chmod-border);
+      border-radius: 13px;
+      background: var(--chmod-bg);
+      color: var(--chmod-text);
+      outline: none;
+      padding: 0 15px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 21px;
+      font-weight: 700;
+      transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+      direction: ltr;
+      text-align: center;
+    }
+
+    .input-wrap input:focus {
+      border-color: var(--chmod-primary);
+      box-shadow: 0 0 0 4px var(--chmod-primary-soft);
+    }
+
+    .input-wrap.symbolic input {
+      font-size: 17px;
+      letter-spacing: 1px;
+    }
+
+    .field-error {
+      min-height: 20px;
+      margin-top: 7px;
+      color: var(--chmod-red);
+      font-size: 11px;
+      text-align: right;
+    }
+
+    /* BUTTONS */
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .btn {
+      min-height: 44px;
+      border: 1px solid var(--chmod-border);
+      border-radius: 12px;
+      padding: 9px 15px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      color: var(--chmod-soft);
+      background: var(--chmod-surface-2);
+      font-size: 13px;
+      font-weight: 700;
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--chmod-border-strong);
+      background: var(--chmod-primary-soft);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      color: white;
+      border-color: transparent;
+      background: linear-gradient(
+        135deg,
+        var(--chmod-primary-2),
+        var(--chmod-primary)
+      );
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(
+        135deg,
+        var(--chmod-primary),
+        var(--chmod-primary-2)
+      );
+    }
+
+    .btn-danger:hover {
+      border-color: rgba(239, 68, 68, 0.35);
+      background: var(--chmod-red-soft);
+      color: var(--chmod-red);
+    }
+
+    .btn-success:hover {
+      border-color: rgba(34, 197, 94, 0.35);
+      background: var(--chmod-green-soft);
+      color: var(--chmod-green);
+    }
+
+    .btn-small {
+      min-height: 36px;
+      padding: 7px 11px;
+      font-size: 11px;
+    }
+
+    /* RESULT */
+
+    .result-section {
+      margin-top: 22px;
+    }
+
+    .section-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 13px;
+      flex-wrap: wrap;
+    }
+
+    .section-heading h2,
+    .section-heading h3 {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .section-heading h2 i,
+    .section-heading h3 i {
+      color: var(--chmod-primary);
+      margin-left: 7px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .result-card {
+      min-width: 0;
+      padding: 17px;
+      border: 1px solid var(--chmod-border);
+      border-radius: 15px;
+      background: var(--chmod-surface-2);
+    }
+
+    .result-card-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      color: var(--chmod-muted);
+      font-size: 11px;
+      margin-bottom: 10px;
+    }
+
+    .result-value {
+      min-height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      direction: ltr;
+      text-align: center;
+      color: var(--chmod-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 25px;
+      font-weight: 700;
+      word-break: break-all;
+    }
+
+    .result-card.command-card {
+      grid-column: 1 / -1;
+    }
+
+    .command-box {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      direction: ltr;
+    }
+
+    .command-box code {
+      flex: 1;
+      min-width: 0;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 13px;
+      border-radius: 11px;
+      background: var(--chmod-bg);
+      border: 1px solid var(--chmod-border);
+      color: var(--chmod-green);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+    }
+
+    /* MATRIX */
+
+    .matrix-section {
+      margin-top: 25px;
+    }
+
+    .matrix-wrap {
+      border: 1px solid var(--chmod-border);
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--chmod-surface-2);
+    }
+
+    .permission-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+
+    .permission-table th,
+    .permission-table td {
+      padding: 13px 8px;
+      border-bottom: 1px solid var(--chmod-border);
+      text-align: center;
+    }
+
+    .permission-table tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .permission-table th {
+      color: var(--chmod-muted);
+      font-size: 11px;
+      font-weight: 700;
+      background: var(--chmod-bg);
+    }
+
+    .permission-table td {
+      color: var(--chmod-soft);
+      font-size: 12px;
+    }
+
+    .permission-table .role-cell {
+      text-align: right;
+      padding-right: 15px;
+      font-weight: 800;
+    }
+
+    .role-name {
+      display: block;
+      color: var(--chmod-text);
+    }
+
+    .role-code {
+      display: block;
+      margin-top: 2px;
+      color: var(--chmod-muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      direction: ltr;
+    }
+
+    .permission-check {
+      width: 22px;
+      height: 22px;
+      accent-color: var(--chmod-primary-2);
+      cursor: pointer;
+    }
+
+    .permission-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: var(--chmod-primary);
+      direction: ltr;
+    }
+
+    /* FILE COMMAND */
+
+    .filename-section {
+      margin-top: 22px;
+      padding: 18px;
+      border: 1px solid var(--chmod-border);
+      border-radius: 16px;
+      background: var(--chmod-surface-2);
+    }
+
+    .filename-input {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      direction: ltr;
+    }
+
+    .filename-input input {
+      flex: 1;
+      min-width: 0;
+      height: 46px;
+      border: 1px solid var(--chmod-border);
+      border-radius: 11px;
+      background: var(--chmod-bg);
+      color: var(--chmod-text);
+      padding: 0 13px;
+      outline: none;
+      font-family: 'JetBrains Mono', monospace;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .filename-input input:focus {
+      border-color: var(--chmod-primary);
+      box-shadow: 0 0 0 4px var(--chmod-primary-soft);
+    }
+
+    /* PRESETS */
+
+    .presets-section {
+      margin-top: 25px;
+    }
+
+    .presets-grid {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .preset {
+      border: 1px solid var(--chmod-border);
+      border-radius: 13px;
+      background: var(--chmod-surface-2);
+      padding: 13px 8px;
+      cursor: pointer;
+      text-align: center;
+      color: var(--chmod-text);
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        background 0.18s ease;
+    }
+
+    .preset:hover {
+      transform: translateY(-2px);
+      border-color: var(--chmod-border-strong);
+      background: var(--chmod-primary-soft);
+    }
+
+    .preset-number {
+      display: block;
+      direction: ltr;
+      color: var(--chmod-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .preset-name {
+      display: block;
+      margin-top: 4px;
+      color: var(--chmod-muted);
+      font-size: 10px;
+    }
+
+    /* INFO */
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+      margin-top: 25px;
+    }
+
+    .info-card {
+      padding: 21px;
+      border: 1px solid var(--chmod-border);
+      border-radius: 17px;
+      background: var(--chmod-surface);
+    }
+
+    .info-card h2 {
+      margin: 0 0 14px;
+      font-size: 17px;
+    }
+
+    .info-card h2 i {
+      color: var(--chmod-primary);
+      margin-left: 7px;
+    }
+
+    .info-card p {
+      margin: 0;
+      color: var(--chmod-muted);
+      font-size: 13px;
+      line-height: 1.9;
+    }
+
+    .number-list {
+      display: grid;
+      gap: 8px;
+      margin-top: 13px;
+    }
+
+    .number-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 11px;
+      border-radius: 10px;
+      background: var(--chmod-surface-2);
+      border: 1px solid var(--chmod-border);
+      font-size: 12px;
+    }
+
+    .number-item strong {
+      color: var(--chmod-primary);
+      font-family: 'JetBrains Mono', monospace;
+      direction: ltr;
+    }
+
+    .number-item span {
+      color: var(--chmod-soft);
+    }
+
+    .steps {
+      display: grid;
+      gap: 10px;
+      counter-reset: step;
+    }
+
+    .step {
+      position: relative;
+      padding: 11px 42px 11px 11px;
+      border-radius: 11px;
+      border: 1px solid var(--chmod-border);
+      background: var(--chmod-surface-2);
+      color: var(--chmod-soft);
+      font-size: 12px;
+      line-height: 1.7;
+      counter-increment: step;
+    }
+
+    .step::before {
+      content: counter(step);
+      position: absolute;
+      right: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 23px;
+      height: 23px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--chmod-primary-soft);
+      color: var(--chmod-primary);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+    }
+
+    .warning {
+      margin-top: 25px;
+      padding: 17px;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 15px;
+      background: var(--chmod-orange-soft);
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .warning i {
+      color: var(--chmod-orange);
+      margin-top: 3px;
+    }
+
+    .warning strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--chmod-orange);
+      font-size: 13px;
+    }
+
+    .warning p {
+      margin: 0;
+      color: var(--chmod-soft);
+      font-size: 12px;
+      line-height: 1.8;
+    }
+
+    /* FAQ */
+
+    .faq-section {
+      margin-top: 25px;
+      padding: 21px;
+      border: 1px solid var(--chmod-border);
+      border-radius: 17px;
+      background: var(--chmod-surface);
+    }
+
+    .faq-section h2 {
+      margin: 0 0 15px;
+      font-size: 18px;
+    }
+
+    .faq-section h2 i {
+      color: var(--chmod-primary);
+      margin-left: 7px;
+    }
+
+    .faq-list {
+      display: grid;
+      gap: 9px;
+    }
+
+    .faq-item {
+      border: 1px solid var(--chmod-border);
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--chmod-surface-2);
+    }
+
+    .faq-question {
+      width: 100%;
+      border: 0;
+      background: transparent;
+      color: var(--chmod-text);
+      padding: 14px;
+      text-align: right;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .faq-question i {
+      color: var(--chmod-primary);
+      transition: transform 0.2s ease;
+    }
+
+    .faq-answer {
+      display: none;
+      padding: 0 14px 14px;
+      color: var(--chmod-muted);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .faq-item.open .faq-answer {
+      display: block;
+    }
+
+    .faq-item.open .faq-question i {
+      transform: rotate(180deg);
+    }
+
+    /* TOAST */
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 25px;
+      z-index: 9999;
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border: 1px solid var(--chmod-border);
+      border-radius: 12px;
+      background: var(--chmod-surface);
+      color: var(--chmod-text);
+      box-shadow: var(--chmod-shadow);
+      font-size: 12px;
+      font-weight: 700;
+      transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translate(-50%, 0);
+    }
+
+    .toast.success i {
+      color: var(--chmod-green);
+    }
+
+    .toast.error i {
+      color: var(--chmod-red);
+    }
+
+    /* FOOTER ACTIONS */
+
+    .bottom-actions {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 25px;
+    }
+
+    /* RESPONSIVE */
+
+    @media (max-width: 900px) {
+      .result-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .presets-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 700px) {
+      .chmod-page {
+        padding: 18px 10px 50px;
+      }
+
+      .hero {
+        padding: 30px 17px;
+        border-radius: 21px;
+      }
+
+      .hero-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 18px;
+        font-size: 25px;
+      }
+
+      .tool-body {
+        padding: 14px;
+      }
+
+      .input-grid,
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .result-card.command-card {
+        grid-column: auto;
+      }
+
+      .presets-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .matrix-wrap {
+        overflow-x: auto;
+      }
+
+      .permission-table {
+        min-width: 560px;
+      }
+
+      .filename-input {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .filename-input .btn {
+        width: 100%;
+      }
+
+      .command-box {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .command-box .btn {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 430px) {
+      .hero h1 {
+        font-size: 27px;
+      }
+
+      .hero p {
+        font-size: 13px;
+      }
+
+      .field-card {
+        padding: 13px;
+      }
+
+      .input-wrap input {
+        height: 50px;
+        font-size: 18px;
+      }
+
+      .input-wrap.symbolic input {
+        font-size: 14px;
+      }
+
+      .btn {
+        flex: 1;
+      }
+    }
+  </style>
 </head>
 
 <body>
-
   <Header />
 
   <main class="chmod-page">
+    <div class="chmod-container">
 
-    <!-- HERO -->
-    <section class="hero">
-
-      <div class="hero-bg"></div>
-
-      <div class="container hero-content">
-
+      <!-- HERO -->
+      <section class="hero">
         <div class="hero-icon">
-          <i class="fa-solid fa-shield-halved"></i>
-        </div>
-
-        <div class="hero-badge">
-          <i class="fa-solid fa-terminal"></i>
-          Linux Permissions
+          <i class="fa-solid fa-key"></i>
         </div>
 
         <h1>
-          CHMOD
-          <span>Converter</span>
+          CHMOD Converter
+          <span>محول صلاحيات Linux</span>
         </h1>
 
         <p>
-          محول صلاحيات Linux
-          <br />
-          حوّل بين الصيغة الرقمية والرمزية وأنشئ أمر chmod جاهزًا.
+          حوّل صلاحيات الملفات والمجلدات في Linux بين النظام الرقمي
+          والنظام الرمزي، وأنشئ أمر chmod جاهزًا للنسخ والاستخدام.
         </p>
 
-        <div class="hero-tags">
-          <span>
-            <i class="fa-solid fa-hashtag"></i>
-            Numeric
+        <div class="hero-badges">
+          <span class="hero-badge">
+            <i class="fa-solid fa-shield-halved"></i>
+            يعمل محليًا
           </span>
 
-          <span>
-            <i class="fa-solid fa-code"></i>
-            Symbolic
+          <span class="hero-badge">
+            <i class="fa-solid fa-right-left"></i>
+            تحويل ثنائي الاتجاه
           </span>
 
-          <span>
-            <i class="fa-solid fa-terminal"></i>
-            Command
+          <span class="hero-badge">
+            <i class="fa-brands fa-linux"></i>
+            Linux
+          </span>
+
+          <span class="hero-badge">
+            <i class="fa-solid fa-bolt"></i>
+            بدون خادم
           </span>
         </div>
+      </section>
 
-      </div>
+      <!-- TOOL -->
+      <section class="tool-card">
 
-    </section>
-
-
-    <!-- TOOL -->
-    <section class="tool-section">
-
-      <div class="container">
-
-        <div class="tool-card">
-
-          <!-- HEADER -->
-          <div class="tool-card-header">
-
-            <div>
-              <h2>
-                <i class="fa-solid fa-sliders"></i>
-                محول الصلاحيات
-              </h2>
-
-              <p>
-                أدخل القيمة الرقمية أو الرمزية وسيتم تحديث النتائج تلقائيًا.
-              </p>
-            </div>
-
-            <button
-              type="button"
-              id="clearBtn"
-              class="clear-btn"
-            >
-              <i class="fa-solid fa-eraser"></i>
-              مسح
-            </button>
-
+        <div class="tool-header">
+          <div class="tool-title">
+            <i class="fa-solid fa-sliders"></i>
+            محول الصلاحيات
           </div>
 
+          <div class="tool-status">
+            <span class="tool-status-dot"></span>
+            جاهز للعمل
+          </div>
+        </div>
+
+        <div class="tool-body">
 
           <!-- INPUTS -->
           <div class="input-grid">
 
-            <!-- NUMERIC -->
-            <div class="input-card">
-
-              <div class="input-label">
-
-                <span>
+            <div class="field-card">
+              <div class="field-label">
+                <div class="field-label-main">
                   <i class="fa-solid fa-hashtag"></i>
                   الصيغة الرقمية
-                </span>
+                </div>
 
-                <small>مثال: 755</small>
-
+                <span class="field-hint">مثال: 755</span>
               </div>
 
               <div class="input-wrap">
-
                 <input
                   id="numericInput"
                   type="text"
                   inputmode="numeric"
-                  maxlength="3"
+                  maxlength="4"
                   value="755"
-                  placeholder="755"
                   autocomplete="off"
-                  dir="ltr"
+                  spellcheck="false"
+                  aria-label="CHMOD numeric"
                 />
-
-                <button
-                  type="button"
-                  class="small-copy"
-                  data-copy="numericInput"
-                  aria-label="نسخ"
-                >
-                  <i class="fa-regular fa-copy"></i>
-                </button>
-
               </div>
 
-              <div class="input-status">
-
-                <span>
-                  ثلاثة أرقام من 0 إلى 7
-                </span>
-
-                <strong id="numericStatus" class="ok">
-                  <i class="fa-solid fa-circle-check"></i>
-                  صحيح
-                </strong>
-
-              </div>
-
+              <div id="numericError" class="field-error"></div>
             </div>
 
-
-            <!-- SYMBOLIC -->
-            <div class="input-card">
-
-              <div class="input-label">
-
-                <span>
+            <div class="field-card">
+              <div class="field-label">
+                <div class="field-label-main">
                   <i class="fa-solid fa-code"></i>
                   الصيغة الرمزية
-                </span>
+                </div>
 
-                <small>مثال: rwxr-xr-x</small>
-
+                <span class="field-hint">مثال: rwxr-xr-x</span>
               </div>
 
-              <div class="input-wrap">
-
+              <div class="input-wrap symbolic">
                 <input
                   id="symbolicInput"
                   type="text"
                   maxlength="9"
                   value="rwxr-xr-x"
-                  placeholder="rwxr-xr-x"
                   autocomplete="off"
-                  dir="ltr"
+                  spellcheck="false"
+                  aria-label="CHMOD symbolic"
                 />
-
-                <button
-                  type="button"
-                  class="small-copy"
-                  data-copy="symbolicInput"
-                  aria-label="نسخ"
-                >
-                  <i class="fa-regular fa-copy"></i>
-                </button>
-
               </div>
 
-              <div class="input-status">
-
-                <span>
-                  9 أحرف r / w / x / -
-                </span>
-
-                <strong id="symbolicStatus" class="ok">
-                  <i class="fa-solid fa-circle-check"></i>
-                  صحيح
-                </strong>
-
-              </div>
-
+              <div id="symbolicError" class="field-error"></div>
             </div>
 
           </div>
 
+          <!-- MAIN BUTTONS -->
+          <div class="button-row">
+            <button class="btn btn-primary" id="numericToSymbolicBtn" type="button">
+              <i class="fa-solid fa-arrow-left"></i>
+              رقمي ← رمزي
+            </button>
+
+            <button class="btn btn-primary" id="symbolicToNumericBtn" type="button">
+              <i class="fa-solid fa-arrow-right"></i>
+              رمزي ← رقمي
+            </button>
+
+            <button class="btn btn-success" id="copyAllBtn" type="button">
+              <i class="fa-regular fa-copy"></i>
+              نسخ الكل
+            </button>
+
+            <button class="btn btn-danger" id="resetBtn" type="button">
+              <i class="fa-solid fa-rotate-left"></i>
+              إعادة ضبط
+            </button>
+          </div>
 
           <!-- RESULTS -->
-          <div class="results-grid">
+          <section class="result-section">
 
-            <div class="result-card blue">
-
-              <div class="result-title">
-                <i class="fa-solid fa-hashtag"></i>
-                القيمة الرقمية
-              </div>
-
-              <div
-                id="numericResult"
-                class="result-value"
-                dir="ltr"
-              >
-                755
-              </div>
-
-              <button
-                type="button"
-                class="result-copy"
-                data-copy="numericResult"
-              >
-                <i class="fa-regular fa-copy"></i>
-                نسخ
-              </button>
-
+            <div class="section-heading">
+              <h2>
+                <i class="fa-solid fa-square-poll-vertical"></i>
+                النتائج
+              </h2>
             </div>
 
+            <div class="result-grid">
 
-            <div class="result-card green">
+              <div class="result-card">
+                <div class="result-card-label">
+                  <span>القيمة الرقمية</span>
 
-              <div class="result-title">
-                <i class="fa-solid fa-code"></i>
-                القيمة الرمزية
-              </div>
-
-              <div
-                id="symbolicResult"
-                class="result-value symbolic"
-                dir="ltr"
-              >
-                rwxr-xr-x
-              </div>
-
-              <button
-                type="button"
-                class="result-copy"
-                data-copy="symbolicResult"
-              >
-                <i class="fa-regular fa-copy"></i>
-                نسخ
-              </button>
-
-            </div>
-
-          </div>
-
-
-          <!-- COMMAND -->
-          <div class="command-area">
-
-            <div class="area-title">
-
-              <span>
-                <i class="fa-solid fa-terminal"></i>
-                أمر chmod
-              </span>
-
-              <small>
-                جاهز للاستخدام
-              </small>
-
-            </div>
-
-            <div class="terminal">
-
-              <div class="terminal-bar">
-
-                <div class="terminal-dots">
-                  <span></span>
-                  <span></span>
-                  <span></span>
+                  <button
+                    class="btn btn-small copy-btn"
+                    type="button"
+                    data-copy-target="numericResult"
+                  >
+                    <i class="fa-regular fa-copy"></i>
+                    نسخ
+                  </button>
                 </div>
 
-                <span>bash</span>
-
+                <div id="numericResult" class="result-value">
+                  755
+                </div>
               </div>
 
-              <div class="terminal-line" dir="ltr">
+              <div class="result-card">
+                <div class="result-card-label">
+                  <span>القيمة الرمزية</span>
 
-                <span class="prompt">$</span>
+                  <button
+                    class="btn btn-small copy-btn"
+                    type="button"
+                    data-copy-target="symbolicResult"
+                  >
+                    <i class="fa-regular fa-copy"></i>
+                    نسخ
+                  </button>
+                </div>
 
-                <code id="chmodCommand">
-                  chmod 755 filename
-                </code>
+                <div id="symbolicResult" class="result-value">
+                  rwxr-xr-x
+                </div>
+              </div>
 
-                <button
-                  type="button"
-                  id="copyCommand"
-                  aria-label="نسخ الأمر"
+              <div class="result-card">
+                <div class="result-card-label">
+                  <span>الوصف</span>
+                </div>
+
+                <div
+                  id="permissionDescription"
+                  class="result-value"
+                  style="font-family:'Cairo',sans-serif;font-size:14px;"
                 >
-                  <i class="fa-regular fa-copy"></i>
-                </button>
+                  المالك: كامل الصلاحيات
+                </div>
+              </div>
+
+              <div class="result-card command-card">
+
+                <div class="result-card-label">
+                  <span>
+                    <i class="fa-solid fa-terminal"></i>
+                    أمر chmod
+                  </span>
+
+                  <button
+                    class="btn btn-small copy-btn"
+                    type="button"
+                    data-copy-target="chmodCommand"
+                  >
+                    <i class="fa-regular fa-copy"></i>
+                    نسخ
+                  </button>
+                </div>
+
+                <div class="command-box">
+                  <code id="chmodCommand">chmod 755 filename</code>
+
+                  <button class="btn btn-primary" id="copyCommandBtn" type="button">
+                    <i class="fa-regular fa-copy"></i>
+                    نسخ الأمر
+                  </button>
+                </div>
 
               </div>
 
             </div>
+          </section>
 
+          <!-- MATRIX -->
+          <section class="matrix-section">
 
-            <div class="filename">
+            <div class="section-heading">
+              <h2>
+                <i class="fa-solid fa-table-cells"></i>
+                مصفوفة الصلاحيات
+              </h2>
 
-              <label for="filenameInput">
-                اسم الملف أو المجلد
-              </label>
+              <button class="btn btn-small" id="clearMatrixBtn" type="button">
+                <i class="fa-solid fa-eraser"></i>
+                مسح
+              </button>
+            </div>
 
+            <div class="matrix-wrap">
+              <table class="permission-table">
+                <thead>
+                  <tr>
+                    <th>المستخدم</th>
+                    <th>قراءة<br />Read</th>
+                    <th>كتابة<br />Write</th>
+                    <th>تنفيذ<br />Execute</th>
+                    <th>القيمة</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+
+                  <tr>
+                    <td class="role-cell">
+                      <span class="role-name">المالك</span>
+                      <span class="role-code">User / u</span>
+                    </td>
+
+                    <td>
+                      <input
+                        class="permission-check"
+                        id="uRead"
+                        type="checkbox"
+                        data-role="u"
+                        data-value="4"
+                        aria-label="User read"
+                      />
+                    </td>
+
+                    <td>
+                      <input
+                        class="permission-check"
+                        id="uWrite"
+                        type="checkbox"
+                        data-role="u"
+                        data-value="2"
+                        aria-label="User write"
+                      />
+                    </td>
+
+                    <td>
+                      <input
+                        class="permission-check"
+                        id="uExecute"
+                        type="checkbox"
+                        data-role="u"
+                        data-value="1"
+                        aria-label="User execute"
+                      />
+                    </td>
+
+                    <td>
+                      <span id="uNumber" class="permission-number">7</span>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="role-cell">
+                      <span class="role-name">المجموعة</span>
+                      <span class="role-code">Group / g</span>
+                    </td>
+
+                    <td>
+                      <input
+                        class="permission-check"
+                        id="gRead"
+                        type="checkbox"
+                        data-role="g"
+                        data-value="4"
+                        aria-label="Group read"
+                      />
+                    </td>
+
+                    <td>
+                      <input
+                        class="permission-check"
+                        id="gWrite"
+                        type="checkbox"
+                        data-role="g"
+                        data-value="2"
+                        aria-label="Group write"
+                      />
+                    </td>
+
+                    <td>
+                      <input
+                        class="permission-check"
+                        id="gExecute"
+                        type="checkbox"
+                        data-role="g"
+                        data-value="1"
+                        aria-label="Group execute"
+                      />
+                    </td>
+
+                    <td>
+                      <span id="gNumber" class="permission-number">5</span>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td class="role-cell">
+                      <span class="role-name">الآخرون</span>
+                      <span class="role-code">Others / o</span>
+                    </td>
+
+                    <td>
+                      <input
+                        class="permission-check"
+                        id="oRead"
+                        type="checkbox"
+                        data-role="o"
+                        data-value="4"
+                        aria-label="Others read"
+                      />
+                    </td>
+
+                    <td>
+                      <input
+                        class="permission-check"
+                        id="oWrite"
+                        type="checkbox"
+                        data-role="o"
+                        data-value="2"
+                        aria-label="Others write"
+                      />
+                    </td>
+
+                    <td>
+                      <input
+                        class="permission-check"
+                        id="oExecute"
+                        type="checkbox"
+                        data-role="o"
+                        data-value="1"
+                        aria-label="Others execute"
+                      />
+                    </td>
+
+                    <td>
+                      <span id="oNumber" class="permission-number">5</span>
+                    </td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+          </section>
+
+          <!-- FILENAME -->
+          <section class="filename-section">
+
+            <div class="section-heading">
+              <h3>
+                <i class="fa-solid fa-file-code"></i>
+                اسم الملف
+              </h3>
+            </div>
+
+            <div class="filename-input">
               <input
                 id="filenameInput"
                 type="text"
                 value="filename"
                 placeholder="filename"
-                dir="ltr"
                 autocomplete="off"
+                spellcheck="false"
               />
 
+              <button class="btn btn-primary" id="updateFilenameBtn" type="button">
+                <i class="fa-solid fa-check"></i>
+                تحديث الأمر
+              </button>
             </div>
 
-          </div>
-
-
-          <!-- MATRIX -->
-          <div class="matrix-area">
-
-            <div class="area-title">
-
-              <span>
-                <i class="fa-solid fa-table-list"></i>
-                مصفوفة الصلاحيات
-              </span>
-
-              <small>
-                عدّل الصلاحيات مباشرة
-              </small>
-
-            </div>
-
-            <div class="matrix">
-
-              <div class="matrix-header">
-
-                <div>المستخدم</div>
-                <div>قراءة</div>
-                <div>كتابة</div>
-                <div>تنفيذ</div>
-                <div>القيمة</div>
-
-              </div>
-
-
-              <!-- USER -->
-              <div class="matrix-row">
-
-                <div class="role">
-
-                  <span class="role-icon">
-                    <i class="fa-solid fa-user"></i>
-                  </span>
-
-                  <div>
-                    <strong>User</strong>
-                    <small>المالك</small>
-                  </div>
-
-                </div>
-
-                <label class="permission-check">
-                  <input id="uRead" type="checkbox" checked />
-                  <span>r</span>
-                </label>
-
-                <label class="permission-check">
-                  <input id="uWrite" type="checkbox" checked />
-                  <span>w</span>
-                </label>
-
-                <label class="permission-check">
-                  <input id="uExecute" type="checkbox" checked />
-                  <span>x</span>
-                </label>
-
-                <strong id="uValue" class="digit">
-                  7
-                </strong>
-
-              </div>
-
-
-              <!-- GROUP -->
-              <div class="matrix-row">
-
-                <div class="role">
-
-                  <span class="role-icon purple">
-                    <i class="fa-solid fa-users"></i>
-                  </span>
-
-                  <div>
-                    <strong>Group</strong>
-                    <small>المجموعة</small>
-                  </div>
-
-                </div>
-
-                <label class="permission-check">
-                  <input id="gRead" type="checkbox" checked />
-                  <span>r</span>
-                </label>
-
-                <label class="permission-check">
-                  <input id="gWrite" type="checkbox" />
-                  <span>w</span>
-                </label>
-
-                <label class="permission-check">
-                  <input id="gExecute" type="checkbox" checked />
-                  <span>x</span>
-                </label>
-
-                <strong id="gValue" class="digit">
-                  5
-                </strong>
-
-              </div>
-
-
-              <!-- OTHERS -->
-              <div class="matrix-row">
-
-                <div class="role">
-
-                  <span class="role-icon green-icon">
-                    <i class="fa-solid fa-globe"></i>
-                  </span>
-
-                  <div>
-                    <strong>Others</strong>
-                    <small>الآخرون</small>
-                  </div>
-
-                </div>
-
-                <label class="permission-check">
-                  <input id="oRead" type="checkbox" checked />
-                  <span>r</span>
-                </label>
-
-                <label class="permission-check">
-                  <input id="oWrite" type="checkbox" />
-                  <span>w</span>
-                </label>
-
-                <label class="permission-check">
-                  <input id="oExecute" type="checkbox" checked />
-                  <span>x</span>
-                </label>
-
-                <strong id="oValue" class="digit">
-                  5
-                </strong>
-
-              </div>
-
-            </div>
-
-          </div>
-
+          </section>
 
           <!-- PRESETS -->
-          <div class="presets-area">
+          <section class="presets-section">
 
-            <div class="area-title">
-
-              <span>
+            <div class="section-heading">
+              <h2>
                 <i class="fa-solid fa-bolt"></i>
                 صلاحيات شائعة
-              </span>
-
-              <small>
-                اختيار سريع
-              </small>
-
+              </h2>
             </div>
 
-            <div class="preset-grid">
+            <div class="presets-grid">
 
-              <button class="preset" type="button" data-value="755">
-                <strong>755</strong>
-                <code>rwxr-xr-x</code>
-                <small>شائع للملفات التنفيذية</small>
+              <button class="preset" type="button" data-permission="755">
+                <span class="preset-number">755</span>
+                <span class="preset-name">تنفيذ شائع</span>
               </button>
 
-              <button class="preset" type="button" data-value="644">
-                <strong>644</strong>
-                <code>rw-r--r--</code>
-                <small>شائع للملفات</small>
+              <button class="preset" type="button" data-permission="644">
+                <span class="preset-number">644</span>
+                <span class="preset-name">ملفات عادية</span>
               </button>
 
-              <button class="preset" type="button" data-value="700">
-                <strong>700</strong>
-                <code>rwx------</code>
-                <small>المالك فقط</small>
+              <button class="preset" type="button" data-permission="700">
+                <span class="preset-number">700</span>
+                <span class="preset-name">خاص بالمالك</span>
               </button>
 
-              <button class="preset" type="button" data-value="600">
-                <strong>600</strong>
-                <code>rw-------</code>
-                <small>المالك قراءة وكتابة</small>
+              <button class="preset" type="button" data-permission="600">
+                <span class="preset-number">600</span>
+                <span class="preset-name">خاص جدًا</span>
               </button>
 
-              <button class="preset" type="button" data-value="775">
-                <strong>775</strong>
-                <code>rwxrwxr-x</code>
-                <small>المالك والمجموعة</small>
+              <button class="preset" type="button" data-permission="775">
+                <span class="preset-number">775</span>
+                <span class="preset-name">مجموعة كاملة</span>
               </button>
 
-              <button class="preset danger-preset" type="button" data-value="777">
-                <strong>777</strong>
-                <code>rwxrwxrwx</code>
-                <small>صلاحيات كاملة للجميع</small>
+              <button class="preset" type="button" data-permission="777">
+                <span class="preset-number">777</span>
+                <span class="preset-name">كل الصلاحيات</span>
               </button>
 
             </div>
 
-          </div>
-
-
-          <!-- ACTIONS -->
-          <div class="actions">
-
-            <button
-              type="button"
-              id="resetBtn"
-              class="primary-btn"
-            >
-              <i class="fa-solid fa-rotate-left"></i>
-              إعادة 755
-            </button>
-
-            <button
-              type="button"
-              id="copyAllBtn"
-              class="secondary-btn"
-            >
-              <i class="fa-regular fa-copy"></i>
-              نسخ جميع النتائج
-            </button>
-
-          </div>
+          </section>
 
         </div>
+      </section>
 
-      </div>
+      <!-- INFORMATION -->
+      <section class="info-grid">
 
-    </section>
-
-
-    <!-- EXPLANATION -->
-    <section class="info-section">
-
-      <div class="container">
-
-        <div class="section-heading">
-
-          <div class="heading-icon">
+        <article class="info-card">
+          <h2>
             <i class="fa-solid fa-circle-info"></i>
-          </div>
-
-          <div>
-            <h2>فهم صلاحيات Linux</h2>
-            <p>
-              أساسيات نظام CHMOD بطريقة بسيطة
-            </p>
-          </div>
-
-        </div>
-
-
-        <div class="info-grid">
-
-          <article class="info-card">
-
-            <div class="info-icon">
-              <i class="fa-solid fa-eye"></i>
-            </div>
-
-            <h3>Read — القراءة</h3>
-
-            <p>
-              تسمح بقراءة محتوى الملف أو عرض محتويات المجلد.
-            </p>
-
-            <div class="info-value">
-              <strong>4</strong>
-              <code>r</code>
-            </div>
-
-          </article>
-
-
-          <article class="info-card">
-
-            <div class="info-icon">
-              <i class="fa-solid fa-pen"></i>
-            </div>
-
-            <h3>Write — الكتابة</h3>
-
-            <p>
-              تسمح بتعديل الملف أو إنشاء وحذف العناصر في المجلد.
-            </p>
-
-            <div class="info-value">
-              <strong>2</strong>
-              <code>w</code>
-            </div>
-
-          </article>
-
-
-          <article class="info-card">
-
-            <div class="info-icon">
-              <i class="fa-solid fa-play"></i>
-            </div>
-
-            <h3>Execute — التنفيذ</h3>
-
-            <p>
-              تسمح بتنفيذ الملف أو الدخول إلى المجلد.
-            </p>
-
-            <div class="info-value">
-              <strong>1</strong>
-              <code>x</code>
-            </div>
-
-          </article>
-
-        </div>
-
-
-        <div class="calculation">
-
-          <h3>
-            <i class="fa-solid fa-calculator"></i>
-            مثال: كيف تصبح الصلاحية 7؟
-          </h3>
-
-          <div class="calculation-row">
-
-            <div>
-              <strong>4</strong>
-              <span>Read</span>
-            </div>
-
-            <b>+</b>
-
-            <div>
-              <strong>2</strong>
-              <span>Write</span>
-            </div>
-
-            <b>+</b>
-
-            <div>
-              <strong>1</strong>
-              <span>Execute</span>
-            </div>
-
-            <b>=</b>
-
-            <div class="total">
-              <strong>7</strong>
-              <span>rwx</span>
-            </div>
-
-          </div>
+            كيف تعمل أرقام CHMOD؟
+          </h2>
 
           <p>
-            لذلك فإن الرقم 7 يعني:
-            <code>4 + 2 + 1</code>
-            أي القراءة والكتابة والتنفيذ.
+            كل رقم في صلاحية Linux يتكون من مجموع قيم القراءة والكتابة
+            والتنفيذ. توجد ثلاث مجموعات: المالك، المجموعة، والآخرون.
           </p>
 
-        </div>
+          <div class="number-list">
 
-      </div>
+            <div class="number-item">
+              <span>قراءة Read</span>
+              <strong>4</strong>
+            </div>
 
-    </section>
+            <div class="number-item">
+              <span>كتابة Write</span>
+              <strong>2</strong>
+            </div>
 
+            <div class="number-item">
+              <span>تنفيذ Execute</span>
+              <strong>1</strong>
+            </div>
 
-    <!-- STEPS -->
-    <section class="steps-section">
+            <div class="number-item">
+              <span>لا توجد صلاحية</span>
+              <strong>0</strong>
+            </div>
 
-      <div class="container">
+          </div>
+        </article>
 
-        <div class="section-heading">
-
-          <div class="heading-icon">
+        <article class="info-card">
+          <h2>
             <i class="fa-solid fa-list-ol"></i>
+            طريقة الاستخدام
+          </h2>
+
+          <div class="steps">
+
+            <div class="step">
+              أدخل القيمة الرقمية مثل <strong>755</strong>.
+            </div>
+
+            <div class="step">
+              سيتم تحويلها إلى الصيغة الرمزية تلقائيًا.
+            </div>
+
+            <div class="step">
+              يمكنك أيضًا تعديل مربعات القراءة والكتابة والتنفيذ.
+            </div>
+
+            <div class="step">
+              أدخل اسم الملف للحصول على أمر chmod جاهز.
+            </div>
+
+          </div>
+        </article>
+
+      </section>
+
+      <!-- WARNING -->
+      <section class="warning">
+
+        <i class="fa-solid fa-triangle-exclamation"></i>
+
+        <div>
+          <strong>تنبيه أمني حول chmod 777</strong>
+
+          <p>
+            تمنح الصلاحية 777 القراءة والكتابة والتنفيذ للمالك والمجموعة
+            والآخرين. تجنب استخدامها إلا عندما تكون هناك حاجة واضحة،
+            لأن منح الكتابة والتنفيذ للجميع قد يزيد مخاطر الوصول غير المصرح به.
+          </p>
+        </div>
+
+      </section>
+
+      <!-- FAQ -->
+      <section class="faq-section">
+
+        <h2>
+          <i class="fa-solid fa-circle-question"></i>
+          الأسئلة الشائعة
+        </h2>
+
+        <div class="faq-list">
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>ماذا يعني chmod 755؟</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+
+            <div class="faq-answer">
+              يعني أن المالك لديه القراءة والكتابة والتنفيذ،
+              بينما المجموعة والآخرون لديهم القراءة والتنفيذ فقط.
+              الصيغة الرمزية هي rwxr-xr-x.
+            </div>
           </div>
 
-          <div>
-            <h2>كيفية الاستخدام</h2>
-            <p>
-              ثلاث خطوات فقط
-            </p>
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>ماذا يعني chmod 644؟</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+
+            <div class="faq-answer">
+              المالك يستطيع القراءة والكتابة، بينما المجموعة والآخرون
+              يستطيعون القراءة فقط. الصيغة الرمزية هي rw-r--r--.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>هل يتم إرسال البيانات إلى الخادم؟</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+
+            <div class="faq-answer">
+              لا. عملية التحويل تتم داخل المتصفح باستخدام JavaScript،
+              ولا تحتاج إلى خادم أو API.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question" type="button">
+              <span>ما الفرق بين الصيغة الرقمية والرمزية؟</span>
+              <i class="fa-solid fa-chevron-down"></i>
+            </button>
+
+            <div class="faq-answer">
+              الصيغة الرقمية تستخدم أرقامًا مثل 755 و644، بينما الصيغة
+              الرمزية تستخدم الأحرف r وw وx لتمثيل القراءة والكتابة والتنفيذ.
+            </div>
           </div>
 
         </div>
 
+      </section>
 
-        <div class="steps-grid">
+      <!-- BOTTOM ACTIONS -->
+      <div class="bottom-actions">
 
-          <article class="step">
+        <button class="btn btn-primary" id="bottomCopyBtn" type="button">
+          <i class="fa-regular fa-copy"></i>
+          نسخ النتيجة
+        </button>
 
-            <div class="step-number">
-              01
-            </div>
-
-            <div class="step-icon">
-              <i class="fa-solid fa-keyboard"></i>
-            </div>
-
-            <h3>أدخل الصلاحية</h3>
-
-            <p>
-              أدخل قيمة مثل 755 أو rwxr-xr-x.
-            </p>
-
-          </article>
-
-
-          <article class="step">
-
-            <div class="step-number">
-              02
-            </div>
-
-            <div class="step-icon">
-              <i class="fa-solid fa-arrows-rotate"></i>
-            </div>
-
-            <h3>شاهد التحويل</h3>
-
-            <p>
-              يتم تحديث القيمة الأخرى والمصفوفة مباشرة.
-            </p>
-
-          </article>
-
-
-          <article class="step">
-
-            <div class="step-number">
-              03
-            </div>
-
-            <div class="step-icon">
-              <i class="fa-solid fa-terminal"></i>
-            </div>
-
-            <h3>انسخ الأمر</h3>
-
-            <p>
-              احصل على أمر chmod جاهز للاستخدام.
-            </p>
-
-          </article>
-
-        </div>
+        <button class="btn" id="bottomResetBtn" type="button">
+          <i class="fa-solid fa-rotate-left"></i>
+          إعادة ضبط
+        </button>
 
       </div>
 
-    </section>
-
-
-    <!-- SECURITY -->
-    <section class="security-section">
-
-      <div class="container">
-
-        <div class="security">
-
-          <div class="security-icon">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-          </div>
-
-          <div>
-            <h2>تنبيه أمني</h2>
-
-            <p>
-              تجنب استخدام
-              <code>chmod 777</code>
-              دون حاجة واضحة، لأنه يمنح جميع المستخدمين صلاحيات القراءة والكتابة والتنفيذ.
-            </p>
-          </div>
-
-          <strong>777</strong>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- FAQ -->
-    <section class="faq-section">
-
-      <div class="container">
-
-        <div class="section-heading">
-
-          <div class="heading-icon">
-            <i class="fa-solid fa-circle-question"></i>
-          </div>
-
-          <div>
-            <h2>الأسئلة الشائعة</h2>
-            <p>
-              معلومات سريعة حول CHMOD
-            </p>
-          </div>
-
-        </div>
-
-
-        <div class="faq">
-
-          <details open>
-
-            <summary>
-              <span>
-                <i class="fa-solid fa-question"></i>
-                ماذا يعني chmod 755؟
-              </span>
-
-              <i class="fa-solid fa-chevron-down"></i>
-            </summary>
-
-            <p>
-              المالك لديه القراءة والكتابة والتنفيذ
-              <code>rwx</code>،
-              بينما المجموعة والآخرون لديهم القراءة والتنفيذ
-              <code>r-x</code>.
-            </p>
-
-          </details>
-
-
-          <details>
-
-            <summary>
-              <span>
-                <i class="fa-solid fa-question"></i>
-                ماذا يعني chmod 644؟
-              </span>
-
-              <i class="fa-solid fa-chevron-down"></i>
-            </summary>
-
-            <p>
-              المالك لديه القراءة والكتابة
-              <code>rw-</code>،
-              والمجموعة والآخرون لديهم القراءة فقط
-              <code>r--</code>.
-            </p>
-
-          </details>
-
-
-          <details>
-
-            <summary>
-              <span>
-                <i class="fa-solid fa-question"></i>
-                هل يتم إرسال البيانات إلى خادم؟
-              </span>
-
-              <i class="fa-solid fa-chevron-down"></i>
-            </summary>
-
-            <p>
-              لا. جميع عمليات التحويل تتم داخل المتصفح ولا تحتاج إلى API.
-            </p>
-
-          </details>
-
-
-          <details>
-
-            <summary>
-              <span>
-                <i class="fa-solid fa-question"></i>
-                ما الفرق بين Numeric و Symbolic؟
-              </span>
-
-              <i class="fa-solid fa-chevron-down"></i>
-            </summary>
-
-            <p>
-              Numeric تستخدم أرقامًا مثل
-              <code>755</code>،
-              بينما Symbolic تستخدم
-              <code>r</code>
-              و
-              <code>w</code>
-              و
-              <code>x</code>
-              والشرطة
-              <code>-</code>.
-            </p>
-
-          </details>
-
-        </div>
-
-      </div>
-
-    </section>
-
+    </div>
   </main>
+
+  <div id="toast" class="toast">
+    <i class="fa-solid fa-check"></i>
+    <span id="toastText">تم النسخ</span>
+  </div>
 
   <Footer />
 
-
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      const numericInput = document.getElementById('numericInput');
+      const symbolicInput = document.getElementById('symbolicInput');
 
-      const numericInput =
-        document.getElementById('numericInput');
+      const numericError = document.getElementById('numericError');
+      const symbolicError = document.getElementById('symbolicError');
 
-      const symbolicInput =
-        document.getElementById('symbolicInput');
+      const numericResult = document.getElementById('numericResult');
+      const symbolicResult = document.getElementById('symbolicResult');
+      const permissionDescription =
+        document.getElementById('permissionDescription');
 
-      const numericResult =
-        document.getElementById('numericResult');
+      const chmodCommand = document.getElementById('chmodCommand');
+      const filenameInput = document.getElementById('filenameInput');
 
-      const symbolicResult =
-        document.getElementById('symbolicResult');
+      const numericToSymbolicBtn =
+        document.getElementById('numericToSymbolicBtn');
 
-      const numericStatus =
-        document.getElementById('numericStatus');
+      const symbolicToNumericBtn =
+        document.getElementById('symbolicToNumericBtn');
 
-      const symbolicStatus =
-        document.getElementById('symbolicStatus');
+      const copyAllBtn = document.getElementById('copyAllBtn');
+      const resetBtn = document.getElementById('resetBtn');
 
-      const filenameInput =
-        document.getElementById('filenameInput');
+      const copyCommandBtn =
+        document.getElementById('copyCommandBtn');
 
-      const chmodCommand =
-        document.getElementById('chmodCommand');
+      const updateFilenameBtn =
+        document.getElementById('updateFilenameBtn');
 
+      const clearMatrixBtn =
+        document.getElementById('clearMatrixBtn');
 
-      function digitToSymbolic(value) {
+      const bottomCopyBtn =
+        document.getElementById('bottomCopyBtn');
 
-        const number = Number(value);
+      const bottomResetBtn =
+        document.getElementById('bottomResetBtn');
+
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toastText');
+
+      const matrixIds = [
+        'uRead',
+        'uWrite',
+        'uExecute',
+        'gRead',
+        'gWrite',
+        'gExecute',
+        'oRead',
+        'oWrite',
+        'oExecute'
+      ];
+
+      function digitToSymbolic(digit) {
+        const n = Number(digit);
+
+        if (Number.isNaN(n) || n < 0 || n > 7) {
+          return '---';
+        }
 
         let result = '';
 
-        result += number & 4 ? 'r' : '-';
-        result += number & 2 ? 'w' : '-';
-        result += number & 1 ? 'x' : '-';
+        result += (n & 4) ? 'r' : '-';
+        result += (n & 2) ? 'w' : '-';
+        result += (n & 1) ? 'x' : '-';
 
         return result;
       }
 
-
       function numericToSymbolic(value) {
+        const clean = String(value).trim();
 
-        if (!/^[0-7]{3}$/.test(value)) {
-          return '';
-        }
-
-        return (
-          digitToSymbolic(value[0]) +
-          digitToSymbolic(value[1]) +
-          digitToSymbolic(value[2])
-        );
-      }
-
-
-      function symbolicToDigit(value) {
-
-        if (!/^[rwx-]{3}$/.test(value)) {
+        if (!/^[0-7]{3,4}$/.test(clean)) {
           return null;
         }
 
-        let number = 0;
+        const digits = clean.length === 4
+          ? clean.slice(1)
+          : clean;
 
-        if (value[0] === 'r') {
-          number += 4;
-        }
-
-        if (value[1] === 'w') {
-          number += 2;
-        }
-
-        if (value[2] === 'x') {
-          number += 1;
-        }
-
-        return number;
+        return (
+          digitToSymbolic(digits[0]) +
+          digitToSymbolic(digits[1]) +
+          digitToSymbolic(digits[2])
+        );
       }
 
+      function symbolicToDigit(group) {
+        if (group.length !== 3) {
+          return null;
+        }
+
+        let value = 0;
+
+        if (group[0] === 'r') value += 4;
+        if (group[1] === 'w') value += 2;
+        if (group[2] === 'x') value += 1;
+
+        const valid =
+          (group[0] === 'r' || group[0] === '-') &&
+          (group[1] === 'w' || group[1] === '-') &&
+          (group[2] === 'x' || group[2] === '-');
+
+        return valid ? String(value) : null;
+      }
 
       function symbolicToNumeric(value) {
+        let clean = String(value)
+          .trim()
+          .toLowerCase()
+          .replace(/\s+/g, '');
 
-        if (!/^[rwx-]{9}$/.test(value)) {
-          return '';
+        if (clean.length === 10 && /^[d-]/.test(clean)) {
+          clean = clean.slice(1);
         }
 
-        const a =
-          symbolicToDigit(value.substring(0, 3));
+        if (!/^[rwx-]{9}$/.test(clean)) {
+          return null;
+        }
 
-        const b =
-          symbolicToDigit(value.substring(3, 6));
-
-        const c =
-          symbolicToDigit(value.substring(6, 9));
+        const user = symbolicToDigit(clean.slice(0, 3));
+        const group = symbolicToDigit(clean.slice(3, 6));
+        const others = symbolicToDigit(clean.slice(6, 9));
 
         if (
-          a === null ||
-          b === null ||
-          c === null
+          user === null ||
+          group === null ||
+          others === null
         ) {
+          return null;
+        }
+
+        return user + group + others;
+      }
+
+      function describePermission(value) {
+        const clean = String(value);
+
+        if (!/^[0-7]{3}$/.test(clean)) {
           return '';
         }
 
-        return `${a}${b}${c}`;
-      }
+        const names = [];
 
-
-      function setStatus(element, valid, message) {
-
-        if (!element) {
-          return;
-        }
-
-        element.className =
-          valid ? 'ok' : 'error';
-
-        element.innerHTML = valid
-          ? `<i class="fa-solid fa-circle-check"></i>${message}`
-          : `<i class="fa-solid fa-circle-xmark"></i>${message}`;
-      }
-
-
-      function updateMatrix(value) {
-
-        if (!/^[0-7]{3}$/.test(value)) {
-          return;
-        }
-
-        const numbers = [
-          Number(value[0]),
-          Number(value[1]),
-          Number(value[2])
+        const roles = [
+          ['المالك', clean[0]],
+          ['المجموعة', clean[1]],
+          ['الآخرون', clean[2]]
         ];
 
-        const groups = [
-          ['uRead', 'uWrite', 'uExecute', 'uValue'],
-          ['gRead', 'gWrite', 'gExecute', 'gValue'],
-          ['oRead', 'oWrite', 'oExecute', 'oValue']
-        ];
+        roles.forEach(([name, digit]) => {
+          const n = Number(digit);
+          const parts = [];
 
+          if (n & 4) parts.push('قراءة');
+          if (n & 2) parts.push('كتابة');
+          if (n & 1) parts.push('تنفيذ');
 
-        groups.forEach((group, index) => {
-
-          const number = numbers[index];
-
-          const read =
-            document.getElementById(group[0]);
-
-          const write =
-            document.getElementById(group[1]);
-
-          const execute =
-            document.getElementById(group[2]);
-
-          const output =
-            document.getElementById(group[3]);
-
-
-          if (read) {
-            read.checked = Boolean(number & 4);
-          }
-
-          if (write) {
-            write.checked = Boolean(number & 2);
-          }
-
-          if (execute) {
-            execute.checked = Boolean(number & 1);
-          }
-
-          if (output) {
-            output.textContent = String(number);
-          }
-
+          names.push(
+            `${name}: ${parts.length ? parts.join(' + ') : 'لا توجد صلاحيات'}`
+          );
         });
+
+        return names.join(' • ');
       }
 
+      function setError(element, message) {
+        if (element) {
+          element.textContent = message || '';
+        }
+      }
+
+      function setStatus(type) {
+        if (type === 'success') {
+          setError(numericError, '');
+          setError(symbolicError, '');
+        }
+      }
 
       function updateCommand() {
+        const numeric = numericResult.textContent.trim();
 
-        let filename =
-          filenameInput.value.trim();
+        let filename = filenameInput.value.trim();
 
         if (!filename) {
           filename = 'filename';
         }
 
-        const value =
-          numericInput.value || '000';
-
         chmodCommand.textContent =
-          `chmod ${value} ${filename}`;
+          `chmod ${numeric} ${filename}`;
       }
 
-
-      function updateFromNumeric(value) {
-
-        if (!/^[0-7]{3}$/.test(value)) {
-
-          setStatus(
-            numericStatus,
-            false,
-            'أدخل 3 أرقام من 0 إلى 7'
-          );
-
+      function updateMatrixFromNumeric(numeric) {
+        if (!/^[0-7]{3}$/.test(numeric)) {
           return;
         }
 
-        const symbolic =
-          numericToSymbolic(value);
-
-        symbolicInput.value = symbolic;
-
-        numericResult.textContent = value;
-
-        symbolicResult.textContent = symbolic;
-
-        setStatus(
-          numericStatus,
-          true,
-          'صحيح'
-        );
-
-        setStatus(
-          symbolicStatus,
-          true,
-          'صحيح'
-        );
-
-        updateMatrix(value);
-        updateCommand();
-      }
-
-
-      function updateFromSymbolic(value) {
-
-        if (!/^[rwx-]{9}$/.test(value)) {
-
-          setStatus(
-            symbolicStatus,
-            false,
-            'الصيغة غير مكتملة'
-          );
-
-          return;
-        }
-
-        const numeric =
-          symbolicToNumeric(value);
-
-        if (!numeric) {
-
-          setStatus(
-            symbolicStatus,
-            false,
-            'صيغة غير صحيحة'
-          );
-
-          return;
-        }
-
-        numericInput.value = numeric;
-
-        numericResult.textContent = numeric;
-
-        symbolicResult.textContent = value;
-
-        setStatus(
-          numericStatus,
-          true,
-          'صحيح'
-        );
-
-        setStatus(
-          symbolicStatus,
-          true,
-          'صحيح'
-        );
-
-        updateMatrix(numeric);
-        updateCommand();
-      }
-
-
-      function getMatrixValue() {
-
-        const groups = [
-          ['uRead', 'uWrite', 'uExecute'],
-          ['gRead', 'gWrite', 'gExecute'],
-          ['oRead', 'oWrite', 'oExecute']
+        const roles = [
+          ['u', numeric[0]],
+          ['g', numeric[1]],
+          ['o', numeric[2]]
         ];
 
-
-        return groups.map(group => {
-
-          let number = 0;
+        roles.forEach(([role, digit]) => {
+          const n = Number(digit);
 
           const read =
-            document.getElementById(group[0]);
+            document.getElementById(`${role}Read`);
 
           const write =
-            document.getElementById(group[1]);
+            document.getElementById(`${role}Write`);
 
           const execute =
-            document.getElementById(group[2]);
+            document.getElementById(`${role}Execute`);
 
+          const number =
+            document.getElementById(`${role}Number`);
 
-          if (read && read.checked) {
-            number += 4;
-          }
-
-          if (write && write.checked) {
-            number += 2;
-          }
-
-          if (execute && execute.checked) {
-            number += 1;
-          }
-
-          return number;
-
-        }).join('');
+          if (read) read.checked = Boolean(n & 4);
+          if (write) write.checked = Boolean(n & 2);
+          if (execute) execute.checked = Boolean(n & 1);
+          if (number) number.textContent = String(n);
+        });
       }
 
+      function getMatrixDigit(role) {
+        let value = 0;
 
-      function updateFromMatrix() {
+        const read =
+          document.getElementById(`${role}Read`);
 
-        const numeric =
-          getMatrixValue();
+        const write =
+          document.getElementById(`${role}Write`);
 
-        const symbolic =
-          numericToSymbolic(numeric);
+        const execute =
+          document.getElementById(`${role}Execute`);
+
+        if (read && read.checked) {
+          value += 4;
+        }
+
+        if (write && write.checked) {
+          value += 2;
+        }
+
+        if (execute && execute.checked) {
+          value += 1;
+        }
+
+        return value;
+      }
+
+      function updateFromNumeric(value, showErrors = true) {
+        let clean = String(value)
+          .replace(/\D/g, '')
+          .slice(0, 4);
+
+        numericInput.value = clean;
+
+        if (!/^[0-7]{3,4}$/.test(clean)) {
+          if (showErrors) {
+            setError(
+              numericError,
+              'أدخل 3 أو 4 أرقام من 0 إلى 7.'
+            );
+          }
+          return false;
+        }
+
+        const symbolic = numericToSymbolic(clean);
+
+        if (!symbolic) {
+          if (showErrors) {
+            setError(
+              numericError,
+              'قيمة CHMOD غير صحيحة.'
+            );
+          }
+          return false;
+        }
+
+        const normalized =
+          clean.length === 4
+            ? clean.slice(1)
+            : clean;
+
+        symbolicInput.value = symbolic;
+
+        numericResult.textContent = normalized;
+        symbolicResult.textContent = symbolic;
+
+        permissionDescription.textContent =
+          describePermission(normalized);
+
+        updateMatrixFromNumeric(normalized);
+        updateCommand();
+
+        setStatus('success');
+
+        return true;
+      }
+
+      function updateFromSymbolic(value, showErrors = true) {
+        let clean = String(value)
+          .trim()
+          .toLowerCase()
+          .replace(/\s+/g, '');
+
+        if (clean.length === 10 && /^[d-]/.test(clean)) {
+          clean = clean.slice(1);
+        }
+
+        symbolicInput.value = clean;
+
+        const numeric = symbolicToNumeric(clean);
+
+        if (!numeric) {
+          if (showErrors) {
+            setError(
+              symbolicError,
+              'أدخل صيغة مثل rwxr-xr-x.'
+            );
+          }
+          return false;
+        }
 
         numericInput.value = numeric;
+
+        numericResult.textContent = numeric;
+        symbolicResult.textContent = clean;
+
+        permissionDescription.textContent =
+          describePermission(numeric);
+
+        updateMatrixFromNumeric(numeric);
+        updateCommand();
+
+        setStatus('success');
+
+        return true;
+      }
+
+      function updateFromMatrix() {
+        const numeric =
+          String(getMatrixDigit('u')) +
+          String(getMatrixDigit('g')) +
+          String(getMatrixDigit('o'));
+
+        numericInput.value = numeric;
+
+        const symbolic = numericToSymbolic(numeric);
+
+        if (!symbolic) {
+          return;
+        }
 
         symbolicInput.value = symbolic;
 
         numericResult.textContent = numeric;
-
         symbolicResult.textContent = symbolic;
 
-        setStatus(
-          numericStatus,
-          true,
-          'صحيح'
-        );
+        permissionDescription.textContent =
+          describePermission(numeric);
 
-        setStatus(
-          symbolicStatus,
-          true,
-          'صحيح'
-        );
-
-        updateMatrix(numeric);
         updateCommand();
-      }
 
+        const roles = ['u', 'g', 'o'];
 
-      function copyText(text) {
+        roles.forEach((role) => {
+          const number =
+            document.getElementById(`${role}Number`);
 
-        if (!text) {
-          return;
-        }
-
-        if (
-          navigator.clipboard &&
-          window.isSecureContext
-        ) {
-
-          navigator.clipboard
-            .writeText(text)
-            .then(() => showToast('تم النسخ'));
-
-          return;
-        }
-
-
-        const textarea =
-          document.createElement('textarea');
-
-        textarea.value = text;
-
-        textarea.style.position = 'fixed';
-        textarea.style.left = '-9999px';
-
-        document.body.appendChild(textarea);
-
-        textarea.focus();
-        textarea.select();
-
-        try {
-          document.execCommand('copy');
-          showToast('تم النسخ');
-        } catch (error) {
-          showToast('تعذر النسخ');
-        }
-
-        textarea.remove();
-      }
-
-
-      function showToast(message) {
-
-        const old =
-          document.querySelector('.chmod-toast');
-
-        if (old) {
-          old.remove();
-        }
-
-        const toast =
-          document.createElement('div');
-
-        toast.className = 'chmod-toast';
-
-        toast.innerHTML =
-          `<i class="fa-solid fa-check"></i>${message}`;
-
-        document.body.appendChild(toast);
-
-        requestAnimationFrame(() => {
-          toast.classList.add('show');
+          if (number) {
+            number.textContent =
+              String(getMatrixDigit(role));
+          }
         });
 
-        setTimeout(() => {
-
-          toast.classList.remove('show');
-
-          setTimeout(() => {
-            toast.remove();
-          }, 200);
-
-        }, 1600);
+        setError(numericError, '');
+        setError(symbolicError, '');
       }
 
+      async function copyText(text, successMessage = 'تم النسخ') {
+        if (!text) {
+          showToast('لا يوجد محتوى للنسخ', 'error');
+          return;
+        }
 
-      /* Numeric input */
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast(successMessage, 'success');
+        } catch (error) {
+          const textarea =
+            document.createElement('textarea');
 
-      numericInput.addEventListener(
-        'input',
-        () => {
+          textarea.value = text;
+          textarea.style.position = 'fixed';
+          textarea.style.opacity = '0';
 
-          let value =
-            numericInput.value
-              .replace(/[^0-7]/g, '')
-              .substring(0, 3);
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
 
-          numericInput.value = value;
-
-          if (value.length === 3) {
-            updateFromNumeric(value);
+          try {
+            document.execCommand('copy');
+            showToast(successMessage, 'success');
+          } catch (copyError) {
+            showToast('تعذر النسخ تلقائيًا', 'error');
           }
 
+          textarea.remove();
+        }
+      }
+
+      function showToast(message, type = 'success') {
+        toastText.textContent = message;
+
+        toast.classList.remove('success', 'error');
+        toast.classList.add(type);
+        toast.classList.add('show');
+
+        window.clearTimeout(showToast.timer);
+
+        showToast.timer = window.setTimeout(() => {
+          toast.classList.remove('show');
+        }, 2200);
+      }
+
+      function resetTool() {
+        numericInput.value = '755';
+        symbolicInput.value = 'rwxr-xr-x';
+        filenameInput.value = 'filename';
+
+        updateFromNumeric('755', false);
+
+        showToast('تمت إعادة الضبط', 'success');
+      }
+
+      function copyAll() {
+        const text =
+`CHMOD: ${numericResult.textContent.trim()}
+Symbolic: ${symbolicResult.textContent.trim()}
+Command: ${chmodCommand.textContent.trim()}`;
+
+        copyText(text, 'تم نسخ جميع النتائج');
+      }
+
+      numericToSymbolicBtn.addEventListener(
+        'click',
+        () => {
+          updateFromNumeric(numericInput.value, true);
         }
       );
 
-
-      /* Symbolic input */
-
-      symbolicInput.addEventListener(
-        'input',
+      symbolicToNumericBtn.addEventListener(
+        'click',
         () => {
-
-          let value =
-            symbolicInput.value
-              .toLowerCase()
-              .replace(/[^rwx-]/g, '')
-              .substring(0, 9);
-
-          symbolicInput.value = value;
-
-          if (value.length === 9) {
-            updateFromSymbolic(value);
-          }
-
+          updateFromSymbolic(symbolicInput.value, true);
         }
       );
 
+      numericInput.addEventListener('input', () => {
+        const value = numericInput.value;
 
-      /* Filename */
-
-      filenameInput.addEventListener(
-        'input',
-        updateCommand
-      );
-
-
-      /* Matrix */
-
-      const matrixInputs = document.querySelectorAll(
-        '.permission-check input'
-      );
-
-
-      matrixInputs.forEach(input => {
-
-        input.addEventListener(
-          'change',
-          updateFromMatrix
-        );
-
+        if (/^[0-7]{3,4}$/.test(value)) {
+          updateFromNumeric(value, false);
+        } else {
+          setError(
+            numericError,
+            'أدخل 3 أو 4 أرقام من 0 إلى 7.'
+          );
+        }
       });
 
-
-      /* Presets */
-
-      const presets =
-        document.querySelectorAll('.preset');
-
-
-      presets.forEach(button => {
-
-        button.addEventListener(
-          'click',
-          () => {
-
-            const value =
-              button.getAttribute('data-value');
-
-            if (!value) {
-              return;
-            }
-
-            numericInput.value = value;
-
-            updateFromNumeric(value);
-
-          }
-        );
-
+      numericInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          updateFromNumeric(numericInput.value, true);
+        }
       });
 
+      symbolicInput.addEventListener('input', () => {
+        const value = symbolicInput.value;
 
-      /* Copy buttons */
+        if (symbolicToNumeric(value)) {
+          updateFromSymbolic(value, false);
+        } else if (value.length >= 9) {
+          setError(
+            symbolicError,
+            'الصيغة يجب أن تكون مثل rwxr-xr-x.'
+          );
+        }
+      });
 
-      const copyButtons =
-        document.querySelectorAll('[data-copy]');
+      symbolicInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          updateFromSymbolic(symbolicInput.value, true);
+        }
+      });
 
+      filenameInput.addEventListener('input', () => {
+        updateCommand();
+      });
 
-      copyButtons.forEach(button => {
+      filenameInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          updateCommand();
+          showToast('تم تحديث الأمر', 'success');
+        }
+      });
 
-        button.addEventListener(
-          'click',
-          () => {
+      updateFilenameBtn.addEventListener(
+        'click',
+        () => {
+          updateCommand();
+          showToast('تم تحديث أمر chmod', 'success');
+        }
+      );
 
-            const id =
-              button.getAttribute('data-copy');
+      copyCommandBtn.addEventListener(
+        'click',
+        () => {
+          copyText(
+            chmodCommand.textContent.trim(),
+            'تم نسخ أمر chmod'
+          );
+        }
+      );
 
-            const element =
+      copyAllBtn.addEventListener(
+        'click',
+        copyAll
+      );
+
+      bottomCopyBtn.addEventListener(
+        'click',
+        copyAll
+      );
+
+      resetBtn.addEventListener(
+        'click',
+        resetTool
+      );
+
+      bottomResetBtn.addEventListener(
+        'click',
+        resetTool
+      );
+
+      clearMatrixBtn.addEventListener(
+        'click',
+        () => {
+          matrixIds.forEach((id) => {
+            const checkbox =
               document.getElementById(id);
 
-            if (!element) {
-              return;
+            if (checkbox) {
+              checkbox.checked = false;
             }
+          });
 
-            const value =
-              'value' in element
-                ? element.value
-                : element.textContent;
+          updateFromMatrix();
 
-            copyText(String(value).trim());
-
-          }
-        );
-
-      });
-
-
-      /* Copy command */
+          showToast(
+            'تم مسح جميع الصلاحيات',
+            'success'
+          );
+        }
+      );
 
       document
-        .getElementById('copyCommand')
-        .addEventListener(
-          'click',
-          () => {
-
-            copyText(
-              chmodCommand.textContent.trim()
-            );
-
-          }
-        );
-
-
-      /* Copy all */
+        .querySelectorAll('.permission-check')
+        .forEach((checkbox) => {
+          checkbox.addEventListener(
+            'change',
+            updateFromMatrix
+          );
+        });
 
       document
-        .getElementById('copyAllBtn')
-        .addEventListener(
-          'click',
-          () => {
+        .querySelectorAll('.preset')
+        .forEach((preset) => {
+          preset.addEventListener(
+            'click',
+            () => {
+              const value =
+                preset.dataset.permission || '755';
 
-            const text =
-              `Numeric: ${numericResult.textContent.trim()}\n` +
-              `Symbolic: ${symbolicResult.textContent.trim()}\n` +
-              `Command: ${chmodCommand.textContent.trim()}`;
+              updateFromNumeric(value, false);
 
-            copyText(text);
-
-          }
-        );
-
-
-      /* Clear */
-
-      document
-        .getElementById('clearBtn')
-        .addEventListener(
-          'click',
-          () => {
-
-            numericInput.value = '';
-            symbolicInput.value = '';
-
-            numericResult.textContent = '—';
-            symbolicResult.textContent = '—';
-
-            setStatus(
-              numericStatus,
-              false,
-              'فارغ'
-            );
-
-            setStatus(
-              symbolicStatus,
-              false,
-              'فارغ'
-            );
-
-            matrixInputs.forEach(input => {
-              input.checked = false;
-            });
-
-            document.getElementById(
-              'uValue'
-            ).textContent = '0';
-
-            document.getElementById(
-              'gValue'
-            ).textContent = '0';
-
-            document.getElementById(
-              'oValue'
-            ).textContent = '0';
-
-            updateCommand();
-
-          }
-        );
-
-
-      /* Reset */
+              showToast(
+                `تم اختيار CHMOD ${value}`,
+                'success'
+              );
+            }
+          );
+        });
 
       document
-        .getElementById('resetBtn')
-        .addEventListener(
-          'click',
-          () => {
+        .querySelectorAll('.copy-btn')
+        .forEach((button) => {
+          button.addEventListener(
+            'click',
+            () => {
+              const targetId =
+                button.dataset.copyTarget;
 
-            numericInput.value = '755';
+              const target =
+                document.getElementById(targetId);
 
-            updateFromNumeric('755');
+              if (!target) {
+                return;
+              }
 
-          }
-        );
+              copyText(
+                target.textContent.trim(),
+                'تم النسخ بنجاح'
+              );
+            }
+          );
+        });
 
+      document
+        .querySelectorAll('.faq-question')
+        .forEach((button) => {
+          button.addEventListener(
+            'click',
+            () => {
+              const item =
+                button.closest('.faq-item');
 
-      /* Initial state */
+              if (!item) {
+                return;
+              }
 
-      updateFromNumeric('755');
+              document
+                .querySelectorAll('.faq-item.open')
+                .forEach((openItem) => {
+                  if (openItem !== item) {
+                    openItem.classList.remove('open');
+                  }
+                });
 
+              item.classList.toggle('open');
+            }
+          );
+        });
+
+      /* الحالة الابتدائية */
+      updateFromNumeric('755', false);
     });
   </script>
-
 </body>
 </html>
-
-
-<style>
-
-:global(*) {
-  box-sizing: border-box;
-}
-
-:global(html) {
-  --chmod-bg: #07111f;
-  --chmod-surface: #0d1b2d;
-  --chmod-surface-2: #101f33;
-  --chmod-border: rgba(148, 163, 184, .14);
-
-  --chmod-text: #f1f5f9;
-  --chmod-muted: #94a3b8;
-
-  --chmod-primary: #38bdf8;
-  --chmod-primary-2: #0ea5e9;
-
-  --chmod-success: #22c55e;
-  --chmod-danger: #ef4444;
-  --chmod-warning: #f59e0b;
-
-  --chmod-soft: rgba(56, 189, 248, .11);
-
-  --chmod-shadow:
-    0 20px 60px rgba(0, 0, 0, .22);
-}
-
-
-:global(html[data-theme='light']) {
-  --chmod-bg: #f4f9fd;
-  --chmod-surface: #ffffff;
-  --chmod-surface-2: #f8fbff;
-
-  --chmod-border: rgba(15, 23, 42, .10);
-
-  --chmod-text: #0f172a;
-  --chmod-muted: #64748b;
-
-  --chmod-primary: #0284c7;
-  --chmod-primary-2: #0369a1;
-
-  --chmod-success: #16a34a;
-  --chmod-danger: #dc2626;
-  --chmod-warning: #d97706;
-
-  --chmod-soft: rgba(2, 132, 199, .08);
-
-  --chmod-shadow:
-    0 20px 55px rgba(15, 23, 42, .08);
-}
-
-
-:global(body) {
-  margin: 0;
-  background: var(--chmod-bg);
-  color: var(--chmod-text);
-  font-family: 'Cairo', sans-serif;
-
-  transition:
-    background .25s ease,
-    color .25s ease;
-}
-
-
-:global(button),
-:global(input) {
-  font-family: inherit;
-}
-
-
-.container {
-  width: min(1180px, calc(100% - 30px));
-  margin: auto;
-}
-
-
-/* HERO */
-
-.hero {
-  position: relative;
-  overflow: hidden;
-
-  padding: 75px 0 100px;
-
-  background:
-    radial-gradient(
-      circle at 50% 0,
-      rgba(14, 165, 233, .15),
-      transparent 50%
-    ),
-    var(--chmod-bg);
-}
-
-
-.hero-bg {
-  position: absolute;
-  inset: 0;
-
-  opacity: .5;
-
-  background-image:
-    linear-gradient(
-      rgba(56,189,248,.035) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      90deg,
-      rgba(56,189,248,.035) 1px,
-      transparent 1px
-    );
-
-  background-size: 42px 42px;
-
-  pointer-events: none;
-}
-
-
-.hero-content {
-  position: relative;
-  z-index: 1;
-
-  text-align: center;
-}
-
-
-.hero-icon {
-  width: 75px;
-  height: 75px;
-
-  margin: auto auto 20px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 21px;
-
-  background: var(--chmod-soft);
-
-  border: 1px solid
-    rgba(56,189,248,.22);
-
-  color: var(--chmod-primary);
-
-  font-size: 30px;
-}
-
-
-.hero-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-
-  padding: 7px 14px;
-
-  border-radius: 999px;
-
-  background: var(--chmod-soft);
-
-  color: var(--chmod-primary);
-
-  font-size: 11px;
-  font-weight: 700;
-}
-
-
-.hero h1 {
-  margin: 20px 0 13px;
-
-  font-size: clamp(42px, 7vw, 72px);
-
-  line-height: 1;
-
-  letter-spacing: -2px;
-
-  font-weight: 800;
-}
-
-
-.hero h1 span {
-  color: var(--chmod-primary);
-}
-
-
-.hero p {
-  margin: 0 auto;
-
-  color: var(--chmod-muted);
-
-  line-height: 2;
-
-  font-size: 15px;
-}
-
-
-.hero-tags {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 8px;
-
-  margin-top: 23px;
-}
-
-
-.hero-tags span {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-
-  padding: 7px 12px;
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 9px;
-
-  background: var(--chmod-surface);
-
-  color: var(--chmod-muted);
-
-  font-size: 11px;
-}
-
-
-.hero-tags i {
-  color: var(--chmod-primary);
-}
-
-
-/* TOOL */
-
-.tool-section {
-  position: relative;
-
-  margin-top: -35px;
-
-  padding-bottom: 75px;
-
-  z-index: 2;
-}
-
-
-.tool-card {
-  overflow: hidden;
-
-  background: var(--chmod-surface);
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 25px;
-
-  box-shadow: var(--chmod-shadow);
-}
-
-
-.tool-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  gap: 20px;
-
-  padding: 26px 28px;
-
-  border-bottom: 1px solid var(--chmod-border);
-}
-
-
-.tool-card-header h2 {
-  margin: 0;
-
-  font-size: 18px;
-}
-
-
-.tool-card-header h2 i {
-  color: var(--chmod-primary);
-  margin-left: 7px;
-}
-
-
-.tool-card-header p {
-  margin: 6px 0 0;
-
-  color: var(--chmod-muted);
-
-  font-size: 12px;
-}
-
-
-.clear-btn {
-  border: 1px solid var(--chmod-border);
-
-  background: transparent;
-
-  color: var(--chmod-muted);
-
-  padding: 9px 13px;
-
-  border-radius: 9px;
-
-  cursor: pointer;
-
-  font-size: 11px;
-}
-
-
-.clear-btn:hover {
-  color: var(--chmod-danger);
-
-  border-color:
-    rgba(239,68,68,.25);
-}
-
-
-.input-grid {
-  display: grid;
-
-  grid-template-columns: repeat(2, 1fr);
-
-  gap: 16px;
-
-  padding: 26px 28px;
-}
-
-
-.input-card {
-  padding: 17px;
-
-  background: var(--chmod-surface-2);
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 15px;
-}
-
-
-.input-label {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  margin-bottom: 10px;
-
-  font-size: 12px;
-  font-weight: 700;
-}
-
-
-.input-label span {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-
-.input-label i {
-  color: var(--chmod-primary);
-}
-
-
-.input-label small {
-  color: var(--chmod-muted);
-
-  font-weight: 400;
-}
-
-
-.input-wrap {
-  position: relative;
-}
-
-
-.input-wrap input {
-  width: 100%;
-  height: 55px;
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 11px;
-
-  outline: none;
-
-  background: var(--chmod-bg);
-
-  color: var(--chmod-text);
-
-  padding: 0 50px 0 15px;
-
-  font-family: 'JetBrains Mono', monospace;
-
-  font-size: 21px;
-  font-weight: 700;
-
-  direction: ltr;
-
-  transition:
-    border-color .2s ease,
-    box-shadow .2s ease;
-}
-
-
-.input-wrap input:focus {
-  border-color: var(--chmod-primary);
-
-  box-shadow:
-    0 0 0 3px var(--chmod-soft);
-}
-
-
-.small-copy {
-  position: absolute;
-
-  right: 8px;
-  top: 50%;
-
-  transform: translateY(-50%);
-
-  width: 35px;
-  height: 35px;
-
-  border: 0;
-
-  border-radius: 8px;
-
-  background: var(--chmod-soft);
-
-  color: var(--chmod-primary);
-
-  cursor: pointer;
-}
-
-
-.input-status {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  margin-top: 8px;
-
-  color: var(--chmod-muted);
-
-  font-size: 10px;
-}
-
-
-.input-status strong {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-
-.input-status .ok {
-  color: var(--chmod-success);
-}
-
-
-.input-status .error {
-  color: var(--chmod-danger);
-}
-
-
-/* RESULTS */
-
-.results-grid {
-  display: grid;
-
-  grid-template-columns: repeat(2, 1fr);
-
-  gap: 16px;
-
-  padding: 0 28px 26px;
-}
-
-
-.result-card {
-  position: relative;
-
-  padding: 20px;
-
-  min-height: 125px;
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 15px;
-}
-
-
-.result-card.blue {
-  background:
-    linear-gradient(
-      135deg,
-      var(--chmod-soft),
-      transparent
-    );
-}
-
-
-.result-card.green {
-  background:
-    linear-gradient(
-      135deg,
-      rgba(34,197,94,.08),
-      transparent
-    );
-}
-
-
-.result-title {
-  color: var(--chmod-muted);
-
-  font-size: 11px;
-  font-weight: 700;
-}
-
-
-.result-title i {
-  color: var(--chmod-primary);
-  margin-left: 6px;
-}
-
-
-.green .result-title i {
-  color: var(--chmod-success);
-}
-
-
-.result-value {
-  margin-top: 8px;
-
-  color: var(--chmod-text);
-
-  font-family: 'JetBrains Mono', monospace;
-
-  font-size: 29px;
-  font-weight: 800;
-
-  text-align: left;
-}
-
-
-.result-value.symbolic {
-  font-size: 21px;
-  letter-spacing: 1px;
-}
-
-
-.result-copy {
-  position: absolute;
-
-  left: 15px;
-  top: 15px;
-
-  padding: 6px 9px;
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 7px;
-
-  background: var(--chmod-surface);
-
-  color: var(--chmod-muted);
-
-  cursor: pointer;
-
-  font-size: 10px;
-}
-
-
-.result-copy:hover {
-  color: var(--chmod-primary);
-}
-
-
-/* AREA */
-
-.command-area,
-.matrix-area,
-.presets-area {
-  padding: 0 28px 28px;
-}
-
-
-.area-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  margin-bottom: 12px;
-
-  font-size: 13px;
-  font-weight: 800;
-}
-
-
-.area-title span {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-}
-
-
-.area-title i {
-  color: var(--chmod-primary);
-}
-
-
-.area-title small {
-  color: var(--chmod-muted);
-
-  font-size: 10px;
-  font-weight: 400;
-}
-
-
-/* TERMINAL */
-
-.terminal {
-  overflow: hidden;
-
-  border: 1px solid rgba(148,163,184,.13);
-
-  border-radius: 13px;
-
-  background: #071018;
-}
-
-
-.terminal-bar {
-  height: 34px;
-
-  display: flex;
-  align-items: center;
-
-  gap: 12px;
-
-  padding: 0 12px;
-
-  border-bottom: 1px solid rgba(148,163,184,.10);
-
-  color: #64748b;
-
-  font-size: 9px;
-}
-
-
-.terminal-dots {
-  display: flex;
-  gap: 5px;
-}
-
-
-.terminal-dots span {
-  width: 7px;
-  height: 7px;
-
-  border-radius: 50%;
-
-  background: #475569;
-}
-
-
-.terminal-line {
-  min-height: 58px;
-
-  display: flex;
-  align-items: center;
-
-  gap: 9px;
-
-  padding: 0 14px;
-
-  color: #e2e8f0;
-
-  font-family: 'JetBrains Mono', monospace;
-
-  font-size: 13px;
-}
-
-
-.terminal-line .prompt {
-  color: #22c55e;
-}
-
-
-.terminal-line code {
-  flex: 1;
-
-  color: #e2e8f0;
-
-  background: transparent;
-
-  padding: 0;
-
-  white-space: nowrap;
-}
-
-
-.terminal-line button {
-  border: 0;
-
-  background: transparent;
-
-  color: #94a3b8;
-
-  cursor: pointer;
-}
-
-
-.terminal-line button:hover {
-  color: #38bdf8;
-}
-
-
-.filename {
-  display: flex;
-  align-items: center;
-
-  gap: 12px;
-
-  margin-top: 11px;
-}
-
-
-.filename label {
-  color: var(--chmod-muted);
-
-  font-size: 11px;
-  font-weight: 700;
-}
-
-
-.filename input {
-  flex: 1;
-
-  height: 40px;
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 9px;
-
-  outline: none;
-
-  background: var(--chmod-surface-2);
-
-  color: var(--chmod-text);
-
-  padding: 0 11px;
-
-  font-family: 'JetBrains Mono', monospace;
-
-  font-size: 11px;
-}
-
-
-.filename input:focus {
-  border-color: var(--chmod-primary);
-}
-
-
-/* MATRIX */
-
-.matrix {
-  overflow: hidden;
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 13px;
-
-  background: var(--chmod-surface-2);
-}
-
-
-.matrix-header,
-.matrix-row {
-  display: grid;
-
-  grid-template-columns:
-    minmax(150px, 1.5fr)
-    repeat(3, 1fr)
-    70px;
-
-  align-items: center;
-}
-
-
-.matrix-header {
-  min-height: 43px;
-
-  background: var(--chmod-soft);
-
-  color: var(--chmod-muted);
-
-  font-size: 10px;
-  font-weight: 700;
-
-  text-align: center;
-}
-
-
-.matrix-header div:first-child {
-  text-align: right;
-
-  padding-right: 15px;
-}
-
-
-.matrix-row {
-  min-height: 68px;
-
-  border-top: 1px solid var(--chmod-border);
-
-  text-align: center;
-}
-
-
-.role {
-  display: flex;
-  align-items: center;
-
-  gap: 9px;
-
-  padding-right: 15px;
-
-  text-align: right;
-}
-
-
-.role-icon {
-  width: 34px;
-  height: 34px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 9px;
-
-  background: var(--chmod-soft);
-
-  color: var(--chmod-primary);
-}
-
-
-.role-icon.purple {
-  color: #a78bfa;
-
-  background: rgba(167,139,250,.10);
-}
-
-
-.role-icon.green-icon {
-  color: var(--chmod-success);
-
-  background: rgba(34,197,94,.10);
-}
-
-
-.role strong {
-  display: block;
-
-  font-size: 11px;
-}
-
-
-.role small {
-  display: block;
-
-  margin-top: 2px;
-
-  color: var(--chmod-muted);
-
-  font-size: 9px;
-}
-
-
-.permission-check {
-  display: flex;
-  justify-content: center;
-
-  cursor: pointer;
-}
-
-
-.permission-check input {
-  position: absolute;
-
-  opacity: 0;
-}
-
-
-.permission-check span {
-  width: 32px;
-  height: 32px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 8px;
-
-  background: var(--chmod-bg);
-
-  color: var(--chmod-muted);
-
-  font-family: 'JetBrains Mono', monospace;
-
-  font-size: 12px;
-
-  transition: .15s ease;
-}
-
-
-.permission-check:hover span {
-  border-color: var(--chmod-primary);
-
-  color: var(--chmod-primary);
-}
-
-
-.permission-check input:checked + span {
-  color: var(--chmod-primary);
-
-  background: var(--chmod-soft);
-
-  border-color:
-    rgba(56,189,248,.35);
-}
-
-
-.digit {
-  color: var(--chmod-primary);
-
-  font-family: 'JetBrains Mono', monospace;
-
-  font-size: 17px;
-}
-
-
-/* PRESETS */
-
-.preset-grid {
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 10px;
-}
-
-
-.preset {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-
-  padding: 14px;
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 12px;
-
-  background: var(--chmod-surface-2);
-
-  color: var(--chmod-text);
-
-  text-align: right;
-
-  cursor: pointer;
-
-  transition:
-    transform .18s ease,
-    border-color .18s ease,
-    background .18s ease;
-}
-
-
-.preset:hover {
-  transform: translateY(-2px);
-
-  border-color:
-    rgba(56,189,248,.30);
-
-  background: var(--chmod-soft);
-}
-
-
-.preset strong {
-  color: var(--chmod-primary);
-
-  font-family: 'JetBrains Mono', monospace;
-
-  font-size: 19px;
-}
-
-
-.preset code {
-  margin-top: 4px;
-
-  padding: 0;
-
-  background: transparent;
-
-  color: var(--chmod-muted);
-
-  font-size: 9px;
-}
-
-
-.preset small {
-  margin-top: 6px;
-
-  color: var(--chmod-muted);
-
-  font-size: 8px;
-}
-
-
-.danger-preset strong {
-  color: var(--chmod-warning);
-}
-
-
-/* ACTIONS */
-
-.actions {
-  display: flex;
-
-  gap: 10px;
-
-  padding: 0 28px 28px;
-}
-
-
-.primary-btn,
-.secondary-btn {
-  min-height: 43px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 8px;
-
-  padding: 0 16px;
-
-  border-radius: 10px;
-
-  cursor: pointer;
-
-  font-size: 11px;
-  font-weight: 700;
-}
-
-
-.primary-btn {
-  border: 0;
-
-  color: white;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--chmod-primary-2),
-      var(--chmod-primary)
-    );
-}
-
-
-.secondary-btn {
-  border: 1px solid var(--chmod-border);
-
-  background: transparent;
-
-  color: var(--chmod-muted);
-}
-
-
-.primary-btn:hover,
-.secondary-btn:hover {
-  transform: translateY(-1px);
-}
-
-
-/* SECTIONS */
-
-.info-section,
-.steps-section,
-.faq-section {
-  padding: 75px 0;
-}
-
-
-.info-section {
-  background: var(--chmod-surface-2);
-
-  border-top: 1px solid var(--chmod-border);
-  border-bottom: 1px solid var(--chmod-border);
-}
-
-
-.section-heading {
-  display: flex;
-  align-items: center;
-
-  gap: 12px;
-
-  margin-bottom: 27px;
-}
-
-
-.heading-icon {
-  width: 44px;
-  height: 44px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 12px;
-
-  background: var(--chmod-soft);
-
-  color: var(--chmod-primary);
-}
-
-
-.section-heading h2 {
-  margin: 0;
-
-  font-size: 23px;
-}
-
-
-.section-heading p {
-  margin: 3px 0 0;
-
-  color: var(--chmod-muted);
-
-  font-size: 11px;
-}
-
-
-.info-grid {
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 14px;
-}
-
-
-.info-card {
-  padding: 22px;
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 15px;
-
-  background: var(--chmod-surface);
-}
-
-
-.info-icon {
-  width: 42px;
-  height: 42px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 11px;
-
-  background: var(--chmod-soft);
-
-  color: var(--chmod-primary);
-}
-
-
-.info-card h3 {
-  margin: 14px 0 7px;
-
-  font-size: 14px;
-}
-
-
-.info-card p {
-  min-height: 45px;
-
-  margin: 0;
-
-  color: var(--chmod-muted);
-
-  font-size: 11px;
-
-  line-height: 1.9;
-}
-
-
-.info-value {
-  display: flex;
-  align-items: center;
-
-  gap: 8px;
-
-  margin-top: 15px;
-}
-
-
-.info-value strong {
-  color: var(--chmod-primary);
-
-  font-family: 'JetBrains Mono', monospace;
-
-  font-size: 22px;
-}
-
-
-.info-value code {
-  color: var(--chmod-primary);
-
-  background: var(--chmod-soft);
-
-  padding: 4px 7px;
-
-  border-radius: 6px;
-
-  font-family: 'JetBrains Mono', monospace;
-}
-
-
-.calculation {
-  margin-top: 18px;
-
-  padding: 24px;
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 15px;
-
-  background: var(--chmod-surface);
-}
-
-
-.calculation h3 {
-  margin: 0;
-
-  font-size: 13px;
-}
-
-
-.calculation h3 i {
-  color: var(--chmod-primary);
-
-  margin-left: 6px;
-}
-
-
-.calculation-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  flex-wrap: wrap;
-
-  gap: 10px;
-
-  margin-top: 20px;
-}
-
-
-.calculation-row > div {
-  min-width: 80px;
-
-  padding: 11px;
-
-  text-align: center;
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 10px;
-
-  background: var(--chmod-surface-2);
-}
-
-
-.calculation-row strong {
-  display: block;
-
-  color: var(--chmod-primary);
-
-  font-family: 'JetBrains Mono', monospace;
-
-  font-size: 21px;
-}
-
-
-.calculation-row span {
-  color: var(--chmod-muted);
-
-  font-size: 9px;
-}
-
-
-.calculation-row b {
-  color: var(--chmod-muted);
-}
-
-
-.calculation-row .total {
-  background: rgba(34,197,94,.08);
-
-  border-color: rgba(34,197,94,.20);
-}
-
-
-.calculation-row .total strong {
-  color: var(--chmod-success);
-}
-
-
-.calculation p {
-  margin: 18px 0 0;
-
-  padding-top: 15px;
-
-  border-top: 1px solid var(--chmod-border);
-
-  color: var(--chmod-muted);
-
-  font-size: 11px;
-}
-
-
-.calculation code,
-.security code,
-.faq code {
-  padding: 2px 5px;
-
-  border-radius: 4px;
-
-  background: var(--chmod-soft);
-
-  color: var(--chmod-primary);
-
-  font-family: 'JetBrains Mono', monospace;
-}
-
-
-/* STEPS */
-
-.steps-grid {
-  display: grid;
-
-  grid-template-columns: repeat(3, 1fr);
-
-  gap: 14px;
-}
-
-
-.step {
-  position: relative;
-
-  padding: 23px;
-
-  overflow: hidden;
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 15px;
-
-  background: var(--chmod-surface);
-}
-
-
-.step-number {
-  position: absolute;
-
-  top: 12px;
-  left: 15px;
-
-  color: var(--chmod-primary);
-
-  opacity: .12;
-
-  font-family: 'JetBrains Mono', monospace;
-
-  font-size: 31px;
-  font-weight: 800;
-}
-
-
-.step-icon {
-  width: 45px;
-  height: 45px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 12px;
-
-  background: var(--chmod-soft);
-
-  color: var(--chmod-primary);
-}
-
-
-.step h3 {
-  margin: 15px 0 6px;
-
-  font-size: 14px;
-}
-
-
-.step p {
-  margin: 0;
-
-  color: var(--chmod-muted);
-
-  font-size: 11px;
-
-  line-height: 1.9;
-}
-
-
-/* SECURITY */
-
-.security-section {
-  padding-bottom: 75px;
-}
-
-
-.security {
-  display: flex;
-  align-items: center;
-
-  gap: 15px;
-
-  padding: 21px;
-
-  border: 1px solid rgba(245,158,11,.18);
-
-  border-radius: 15px;
-
-  background: rgba(245,158,11,.06);
-}
-
-
-.security-icon {
-  width: 47px;
-  height: 47px;
-
-  flex-shrink: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 12px;
-
-  color: var(--chmod-warning);
-
-  background: rgba(245,158,11,.10);
-}
-
-
-.security h2 {
-  margin: 0 0 4px;
-
-  font-size: 14px;
-}
-
-
-.security p {
-  margin: 0;
-
-  color: var(--chmod-muted);
-
-  font-size: 11px;
-
-  line-height: 1.9;
-}
-
-
-.security > strong {
-  margin-right: auto;
-
-  color: var(--chmod-warning);
-
-  font-family: 'JetBrains Mono', monospace;
-
-  font-size: 27px;
-}
-
-
-/* FAQ */
-
-.faq {
-  display: flex;
-  flex-direction: column;
-
-  gap: 9px;
-}
-
-
-.faq details {
-  overflow: hidden;
-
-  border: 1px solid var(--chmod-border);
-
-  border-radius: 12px;
-
-  background: var(--chmod-surface);
-}
-
-
-.faq summary {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: 16px 18px;
-
-  cursor: pointer;
-
-  list-style: none;
-
-  font-size: 12px;
-  font-weight: 700;
-}
-
-
-.faq summary::-webkit-details-marker {
-  display: none;
-}
-
-
-.faq summary span {
-  display: flex;
-  align-items: center;
-
-  gap: 8px;
-}
-
-
-.faq summary span i {
-  color: var(--chmod-primary);
-}
-
-
-.faq summary > i {
-  color: var(--chmod-muted);
-
-  transition: transform .2s ease;
-}
-
-
-.faq details[open] summary > i {
-  transform: rotate(180deg);
-}
-
-
-.faq details > p {
-  margin: 0;
-
-  padding: 0 18px 17px;
-
-  color: var(--chmod-muted);
-
-  font-size: 11px;
-
-  line-height: 2;
-}
-
-
-/* TOAST */
-
-.chmod-toast {
-  position: fixed;
-
-  right: 18px;
-  bottom: 18px;
-
-  z-index: 9999;
-
-  display: flex;
-  align-items: center;
-
-  gap: 7px;
-
-  padding: 10px 14px;
-
-  border-radius: 9px;
-
-  background: #0f172a;
-
-  color: white;
-
-  font-size: 11px;
-
-  opacity: 0;
-
-  transform: translateY(15px);
-
-  transition:
-    opacity .2s ease,
-    transform .2s ease;
-}
-
-
-.chmod-toast.show {
-  opacity: 1;
-
-  transform: translateY(0);
-}
-
-
-.chmod-toast i {
-  color: #22c55e;
-}
-
-
-/* MOBILE */
-
-@media (max-width: 800px) {
-
-  .input-grid,
-  .results-grid {
-    grid-template-columns: 1fr;
-  }
-
-
-  .info-grid,
-  .steps-grid {
-    grid-template-columns: 1fr;
-  }
-
-
-  .preset-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-}
-
-
-@media (max-width: 600px) {
-
-  .container {
-    width: calc(100% - 20px);
-  }
-
-
-  .hero {
-    padding: 52px 0 75px;
-  }
-
-
-  .hero h1 {
-    font-size: 42px;
-
-    letter-spacing: -1px;
-  }
-
-
-  .hero p {
-    font-size: 12px;
-  }
-
-
-  .tool-section {
-    margin-top: -25px;
-  }
-
-
-  .tool-card {
-    border-radius: 18px;
-  }
-
-
-  .tool-card-header {
-    align-items: flex-start;
-
-    flex-direction: column;
-
-    padding: 20px;
-  }
-
-
-  .input-grid,
-  .results-grid {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-
-  .command-area,
-  .matrix-area,
-  .presets-area {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-
-  .actions {
-    flex-direction: column;
-
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-
-  .primary-btn,
-  .secondary-btn {
-    width: 100%;
-  }
-
-
-  .matrix {
-    overflow-x: auto;
-  }
-
-
-  .matrix-header,
-  .matrix-row {
-    min-width: 590px;
-  }
-
-
-  .filename {
-    flex-direction: column;
-
-    align-items: stretch;
-  }
-
-
-  .security {
-    align-items: flex-start;
-  }
-
-
-  .security > strong {
-    display: none;
-  }
-
-
-  .info-section,
-  .steps-section,
-  .faq-section {
-    padding: 55px 0;
-  }
-
-}
-
-
-@media (max-width: 400px) {
-
-  .preset-grid {
-    grid-template-columns: 1fr;
-  }
-
-
-  .hero-tags span {
-    width: 100%;
-
-    justify-content: center;
-  }
-
-
-  .calculation-row {
-    gap: 5px;
-  }
-
-
-  .calculation-row > div {
-    min-width: 65px;
-  }
-
-
-  .result-value {
-    font-size: 25px;
-  }
-
-
-  .result-value.symbolic {
-    font-size: 17px;
-  }
-
-}
-
-</style>
