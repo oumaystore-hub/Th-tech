@@ -1,0 +1,3286 @@
+---
+import Header from '../../../components/Header.astro';
+import Footer from '../../../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const canonical = `https://oumaystore-hub.github.io${base}/tools/unix-permission/`;
+---
+
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Unix Permission Calculator | حاسبة صلاحيات Unix - Th.Tech</title>
+
+  <meta
+    name="description"
+    content="حاسبة صلاحيات Unix تفاعلية لحساب صلاحيات User وGroup وOthers وتحويلها إلى الصيغة الرقمية والرمزية وأمر chmod."
+  />
+
+  <meta
+    name="keywords"
+    content="Unix Permission Calculator, Unix permissions, Linux permissions, chmod calculator, حاسبة صلاحيات Unix, صلاحيات Linux"
+  />
+
+  <link rel="canonical" href={canonical} />
+
+  <meta name="theme-color" content="#07111f" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+</head>
+
+<body>
+
+  <Header />
+
+  <main class="permission-page">
+
+    <!-- HERO -->
+    <section class="hero">
+
+      <div class="hero-icon">
+        <i class="fa-solid fa-lock"></i>
+      </div>
+
+      <div class="hero-content">
+
+        <span class="eyebrow">
+          <i class="fa-brands fa-linux"></i>
+          UNIX / LINUX DEVELOPER TOOL
+        </span>
+
+        <h1>
+          حاسبة صلاحيات
+          <span>Unix</span>
+        </h1>
+
+        <p>
+          احسب صلاحيات الملفات والمجلدات بسهولة باستخدام
+          User وGroup وOthers.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- LIVE RESULT -->
+    <section class="result-panel">
+
+      <div class="result-item">
+
+        <span class="result-label">
+          الصيغة الرقمية
+        </span>
+
+        <strong id="numericResult">
+          755
+        </strong>
+
+      </div>
+
+
+      <div class="result-divider"></div>
+
+
+      <div class="result-item symbolic-result">
+
+        <span class="result-label">
+          الصيغة الرمزية
+        </span>
+
+        <strong id="symbolicResult">
+          rwxr-xr-x
+        </strong>
+
+      </div>
+
+
+      <div class="result-divider"></div>
+
+
+      <div class="result-item">
+
+        <span class="result-label">
+          القيمة الإجمالية
+        </span>
+
+        <strong id="totalValue">
+          493
+        </strong>
+
+      </div>
+
+    </section>
+
+
+    <!-- PERMISSION CALCULATOR -->
+    <section class="calculator-section">
+
+      <div class="section-heading">
+
+        <div class="heading-icon">
+          <i class="fa-solid fa-sliders"></i>
+        </div>
+
+        <div>
+          <h2>محدد الصلاحيات</h2>
+
+          <p>
+            فعّل أو عطّل الصلاحيات المطلوبة
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="permission-grid">
+
+
+        <!-- USER -->
+        <div class="permission-card">
+
+          <div class="permission-card-header">
+
+            <div class="role-icon user-icon">
+              <i class="fa-solid fa-user"></i>
+            </div>
+
+            <div>
+              <h3>المالك</h3>
+              <span>User / Owner</span>
+            </div>
+
+            <strong
+              id="userDigit"
+              class="role-digit"
+            >
+              7
+            </strong>
+
+          </div>
+
+
+          <div class="permission-list">
+
+            <label class="permission-row">
+
+              <input
+                type="checkbox"
+                data-role="user"
+                data-permission="read"
+                checked
+              />
+
+              <span class="custom-check">
+                <i class="fa-solid fa-check"></i>
+              </span>
+
+              <span class="permission-name">
+                <strong>Read</strong>
+                <small>قراءة</small>
+              </span>
+
+              <span class="permission-letter">
+                r
+              </span>
+
+              <span class="permission-value">
+                4
+              </span>
+
+            </label>
+
+
+            <label class="permission-row">
+
+              <input
+                type="checkbox"
+                data-role="user"
+                data-permission="write"
+                checked
+              />
+
+              <span class="custom-check">
+                <i class="fa-solid fa-check"></i>
+              </span>
+
+              <span class="permission-name">
+                <strong>Write</strong>
+                <small>كتابة</small>
+              </span>
+
+              <span class="permission-letter">
+                w
+              </span>
+
+              <span class="permission-value">
+                2
+              </span>
+
+            </label>
+
+
+            <label class="permission-row">
+
+              <input
+                type="checkbox"
+                data-role="user"
+                data-permission="execute"
+                checked
+              />
+
+              <span class="custom-check">
+                <i class="fa-solid fa-check"></i>
+              </span>
+
+              <span class="permission-name">
+                <strong>Execute</strong>
+                <small>تنفيذ</small>
+              </span>
+
+              <span class="permission-letter">
+                x
+              </span>
+
+              <span class="permission-value">
+                1
+              </span>
+
+            </label>
+
+          </div>
+
+        </div>
+
+
+        <!-- GROUP -->
+        <div class="permission-card">
+
+          <div class="permission-card-header">
+
+            <div class="role-icon group-icon">
+              <i class="fa-solid fa-users"></i>
+            </div>
+
+            <div>
+              <h3>المجموعة</h3>
+              <span>Group</span>
+            </div>
+
+            <strong
+              id="groupDigit"
+              class="role-digit"
+            >
+              5
+            </strong>
+
+          </div>
+
+
+          <div class="permission-list">
+
+            <label class="permission-row">
+
+              <input
+                type="checkbox"
+                data-role="group"
+                data-permission="read"
+                checked
+              />
+
+              <span class="custom-check">
+                <i class="fa-solid fa-check"></i>
+              </span>
+
+              <span class="permission-name">
+                <strong>Read</strong>
+                <small>قراءة</small>
+              </span>
+
+              <span class="permission-letter">
+                r
+              </span>
+
+              <span class="permission-value">
+                4
+              </span>
+
+            </label>
+
+
+            <label class="permission-row">
+
+              <input
+                type="checkbox"
+                data-role="group"
+                data-permission="write"
+              />
+
+              <span class="custom-check">
+                <i class="fa-solid fa-check"></i>
+              </span>
+
+              <span class="permission-name">
+                <strong>Write</strong>
+                <small>كتابة</small>
+              </span>
+
+              <span class="permission-letter">
+                w
+              </span>
+
+              <span class="permission-value">
+                2
+              </span>
+
+            </label>
+
+
+            <label class="permission-row">
+
+              <input
+                type="checkbox"
+                data-role="group"
+                data-permission="execute"
+                checked
+              />
+
+              <span class="custom-check">
+                <i class="fa-solid fa-check"></i>
+              </span>
+
+              <span class="permission-name">
+                <strong>Execute</strong>
+                <small>تنفيذ</small>
+              </span>
+
+              <span class="permission-letter">
+                x
+              </span>
+
+              <span class="permission-value">
+                1
+              </span>
+
+            </label>
+
+          </div>
+
+        </div>
+
+
+        <!-- OTHERS -->
+        <div class="permission-card">
+
+          <div class="permission-card-header">
+
+            <div class="role-icon others-icon">
+              <i class="fa-solid fa-globe"></i>
+            </div>
+
+            <div>
+              <h3>الآخرون</h3>
+              <span>Others</span>
+            </div>
+
+            <strong
+              id="othersDigit"
+              class="role-digit"
+            >
+              5
+            </strong>
+
+          </div>
+
+
+          <div class="permission-list">
+
+            <label class="permission-row">
+
+              <input
+                type="checkbox"
+                data-role="others"
+                data-permission="read"
+                checked
+              />
+
+              <span class="custom-check">
+                <i class="fa-solid fa-check"></i>
+              </span>
+
+              <span class="permission-name">
+                <strong>Read</strong>
+                <small>قراءة</small>
+              </span>
+
+              <span class="permission-letter">
+                r
+              </span>
+
+              <span class="permission-value">
+                4
+              </span>
+
+            </label>
+
+
+            <label class="permission-row">
+
+              <input
+                type="checkbox"
+                data-role="others"
+                data-permission="write"
+              />
+
+              <span class="custom-check">
+                <i class="fa-solid fa-check"></i>
+              </span>
+
+              <span class="permission-name">
+                <strong>Write</strong>
+                <small>كتابة</small>
+              </span>
+
+              <span class="permission-letter">
+                w
+              </span>
+
+              <span class="permission-value">
+                2
+              </span>
+
+            </label>
+
+
+            <label class="permission-row">
+
+              <input
+                type="checkbox"
+                data-role="others"
+                data-permission="execute"
+                checked
+              />
+
+              <span class="custom-check">
+                <i class="fa-solid fa-check"></i>
+              </span>
+
+              <span class="permission-name">
+                <strong>Execute</strong>
+                <small>تنفيذ</small>
+              </span>
+
+              <span class="permission-letter">
+                x
+              </span>
+
+              <span class="permission-value">
+                1
+              </span>
+
+            </label>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- COMMAND -->
+    <section class="command-section">
+
+      <div class="section-heading">
+
+        <div class="heading-icon">
+          <i class="fa-solid fa-terminal"></i>
+        </div>
+
+        <div>
+          <h2>أمر chmod</h2>
+
+          <p>
+            الأمر الجاهز لتطبيق الصلاحيات
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="command-card">
+
+        <div class="command-code">
+
+          <span class="command-prefix">
+            $
+          </span>
+
+          <code id="commandOutput">
+            chmod 755 filename
+          </code>
+
+        </div>
+
+        <button
+          id="copyCommandBtn"
+          class="copy-button"
+          type="button"
+          aria-label="نسخ الأمر"
+          title="نسخ الأمر"
+        >
+          <i class="fa-regular fa-copy"></i>
+          <span>نسخ</span>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- FILENAME -->
+    <section class="filename-section">
+
+      <div class="section-heading">
+
+        <div class="heading-icon">
+          <i class="fa-regular fa-file-code"></i>
+        </div>
+
+        <div>
+          <h2>اسم الملف</h2>
+
+          <p>
+            استخدم اسم ملفك لإنشاء الأمر النهائي
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="filename-card">
+
+        <div class="filename-input">
+
+          <i class="fa-regular fa-file"></i>
+
+          <input
+            id="filenameInput"
+            type="text"
+            value="filename"
+            placeholder="filename"
+            autocomplete="off"
+          />
+
+        </div>
+
+        <div class="filename-preview">
+
+          <span>
+            الأمر:
+          </span>
+
+          <code id="filenameCommand">
+            chmod 755 filename
+          </code>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- QUICK PRESETS -->
+    <section class="preset-section">
+
+      <div class="section-heading">
+
+        <div class="heading-icon">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+
+        <div>
+          <h2>إعدادات جاهزة</h2>
+
+          <p>
+            اختر صلاحية شائعة بنقرة واحدة
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="preset-grid">
+
+        <button
+          class="preset"
+          data-value="755"
+          type="button"
+        >
+          <strong>755</strong>
+          <span>rwxr-xr-x</span>
+          <small>تنفيذ شائع</small>
+        </button>
+
+
+        <button
+          class="preset"
+          data-value="644"
+          type="button"
+        >
+          <strong>644</strong>
+          <span>rw-r--r--</span>
+          <small>ملفات عادية</small>
+        </button>
+
+
+        <button
+          class="preset"
+          data-value="700"
+          type="button"
+        >
+          <strong>700</strong>
+          <span>rwx------</span>
+          <small>خاص بالمالك</small>
+        </button>
+
+
+        <button
+          class="preset"
+          data-value="600"
+          type="button"
+        >
+          <strong>600</strong>
+          <span>rw-------</span>
+          <small>ملف خاص</small>
+        </button>
+
+
+        <button
+          class="preset"
+          data-value="775"
+          type="button"
+        >
+          <strong>775</strong>
+          <span>rwxrwxr-x</span>
+          <small>مجلدات مشتركة</small>
+        </button>
+
+
+        <button
+          class="preset danger"
+          data-value="777"
+          type="button"
+        >
+          <strong>777</strong>
+          <span>rwxrwxrwx</span>
+          <small>صلاحيات كاملة</small>
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- ACTIONS -->
+    <section class="actions">
+
+      <button
+        id="copyAllBtn"
+        class="main-action"
+        type="button"
+      >
+        <i class="fa-regular fa-copy"></i>
+        نسخ النتائج
+      </button>
+
+
+      <button
+        id="resetBtn"
+        class="reset-action"
+        type="button"
+      >
+        <i class="fa-solid fa-rotate-right"></i>
+        إعادة ضبط
+      </button>
+
+    </section>
+
+
+    <!-- EXPLANATION -->
+    <section class="explanation">
+
+      <div class="info-card">
+
+        <div class="info-icon">
+          <i class="fa-solid fa-circle-info"></i>
+        </div>
+
+        <div>
+
+          <h2>
+            كيف تعمل صلاحيات Unix؟
+          </h2>
+
+          <p>
+            صلاحيات Unix تقسم الوصول إلى ثلاثة مستويات:
+            المالك User، المجموعة Group، والآخرون Others.
+          </p>
+
+          <div class="permission-examples">
+
+            <div>
+              <strong>r</strong>
+              <span>Read — قراءة</span>
+              <b>4</b>
+            </div>
+
+            <div>
+              <strong>w</strong>
+              <span>Write — كتابة</span>
+              <b>2</b>
+            </div>
+
+            <div>
+              <strong>x</strong>
+              <span>Execute — تنفيذ</span>
+              <b>1</b>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <div class="warning-card">
+
+        <div class="warning-icon">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+
+        <div>
+
+          <h3>
+            انتبه إلى الصلاحية 777
+          </h3>
+
+          <p>
+            تمنح 777 صلاحيات القراءة والكتابة والتنفيذ للمالك
+            والمجموعة وجميع المستخدمين. استخدمها فقط عندما تكون
+            هناك حاجة واضحة لذلك.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- FAQ -->
+    <section class="faq-section">
+
+      <div class="section-heading">
+
+        <div class="heading-icon">
+          <i class="fa-solid fa-circle-question"></i>
+        </div>
+
+        <div>
+          <h2>الأسئلة الشائعة</h2>
+
+          <p>
+            معلومات سريعة حول Unix Permissions
+          </p>
+        </div>
+
+      </div>
+
+
+      <div class="faq-list">
+
+        <details>
+
+          <summary>
+            <span>
+              ماذا يعني الرقم 755؟
+            </span>
+
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            يعني أن المالك لديه القراءة والكتابة والتنفيذ،
+            بينما المجموعة والآخرون لديهم القراءة والتنفيذ فقط.
+          </p>
+
+        </details>
+
+
+        <details>
+
+          <summary>
+            <span>
+              ماذا تعني الصيغة rwxr-xr-x؟
+            </span>
+
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            هي الصيغة الرمزية للصلاحية 755، وتتكون من ثلاث
+            مجموعات، كل مجموعة مكونة من Read وWrite وExecute.
+          </p>
+
+        </details>
+
+
+        <details>
+
+          <summary>
+            <span>
+              ما قيمة Read وWrite وExecute؟
+            </span>
+
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            القراءة تساوي 4، والكتابة تساوي 2، والتنفيذ يساوي 1.
+            يتم جمع القيم للحصول على رقم كل مجموعة.
+          </p>
+
+        </details>
+
+
+        <details>
+
+          <summary>
+            <span>
+              ما الفرق بين User وGroup وOthers؟
+            </span>
+
+            <i class="fa-solid fa-chevron-down"></i>
+          </summary>
+
+          <p>
+            User هو مالك الملف، Group هي المجموعة المرتبطة بالملف،
+            وOthers هم باقي المستخدمين الذين لا ينتمون إلى المالك
+            أو المجموعة المحددة.
+          </p>
+
+        </details>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <Footer />
+
+
+  <!-- TOAST -->
+  <div
+    id="toast"
+    class="toast"
+    role="status"
+    aria-live="polite"
+  >
+
+    <i class="fa-solid fa-check"></i>
+
+    <span id="toastMessage">
+      تم النسخ بنجاح
+    </span>
+
+  </div>
+
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+      /* ============================================
+       * TH-TECH THEME SYNC
+       * ============================================ */
+
+      function syncTheme() {
+
+        const theme =
+          localStorage.getItem('theme');
+
+        if (theme === 'light') {
+
+          document.documentElement.setAttribute(
+            'data-theme',
+            'light'
+          );
+
+        } else {
+
+          document.documentElement.removeAttribute(
+            'data-theme'
+          );
+
+        }
+
+      }
+
+      syncTheme();
+
+
+      const themeButton =
+        document.getElementById('theme-btn');
+
+      if (themeButton) {
+
+        themeButton.addEventListener(
+          'click',
+          () => {
+
+            setTimeout(() => {
+              syncTheme();
+            }, 0);
+
+          }
+        );
+
+      }
+
+
+      /* ============================================
+       * ELEMENTS
+       * ============================================ */
+
+      const numericResult =
+        document.getElementById(
+          'numericResult'
+        );
+
+      const symbolicResult =
+        document.getElementById(
+          'symbolicResult'
+        );
+
+      const totalValue =
+        document.getElementById(
+          'totalValue'
+        );
+
+      const userDigit =
+        document.getElementById(
+          'userDigit'
+        );
+
+      const groupDigit =
+        document.getElementById(
+          'groupDigit'
+        );
+
+      const othersDigit =
+        document.getElementById(
+          'othersDigit'
+        );
+
+      const commandOutput =
+        document.getElementById(
+          'commandOutput'
+        );
+
+      const filenameCommand =
+        document.getElementById(
+          'filenameCommand'
+        );
+
+      const filenameInput =
+        document.getElementById(
+          'filenameInput'
+        );
+
+      const copyCommandBtn =
+        document.getElementById(
+          'copyCommandBtn'
+        );
+
+      const copyAllBtn =
+        document.getElementById(
+          'copyAllBtn'
+        );
+
+      const resetBtn =
+        document.getElementById(
+          'resetBtn'
+        );
+
+      const toast =
+        document.getElementById(
+          'toast'
+        );
+
+      const toastMessage =
+        document.getElementById(
+          'toastMessage'
+        );
+
+
+      /* ============================================
+       * ROLE CALCULATIONS
+       * ============================================ */
+
+      function getRoleDigit(role) {
+
+        let value = 0;
+
+
+        const read =
+          document.querySelector(
+            `input[data-role="${role}"][data-permission="read"]`
+          );
+
+        const write =
+          document.querySelector(
+            `input[data-role="${role}"][data-permission="write"]`
+          );
+
+        const execute =
+          document.querySelector(
+            `input[data-role="${role}"][data-permission="execute"]`
+          );
+
+
+        if (read && read.checked) {
+          value += 4;
+        }
+
+
+        if (write && write.checked) {
+          value += 2;
+        }
+
+
+        if (execute && execute.checked) {
+          value += 1;
+        }
+
+
+        return value;
+      }
+
+
+      /* ============================================
+       * SYMBOLIC CONVERSION
+       * ============================================ */
+
+      function digitToSymbolic(digit) {
+
+        const values = [
+          '---',
+          '--x',
+          '-w-',
+          '-wx',
+          'r--',
+          'r-x',
+          'rw-',
+          'rwx'
+        ];
+
+        return values[digit] || '---';
+      }
+
+
+      function numericToSymbolic(number) {
+
+        const value =
+          String(number);
+
+        if (
+          !/^[0-7]{3}$/.test(value)
+        ) {
+          return '---------';
+        }
+
+
+        return (
+          digitToSymbolic(
+            Number(value[0])
+          ) +
+
+          digitToSymbolic(
+            Number(value[1])
+          ) +
+
+          digitToSymbolic(
+            Number(value[2])
+          )
+        );
+
+      }
+
+
+      /* ============================================
+       * UPDATE CALCULATOR
+       * ============================================ */
+
+      function updateCalculator() {
+
+        const user =
+          getRoleDigit('user');
+
+        const group =
+          getRoleDigit('group');
+
+        const others =
+          getRoleDigit('others');
+
+
+        const numeric =
+          `${user}${group}${others}`;
+
+
+        const symbolic =
+          numericToSymbolic(numeric);
+
+
+        const total =
+          user * 64 +
+          group * 8 +
+          others;
+
+
+        numericResult.textContent =
+          numeric;
+
+        symbolicResult.textContent =
+          symbolic;
+
+        totalValue.textContent =
+          total;
+
+
+        userDigit.textContent =
+          user;
+
+        groupDigit.textContent =
+          group;
+
+        othersDigit.textContent =
+          others;
+
+
+        updateCommand(numeric);
+
+      }
+
+
+      /* ============================================
+       * COMMAND
+       * ============================================ */
+
+      function updateCommand(numeric) {
+
+        const filename =
+          filenameInput.value.trim() ||
+          'filename';
+
+
+        const command =
+          `chmod ${numeric} ${filename}`;
+
+
+        commandOutput.textContent =
+          command;
+
+        filenameCommand.textContent =
+          command;
+
+      }
+
+
+      /* ============================================
+       * PERMISSION EVENTS
+       * ============================================ */
+
+      document
+        .querySelectorAll(
+          '.permission-row input'
+        )
+        .forEach(input => {
+
+          input.addEventListener(
+            'change',
+            updateCalculator
+          );
+
+        });
+
+
+      /* ============================================
+       * FILENAME
+       * ============================================ */
+
+      filenameInput.addEventListener(
+        'input',
+        () => {
+
+          const user =
+            getRoleDigit('user');
+
+          const group =
+            getRoleDigit('group');
+
+          const others =
+            getRoleDigit('others');
+
+          const numeric =
+            `${user}${group}${others}`;
+
+          updateCommand(numeric);
+
+        }
+      );
+
+
+      /* ============================================
+       * PRESETS
+       * ============================================ */
+
+      document
+        .querySelectorAll('.preset')
+        .forEach(button => {
+
+          button.addEventListener(
+            'click',
+            () => {
+
+              const value =
+                button.dataset.value;
+
+
+              if (
+                !/^[0-7]{3}$/.test(value)
+              ) {
+                return;
+              }
+
+
+              setFromNumeric(value);
+
+
+              showToast(
+                `تم اختيار الصلاحية ${value}`
+              );
+
+            }
+          );
+
+        });
+
+
+      /* ============================================
+       * SET FROM NUMERIC
+       * ============================================ */
+
+      function setFromNumeric(number) {
+
+        const roles = [
+          {
+            name: 'user',
+            digit: Number(number[0])
+          },
+          {
+            name: 'group',
+            digit: Number(number[1])
+          },
+          {
+            name: 'others',
+            digit: Number(number[2])
+          }
+        ];
+
+
+        roles.forEach(role => {
+
+          const read =
+            document.querySelector(
+              `input[data-role="${role.name}"][data-permission="read"]`
+            );
+
+          const write =
+            document.querySelector(
+              `input[data-role="${role.name}"][data-permission="write"]`
+            );
+
+          const execute =
+            document.querySelector(
+              `input[data-role="${role.name}"][data-permission="execute"]`
+            );
+
+
+          if (read) {
+            read.checked =
+              Boolean(role.digit & 4);
+          }
+
+
+          if (write) {
+            write.checked =
+              Boolean(role.digit & 2);
+          }
+
+
+          if (execute) {
+            execute.checked =
+              Boolean(role.digit & 1);
+          }
+
+        });
+
+
+        updateCalculator();
+
+      }
+
+
+      /* ============================================
+       * COPY
+       * ============================================ */
+
+      async function copyText(text) {
+
+        try {
+
+          await navigator.clipboard.writeText(
+            text
+          );
+
+          return true;
+
+        } catch {
+
+          const textarea =
+            document.createElement(
+              'textarea'
+            );
+
+
+          textarea.value =
+            text;
+
+          textarea.style.position =
+            'fixed';
+
+          textarea.style.opacity =
+            '0';
+
+          document.body.appendChild(
+            textarea
+          );
+
+          textarea.select();
+
+
+          let success = false;
+
+          try {
+
+            success =
+              document.execCommand(
+                'copy'
+              );
+
+          } catch {
+
+            success = false;
+
+          }
+
+
+          textarea.remove();
+
+          return success;
+
+        }
+
+      }
+
+
+      copyCommandBtn.addEventListener(
+        'click',
+        async () => {
+
+          const text =
+            commandOutput.textContent.trim();
+
+
+          const success =
+            await copyText(text);
+
+
+          if (success) {
+
+            showToast(
+              'تم نسخ أمر chmod'
+            );
+
+          }
+
+        }
+      );
+
+
+      copyAllBtn.addEventListener(
+        'click',
+        async () => {
+
+          const numeric =
+            numericResult.textContent.trim();
+
+          const symbolic =
+            symbolicResult.textContent.trim();
+
+          const total =
+            totalValue.textContent.trim();
+
+          const command =
+            commandOutput.textContent.trim();
+
+
+          const text =
+`Unix Permissions
+Numeric: ${numeric}
+Symbolic: ${symbolic}
+Value: ${total}
+Command: ${command}`;
+
+
+          const success =
+            await copyText(text);
+
+
+          if (success) {
+
+            showToast(
+              'تم نسخ جميع النتائج'
+            );
+
+          }
+
+        }
+      );
+
+
+      /* ============================================
+       * RESET
+       * ============================================ */
+
+      resetBtn.addEventListener(
+        'click',
+        () => {
+
+          setFromNumeric('755');
+
+          filenameInput.value =
+            'filename';
+
+          updateCalculator();
+
+          showToast(
+            'تمت إعادة ضبط الأداة'
+          );
+
+        }
+      );
+
+
+      /* ============================================
+       * TOAST
+       * ============================================ */
+
+      let toastTimer;
+
+
+      function showToast(message) {
+
+        toastMessage.textContent =
+          message;
+
+
+        toast.classList.add(
+          'show'
+        );
+
+
+        clearTimeout(
+          toastTimer
+        );
+
+
+        toastTimer =
+          setTimeout(() => {
+
+            toast.classList.remove(
+              'show'
+            );
+
+          }, 2200);
+
+      }
+
+
+      /* ============================================
+       * INITIALIZE
+       * ============================================ */
+
+      updateCalculator();
+
+    });
+  </script>
+
+
+  <style>
+
+    /* ============================================
+     * DARK THEME VARIABLES
+     * ============================================ */
+
+    :global(html) {
+
+      --up-bg: #07111f;
+      --up-bg-2: #0a1628;
+
+      --up-surface: #0d1b2d;
+      --up-surface-2: #102238;
+      --up-card: #112a43;
+
+      --up-border:
+        rgba(148, 163, 184, 0.15);
+
+      --up-border-strong:
+        rgba(56, 189, 248, 0.28);
+
+      --up-text: #f1f5f9;
+      --up-soft: #cbd5e1;
+      --up-muted: #94a3b8;
+
+      --up-primary: #38bdf8;
+      --up-primary-2: #0ea5e9;
+
+      --up-primary-soft:
+        rgba(56, 189, 248, 0.12);
+
+      --up-green: #22c55e;
+      --up-green-soft:
+        rgba(34, 197, 94, 0.12);
+
+      --up-orange: #f59e0b;
+      --up-orange-soft:
+        rgba(245, 158, 11, 0.12);
+
+      --up-red: #ef4444;
+      --up-red-soft:
+        rgba(239, 68, 68, 0.12);
+
+      --up-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.25);
+
+      --up-radius: 18px;
+
+      color-scheme: dark;
+    }
+
+
+    /* ============================================
+     * LIGHT THEME
+     * ============================================ */
+
+    :global(html[data-theme='light']) {
+
+      --up-bg: #f1f7fc;
+      --up-bg-2: #eaf4fb;
+
+      --up-surface: #ffffff;
+      --up-surface-2: #f8fbfe;
+      --up-card: #ffffff;
+
+      --up-border:
+        rgba(15, 23, 42, 0.10);
+
+      --up-border-strong:
+        rgba(14, 165, 233, 0.28);
+
+      --up-text: #0f172a;
+      --up-soft: #334155;
+      --up-muted: #64748b;
+
+      --up-primary: #0284c7;
+      --up-primary-2: #0ea5e9;
+
+      --up-primary-soft:
+        rgba(14, 165, 233, 0.09);
+
+      --up-green: #16a34a;
+      --up-green-soft:
+        rgba(22, 163, 74, 0.09);
+
+      --up-orange: #d97706;
+      --up-orange-soft:
+        rgba(217, 119, 6, 0.09);
+
+      --up-red: #dc2626;
+      --up-red-soft:
+        rgba(220, 38, 38, 0.08);
+
+      --up-shadow:
+        0 18px 50px
+        rgba(15, 23, 42, 0.09);
+
+      color-scheme: light;
+    }
+
+
+    /* ============================================
+     * GLOBAL
+     * ============================================ */
+
+    :global(*) {
+      box-sizing: border-box;
+    }
+
+
+    :global(body) {
+
+      margin: 0;
+
+      min-height: 100vh;
+
+      background:
+        radial-gradient(
+          circle at top right,
+          rgba(14, 165, 233, 0.10),
+          transparent 34%
+        ),
+        linear-gradient(
+          135deg,
+          var(--up-bg),
+          var(--up-bg-2)
+        );
+
+      color:
+        var(--up-text);
+
+      font-family:
+        'Cairo',
+        sans-serif;
+
+      transition:
+        background 0.3s ease,
+        color 0.3s ease;
+    }
+
+
+    /* ============================================
+     * PAGE
+     * ============================================ */
+
+    .permission-page {
+
+      width:
+        min(
+          1180px,
+          calc(100% - 32px)
+        );
+
+      margin: 0 auto;
+
+      padding:
+        55px 0 80px;
+    }
+
+
+    /* ============================================
+     * HERO
+     * ============================================ */
+
+    .hero {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 22px;
+
+      margin-bottom: 28px;
+
+      padding: 28px;
+
+      border:
+        1px solid var(--up-border);
+
+      border-radius:
+        var(--up-radius);
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--up-surface),
+          var(--up-surface-2)
+        );
+
+      box-shadow:
+        var(--up-shadow);
+    }
+
+
+    .hero-icon {
+
+      width: 70px;
+      height: 70px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 20px;
+
+      color: #fff;
+
+      font-size: 29px;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--up-primary),
+          var(--up-primary-2)
+        );
+
+      box-shadow:
+        0 12px 30px
+        rgba(14, 165, 233, 0.25);
+    }
+
+
+    .eyebrow {
+
+      display: inline-flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      margin-bottom: 4px;
+
+      color:
+        var(--up-primary);
+
+      font-size: 12px;
+
+      font-weight: 800;
+    }
+
+
+    .hero h1 {
+
+      margin: 0;
+
+      font-size:
+        clamp(
+          28px,
+          5vw,
+          43px
+        );
+
+      font-weight: 800;
+
+      letter-spacing: -1px;
+    }
+
+
+    .hero h1 span {
+
+      color:
+        var(--up-primary);
+    }
+
+
+    .hero p {
+
+      margin:
+        8px 0 0;
+
+      color:
+        var(--up-muted);
+
+      font-size: 14px;
+
+      line-height: 1.8;
+    }
+
+
+    /* ============================================
+     * RESULT PANEL
+     * ============================================ */
+
+    .result-panel {
+
+      display: grid;
+
+      grid-template-columns:
+        1fr auto 1.4fr auto 1fr;
+
+      align-items: center;
+
+      margin-bottom: 34px;
+
+      padding: 22px;
+
+      border:
+        1px solid var(--up-border);
+
+      border-radius:
+        var(--up-radius);
+
+      background:
+        var(--up-surface);
+
+      box-shadow:
+        var(--up-shadow);
+    }
+
+
+    .result-item {
+
+      text-align: center;
+    }
+
+
+    .result-label {
+
+      display: block;
+
+      margin-bottom: 5px;
+
+      color:
+        var(--up-muted);
+
+      font-size: 12px;
+    }
+
+
+    .result-item strong {
+
+      display: block;
+
+      color:
+        var(--up-primary);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+
+      font-size: 31px;
+
+      font-weight: 700;
+
+      direction: ltr;
+    }
+
+
+    .symbolic-result strong {
+
+      color:
+        var(--up-green);
+
+      font-size: 25px;
+    }
+
+
+    .result-divider {
+
+      width: 1px;
+
+      height: 45px;
+
+      background:
+        var(--up-border);
+    }
+
+
+    /* ============================================
+     * HEADINGS
+     * ============================================ */
+
+    .section-heading {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 13px;
+
+      margin-bottom: 18px;
+    }
+
+
+    .heading-icon {
+
+      width: 45px;
+      height: 45px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      flex-shrink: 0;
+
+      border-radius: 13px;
+
+      color:
+        var(--up-primary);
+
+      background:
+        var(--up-primary-soft);
+
+      border:
+        1px solid
+        var(--up-border-strong);
+    }
+
+
+    .section-heading h2 {
+
+      margin: 0;
+
+      font-size: 19px;
+
+      font-weight: 800;
+    }
+
+
+    .section-heading p {
+
+      margin:
+        2px 0 0;
+
+      color:
+        var(--up-muted);
+
+      font-size: 12px;
+    }
+
+
+    /* ============================================
+     * PERMISSION GRID
+     * ============================================ */
+
+    .calculator-section {
+
+      margin-bottom: 35px;
+    }
+
+
+    .permission-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, minmax(0, 1fr));
+
+      gap: 18px;
+    }
+
+
+    .permission-card {
+
+      overflow: hidden;
+
+      border:
+        1px solid var(--up-border);
+
+      border-radius:
+        var(--up-radius);
+
+      background:
+        var(--up-surface);
+
+      box-shadow:
+        var(--up-shadow);
+
+      transition:
+        transform 0.25s ease,
+        border-color 0.25s ease;
+    }
+
+
+    .permission-card:hover {
+
+      transform:
+        translateY(-3px);
+
+      border-color:
+        var(--up-border-strong);
+    }
+
+
+    .permission-card-header {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      padding: 19px;
+
+      border-bottom:
+        1px solid var(--up-border);
+    }
+
+
+    .role-icon {
+
+      width: 45px;
+      height: 45px;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 13px;
+
+      font-size: 18px;
+    }
+
+
+    .user-icon {
+
+      color:
+        var(--up-primary);
+
+      background:
+        var(--up-primary-soft);
+    }
+
+
+    .group-icon {
+
+      color:
+        var(--up-green);
+
+      background:
+        var(--up-green-soft);
+    }
+
+
+    .others-icon {
+
+      color:
+        var(--up-orange);
+
+      background:
+        var(--up-orange-soft);
+    }
+
+
+    .permission-card-header h3 {
+
+      margin: 0;
+
+      font-size: 15px;
+    }
+
+
+    .permission-card-header span {
+
+      display: block;
+
+      margin-top: 2px;
+
+      color:
+        var(--up-muted);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+
+      font-size: 9px;
+
+      direction: ltr;
+
+      text-align: right;
+    }
+
+
+    .role-digit {
+
+      margin-right: auto;
+
+      color:
+        var(--up-primary);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+
+      font-size: 28px;
+    }
+
+
+    .permission-list {
+
+      padding: 10px 15px 15px;
+    }
+
+
+    .permission-row {
+
+      position: relative;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      min-height: 53px;
+
+      cursor: pointer;
+
+      border-bottom:
+        1px solid var(--up-border);
+    }
+
+
+    .permission-row:last-child {
+      border-bottom: none;
+    }
+
+
+    .permission-row input {
+
+      position: absolute;
+
+      opacity: 0;
+
+      pointer-events: none;
+    }
+
+
+    .custom-check {
+
+      width: 21px;
+      height: 21px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border:
+        1px solid var(--up-border);
+
+      border-radius: 6px;
+
+      background:
+        var(--up-bg);
+
+      color: #fff;
+
+      transition:
+        all 0.2s ease;
+    }
+
+
+    .custom-check i {
+
+      opacity: 0;
+
+      font-size: 11px;
+    }
+
+
+    .permission-row input:checked
+    + .custom-check {
+
+      border-color:
+        var(--up-primary);
+
+      background:
+        var(--up-primary);
+
+      box-shadow:
+        0 3px 10px
+        rgba(14, 165, 233, 0.20);
+    }
+
+
+    .permission-row input:checked
+    + .custom-check i {
+
+      opacity: 1;
+    }
+
+
+    .permission-name {
+
+      display: flex;
+
+      flex-direction: column;
+
+      gap: 0;
+    }
+
+
+    .permission-name strong {
+
+      color:
+        var(--up-text);
+
+      font-size: 12px;
+    }
+
+
+    .permission-name small {
+
+      color:
+        var(--up-muted);
+
+      font-size: 9px;
+    }
+
+
+    .permission-letter {
+
+      margin-right: auto;
+
+      color:
+        var(--up-primary);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+
+      font-weight: 700;
+    }
+
+
+    .permission-value {
+
+      min-width: 22px;
+
+      text-align: center;
+
+      color:
+        var(--up-muted);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+
+      font-size: 11px;
+    }
+
+
+    /* ============================================
+     * COMMAND
+     * ============================================ */
+
+    .command-section {
+
+      margin-bottom: 35px;
+    }
+
+
+    .command-card {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 15px;
+
+      border:
+        1px solid var(--up-border);
+
+      border-radius:
+        var(--up-radius);
+
+      background:
+        #050d18;
+
+      direction: ltr;
+    }
+
+
+    :global(html[data-theme='light'])
+    .command-card {
+
+      background:
+        #eef6fc;
+    }
+
+
+    .command-code {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 9px;
+
+      min-width: 0;
+    }
+
+
+    .command-prefix {
+
+      color:
+        var(--up-green);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+
+      font-weight: 700;
+    }
+
+
+    .command-code code {
+
+      color:
+        var(--up-primary);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+
+      font-size: 14px;
+
+      white-space: nowrap;
+
+      overflow-x: auto;
+    }
+
+
+    .copy-button {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      gap: 7px;
+
+      flex-shrink: 0;
+
+      border:
+        1px solid var(--up-border);
+
+      border-radius: 10px;
+
+      padding: 10px 13px;
+
+      color:
+        var(--up-soft);
+
+      background:
+        var(--up-surface);
+
+      font-family:
+        'Cairo',
+        sans-serif;
+
+      font-size: 12px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition:
+        color 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+
+    .copy-button:hover {
+
+      color:
+        var(--up-primary);
+
+      border-color:
+        var(--up-border-strong);
+    }
+
+
+    /* ============================================
+     * FILENAME
+     * ============================================ */
+
+    .filename-section {
+
+      margin-bottom: 35px;
+    }
+
+
+    .filename-card {
+
+      display: grid;
+
+      grid-template-columns:
+        1fr 1fr;
+
+      gap: 15px;
+    }
+
+
+    .filename-input {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 12px;
+
+      min-height: 58px;
+
+      padding: 0 16px;
+
+      border:
+        1px solid var(--up-border);
+
+      border-radius: 14px;
+
+      background:
+        var(--up-surface);
+
+      color:
+        var(--up-muted);
+    }
+
+
+    .filename-input input {
+
+      width: 100%;
+
+      border: none;
+
+      outline: none;
+
+      background: transparent;
+
+      color:
+        var(--up-text);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+
+      font-size: 14px;
+
+      direction: ltr;
+
+      text-align: left;
+    }
+
+
+    .filename-preview {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 10px;
+
+      min-width: 0;
+
+      padding: 0 16px;
+
+      border:
+        1px solid var(--up-border);
+
+      border-radius: 14px;
+
+      background:
+        var(--up-surface);
+    }
+
+
+    .filename-preview span {
+
+      flex-shrink: 0;
+
+      color:
+        var(--up-muted);
+
+      font-size: 11px;
+    }
+
+
+    .filename-preview code {
+
+      min-width: 0;
+
+      color:
+        var(--up-primary);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+
+      font-size: 12px;
+
+      direction: ltr;
+
+      white-space: nowrap;
+
+      overflow-x: auto;
+    }
+
+
+    /* ============================================
+     * PRESETS
+     * ============================================ */
+
+    .preset-section {
+
+      margin-bottom: 35px;
+    }
+
+
+    .preset-grid {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(6, minmax(0, 1fr));
+
+      gap: 12px;
+    }
+
+
+    .preset {
+
+      min-height: 118px;
+
+      display: flex;
+
+      flex-direction: column;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 4px;
+
+      padding: 12px;
+
+      border:
+        1px solid var(--up-border);
+
+      border-radius: 15px;
+
+      background:
+        var(--up-surface);
+
+      color:
+        var(--up-text);
+
+      font-family:
+        'Cairo',
+        sans-serif;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease;
+    }
+
+
+    .preset:hover {
+
+      transform:
+        translateY(-3px);
+
+      border-color:
+        var(--up-border-strong);
+
+      background:
+        var(--up-primary-soft);
+    }
+
+
+    .preset strong {
+
+      color:
+        var(--up-primary);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+
+      font-size: 21px;
+    }
+
+
+    .preset span {
+
+      direction: ltr;
+
+      color:
+        var(--up-soft);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+
+      font-size: 10px;
+    }
+
+
+    .preset small {
+
+      color:
+        var(--up-muted);
+
+      font-size: 9px;
+    }
+
+
+    .preset.danger strong {
+
+      color:
+        var(--up-red);
+    }
+
+
+    /* ============================================
+     * ACTIONS
+     * ============================================ */
+
+    .actions {
+
+      display: flex;
+
+      justify-content: center;
+
+      gap: 12px;
+
+      margin-bottom: 45px;
+    }
+
+
+    .main-action,
+    .reset-action {
+
+      min-width: 170px;
+
+      padding: 13px 20px;
+
+      border-radius: 12px;
+
+      font-family:
+        'Cairo',
+        sans-serif;
+
+      font-size: 13px;
+
+      font-weight: 700;
+
+      cursor: pointer;
+
+      transition:
+        transform 0.2s ease;
+    }
+
+
+    .main-action:hover,
+    .reset-action:hover {
+
+      transform:
+        translateY(-2px);
+    }
+
+
+    .main-action {
+
+      border: none;
+
+      color: #fff;
+
+      background:
+        linear-gradient(
+          135deg,
+          var(--up-primary),
+          var(--up-primary-2)
+        );
+    }
+
+
+    .reset-action {
+
+      color:
+        var(--up-text);
+
+      background:
+        var(--up-surface);
+
+      border:
+        1px solid var(--up-border);
+    }
+
+
+    /* ============================================
+     * EXPLANATION
+     * ============================================ */
+
+    .explanation {
+
+      display: grid;
+
+      gap: 15px;
+
+      margin-bottom: 42px;
+    }
+
+
+    .info-card,
+    .warning-card {
+
+      display: flex;
+
+      gap: 15px;
+
+      padding: 22px;
+
+      border:
+        1px solid var(--up-border);
+
+      border-radius:
+        var(--up-radius);
+
+      background:
+        var(--up-surface);
+    }
+
+
+    .info-icon,
+    .warning-icon {
+
+      width: 45px;
+      height: 45px;
+
+      flex-shrink: 0;
+
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      border-radius: 13px;
+
+      font-size: 18px;
+    }
+
+
+    .info-icon {
+
+      color:
+        var(--up-primary);
+
+      background:
+        var(--up-primary-soft);
+    }
+
+
+    .warning-icon {
+
+      color:
+        var(--up-orange);
+
+      background:
+        var(--up-orange-soft);
+    }
+
+
+    .info-card h2,
+    .warning-card h3 {
+
+      margin:
+        0 0 7px;
+
+      font-size: 17px;
+    }
+
+
+    .info-card p,
+    .warning-card p {
+
+      margin:
+        5px 0;
+
+      color:
+        var(--up-muted);
+
+      font-size: 12px;
+
+      line-height: 1.9;
+    }
+
+
+    .permission-examples {
+
+      display: grid;
+
+      grid-template-columns:
+        repeat(3, 1fr);
+
+      gap: 10px;
+
+      margin-top: 15px;
+    }
+
+
+    .permission-examples div {
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      padding: 9px;
+
+      border:
+        1px solid var(--up-border);
+
+      border-radius: 10px;
+
+      background:
+        var(--up-surface-2);
+    }
+
+
+    .permission-examples strong {
+
+      color:
+        var(--up-primary);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+    }
+
+
+    .permission-examples span {
+
+      flex: 1;
+
+      color:
+        var(--up-soft);
+
+      font-size: 10px;
+    }
+
+
+    .permission-examples b {
+
+      color:
+        var(--up-muted);
+
+      font-family:
+        'JetBrains Mono',
+        monospace;
+
+      font-size: 10px;
+    }
+
+
+    .warning-card {
+
+      border-color:
+        rgba(245, 158, 11, 0.25);
+    }
+
+
+    /* ============================================
+     * FAQ
+     * ============================================ */
+
+    .faq-section {
+
+      margin-bottom: 25px;
+    }
+
+
+    .faq-list {
+
+      display: grid;
+
+      gap: 10px;
+    }
+
+
+    .faq-list details {
+
+      border:
+        1px solid var(--up-border);
+
+      border-radius: 14px;
+
+      background:
+        var(--up-surface);
+
+      overflow: hidden;
+    }
+
+
+    .faq-list details[open] {
+
+      border-color:
+        var(--up-border-strong);
+    }
+
+
+    .faq-list summary {
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: space-between;
+
+      gap: 15px;
+
+      padding: 17px 18px;
+
+      cursor: pointer;
+
+      list-style: none;
+
+      color:
+        var(--up-text);
+
+      font-size: 13px;
+
+      font-weight: 700;
+    }
+
+
+    .faq-list summary::-webkit-details-marker {
+      display: none;
+    }
+
+
+    .faq-list summary i {
+
+      color:
+        var(--up-primary);
+
+      transition:
+        transform 0.2s ease;
+    }
+
+
+    .faq-list details[open]
+    summary i {
+
+      transform:
+        rotate(180deg);
+    }
+
+
+    .faq-list details p {
+
+      margin: 0;
+
+      padding:
+        0 18px 18px;
+
+      color:
+        var(--up-muted);
+
+      font-size: 12px;
+
+      line-height: 1.9;
+    }
+
+
+    /* ============================================
+     * TOAST
+     * ============================================ */
+
+    .toast {
+
+      position: fixed;
+
+      z-index: 9999;
+
+      left: 50%;
+
+      bottom: 25px;
+
+      display: flex;
+
+      align-items: center;
+
+      gap: 8px;
+
+      padding: 12px 18px;
+
+      border:
+        1px solid var(--up-border-strong);
+
+      border-radius: 12px;
+
+      background:
+        var(--up-surface);
+
+      color:
+        var(--up-text);
+
+      box-shadow:
+        var(--up-shadow);
+
+      font-size: 12px;
+
+      opacity: 0;
+
+      pointer-events: none;
+
+      transform:
+        translate(-50%, 30px);
+
+      transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+    }
+
+
+    .toast i {
+
+      color:
+        var(--up-green);
+    }
+
+
+    .toast.show {
+
+      opacity: 1;
+
+      transform:
+        translate(-50%, 0);
+    }
+
+
+    /* ============================================
+     * RESPONSIVE
+     * ============================================ */
+
+    @media (max-width: 950px) {
+
+      .permission-grid {
+
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+
+      .preset-grid {
+
+        grid-template-columns:
+          repeat(3, minmax(0, 1fr));
+      }
+
+    }
+
+
+    @media (max-width: 700px) {
+
+      .permission-page {
+
+        width:
+          min(
+            calc(100% - 20px),
+            620px
+          );
+
+        padding:
+          30px 0 60px;
+      }
+
+
+      .hero {
+
+        align-items: flex-start;
+
+        padding: 21px;
+      }
+
+
+      .hero-icon {
+
+        width: 55px;
+        height: 55px;
+
+        border-radius: 15px;
+
+        font-size: 23px;
+      }
+
+
+      .hero h1 {
+
+        font-size: 28px;
+      }
+
+
+      .hero p {
+
+        font-size: 12px;
+      }
+
+
+      .result-panel {
+
+        grid-template-columns:
+          1fr;
+
+        gap: 16px;
+      }
+
+
+      .result-divider {
+
+        width: 70%;
+
+        height: 1px;
+
+        margin: 0 auto;
+      }
+
+
+      .permission-grid {
+
+        grid-template-columns: 1fr;
+      }
+
+
+      .filename-card {
+
+        grid-template-columns: 1fr;
+      }
+
+
+      .permission-examples {
+
+        grid-template-columns: 1fr;
+      }
+
+
+      .actions {
+
+        flex-direction: column;
+      }
+
+
+      .main-action,
+      .reset-action {
+
+        width: 100%;
+      }
+
+    }
+
+
+    @media (max-width: 460px) {
+
+      .hero {
+
+        gap: 13px;
+      }
+
+
+      .hero-icon {
+
+        width: 48px;
+        height: 48px;
+
+        font-size: 19px;
+      }
+
+
+      .hero h1 {
+
+        font-size: 24px;
+      }
+
+
+      .preset-grid {
+
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
+
+
+      .command-card {
+
+        align-items: stretch;
+
+        flex-direction: column;
+      }
+
+
+      .copy-button {
+
+        width: 100%;
+      }
+
+
+      .result-item strong {
+
+        font-size: 27px;
+      }
+
+
+      .symbolic-result strong {
+
+        font-size: 21px;
+      }
+
+    }
+
+  </style>
+
+</body>
+</html>
