@@ -1,0 +1,316 @@
+import fs from 'node:fs';
+import path from 'node:path';
+
+const DIST_TOOLS = path.resolve('dist/tools');
+
+if (!fs.existsSync(DIST_TOOLS)) {
+  console.log('⚠️ dist/tools غير موجود، تم تجاوز الربط الداخلي.');
+  process.exit(0);
+}
+
+/* الكلمات التي لا نريد استخدامها لتحديد علاقة الأدوات */
+const STOP_WORDS = new Set([
+  'tool',
+  'tools',
+  'online',
+  'free',
+  'generator',
+  'formatter',
+  'converter',
+  'checker',
+  'counter',
+  'maker',
+  'creator',
+  'utility',
+  'utilities',
+  'html',
+  'www',
+  'com'
+]);
+
+/* تنظيف اسم الأداة */
+function normalize(text) {
+  return text
+    .toLowerCase()
+    .replace(/[-_/]+/g, ' ')
+    .replace(/[^\p{L}\p{N}\s]/gu, ' ')
+    .split(/\s+/)
+    .filter(word => word.length > 2 && !STOP_WORDS.has(word));
+}
+
+/* استخراج الأدوات الموجودة فعليًا في dist/tools */
+function getToolDirectories() {
+  return fs
+    .readdirSync(DIST_TOOLS, { withFileTypes: true })
+    .filter(entry => entry.isDirectory())
+    .map(entry => entry.name)
+    .filter(slug => {
+      const indexPath = path.join(DIST_TOOLS, slug, 'index.html');
+      return fs.existsSync(indexPath);
+    });
+}
+
+const tools = getToolDirectories();
+
+if (tools.length === 0) {
+  console.log('⚠️ لم يتم العثور على صفحات أدوات.');
+  process.exit(0);
+}
+
+/* استخراج عنوان الصفحة */
+function getTitle(html, fallback) {
+  const match = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+
+  if (!match) return fallback;
+
+  return match[1]
+    .replace(/<[^>]+>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/* حساب مدى التشابه بين أداتين */
+function similarity(slugA, titleA, slugB, titleB) {
+  const wordsA = new Set([
+    ...normalize(slugA),
+    ...normalize(titleA)
+  ]);
+
+  const wordsB = new Set([
+    ...normalize(slugB),
+    ...normalize(titleB)
+  ]);
+
+  let score = 0;
+
+  for (const word of wordsA) {
+    if (wordsB.has(word)) {
+      score += 1;
+    }
+  }
+
+  /* مكافأة إضافية للأدوات التي تشترك في بداية slug */
+  const partsA = slugA.split('-');
+  const partsB = slugB.split('-');
+
+  if (partsA[0] && partsA[0] === partsB[0]) {
+    score += 2;
+  }
+
+  return score;
+}
+
+/* إنشاء بطاقة الأداة */
+function createCard(tool) {
+  return `
+      <a class="th-related-card" href="${tool.href}">
+        <div class="th-related-icon">🛠️</div>
+        <div class="th-related-content">
+          <h3>${escapeHtml(tool.title)}</h3>
+          <span>فتح الأداة ←</span>
+        </div>
+      </a>
+  `;
+}
+
+/* حماية HTML */
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+/* CSS الخاص بالقسم */
+const relatedCSS = `
+<style id="th-related-tools-style">
+.th-related-tools {
+  width: min(1100px, calc(100% - 32px));
+  margin: 45px auto 30px;
+  padding: 28px;
+  border-radius: 22px;
+  background: var(--card-bg, rgba(255,255,255,.04));
+  border: 1px solid var(--border-color, rgba(255,255,255,.10));
+  box-sizing: border-box;
+}
+
+.th-related-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.th-related-header h2 {
+  margin: 0 0 8px;
+  font-size: 1.55rem;
+  font-weight: 800;
+}
+
+.th-related-header p {
+  margin: 0;
+  opacity: .72;
+  font-size: .95rem;
+}
+
+.th-related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+}
+
+.th-related-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding: 17px;
+  border-radius: 16px;
+  text-decoration: none;
+  color: inherit;
+  background: var(--card-bg, rgba(255,255,255,.035));
+  border: 1px solid var(--border-color, rgba(255,255,255,.09));
+  transition:
+    transform .2s ease,
+    border-color .2s ease,
+    box-shadow .2s ease;
+}
+
+.th-related-card:hover {
+  transform: translateY(-3px);
+  border-color: #38bdf8;
+  box-shadow: 0 8px 25px rgba(0,0,0,.12);
+}
+
+.th-related-icon {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(56,189,248,.12);
+  font-size: 20px;
+}
+
+.th-related-content {
+  min-width: 0;
+}
+
+.th-related-content h3 {
+  margin: 0 0 5px;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.th-related-content span {
+  font-size: .8rem;
+  opacity: .65;
+}
+
+@media (max-width: 800px) {
+  .th-related-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .th-related-tools {
+    width: calc(100% - 20px);
+    padding: 20px 15px;
+    border-radius: 18px;
+  }
+
+  .th-related-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .th-related-card {
+    padding: 14px;
+  }
+}
+</style>
+`;
+
+/* معالجة جميع الأدوات */
+let modified = 0;
+
+for (const currentSlug of tools) {
+  const currentPath = path.join(
+    DIST_TOOLS,
+    currentSlug,
+    'index.html'
+  );
+
+  let html = fs.readFileSync(currentPath, 'utf8');
+
+  /* منع التكرار */
+  if (html.includes('th-related-tools')) {
+    continue;
+  }
+
+  const currentTitle = getTitle(html, currentSlug);
+
+  const candidates = tools
+    .filter(slug => slug !== currentSlug)
+    .map(slug => {
+      const filePath = path.join(
+        DIST_TOOLS,
+        slug,
+        'index.html'
+      );
+
+      const content = fs.readFileSync(filePath, 'utf8');
+      const title = getTitle(content, slug);
+
+      return {
+        slug,
+        title,
+        score: similarity(
+          currentSlug,
+          currentTitle,
+          slug,
+          title
+        ),
+        href: `../../../tools/${slug}/`
+      };
+    })
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 3);
+
+  if (candidates.length === 0) {
+    continue;
+  }
+
+  const cards = candidates
+    .map(createCard)
+    .join('');
+
+  const section = `
+${relatedCSS}
+
+<section class="th-related-tools" aria-labelledby="th-related-title">
+  <div class="th-related-header">
+    <h2 id="th-related-title">أدوات ذات صلة</h2>
+    <p>أدوات أخرى قد تساعدك في نفس المهمة</p>
+  </div>
+
+  <div class="th-related-grid">
+    ${cards}
+  </div>
+</section>
+`;
+
+  /* نضع القسم قبل footer إن أمكن */
+  if (html.match(/<\/main>/i)) {
+    html = html.replace(/<\/main>/i, `${section}\n</main>`);
+  } else {
+    html = html.replace(/<\/body>/i, `${section}\n</body>`);
+  }
+
+  fs.writeFileSync(currentPath, html, 'utf8');
+
+  modified++;
+}
+
+console.log(`✅ تم إضافة الربط الداخلي إلى ${modified} صفحة أداة.`);
+console.log(`🔗 عدد الأدوات المكتشفة: ${tools.length}`);
