@@ -222,7 +222,7 @@ function buildRelatedToolsBlock(relatedTools) {
     padding: 14px;
     border-radius: 15px;
     text-decoration: none;
-    color: inherit;
+    color: #f8fafc;
     background: rgba(255, 255, 255, 0.035);
     border: 1px solid rgba(255, 255, 255, 0.08);
     transition:
@@ -285,25 +285,38 @@ function buildRelatedToolsBlock(relatedTools) {
     }
   }
 
+  /* الوضع الفاتح */
   [data-theme="light"] .related-tools {
     background: #ffffff;
     border-color: rgba(15, 23, 42, 0.1);
   }
 
   [data-theme="light"] .related-tool-card {
+    color: #0f172a;
     background: #f8fafc;
     border-color: rgba(15, 23, 42, 0.08);
   }
 
+  [data-theme="light"] .related-tool-card strong {
+    color: #0f172a;
+  }
+
+  [data-theme="light"] .related-tool-card small {
+    color: #64748b;
+  }
+
   [data-theme="light"] .related-tool-card:hover {
     background: #f0f9ff;
+  }
+
+  [data-theme="light"] .related-tool-icon {
+    background: rgba(14, 165, 233, 0.12);
   }
 </style>
 ${END_MARKER}`;
 }
 
 function removeOldRelatedBlock(content) {
-  // إزالة النسخة الجديدة إن كانت موجودة
   const markedRegex = new RegExp(
     `${escapeRegExp(START_MARKER)}[\\s\\S]*?${escapeRegExp(
       END_MARKER
@@ -313,7 +326,6 @@ function removeOldRelatedBlock(content) {
 
   content = content.replace(markedRegex, '');
 
-  // إزالة النسخة القديمة التي أضافها السكربت السابق
   const oldRegex =
     /\s*<section class="related-tools"[\s\S]*?<\/style>\s*/g;
 
@@ -346,7 +358,6 @@ for (const slug of toolDirs) {
     continue;
   }
 
-  // إزالة أي نسخة سابقة أولاً
   content = removeOldRelatedBlock(content);
 
   const relatedTools = getRelatedTools(
@@ -371,7 +382,6 @@ for (const slug of toolDirs) {
   const block =
     buildRelatedToolsBlock(relatedTools);
 
-  // يجب أن يكون القسم داخل <main>
   const mainEnd = content.lastIndexOf('</main>');
 
   if (mainEnd === -1) {
@@ -381,7 +391,6 @@ for (const slug of toolDirs) {
     continue;
   }
 
-  // إدراج القسم مباشرة قبل </main>
   content =
     content.slice(0, mainEnd) +
     '\n\n' +
