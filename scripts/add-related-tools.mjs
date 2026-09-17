@@ -7,13 +7,23 @@ const TOOLS_DIR = path.join(ROOT, 'src', 'pages', 'tools');
 const START_MARKER = '<!-- TH-RELATED-TOOLS-START -->';
 const END_MARKER = '<!-- TH-RELATED-TOOLS-END -->';
 
+/* ==========================================
+   اكتشاف الأدوات
+   ========================================== */
+
 const toolDirs = fs
   .readdirSync(TOOLS_DIR, { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
   .map((entry) => entry.name)
   .filter((slug) =>
-    fs.existsSync(path.join(TOOLS_DIR, slug, 'index.astro'))
+    fs.existsSync(
+      path.join(TOOLS_DIR, slug, 'index.astro')
+    )
   );
+
+/* ==========================================
+   أدوات مساعدة
+   ========================================== */
 
 const normalize = (text) =>
   text
@@ -30,6 +40,10 @@ const getToolName = (slug) =>
         word.charAt(0).toUpperCase() + word.slice(1)
     )
     .join(' ');
+
+/* ==========================================
+   مجموعات الكلمات
+   ========================================== */
 
 const keywords = {
   json: ['json', 'javascript object notation', 'بيانات json'],
@@ -63,14 +77,18 @@ const keywords = {
   sql: ['sql', 'database', 'قاعدة بيانات'],
   api: ['api', 'request', 'http', 'rest', 'endpoint'],
   crypto: ['crypto', 'encryption', 'decrypt', 'encrypt', 'تشفير'],
-  code: ['code', 'formatter', 'format', 'كود'],
+  code: ['code', 'formatter', 'format', 'كود']
 };
 
 const tools = toolDirs.map((slug) => ({
   slug,
   name: getToolName(slug),
-  normalized: normalize(getToolName(slug)),
+  normalized: normalize(getToolName(slug))
 }));
+
+/* ==========================================
+   حساب الأدوات المرتبطة
+   ========================================== */
 
 function scoreTools(currentTool, candidateTool) {
   if (currentTool.slug === candidateTool.slug) {
@@ -96,11 +114,19 @@ function scoreTools(currentTool, candidateTool) {
     }
   }
 
-  const currentWords = new Set(current.split(/\s+/));
-  const candidateWords = new Set(candidate.split(/\s+/));
+  const currentWords = new Set(
+    current.split(/\s+/)
+  );
+
+  const candidateWords = new Set(
+    candidate.split(/\s+/)
+  );
 
   for (const word of currentWords) {
-    if (word.length > 2 && candidateWords.has(word)) {
+    if (
+      word.length > 2 &&
+      candidateWords.has(word)
+    ) {
       score += 5;
     }
   }
@@ -112,7 +138,7 @@ function getRelatedTools(currentTool, limit = 6) {
   return tools
     .map((tool) => ({
       ...tool,
-      score: scoreTools(currentTool, tool),
+      score: scoreTools(currentTool, tool)
     }))
     .filter((tool) => tool.score > 0)
     .sort(
@@ -124,7 +150,7 @@ function getRelatedTools(currentTool, limit = 6) {
 }
 
 /* ==========================================
-   أيقونات SVG حسب نوع الأداة
+   أيقونات SVG
    ========================================== */
 
 function getToolIcon(slug) {
@@ -133,7 +159,7 @@ function getToolIcon(slug) {
   if (s.includes('json')) {
     return `
       <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M8 4c-2 1-3 3-3 6s1 5 3 6"/>
+        <path d="M8 4C6 5 5 7 5 10s1 5 3 6"/>
         <path d="M16 4c2 1 3 3 3 6s-1 5-3 6"/>
         <path d="M9 8h6M9 12h4M9 16h6"/>
       </svg>`;
@@ -173,19 +199,6 @@ function getToolIcon(slug) {
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <rect x="3" y="5" width="18" height="14" rx="2"/>
         <path d="M6 15V9l3 3 3-3v6M16 9v6M14 13l2 2 2-2"/>
-      </svg>`;
-  }
-
-  if (
-    s.includes('image') ||
-    s.includes('photo') ||
-    s.includes('compress')
-  ) {
-    return `
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <rect x="3" y="4" width="18" height="16" rx="2"/>
-        <circle cx="8" cy="9" r="1.5"/>
-        <path d="m5 17 5-5 3 3 2-2 4 4"/>
       </svg>`;
   }
 
@@ -261,7 +274,7 @@ function getToolIcon(slug) {
         <circle cx="9" cy="9" r="1.5"/>
         <circle cx="15" cy="9" r="1.5"/>
         <circle cx="9" cy="15" r="1.5"/>
-        <path d="M14 15h.01"/>
+        <circle cx="15" cy="15" r="1.5"/>
       </svg>`;
   }
 
@@ -271,7 +284,7 @@ function getToolIcon(slug) {
   ) {
     return `
       <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M5 5h14v14H5z"/>
+        <rect x="4" y="4" width="16" height="16" rx="3"/>
         <path d="m8 12 2-2 2 2 2-2 2 2"/>
       </svg>`;
   }
@@ -285,18 +298,6 @@ function getToolIcon(slug) {
         <ellipse cx="12" cy="5" rx="7" ry="3"/>
         <path d="M5 5v7c0 2 3 3 7 3s7-1 7-3V5"/>
         <path d="M5 12v7c0 2 3 3 7 3s7-1 7-3v-7"/>
-      </svg>`;
-  }
-
-  if (
-    s.includes('xml') ||
-    s.includes('yaml') ||
-    s.includes('csv')
-  ) {
-    return `
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M6 3h8l4 4v14H6z"/>
-        <path d="M14 3v5h5M9 12h6M9 16h6"/>
       </svg>`;
   }
 
@@ -320,8 +321,7 @@ function getToolIcon(slug) {
   ) {
     return `
       <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M5 5h14M12 5v14M8 19h8"/>
-        <path d="M8 9h8"/>
+        <path d="M5 5h14M12 5v14M8 19h8M8 9h8"/>
       </svg>`;
   }
 
@@ -342,6 +342,10 @@ function getToolIcon(slug) {
       <path d="M8 8h8M8 12h8M8 16h5"/>
     </svg>`;
 }
+
+/* ==========================================
+   إنشاء القسم
+   ========================================== */
 
 function buildRelatedToolsBlock(relatedTools) {
   if (!relatedTools.length) {
@@ -364,7 +368,10 @@ function buildRelatedToolsBlock(relatedTools) {
             <small>أداة مرتبطة</small>
           </span>
 
-          <span class="related-tool-arrow" aria-hidden="true">
+          <span
+            class="related-tool-arrow"
+            aria-hidden="true"
+          >
             ←
           </span>
         </a>`
@@ -372,24 +379,25 @@ function buildRelatedToolsBlock(relatedTools) {
     .join('');
 
   return `${START_MARKER}
+
 <section
   class="related-tools"
   aria-labelledby="related-tools-title"
 >
   <div class="related-tools-header">
-    <div>
-      <span class="related-tools-label">
-        استكشف المزيد
-      </span>
 
-      <h2 id="related-tools-title">
-        أدوات ذات صلة
-      </h2>
+    <span class="related-tools-label">
+      استكشف المزيد
+    </span>
 
-      <p>
-        أدوات أخرى قد تساعدك في إكمال مهمتك.
-      </p>
-    </div>
+    <h2 id="related-tools-title">
+      أدوات ذات صلة
+    </h2>
+
+    <p>
+      أدوات أخرى قد تساعدك في إكمال مهمتك.
+    </p>
+
   </div>
 
   <div class="related-tools-grid">
@@ -398,53 +406,56 @@ function buildRelatedToolsBlock(relatedTools) {
 </section>
 
 <style>
-  /* =========================================
-     Related Tools
-     الوضع الافتراضي = فاتح
-     ========================================= */
+  /* =====================================
+     الحاوية
+     ===================================== */
 
   .related-tools {
     width: min(1000px, 100%);
-    margin: 40px auto 25px;
-    padding: 22px;
+    margin: 38px auto 24px;
+    padding: 20px;
 
     border-radius: 18px;
 
-    background: #ffffff !important;
-    color: #0f172a !important;
+    background: #ffffff;
+    color: #0f172a;
 
-    border: 1px solid #e2e8f0 !important;
+    border: 1px solid #e2e8f0;
 
     box-shadow:
-      0 8px 24px rgba(15, 23, 42, 0.06) !important;
+      0 6px 20px rgba(15, 23, 42, 0.06);
 
     transition:
-      background 0.25s ease,
-      color 0.25s ease,
-      border-color 0.25s ease;
+      background .25s ease,
+      color .25s ease,
+      border-color .25s ease;
   }
 
+  /* =====================================
+     العنوان
+     ===================================== */
+
   .related-tools-header {
-    margin-bottom: 17px;
+    margin-bottom: 16px;
   }
 
   .related-tools-label {
     display: inline-block;
 
-    margin-bottom: 5px;
+    margin-bottom: 4px;
 
-    color: #0284c7 !important;
+    color: #0284c7;
 
-    font-size: 0.78rem;
+    font-size: .76rem;
     font-weight: 800;
   }
 
   .related-tools h2 {
-    margin: 0 0 5px;
+    margin: 0 0 4px;
 
-    color: #0f172a !important;
+    color: #0f172a;
 
-    font-size: 1.3rem;
+    font-size: 1.25rem;
     line-height: 1.4;
     font-weight: 800;
   }
@@ -452,14 +463,14 @@ function buildRelatedToolsBlock(relatedTools) {
   .related-tools p {
     margin: 0;
 
-    color: #64748b !important;
+    color: #64748b;
 
-    font-size: 0.85rem;
+    font-size: .84rem;
   }
 
-  /* =========================================
-     Cards
-     ========================================= */
+  /* =====================================
+     البطاقات
+     ===================================== */
 
   .related-tools-grid {
     display: grid;
@@ -474,82 +485,82 @@ function buildRelatedToolsBlock(relatedTools) {
     display: flex;
     align-items: center;
 
+    min-width: 0;
+    min-height: 56px;
+
     gap: 9px;
 
-    min-height: 58px;
+    padding: 8px 10px;
 
-    padding: 9px 10px;
+    border-radius: 11px;
 
-    border-radius: 12px;
+    background: #f8fafc;
+    color: #0f172a;
 
-    text-decoration: none !important;
+    border: 1px solid #e2e8f0;
 
-    color: #0f172a !important;
-
-    background: #f8fafc !important;
-
-    border: 1px solid #e2e8f0 !important;
+    text-decoration: none;
 
     box-shadow:
-      0 2px 8px rgba(15, 23, 42, 0.035) !important;
+      0 2px 7px rgba(15, 23, 42, 0.035);
 
     transition:
-      transform 0.18s ease,
-      border-color 0.18s ease,
-      background 0.18s ease,
-      box-shadow 0.18s ease;
+      transform .18s ease,
+      background .18s ease,
+      border-color .18s ease;
   }
 
   .related-tool-card:hover {
     transform: translateY(-2px);
 
-    color: #0f172a !important;
+    background: #f0f9ff;
 
-    background: #f0f9ff !important;
+    color: #0f172a;
 
-    border-color: #38bdf8 !important;
-
-    box-shadow:
-      0 6px 14px rgba(14, 165, 233, 0.10) !important;
+    border-color: #38bdf8;
   }
 
-  /* =========================================
-     SVG icon
-     ========================================= */
+  /* =====================================
+     الأيقونة
+     ===================================== */
 
   .related-tool-icon {
     display: grid;
     place-items: center;
 
-    width: 34px;
-    height: 34px;
+    width: 33px;
+    height: 33px;
 
-    flex: 0 0 34px;
+    flex: 0 0 33px;
 
     border-radius: 9px;
 
-    color: #0284c7 !important;
+    color: #0284c7;
 
-    background: rgba(14, 165, 233, 0.10) !important;
+    background: #e0f2fe;
   }
 
   .related-tool-icon svg {
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
 
     fill: none;
+
     stroke: currentColor;
 
     stroke-width: 1.8;
+
     stroke-linecap: round;
     stroke-linejoin: round;
   }
 
+  /* =====================================
+     النص
+     ===================================== */
+
   .related-tool-content {
     display: flex;
     flex-direction: column;
-
-    justify-content: center;
 
     gap: 2px;
 
@@ -560,185 +571,115 @@ function buildRelatedToolsBlock(relatedTools) {
   .related-tool-content strong {
     display: block;
 
-    color: #0f172a !important;
-
-    font-size: 0.84rem;
-    line-height: 1.25;
-    font-weight: 750;
+    min-width: 0;
 
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+
+    color: #0f172a;
+
+    font-size: .82rem;
+    line-height: 1.25;
+    font-weight: 750;
   }
 
   .related-tool-content small {
-    color: #64748b !important;
+    color: #64748b;
 
-    font-size: 0.68rem;
+    font-size: .67rem;
     line-height: 1.2;
   }
 
   .related-tool-arrow {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    flex: 0 0 auto;
 
-    width: 22px;
-    height: 22px;
+    color: #94a3b8;
 
-    flex: 0 0 22px;
-
-    color: #94a3b8 !important;
-
-    font-size: 0.85rem;
+    font-size: .8rem;
 
     transition:
-      transform 0.18s ease,
-      color 0.18s ease;
+      color .18s ease,
+      transform .18s ease;
   }
 
   .related-tool-card:hover .related-tool-arrow {
-    color: #0284c7 !important;
+    color: #0284c7;
 
     transform: translateX(-2px);
   }
 
-  /* =========================================
-     الوضع الليلي الحقيقي في المشروع
-     يعتمد على class وليس data-theme
-     ========================================= */
+  /* =====================================
+     الوضع الليلي
+     يعتمد على class الموجود في المشروع
+     html.dark-mode
+     ===================================== */
 
-  html.dark-mode .related-tools,
-  body.dark-mode .related-tools,
-  html.dark .related-tools,
-  body.dark .related-tools {
-    background: #111827 !important;
-    color: #f8fafc !important;
+  html.dark-mode .related-tools {
+    background: #111827;
+    color: #f8fafc;
 
-    border-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255,255,255,.08);
 
     box-shadow:
-      0 10px 30px rgba(0, 0, 0, 0.20) !important;
+      0 8px 25px rgba(0,0,0,.22);
   }
 
-  html.dark-mode .related-tools h2,
-  body.dark-mode .related-tools h2,
-  html.dark .related-tools h2,
-  body.dark .related-tools h2 {
-    color: #f8fafc !important;
+  html.dark-mode .related-tools h2 {
+    color: #f8fafc;
   }
 
-  html.dark-mode .related-tools p,
-  body.dark-mode .related-tools p,
-  html.dark .related-tools p,
-  body.dark .related-tools p {
-    color: #cbd5e1 !important;
+  html.dark-mode .related-tools p {
+    color: #cbd5e1;
   }
 
-  html.dark-mode .related-tool-card,
-  body.dark-mode .related-tool-card,
-  html.dark .related-tool-card,
-  body.dark .related-tool-card {
-    color: #f8fafc !important;
+  html.dark-mode .related-tool-card {
+    background: #1e293b;
+    color: #f8fafc;
 
-    background: #1e293b !important;
+    border-color: rgba(255,255,255,.08);
 
-    border-color: rgba(255, 255, 255, 0.08) !important;
-
-    box-shadow: none !important;
+    box-shadow: none;
   }
 
-  html.dark-mode .related-tool-card:hover,
-  body.dark-mode .related-tool-card:hover,
-  html.dark .related-tool-card:hover,
-  body.dark .related-tool-card:hover {
-    color: #ffffff !important;
+  html.dark-mode .related-tool-card:hover {
+    background: #263449;
+    color: #ffffff;
 
-    background: #263449 !important;
-
-    border-color: #38bdf8 !important;
+    border-color: #38bdf8;
   }
 
-  html.dark-mode .related-tool-content strong,
-  body.dark-mode .related-tool-content strong,
-  html.dark .related-tool-content strong,
-  body.dark .related-tool-content strong {
-    color: #f8fafc !important;
+  html.dark-mode .related-tool-icon {
+    color: #38bdf8;
+
+    background: rgba(56,189,248,.12);
   }
 
-  html.dark-mode .related-tool-content small,
-  body.dark-mode .related-tool-content small,
-  html.dark .related-tool-content small,
-  body.dark .related-tool-content small {
-    color: #94a3b8 !important;
+  html.dark-mode .related-tool-content strong {
+    color: #f8fafc;
   }
 
-  html.dark-mode .related-tool-icon,
-  body.dark-mode .related-tool-icon,
-  html.dark .related-tool-icon,
-  body.dark .related-tool-icon {
-    color: #38bdf8 !important;
-
-    background: rgba(56, 189, 248, 0.12) !important;
+  html.dark-mode .related-tool-content small {
+    color: #94a3b8;
   }
 
-  html.dark-mode .related-tool-arrow,
-  body.dark-mode .related-tool-arrow,
-  html.dark .related-tool-arrow,
-  body.dark .related-tool-arrow {
-    color: #64748b !important;
+  html.dark-mode .related-tool-arrow {
+    color: #64748b;
   }
 
-  /* =========================================
-     الوضع النهاري
-     نتأكد أنه يتغلب على أي CSS عام
-     ========================================= */
-
-  html:not(.dark-mode) .related-tools,
-  body:not(.dark-mode) .related-tools,
-  html:not(.dark) .related-tools {
-    background: #ffffff !important;
-
-    color: #0f172a !important;
-
-    border-color: #e2e8f0 !important;
-
-    box-shadow:
-      0 8px 24px rgba(15, 23, 42, 0.06) !important;
+  html.dark-mode .related-tool-card:hover
+  .related-tool-arrow {
+    color: #38bdf8;
   }
 
-  html:not(.dark-mode) .related-tool-card,
-  body:not(.dark-mode) .related-tool-card,
-  html:not(.dark) .related-tool-card {
-    background: #f8fafc !important;
-
-    color: #0f172a !important;
-
-    border-color: #e2e8f0 !important;
-
-    box-shadow:
-      0 2px 8px rgba(15, 23, 42, 0.035) !important;
-  }
-
-  html:not(.dark-mode) .related-tool-content strong,
-  body:not(.dark-mode) .related-tool-content strong,
-  html:not(.dark) .related-tool-content strong {
-    color: #0f172a !important;
-  }
-
-  html:not(.dark-mode) .related-tool-content small,
-  body:not(.dark-mode) .related-tool-content small,
-  html:not(.dark) .related-tool-content small {
-    color: #64748b !important;
-  }
-
-  /* =========================================
-     Responsive
-     ========================================= */
+  /* =====================================
+     الهاتف
+     ===================================== */
 
   @media (max-width: 800px) {
+
     .related-tools {
-      padding: 18px;
+      padding: 17px;
       margin-top: 30px;
     }
 
@@ -749,8 +690,9 @@ function buildRelatedToolsBlock(relatedTools) {
   }
 
   @media (max-width: 520px) {
+
     .related-tools {
-      padding: 16px;
+      padding: 15px;
     }
 
     .related-tools-grid {
@@ -758,23 +700,35 @@ function buildRelatedToolsBlock(relatedTools) {
     }
 
     .related-tool-card {
-      min-height: 54px;
-      padding: 8px 9px;
+      min-height: 53px;
+      padding: 8px;
     }
 
     .related-tool-icon {
-      width: 32px;
-      height: 32px;
-      flex-basis: 32px;
+      width: 31px;
+      height: 31px;
+      flex-basis: 31px;
     }
 
     .related-tool-icon svg {
-      width: 17px;
-      height: 17px;
+      width: 16px;
+      height: 16px;
     }
   }
 </style>
+
 ${END_MARKER}`;
+}
+
+/* ==========================================
+   حذف النسخة القديمة
+   ========================================== */
+
+function escapeRegExp(value) {
+  return value.replace(
+    /[.*+?^${}()|[\]\\]/g,
+    '\\$&'
+  );
 }
 
 function removeOldRelatedBlock(content) {
@@ -795,12 +749,9 @@ function removeOldRelatedBlock(content) {
   return content;
 }
 
-function escapeRegExp(value) {
-  return value.replace(
-    /[.*+?^${}()|[\]\\]/g,
-    '\\$&'
-  );
-}
+/* ==========================================
+   تحديث جميع الأدوات
+   ========================================== */
 
 for (const slug of toolDirs) {
   const filePath = path.join(
@@ -809,7 +760,10 @@ for (const slug of toolDirs) {
     'index.astro'
   );
 
-  let content = fs.readFileSync(filePath, 'utf8');
+  let content = fs.readFileSync(
+    filePath,
+    'utf8'
+  );
 
   const currentTool = tools.find(
     (tool) => tool.slug === slug
