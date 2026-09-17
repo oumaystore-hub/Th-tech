@@ -4,10 +4,16 @@ import path from 'node:path';
 const ROOT = process.cwd();
 const TOOLS_DIR = path.join(ROOT, 'src', 'pages', 'tools');
 
-const toolFiles = fs
+const START_MARKER = '<!-- TH-RELATED-TOOLS-START -->';
+const END_MARKER = '<!-- TH-RELATED-TOOLS-END -->';
+
+const toolDirs = fs
   .readdirSync(TOOLS_DIR, { withFileTypes: true })
   .filter((entry) => entry.isDirectory())
-  .map((entry) => entry.name);
+  .map((entry) => entry.name)
+  .filter((slug) =>
+    fs.existsSync(path.join(TOOLS_DIR, slug, 'index.astro'))
+  );
 
 const normalize = (text) =>
   text
@@ -19,7 +25,10 @@ const normalize = (text) =>
 const getToolName = (slug) =>
   slug
     .split('-')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .map(
+      (word) =>
+        word.charAt(0).toUpperCase() + word.slice(1)
+    )
     .join(' ');
 
 const keywords = {
@@ -28,7 +37,15 @@ const keywords = {
   html: ['html', 'markup', 'صفحة ويب'],
   css: ['css', 'style', 'styles'],
   markdown: ['markdown', 'md'],
-  text: ['text', 'word', 'character', 'sentence', 'نص', 'كلمة', 'حرف'],
+  text: [
+    'text',
+    'word',
+    'character',
+    'sentence',
+    'نص',
+    'كلمة',
+    'حرف'
+  ],
   image: ['image', 'photo', 'picture', 'صورة'],
   color: ['color', 'colour', 'hex', 'rgb', 'hsl', 'لون'],
   url: ['url', 'link', 'رابط'],
@@ -44,16 +61,21 @@ const keywords = {
   yaml: ['yaml', 'yml'],
   csv: ['csv'],
   sql: ['sql', 'database', 'قاعدة بيانات'],
+  api: ['api', 'request', 'http', 'rest', 'endpoint'],
+  crypto: ['crypto', 'encryption', 'decrypt', 'encrypt', 'تشفير'],
+  code: ['code', 'formatter', 'format', 'كود'],
 };
 
-const tools = toolFiles.map((slug) => ({
+const tools = toolDirs.map((slug) => ({
   slug,
   name: getToolName(slug),
   normalized: normalize(getToolName(slug)),
 }));
 
 function scoreTools(currentTool, candidateTool) {
-  if (currentTool.slug === candidateTool.slug) return -Infinity;
+  if (currentTool.slug === candidateTool.slug) {
+    return -Infinity;
+  }
 
   const current = currentTool.normalized;
   const candidate = candidateTool.normalized;
@@ -93,18 +115,28 @@ function getRelatedTools(currentTool, limit = 6) {
       score: scoreTools(currentTool, tool),
     }))
     .filter((tool) => tool.score > 0)
-    .sort((a, b) => b.score - a.score || a.name.localeCompare(b.name))
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        a.name.localeCompare(b.name)
+    )
     .slice(0, limit);
 }
 
 function buildRelatedToolsBlock(relatedTools) {
-  if (!relatedTools.length) return '';
+  if (!relatedTools.length) {
+    return '';
+  }
 
   const cards = relatedTools
     .map(
       (tool) => `
-        <a class="related-tool-card" href={\`\${base}/tools/${tool.slug}/\`}>
+        <a
+          class="related-tool-card"
+          href={\`\${base}/tools/${tool.slug}/\`}
+        >
           <span class="related-tool-icon">⚡</span>
+
           <span class="related-tool-content">
             <strong>${tool.name}</strong>
             <small>أداة مرتبطة</small>
@@ -113,13 +145,24 @@ function buildRelatedToolsBlock(relatedTools) {
     )
     .join('');
 
-  return `
-<section class="related-tools" aria-labelledby="related-tools-title">
+  return `${START_MARKER}
+<section
+  class="related-tools"
+  aria-labelledby="related-tools-title"
+>
   <div class="related-tools-header">
     <div>
-      <span class="related-tools-label">استكشف المزيد</span>
-      <h2 id="related-tools-title">أدوات ذات صلة</h2>
-      <p>أدوات أخرى قد تساعدك في إكمال مهمتك.</p>
+      <span class="related-tools-label">
+        استكشف المزيد
+      </span>
+
+      <h2 id="related-tools-title">
+        أدوات ذات صلة
+      </h2>
+
+      <p>
+        أدوات أخرى قد تساعدك في إكمال مهمتك.
+      </p>
     </div>
   </div>
 
@@ -135,7 +178,10 @@ function buildRelatedToolsBlock(relatedTools) {
     padding: 28px;
     border-radius: 20px;
     background: var(--card-bg, #111827);
-    border: 1px solid var(--border-color, rgba(255,255,255,.08));
+    border: 1px solid var(
+      --border-color,
+      rgba(255, 255, 255, 0.08)
+    );
   }
 
   .related-tools-header {
@@ -146,7 +192,7 @@ function buildRelatedToolsBlock(relatedTools) {
     display: inline-block;
     margin-bottom: 7px;
     color: #38bdf8;
-    font-size: .85rem;
+    font-size: 0.85rem;
     font-weight: 700;
   }
 
@@ -157,13 +203,14 @@ function buildRelatedToolsBlock(relatedTools) {
 
   .related-tools p {
     margin: 0;
-    opacity: .72;
-    font-size: .95rem;
+    opacity: 0.72;
+    font-size: 0.95rem;
   }
 
   .related-tools-grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
     gap: 14px;
   }
 
@@ -176,16 +223,18 @@ function buildRelatedToolsBlock(relatedTools) {
     border-radius: 15px;
     text-decoration: none;
     color: inherit;
-    background: rgba(255,255,255,.035);
-    border: 1px solid rgba(255,255,255,.08);
-    transition: transform .2s ease, border-color .2s ease,
-                background .2s ease;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      background 0.2s ease;
   }
 
   .related-tool-card:hover {
     transform: translateY(-3px);
     border-color: #38bdf8;
-    background: rgba(56,189,248,.08);
+    background: rgba(56, 189, 248, 0.08);
   }
 
   .related-tool-icon {
@@ -195,7 +244,7 @@ function buildRelatedToolsBlock(relatedTools) {
     height: 42px;
     flex: 0 0 42px;
     border-radius: 12px;
-    background: rgba(56,189,248,.12);
+    background: rgba(56, 189, 248, 0.12);
     font-size: 1.1rem;
   }
 
@@ -207,15 +256,15 @@ function buildRelatedToolsBlock(relatedTools) {
   }
 
   .related-tool-content strong {
-    font-size: .95rem;
+    font-size: 0.95rem;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
   .related-tool-content small {
-    opacity: .55;
-    font-size: .75rem;
+    opacity: 0.55;
+    font-size: 0.75rem;
   }
 
   @media (max-width: 800px) {
@@ -225,7 +274,8 @@ function buildRelatedToolsBlock(relatedTools) {
     }
 
     .related-tools-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
     }
   }
 
@@ -237,66 +287,121 @@ function buildRelatedToolsBlock(relatedTools) {
 
   [data-theme="light"] .related-tools {
     background: #ffffff;
-    border-color: rgba(15,23,42,.1);
+    border-color: rgba(15, 23, 42, 0.1);
   }
 
   [data-theme="light"] .related-tool-card {
     background: #f8fafc;
-    border-color: rgba(15,23,42,.08);
+    border-color: rgba(15, 23, 42, 0.08);
   }
 
   [data-theme="light"] .related-tool-card:hover {
     background: #f0f9ff;
   }
-</style>`;
+</style>
+${END_MARKER}`;
 }
 
-for (const slug of toolFiles) {
-  const filePath = path.join(TOOLS_DIR, slug, 'index.astro');
+function removeOldRelatedBlock(content) {
+  // إزالة النسخة الجديدة إن كانت موجودة
+  const markedRegex = new RegExp(
+    `${escapeRegExp(START_MARKER)}[\\s\\S]*?${escapeRegExp(
+      END_MARKER
+    )}\\s*`,
+    'g'
+  );
 
-  if (!fs.existsSync(filePath)) {
-    continue;
-  }
+  content = content.replace(markedRegex, '');
+
+  // إزالة النسخة القديمة التي أضافها السكربت السابق
+  const oldRegex =
+    /\s*<section class="related-tools"[\s\S]*?<\/style>\s*/g;
+
+  content = content.replace(oldRegex, '\n');
+
+  return content;
+}
+
+function escapeRegExp(value) {
+  return value.replace(
+    /[.*+?^${}()|[\]\\]/g,
+    '\\$&'
+  );
+}
+
+for (const slug of toolDirs) {
+  const filePath = path.join(
+    TOOLS_DIR,
+    slug,
+    'index.astro'
+  );
 
   let content = fs.readFileSync(filePath, 'utf8');
 
-  if (content.includes('class="related-tools"')) {
-    console.log(`⏭️  تخطي: ${slug} — الربط موجود مسبقًا`);
-    continue;
-  }
-
-  const currentTool = tools.find((tool) => tool.slug === slug);
+  const currentTool = tools.find(
+    (tool) => tool.slug === slug
+  );
 
   if (!currentTool) {
     continue;
   }
 
-  const relatedTools = getRelatedTools(currentTool);
+  // إزالة أي نسخة سابقة أولاً
+  content = removeOldRelatedBlock(content);
+
+  const relatedTools = getRelatedTools(
+    currentTool,
+    6
+  );
 
   if (!relatedTools.length) {
-    console.log(`⚠️  لا توجد أدوات مرتبطة: ${slug}`);
+    fs.writeFileSync(
+      filePath,
+      content,
+      'utf8'
+    );
+
+    console.log(
+      `⚠️ لا توجد أدوات مرتبطة: ${slug}`
+    );
+
     continue;
   }
 
-  const block = buildRelatedToolsBlock(relatedTools);
+  const block =
+    buildRelatedToolsBlock(relatedTools);
 
-  const htmlEnd = content.lastIndexOf('</html>');
+  // يجب أن يكون القسم داخل <main>
+  const mainEnd = content.lastIndexOf('</main>');
 
-  if (htmlEnd !== -1) {
-    content =
-      content.slice(0, htmlEnd) +
-      block +
-      '\n' +
-      content.slice(htmlEnd);
-  } else {
-    content += '\n' + block + '\n';
+  if (mainEnd === -1) {
+    console.log(
+      `❌ لم يتم العثور على </main>: ${slug}`
+    );
+    continue;
   }
 
-  fs.writeFileSync(filePath, content, 'utf8');
+  // إدراج القسم مباشرة قبل </main>
+  content =
+    content.slice(0, mainEnd) +
+    '\n\n' +
+    block +
+    '\n\n' +
+    content.slice(mainEnd);
+
+  fs.writeFileSync(
+    filePath,
+    content,
+    'utf8'
+  );
 
   console.log(
-    `✅ ${slug} ← ${relatedTools.map((tool) => tool.slug).join(', ')}`
+    `✅ ${slug} ← ${relatedTools
+      .map((tool) => tool.slug)
+      .join(', ')}`
   );
 }
 
-console.log('\n🎉 تم الانتهاء من إضافة الأدوات ذات الصلة.');
+console.log(
+  '\n🎉 تم تحديث الربط الداخلي لجميع الأدوات بنجاح.'
+);
