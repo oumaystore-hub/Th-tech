@@ -38,8 +38,54 @@ const featuredSlugs = [
   'api-request-builder'
 ];
 
+const featuredMeta = {
+  'json-formatter': {
+    icon: 'fa-solid fa-code',
+    type: 'JSON',
+    visual: 'json'
+  },
+  'json-validator': {
+    icon: 'fa-solid fa-circle-check',
+    type: 'VALIDATOR',
+    visual: 'check'
+  },
+  'base64-encoder-decoder': {
+    icon: 'fa-solid fa-lock',
+    type: 'BASE64',
+    visual: 'base64'
+  },
+  'qr-code-generator': {
+    icon: 'fa-solid fa-qrcode',
+    type: 'QR CODE',
+    visual: 'qr'
+  },
+  'color-picker': {
+    icon: 'fa-solid fa-palette',
+    type: 'COLOR',
+    visual: 'color'
+  },
+  'api-request-builder': {
+    icon: 'fa-solid fa-plug',
+    type: 'API',
+    visual: 'api'
+  }
+};
+
 const featuredTools = featuredSlugs
-  .map((slug) => toolsData.find((tool) => tool.slug === slug))
+  .map((slug) => {
+    const tool = toolsData.find((item) => item.slug === slug);
+
+    if (!tool) return null;
+
+    return {
+      ...tool,
+      ...(featuredMeta[slug] || {
+        icon: 'fa-solid fa-wand-magic-sparkles',
+        type: 'TOOL',
+        visual: 'default'
+      })
+    };
+  })
   .filter(Boolean);
 
 const remainingTools = toolsData
@@ -48,32 +94,103 @@ const remainingTools = toolsData
 
 const tracks = [
   {
-    icon: '🤖',
+    icon: 'fa-solid fa-brain',
     title: 'الذكاء الاصطناعي',
     description: 'اكتشف أدوات وتقنيات الذكاء الاصطناعي الحديثة.',
     tag: 'AI',
-    href: '#tools'
+    href: '#tools',
+    className: 'track-ai'
   },
   {
-    icon: '💻',
+    icon: 'fa-solid fa-code',
     title: 'البرمجة',
     description: 'أدوات عملية تساعدك على كتابة وتحليل وتحسين الكود.',
     tag: 'CODE',
-    href: '#tools'
+    href: '#tools',
+    className: 'track-code'
   },
   {
-    icon: '🛡️',
+    icon: 'fa-solid fa-shield-halved',
     title: 'الأمن السيبراني',
     description: 'أدوات مفيدة للتشفير والتحقق وتحليل البيانات.',
     tag: 'SECURITY',
-    href: '#tools'
+    href: '#tools',
+    className: 'track-security'
   },
   {
-    icon: '☁️',
+    icon: 'fa-solid fa-cloud',
     title: 'الويب والسحابة',
     description: 'أدوات للمطورين وأصحاب المواقع والمشاريع الرقمية.',
     tag: 'WEB',
-    href: '#tools'
+    href: '#tools',
+    className: 'track-web'
+  }
+];
+
+const tickerItems = [
+  {
+    icon: 'fa-solid fa-code',
+    label: 'JSON'
+  },
+  {
+    icon: 'fa-brands fa-js',
+    label: 'JavaScript'
+  },
+  {
+    icon: 'fa-brands fa-html5',
+    label: 'HTML'
+  },
+  {
+    icon: 'fa-brands fa-css3-alt',
+    label: 'CSS'
+  },
+  {
+    icon: 'fa-solid fa-plug',
+    label: 'API'
+  },
+  {
+    icon: 'fa-solid fa-qrcode',
+    label: 'QR CODE'
+  },
+  {
+    icon: 'fa-solid fa-lock',
+    label: 'BASE64'
+  },
+  {
+    icon: 'fa-solid fa-key',
+    label: 'JWT'
+  },
+  {
+    icon: 'fa-solid fa-filter',
+    label: 'REGEX'
+  },
+  {
+    icon: 'fa-solid fa-database',
+    label: 'SQL'
+  },
+  {
+    icon: 'fa-solid fa-fingerprint',
+    label: 'UUID'
+  },
+  {
+    icon: 'fa-solid fa-hashtag',
+    label: 'HASH'
+  },
+  {
+    icon: 'fa-brands fa-markdown',
+    label: 'MARKDOWN'
+  },
+  {
+    icon: 'fa-solid fa-palette',
+    label: 'COLOR'
+  },
+  {
+    icon: 'fa-solid fa-clock',
+    label: 'TIMESTAMP'
+  },
+  {
+    icon: 'fa-solid fa-file-code',
+    label: 'YAML'
   }
 ];
 
@@ -128,7 +245,9 @@ const jsonLd = {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <title>Th.Tech | منصة تقنية عربية للأدوات والبرمجة والذكاء الاصطناعي</title>
+    <title>
+      Th.Tech | منصة تقنية عربية للأدوات والبرمجة والذكاء الاصطناعي
+    </title>
 
     <meta
       name="description"
@@ -140,7 +259,7 @@ const jsonLd = {
       content="أدوات تقنية, أدوات برمجة, ذكاء اصطناعي, أدوات ويب, JSON, API, QR, Base64, مطورين, Th.Tech"
     />
 
-    <meta name="theme-color" content="#08111f" />
+    <meta name="theme-color" content="#07111f" />
 
     <link rel="canonical" href={`${siteUrl}${base}/`} />
 
@@ -157,49 +276,76 @@ const jsonLd = {
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
 
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(jsonLd)}
+    />
 
     <style>
       :root {
-        --bg: #f6f9fc;
-        --bg-soft: #eef6fb;
-        --surface: rgba(255, 255, 255, 0.82);
+        --bg: #f7fafc;
+        --bg-2: #eef6fb;
+        --surface: rgba(255, 255, 255, 0.86);
         --surface-solid: #ffffff;
+        --surface-soft: #f1f7fb;
+
         --text: #0f172a;
-        --text-soft: #526174;
-        --border: rgba(15, 23, 42, 0.09);
+        --text-soft: #5b6b7d;
+        --text-muted: #8290a0;
+
+        --border: rgba(15, 23, 42, 0.085);
+        --border-strong: rgba(14, 165, 233, 0.2);
 
         --primary: #0891b2;
         --primary-2: #2563eb;
-        --accent: #7c3aed;
+        --accent: #6366f1;
         --cyan: #06b6d4;
 
-        --shadow:
-          0 20px 60px rgba(15, 23, 42, 0.08);
-
-        --radius-xl: 30px;
-        --radius-lg: 22px;
-        --radius-md: 16px;
-
         --container: 1180px;
+
+        --radius-xl: 28px;
+        --radius-lg: 20px;
+        --radius-md: 15px;
+        --radius-sm: 11px;
+
+        --shadow-sm:
+          0 8px 30px rgba(15, 23, 42, 0.045);
+
+        --shadow-md:
+          0 18px 50px rgba(15, 23, 42, 0.075);
+
+        --shadow-lg:
+          0 28px 80px rgba(15, 23, 42, 0.11);
       }
 
       html.dark-mode {
-        --bg: #060b14;
-        --bg-soft: #0a1220;
-        --surface: rgba(15, 23, 42, 0.72);
-        --surface-solid: #0f172a;
+        --bg: #050a12;
+        --bg-2: #08111d;
+
+        --surface: rgba(13, 23, 39, 0.82);
+        --surface-solid: #0d1727;
+        --surface-soft: #101d30;
+
         --text: #f8fafc;
-        --text-soft: #94a3b8;
-        --border: rgba(148, 163, 184, 0.12);
+        --text-soft: #9aaabd;
+        --text-muted: #718198;
+
+        --border: rgba(148, 163, 184, 0.11);
+        --border-strong: rgba(34, 211, 238, 0.2);
 
         --primary: #22d3ee;
         --primary-2: #60a5fa;
-        --accent: #a78bfa;
+        --accent: #818cf8;
         --cyan: #67e8f9;
 
-        --shadow:
-          0 25px 70px rgba(0, 0, 0, 0.32);
+        --shadow-sm:
+          0 8px 30px rgba(0, 0, 0, 0.18);
+
+        --shadow-md:
+          0 18px 55px rgba(0, 0, 0, 0.25);
+
+        --shadow-lg:
+          0 30px 80px rgba(0, 0, 0, 0.32);
       }
 
       * {
@@ -212,24 +358,28 @@ const jsonLd = {
 
       body {
         margin: 0;
+        overflow-x: hidden;
+
         font-family: "Cairo", sans-serif;
+
+        color: var(--text);
+
         background:
           radial-gradient(
-            circle at 10% 10%,
-            rgba(34, 211, 238, 0.07),
-            transparent 25%
+            circle at 15% 5%,
+            rgba(6, 182, 212, 0.065),
+            transparent 24%
           ),
           radial-gradient(
-            circle at 90% 20%,
-            rgba(124, 58, 237, 0.06),
+            circle at 88% 12%,
+            rgba(99, 102, 241, 0.055),
             transparent 25%
           ),
           var(--bg);
-        color: var(--text);
-        overflow-x: hidden;
+
         transition:
-          background 0.35s ease,
-          color 0.35s ease;
+          background 0.3s ease,
+          color 0.3s ease;
       }
 
       a {
@@ -248,19 +398,23 @@ const jsonLd = {
       }
 
       .container {
-        width: min(var(--container), calc(100% - 40px));
+        width: min(
+          var(--container),
+          calc(100% - 40px)
+        );
+
         margin-inline: auto;
       }
 
-      /* ========================================
+      /* =====================================================
          BACKGROUND
-         ======================================== */
+      ===================================================== */
 
       .page-background {
         position: fixed;
         inset: 0;
+        z-index: -10;
         pointer-events: none;
-        z-index: -5;
         overflow: hidden;
       }
 
@@ -270,82 +424,91 @@ const jsonLd = {
 
         background-image:
           linear-gradient(
-            rgba(14, 165, 233, 0.035) 1px,
+            rgba(14, 165, 233, 0.025) 1px,
             transparent 1px
           ),
           linear-gradient(
             90deg,
-            rgba(14, 165, 233, 0.035) 1px,
+            rgba(14, 165, 233, 0.025) 1px,
             transparent 1px
           );
 
-        background-size: 44px 44px;
+        background-size: 46px 46px;
 
-        mask-image: linear-gradient(
-          to bottom,
-          black,
-          transparent 70%
-        );
+        mask-image:
+          linear-gradient(
+            to bottom,
+            black,
+            transparent 72%
+          );
       }
 
       .bg-orb {
         position: absolute;
         border-radius: 50%;
-        filter: blur(70px);
-        opacity: 0.25;
+        pointer-events: none;
+        filter: blur(80px);
+        opacity: 0.16;
+        will-change: transform;
       }
 
       .bg-orb-one {
-        width: 320px;
-        height: 320px;
-        top: 5%;
-        right: -100px;
+        width: 300px;
+        height: 300px;
+        top: 2%;
+        right: -130px;
         background: #22d3ee;
-        animation: backgroundOrbOne 15s ease-in-out infinite;
+        animation:
+          bgFloatOne 18s ease-in-out infinite;
       }
 
       .bg-orb-two {
-        width: 280px;
-        height: 280px;
-        top: 30%;
-        left: -100px;
+        width: 260px;
+        height: 260px;
+        top: 32%;
+        left: -120px;
         background: #6366f1;
-        animation: backgroundOrbTwo 18s ease-in-out infinite;
+        animation:
+          bgFloatTwo 21s ease-in-out infinite;
       }
 
-      @keyframes backgroundOrbOne {
-        0%, 100% {
+      @keyframes bgFloatOne {
+        0%,
+        100% {
           transform: translate3d(0, 0, 0);
         }
+
         50% {
-          transform: translate3d(-50px, 35px, 0);
+          transform: translate3d(-35px, 25px, 0);
         }
       }
 
-      @keyframes backgroundOrbTwo {
-        0%, 100% {
+      @keyframes bgFloatTwo {
+        0%,
+        100% {
           transform: translate3d(0, 0, 0);
         }
+
         50% {
-          transform: translate3d(55px, -30px, 0);
+          transform: translate3d(30px, -25px, 0);
         }
       }
 
-      /* ========================================
+      /* =====================================================
          HERO
-         ======================================== */
+      ===================================================== */
 
       .hero {
         position: relative;
-        min-height: 720px;
+
+        min-height: 650px;
+
         padding:
-          90px 0
-          70px;
+          72px 0
+          55px;
 
         display: flex;
         align-items: center;
-
-        overflow: hidden;
       }
 
       .hero-grid {
@@ -353,19 +516,25 @@ const jsonLd = {
         z-index: 2;
 
         display: grid;
-        grid-template-columns: 1.05fr 0.95fr;
+
+        grid-template-columns:
+          1fr
+          0.92fr;
+
         align-items: center;
-        gap: 70px;
+
+        gap: 55px;
       }
 
       .hero-content {
-        animation: heroContentIn 0.9s ease both;
+        animation:
+          heroIn 0.8s ease both;
       }
 
-      @keyframes heroContentIn {
+      @keyframes heroIn {
         from {
           opacity: 0;
-          transform: translateY(25px);
+          transform: translateY(18px);
         }
 
         to {
@@ -379,50 +548,73 @@ const jsonLd = {
         align-items: center;
         gap: 9px;
 
-        padding: 8px 13px;
+        padding:
+          7px 12px;
 
-        border: 1px solid var(--border);
+        border:
+          1px solid var(--border);
+
         border-radius: 999px;
 
-        background: var(--surface);
+        background:
+          var(--surface);
 
-        backdrop-filter: blur(14px);
+        color:
+          var(--text-soft);
 
-        color: var(--text-soft);
-        font-size: 13px;
+        font-size: 11px;
         font-weight: 700;
 
         box-shadow:
-          0 8px 30px rgba(15, 23, 42, 0.05);
+          var(--shadow-sm);
+
+        backdrop-filter: blur(12px);
       }
 
       .hero-badge-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--cyan);
-        box-shadow:
-          0 0 0 5px rgba(34, 211, 238, 0.1),
-          0 0 15px rgba(34, 211, 238, 0.6);
+        width: 7px;
+        height: 7px;
 
-        animation: badgePulse 2s ease-in-out infinite;
+        border-radius: 50%;
+
+        background:
+          var(--cyan);
+
+        box-shadow:
+          0 0 0 4px
+          rgba(6, 182, 212, 0.1);
+
+        animation:
+          badgePulse 2.4s ease-in-out infinite;
       }
 
       @keyframes badgePulse {
-        50% {
-          transform: scale(1.3);
+        0%,
+        100% {
           opacity: 0.7;
+          transform: scale(0.9);
+        }
+
+        50% {
+          opacity: 1;
+          transform: scale(1.15);
         }
       }
 
       .hero h1 {
-        margin: 22px 0 18px;
+        max-width: 690px;
 
-        max-width: 720px;
+        margin:
+          20px 0
+          16px;
 
-        font-size: clamp(42px, 6vw, 72px);
-        line-height: 1.08;
-        letter-spacing: -2.5px;
+        font-size:
+          clamp(39px, 5vw, 62px);
+
+        line-height: 1.13;
+
+        letter-spacing: -2px;
+
         font-weight: 900;
       }
 
@@ -435,17 +627,20 @@ const jsonLd = {
             var(--accent)
           );
 
+        background-size: 180% auto;
+
         -webkit-background-clip: text;
         background-clip: text;
+
         color: transparent;
 
-        background-size: 200% auto;
-
-        animation: gradientMove 5s ease infinite;
+        animation:
+          gradientShift 6s ease-in-out infinite;
       }
 
-      @keyframes gradientMove {
-        0%, 100% {
+      @keyframes gradientShift {
+        0%,
+        100% {
           background-position: 0% center;
         }
 
@@ -455,13 +650,14 @@ const jsonLd = {
       }
 
       .hero-description {
-        max-width: 650px;
+        max-width: 620px;
 
         margin: 0;
 
         color: var(--text-soft);
 
-        font-size: 18px;
+        font-size: 15px;
+
         line-height: 2;
 
         font-weight: 500;
@@ -470,76 +666,94 @@ const jsonLd = {
       .hero-actions {
         display: flex;
         flex-wrap: wrap;
-        gap: 12px;
 
-        margin-top: 30px;
+        gap: 10px;
+
+        margin-top: 25px;
       }
 
       .btn {
-        min-height: 50px;
+        min-height: 47px;
 
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        gap: 9px;
 
-        padding: 0 20px;
+        gap: 8px;
 
-        border-radius: 14px;
+        padding:
+          0 18px;
 
-        border: 1px solid var(--border);
+        border:
+          1px solid var(--border);
 
+        border-radius:
+          13px;
+
+        font-size: 12px;
         font-weight: 800;
 
         transition:
-          transform 0.25s ease,
-          box-shadow 0.25s ease,
-          border-color 0.25s ease;
+          transform 0.22s ease,
+          box-shadow 0.22s ease,
+          border-color 0.22s ease;
       }
 
       .btn:hover {
-        transform: translateY(-3px);
+        transform: translateY(-2px);
       }
 
       .btn-primary {
-        color: white;
+        color: #ffffff;
+
+        border-color: transparent;
 
         background:
           linear-gradient(
             135deg,
             #0891b2,
-            #2563eb,
-            #6366f1
+            #2563eb
           );
 
-        border-color: transparent;
-
         box-shadow:
-          0 12px 30px rgba(37, 99, 235, 0.25);
+          0 12px 28px
+          rgba(37, 99, 235, 0.2);
       }
 
       .btn-primary:hover {
         box-shadow:
-          0 18px 40px rgba(37, 99, 235, 0.32);
+          0 16px 34px
+          rgba(37, 99, 235, 0.27);
       }
 
       .btn-secondary {
-        background: var(--surface);
         color: var(--text);
-        backdrop-filter: blur(12px);
+
+        background:
+          var(--surface);
+
+        backdrop-filter:
+          blur(10px);
+      }
+
+      .btn-secondary:hover {
+        border-color:
+          var(--border-strong);
       }
 
       .hero-trust {
         display: flex;
-        align-items: center;
         flex-wrap: wrap;
-        gap: 18px;
+        align-items: center;
 
-        margin-top: 25px;
+        gap: 15px;
 
-        color: var(--text-soft);
-        font-size: 12px;
-        font-weight: 600;
+        margin-top: 20px;
+
+        color: var(--text-muted);
+
+        font-size: 10px;
+        font-weight: 700;
       }
 
       .hero-trust span {
@@ -552,26 +766,27 @@ const jsonLd = {
         color: var(--primary);
       }
 
-      /* ========================================
-         PROFESSIONAL LOGO
-         ======================================== */
+      /* =====================================================
+         HERO VISUAL
+      ===================================================== */
 
       .hero-visual {
         position: relative;
 
-        min-height: 520px;
+        min-height: 475px;
 
         display: flex;
         align-items: center;
         justify-content: center;
 
-        animation: visualIn 1s 0.15s ease both;
+        animation:
+          visualIn 0.9s 0.1s ease both;
       }
 
       @keyframes visualIn {
         from {
           opacity: 0;
-          transform: scale(0.94);
+          transform: scale(0.96);
         }
 
         to {
@@ -580,29 +795,142 @@ const jsonLd = {
         }
       }
 
-      .th-tech-logo-core {
-        --logo-cyan: #22d3ee;
-        --logo-blue: #38bdf8;
-        --logo-indigo: #6366f1;
-
+      .visual-stage {
         position: relative;
 
-        width: 410px;
-        height: 410px;
+        width: 445px;
+        height: 445px;
 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        isolation: isolate;
+        display: grid;
+        place-items: center;
       }
 
-      .logo-main {
-        position: relative;
-        z-index: 10;
+      .visual-glow {
+        position: absolute;
+        inset: 60px;
 
-        width: 225px;
-        height: 225px;
+        border-radius: 50%;
+
+        background:
+          radial-gradient(
+            circle,
+            rgba(6, 182, 212, 0.17),
+            rgba(99, 102, 241, 0.08) 40%,
+            transparent 70%
+          );
+
+        filter: blur(25px);
+
+        animation:
+          visualGlow 4s ease-in-out infinite;
+      }
+
+      @keyframes visualGlow {
+        0%,
+        100% {
+          opacity: 0.65;
+          transform: scale(0.96);
+        }
+
+        50% {
+          opacity: 1;
+          transform: scale(1.04);
+        }
+      }
+
+      .visual-ring {
+        position: absolute;
+
+        top: 50%;
+        left: 50%;
+
+        border-radius: 50%;
+
+        transform:
+          translate(-50%, -50%);
+
+        pointer-events: none;
+      }
+
+      .visual-ring-one {
+        width: 275px;
+        height: 275px;
+
+        border:
+          1px solid
+          rgba(6, 182, 212, 0.16);
+
+        border-top-color:
+          rgba(6, 182, 212, 0.8);
+
+        animation:
+          rotateRing 14s linear infinite;
+      }
+
+      .visual-ring-two {
+        width: 350px;
+        height: 350px;
+
+        border:
+          1px dashed
+          rgba(99, 102, 241, 0.19);
+
+        border-left-color:
+          rgba(6, 182, 212, 0.7);
+
+        animation:
+          rotateRingReverse 19s linear infinite;
+      }
+
+      .visual-ring-three {
+        width: 420px;
+        height: 420px;
+
+        border:
+          1px solid
+          rgba(56, 189, 248, 0.07);
+
+        border-bottom-color:
+          rgba(99, 102, 241, 0.48);
+
+        animation:
+          rotateRing 26s linear infinite;
+      }
+
+      @keyframes rotateRing {
+        from {
+          transform:
+            translate(-50%, -50%)
+            rotate(0deg);
+        }
+
+        to {
+          transform:
+            translate(-50%, -50%)
+            rotate(360deg);
+        }
+      }
+
+      @keyframes rotateRingReverse {
+        from {
+          transform:
+            translate(-50%, -50%)
+            rotate(360deg);
+        }
+
+        to {
+          transform:
+            translate(-50%, -50%)
+            rotate(0deg);
+        }
+      }
+
+      .logo-core {
+        position: relative;
+        z-index: 5;
+
+        width: 220px;
+        height: 220px;
 
         display: flex;
         flex-direction: column;
@@ -613,79 +941,80 @@ const jsonLd = {
 
         background:
           radial-gradient(
-            circle at 30% 20%,
-            rgba(34, 211, 238, 0.18),
+            circle at 32% 22%,
+            rgba(34, 211, 238, 0.15),
             transparent 38%
           ),
           radial-gradient(
-            circle at 75% 80%,
-            rgba(99, 102, 241, 0.2),
+            circle at 75% 78%,
+            rgba(99, 102, 241, 0.16),
             transparent 45%
           ),
-          rgba(10, 18, 32, 0.92);
+          rgba(8, 17, 31, 0.92);
 
         border:
-          1px solid rgba(103, 232, 249, 0.35);
+          1px solid
+          rgba(103, 232, 249, 0.28);
 
         box-shadow:
-          0 0 25px rgba(34, 211, 238, 0.18),
-          0 0 65px rgba(59, 130, 246, 0.15),
-          inset 0 0 40px rgba(56, 189, 248, 0.08);
+          0 20px 60px
+          rgba(2, 8, 23, 0.2),
+          0 0 45px
+          rgba(34, 211, 238, 0.11),
+          inset 0 0 35px
+          rgba(56, 189, 248, 0.055);
 
-        backdrop-filter: blur(16px);
+        backdrop-filter:
+          blur(15px);
 
         animation:
-          logoFloat 5s ease-in-out infinite;
+          coreFloat 5s ease-in-out infinite;
       }
 
-      .logo-main::before {
-        content: "";
+      @keyframes coreFloat {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
 
-        position: absolute;
-        inset: 10px;
-
-        border-radius: 50%;
-
-        border:
-          1px solid rgba(255, 255, 255, 0.08);
-
-        pointer-events: none;
+        50% {
+          transform: translateY(-7px);
+        }
       }
 
-      .logo-glow {
-        position: absolute;
-        inset: -30px;
-
-        border-radius: 50%;
-
+      html:not(.dark-mode) .logo-core {
         background:
           radial-gradient(
-            circle,
-            rgba(34, 211, 238, 0.22),
-            rgba(99, 102, 241, 0.1) 35%,
-            transparent 70%
-          );
+            circle at 32% 22%,
+            rgba(6, 182, 212, 0.1),
+            transparent 38%
+          ),
+          radial-gradient(
+            circle at 75% 78%,
+            rgba(99, 102, 241, 0.08),
+            transparent 45%
+          ),
+          rgba(255, 255, 255, 0.93);
 
-        filter: blur(17px);
+        border-color:
+          rgba(14, 165, 233, 0.22);
 
-        z-index: -1;
-
-        animation:
-          logoGlow 3.5s ease-in-out infinite;
+        box-shadow:
+          0 20px 55px
+          rgba(15, 23, 42, 0.09),
+          0 0 35px
+          rgba(14, 165, 233, 0.08);
       }
 
       .logo-symbol {
-        position: relative;
+        width: 83px;
+        height: 83px;
 
-        width: 105px;
-        height: 105px;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        display: grid;
+        place-items: center;
 
         animation:
-          logoSymbolFloat 4s ease-in-out infinite;
+          symbolFloat 4s ease-in-out infinite;
       }
 
       .logo-symbol svg {
@@ -694,24 +1023,38 @@ const jsonLd = {
 
         filter:
           drop-shadow(
-            0 0 8px
-            rgba(34, 211, 238, 0.35)
+            0 0 9px
+            rgba(34, 211, 238, 0.32)
           )
           drop-shadow(
-            0 0 22px
-            rgba(99, 102, 241, 0.2)
+            0 0 20px
+            rgba(99, 102, 241, 0.14)
           );
       }
 
+      @keyframes symbolFloat {
+        0%,
+        100% {
+          transform:
+            translateY(0)
+            scale(1);
+        }
+
+        50% {
+          transform:
+            translateY(-3px)
+            scale(1.025);
+        }
+      }
+
       .logo-name {
-        margin-top: 2px;
+        margin-top: 5px;
 
-        font-family: "Cairo", sans-serif;
-
-        font-size: 28px;
+        font-size: 27px;
         line-height: 1;
 
         font-weight: 900;
+
         letter-spacing: -1px;
 
         background:
@@ -728,87 +1071,30 @@ const jsonLd = {
         color: transparent;
       }
 
-      .logo-name strong {
-        font-weight: 900;
-      }
-
       .logo-subtitle {
-        margin-top: 9px;
+        margin-top: 8px;
 
-        color: rgba(186, 230, 253, 0.68);
+        color:
+          rgba(186, 230, 253, 0.6);
 
         font-family:
           "JetBrains Mono",
           monospace;
 
-        font-size: 8px;
-        font-weight: 600;
+        font-size: 7px;
 
-        letter-spacing: 2.5px;
+        font-weight: 700;
+
+        letter-spacing: 2px;
       }
 
-      .logo-ring {
+      html:not(.dark-mode) .logo-subtitle {
+        color:
+          rgba(15, 23, 42, 0.48);
+      }
+
+      .orbit-node {
         position: absolute;
-
-        top: 50%;
-        left: 50%;
-
-        border-radius: 50%;
-
-        pointer-events: none;
-
-        transform:
-          translate(-50%, -50%);
-      }
-
-      .ring-one {
-        width: 275px;
-        height: 275px;
-
-        border:
-          1px solid rgba(34, 211, 238, 0.2);
-
-        border-top-color:
-          rgba(34, 211, 238, 0.9);
-
-        border-right-color:
-          rgba(99, 102, 241, 0.45);
-
-        animation:
-          ringRotateOne 12s linear infinite;
-      }
-
-      .ring-two {
-        width: 330px;
-        height: 330px;
-
-        border:
-          1px dashed rgba(99, 102, 241, 0.22);
-
-        border-left-color:
-          rgba(34, 211, 238, 0.78);
-
-        animation:
-          ringRotateTwo 18s linear infinite;
-      }
-
-      .ring-three {
-        width: 380px;
-        height: 380px;
-
-        border:
-          1px solid rgba(56, 189, 248, 0.09);
-
-        border-bottom-color:
-          rgba(129, 140, 248, 0.6);
-
-        animation:
-          ringRotateThree 25s linear infinite;
-      }
-
-      .orbit-point {
-        position: absolute;
-
         z-index: 7;
 
         width: 8px;
@@ -824,99 +1110,114 @@ const jsonLd = {
           );
 
         box-shadow:
-          0 0 10px rgba(34, 211, 238, 0.8),
-          0 0 25px rgba(99, 102, 241, 0.4);
+          0 0 10px
+          rgba(34, 211, 238, 0.75),
+          0 0 23px
+          rgba(99, 102, 241, 0.3);
 
         animation:
-          pointPulse 2.8s ease-in-out infinite;
+          nodePulse 2.8s ease-in-out infinite;
       }
 
-      .point-one {
-        top: 55px;
-        left: 98px;
+      .node-one {
+        top: 65px;
+        right: 92px;
       }
 
-      .point-two {
-        top: 120px;
-        right: 30px;
+      .node-two {
+        top: 145px;
+        left: 27px;
         animation-delay: -0.7s;
       }
 
-      .point-three {
-        bottom: 55px;
-        left: 80px;
+      .node-three {
+        bottom: 68px;
+        right: 95px;
         animation-delay: -1.4s;
       }
 
-      .point-four {
-        bottom: 90px;
-        right: 55px;
+      .node-four {
+        bottom: 145px;
+        left: 48px;
         animation-delay: -2.1s;
       }
 
-      .floating-tech-card {
+      @keyframes nodePulse {
+        0%,
+        100% {
+          transform: scale(0.75);
+          opacity: 0.5;
+        }
+
+        50% {
+          transform: scale(1.3);
+          opacity: 1;
+        }
+      }
+
+      .tech-chip {
         position: absolute;
+        z-index: 9;
 
-        z-index: 15;
+        min-width: 115px;
 
-        min-width: 125px;
-
-        padding: 10px 13px;
+        padding:
+          9px 11px;
 
         display: flex;
         align-items: center;
-        gap: 9px;
+        gap: 8px;
 
         border:
           1px solid var(--border);
 
-        border-radius: 14px;
+        border-radius: 12px;
 
         background:
-          rgba(255, 255, 255, 0.68);
+          var(--surface);
 
         box-shadow:
-          0 14px 35px rgba(15, 23, 42, 0.08);
+          var(--shadow-sm);
 
-        backdrop-filter: blur(14px);
+        backdrop-filter:
+          blur(13px);
 
-        color: var(--text);
+        color:
+          var(--text);
 
         font-family:
           "JetBrains Mono",
           monospace;
 
-        font-size: 10px;
+        font-size: 9px;
+
         font-weight: 700;
       }
 
-      html.dark-mode .floating-tech-card {
-        background:
-          rgba(15, 23, 42, 0.7);
+      .tech-chip i {
+        color:
+          var(--primary);
       }
 
-      .floating-tech-card i {
-        color: var(--primary);
-      }
-
-      .floating-card-one {
-        top: 85px;
-        right: 0;
+      .chip-one {
+        top: 74px;
+        right: 5px;
 
         animation:
-          floatingCardOne 5s ease-in-out infinite;
+          chipFloatOne 5s ease-in-out infinite;
       }
 
-      .floating-card-two {
-        bottom: 75px;
-        left: 5px;
+      .chip-two {
+        bottom: 76px;
+        left: 3px;
 
         animation:
-          floatingCardTwo 6s ease-in-out infinite;
+          chipFloatTwo 6s ease-in-out infinite;
       }
 
-      @keyframes logoFloat {
-        0%, 100% {
+      @keyframes chipFloatOne {
+        0%,
+        100% {
           transform: translateY(0);
         }
 
@@ -925,109 +1226,20 @@ const jsonLd = {
         }
       }
 
-      @keyframes logoSymbolFloat {
-        0%, 100% {
-          transform:
-            translateY(0)
-            scale(1);
+      @keyframes chipFloatTwo {
+        0%,
+        100% {
+          transform: translateY(0);
         }
 
         50% {
-          transform:
-            translateY(-3px)
-            scale(1.025);
+          transform: translateY(8px);
         }
       }
 
-      @keyframes logoGlow {
-        0%, 100% {
-          opacity: 0.55;
-          transform: scale(0.96);
-        }
-
-        50% {
-          opacity: 1;
-          transform: scale(1.04);
-        }
-      }
-
-      @keyframes ringRotateOne {
-        from {
-          transform:
-            translate(-50%, -50%)
-            rotate(0deg);
-        }
-
-        to {
-          transform:
-            translate(-50%, -50%)
-            rotate(360deg);
-        }
-      }
-
-      @keyframes ringRotateTwo {
-        from {
-          transform:
-            translate(-50%, -50%)
-            rotate(360deg);
-        }
-
-        to {
-          transform:
-            translate(-50%, -50%)
-            rotate(0deg);
-        }
-      }
-
-      @keyframes ringRotateThree {
-        from {
-          transform:
-            translate(-50%, -50%)
-            rotate(0deg);
-        }
-
-        to {
-          transform:
-            translate(-50%, -50%)
-            rotate(360deg);
-        }
-      }
-
-      @keyframes pointPulse {
-        0%, 100% {
-          transform: scale(0.8);
-          opacity: 0.45;
-        }
-
-        50% {
-          transform: scale(1.35);
-          opacity: 1;
-        }
-      }
-
-      @keyframes floatingCardOne {
-        0%, 100% {
-          transform: translate3d(0, 0, 0);
-        }
-
-        50% {
-          transform: translate3d(0, -10px, 0);
-        }
-      }
-
-      @keyframes floatingCardTwo {
-        0%, 100% {
-          transform: translate3d(0, 0, 0);
-        }
-
-        50% {
-          transform: translate3d(0, 9px, 0);
-        }
-      }
-
-      /* ========================================
-         TECH TICKER
-         ======================================== */
+      /* =====================================================
+         TICKER
+      ===================================================== */
 
       .tech-ticker {
         overflow: hidden;
@@ -1039,12 +1251,12 @@ const jsonLd = {
           1px solid var(--border);
 
         background:
-          rgba(255, 255, 255, 0.35);
+          rgba(255, 255, 255, 0.3);
       }
 
       html.dark-mode .tech-ticker {
         background:
-          rgba(15, 23, 42, 0.35);
+          rgba(7, 17, 31, 0.38);
       }
 
       .ticker-track {
@@ -1052,37 +1264,52 @@ const jsonLd = {
 
         display: flex;
         align-items: center;
-        gap: 30px;
 
-        padding: 15px 0;
+        gap: 34px;
+
+        padding:
+          13px 0;
 
         animation:
-          tickerMove 28s linear infinite;
+          tickerMove 34s linear infinite;
       }
 
       .ticker-item {
         display: inline-flex;
         align-items: center;
-        gap: 9px;
+        gap: 8px;
 
-        color: var(--text-soft);
+        color:
+          var(--text-muted);
 
         font-family:
           "JetBrains Mono",
           monospace;
 
-        font-size: 11px;
+        font-size: 10px;
+
         font-weight: 700;
 
         white-space: nowrap;
       }
 
-      .ticker-item::before {
-        content: "◆";
+      .ticker-item i {
+        color:
+          var(--primary);
 
-        color: var(--primary);
+        font-size: 11px;
+      }
 
-        font-size: 7px;
+      .ticker-separator {
+        width: 3px;
+        height: 3px;
+
+        border-radius: 50%;
+
+        background:
+          var(--primary);
+
+        opacity: 0.45;
       }
 
       @keyframes tickerMove {
@@ -1095,20 +1322,21 @@ const jsonLd = {
         }
       }
 
-      /* ========================================
+      /* =====================================================
          SECTIONS
-         ======================================== */
+      ===================================================== */
 
       .section {
-        padding: 95px 0;
+        padding:
+          78px 0;
       }
 
       .section-heading {
-        max-width: 720px;
+        max-width: 700px;
 
         margin:
           0 auto
-          50px;
+          42px;
 
         text-align: center;
       }
@@ -1116,217 +1344,58 @@ const jsonLd = {
       .section-kicker {
         display: inline-flex;
 
-        padding: 7px 12px;
+        padding:
+          6px 10px;
 
-        border-radius: 999px;
+        border-radius:
+          999px;
 
         background:
-          rgba(34, 211, 238, 0.08);
+          rgba(6, 182, 212, 0.07);
 
-        color: var(--primary);
+        color:
+          var(--primary);
 
         font-family:
           "JetBrains Mono",
           monospace;
 
-        font-size: 10px;
+        font-size: 9px;
+
         font-weight: 800;
 
         letter-spacing: 1px;
       }
 
       .section-heading h2 {
-        margin: 15px 0 10px;
+        margin:
+          13px 0
+          9px;
 
         font-size:
-          clamp(30px, 4vw, 46px);
+          clamp(27px, 3.5vw, 41px);
 
-        line-height: 1.2;
+        line-height: 1.25;
 
         font-weight: 900;
+
+        letter-spacing: -0.7px;
       }
 
       .section-heading p {
         margin: 0;
 
-        color: var(--text-soft);
+        color:
+          var(--text-soft);
 
-        font-size: 16px;
+        font-size: 13px;
+
         line-height: 1.9;
       }
 
-      /* ========================================
-         TOOL FINDER
-         ======================================== */
-
-      .tool-finder {
-        position: relative;
-
-        padding: 25px;
-
-        border:
-          1px solid var(--border);
-
-        border-radius:
-          var(--radius-xl);
-
-        background: var(--surface);
-
-        box-shadow: var(--shadow);
-
-        backdrop-filter: blur(16px);
-      }
-
-      .tool-search {
-        position: relative;
-      }
-
-      .tool-search i {
-        position: absolute;
-
-        top: 50%;
-        right: 19px;
-
-        transform: translateY(-50%);
-
-        color: var(--text-soft);
-      }
-
-      .tool-search input {
-        width: 100%;
-
-        height: 58px;
-
-        padding:
-          0 52px
-          0 18px;
-
-        border:
-          1px solid var(--border);
-
-        border-radius: 15px;
-
-        outline: none;
-
-        background:
-          var(--surface-solid);
-
-        color: var(--text);
-
-        font-size: 15px;
-
-        transition:
-          border-color 0.25s ease,
-          box-shadow 0.25s ease;
-      }
-
-      .tool-search input:focus {
-        border-color:
-          rgba(34, 211, 238, 0.5);
-
-        box-shadow:
-          0 0 0 4px
-          rgba(34, 211, 238, 0.08);
-      }
-
-      .tool-results {
-        display: grid;
-
-        grid-template-columns:
-          repeat(4, 1fr);
-
-        gap: 12px;
-
-        margin-top: 18px;
-      }
-
-      .tool-result {
-        min-height: 72px;
-
-        display: flex;
-        align-items: center;
-
-        gap: 12px;
-
-        padding: 13px;
-
-        border:
-          1px solid var(--border);
-
-        border-radius: 15px;
-
-        background:
-          rgba(255, 255, 255, 0.45);
-
-        transition:
-          transform 0.25s ease,
-          border-color 0.25s ease,
-          background 0.25s ease;
-      }
-
-      html.dark-mode .tool-result {
-        background:
-          rgba(15, 23, 42, 0.45);
-      }
-
-      .tool-result:hover {
-        transform: translateY(-3px);
-
-        border-color:
-          rgba(34, 211, 238, 0.35);
-      }
-
-      .tool-result-icon {
-        width: 40px;
-        height: 40px;
-
-        flex: 0 0 40px;
-
-        display: grid;
-        place-items: center;
-
-        border-radius: 12px;
-
-        background:
-          linear-gradient(
-            135deg,
-            rgba(34, 211, 238, 0.12),
-            rgba(99, 102, 241, 0.12)
-          );
-
-        color: var(--primary);
-      }
-
-      .tool-result strong {
-        display: block;
-
-        font-size: 12px;
-
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-
-      .tool-result small {
-        color: var(--text-soft);
-        font-size: 9px;
-      }
-
-      .no-results {
-        display: none;
-
-        padding: 25px;
-
-        text-align: center;
-
-        color: var(--text-soft);
-
-        font-size: 13px;
-      }
-
-      /* ========================================
+      /* =====================================================
          STATS
-         ======================================== */
+      ===================================================== */
 
       .stats-grid {
         display: grid;
@@ -1334,13 +1403,21 @@ const jsonLd = {
         grid-template-columns:
           repeat(4, 1fr);
 
-        gap: 15px;
+        gap: 13px;
       }
 
       .stat-card {
         position: relative;
 
-        padding: 25px;
+        min-height: 126px;
+
+        padding:
+          20px 15px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
 
         overflow: hidden;
 
@@ -1350,14 +1427,14 @@ const jsonLd = {
         border-radius:
           var(--radius-lg);
 
-        background: var(--surface);
+        background:
+          var(--surface);
 
         box-shadow:
-          0 15px 45px rgba(15, 23, 42, 0.05);
+          var(--shadow-sm);
 
-        backdrop-filter: blur(14px);
-
-        text-align: center;
+        backdrop-filter:
+          blur(12px);
       }
 
       .stat-card::after {
@@ -1365,8 +1442,8 @@ const jsonLd = {
 
         position: absolute;
 
-        width: 90px;
-        height: 90px;
+        width: 80px;
+        height: 80px;
 
         left: -30px;
         bottom: -35px;
@@ -1374,15 +1451,17 @@ const jsonLd = {
         border-radius: 50%;
 
         background:
-          rgba(34, 211, 238, 0.08);
+          rgba(6, 182, 212, 0.08);
 
-        filter: blur(5px);
+        filter: blur(3px);
       }
 
       .stat-number {
         display: block;
 
-        font-size: 36px;
+        font-size: 32px;
+
+        line-height: 1.2;
 
         font-weight: 900;
 
@@ -1400,15 +1479,217 @@ const jsonLd = {
       }
 
       .stat-label {
-        color: var(--text-soft);
+        margin-top: 4px;
 
-        font-size: 12px;
+        color:
+          var(--text-soft);
+
+        font-size: 10px;
+
         font-weight: 700;
       }
 
-      /* ========================================
+      /* =====================================================
+         TOOL FINDER
+      ===================================================== */
+
+      .tool-finder {
+        padding: 21px;
+
+        border:
+          1px solid var(--border);
+
+        border-radius:
+          var(--radius-xl);
+
+        background:
+          var(--surface);
+
+        box-shadow:
+          var(--shadow-md);
+
+        backdrop-filter:
+          blur(14px);
+      }
+
+      .tool-search {
+        position: relative;
+      }
+
+      .tool-search i {
+        position: absolute;
+
+        top: 50%;
+        right: 18px;
+
+        transform:
+          translateY(-50%);
+
+        color:
+          var(--text-muted);
+
+        font-size: 13px;
+      }
+
+      .tool-search input {
+        width: 100%;
+
+        height: 53px;
+
+        padding:
+          0 48px
+          0 16px;
+
+        border:
+          1px solid var(--border);
+
+        border-radius:
+          13px;
+
+        outline: none;
+
+        background:
+          var(--surface-solid);
+
+        color:
+          var(--text);
+
+        font-size: 12px;
+
+        transition:
+          border-color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+
+      .tool-search input:focus {
+        border-color:
+          rgba(6, 182, 212, 0.42);
+
+        box-shadow:
+          0 0 0 4px
+          rgba(6, 182, 212, 0.07);
+      }
+
+      .tool-results {
+        display: grid;
+
+        grid-template-columns:
+          repeat(4, 1fr);
+
+        gap: 10px;
+
+        margin-top: 14px;
+      }
+
+      .tool-result {
+        min-height: 66px;
+
+        display: flex;
+        align-items: center;
+
+        gap: 10px;
+
+        padding:
+          10px;
+
+        border:
+          1px solid var(--border);
+
+        border-radius:
+          13px;
+
+        background:
+          rgba(255, 255, 255, 0.38);
+
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease;
+      }
+
+      html.dark-mode .tool-result {
+        background:
+          rgba(15, 23, 42, 0.4);
+      }
+
+      .tool-result:hover {
+        transform:
+          translateY(-2px);
+
+        border-color:
+          var(--border-strong);
+      }
+
+      .tool-result-icon {
+        width: 37px;
+        height: 37px;
+
+        flex: 0 0 37px;
+
+        display: grid;
+        place-items: center;
+
+        border-radius:
+          10px;
+
+        background:
+          linear-gradient(
+            135deg,
+            rgba(6, 182, 212, 0.11),
+            rgba(99, 102, 241, 0.11)
+          );
+
+        color:
+          var(--primary);
+
+        font-size: 14px;
+      }
+
+      .tool-result strong {
+        display: block;
+
+        max-width: 150px;
+
+        overflow: hidden;
+
+        color:
+          var(--text);
+
+        font-size: 10px;
+
+        font-weight: 800;
+
+        white-space: nowrap;
+
+        text-overflow: ellipsis;
+      }
+
+      .tool-result small {
+        display: block;
+
+        margin-top: 2px;
+
+        color:
+          var(--text-muted);
+
+        font-size: 8px;
+      }
+
+      .no-results {
+        display: none;
+
+        padding: 20px;
+
+        color:
+          var(--text-soft);
+
+        text-align: center;
+
+        font-size: 11px;
+      }
+
+      /* =====================================================
          FEATURED TOOLS
-         ======================================== */
+      ===================================================== */
 
       .tools-grid {
         display: grid;
@@ -1416,13 +1697,15 @@ const jsonLd = {
         grid-template-columns:
           repeat(3, 1fr);
 
-        gap: 17px;
+        gap: 14px;
       }
 
       .tool-card {
         position: relative;
 
-        padding: 23px;
+        min-width: 0;
+
+        overflow: hidden;
 
         border:
           1px solid var(--border);
@@ -1430,118 +1713,287 @@ const jsonLd = {
         border-radius:
           var(--radius-lg);
 
-        background: var(--surface);
+        background:
+          var(--surface);
 
         box-shadow:
-          0 14px 40px rgba(15, 23, 42, 0.045);
+          var(--shadow-sm);
 
-        backdrop-filter: blur(12px);
-
-        overflow: hidden;
-
-        transition:
-          transform 0.3s ease,
-          border-color 0.3s ease,
-          box-shadow 0.3s ease;
-      }
-
-      .tool-card::before {
-        content: "";
-
-        position: absolute;
-
-        top: -70px;
-        left: -70px;
-
-        width: 160px;
-        height: 160px;
-
-        border-radius: 50%;
-
-        background:
-          radial-gradient(
-            circle,
-            rgba(34, 211, 238, 0.11),
-            transparent 70%
-          );
+        backdrop-filter:
+          blur(12px);
 
         transition:
-          transform 0.5s ease;
+          transform 0.25s ease,
+          border-color 0.25s ease,
+          box-shadow 0.25s ease;
       }
 
       .tool-card:hover {
-        transform: translateY(-7px);
+        transform:
+          translateY(-5px);
 
         border-color:
-          rgba(34, 211, 238, 0.3);
+          var(--border-strong);
 
         box-shadow:
-          0 25px 60px rgba(15, 23, 42, 0.1);
+          var(--shadow-md);
       }
 
-      .tool-card:hover::before {
-        transform: scale(1.4);
-      }
-
-      .tool-icon {
+      .tool-visual {
         position: relative;
-        z-index: 2;
 
-        width: 50px;
-        height: 50px;
+        height: 116px;
 
-        display: grid;
-        place-items: center;
+        overflow: hidden;
 
-        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
         background:
           linear-gradient(
             135deg,
-            rgba(34, 211, 238, 0.12),
-            rgba(99, 102, 241, 0.13)
+            #07111f,
+            #0b1b31
           );
-
-        color: var(--primary);
-
-        font-size: 20px;
       }
 
-      .tool-card h3 {
+      .tool-visual::after {
+        content: "";
+
+        position: absolute;
+
+        inset: 0;
+
+        background:
+          linear-gradient(
+            120deg,
+            transparent 20%,
+            rgba(255, 255, 255, 0.055),
+            transparent 80%
+          );
+
+        transform:
+          translateX(-100%);
+
+        transition:
+          transform 0.6s ease;
+      }
+
+      .tool-card:hover .tool-visual::after {
+        transform:
+          translateX(100%);
+      }
+
+      .tool-visual-grid {
+        position: absolute;
+        inset: 0;
+
+        opacity: 0.35;
+
+        background-image:
+          linear-gradient(
+            rgba(103, 232, 249, 0.09) 1px,
+            transparent 1px
+          ),
+          linear-gradient(
+            90deg,
+            rgba(103, 232, 249, 0.09) 1px,
+            transparent 1px
+          );
+
+        background-size: 18px 18px;
+      }
+
+      .tool-visual-window {
         position: relative;
         z-index: 2;
 
-        margin:
-          17px 0
-          7px;
+        width: 72%;
 
-        font-size: 16px;
+        padding: 11px;
+
+        border:
+          1px solid
+          rgba(148, 163, 184, 0.18);
+
+        border-radius: 10px;
+
+        background:
+          rgba(2, 8, 23, 0.62);
+
+        box-shadow:
+          0 15px 30px
+          rgba(0, 0, 0, 0.18);
+
+        transform:
+          perspective(500px)
+          rotateX(3deg);
+      }
+
+      .window-top {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        margin-bottom: 8px;
+      }
+
+      .window-top span {
+        width: 5px;
+        height: 5px;
+
+        border-radius: 50%;
+
+        background:
+          #64748b;
+      }
+
+      .window-lines {
+        display: grid;
+        gap: 4px;
+      }
+
+      .window-line {
+        height: 4px;
+
+        border-radius: 99px;
+
+        background:
+          rgba(103, 232, 249, 0.38);
+      }
+
+      .window-line:nth-child(2) {
+        width: 72%;
+        background:
+          rgba(129, 140, 248, 0.4);
+      }
+
+      .window-line:nth-child(3) {
+        width: 52%;
+        background:
+          rgba(34, 211, 238, 0.25);
+      }
+
+      .tool-visual-symbol {
+        position: absolute;
+        z-index: 3;
+
+        width: 48px;
+        height: 48px;
+
+        display: grid;
+        place-items: center;
+
+        border-radius: 14px;
+
+        background:
+          linear-gradient(
+            135deg,
+            rgba(34, 211, 238, 0.95),
+            rgba(99, 102, 241, 0.95)
+          );
+
+        color: #ffffff;
+
+        font-size: 18px;
+
+        box-shadow:
+          0 10px 28px
+          rgba(34, 211, 238, 0.2);
+      }
+
+      .tool-card-body {
+        padding: 16px;
+      }
+
+      .tool-card-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        gap: 8px;
+      }
+
+      .tool-card-type {
+        color:
+          var(--primary);
+
+        font-family:
+          "JetBrains Mono",
+          monospace;
+
+        font-size: 8px;
+
+        font-weight: 800;
+
+        letter-spacing: 0.7px;
+      }
+
+      .tool-card-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+
+        color:
+          var(--text-muted);
+
+        font-size: 8px;
+        font-weight: 700;
+      }
+
+      .tool-card-status::before {
+        content: "";
+
+        width: 5px;
+        height: 5px;
+
+        border-radius: 50%;
+
+        background:
+          #22c55e;
+
+        box-shadow:
+          0 0 7px
+          rgba(34, 197, 94, 0.5);
+      }
+
+      .tool-card h3 {
+        margin:
+          9px 0
+          5px;
+
+        font-size: 14px;
+
+        line-height: 1.5;
+
         font-weight: 800;
       }
 
       .tool-card p {
-        position: relative;
-        z-index: 2;
-
         margin: 0;
 
-        color: var(--text-soft);
+        color:
+          var(--text-soft);
 
-        font-size: 12px;
+        font-size: 10px;
+
         line-height: 1.8;
       }
 
       .tool-card-link {
-        position: relative;
-        z-index: 2;
-
         display: inline-flex;
+        align-items: center;
 
-        margin-top: 16px;
+        gap: 5px;
 
-        color: var(--primary);
+        margin-top: 11px;
 
-        font-size: 11px;
+        color:
+          var(--primary);
+
+        font-size: 9px;
+
         font-weight: 800;
       }
 
@@ -1549,12 +2001,12 @@ const jsonLd = {
         display: flex;
         justify-content: center;
 
-        margin-top: 35px;
+        margin-top: 28px;
       }
 
-      /* ========================================
+      /* =====================================================
          TRACKS
-         ======================================== */
+      ===================================================== */
 
       .tracks-grid {
         display: grid;
@@ -1562,19 +2014,18 @@ const jsonLd = {
         grid-template-columns:
           repeat(4, 1fr);
 
-        gap: 16px;
+        gap: 13px;
       }
 
       .track-card {
         position: relative;
 
-        min-height: 230px;
+        min-height: 205px;
 
-        padding: 24px;
+        padding: 20px;
 
         display: flex;
         flex-direction: column;
-
         justify-content: space-between;
 
         overflow: hidden;
@@ -1585,38 +2036,78 @@ const jsonLd = {
         border-radius:
           var(--radius-lg);
 
-        background: var(--surface);
+        background:
+          var(--surface);
+
+        box-shadow:
+          var(--shadow-sm);
 
         transition:
-          transform 0.3s ease,
-          border-color 0.3s ease;
+          transform 0.25s ease,
+          border-color 0.25s ease;
+      }
+
+      .track-card::before {
+        content: "";
+
+        position: absolute;
+
+        width: 130px;
+        height: 130px;
+
+        top: -70px;
+        left: -50px;
+
+        border-radius: 50%;
+
+        background:
+          rgba(6, 182, 212, 0.08);
+
+        filter: blur(10px);
       }
 
       .track-card:hover {
-        transform: translateY(-7px);
+        transform:
+          translateY(-5px);
 
         border-color:
-          rgba(34, 211, 238, 0.3);
+          var(--border-strong);
       }
 
       .track-icon {
-        font-size: 36px;
+        width: 43px;
+        height: 43px;
 
-        filter:
-          drop-shadow(
-            0 8px 15px
-            rgba(15, 23, 42, 0.1)
+        display: grid;
+        place-items: center;
+
+        margin-bottom: 13px;
+
+        border-radius: 13px;
+
+        background:
+          linear-gradient(
+            135deg,
+            rgba(6, 182, 212, 0.1),
+            rgba(99, 102, 241, 0.11)
           );
+
+        color:
+          var(--primary);
+
+        font-size: 17px;
       }
 
       .track-tag {
-        color: var(--primary);
+        color:
+          var(--primary);
 
         font-family:
           "JetBrains Mono",
           monospace;
 
-        font-size: 9px;
+        font-size: 8px;
+
         font-weight: 800;
 
         letter-spacing: 1px;
@@ -1624,138 +2115,148 @@ const jsonLd = {
 
       .track-card h3 {
         margin:
-          10px 0
+          8px 0
           5px;
 
-        font-size: 18px;
+        font-size: 16px;
+
+        font-weight: 800;
       }
 
       .track-card p {
         margin: 0;
 
-        color: var(--text-soft);
+        color:
+          var(--text-soft);
 
-        font-size: 12px;
+        font-size: 10px;
+
         line-height: 1.8;
       }
 
-      /* ========================================
+      /* =====================================================
          CODE EDITOR
-         ======================================== */
-
-      .editor-section {
-        position: relative;
-      }
+      ===================================================== */
 
       .editor-wrapper {
         display: grid;
 
         grid-template-columns:
-          1fr 0.9fr;
+          1fr
+          0.92fr;
 
-        min-height: 510px;
+        min-height: 495px;
 
         overflow: hidden;
 
         border:
-          1px solid rgba(148, 163, 184, 0.16);
+          1px solid
+          rgba(148, 163, 184, 0.14);
 
         border-radius:
-          28px;
+          24px;
 
         background:
-          #08111f;
+          #07111f;
 
         box-shadow:
-          0 30px 80px rgba(2, 8, 23, 0.2);
+          0 25px 70px
+          rgba(2, 8, 23, 0.18);
       }
 
       .editor-panel {
+        min-width: 0;
+
         display: flex;
         flex-direction: column;
-
-        min-width: 0;
       }
 
       .editor-toolbar {
-        min-height: 60px;
+        min-height: 57px;
 
         display: flex;
         align-items: center;
         justify-content: space-between;
 
-        gap: 12px;
+        gap: 10px;
 
         padding:
-          10px 15px;
+          9px 13px;
 
         border-bottom:
           1px solid
-          rgba(148, 163, 184, 0.12);
+          rgba(148, 163, 184, 0.1);
 
         background:
-          rgba(15, 23, 42, 0.7);
+          rgba(15, 23, 42, 0.68);
       }
 
       .editor-tabs {
         display: flex;
-        gap: 5px;
+        gap: 4px;
       }
 
       .editor-tab {
-        min-height: 36px;
+        min-height: 34px;
 
         padding:
-          0 12px;
+          0 11px;
 
         border: 0;
-        border-radius: 9px;
+
+        border-radius:
+          8px;
 
         background:
           transparent;
 
         color:
-          #94a3b8;
+          #8190a5;
 
         font-family:
           "JetBrains Mono",
           monospace;
 
-        font-size: 10px;
+        font-size: 9px;
+
         font-weight: 700;
       }
 
+      .editor-tab:hover,
       .editor-tab.active {
-        background:
-          rgba(34, 211, 238, 0.1);
-
         color:
           #67e8f9;
+
+        background:
+          rgba(34, 211, 238, 0.08);
       }
 
       .editor-actions {
         display: flex;
-        gap: 6px;
+        gap: 5px;
       }
 
       .editor-action {
-        width: 35px;
-        height: 35px;
+        width: 33px;
+        height: 33px;
 
         display: grid;
         place-items: center;
 
         border:
           1px solid
-          rgba(148, 163, 184, 0.14);
+          rgba(148, 163, 184, 0.12);
 
-        border-radius: 9px;
+        border-radius:
+          8px;
 
         background:
           rgba(15, 23, 42, 0.7);
 
         color:
-          #94a3b8;
+          #8190a5;
+
+        font-size: 11px;
       }
 
       .editor-action:hover {
@@ -1763,7 +2264,7 @@ const jsonLd = {
           #67e8f9;
 
         border-color:
-          rgba(34, 211, 238, 0.3);
+          rgba(34, 211, 238, 0.28);
       }
 
       .editor-body {
@@ -1773,26 +2274,32 @@ const jsonLd = {
 
         display: flex;
 
-        min-height: 430px;
+        min-height: 395px;
+
+        overflow: hidden;
       }
 
       .line-numbers {
-        width: 48px;
+        width: 45px;
+
+        flex: 0 0 45px;
 
         padding:
-          20px 10px;
+          18px 7px;
+
+        overflow: hidden;
 
         background:
           rgba(2, 8, 23, 0.35);
 
         color:
-          #475569;
+          #45546a;
 
         font-family:
           "JetBrains Mono",
           monospace;
 
-        font-size: 11px;
+        font-size: 10px;
 
         line-height: 1.8;
 
@@ -1804,16 +2311,18 @@ const jsonLd = {
       .code-editor {
         flex: 1;
 
+        min-width: 0;
+
         width: 100%;
 
         resize: none;
 
         padding:
-          20px;
+          18px;
 
         border: 0;
 
-        outline: none;
+        outline: 0;
 
         background:
           transparent;
@@ -1825,7 +2334,7 @@ const jsonLd = {
           "JetBrains Mono",
           monospace;
 
-        font-size: 12px;
+        font-size: 11px;
 
         line-height: 1.8;
 
@@ -1833,27 +2342,27 @@ const jsonLd = {
       }
 
       .editor-status {
-        min-height: 34px;
+        min-height: 33px;
 
         display: flex;
         align-items: center;
         justify-content: space-between;
 
         padding:
-          0 15px;
+          0 13px;
 
         border-top:
           1px solid
-          rgba(148, 163, 184, 0.1);
+          rgba(148, 163, 184, 0.09);
 
         color:
-          #64748b;
+          #5f7189;
 
         font-family:
           "JetBrains Mono",
           monospace;
 
-        font-size: 9px;
+        font-size: 8px;
       }
 
       .status-live {
@@ -1865,8 +2374,8 @@ const jsonLd = {
       .status-live::before {
         content: "";
 
-        width: 6px;
-        height: 6px;
+        width: 5px;
+        height: 5px;
 
         border-radius: 50%;
 
@@ -1874,12 +2383,12 @@ const jsonLd = {
           #22c55e;
 
         box-shadow:
-          0 0 8px
+          0 0 7px
           rgba(34, 197, 94, 0.7);
       }
 
       .preview-panel {
-        position: relative;
+        min-width: 0;
 
         display: flex;
         flex-direction: column;
@@ -1889,14 +2398,14 @@ const jsonLd = {
       }
 
       .preview-header {
-        min-height: 60px;
+        min-height: 57px;
 
         display: flex;
         align-items: center;
         justify-content: space-between;
 
         padding:
-          0 18px;
+          0 16px;
 
         border-bottom:
           1px solid
@@ -1911,12 +2420,12 @@ const jsonLd = {
 
       .preview-dots {
         display: flex;
-        gap: 6px;
+        gap: 5px;
       }
 
       .preview-dots span {
-        width: 8px;
-        height: 8px;
+        width: 7px;
+        height: 7px;
 
         border-radius: 50%;
 
@@ -1932,7 +2441,7 @@ const jsonLd = {
           "JetBrains Mono",
           monospace;
 
-        font-size: 9px;
+        font-size: 8px;
       }
 
       #code-preview {
@@ -1940,36 +2449,41 @@ const jsonLd = {
 
         width: 100%;
 
+        min-height: 350px;
+
         border: 0;
 
-        background: white;
+        background:
+          #ffffff;
       }
 
       .editor-info {
-        padding: 22px;
+        padding:
+          17px;
 
         border-top:
           1px solid
-          rgba(148, 163, 184, 0.12);
+          rgba(148, 163, 184, 0.1);
 
         background:
-          rgba(15, 23, 42, 0.7);
+          #07111f;
 
-        color: #94a3b8;
+        color:
+          #8190a5;
 
-        font-size: 11px;
+        font-size: 9px;
 
         line-height: 1.8;
       }
 
       .editor-info strong {
         color:
-          #e2e8f0;
+          #dbeafe;
       }
 
-      /* ========================================
-         HOW IT WORKS
-         ======================================== */
+      /* =====================================================
+         STEPS
+      ===================================================== */
 
       .steps-grid {
         display: grid;
@@ -1977,13 +2491,11 @@ const jsonLd = {
         grid-template-columns:
           repeat(3, 1fr);
 
-        gap: 20px;
+        gap: 13px;
       }
 
       .step-card {
-        position: relative;
-
-        padding: 30px;
+        padding: 24px;
 
         border:
           1px solid var(--border);
@@ -1991,54 +2503,64 @@ const jsonLd = {
         border-radius:
           var(--radius-lg);
 
-        background: var(--surface);
+        background:
+          var(--surface);
+
+        box-shadow:
+          var(--shadow-sm);
       }
 
       .step-number {
-        width: 45px;
-        height: 45px;
+        width: 42px;
+        height: 42px;
 
         display: grid;
         place-items: center;
 
-        border-radius: 13px;
+        border-radius:
+          12px;
 
         background:
           linear-gradient(
             135deg,
-            rgba(34, 211, 238, 0.14),
-            rgba(99, 102, 241, 0.15)
+            rgba(6, 182, 212, 0.1),
+            rgba(99, 102, 241, 0.11)
           );
 
-        color: var(--primary);
+        color:
+          var(--primary);
 
         font-family:
           "JetBrains Mono",
           monospace;
 
-        font-size: 14px;
+        font-size: 11px;
+
         font-weight: 800;
       }
 
       .step-card h3 {
         margin:
-          18px 0 8px;
+          15px 0
+          7px;
 
-        font-size: 17px;
+        font-size: 15px;
       }
 
       .step-card p {
         margin: 0;
 
-        color: var(--text-soft);
+        color:
+          var(--text-soft);
 
-        font-size: 12px;
+        font-size: 10px;
+
         line-height: 1.9;
       }
 
-      /* ========================================
+      /* =====================================================
          FEATURES
-         ======================================== */
+      ===================================================== */
 
       .features-grid {
         display: grid;
@@ -2046,11 +2568,11 @@ const jsonLd = {
         grid-template-columns:
           repeat(3, 1fr);
 
-        gap: 15px;
+        gap: 12px;
       }
 
       .feature {
-        padding: 22px;
+        padding: 20px;
 
         border:
           1px solid var(--border);
@@ -2060,92 +2582,106 @@ const jsonLd = {
 
         background:
           var(--surface);
+
+        box-shadow:
+          var(--shadow-sm);
       }
 
       .feature i {
-        color: var(--primary);
+        color:
+          var(--primary);
 
-        font-size: 21px;
+        font-size: 18px;
       }
 
       .feature h3 {
         margin:
-          13px 0 6px;
+          11px 0
+          5px;
 
-        font-size: 15px;
+        font-size: 13px;
       }
 
       .feature p {
         margin: 0;
 
-        color: var(--text-soft);
+        color:
+          var(--text-soft);
 
-        font-size: 11px;
+        font-size: 9px;
 
         line-height: 1.9;
       }
 
-      /* ========================================
+      /* =====================================================
          FAQ
-         ======================================== */
+      ===================================================== */
 
       .faq-list {
-        max-width: 850px;
+        max-width: 820px;
 
         margin-inline: auto;
 
         display: grid;
 
-        gap: 10px;
+        gap: 8px;
       }
 
       .faq-item {
+        overflow: hidden;
+
         border:
           1px solid var(--border);
 
         border-radius:
-          16px;
+          14px;
 
         background:
           var(--surface);
-
-        overflow: hidden;
       }
 
       .faq-question {
         width: 100%;
 
-        min-height: 65px;
+        min-height: 59px;
 
         display: flex;
         align-items: center;
         justify-content: space-between;
 
-        gap: 20px;
+        gap: 15px;
 
         padding:
-          0 20px;
+          0 17px;
 
         border: 0;
 
-        background: transparent;
+        background:
+          transparent;
 
-        color: var(--text);
+        color:
+          var(--text);
 
         text-align: right;
 
-        font-size: 14px;
+        font-size: 11px;
+
         font-weight: 800;
       }
 
       .faq-question i {
-        color: var(--primary);
+        color:
+          var(--primary);
+
+        font-size: 10px;
 
         transition:
-          transform 0.25s ease;
+          transform 0.2s ease;
       }
 
-      .faq-item.open .faq-question i {
+      .faq-item.open
+        .faq-question
+        i {
         transform:
           rotate(180deg);
       }
@@ -2153,68 +2689,76 @@ const jsonLd = {
       .faq-answer {
         display: grid;
 
-        grid-template-rows: 0fr;
+        grid-template-rows:
+          0fr;
 
         transition:
-          grid-template-rows 0.3s ease;
+          grid-template-rows 0.25s ease;
       }
 
       .faq-answer-inner {
         overflow: hidden;
 
-        color: var(--text-soft);
-
-        font-size: 12px;
-        line-height: 1.9;
-
         padding:
-          0 20px;
+          0 17px;
+
+        color:
+          var(--text-soft);
+
+        font-size: 10px;
+
+        line-height: 1.9;
       }
 
-      .faq-item.open .faq-answer {
-        grid-template-rows: 1fr;
+      .faq-item.open
+        .faq-answer {
+        grid-template-rows:
+          1fr;
       }
 
-      .faq-item.open .faq-answer-inner {
-        padding-bottom: 20px;
+      .faq-item.open
+        .faq-answer-inner {
+        padding-bottom:
+          17px;
       }
 
-      /* ========================================
+      /* =====================================================
          CTA
-         ======================================== */
+      ===================================================== */
 
       .cta {
         position: relative;
 
         overflow: hidden;
 
-        padding: 65px 30px;
+        padding:
+          55px 25px;
 
         border:
           1px solid
-          rgba(34, 211, 238, 0.2);
+          rgba(34, 211, 238, 0.18);
 
         border-radius:
-          32px;
+          28px;
 
         background:
           radial-gradient(
             circle at 10% 20%,
-            rgba(34, 211, 238, 0.2),
-            transparent 30%
+            rgba(34, 211, 238, 0.16),
+            transparent 32%
           ),
           radial-gradient(
             circle at 90% 80%,
-            rgba(99, 102, 241, 0.22),
+            rgba(99, 102, 241, 0.17),
             transparent 35%
           ),
-          #0b1424;
+          #091525;
 
         text-align: center;
 
         box-shadow:
-          0 30px 80px
-          rgba(2, 8, 23, 0.2);
+          0 25px 70px
+          rgba(2, 8, 23, 0.18);
       }
 
       .cta::before {
@@ -2222,27 +2766,32 @@ const jsonLd = {
 
         position: absolute;
 
-        inset: 0;
+        top: 0;
+        bottom: 0;
+
+        width: 90px;
 
         background:
           linear-gradient(
-            120deg,
+            90deg,
             transparent,
-            rgba(255, 255, 255, 0.05),
+            rgba(255, 255, 255, 0.045),
             transparent
           );
 
         transform:
-          translateX(-100%);
+          translateX(-160px);
 
         animation:
-          ctaShine 7s linear infinite;
+          ctaShine 8s linear infinite;
       }
 
       @keyframes ctaShine {
         to {
           transform:
-            translateX(100%);
+            translateX(
+              calc(100vw + 160px)
+            );
         }
       }
 
@@ -2252,41 +2801,47 @@ const jsonLd = {
       }
 
       .cta h2 {
-        margin: 0 0 12px;
+        margin:
+          0 0
+          10px;
 
-        color: white;
+        color:
+          #ffffff;
 
         font-size:
-          clamp(28px, 4vw, 44px);
+          clamp(26px, 3.5vw, 39px);
 
         font-weight: 900;
       }
 
       .cta p {
-        max-width: 620px;
+        max-width: 590px;
 
         margin:
-          0 auto 25px;
+          0 auto
+          22px;
 
         color:
-          #94a3b8;
+          #91a2b8;
+
+        font-size: 12px;
 
         line-height: 1.9;
       }
 
-      /* ========================================
-         SCROLL REVEAL
-         ======================================== */
+      /* =====================================================
+         REVEAL
+      ===================================================== */
 
       .reveal {
         opacity: 0;
 
         transform:
-          translateY(24px);
+          translateY(18px);
 
         transition:
-          opacity 0.7s ease,
-          transform 0.7s ease;
+          opacity 0.55s ease,
+          transform 0.55s ease;
       }
 
       .reveal.visible {
@@ -2296,20 +2851,20 @@ const jsonLd = {
           translateY(0);
       }
 
-      /* ========================================
+      /* =====================================================
          SCROLL TOP
-         ======================================== */
+      ===================================================== */
 
       .scroll-top {
         position: fixed;
 
-        left: 20px;
-        bottom: 20px;
+        left: 18px;
+        bottom: 18px;
 
         z-index: 100;
 
-        width: 43px;
-        height: 43px;
+        width: 41px;
+        height: 41px;
 
         display: grid;
         place-items: center;
@@ -2317,25 +2872,28 @@ const jsonLd = {
         border:
           1px solid var(--border);
 
-        border-radius: 13px;
+        border-radius:
+          12px;
 
         background:
           var(--surface);
 
-        color: var(--primary);
+        color:
+          var(--primary);
 
-        backdrop-filter: blur(12px);
+        backdrop-filter:
+          blur(12px);
 
         opacity: 0;
         visibility: hidden;
 
         transform:
-          translateY(10px);
+          translateY(8px);
 
         transition:
-          opacity 0.25s ease,
-          visibility 0.25s ease,
-          transform 0.25s ease;
+          opacity 0.2s ease,
+          visibility 0.2s ease,
+          transform 0.2s ease;
       }
 
       .scroll-top.show {
@@ -2346,48 +2904,16 @@ const jsonLd = {
           translateY(0);
       }
 
-      /* ========================================
-         LIGHT LOGO
-         ======================================== */
+      /* =====================================================
+         RESPONSIVE — TABLET
+      ===================================================== */
 
-      html:not(.dark-mode) .logo-main {
-        background:
-          radial-gradient(
-            circle at 30% 20%,
-            rgba(34, 211, 238, 0.12),
-            transparent 38%
-          ),
-          radial-gradient(
-            circle at 75% 80%,
-            rgba(99, 102, 241, 0.1),
-            transparent 45%
-          ),
-          rgba(255, 255, 255, 0.9);
-
-        border-color:
-          rgba(14, 165, 233, 0.25);
-
-        box-shadow:
-          0 15px 45px
-          rgba(15, 23, 42, 0.1),
-          0 0 35px
-          rgba(14, 165, 233, 0.1),
-          inset 0 0 30px
-          rgba(14, 165, 233, 0.04);
-      }
-
-      html:not(.dark-mode) .logo-subtitle {
-        color:
-          rgba(15, 23, 42, 0.55);
-      }
-
-      /* ========================================
-         RESPONSIVE
-         ======================================== */
-
-      @media (max-width: 1000px) {
+      @media (max-width: 1050px) {
         .hero-grid {
           grid-template-columns: 1fr;
+
+          gap: 30px;
+
           text-align: center;
         }
 
@@ -2397,13 +2923,17 @@ const jsonLd = {
           align-items: center;
         }
 
+        .hero-description {
+          max-width: 680px;
+        }
+
         .hero-visual {
-          min-height: 470px;
+          min-height: 430px;
         }
 
         .tool-results {
           grid-template-columns:
-            repeat(2, 1fr);
+            repeat(3, 1fr);
         }
 
         .tracks-grid {
@@ -2417,233 +2947,587 @@ const jsonLd = {
         }
 
         .editor-wrapper {
-          grid-template-columns: 1fr;
+          grid-template-columns:
+            1fr;
         }
 
         .preview-panel {
-          min-height: 360px;
+          min-height: 370px;
         }
       }
+
+      /* =====================================================
+         RESPONSIVE — MOBILE
+      ===================================================== */
 
       @media (max-width: 760px) {
-        .hero {
-          padding:
-            65px 0
-            45px;
-        }
-
-        .hero h1 {
-          font-size:
-            clamp(37px, 11vw, 54px);
-
-          letter-spacing: -1.5px;
-        }
-
-        .hero-description {
-          font-size: 15px;
-        }
-
-        .hero-actions {
-          justify-content: center;
-        }
-
-        .hero-visual {
-          min-height: 390px;
-        }
-
-        .th-tech-logo-core {
-          width: 320px;
-          height: 320px;
-        }
-
-        .logo-main {
-          width: 185px;
-          height: 185px;
-        }
-
-        .logo-symbol {
-          width: 86px;
-          height: 86px;
-        }
-
-        .ring-one {
-          width: 245px;
-          height: 245px;
-        }
-
-        .ring-two {
-          width: 285px;
-          height: 285px;
-        }
-
-        .ring-three {
-          width: 315px;
-          height: 315px;
-        }
-
-        .floating-card-one {
-          right: -5px;
-        }
-
-        .floating-card-two {
-          left: -5px;
-        }
-
-        .section {
-          padding: 70px 0;
-        }
-
-        .tools-grid {
-          grid-template-columns:
-            repeat(2, 1fr);
-        }
-
-        .features-grid {
-          grid-template-columns:
-            repeat(2, 1fr);
-        }
-
-        .steps-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-
-      @media (max-width: 520px) {
         .container {
           width:
-            min(
-              var(--container),
-              calc(100% - 24px)
-            );
+            calc(100% - 28px);
         }
 
         .hero {
           min-height: auto;
+
+          padding:
+            52px 0
+            30px;
+        }
+
+        .hero-grid {
+          gap: 10px;
         }
 
         .hero h1 {
-          font-size: 38px;
+          margin-top: 17px;
+
+          font-size:
+            clamp(32px, 9.5vw, 43px);
+
+          line-height: 1.17;
+
+          letter-spacing:
+            -1.2px;
         }
 
         .hero-description {
-          font-size: 14px;
+          font-size: 12px;
+
           line-height: 1.9;
+        }
+
+        .hero-actions {
+          justify-content: center;
+
+          width: 100%;
+
+          margin-top: 20px;
+        }
+
+        .btn {
+          min-height: 43px;
+
+          padding-inline: 14px;
+
+          font-size: 10px;
         }
 
         .hero-trust {
           justify-content: center;
+
+          gap: 10px;
+
+          font-size: 8px;
         }
 
         .hero-visual {
-          min-height: 320px;
+          min-height: 350px;
+
+          margin-top: 4px;
         }
 
-        .th-tech-logo-core {
+        .visual-stage {
+          width: 330px;
+          height: 330px;
+        }
+
+        .visual-ring-one {
+          width: 220px;
+          height: 220px;
+        }
+
+        .visual-ring-two {
           width: 275px;
           height: 275px;
         }
 
-        .logo-main {
-          width: 165px;
-          height: 165px;
+        .visual-ring-three {
+          width: 315px;
+          height: 315px;
+        }
+
+        .logo-core {
+          width: 174px;
+          height: 174px;
         }
 
         .logo-symbol {
-          width: 75px;
-          height: 75px;
+          width: 65px;
+          height: 65px;
         }
 
         .logo-name {
-          font-size: 22px;
+          font-size: 21px;
         }
 
         .logo-subtitle {
-          font-size: 6px;
-          letter-spacing: 1.7px;
+          font-size: 5px;
+          letter-spacing: 1.4px;
         }
 
-        .ring-one {
-          width: 215px;
-          height: 215px;
+        .chip-one {
+          top: 55px;
+          right: -2px;
         }
 
-        .ring-two {
-          width: 245px;
-          height: 245px;
+        .chip-two {
+          bottom: 55px;
+          left: -2px;
         }
 
-        .ring-three {
-          width: 270px;
-          height: 270px;
+        .tech-chip {
+          min-width: 100px;
+
+          padding:
+            7px 9px;
+
+          font-size: 7px;
         }
 
-        .floating-tech-card {
-          display: none;
-        }
-
-        .stats-grid,
-        .tracks-grid,
-        .tools-grid,
-        .features-grid {
-          grid-template-columns: 1fr;
-        }
-
-        .tool-results {
-          grid-template-columns: 1fr;
+        .section {
+          padding:
+            58px 0;
         }
 
         .section-heading {
-          margin-bottom: 32px;
+          margin-bottom:
+            30px;
         }
 
         .section-heading h2 {
-          font-size: 29px;
+          font-size:
+            clamp(24px, 7vw, 31px);
         }
 
         .section-heading p {
-          font-size: 13px;
+          font-size: 11px;
+        }
+
+        .stats-grid {
+          grid-template-columns:
+            repeat(2, 1fr);
+
+          gap: 9px;
+        }
+
+        .stat-card {
+          min-height: 105px;
+
+          padding:
+            14px 8px;
+        }
+
+        .stat-number {
+          font-size: 27px;
+        }
+
+        .stat-label {
+          font-size: 8px;
         }
 
         .tool-finder {
+          padding: 13px;
+
+          border-radius:
+            19px;
+        }
+
+        .tool-results {
+          grid-template-columns:
+            repeat(2, 1fr);
+
+          gap: 7px;
+        }
+
+        .tool-result {
+          min-height: 61px;
+
+          padding: 8px;
+
+          gap: 7px;
+
+          border-radius: 11px;
+        }
+
+        .tool-result-icon {
+          width: 32px;
+          height: 32px;
+
+          flex-basis: 32px;
+
+          font-size: 11px;
+        }
+
+        .tool-result strong {
+          max-width: 105px;
+
+          font-size: 8px;
+        }
+
+        .tool-result small {
+          font-size: 7px;
+        }
+
+        /*
+         * مهم:
+         * الأدوات على الهاتف عمودان
+         */
+        .tools-grid {
+          grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+          gap: 9px;
+        }
+
+        .tool-visual {
+          height: 82px;
+        }
+
+        .tool-visual-window {
+          width: 74%;
+
+          padding: 7px;
+        }
+
+        .tool-visual-symbol {
+          width: 34px;
+          height: 34px;
+
+          border-radius: 10px;
+
+          font-size: 12px;
+        }
+
+        .tool-card-body {
+          padding: 11px;
+        }
+
+        .tool-card-type {
+          font-size: 6px;
+        }
+
+        .tool-card-status {
+          font-size: 6px;
+        }
+
+        .tool-card h3 {
+          margin-top: 7px;
+
+          font-size: 10px;
+
+          line-height: 1.45;
+        }
+
+        .tool-card p {
+          font-size: 8px;
+
+          line-height: 1.7;
+        }
+
+        .tool-card-link {
+          margin-top: 8px;
+
+          font-size: 7px;
+        }
+
+        .all-tools-link {
+          margin-top: 22px;
+        }
+
+        .tracks-grid {
+          grid-template-columns:
+            repeat(2, 1fr);
+
+          gap: 9px;
+        }
+
+        .track-card {
+          min-height: 175px;
+
           padding: 14px;
+
+          border-radius:
+            15px;
+        }
+
+        .track-icon {
+          width: 36px;
+          height: 36px;
+
+          margin-bottom: 9px;
+
+          border-radius: 10px;
+
+          font-size: 14px;
+        }
+
+        .track-tag {
+          font-size: 6px;
+        }
+
+        .track-card h3 {
+          margin:
+            6px 0
+            4px;
+
+          font-size: 12px;
+        }
+
+        .track-card p {
+          font-size: 8px;
+
+          line-height: 1.7;
         }
 
         .editor-wrapper {
-          border-radius: 20px;
+          border-radius:
+            18px;
         }
 
         .editor-toolbar {
-          flex-wrap: wrap;
-        }
+          min-height: 52px;
 
-        .editor-tabs {
-          overflow-x: auto;
+          padding:
+            7px 9px;
         }
 
         .editor-tab {
-          flex: 0 0 auto;
+          min-height: 31px;
+
+          padding-inline: 8px;
+
+          font-size: 8px;
+        }
+
+        .editor-action {
+          width: 30px;
+          height: 30px;
+
+          font-size: 9px;
+        }
+
+        .editor-body {
+          min-height: 330px;
         }
 
         .line-numbers {
-          width: 37px;
-          padding-inline: 5px;
+          width: 35px;
+          flex-basis: 35px;
+
+          padding:
+            15px 4px;
+
+          font-size: 8px;
         }
 
         .code-editor {
           padding: 15px;
-          font-size: 10px;
+
+          font-size: 9px;
+
+          line-height: 1.8;
+        }
+
+        .editor-status {
+          min-height: 30px;
+
+          padding-inline: 10px;
+
+          font-size: 7px;
+        }
+
+        #code-preview {
+          min-height: 250px;
         }
 
         .preview-panel {
-          min-height: 300px;
+          min-height: 330px;
+        }
+
+        .editor-info {
+          padding:
+            13px;
+
+          font-size: 8px;
+        }
+
+        .steps-grid {
+          grid-template-columns:
+            1fr;
+
+          gap: 9px;
+        }
+
+        .step-card {
+          padding:
+            18px;
+        }
+
+        .step-card h3 {
+          font-size: 13px;
+        }
+
+        .step-card p {
+          font-size: 9px;
+        }
+
+        .features-grid {
+          grid-template-columns:
+            repeat(2, 1fr);
+
+          gap: 8px;
+        }
+
+        .feature {
+          padding:
+            15px;
+        }
+
+        .feature i {
+          font-size: 15px;
+        }
+
+        .feature h3 {
+          font-size: 11px;
+        }
+
+        .feature p {
+          font-size: 8px;
+
+          line-height: 1.8;
+        }
+
+        .faq-question {
+          min-height: 54px;
+
+          padding-inline: 13px;
+
+          font-size: 9px;
+        }
+
+        .faq-answer-inner {
+          padding-inline: 13px;
+
+          font-size: 8px;
         }
 
         .cta {
           padding:
-            45px 18px;
-          border-radius: 24px;
+            40px 17px;
+
+          border-radius:
+            21px;
+        }
+
+        .cta h2 {
+          font-size:
+            clamp(23px, 7vw, 30px);
+        }
+
+        .cta p {
+          font-size: 9px;
         }
       }
+
+      /* =====================================================
+         VERY SMALL PHONES
+      ===================================================== */
+
+      @media (max-width: 390px) {
+        .container {
+          width:
+            calc(100% - 22px);
+        }
+
+        .hero {
+          padding-top:
+            42px;
+        }
+
+        .hero h1 {
+          font-size: 31px;
+        }
+
+        .hero-description {
+          font-size: 11px;
+        }
+
+        .hero-trust {
+          gap: 7px;
+
+          font-size: 7px;
+        }
+
+        .visual-stage {
+          width: 285px;
+          height: 285px;
+        }
+
+        .hero-visual {
+          min-height: 300px;
+        }
+
+        .visual-ring-one {
+          width: 195px;
+          height: 195px;
+        }
+
+        .visual-ring-two {
+          width: 235px;
+          height: 235px;
+        }
+
+        .visual-ring-three {
+          width: 270px;
+          height: 270px;
+        }
+
+        .logo-core {
+          width: 155px;
+          height: 155px;
+        }
+
+        .logo-symbol {
+          width: 57px;
+          height: 57px;
+        }
+
+        .logo-name {
+          font-size: 19px;
+        }
+
+        .tech-chip {
+          display: none;
+        }
+
+        .tool-result strong {
+          max-width: 92px;
+        }
+
+        .tool-card h3 {
+          font-size: 9px;
+        }
+
+        .tool-card p {
+          font-size: 7px;
+        }
+
+        .track-card {
+          min-height: 165px;
+        }
+
+        .features-grid {
+          gap: 7px;
+        }
+
+        .feature {
+          padding: 12px;
+        }
+      }
+
+      /* =====================================================
+         REDUCED MOTION
+      ===================================================== */
 
       @media (prefers-reduced-motion: reduce) {
         html {
@@ -2653,16 +3537,24 @@ const jsonLd = {
         *,
         *::before,
         *::after {
-          animation-duration: 0.01ms !important;
-          animation-iteration-count: 1 !important;
-          transition-duration: 0.01ms !important;
+          animation-duration:
+            0.01ms !important;
+
+          animation-iteration-count:
+            1 !important;
+
+          transition-duration:
+            0.01ms !important;
         }
       }
     </style>
   </head>
 
   <body>
-    <div class="page-background" aria-hidden="true">
+    <div
+      class="page-background"
+      aria-hidden="true"
+    >
       <div class="bg-grid"></div>
       <div class="bg-orb bg-orb-one"></div>
       <div class="bg-orb bg-orb-two"></div>
@@ -2671,9 +3563,10 @@ const jsonLd = {
     <Header />
 
     <main>
-      <!-- =========================================
+
+      <!-- =================================================
            HERO
-           ========================================= -->
+      ================================================== -->
 
       <section class="hero">
         <div class="container hero-grid">
@@ -2682,23 +3575,26 @@ const jsonLd = {
 
             <div class="hero-badge">
               <span class="hero-badge-dot"></span>
+
               منصة تقنية عربية تتطور باستمرار
             </div>
 
             <h1>
-              أدوات تقنية
+              كل أدواتك التقنية
               <br />
-              <span class="gradient-text">أذكى وأسرع</span>
-              <br />
-              في مكان واحد
+              <span class="gradient-text">
+                في مكان واحد
+              </span>
             </h1>
 
             <p class="hero-description">
-              Th.Tech تجمع لك أدوات عملية للبرمجة والويب والذكاء الاصطناعي
-              والأمن السيبراني، لتنجز مهامك اليومية مباشرة من المتصفح.
+              Th.Tech تجمع لك أدوات عملية للبرمجة والويب
+              والذكاء الاصطناعي والأمن السيبراني، لتنجز
+              مهامك اليومية بسرعة ومن المتصفح مباشرة.
             </p>
 
             <div class="hero-actions">
+
               <a
                 class="btn btn-primary"
                 href="#tools"
@@ -2714,66 +3610,90 @@ const jsonLd = {
                 <i class="fa-solid fa-code"></i>
                 جرّب محرر الأكواد
               </a>
+
             </div>
 
             <div class="hero-trust">
+
               <span>
                 <i class="fa-solid fa-bolt"></i>
-                سريع ومباشر
+                سريع
               </span>
 
               <span>
                 <i class="fa-solid fa-lock"></i>
-                أدوات تعمل من المتصفح
+                مباشر من المتصفح
               </span>
 
               <span>
                 <i class="fa-solid fa-mobile-screen"></i>
                 متوافق مع الهاتف
               </span>
+
             </div>
 
           </div>
 
-          <!-- CENTRAL LOGO -->
+          <!-- =================================================
+               PROFESSIONAL ANIMATED LOGO
+          ================================================== -->
 
           <div class="hero-visual">
 
-            <div
-              class="th-tech-logo-core"
-              aria-label="Th.Tech"
-            >
+            <div class="visual-stage">
 
-              <div class="logo-ring ring-one"></div>
-              <div class="logo-ring ring-two"></div>
-              <div class="logo-ring ring-three"></div>
+              <div class="visual-glow"></div>
 
-              <span class="orbit-point point-one"></span>
-              <span class="orbit-point point-two"></span>
-              <span class="orbit-point point-three"></span>
-              <span class="orbit-point point-four"></span>
+              <div
+                class="visual-ring visual-ring-one"
+              ></div>
 
-              <div class="floating-tech-card floating-card-one">
+              <div
+                class="visual-ring visual-ring-two"
+              ></div>
+
+              <div
+                class="visual-ring visual-ring-three"
+              ></div>
+
+              <span
+                class="orbit-node node-one"
+              ></span>
+
+              <span
+                class="orbit-node node-two"
+              ></span>
+
+              <span
+                class="orbit-node node-three"
+              ></span>
+
+              <span
+                class="orbit-node node-four"
+              ></span>
+
+              <div class="tech-chip chip-one">
                 <i class="fa-solid fa-microchip"></i>
                 AI TOOLS
               </div>
 
-              <div class="floating-tech-card floating-card-two">
+              <div class="tech-chip chip-two">
                 <i class="fa-solid fa-terminal"></i>
                 DEV TOOLS
               </div>
 
-              <div class="logo-main">
-
-                <div class="logo-glow"></div>
+              <div class="logo-core">
 
                 <div class="logo-symbol">
+
                   <svg
                     viewBox="0 0 160 160"
                     xmlns="http://www.w3.org/2000/svg"
                     aria-hidden="true"
                   >
+
                     <defs>
+
                       <linearGradient
                         id="thLogoGradient"
                         x1="20"
@@ -2814,6 +3734,7 @@ const jsonLd = {
                           stop-color="#818cf8"
                         />
                       </linearGradient>
+
                     </defs>
 
                     <circle
@@ -2821,7 +3742,7 @@ const jsonLd = {
                       cy="80"
                       r="66"
                       fill="url(#thLogoGradient)"
-                      opacity="0.12"
+                      opacity="0.11"
                     />
 
                     <circle
@@ -2831,7 +3752,7 @@ const jsonLd = {
                       fill="none"
                       stroke="url(#thLogoStroke)"
                       stroke-width="2"
-                      opacity="0.8"
+                      opacity="0.75"
                     />
 
                     <g
@@ -2841,12 +3762,17 @@ const jsonLd = {
                       stroke-linecap="round"
                       stroke-linejoin="round"
                     >
+
                       <path d="M38 48 H87" />
+
                       <path d="M62.5 48 V112" />
 
                       <path d="M93 48 V112" />
+
                       <path d="M122 48 V112" />
+
                       <path d="M93 80 H122" />
+
                     </g>
 
                     <circle
@@ -2855,11 +3781,13 @@ const jsonLd = {
                       r="5"
                       fill="#67e8f9"
                     />
+
                   </svg>
+
                 </div>
 
                 <div class="logo-name">
-                  <span>Th</span><strong>.Tech</strong>
+                  Th<strong>.Tech</strong>
                 </div>
 
                 <div class="logo-subtitle">
@@ -2871,64 +3799,57 @@ const jsonLd = {
             </div>
 
           </div>
+
         </div>
       </section>
 
-      <!-- =========================================
-           TICKER
-           ========================================= -->
+      <!-- =================================================
+           TECH TICKER
+      ================================================== -->
 
       <div class="tech-ticker">
+
         <div class="ticker-track">
+
           {
-            [
-              'JSON',
-              'JavaScript',
-              'HTML',
-              'CSS',
-              'API',
-              'QR CODE',
-              'BASE64',
-              'JWT',
-              'REGEX',
-              'SQL',
-              'UUID',
-              'HASH',
-              'MARKDOWN',
-              'COLOR',
-              'TIMESTAMP',
-              'YAML',
-              'CSV',
-              'XML',
-              'JSON',
-              'JavaScript',
-              'HTML',
-              'CSS',
-              'API',
-              'QR CODE',
-              'BASE64',
-              'JWT',
-              'REGEX',
-              'SQL',
-              'UUID',
-              'HASH'
-            ].map((item) => (
-              <span class="ticker-item">{item}</span>
-            ))
+            [...tickerItems, ...tickerItems].map(
+              (item, index) => (
+                <span
+                  class="ticker-item"
+                  aria-hidden={
+                    index >= tickerItems.length
+                      ? 'true'
+                      : undefined
+                  }
+                >
+
+                  <i class={item.icon}></i>
+
+                  {item.label}
+
+                  <span class="ticker-separator"></span>
+
+                </span>
+              )
+            )
           }
+
         </div>
+
       </div>
 
-      <!-- =========================================
+      <!-- =================================================
            STATS
-           ========================================= -->
+      ================================================== -->
 
       <section class="section">
+
         <div class="container">
 
           <div class="stats-grid">
 
             <div class="stat-card reveal">
+
               <span
                 class="stat-number"
                 data-counter={toolsCount}
@@ -2939,9 +3860,11 @@ const jsonLd = {
               <span class="stat-label">
                 أداة تقنية
               </span>
+
             </div>
 
             <div class="stat-card reveal">
+
               <span
                 class="stat-number"
                 data-counter="4"
@@ -2952,9 +3875,11 @@ const jsonLd = {
               <span class="stat-label">
                 مسارات تقنية
               </span>
+
             </div>
 
             <div class="stat-card reveal">
+
               <span
                 class="stat-number"
                 data-counter="100"
@@ -2965,9 +3890,11 @@ const jsonLd = {
               <span class="stat-label">
                 تجربة مباشرة
               </span>
+
             </div>
 
             <div class="stat-card reveal">
+
               <span class="stat-number">
                 ∞
               </span>
@@ -2975,24 +3902,28 @@ const jsonLd = {
               <span class="stat-label">
                 إمكانيات الاستخدام
               </span>
+
             </div>
 
           </div>
 
         </div>
+
       </section>
 
-      <!-- =========================================
+      <!-- =================================================
            TOOL FINDER
-           ========================================= -->
+      ================================================== -->
 
       <section
         id="tools"
         class="section"
       >
+
         <div class="container">
 
           <div class="section-heading reveal">
+
             <span class="section-kicker">
               TOOL FINDER
             </span>
@@ -3004,11 +3935,13 @@ const jsonLd = {
             <p>
               اكتب اسم الأداة أو التقنية للوصول إليها بسرعة.
             </p>
+
           </div>
 
           <div class="tool-finder reveal">
 
             <div class="tool-search">
+
               <i class="fa-solid fa-magnifying-glass"></i>
 
               <input
@@ -3018,12 +3951,14 @@ const jsonLd = {
                 autocomplete="off"
                 aria-label="البحث عن أداة"
               />
+
             </div>
 
             <div
               class="tool-results"
               id="tool-results"
             >
+
               {
                 [...featuredTools, ...remainingTools]
                   .slice(0, 18)
@@ -3033,17 +3968,34 @@ const jsonLd = {
                       href={tool.href}
                       data-tool-name={tool.name.toLowerCase()}
                     >
+
                       <span class="tool-result-icon">
-                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+
+                        <i
+                          class={
+                            featuredMeta[tool.slug]?.icon ||
+                            'fa-solid fa-wand-magic-sparkles'
+                          }
+                        ></i>
+
                       </span>
 
                       <span>
-                        <strong>{tool.name}</strong>
-                        <small>أداة تقنية</small>
+
+                        <strong>
+                          {tool.name}
+                        </strong>
+
+                        <small>
+                          أداة تقنية
+                        </small>
+
                       </span>
+
                     </a>
                   ))
               }
+
             </div>
 
             <div
@@ -3056,16 +4008,19 @@ const jsonLd = {
           </div>
 
         </div>
+
       </section>
 
-      <!-- =========================================
+      <!-- =================================================
            FEATURED TOOLS
-           ========================================= -->
+      ================================================== -->
 
       <section class="section">
+
         <div class="container">
 
           <div class="section-heading reveal">
+
             <span class="section-kicker">
               FEATURED TOOLS
             </span>
@@ -3077,6 +4032,7 @@ const jsonLd = {
             <p>
               مجموعة من الأدوات العملية التي يمكنك استخدامها مباشرة.
             </p>
+
           </div>
 
           <div class="tools-grid">
@@ -3086,35 +4042,67 @@ const jsonLd = {
                 <a
                   class="tool-card reveal"
                   href={tool.href}
-                  style={`transition-delay:${index * 50}ms`}
+                  style={`transition-delay:${index * 45}ms`}
                 >
-                  <div class="tool-icon">
-                    <i
-                      class={
-                        index === 0
-                          ? 'fa-solid fa-code'
-                          : index === 1
-                            ? 'fa-solid fa-circle-check'
-                            : index === 2
-                              ? 'fa-solid fa-lock'
-                              : index === 3
-                                ? 'fa-solid fa-qrcode'
-                                : index === 4
-                                  ? 'fa-solid fa-palette'
-                                  : 'fa-solid fa-plug'
-                      }
-                    ></i>
+
+                  <div class="tool-visual">
+
+                    <div class="tool-visual-grid"></div>
+
+                    <div class="tool-visual-window">
+
+                      <div class="window-top">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+
+                      <div class="window-lines">
+                        <div class="window-line"></div>
+                        <div class="window-line"></div>
+                        <div class="window-line"></div>
+                      </div>
+
+                    </div>
+
+                    <div class="tool-visual-symbol">
+
+                      <i class={tool.icon}></i>
+
+                    </div>
+
                   </div>
 
-                  <h3>{tool.name}</h3>
+                  <div class="tool-card-body">
 
-                  <p>
-                    أداة تقنية مجانية وسريعة للاستخدام مباشرة من المتصفح.
-                  </p>
+                    <div class="tool-card-meta">
 
-                  <span class="tool-card-link">
-                    فتح الأداة ←
-                  </span>
+                      <span class="tool-card-type">
+                        {tool.type}
+                      </span>
+
+                      <span class="tool-card-status">
+                        متاح الآن
+                      </span>
+
+                    </div>
+
+                    <h3>
+                      {tool.name}
+                    </h3>
+
+                    <p>
+                      أداة تقنية مجانية وسريعة
+                      للاستخدام مباشرة من المتصفح.
+                    </p>
+
+                    <span class="tool-card-link">
+                      فتح الأداة
+                      <span>←</span>
+                    </span>
+
+                  </div>
+
                 </a>
               ))
             }
@@ -3122,26 +4110,33 @@ const jsonLd = {
           </div>
 
           <div class="all-tools-link">
+
             <a
               class="btn btn-secondary"
               href={`${base}/tools/`}
             >
-              <i class="fa-solid fa-grid-2"></i>
+              <i class="fa-solid fa-table-cells-large"></i>
+
               مشاهدة جميع الأدوات
+
             </a>
+
           </div>
 
         </div>
+
       </section>
 
-      <!-- =========================================
+      <!-- =================================================
            TRACKS
-           ========================================= -->
+      ================================================== -->
 
       <section class="section">
+
         <div class="container">
 
           <div class="section-heading reveal">
+
             <span class="section-kicker">
               TECH TRACKS
             </span>
@@ -3153,6 +4148,7 @@ const jsonLd = {
             <p>
               مسارات تجمع الأدوات والمواضيع التقنية في تجربة واحدة.
             </p>
+
           </div>
 
           <div class="tracks-grid">
@@ -3161,11 +4157,17 @@ const jsonLd = {
               tracks.map((track) => (
                 <a
                   href={track.href}
-                  class="track-card reveal"
+                  class:list={[
+                    'track-card',
+                    track.className,
+                    'reveal'
+                  ]}
                 >
+
                   <div>
+
                     <div class="track-icon">
-                      {track.icon}
+                      <i class={track.icon}></i>
                     </div>
 
                     <span class="track-tag">
@@ -3179,11 +4181,14 @@ const jsonLd = {
                     <p>
                       {track.description}
                     </p>
+
                   </div>
 
                   <span class="tool-card-link">
-                    استكشف ←
+                    استكشف
+                    <span>←</span>
                   </span>
+
                 </a>
               ))
             }
@@ -3191,16 +4196,18 @@ const jsonLd = {
           </div>
 
         </div>
+
       </section>
 
-      <!-- =========================================
+      <!-- =================================================
            CODE EDITOR
-           ========================================= -->
+      ================================================== -->
 
       <section
         id="code-editor"
-        class="section editor-section"
+        class="section"
       >
+
         <div class="container">
 
           <div class="section-heading reveal">
@@ -3220,8 +4227,6 @@ const jsonLd = {
           </div>
 
           <div class="editor-wrapper reveal">
-
-            <!-- EDITOR -->
 
             <div class="editor-panel">
 
@@ -3324,16 +4329,16 @@ const jsonLd = {
 
             </div>
 
-            <!-- PREVIEW -->
-
             <div class="preview-panel">
 
               <div class="preview-header">
 
                 <div class="preview-dots">
+
                   <span></span>
                   <span></span>
                   <span></span>
+
                 </div>
 
                 <span class="preview-title">
@@ -3349,11 +4354,17 @@ const jsonLd = {
               ></iframe>
 
               <div class="editor-info">
+
                 <strong>
                   محرر سريع ومباشر
                 </strong>
+
                 <br />
-                التغييرات تظهر في المعاينة مباشرة، ويمكنك تجربة HTML وCSS وJavaScript دون مغادرة الصفحة.
+
+                التغييرات تظهر في المعاينة مباشرة،
+                ويمكنك تجربة HTML وCSS وJavaScript
+                دون مغادرة الصفحة.
+
               </div>
 
             </div>
@@ -3361,16 +4372,19 @@ const jsonLd = {
           </div>
 
         </div>
+
       </section>
 
-      <!-- =========================================
+      <!-- =================================================
            HOW IT WORKS
-           ========================================= -->
+      ================================================== -->
 
       <section class="section">
+
         <div class="container">
 
           <div class="section-heading reveal">
+
             <span class="section-kicker">
               HOW IT WORKS
             </span>
@@ -3382,12 +4396,16 @@ const jsonLd = {
             <p>
               لا حاجة لتعقيد المهمة؛ اختر الأداة وابدأ مباشرة.
             </p>
+
           </div>
 
           <div class="steps-grid">
 
             <div class="step-card reveal">
-              <div class="step-number">01</div>
+
+              <div class="step-number">
+                01
+              </div>
 
               <h3>
                 اختر الأداة
@@ -3396,10 +4414,14 @@ const jsonLd = {
               <p>
                 استخدم البحث أو تصفح الأدوات للوصول إلى الأداة المناسبة لمهمتك.
               </p>
+
             </div>
 
             <div class="step-card reveal">
-              <div class="step-number">02</div>
+
+              <div class="step-number">
+                02
+              </div>
 
               <h3>
                 أدخل بياناتك
@@ -3408,10 +4430,14 @@ const jsonLd = {
               <p>
                 استخدم الواجهة البسيطة للأداة وأدخل البيانات التي تريد معالجتها.
               </p>
+
             </div>
 
             <div class="step-card reveal">
-              <div class="step-number">03</div>
+
+              <div class="step-number">
+                03
+              </div>
 
               <h3>
                 احصل على النتيجة
@@ -3420,18 +4446,21 @@ const jsonLd = {
               <p>
                 عاين النتيجة وانسخها أو استخدمها مباشرة في مشروعك.
               </p>
+
             </div>
 
           </div>
 
         </div>
+
       </section>
 
-      <!-- =========================================
+      <!-- =================================================
            FEATURES
-           ========================================= -->
+      ================================================== -->
 
       <section class="section">
+
         <div class="container">
 
           <div class="section-heading reveal">
@@ -3453,6 +4482,7 @@ const jsonLd = {
           <div class="features-grid">
 
             <div class="feature reveal">
+
               <i class="fa-solid fa-bolt"></i>
 
               <h3>
@@ -3462,9 +4492,11 @@ const jsonLd = {
               <p>
                 الوصول إلى الأدوات وتشغيلها مباشرة دون خطوات غير ضرورية.
               </p>
+
             </div>
 
             <div class="feature reveal">
+
               <i class="fa-solid fa-code"></i>
 
               <h3>
@@ -3474,9 +4506,11 @@ const jsonLd = {
               <p>
                 مجموعة كبيرة من أدوات البرمجة والبيانات وواجهات API.
               </p>
+
             </div>
 
             <div class="feature reveal">
+
               <i class="fa-solid fa-mobile-screen"></i>
 
               <h3>
@@ -3486,9 +4520,11 @@ const jsonLd = {
               <p>
                 تجربة مناسبة للهاتف والكمبيوتر والأجهزة اللوحية.
               </p>
+
             </div>
 
             <div class="feature reveal">
+
               <i class="fa-solid fa-moon"></i>
 
               <h3>
@@ -3498,9 +4534,11 @@ const jsonLd = {
               <p>
                 واجهة مريحة للاستخدام في مختلف ظروف الإضاءة.
               </p>
+
             </div>
 
             <div class="feature reveal">
+
               <i class="fa-solid fa-shield-halved"></i>
 
               <h3>
@@ -3510,9 +4548,11 @@ const jsonLd = {
               <p>
                 العديد من الأدوات تعمل مباشرة داخل المتصفح دون الحاجة إلى خادم.
               </p>
+
             </div>
 
             <div class="feature reveal">
+
               <i class="fa-solid fa-arrows-rotate"></i>
 
               <h3>
@@ -3522,18 +4562,21 @@ const jsonLd = {
               <p>
                 المنصة قابلة للتوسع وإضافة أدوات وتجارب جديدة باستمرار.
               </p>
+
             </div>
 
           </div>
 
         </div>
+
       </section>
 
-      <!-- =========================================
+      <!-- =================================================
            FAQ
-           ========================================= -->
+      ================================================== -->
 
       <section class="section">
+
         <div class="container">
 
           <div class="section-heading reveal">
@@ -3559,28 +4602,34 @@ const jsonLd = {
                 <div
                   class:list={[
                     'faq-item',
-                    index === 0
-                      ? 'open'
-                      : ''
+                    index === 0 ? 'open' : ''
                   ]}
                 >
 
                   <button
                     class="faq-question"
                     type="button"
-                    aria-expanded={index === 0 ? 'true' : 'false'}
+                    aria-expanded={
+                      index === 0
+                        ? 'true'
+                        : 'false'
+                    }
                   >
+
                     <span>
                       {faq.q}
                     </span>
 
                     <i class="fa-solid fa-chevron-down"></i>
+
                   </button>
 
                   <div class="faq-answer">
+
                     <div class="faq-answer-inner">
                       {faq.a}
                     </div>
+
                   </div>
 
                 </div>
@@ -3590,13 +4639,15 @@ const jsonLd = {
           </div>
 
         </div>
+
       </section>
 
-      <!-- =========================================
+      <!-- =================================================
            CTA
-           ========================================= -->
+      ================================================== -->
 
       <section class="section">
+
         <div class="container">
 
           <div class="cta reveal">
@@ -3624,7 +4675,9 @@ const jsonLd = {
           </div>
 
         </div>
+
       </section>
+
     </main>
 
     <Footer />
@@ -3639,43 +4692,51 @@ const jsonLd = {
     </button>
 
     <script>
-      /* ==========================================
+      /* ==================================================
          CODE EDITOR
-         ========================================== */
+      ================================================== */
 
-      const editor = document.getElementById(
-        'code-editor-input'
-      );
+      const editor =
+        document.getElementById(
+          'code-editor-input'
+        );
 
-      const preview = document.getElementById(
-        'code-preview'
-      );
+      const preview =
+        document.getElementById(
+          'code-preview'
+        );
 
-      const lineNumbers = document.getElementById(
-        'line-numbers'
-      );
+      const lineNumbers =
+        document.getElementById(
+          'line-numbers'
+        );
 
-      const editorLanguage = document.getElementById(
-        'editor-language'
-      );
+      const editorLanguage =
+        document.getElementById(
+          'editor-language'
+        );
 
-      const tabs = document.querySelectorAll(
-        '.editor-tab'
-      );
+      const tabs =
+        document.querySelectorAll(
+          '.editor-tab'
+        );
 
-      const runButton = document.getElementById(
-        'run-code'
-      );
+      const runButton =
+        document.getElementById(
+          'run-code'
+        );
 
-      const copyButton = document.getElementById(
-        'copy-code'
-      );
+      const copyButton =
+        document.getElementById(
+          'copy-code'
+        );
 
-      const resetButton = document.getElementById(
-        'reset-code'
-      );
+      const resetButton =
+        document.getElementById(
+          'reset-code'
+        );
 
-      const editorCode = {
+      const defaultEditorCode = {
         html: `<div class="demo">
   <div class="icon">✦</div>
   <h1>مرحباً بك في Th.Tech</h1>
@@ -3713,100 +4774,105 @@ button {
 }`
       };
 
+      const editorCode = {
+        ...defaultEditorCode
+      };
+
       let currentLanguage = 'html';
 
       if (editor) {
-        editor.value = editorCode.html;
+        editor.value =
+          editorCode.html;
       }
 
       function updateLineNumbers() {
         if (!editor || !lineNumbers) return;
 
-        const lines =
+        const count =
           editor.value.split('\n').length;
 
         lineNumbers.innerHTML =
           Array.from(
-            { length: lines },
+            { length: count },
             (_, index) => index + 1
           ).join('<br>');
       }
 
       function buildPreview() {
-        if (!preview) return;
+        if (!preview || !editor) return;
 
-        const html =
+        let htmlContent =
+          editorCode.html;
+
+        let cssContent =
+          editorCode.css;
+
+        let jsContent =
+          editorCode.js;
+
+        if (
           currentLanguage === 'html'
-            ? editorCode.html
-            : '';
-
-        const css =
-          currentLanguage === 'css'
-            ? editorCode.css
-            : editorCode.css;
-
-        const js =
-          currentLanguage === 'js'
-            ? editorCode.js
-            : editorCode.js;
-
-        let finalHtml = '';
-
-        if (currentLanguage === 'html') {
-          finalHtml = editor.value;
-        } else if (currentLanguage === 'css') {
-          finalHtml = `
-            <style>${editor.value}</style>
-            ${editorCode.html}
-          `;
-        } else {
-          finalHtml = `
-            ${editorCode.html}
-            <script>
-              ${editor.value}
-            <\/script>
-          `;
+        ) {
+          htmlContent =
+            editor.value;
         }
 
-        if (currentLanguage === 'html') {
-          finalHtml = `
-            ${finalHtml}
+        if (
+          currentLanguage === 'css'
+        ) {
+          cssContent =
+            editor.value;
+        }
 
-            <style>
-              ${editorCode.css}
-            </style>
-
-            <script>
-              ${editorCode.js}
-            <\/script>
-          `;
+        if (
+          currentLanguage === 'js'
+        ) {
+          jsContent =
+            editor.value;
         }
 
         preview.srcdoc = `
-          <!doctype html>
-          <html lang="ar" dir="rtl">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width,initial-scale=1">
-          </head>
-          <body>
-            ${finalHtml}
-          </body>
-          </html>
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  >
+  <style>
+    ${cssContent}
+  </style>
+</head>
+
+<body>
+
+  ${htmlContent}
+
+  <script>
+    ${jsContent}
+  <\/script>
+
+</body>
+</html>
         `;
 
         updateLineNumbers();
       }
 
-      function switchEditorLanguage(language) {
+      function switchEditorLanguage(
+        language
+      ) {
         if (!editor) return;
 
-        currentLanguage = language;
+        currentLanguage =
+          language;
 
         tabs.forEach((tab) => {
           tab.classList.toggle(
             'active',
-            tab.dataset.language === language
+            tab.dataset.language ===
+              language
           );
         });
 
@@ -3819,6 +4885,7 @@ button {
           editorCode[language];
 
         updateLineNumbers();
+
         buildPreview();
       }
 
@@ -3836,14 +4903,18 @@ button {
       editor?.addEventListener(
         'input',
         () => {
-          editorCode[currentLanguage] =
-            editor.value;
+          editorCode[
+            currentLanguage
+          ] = editor.value;
 
           updateLineNumbers();
 
-          if (currentLanguage === 'html') {
-            buildPreview();
-          }
+          /*
+           * المعاينة المباشرة تبقى خفيفة
+           * ويتم تحديثها أثناء الكتابة فقط
+           * دون مراقبة DOM بشكل مستمر.
+           */
+          buildPreview();
         }
       );
 
@@ -3878,10 +4949,13 @@ button {
             setTimeout(() => {
               copyButton.innerHTML =
                 '<i class="fa-regular fa-copy"></i>';
-            }, 1200);
+            }, 1100);
           } catch {
             editor.select();
-            document.execCommand('copy');
+
+            document.execCommand(
+              'copy'
+            );
           }
         }
       );
@@ -3889,41 +4963,14 @@ button {
       resetButton?.addEventListener(
         'click',
         () => {
-          editorCode.html = `<div class="demo">
-  <div class="icon">✦</div>
-  <h1>مرحباً بك في Th.Tech</h1>
-  <p>اكتب الكود وشاهد النتيجة مباشرة.</p>
-  <button onclick="hello()">جرّب الآن</button>
-</div>`;
+          editorCode.html =
+            defaultEditorCode.html;
 
-          editorCode.css = `.demo {
-  font-family: Arial;
-  text-align: center;
-  padding: 45px;
-  color: #0f172a;
-}
+          editorCode.css =
+            defaultEditorCode.css;
 
-.icon {
-  font-size: 42px;
-  color: #06b6d4;
-}
-
-h1 {
-  margin: 12px 0;
-}
-
-button {
-  border: 0;
-  padding: 11px 18px;
-  border-radius: 10px;
-  background: #0891b2;
-  color: white;
-  cursor: pointer;
-}`;
-
-          editorCode.js = `function hello() {
-  alert("مرحباً من Th.Tech ✦");
-}`;
+          editorCode.js =
+            defaultEditorCode.js;
 
           switchEditorLanguage(
             currentLanguage
@@ -3934,9 +4981,9 @@ button {
       updateLineNumbers();
       buildPreview();
 
-      /* ==========================================
+      /* ==================================================
          TOOL SEARCH
-         ========================================== */
+      ================================================== */
 
       const searchInput =
         document.getElementById(
@@ -3963,23 +5010,26 @@ button {
 
           let visible = 0;
 
-          toolResults.forEach((tool) => {
-            const name =
-              tool.dataset.toolName || '';
+          toolResults.forEach(
+            (tool) => {
+              const name =
+                tool.dataset.toolName ||
+                '';
 
-            const matches =
-              !query ||
-              name.includes(query);
+              const matches =
+                !query ||
+                name.includes(query);
 
-            tool.style.display =
-              matches
-                ? 'flex'
-                : 'none';
+              tool.style.display =
+                matches
+                  ? 'flex'
+                  : 'none';
 
-            if (matches) {
-              visible++;
+              if (matches) {
+                visible++;
+              }
             }
-          });
+          );
 
           if (noResults) {
             noResults.style.display =
@@ -3990,18 +5040,26 @@ button {
         }
       );
 
-      /* ==========================================
+      /* ==================================================
          FAQ
-         ========================================== */
+      ================================================== */
 
       document
-        .querySelectorAll('.faq-question')
+        .querySelectorAll(
+          '.faq-question'
+        )
         .forEach((button) => {
+
           button.addEventListener(
             'click',
             () => {
+
               const item =
-                button.closest('.faq-item');
+                button.closest(
+                  '.faq-item'
+                );
+
+              if (!item) return;
 
               const wasOpen =
                 item.classList.contains(
@@ -4012,22 +5070,26 @@ button {
                 .querySelectorAll(
                   '.faq-item'
                 )
-                .forEach((other) => {
-                  other.classList.remove(
-                    'open'
-                  );
+                .forEach(
+                  (other) => {
 
-                  other
-                    .querySelector(
-                      '.faq-question'
-                    )
-                    ?.setAttribute(
-                      'aria-expanded',
-                      'false'
+                    other.classList.remove(
+                      'open'
                     );
-                });
+
+                    other
+                      .querySelector(
+                        '.faq-question'
+                      )
+                      ?.setAttribute(
+                        'aria-expanded',
+                        'false'
+                      );
+                  }
+                );
 
               if (!wasOpen) {
+
                 item.classList.add(
                   'open'
                 );
@@ -4036,14 +5098,17 @@ button {
                   'aria-expanded',
                   'true'
                 );
+
               }
+
             }
           );
+
         });
 
-      /* ==========================================
+      /* ==================================================
          SCROLL REVEAL
-         ========================================== */
+      ================================================== */
 
       const revealItems =
         document.querySelectorAll(
@@ -4051,68 +5116,100 @@ button {
         );
 
       if (
-        'IntersectionObserver' in window
+        'IntersectionObserver' in
+        window
       ) {
+
         const revealObserver =
           new IntersectionObserver(
-            (entries, observer) => {
-              entries.forEach((entry) => {
-                if (
-                  entry.isIntersecting
-                ) {
-                  entry.target.classList.add(
-                    'visible'
-                  );
+            (
+              entries,
+              observer
+            ) => {
 
-                  observer.unobserve(
-                    entry.target
-                  );
+              entries.forEach(
+                (entry) => {
+
+                  if (
+                    entry.isIntersecting
+                  ) {
+
+                    entry.target.classList.add(
+                      'visible'
+                    );
+
+                    observer.unobserve(
+                      entry.target
+                    );
+
+                  }
+
                 }
-              });
+              );
+
             },
             {
-              threshold: 0.08,
-              rootMargin: '0px 0px -40px 0px'
+              threshold: 0.06,
+              rootMargin:
+                '0px 0px -30px 0px'
             }
           );
 
-        revealItems.forEach((item) => {
-          revealObserver.observe(item);
-        });
+        revealItems.forEach(
+          (item) => {
+            revealObserver.observe(
+              item
+            );
+          }
+        );
+
       } else {
-        revealItems.forEach((item) => {
-          item.classList.add('visible');
-        });
+
+        revealItems.forEach(
+          (item) => {
+            item.classList.add(
+              'visible'
+            );
+          }
+        );
+
       }
 
-      /* ==========================================
+      /* ==================================================
          COUNTERS
-         ========================================== */
+      ================================================== */
 
       const counters =
         document.querySelectorAll(
           '[data-counter]'
         );
 
-      function animateCounter(element) {
+      function animateCounter(
+        element
+      ) {
+
         const target =
           Number(
             element.dataset.counter
           );
 
-        if (!Number.isFinite(target)) {
+        if (
+          !Number.isFinite(target)
+        ) {
           return;
         }
 
-        const duration = 1000;
+        const duration = 850;
 
         const start =
           performance.now();
 
         function update(now) {
+
           const progress =
             Math.min(
-              (now - start) / duration,
+              (now - start) /
+                duration,
               1
             );
 
@@ -4128,74 +5225,106 @@ button {
               target * eased
             );
 
-          if (progress < 1) {
+          if (
+            progress < 1
+          ) {
+
             requestAnimationFrame(
               update
             );
+
           }
+
         }
 
-        requestAnimationFrame(update);
+        requestAnimationFrame(
+          update
+        );
       }
 
       if (
-        'IntersectionObserver' in window
+        'IntersectionObserver' in
+        window
       ) {
+
         const counterObserver =
           new IntersectionObserver(
-            (entries, observer) => {
-              entries.forEach((entry) => {
-                if (
-                  entry.isIntersecting
-                ) {
-                  animateCounter(
-                    entry.target
-                  );
+            (
+              entries,
+              observer
+            ) => {
 
-                  observer.unobserve(
-                    entry.target
-                  );
+              entries.forEach(
+                (entry) => {
+
+                  if (
+                    entry.isIntersecting
+                  ) {
+
+                    animateCounter(
+                      entry.target
+                    );
+
+                    observer.unobserve(
+                      entry.target
+                    );
+
+                  }
+
                 }
-              });
+              );
+
             },
             {
-              threshold: 0.5
+              threshold: 0.4
             }
           );
 
-        counters.forEach((counter) => {
-          counterObserver.observe(
-            counter
-          );
-        });
+        counters.forEach(
+          (counter) => {
+            counterObserver.observe(
+              counter
+            );
+          }
+        );
+
       }
 
-      /* ==========================================
+      /* ==================================================
          SCROLL TOP
-         ========================================== */
+      ================================================== */
 
       const scrollTop =
         document.getElementById(
           'scroll-top'
         );
 
-      let scrollTicking = false;
+      let scrollTicking =
+        false;
 
       window.addEventListener(
         'scroll',
         () => {
-          if (scrollTicking) return;
+
+          if (scrollTicking) {
+            return;
+          }
 
           scrollTicking = true;
 
-          requestAnimationFrame(() => {
-            scrollTop?.classList.toggle(
-              'show',
-              window.scrollY > 600
-            );
+          requestAnimationFrame(
+            () => {
 
-            scrollTicking = false;
-          });
+              scrollTop?.classList.toggle(
+                'show',
+                window.scrollY > 550
+              );
+
+              scrollTicking =
+                false;
+            }
+          );
+
         },
         {
           passive: true
@@ -4205,37 +5334,45 @@ button {
       scrollTop?.addEventListener(
         'click',
         () => {
+
           window.scrollTo({
             top: 0,
             behavior: 'smooth'
           });
+
         }
       );
 
-      /* ==========================================
-         KEYBOARD SHORTCUT
-         Ctrl/Cmd + K = TOOL SEARCH
-         ========================================== */
+      /* ==================================================
+         CTRL / CMD + K
+      ================================================== */
 
       document.addEventListener(
         'keydown',
         (event) => {
+
           if (
             (event.ctrlKey ||
               event.metaKey) &&
-            event.key.toLowerCase() === 'k'
+            event.key.toLowerCase() ===
+              'k'
           ) {
+
             event.preventDefault();
 
             searchInput?.focus();
 
             document
-              .getElementById('tools')
+              .getElementById(
+                'tools'
+              )
               ?.scrollIntoView({
                 behavior: 'smooth',
                 block: 'center'
               });
+
           }
+
         }
       );
     </script>
