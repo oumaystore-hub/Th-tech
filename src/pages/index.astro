@@ -28,10 +28,6 @@ const displayName = (slug: string) =>
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(' ');
 
-/*
- * أدوات مفضلة تظهر أولاً إن كانت موجودة.
- * بقية الأدوات يتم اختيارها تلقائياً.
- */
 const preferredTools = [
   'api-request-builder',
   'json-formatter',
@@ -60,6 +56,15 @@ const sortedTools = [...toolSlugs].sort((a, b) => {
 
 const featuredTools = sortedTools.slice(0, 12);
 const toolsCount = toolSlugs.length;
+
+/* ==========================================
+   بيانات الأدوات للبحث السريع
+   ========================================== */
+
+const toolSearchData = sortedTools.map((slug) => ({
+  slug,
+  name: displayName(slug)
+}));
 
 /* ==========================================
    بيانات المسارات
@@ -127,7 +132,7 @@ const faqs = [
   {
     question: 'ما أنواع الأدوات الموجودة؟',
     answer:
-      'ستجد أدوات للمطورين والبيانات والنصوص وJSON وSQL والترميز والتشفير والألوان والروابط وغيرها، ويتم تنظيمها باستمرار لتسهيل الوصول إليها.'
+      'ستجد أدوات للمطورين والبيانات والنصوص وJSON وSQL والترميز والتشفير والألوان والروابط وغيرها.'
   },
   {
     question: 'هل أستطيع استخدام الموقع من الهاتف؟',
@@ -190,7 +195,6 @@ const jsonLd = {
   <link rel="canonical" href={`${siteUrl}/`} />
   <link rel="icon" type="image/png" href={`${siteUrl}/logo1.png`} />
 
-  <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="ar_AR" />
   <meta property="og:site_name" content="Th.Tech" />
@@ -202,7 +206,6 @@ const jsonLd = {
   <meta property="og:url" content={`${siteUrl}/`} />
   <meta property="og:image" content={`${siteUrl}/logo1.png`} />
 
-  <!-- Twitter -->
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Th.Tech | المنصة التقنية" />
   <meta
@@ -213,6 +216,7 @@ const jsonLd = {
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
   <link
     href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
     rel="stylesheet"
@@ -232,7 +236,8 @@ const jsonLd = {
 
         if (
           saved === 'dark' ||
-          (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)
+          (!saved &&
+            window.matchMedia('(prefers-color-scheme: dark)').matches)
         ) {
           document.documentElement.classList.add('dark-mode');
         }
@@ -245,6 +250,7 @@ const jsonLd = {
   <Header />
 
   <main>
+
     <!-- ==========================================
          HERO
          ========================================== -->
@@ -255,6 +261,7 @@ const jsonLd = {
 
       <div class="container hero-container">
         <div class="hero-content">
+
           <div class="hero-badge">
             <span class="badge-dot"></span>
             اكتشف، تعلّم، وابتكر
@@ -301,6 +308,7 @@ const jsonLd = {
               مجاني
             </div>
           </div>
+
         </div>
 
         <div class="hero-visual" aria-hidden="true">
@@ -350,7 +358,13 @@ const jsonLd = {
 
           <div class="hero-center">
             <div class="center-ring">
-              <img src={`${base}/logo1.png`} alt="Th.Tech" />
+              <img
+                src={`${base}/logo1.png`}
+                alt="Th.Tech"
+                width="90"
+                height="90"
+                decoding="async"
+              />
             </div>
 
             <strong>Th.Tech</strong>
@@ -361,7 +375,7 @@ const jsonLd = {
     </section>
 
     <!-- ==========================================
-         TECH TICKER
+         TICKER
          ========================================== -->
 
     <section class="ticker-section" aria-label="التقنيات">
@@ -394,6 +408,7 @@ const jsonLd = {
 
     <section class="stats-section">
       <div class="container stats-grid">
+
         <div class="stat-card">
           <div class="stat-icon">
             <i class="fa-solid fa-screwdriver-wrench"></i>
@@ -429,6 +444,83 @@ const jsonLd = {
           <strong>مجاني</strong>
           <span>متاح للجميع</span>
         </div>
+
+      </div>
+    </section>
+
+    <!-- ==========================================
+         TOOL FINDER
+         ========================================== -->
+
+    <section class="tool-finder-section" aria-labelledby="finder-title">
+      <div class="container">
+
+        <div class="finder-box">
+
+          <div class="finder-content">
+            <div class="section-kicker">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              البحث السريع
+            </div>
+
+            <h2 id="finder-title">
+              ما الأداة التي تبحث عنها؟
+            </h2>
+
+            <p>
+              ابحث بين أدوات Th.Tech مباشرة واستخدم الأداة المناسبة دون
+              الحاجة إلى تصفح القائمة كاملة.
+            </p>
+          </div>
+
+          <div class="finder-controls">
+
+            <div class="search-input-wrap">
+              <i class="fa-solid fa-magnifying-glass"></i>
+
+              <input
+                id="tool-search"
+                type="search"
+                placeholder="مثال: JSON أو SQL أو Base64..."
+                autocomplete="off"
+                aria-label="البحث عن أداة"
+              />
+
+              <button
+                id="clear-tool-search"
+                type="button"
+                aria-label="مسح البحث"
+                title="مسح البحث"
+              >
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+
+            <button
+              id="random-tool"
+              class="random-tool-btn"
+              type="button"
+            >
+              <i class="fa-solid fa-shuffle"></i>
+              أداة عشوائية
+            </button>
+
+          </div>
+
+          <div
+            id="tool-search-results"
+            class="tool-search-results"
+            aria-live="polite"
+          ></div>
+
+          <div id="tool-search-empty" class="tool-search-empty" hidden>
+            <i class="fa-regular fa-face-frown"></i>
+            <strong>لم نجد أداة بهذا الاسم</strong>
+            <span>جرّب كلمة أخرى مثل JSON أو SQL أو QR.</span>
+          </div>
+
+        </div>
+
       </div>
     </section>
 
@@ -436,15 +528,22 @@ const jsonLd = {
          TOOLS
          ========================================== -->
 
-    <section class="tools-section" id="tools" aria-labelledby="tools-title">
+    <section
+      class="tools-section"
+      id="tools"
+      aria-labelledby="tools-title"
+    >
       <div class="container">
+
         <div class="section-heading">
           <div class="section-kicker">
             <i class="fa-solid fa-wand-magic-sparkles"></i>
             أدوات Th.Tech
           </div>
 
-          <h2 id="tools-title">أدوات تقنية تساعدك على إنجاز عملك</h2>
+          <h2 id="tools-title">
+            أدوات تقنية تساعدك على إنجاز عملك
+          </h2>
 
           <p>
             مجموعة من الأدوات العملية للمطورين وصناع المحتوى والمهتمين
@@ -459,6 +558,7 @@ const jsonLd = {
                 href={`${base}/tools/${slug}/`}
                 class="tool-card"
                 aria-label={`فتح أداة ${displayName(slug)}`}
+                data-tool-link={slug}
               >
                 <div class="tool-card-icon">
                   <i class="fa-solid fa-code"></i>
@@ -466,7 +566,10 @@ const jsonLd = {
 
                 <div class="tool-card-content">
                   <h3>{displayName(slug)}</h3>
-                  <p>أداة تقنية متاحة مباشرة عبر المتصفح.</p>
+
+                  <p>
+                    أداة تقنية متاحة مباشرة عبر المتصفح.
+                  </p>
                 </div>
 
                 <span class="tool-arrow">
@@ -478,11 +581,15 @@ const jsonLd = {
         </div>
 
         <div class="section-action">
-          <a href={`${base}/tools/`} class="outline-btn">
-            <span>عرض جميع الأدوات</span>
+          <a
+            href={`${base}/tools/`}
+            class="outline-btn"
+          >
+            <span>عرض جميع الأدوات ({toolsCount})</span>
             <i class="fa-solid fa-arrow-left"></i>
           </a>
         </div>
+
       </div>
     </section>
 
@@ -490,15 +597,21 @@ const jsonLd = {
          TRACKS
          ========================================== -->
 
-    <section class="tracks-section" aria-labelledby="tracks-title">
+    <section
+      class="tracks-section"
+      aria-labelledby="tracks-title"
+    >
       <div class="container">
+
         <div class="section-heading">
           <div class="section-kicker">
             <i class="fa-solid fa-compass"></i>
             مجالات التقنية
           </div>
 
-          <h2 id="tracks-title">اختر المجال الذي يناسبك</h2>
+          <h2 id="tracks-title">
+            اختر المجال الذي يناسبك
+          </h2>
 
           <p>
             ابدأ من المجال الذي يهمك واستكشف الأدوات والمحتوى المرتبط به.
@@ -508,12 +621,16 @@ const jsonLd = {
         <div class="tracks-grid">
           {
             tracks.map((track) => (
-              <a href={`${base}/${track.slug}/`} class="track-card">
+              <a
+                href={`${base}/${track.slug}/`}
+                class="track-card"
+              >
                 <div class="track-image">
                   <img
                     src={track.image}
                     alt={track.title}
                     loading="lazy"
+                    decoding="async"
                   />
 
                   <div class="track-image-overlay"></div>
@@ -543,6 +660,7 @@ const jsonLd = {
             ))
           }
         </div>
+
       </div>
     </section>
 
@@ -550,15 +668,21 @@ const jsonLd = {
          FEATURES
          ========================================== -->
 
-    <section class="features-section" aria-labelledby="features-title">
+    <section
+      class="features-section"
+      aria-labelledby="features-title"
+    >
       <div class="container">
+
         <div class="section-heading">
           <div class="section-kicker">
             <i class="fa-solid fa-sparkles"></i>
             لماذا Th.Tech؟
           </div>
 
-          <h2 id="features-title">تجربة تقنية مصممة ببساطة</h2>
+          <h2 id="features-title">
+            تجربة تقنية مصممة ببساطة
+          </h2>
 
           <p>
             نركز على جعل الوصول إلى الأدوات والمعلومات التقنية أسرع وأسهل.
@@ -566,6 +690,7 @@ const jsonLd = {
         </div>
 
         <div class="features-grid">
+
           <article class="feature-card">
             <div class="feature-icon">
               <i class="fa-solid fa-bolt"></i>
@@ -615,6 +740,7 @@ const jsonLd = {
               أدوات ومراجع تساعدك في البرمجة والبيانات والتقنيات الحديثة.
             </p>
           </article>
+
         </div>
       </div>
     </section>
@@ -623,15 +749,21 @@ const jsonLd = {
          FAQ
          ========================================== -->
 
-    <section class="faq-section" aria-labelledby="faq-title">
+    <section
+      class="faq-section"
+      aria-labelledby="faq-title"
+    >
       <div class="container faq-container">
+
         <div class="section-heading">
           <div class="section-kicker">
             <i class="fa-solid fa-circle-question"></i>
             الأسئلة الشائعة
           </div>
 
-          <h2 id="faq-title">أسئلة قد تساعدك قبل البدء</h2>
+          <h2 id="faq-title">
+            أسئلة قد تساعدك قبل البدء
+          </h2>
 
           <p>
             إجابات سريعة عن استخدام المنصة والأدوات.
@@ -641,7 +773,10 @@ const jsonLd = {
         <div class="faq-list">
           {
             faqs.map((faq, index) => (
-              <details class="faq-item" open={index === 0}>
+              <details
+                class="faq-item"
+                open={index === 0}
+              >
                 <summary>
                   <span>{faq.question}</span>
 
@@ -655,6 +790,7 @@ const jsonLd = {
             ))
           }
         </div>
+
       </div>
     </section>
 
@@ -667,11 +803,14 @@ const jsonLd = {
 
       <div class="container">
         <div class="cta-box">
+
           <div class="cta-icon">
             <i class="fa-solid fa-rocket"></i>
           </div>
 
-          <h2>حوّل أفكارك إلى واقع رقمي</h2>
+          <h2>
+            حوّل أفكارك إلى واقع رقمي
+          </h2>
 
           <p>
             ابدأ باستكشاف أدوات Th.Tech واستخدم الأدوات المناسبة لمهمتك
@@ -679,24 +818,30 @@ const jsonLd = {
           </p>
 
           <div class="cta-actions">
-            <a href={`${base}/tools/`} class="btn btn-primary">
+
+            <a
+              href={`${base}/tools/`}
+              class="btn btn-primary"
+            >
               <i class="fa-solid fa-toolbox"></i>
               استكشف الأدوات
             </a>
 
-            <a href={`${base}/contact/`} class="btn btn-secondary">
+            <a
+              href={`${base}/contact/`}
+              class="btn btn-secondary"
+            >
               <i class="fa-solid fa-envelope"></i>
               تواصل معنا
             </a>
+
           </div>
+
         </div>
       </div>
     </section>
-  </main>
 
-  <!-- ==========================================
-       SCROLL TOP
-       ========================================== -->
+  </main>
 
   <button
     id="scroll-top"
@@ -1011,6 +1156,7 @@ const jsonLd = {
     position: absolute;
     border: 1px solid rgba(2, 132, 199, 0.18);
     border-radius: 50%;
+    will-change: transform;
   }
 
   .orbit-one {
@@ -1095,6 +1241,7 @@ const jsonLd = {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.7rem;
     animation: floating 5s ease-in-out infinite;
+    will-change: transform;
   }
 
   @keyframes floating {
@@ -1178,6 +1325,7 @@ const jsonLd = {
     gap: 55px;
     padding: 22px 0;
     animation: ticker 35s linear infinite;
+    will-change: transform;
   }
 
   .ticker-track span {
@@ -1265,6 +1413,208 @@ const jsonLd = {
   .stat-card span {
     color: var(--text-soft);
     font-size: 0.9rem;
+  }
+
+  /* ==========================================
+     TOOL FINDER
+     ========================================== */
+
+  .tool-finder-section {
+    padding: 75px 0;
+    background:
+      radial-gradient(
+        circle at 15% 50%,
+        rgba(6, 182, 212, 0.08),
+        transparent 35%
+      ),
+      var(--bg);
+  }
+
+  .finder-box {
+    position: relative;
+    overflow: hidden;
+    padding: 38px;
+    border: 1px solid var(--border);
+    border-radius: 26px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+
+  .finder-content {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto 28px;
+  }
+
+  .finder-content h2 {
+    font-size: clamp(1.7rem, 4vw, 2.5rem);
+    margin-bottom: 10px;
+  }
+
+  .finder-content p {
+    color: var(--text-soft);
+    line-height: 1.9;
+  }
+
+  .finder-controls {
+    display: flex;
+    gap: 12px;
+    max-width: 850px;
+    margin: auto;
+  }
+
+  .search-input-wrap {
+    position: relative;
+    flex: 1;
+  }
+
+  .search-input-wrap > i {
+    position: absolute;
+    top: 50%;
+    right: 18px;
+    transform: translateY(-50%);
+    color: var(--primary);
+    pointer-events: none;
+  }
+
+  .search-input-wrap input {
+    width: 100%;
+    height: 56px;
+    padding: 0 50px 0 45px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    outline: none;
+    color: var(--text);
+    background: var(--bg);
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .search-input-wrap input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.08);
+  }
+
+  .search-input-wrap button {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-soft);
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.2s ease;
+  }
+
+  .search-input-wrap.has-value button {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .search-input-wrap button:hover {
+    background: var(--surface-2);
+    color: var(--primary);
+  }
+
+  .random-tool-btn {
+    flex: 0 0 auto;
+    min-height: 56px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 14px;
+    color: white;
+    background: linear-gradient(
+      135deg,
+      var(--primary),
+      var(--accent)
+    );
+    font-weight: 800;
+    cursor: pointer;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .random-tool-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(2, 132, 199, 0.22);
+  }
+
+  .tool-search-results {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .search-result {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--bg);
+    transition: 0.2s ease;
+  }
+
+  .search-result:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+  }
+
+  .search-result-icon {
+    width: 35px;
+    height: 35px;
+    flex: 0 0 35px;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    color: var(--primary);
+    background: rgba(2, 132, 199, 0.1);
+    font-size: 0.85rem;
+  }
+
+  .search-result-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .tool-search-empty {
+    margin-top: 18px;
+    padding: 25px;
+    text-align: center;
+    color: var(--text-soft);
+    border: 1px dashed var(--border);
+    border-radius: 14px;
+  }
+
+  .tool-search-empty i {
+    display: block;
+    color: var(--primary);
+    font-size: 1.5rem;
+    margin-bottom: 8px;
+  }
+
+  .tool-search-empty strong,
+  .tool-search-empty span {
+    display: block;
+  }
+
+  .tool-search-empty strong {
+    color: var(--text);
+    margin-bottom: 4px;
   }
 
   /* ==========================================
@@ -1701,6 +2051,10 @@ const jsonLd = {
     .features-grid {
       grid-template-columns: repeat(2, 1fr);
     }
+
+    .tool-search-results {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   @media (max-width: 900px) {
@@ -1743,6 +2097,10 @@ const jsonLd = {
     .tools-grid {
       grid-template-columns: repeat(2, 1fr);
     }
+
+    .tool-search-results {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
 
   @media (max-width: 640px) {
@@ -1751,137 +2109,318 @@ const jsonLd = {
     }
 
     section {
-      padding: 65px 0;
+      padding: 60px 0;
     }
 
     .hero {
-      padding: 65px 0 45px;
+      padding: 58px 0 40px;
     }
 
+    /*
+     * حجم الخط هنا متوازن للهاتف
+     * ولا يتم تكبيره بشكل مبالغ فيه.
+     */
+
     .hero h1 {
-      font-size: 2.45rem;
-      letter-spacing: -1px;
+      font-size: 2rem;
+      line-height: 1.4;
+      letter-spacing: -0.6px;
+      margin-bottom: 18px;
     }
 
     .hero-description {
-      font-size: 1rem;
+      font-size: 0.9rem;
+      line-height: 1.9;
+      margin-bottom: 22px;
+    }
+
+    .hero-badge {
+      font-size: 0.78rem;
+      padding: 7px 12px;
+      margin-bottom: 18px;
     }
 
     .hero-actions {
       flex-direction: column;
+      gap: 10px;
     }
 
     .hero-actions .btn {
       width: 100%;
+      min-height: 48px;
+      font-size: 0.88rem;
     }
 
     .hero-features {
-      gap: 12px;
-      font-size: 0.8rem;
+      gap: 10px 16px;
+      font-size: 0.72rem;
+      margin-top: 20px;
     }
 
     .hero-visual {
-      height: 330px;
+      height: 310px;
+      margin-top: 10px;
     }
 
     .orbit-one {
-      width: 280px;
-      height: 280px;
+      width: 270px;
+      height: 270px;
     }
 
     .orbit-two {
-      width: 210px;
-      height: 210px;
+      width: 200px;
+      height: 200px;
     }
 
     .hero-center {
-      width: 150px;
-      height: 150px;
+      width: 145px;
+      height: 145px;
     }
 
     .center-ring {
-      width: 62px;
-      height: 62px;
-      padding: 8px;
+      width: 58px;
+      height: 58px;
+      padding: 7px;
+      margin-bottom: 7px;
     }
 
     .hero-center strong {
-      font-size: 0.95rem;
+      font-size: 0.88rem;
     }
 
     .hero-center span {
-      font-size: 0.55rem;
+      font-size: 0.5rem;
     }
 
     .code-card {
-      font-size: 0.56rem;
-      padding: 10px;
+      font-size: 0.48rem;
+      padding: 8px;
     }
 
     .code-python {
-      top: 15px;
-      right: 0;
+      top: 10px;
+      right: -2px;
     }
 
     .code-js {
-      bottom: 15px;
-      left: 0;
+      bottom: 12px;
+      left: -2px;
     }
 
     .code-terminal {
       bottom: -5px;
-      right: 45px;
+      right: 35px;
     }
 
     .section-heading {
-      margin-bottom: 35px;
+      margin-bottom: 30px;
+    }
+
+    .section-kicker {
+      font-size: 0.78rem;
     }
 
     .section-heading h2 {
-      font-size: 1.9rem;
+      font-size: 1.65rem;
+      line-height: 1.45;
+    }
+
+    .section-heading p {
+      font-size: 0.85rem;
+      line-height: 1.8;
+    }
+
+    .stats-section {
+      padding: 30px 0;
     }
 
     .stats-grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
+      gap: 5px;
     }
 
     .stat-card {
-      padding: 15px 5px;
+      padding: 12px 4px;
+    }
+
+    .stat-icon {
+      font-size: 1rem;
+      margin-bottom: 5px;
     }
 
     .stat-card strong {
-      font-size: 1.55rem;
+      font-size: 1.3rem;
     }
+
+    .stat-card span {
+      font-size: 0.7rem;
+    }
+
+    /* Finder */
+
+    .tool-finder-section {
+      padding: 48px 0;
+    }
+
+    .finder-box {
+      padding: 24px 15px;
+      border-radius: 20px;
+    }
+
+    .finder-content {
+      margin-bottom: 20px;
+    }
+
+    .finder-content h2 {
+      font-size: 1.45rem;
+    }
+
+    .finder-content p {
+      font-size: 0.78rem;
+      line-height: 1.8;
+    }
+
+    .finder-controls {
+      flex-direction: column;
+    }
+
+    .search-input-wrap input {
+      height: 50px;
+      font-size: 0.8rem;
+      padding-right: 43px;
+    }
+
+    .random-tool-btn {
+      width: 100%;
+      min-height: 48px;
+      font-size: 0.82rem;
+    }
+
+    .tool-search-results {
+      grid-template-columns: 1fr;
+    }
+
+    .search-result {
+      padding: 11px;
+    }
+
+    .search-result-name {
+      font-size: 0.78rem;
+    }
+
+    /* Tools */
 
     .tools-grid {
       grid-template-columns: 1fr;
+      gap: 12px;
     }
+
+    .tool-card {
+      min-height: 82px;
+      padding: 13px;
+      border-radius: 16px;
+      gap: 11px;
+    }
+
+    .tool-card-icon {
+      width: 43px;
+      height: 43px;
+      flex-basis: 43px;
+      border-radius: 12px;
+      font-size: 0.95rem;
+    }
+
+    .tool-card h3 {
+      font-size: 0.82rem;
+      margin-bottom: 3px;
+    }
+
+    .tool-card p {
+      font-size: 0.65rem;
+    }
+
+    .tool-arrow {
+      font-size: 0.75rem;
+    }
+
+    .outline-btn {
+      font-size: 0.78rem;
+      padding: 11px 17px;
+    }
+
+    /* Tracks */
 
     .tracks-grid,
     .features-grid {
       grid-template-columns: 1fr;
+      gap: 13px;
     }
 
     .track-image {
-      height: 210px;
+      height: 180px;
+    }
+
+    .track-content {
+      padding: 17px;
+    }
+
+    .track-content h3 {
+      font-size: 1.05rem;
+    }
+
+    .track-content p {
+      font-size: 0.78rem;
     }
 
     .feature-card {
-      padding: 22px;
+      padding: 19px;
     }
 
+    .feature-card h3 {
+      font-size: 0.95rem;
+    }
+
+    .feature-card p {
+      font-size: 0.78rem;
+    }
+
+    /* FAQ */
+
     .faq-item summary {
-      padding: 18px;
+      padding: 16px;
+      font-size: 0.82rem;
     }
 
     .faq-answer {
-      padding: 0 18px 18px;
+      padding: 0 16px 17px;
+      font-size: 0.78rem;
+      line-height: 1.85;
+    }
+
+    /* CTA */
+
+    .cta-section {
+      padding: 60px 0;
     }
 
     .cta-box {
-      padding: 50px 20px;
-      border-radius: 22px;
+      padding: 42px 17px;
+      border-radius: 21px;
+    }
+
+    .cta-icon {
+      width: 55px;
+      height: 55px;
+      border-radius: 16px;
+      font-size: 1.2rem;
+    }
+
+    .cta-box h2 {
+      font-size: 1.65rem;
+      line-height: 1.4;
+    }
+
+    .cta-box p {
+      font-size: 0.8rem;
     }
 
     .cta-actions {
@@ -1890,13 +2429,15 @@ const jsonLd = {
 
     .cta-actions .btn {
       width: 100%;
+      min-height: 48px;
+      font-size: 0.85rem;
     }
 
     .scroll-top {
-      left: 14px;
-      bottom: 14px;
-      width: 44px;
-      height: 44px;
+      left: 12px;
+      bottom: 12px;
+      width: 42px;
+      height: 42px;
     }
   }
 
@@ -1918,45 +2459,37 @@ const jsonLd = {
 
 <script>
   /* ==========================================
-     THEME SYNC
+     THEME
      ========================================== */
 
-  const syncTheme = () => {
-    try {
-      const saved = localStorage.getItem('theme');
+  /*
+   * لا يوجد MutationObserver هنا.
+   * Header مسؤول عن تغيير class="dark-mode".
+   * الصفحة تحتاج فقط إلى الاستماع للحدث.
+   */
 
-      if (saved === 'dark') {
-        document.documentElement.classList.add('dark-mode');
-      } else if (saved === 'light') {
-        document.documentElement.classList.remove('dark-mode');
-      }
-    } catch {}
-  };
-
-  syncTheme();
-
-  window.addEventListener('themeChange', syncTheme);
+  window.addEventListener('themeChange', () => {
+    document.documentElement.classList.toggle(
+      'dark-mode',
+      localStorage.getItem('theme') === 'dark'
+    );
+  });
 
   window.addEventListener('storage', (event) => {
     if (event.key === 'theme') {
-      syncTheme();
+      document.documentElement.classList.toggle(
+        'dark-mode',
+        event.newValue === 'dark'
+      );
     }
-  });
-
-  const observer = new MutationObserver(() => {
-    syncTheme();
-  });
-
-  observer.observe(document.documentElement, {
-    attributes: true,
-    attributeFilter: ['class']
   });
 
   /* ==========================================
      TYPEWRITER
      ========================================== */
 
-  const typingElement = document.getElementById('typing-text');
+  const typingElement =
+    document.getElementById('typing-text');
 
   const typingWords = [
     'المستقبل الرقمي',
@@ -1968,135 +2501,505 @@ const jsonLd = {
   let wordIndex = 0;
   let charIndex = typingWords[0].length;
   let deleting = true;
+  let typingTimer = 0;
 
   const typeEffect = () => {
     if (!typingElement) return;
+
+    /*
+     * لا نستمر في تشغيل الحركة عندما تكون الصفحة
+     * في الخلفية لتقليل استهلاك المعالج.
+     */
+    if (document.hidden) {
+      typingTimer = window.setTimeout(typeEffect, 1000);
+      return;
+    }
 
     const current = typingWords[wordIndex];
 
     if (!deleting) {
       charIndex++;
 
-      typingElement.textContent = current.slice(0, charIndex);
+      typingElement.textContent =
+        current.slice(0, charIndex);
 
       if (charIndex >= current.length) {
         deleting = true;
 
-        setTimeout(typeEffect, 1800);
+        typingTimer = window.setTimeout(
+          typeEffect,
+          1800
+        );
+
         return;
       }
 
-      setTimeout(typeEffect, 75);
+      typingTimer = window.setTimeout(
+        typeEffect,
+        75
+      );
     } else {
       charIndex--;
 
-      typingElement.textContent = current.slice(0, charIndex);
+      typingElement.textContent =
+        current.slice(0, charIndex);
 
       if (charIndex <= 0) {
         deleting = false;
-        wordIndex = (wordIndex + 1) % typingWords.length;
+        wordIndex =
+          (wordIndex + 1) % typingWords.length;
 
-        setTimeout(typeEffect, 350);
+        typingTimer = window.setTimeout(
+          typeEffect,
+          350
+        );
+
         return;
       }
 
-      setTimeout(typeEffect, 40);
+      typingTimer = window.setTimeout(
+        typeEffect,
+        40
+      );
     }
   };
 
-  setTimeout(typeEffect, 1500);
+  typingTimer = window.setTimeout(
+    typeEffect,
+    1500
+  );
 
   /* ==========================================
      COUNTER
      ========================================== */
 
-  const counters = document.querySelectorAll('.counter');
+  const counters =
+    document.querySelectorAll('.counter');
 
   const animateCounter = (element) => {
-    const target = Number(element.getAttribute('data-target') || 0);
+    if (element.dataset.animated === 'true') return;
+
+    element.dataset.animated = 'true';
+
+    const target = Number(
+      element.getAttribute('data-target') || 0
+    );
 
     if (!target) {
       element.textContent = '0';
       return;
     }
 
-    const duration = 1200;
+    const duration = 900;
     const start = performance.now();
 
     const update = (now) => {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
+      const progress = Math.min(
+        (now - start) / duration,
+        1
+      );
 
-      element.textContent = Math.floor(target * eased).toString();
+      const eased =
+        1 - Math.pow(1 - progress, 3);
+
+      element.textContent =
+        Math.floor(target * eased).toString();
 
       if (progress < 1) {
         requestAnimationFrame(update);
       } else {
-        element.textContent = target.toString();
+        element.textContent =
+          target.toString();
       }
     };
 
     requestAnimationFrame(update);
   };
 
-  const statsSection = document.querySelector('.stats-section');
+  const statsSection =
+    document.querySelector('.stats-section');
 
   if (statsSection && counters.length) {
-    const statsObserver = new IntersectionObserver(
-      (entries, observer) => {
-        if (entries[0]?.isIntersecting) {
-          counters.forEach(animateCounter);
-          observer.disconnect();
+    const statsObserver =
+      new IntersectionObserver(
+        (entries, observer) => {
+          if (entries[0]?.isIntersecting) {
+            counters.forEach(animateCounter);
+            observer.disconnect();
+          }
+        },
+        {
+          threshold: 0.2
         }
-      },
-      { threshold: 0.25 }
-    );
+      );
 
     statsObserver.observe(statsSection);
   }
 
   /* ==========================================
+     TOOL SEARCH
+     ========================================== */
+
+  const toolsData = [
+    ...JSON.parse(
+      JSON.stringify(
+        {
+          tools: toolSearchData
+        }
+      )
+    ).tools
+  ];
+
+  const toolSearch =
+    document.getElementById('tool-search');
+
+  const resultsContainer =
+    document.getElementById(
+      'tool-search-results'
+    );
+
+  const emptyState =
+    document.getElementById(
+      'tool-search-empty'
+    );
+
+  const clearSearch =
+    document.getElementById(
+      'clear-tool-search'
+    );
+
+  const searchWrapper =
+    document.querySelector(
+      '.search-input-wrap'
+    );
+
+  const randomTool =
+    document.getElementById(
+      'random-tool'
+    );
+
+  const basePath = `${base}`;
+
+  const normalize = (value) =>
+    String(value || '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[-_]/g, ' ')
+      .trim();
+
+  const createResult = (tool) => {
+    const link =
+      document.createElement('a');
+
+    link.className = 'search-result';
+    link.href =
+      `${basePath}/tools/${tool.slug}/`;
+    link.setAttribute(
+      'aria-label',
+      `فتح أداة ${tool.name}`
+    );
+
+    link.innerHTML = `
+      <span class="search-result-icon">
+        <i class="fa-solid fa-code"></i>
+      </span>
+
+      <span class="search-result-name">
+        ${tool.name}
+      </span>
+    `;
+
+    return link;
+  };
+
+  const renderResults = (query = '') => {
+    if (!resultsContainer) return;
+
+    const normalizedQuery =
+      normalize(query);
+
+    resultsContainer.replaceChildren();
+
+    if (!normalizedQuery) {
+      emptyState?.setAttribute(
+        'hidden',
+        ''
+      );
+
+      return;
+    }
+
+    const words =
+      normalizedQuery.split(/\s+/);
+
+    const matches =
+      toolsData
+        .map((tool) => {
+          const name =
+            normalize(tool.name);
+
+          const slug =
+            normalize(tool.slug);
+
+          let score = 0;
+
+          if (name === normalizedQuery) {
+            score += 100;
+          }
+
+          if (
+            name.includes(normalizedQuery)
+          ) {
+            score += 50;
+          }
+
+          if (
+            slug.includes(normalizedQuery)
+          ) {
+            score += 40;
+          }
+
+          words.forEach((word) => {
+            if (word.length > 1) {
+              if (name.includes(word)) {
+                score += 15;
+              }
+
+              if (slug.includes(word)) {
+                score += 10;
+              }
+            }
+          });
+
+          return {
+            tool,
+            score
+          };
+        })
+        .filter((item) => item.score > 0)
+        .sort(
+          (a, b) =>
+            b.score - a.score ||
+            a.tool.name.localeCompare(
+              b.tool.name
+            )
+        )
+        .slice(0, 8);
+
+    if (!matches.length) {
+      emptyState?.removeAttribute(
+        'hidden'
+      );
+
+      return;
+    }
+
+    emptyState?.setAttribute(
+      'hidden',
+      ''
+    );
+
+    const fragment =
+      document.createDocumentFragment();
+
+    matches.forEach(({ tool }) => {
+      fragment.appendChild(
+        createResult(tool)
+      );
+    });
+
+    resultsContainer.appendChild(
+      fragment
+    );
+  };
+
+  if (toolSearch) {
+    toolSearch.addEventListener(
+      'input',
+      () => {
+        const value =
+          toolSearch.value.trim();
+
+        searchWrapper?.classList.toggle(
+          'has-value',
+          value.length > 0
+        );
+
+        renderResults(value);
+      }
+    );
+  }
+
+  if (clearSearch) {
+    clearSearch.addEventListener(
+      'click',
+      () => {
+        if (!toolSearch) return;
+
+        toolSearch.value = '';
+
+        searchWrapper?.classList.remove(
+          'has-value'
+        );
+
+        renderResults('');
+
+        toolSearch.focus();
+      }
+    );
+  }
+
+  if (randomTool) {
+    randomTool.addEventListener(
+      'click',
+      () => {
+        if (!toolsData.length) return;
+
+        const randomIndex =
+          Math.floor(
+            Math.random() *
+              toolsData.length
+          );
+
+        const selected =
+          toolsData[randomIndex];
+
+        if (selected?.slug) {
+          window.location.href =
+            `${basePath}/tools/${selected.slug}/`;
+        }
+      }
+    );
+  }
+
+  /* ==========================================
+     TOOL CARD TRACKING
+     ========================================== */
+
+  document
+    .querySelectorAll('[data-tool-link]')
+    .forEach((link) => {
+      link.addEventListener(
+        'click',
+        () => {
+          const slug =
+            link.getAttribute(
+              'data-tool-link'
+            );
+
+          if (!slug) return;
+
+          try {
+            localStorage.setItem(
+              'thtech-last-tool',
+              slug
+            );
+          } catch {}
+        }
+      );
+    });
+
+  /* ==========================================
      SCROLL TOP
      ========================================== */
 
-  const scrollTop = document.getElementById('scroll-top');
+  const scrollTop =
+    document.getElementById(
+      'scroll-top'
+    );
 
   if (scrollTop) {
+    let scrollTicking = false;
+
+    const updateScrollButton = () => {
+      scrollTop.classList.toggle(
+        'visible',
+        window.scrollY > 500
+      );
+
+      scrollTicking = false;
+    };
+
     window.addEventListener(
       'scroll',
       () => {
-        if (window.scrollY > 500) {
-          scrollTop.classList.add('visible');
-        } else {
-          scrollTop.classList.remove('visible');
-        }
+        if (scrollTicking) return;
+
+        scrollTicking = true;
+
+        requestAnimationFrame(
+          updateScrollButton
+        );
       },
-      { passive: true }
+      {
+        passive: true
+      }
     );
 
-    scrollTop.addEventListener('click', () => {
-      window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
-      });
-    });
+    scrollTop.addEventListener(
+      'click',
+      () => {
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      }
+    );
   }
 
   /* ==========================================
      FAQ
      ========================================== */
 
-  document.querySelectorAll('.faq-item').forEach((item) => {
-    item.addEventListener('toggle', () => {
-      if (!(item instanceof HTMLDetailsElement)) return;
+  const faqItems =
+    document.querySelectorAll(
+      '.faq-item'
+    );
 
-      if (item.open) {
-        document.querySelectorAll('.faq-item').forEach((other) => {
-          if (other !== item && other instanceof HTMLDetailsElement) {
+  faqItems.forEach((item) => {
+    item.addEventListener(
+      'toggle',
+      () => {
+        if (
+          !(item instanceof HTMLDetailsElement)
+        ) {
+          return;
+        }
+
+        if (!item.open) return;
+
+        faqItems.forEach((other) => {
+          if (
+            other !== item &&
+            other instanceof HTMLDetailsElement
+          ) {
             other.open = false;
           }
         });
       }
-    });
+    );
   });
+
+  /* ==========================================
+     PAGE VISIBILITY
+     ========================================== */
+
+  document.addEventListener(
+    'visibilitychange',
+    () => {
+      if (!document.hidden) {
+        if (
+          typingElement &&
+          !typingTimer
+        ) {
+          typingTimer =
+            window.setTimeout(
+              typeEffect,
+              500
+            );
+        }
+      }
+    }
+  );
 </script>
